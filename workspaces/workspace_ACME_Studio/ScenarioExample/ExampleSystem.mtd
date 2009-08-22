@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AcmeModel>
+  <system name="ExampleSystem">
+    <userdata key="connection-patterns">
+      <data>
+        <portConnectionRule connector="Connector" name="">
+          <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+          <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+        </portConnectionRule>
+      </data>
+    </userdata>
+    <component name="Scenario1">
+      <userdata key="vis-information">
+        <data category="component" height="326" rotation="0.0" width="582" x="386" y="218"/>
+      </userdata>
+    </component>
+    <component name="Component0">
+      <userdata key="vis-information">
+        <data category="component" height="136" rotation="0.0" width="103" x="161" y="208"/>
+      </userdata>
+    </component>
+    <component name="ResponseMeasure">
+      <userdata key="vis-information">
+        <data category="component" height="220" rotation="0.0" width="184" x="578" y="199"/>
+      </userdata>
+    </component>
+    <component name="server1">
+      <userdata key="vis-information">
+        <data category="component" height="68" rotation="0.0" width="134" x="378" y="213"/>
+      </userdata>
+    </component>
+  </system>
+</AcmeModel>

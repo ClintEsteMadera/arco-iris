@@ -1,0 +1,22 @@
+import families/ScenarioFamily.acme;
+ 
+System ExampleSystem : ScenarioFamily = new ScenarioFamily extended with {
+
+    Component Scenario1 : ScenarioT = new ScenarioT extended with {
+
+    }
+    Component Component0 : StimulusSourceT = new StimulusSourceT extended with {
+
+        Property name = "a user";
+
+    }
+    Component ResponseMeasure : ResponseMeasureT = new ResponseMeasureT extended with {
+
+        Property name = "normal load";
+
+    }
+    Component server1  = {
+
+    }
+}
+
