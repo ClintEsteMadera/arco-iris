@@ -1,0 +1,30 @@
+Family ScenarioFamily = {
+
+    Element Type ResponseMeasureT = {
+
+        Property name : string;
+
+    }
+    Element Type StimulusSourceT = {
+
+        Property name : string;
+
+    }
+    Element Type ScenarioT = {
+
+        Property environment : string;
+
+        Property response : any;
+
+        Property stimulusSource : any;
+
+        Property stimulus : string;
+
+        Property responseMeasure : any;
+
+        Property artifact : any;
+
+    }
+    Property Type StimulusSourceTeta = string;
+}
+

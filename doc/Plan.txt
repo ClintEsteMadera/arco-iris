@@ -1,0 +1,25 @@
+1. Implementación de herramienta (muy básica en principio) para creación y edición de escenarios. Se nos había ocurrido implementarlo mediante la definición de un escenario en un xml, algo asi:
+      <scenario>
+          <name>Account Creation</name>
+          <stimulusSource>A user</stimulusSource>
+          ...
+      </scenario>
+      Podriamos definir un xsd para hacerlo un poco más formal y consistente. 
+
+2. Implementación de Parser que, dado un escenario y una arquitectura definida en Acme, chequee la existencia del artefacto en la arquitectura dada, así como la existencia de las propiedades utilizadas en el Response Measure, y el chequeo de tipos de datos correspondiente.
+
+3. Implementación de herramienta para creación y edición de Decisiones de Arquitectura (tácticas).
+
+4. Parser para validar Decisiones de Arquitectura (debería poder reutilizarse el mismo implementado para validar las constraints) .
+
+5. Extender herramienta definida en el paso 1 para que permita asignarle una Decisión de Arquitectura al escenario cuando no se cumpla el Response Measure del mismo.
+
+6. Utilizar lo definido en los pasos anteriores en Rainbow:
+         1. Modificar el Constraint Evaluator de Rainbow para que, dado un conjunto de escenarios, tome las constraints definidas en el Response Measure de cada escenario.
+         2. Modificar el Repair Handler para que, cuando se viole un constraint de un escenario, tome como táctica la Decisión de Arquitectura escogida en el escenario.
+
+7. Extender herramienta definida en el paso 1 para que permita definir prioridad de escenarios y Tradeoffs entre escenarios. Este punto fue el que mas dudas nos generó, ya que repasando ATAM, vimos que los tradeoffs eran entre atributos de calidad (o concerns). Optamos por simplificar este punto, asignando peso a los escenarios, dado que una táctica podía perjudicar a un escenario con un QA pero no a otro con el mismo QA ( o concern), e.g., dos servicios relacionados con la performance, pero uno es afectado por una táctica mientras que el otro no.
+
+8. Agregar logica al RepairHandler para que tenga en cuenta, antes de elegir una táctica, los Tradeoffs y prioridades de los escenarios (i.e. si una táctica rompe un escenario de mayor prioridad, la misma no será aplicada).
+
+9. Mejorar la herramienta que permite crear escenarios y Decisiones de Arquitectura. Este punto aplica sólo en caso de que los puntos anteriores no sean suficientes para presentar la tesis.

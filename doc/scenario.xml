@@ -1,0 +1,35 @@
+<scenario>
+	<name>Account Creation - Performance</name>
+	
+	<priority>1</priority>
+	
+	<enabled>true<enabled>
+
+	<concern>RESPONSE_TIME<concern>
+	
+    <stimulusSource>Any user</stimulusSource>
+	
+	<stimulus>createAccount</stimulus>
+	
+	<artifacts>
+		<artifact>accountManager</artifact>
+		<artifact>loadBalancer</artifact>
+	</artifacts>
+	<environment>PEAK_HOURS</environment>
+
+	<response>Account Created</response>
+	
+	<responseMeasure>
+		<description>Account created in less than 500 ms.</description>
+		<invariant>accountManager.accountCreationResponseTime &lt; 500</invariant>
+	</responseMeasure>
+	
+	<strategies>
+		<strategy name="responseTimeStrategy" params="accountManager,loadBalancer">
+			<tradeoffs>
+				<affects>scenario1,scenario2</affects>
+				<breaks>scenario3</breaks>
+			</tradeoffs>
+		</strategy>
+	</strategies>
+</scenario>

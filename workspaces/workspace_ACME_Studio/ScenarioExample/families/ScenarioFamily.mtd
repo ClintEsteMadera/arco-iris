@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AcmeModel>
+  <family name="ScenarioFamily">
+    <userdata key="connection-patterns">
+      <data>
+        <portConnectionRule connector="Connector" name="">
+          <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+          <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+        </portConnectionRule>
+      </data>
+    </userdata>
+    <component-type name="ResponseMeasureT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization/>
+        </data>
+      </userdata>
+    </component-type>
+    <component-type name="StimulusSourceT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization/>
+        </data>
+      </userdata>
+    </component-type>
+    <component-type name="ScenarioT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false">
+            <shape outlineStyle="Solid" visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="128" green="255" red="255"/>
+              <size height="100" width="100"/>
+            </shape>
+            <label>
+              <labelColor/>
+            </label>
+            <font bold="false" height="10" italics="false" name="Arial"/>
+          </visualization>
+        </data>
+      </userdata>
+    </component-type>
+    <system name="prototype">
+      <userdata key="connection-patterns">
+        <data>
+          <portConnectionRule connector="Connector" name="">
+            <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+            <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+          </portConnectionRule>
+        </data>
+      </userdata>
+    </system>
+  </family>
+</AcmeModel>
