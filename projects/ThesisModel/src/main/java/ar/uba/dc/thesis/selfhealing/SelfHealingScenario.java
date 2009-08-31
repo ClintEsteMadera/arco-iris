@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.selfhealing;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.TreeMap;
 
 import ar.uba.dc.thesis.acme.Operation;
@@ -17,7 +18,7 @@ public class SelfHealingScenario extends AtamScenario {
 
 	private int priority;
 
-	private TreeMap<RepairStrategy, Tradeoff> strategyTradeoffMap = new TreeMap<RepairStrategy, Tradeoff>();
+	private Map<RepairStrategy, Tradeoff> strategyTradeoffMap = new TreeMap<RepairStrategy, Tradeoff>();
 
 	public SelfHealingScenario(String name, Concern concern, String stimulusSource,
 			Operation stimulus, String environment, Collection<Artifact> artifacts,
@@ -31,21 +32,36 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public boolean isEnabled() {
-		return this.enabled;
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public int getPriority() {
-		return this.priority;
+		return priority;
 	}
 
-	public TreeMap<RepairStrategy, Tradeoff> getRepairStrategies() {
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public Map<RepairStrategy, Tradeoff> getRepairStrategies() {
 		return this.strategyTradeoffMap;
 	}
 
 	public void addRepairStrategy(RepairStrategy repairStrategy, Tradeoff tradeoff) {
 		if (repairStrategy == null || tradeoff == null) {
-			throw new RuntimeException("Either the repair strategy or the tradeoff is null");
+			throw new RuntimeException("Neither the repair strategy or the tradeoff can be null");
 		}
 		this.strategyTradeoffMap.put(repairStrategy, tradeoff);
+	}
+
+	public String toString(){
+		return super.toString()
+        + toString("enabled", String.valueOf(enabled))
+        + toString("priority", String.valueOf(priority))
+        ;
 	}
 }

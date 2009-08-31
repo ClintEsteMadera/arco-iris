@@ -4,12 +4,18 @@ public class RepairStrategy {
 
 	private String name;
 
-	public RepairStrategy(String name) {
+	private String code;
+
+	public RepairStrategy(String name, String code) {
 		this.name = name;
 	}
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getCode() {
+		return this.code;
 	}
 
 	@Override
