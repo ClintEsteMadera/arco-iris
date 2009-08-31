@@ -1,9 +1,8 @@
 package ar.uba.dc.thesis.qa;
 
 public enum QualityAttribute {
-	PERFORMANCE("Performance");
 
-	private final String description;
+	PERFORMANCE("Performance");
 
 	QualityAttribute(String description) {
 		this.description = description;
@@ -13,4 +12,7 @@ public enum QualityAttribute {
 	public String toString() {
 		return this.description;
 	}
+
+	private final String description;
+
 }
