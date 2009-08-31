@@ -18,8 +18,9 @@ public class Demo {
 
 	public static void main(String[] args) {
 		SelfHealingScenario scenario = getSelfHealingScenario();
+		System.out.println(scenario);
 
-		// TODO Continue from here...
+		// TODO Continue from here... with...?
 	}
 
 	private static SelfHealingScenario getSelfHealingScenario() {
@@ -30,7 +31,7 @@ public class Demo {
 		List<Artifact> artifacts = Collections.singletonList(webServer);
 		String response = "Home Page fully loaded";
 		ResponseMeasure responseMeasure = new ResponseMeasure(
-				"Home Page loaded in less than 10 seconds", "invariant");
+				"Home Page loaded in less than 5 seconds", getResponseMeasureInvariant());
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;
@@ -38,6 +39,11 @@ public class Demo {
 		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource,
 				webServer.getOperation(LOAD_HOME_PAGE), environment, artifacts, response,
 				responseMeasure, archDecisions, enabled, priority);
+	}
+
+	// TODO invariant must be rainbow compatible
+	private static String getResponseMeasureInvariant() {
+		return "responseTime <= 5000ms";
 	}
 
 	private static Artifact getWebServer() {
