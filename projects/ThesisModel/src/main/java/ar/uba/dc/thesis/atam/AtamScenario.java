@@ -42,38 +42,52 @@ public class AtamScenario {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public Concern getConcern() {
-		return this.concern;
+		return concern;
 	}
 
 	public String getStimulusSource() {
-		return this.stimulusSource;
+		return stimulusSource;
 	}
 
 	public Operation getStimulus() {
-		return this.stimulus;
+		return stimulus;
 	}
 
 	public Collection<Artifact> getArtifacts() {
-		return this.artifacts;
+		return artifacts;
 	}
 
 	public String getResponse() {
-		return this.response;
+		return response;
 	}
 
 	public ResponseMeasure getResponseMeasure() {
-		return this.responseMeasure;
+		return responseMeasure;
 	}
 
 	public Collection<ArchitecturalDecision> getArchitecturalDecisions() {
-		return this.architecturalDecisions;
+		return architecturalDecisions;
 	}
 
 	public String getEnvironment() {
-		return this.environment;
+		return environment;
+	}
+
+	public String toString(){
+		return "Scenario: " + name + "\n"
+        + toString("stimulus source", stimulusSource)
+        + toString("stimulus", stimulus.getName())
+        + toString("environment", environment)
+        + toString("response", response)
+        + toString("response measure", responseMeasure.getDescription())
+        ;
+	}
+
+	protected String toString(String fieldName, String fieldValue){
+		return "\t" + fieldName + ": " + fieldValue + "\n";
 	}
 }
