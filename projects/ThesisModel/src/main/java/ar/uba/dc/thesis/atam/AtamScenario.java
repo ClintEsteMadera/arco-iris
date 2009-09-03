@@ -17,7 +17,7 @@ public class AtamScenario {
 
 	private String environment;
 
-	private Collection<Artifact> artifacts;
+	private Collection<Artifact> components;
 
 	private String response;
 
@@ -26,7 +26,7 @@ public class AtamScenario {
 	private Collection<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario(String name, Concern concern, String stimulusSource, Operation stimulus,
-			String environment, Collection<Artifact> artifacts, String response,
+			String environment, Collection<Artifact> components, String response,
 			ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
@@ -35,55 +35,56 @@ public class AtamScenario {
 		this.stimulusSource = stimulusSource;
 		this.stimulus = stimulus;
 		this.environment = environment;
-		this.artifacts = artifacts;
+		this.components = components;
 		this.response = response;
 		this.responseMeasure = responseMeasure;
 		this.architecturalDecisions = architecturalDecisions;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public Concern getConcern() {
-		return concern;
+		return this.concern;
 	}
 
 	public String getStimulusSource() {
-		return stimulusSource;
+		return this.stimulusSource;
 	}
 
 	public Operation getStimulus() {
-		return stimulus;
+		return this.stimulus;
 	}
 
 	public Collection<Artifact> getArtifacts() {
-		return artifacts;
+		return this.components;
 	}
 
 	public String getResponse() {
-		return response;
+		return this.response;
 	}
 
 	public ResponseMeasure getResponseMeasure() {
-		return responseMeasure;
+		return this.responseMeasure;
 	}
 
 	public Collection<ArchitecturalDecision> getArchitecturalDecisions() {
-		return architecturalDecisions;
+		return this.architecturalDecisions;
 	}
 
 	public String getEnvironment() {
-		return environment;
+		return this.environment;
 	}
 
+	@Override
 	public String toString(){
-		return "Scenario: " + name + "\n"
-        + toString("stimulus source", stimulusSource)
-        + toString("stimulus", stimulus.getName())
-        + toString("environment", environment)
-        + toString("response", response)
-        + toString("response measure", responseMeasure.getDescription())
+		return "Scenario: " + this.name + "\n"
+        + this.toString("stimulus source", this.stimulusSource)
+        + this.toString("stimulus", this.stimulus.getName())
+        + this.toString("environment", this.environment)
+        + this.toString("response", this.response)
+        + this.toString("response measure", this.responseMeasure.getDescription())
         ;
 	}
 
