@@ -1,5 +1,7 @@
 package ar.uba.dc.thesis.selfhealing;
 
+import ar.uba.dc.thesis.atam.Artifact;
+
 public class RepairStrategy {
 
 	private String name;
@@ -8,6 +10,7 @@ public class RepairStrategy {
 
 	public RepairStrategy(String name, String code) {
 		this.name = name;
+		this.code = code;
 	}
 
 	public String getName() {
@@ -18,10 +21,16 @@ public class RepairStrategy {
 		return this.code;
 	}
 
+	@SuppressWarnings("unused")
+	public void execute(Artifact... params) {
+		// TODO: Do something
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((this.code == null) ? 0 : this.code.hashCode());
 		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
 		return result;
 	}
@@ -38,6 +47,13 @@ public class RepairStrategy {
 			return false;
 		}
 		RepairStrategy other = (RepairStrategy) obj;
+		if (this.code == null) {
+			if (other.code != null) {
+				return false;
+			}
+		} else if (!this.code.equals(other.code)) {
+			return false;
+		}
 		if (this.name == null) {
 			if (other.name != null) {
 				return false;
