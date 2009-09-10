@@ -4,9 +4,9 @@ import ar.uba.dc.thesis.atam.Artifact;
 
 public class RepairStrategy {
 
-	private String name;
+	private final String name;
 
-	private String code;
+	private final String code;
 
 	public RepairStrategy(String name, String code) {
 		this.name = name;
@@ -23,7 +23,7 @@ public class RepairStrategy {
 
 	@SuppressWarnings("unused")
 	public void execute(Artifact... params) {
-		// TODO: Do something
+		// TODO: Read the code and do something
 	}
 
 	@Override
