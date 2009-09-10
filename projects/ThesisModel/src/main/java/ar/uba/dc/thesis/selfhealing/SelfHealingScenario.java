@@ -1,8 +1,8 @@
 package ar.uba.dc.thesis.selfhealing;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import ar.uba.dc.thesis.acme.Operation;
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
@@ -17,17 +17,16 @@ public class SelfHealingScenario extends AtamScenario {
 
 	private int priority;
 
-	private Map<RepairStrategy, SelfHealingTradeoff> strategyTradeoffMap = new TreeMap<RepairStrategy, SelfHealingTradeoff>();
+	// usamos LinkedHashMap para conservar el orden de insercion que puede ser usado como prioridad
+	private final Map<RepairStrategy, SelfHealingTradeoff> strategyTradeoffMap = new LinkedHashMap<RepairStrategy, SelfHealingTradeoff>();
 
-	public SelfHealingScenario(String name, Concern concern, String stimulusSource,
-			Operation stimulus, String environment, Collection<Artifact> components,
-			String response, ResponseMeasure responseMeasure,
+	public SelfHealingScenario(String name, Concern concern, String stimulusSource, Operation stimulus,
+			String environment, Collection<Artifact> components, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
-		super(name, concern, stimulusSource, stimulus, environment, components, response,
-				responseMeasure, architecturalDecisions);
+		super(name, concern, stimulusSource, stimulus, environment, components, response, responseMeasure,
+				architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
-
 	}
 
 	public boolean isEnabled() {
@@ -58,10 +57,8 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	@Override
-	public String toString(){
-		return super.toString()
-        + this.toString("enabled", String.valueOf(this.enabled))
-        + this.toString("priority", String.valueOf(this.priority))
-        ;
+	public String toString() {
+		return super.toString() + this.toString("enabled", String.valueOf(this.enabled))
+				+ this.toString("priority", String.valueOf(this.priority));
 	}
 }
