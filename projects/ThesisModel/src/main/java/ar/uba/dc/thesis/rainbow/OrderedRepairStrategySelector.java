@@ -1,32 +1,40 @@
 package ar.uba.dc.thesis.rainbow;
 
-import java.util.Iterator;
-
-import ar.uba.dc.thesis.selfhealing.DummyRepairStrategy;
-import ar.uba.dc.thesis.selfhealing.RepairStrategy;
+import ar.uba.dc.thesis.selfhealing.RepairStrategySpecification;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.selfhealing.SelfHealingTradeoff;
 
 /**
  * Takes the <code>RepairStrategy</code> insertion order in the <code>SelfHealingScenario</code>
  */
 public class OrderedRepairStrategySelector implements IRepairStrategySelector {
 
-	public RepairStrategy selectRepairStrategyFor(SelfHealingScenario scenario) {
-		RepairStrategy repairStrategy = DummyRepairStrategy.getInstance();
-		Iterator<RepairStrategy> repairStrategies = scenario.getRepairStrategies().keySet().iterator();
-		boolean selected = false;
-		while (!selected && repairStrategies.hasNext()) {
-			repairStrategy = repairStrategies.next();
-			if (!affectsMayorScenario(repairStrategy, scenario)) {
-				selected = true;
+	public RepairStrategySpecification selectRepairStrategyFor(SelfHealingScenario scenario) {
+		for (RepairStrategySpecification repairStrategySpec : scenario.getRepairStrategySpecs()) {
+			if (!affectsAHigherPriorityScenario(repairStrategySpec, scenario)) {
+				return repairStrategySpec;
 			}
 		}
-		return repairStrategy;
+
+		return null;
 	}
 
-	// TODO cambiar nombre de metodo
-	private boolean affectsMayorScenario(RepairStrategy repairStrategy, SelfHealingScenario scenario) {
-		// TODO verificar que no rompa un escenario de mayor prioridad
+	private boolean affectsAHigherPriorityScenario(RepairStrategySpecification spec,
+			SelfHealingScenario scenarioToRepair) {
+		SelfHealingTradeoff selfHealingTradeoff = spec.getSelfHealingTradeoff();
+
+		for (SelfHealingScenario affectedScenario : selfHealingTradeoff.getAffects()) {
+			if (affectedScenario.getPriority() > scenarioToRepair.getPriority()) {
+				return true;
+			}
+		}
+
+		for (SelfHealingScenario brokenScenario : selfHealingTradeoff.getBreaks()) {
+			if (brokenScenario.getPriority() > scenarioToRepair.getPriority()) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 

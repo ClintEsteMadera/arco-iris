@@ -1,8 +1,8 @@
 package ar.uba.dc.thesis.selfhealing;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import ar.uba.dc.thesis.acme.Operation;
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
@@ -17,8 +17,7 @@ public class SelfHealingScenario extends AtamScenario {
 
 	private int priority;
 
-	// usamos LinkedHashMap para conservar el orden de insercion que puede ser usado como prioridad
-	private final Map<RepairStrategy, SelfHealingTradeoff> strategyTradeoffMap = new LinkedHashMap<RepairStrategy, SelfHealingTradeoff>();
+	private final List<RepairStrategySpecification> strategySpecs = new ArrayList<RepairStrategySpecification>();
 
 	public SelfHealingScenario(String name, Concern concern, String stimulusSource, Operation stimulus,
 			String environment, Collection<Artifact> components, String response, ResponseMeasure responseMeasure,
@@ -45,15 +44,12 @@ public class SelfHealingScenario extends AtamScenario {
 		this.priority = priority;
 	}
 
-	public Map<RepairStrategy, SelfHealingTradeoff> getRepairStrategies() {
-		return this.strategyTradeoffMap;
+	public List<RepairStrategySpecification> getRepairStrategySpecs() {
+		return this.strategySpecs;
 	}
 
-	public void addRepairStrategy(RepairStrategy repairStrategy, SelfHealingTradeoff selfHealingTradeoff) {
-		if (repairStrategy == null || selfHealingTradeoff == null) {
-			throw new RuntimeException("Neither the repair strategy or the tradeoff can be null");
-		}
-		this.strategyTradeoffMap.put(repairStrategy, selfHealingTradeoff);
+	public void addRepairStrategySpec(RepairStrategySpecification spec) {
+		this.strategySpecs.add(spec);
 	}
 
 	@Override

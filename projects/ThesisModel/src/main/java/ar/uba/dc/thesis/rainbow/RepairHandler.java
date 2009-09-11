@@ -1,7 +1,12 @@
 package ar.uba.dc.thesis.rainbow;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ar.uba.dc.thesis.RepairStrategyRepository;
+import ar.uba.dc.thesis.acme.Architecture;
 import ar.uba.dc.thesis.atam.Artifact;
-import ar.uba.dc.thesis.selfhealing.RepairStrategy;
+import ar.uba.dc.thesis.selfhealing.RepairStrategySpecification;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RepairHandler {
@@ -11,13 +16,17 @@ public class RepairHandler {
 	// TODO: permitir seleccionar la implementacion de repairStrategySelector a utilizar
 	private static final RepairHandler instance = new RepairHandler(new OrderedRepairStrategySelector());
 
-	// TODO: continuar implementacion de RepairHandler!
-
 	public void repairScenario(SelfHealingScenario scenario) {
-		RepairStrategy selectedRepairStrategy = repairStrategySelector.selectRepairStrategyFor(scenario);
-		// TODO como llegan aca los parametros de la repairStrategy?
-		Artifact[] params = new Artifact[] {};
-		selectedRepairStrategy.execute(params);
+		RepairStrategySpecification spec = repairStrategySelector.selectRepairStrategyFor(scenario);
+		if (spec != null) {
+			Architecture architecture = Architecture.getInstance();
+			List<Artifact> params = new ArrayList<Artifact>(spec.getParams().length);
+			for (String artifactName : spec.getParams()) {
+				params.add(architecture.getComponent(artifactName));
+			}
+
+			RepairStrategyRepository.getRepairStrategy(spec.getRepairStrategyName()).execute(params);
+		}
 	}
 
 	public static RepairHandler getInstance() {
