@@ -4,12 +4,11 @@ import java.util.Collection;
 
 public class SelfHealingTradeoff {
 
-	private Collection<SelfHealingScenario> affects;
+	private final Collection<SelfHealingScenario> affects;
 
-	private Collection<SelfHealingScenario> breaks;
+	private final Collection<SelfHealingScenario> breaks;
 
-	public SelfHealingTradeoff(Collection<SelfHealingScenario> affects,
-			Collection<SelfHealingScenario> breaks) {
+	public SelfHealingTradeoff(Collection<SelfHealingScenario> affects, Collection<SelfHealingScenario> breaks) {
 		super();
 		this.affects = affects;
 		this.breaks = breaks;
