@@ -7,14 +7,11 @@ public class Architecture {
 
 	private final Collection<Component> components = new HashSet<Component>();
 
-	private static final Architecture INSTANCE = new Architecture();
-
-	private Architecture() {
+	public Architecture(Component... components) {
 		super();
-	}
-
-	public static Architecture getInstance() {
-		return INSTANCE;
+		for (Component component : components) {
+			this.addComponent(component);
+		}
 	}
 
 	public void addComponent(Component component) {
