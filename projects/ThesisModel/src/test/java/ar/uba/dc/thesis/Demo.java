@@ -6,9 +6,9 @@ import ar.uba.dc.thesis.rainbow.RepairHandler;
 public class Demo {
 
 	public static void main(String[] args) {
-		// Supongamos que se rompio heavyLoadScenario y lo detectamos:
 		RepairHandler repairHandler = new RepairHandler(ArchitectureRepository.getDemoArchitecture(),
 				new OrderedRepairStrategySelector());
+		// assume that heavyLoadScenario is broken and SelfHealing starts working:
 		repairHandler.repairScenario(SelfHealingScenarioRepository.HEAVY_LOAD_SCENARIO);
 	}
 }
