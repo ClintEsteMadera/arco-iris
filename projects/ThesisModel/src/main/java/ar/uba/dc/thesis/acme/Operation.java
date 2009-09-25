@@ -1,15 +1,26 @@
 package ar.uba.dc.thesis.acme;
 
-public class Operation {
+import ar.uba.dc.thesis.atam.Artifact;
 
-	private String name;
+public abstract class Operation<C extends Artifact> {
 
-	public Operation(String name) {
+	private final String name;
+	private final C component;
+
+	public Operation(String name, C component) {
 		super();
 		this.name = name;
+		this.component = component;
+
 	}
 
 	public String getName() {
 		return this.name;
 	}
+
+	public C getComponent() {
+		return this.component;
+	}
+
+	public abstract void execute();
 }

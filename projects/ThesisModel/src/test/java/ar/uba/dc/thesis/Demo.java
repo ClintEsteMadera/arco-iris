@@ -1,18 +1,18 @@
 package ar.uba.dc.thesis;
 
+import ar.uba.dc.thesis.acme.Architecture;
 import ar.uba.dc.thesis.rainbow.ConstraintEvaluator;
 import ar.uba.dc.thesis.rainbow.OrderedRepairStrategySelector;
 import ar.uba.dc.thesis.rainbow.RepairHandler;
+import ar.uba.dc.thesis.repository.ArchitectureRepository;
 
 public class Demo {
 
+	private static final int DEFAULT_CHECK_INTERVAL = 10000;
+
 	public static void main(String[] args) {
-		RepairHandler repairHandler = new RepairHandler(ArchitectureRepository.getDemoArchitecture(),
-				new OrderedRepairStrategySelector());
-		long checkInterval = 10000;
-		ConstraintEvaluator constraintEvaluator = new ConstraintEvaluator(repairHandler, checkInterval);
-		constraintEvaluator.start();
-		// assume that heavyLoadScenario is broken and SelfHealing starts working:
-		repairHandler.repairScenario(SelfHealingScenarioRepository.HEAVY_LOAD_SCENARIO);
+		Architecture architecture = ArchitectureRepository.getDummyArchitecture();
+		RepairHandler repairHandler = new RepairHandler(architecture, new OrderedRepairStrategySelector());
+		new ConstraintEvaluator(architecture, repairHandler, DEFAULT_CHECK_INTERVAL).start();
 	}
 }

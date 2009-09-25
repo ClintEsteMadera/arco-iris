@@ -2,7 +2,9 @@ package ar.uba.dc.thesis.qa;
 
 public enum QualityAttribute {
 
-	PERFORMANCE("Performance");
+	PERFORMANCE("Performance"),
+	COST("Cost"),
+	USABILITY("Usability");
 
 	QualityAttribute(String description) {
 		this.description = description;

@@ -1,4 +1,4 @@
-package ar.uba.dc.thesis;
+package ar.uba.dc.thesis.repository;
 
 import java.util.Collections;
 
