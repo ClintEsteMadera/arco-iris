@@ -2,7 +2,6 @@ package ar.uba.dc.thesis.atam;
 
 import java.util.Collection;
 
-import ar.uba.dc.thesis.acme.Operation;
 import ar.uba.dc.thesis.qa.Concern;
 
 public class AtamScenario {
@@ -13,7 +12,7 @@ public class AtamScenario {
 
 	private final String stimulusSource;
 
-	private final Operation<? extends Artifact> stimulus;
+	private final Stimulus stimulus;
 
 	private final String environment;
 
@@ -25,8 +24,8 @@ public class AtamScenario {
 
 	private final Collection<ArchitecturalDecision> architecturalDecisions;
 
-	public AtamScenario(String name, Concern concern, String stimulusSource, Operation<? extends Artifact> stimulus,
-			String environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
+	public AtamScenario(String name, Concern concern, String stimulusSource, Stimulus stimulus, String environment,
+			Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
 		this.name = name;
@@ -52,7 +51,7 @@ public class AtamScenario {
 		return this.stimulusSource;
 	}
 
-	public Operation<? extends Artifact> getStimulus() {
+	public Stimulus getStimulus() {
 		return this.stimulus;
 	}
 
