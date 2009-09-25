@@ -1,8 +1,8 @@
 package ar.uba.dc.thesis.acme;
 
-import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.atam.Stimulus;
 
-public abstract class Operation<C extends Artifact> {
+public abstract class Operation<C extends Component> implements Stimulus {
 
 	private final String name;
 	private final C component;
