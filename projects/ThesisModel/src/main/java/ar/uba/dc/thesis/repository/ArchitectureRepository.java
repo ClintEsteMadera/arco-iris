@@ -4,11 +4,13 @@ import ar.uba.dc.thesis.acme.Architecture;
 
 public class ArchitectureRepository {
 
+	private static final Architecture ZNN_ARCHITECTURE = new Architecture(ComponentRepository.getPageRenderer());
+
 	public static Architecture getDummyArchitecture() {
-		return new Architecture(ComponentRepository.getPageRenderer());
+		return ZNN_ARCHITECTURE;
 	}
 
 	public static Architecture getZnnArchitecture() {
-		return new Architecture(ComponentRepository.getPageRenderer());
+		return ZNN_ARCHITECTURE;
 	}
 }

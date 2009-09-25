@@ -1,6 +1,6 @@
 package ar.uba.dc.thesis.repository;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -20,11 +20,13 @@ public class SelfHealingScenarioRepository {
 
 	public static SelfHealingScenario HEAVY_LOAD_SCENARIO = createHeavyLoadScenario();
 
+	public static List<SelfHealingScenario> scenarios = new ArrayList<SelfHealingScenario>();
 	static {
 		HEAVY_LOAD_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getDisableVideosRepairStrategy());
 		HEAVY_LOAD_SCENARIO
 				.addRepairStrategySpec(RepairStrategySpecRepository.getDisableDynamicContentRepairStrategy());
-
+		scenarios.add(USABILITY_SCENARIO);
+		scenarios.add(HEAVY_LOAD_SCENARIO);
 	}
 
 	private static SelfHealingScenario createUsabilityScenario() {
@@ -62,7 +64,14 @@ public class SelfHealingScenarioRepository {
 	}
 
 	public static Collection<SelfHealingScenario> getEnabledScenarios() {
-		return Arrays.asList(USABILITY_SCENARIO, HEAVY_LOAD_SCENARIO);
+		//TODO evitar recorrer toda la lista, mantener una lista actualizada de escenarios habilitados
+		List<SelfHealingScenario> enabledScenarios = new ArrayList<SelfHealingScenario>();
+		for (SelfHealingScenario scenario : scenarios) {
+			if (scenario.isEnabled()) {
+				enabledScenarios.add(scenario);
+			}
+		}
+		return enabledScenarios;
 	}
 
 }
