@@ -65,7 +65,7 @@ Family EnvType = {
     }
 }
 
- 
+
 Family ZNewsFam extends EnvType with {
 
     Port Type HttpPortT extends ArchPortT with {
