@@ -1,19 +1,13 @@
 package ar.uba.dc.thesis.rainbow;
 
-import ar.uba.dc.thesis.atam.ResponseMeasure;
-
+/**
+ * This is fake version of the concept of Constraint already modeled by ACME and used in Rainbow.
+ */
 public class Constraint {
 
-	public Constraint(ResponseMeasure responseMeasure) {
+	@SuppressWarnings("unused")
+	public Constraint(String invariant) {
 		super();
-		// TODO parsear la responseMeasure y generar una constraint que pueda ser utilizada por
-		// Rainbow
-
+		// TODO parse the invariant and check if its grammar is correct
 	}
-
-	public boolean fails() {
-		// responsabilidad de Rainbow
-		return false;
-	}
-
 }

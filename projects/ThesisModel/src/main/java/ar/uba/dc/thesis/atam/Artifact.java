@@ -7,5 +7,5 @@ import ar.uba.dc.thesis.acme.Operation;
 public interface Artifact {
 	public String getName();
 
-	public Collection<Operation> getOperations();
+	public Collection<Operation<? extends Artifact>> getOperations();
 }

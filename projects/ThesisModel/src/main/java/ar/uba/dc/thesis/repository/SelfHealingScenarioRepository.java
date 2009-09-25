@@ -1,14 +1,17 @@
-package ar.uba.dc.thesis;
+package ar.uba.dc.thesis.repository;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import ar.uba.dc.thesis.acme.Component;
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
-import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
+import ar.uba.dc.thesis.component.dummy.PageRenderer;
+import ar.uba.dc.thesis.component.dummy.PageRenderer.RenderPage;
 import ar.uba.dc.thesis.qa.Concern;
+import ar.uba.dc.thesis.rainbow.Constraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class SelfHealingScenarioRepository {
@@ -28,19 +31,17 @@ public class SelfHealingScenarioRepository {
 		String scenarioName = "Page loaded with all content enabled";
 		String stimulusSource = "Simple User";
 		String environment = "Normal";
-		Component pagerRenderer = ComponentRepository.getPageRenderer();
-		Collection<Artifact> components = Collections.<Artifact> singletonList(pagerRenderer);
+		PageRenderer pageRenderer = ComponentRepository.getPageRenderer();
 		String response = "Page loaded with all content enabled";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Page loaded with all content enabled", pagerRenderer
-				.getName()
-				+ ".allContentEnabled == true");
+		ResponseMeasure responseMeasure = new ResponseMeasure("Page loaded with all content enabled", new Constraint(
+				pageRenderer.getName() + ".allContentEnabled == true"));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, pagerRenderer
-				.getOperation(ComponentRepository.RENDER_PAGE_OPERATION_NAME), environment, components, response,
-				responseMeasure, archDecisions, enabled, priority);
+		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, pageRenderer
+				.getOperation(RenderPage.class.getSimpleName()), environment, pageRenderer, response, responseMeasure,
+				archDecisions, enabled, priority);
 	}
 
 	private static SelfHealingScenario createHeavyLoadScenario() {
@@ -48,18 +49,20 @@ public class SelfHealingScenarioRepository {
 		String stimulusSource = "Simple User";
 		String environment = "Heavy Load";
 		Component pageRenderer = ComponentRepository.getPageRenderer();
-		Collection<Artifact> components = Collections.<Artifact> singletonList(pageRenderer);
 		String response = "Page fully loaded";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Page loaded in less than 5 seconds", pageRenderer
-				.getName()
-				+ ".responseTime<= 5000ms");
+		ResponseMeasure responseMeasure = new ResponseMeasure("Page loaded in less than 5 seconds", new Constraint(
+				pageRenderer.getName() + ".responseTime<= 5000ms"));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;
 
 		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, pageRenderer
-				.getOperation(ComponentRepository.RENDER_PAGE_OPERATION_NAME), environment, components, response,
-				responseMeasure, archDecisions, enabled, priority);
+				.getOperation(RenderPage.class.getSimpleName()), environment, pageRenderer, response, responseMeasure,
+				archDecisions, enabled, priority);
+	}
+
+	public static Collection<SelfHealingScenario> getEnabledScenarios() {
+		return Arrays.asList(USABILITY_SCENARIO, HEAVY_LOAD_SCENARIO);
 	}
 
 }

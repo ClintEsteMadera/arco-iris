@@ -3,9 +3,9 @@ package ar.uba.dc.thesis.rainbow;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.uba.dc.thesis.RepairStrategyRepository;
 import ar.uba.dc.thesis.acme.Architecture;
 import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.repository.RepairStrategyRepository;
 import ar.uba.dc.thesis.selfhealing.RepairStrategySpecification;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 

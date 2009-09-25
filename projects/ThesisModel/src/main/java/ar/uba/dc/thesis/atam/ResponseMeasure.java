@@ -1,22 +1,24 @@
 package ar.uba.dc.thesis.atam;
 
+import ar.uba.dc.thesis.rainbow.Constraint;
+
 public class ResponseMeasure {
 
-	private String description;
+	private final String description;
 
-	private String invariant;
+	private final Constraint constraint;
 
-	public ResponseMeasure(String description, String invariant) {
+	public ResponseMeasure(String description, Constraint constraint) {
 		super();
 		this.description = description;
-		this.invariant = invariant;
+		this.constraint = constraint;
 	}
 
 	public String getDescription() {
 		return this.description;
 	}
 
-	public String getInvariant() {
-		return this.invariant;
+	public Constraint getConstraint() {
+		return this.constraint;
 	}
 }
