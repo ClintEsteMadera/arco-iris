@@ -6,6 +6,7 @@ package org.sa.rainbow.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,11 +32,10 @@ import org.acmestudio.acme.model.command.IAcmeCommand;
 import org.acmestudio.acme.model.command.IAcmeElementCopyCommand;
 import org.acmestudio.acme.model.command.IAcmeFamilyCreateCommand;
 import org.acmestudio.acme.model.command.IAcmeSystemCreateCommand;
-import org.acmestudio.acme.model.root.property.RootProperties;
 import org.acmestudio.acme.rule.node.IExpressionNode;
 import org.acmestudio.acme.rule.node.NumericBinaryRelationalExpressionNode;
 import org.acmestudio.acme.rule.node.NumericLiteralNode;
-import org.acmestudio.acme.rule.node.TypeReferenceNode;
+import org.acmestudio.acme.rule.node.ReferenceNode;
 import org.acmestudio.acme.type.IAcmeTypeChecker;
 import org.acmestudio.acme.type.verification.SynchronousTypeChecker;
 import org.acmestudio.basicmodel.core.AcmeStringValue;
@@ -54,11 +54,9 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
 /**
- * The model object shared by the various running components of Rainbow. Each
- * component holds a reference to model to change/query it. By design, only the
- * RainbowModel Manager gets to modify the RainbowModel, while the others can
- * only read it. This "RainbowModel" encapsulates the system architectural model
- * as well as the environment model.
+ * The model object shared by the various running components of Rainbow. Each component holds a reference to model to
+ * change/query it. By design, only the RainbowModel Manager gets to modify the RainbowModel, while the others can only
+ * read it. This "RainbowModel" encapsulates the system architectural model as well as the environment model.
  * 
  * [10-Apr-2006] Note: The simulation system model is hardcoded into this class.
  * 
@@ -77,8 +75,7 @@ public class RainbowModel implements Model, ModelRepository {
 	/** Acme-based target system-environment model */
 	protected IAcmeModel m_tgtEnv = null;
 	/**
-	 * Acme System instance from the Acme-based environment model, convenience
-	 * reference
+	 * Acme System instance from the Acme-based environment model, convenience reference
 	 */
 	protected IAcmeSystem m_tgtEnvSys = null;
 	/** Map of qualified name to average values */
@@ -94,8 +91,7 @@ public class RainbowModel implements Model, ModelRepository {
 	/** Flag indicating whether a constraint violation has occurred */
 	protected boolean m_constraintViolated = false;
 	/**
-	 * Flag indicating whether an adaptation is advisable, though not strictly
-	 * required
+	 * Flag indicating whether an adaptation is advisable, though not strictly required
 	 */
 	protected boolean m_adaptationAdvised = false;
 
@@ -118,21 +114,17 @@ public class RainbowModel implements Model, ModelRepository {
 		m_path2Resource = new HashMap<String, IAcmeResource>();
 		m_model2Snapshot = new HashMap<IAcmeModel, IAcmeModel>();
 		if (Rainbow.property(Rainbow.PROPKEY_MODEL_PERSIST) != null) {
-			m_preserveModel = Boolean.valueOf(Rainbow
-					.property(Rainbow.PROPKEY_MODEL_PERSIST));
+			m_preserveModel = Boolean.valueOf(Rainbow.property(Rainbow.PROPKEY_MODEL_PERSIST));
 		}
 		// set up Acme standalone env't AND synchronous typechecker
 		m_acmeEnv.useTypeChecker(TypeCheckerType.SYNCHRONOUS);
 
 		try {
 			// load Acme model
-			File modelDir = Util.getRelativeToPath(Rainbow.instance()
-					.getTargetPath(), Rainbow
+			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
 					.property(Rainbow.PROPKEY_MODEL_PATH));
 			// set the family search path to the directory containing model file
-			m_acmeEnv.setProperty(
-					StandaloneResourceProvider.FAMILY_SEARCH_PATH, modelDir
-							.getParent());
+			m_acmeEnv.setProperty(StandaloneResourceProvider.FAMILY_SEARCH_PATH, modelDir.getParent());
 			String modelPath = modelDir.toString();
 			m_acme = (IAcmeModel) getModelForResource(modelPath);
 			// add constraints to the loaded Acme Model
@@ -144,26 +136,21 @@ public class RainbowModel implements Model, ModelRepository {
 		}
 
 		try { // load Acme Target-Environment model
-			String envModelPath = Rainbow.property(
-					Rainbow.PROPKEY_ENV_MODEL_PATH, Rainbow.DEFAULT_ENV_MODEL);
-			File envModelDir = Util.getRelativeToPath(Rainbow.instance()
-					.getTargetPath(), envModelPath);
+			String envModelPath = Rainbow.property(Rainbow.PROPKEY_ENV_MODEL_PATH, Rainbow.DEFAULT_ENV_MODEL);
+			File envModelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), envModelPath);
 			// set the family search path to the directory containing model file
-			StandaloneEnvironment.instance().setProperty(
-					StandaloneResourceProvider.FAMILY_SEARCH_PATH,
+			StandaloneEnvironment.instance().setProperty(StandaloneResourceProvider.FAMILY_SEARCH_PATH,
 					envModelDir.getParent());
 			envModelPath = envModelPath.toString();
 			m_tgtEnv = (IAcmeModel) getModelForResource(envModelPath);
 			m_acmeEnv.getTypeChecker().registerModel(m_tgtEnv);
 			m_tgtEnvSys = m_tgtEnv.getSystems().iterator().next();
 		} catch (IOException e) {
-			m_logger.error(
-					"Get Acme Target-Environment model resource failed!", e);
+			m_logger.error("Get Acme Target-Environment model resource failed!", e);
 		}
 
 		try { // load archOp map
-			String opPath = Util.getRelativeToPath(
-					Rainbow.instance().getTargetPath(),
+			String opPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
 					Rainbow.property(Rainbow.PROPKEY_OP_MAP_PATH)).toString();
 			FileInputStream fileIn = new FileInputStream(opPath);
 			m_opMap.load(fileIn);
@@ -176,13 +163,11 @@ public class RainbowModel implements Model, ModelRepository {
 			// test model
 			IAcmeSystem sys = m_acme.getSystems().iterator().next();
 			for (IAcmeObject o : sys.getChildren()) {
-				m_logger.trace("Got Acme Object "
-						+ ((IAcmeElement) o).getQualifiedName());
+				m_logger.trace("Got Acme Object " + ((IAcmeElement) o).getQualifiedName());
 			}
 		}
 
-		Oracle.instance().writeManagerPanel(m_logger,
-				"Rainbow Model initialized!");
+		Oracle.instance().writeManagerPanel(m_logger, "Rainbow Model initialized!");
 	}
 
 	/**
@@ -191,43 +176,47 @@ public class RainbowModel implements Model, ModelRepository {
 	 * @param modelPath
 	 */
 	private void addScenariosConstraintsToAcmeModel() {
+		// TODO estos 5 datos deberian leerse del ScenarioSpec
 		String systemName = "ZNewsSys";
 		String artifactName = "c1";
-		AcmeComponent client1 = (AcmeComponent) m_acme.getSystem(systemName)
-				.getComponent(artifactName);
+		int maxResponseTime = 5;
+		String artifactProperty = "experRespTime";
+		ExpressionOperator operator = ExpressionOperator.GREATER_OR_EQUAL_OP;
+
+		// TODO el nombre de la regla lo seteamos nosotros tomando el nombre del scenario?
+		String ruleName = "clientePerformanceRule";
+
+		AcmeComponent client1 = (AcmeComponent) m_acme.getSystem(systemName).getComponent(artifactName);
 		if (client1 == null) {
-			throw new RuntimeException("No se encontro el componente "
-					+ artifactName);
+			throw new RuntimeException("No se encontro el componente " + artifactName);
 		}
 		m_logger.info("Se encontro el componente " + artifactName);
 		// Hasta aca funciona
+		AcmeDesignRule createdRule = null;
 		try {
-			AcmeDesignRule createdRule = client1
-					.createDesignRule("clientePerformanceRule");
-			createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
-			NumericBinaryRelationalExpressionNode expression = new NumericBinaryRelationalExpressionNode(
-					client1.getContext());
-			expression
-					.setExpressionType(NumericBinaryRelationalExpressionNode.INT_TYPE);
-			TypeReferenceNode first = new TypeReferenceNode(client1
-					.getContext());
-			RootProperties.PropertyType acmeType = new RootProperties.PropertyType();
-			first.setBasicTypeRef(acmeType);
-
-			expression.setFirstChild(first);
-			expression.setOperator(ExpressionOperator.GREATER_OR_EQUAL_OP);
-			IExpressionNode second = new NumericLiteralNode(5, client1
-					.getContext());
-			expression.setSecondChild(second);
-			createdRule.setDesignRuleExpression(expression);
+			createdRule = client1.createDesignRule(ruleName);
 		} catch (AcmeIllegalNameException e) {
 			m_logger.error("Error creating rule from Scenario", e);
+			throw new RuntimeException(e);
 		}
+		// TODO siempre es invariant o puede ser heuristic?
+		createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
+		NumericBinaryRelationalExpressionNode expression = new NumericBinaryRelationalExpressionNode(client1
+				.getContext());
+		// TODO le ponemos FLOAT siempre y listo?
+		expression.setExpressionType(NumericBinaryRelationalExpressionNode.INT_TYPE);
+		ReferenceNode first = new ReferenceNode(null);
+		first.setReference(Arrays.asList("self", artifactProperty));
+		expression.setFirstChild(first);
+		expression.setOperator(operator);
+		IExpressionNode second = new NumericLiteralNode(maxResponseTime, client1.getContext());
+		expression.setSecondChild(second);
+		createdRule.setDesignRuleExpression(expression);
 	}
 
 	/**
-	 * Returns from the given element the value of the property named by
-	 * {@linkplain Model.PROPKEY_LOCATION}, converted to lowercase.
+	 * Returns from the given element the value of the property named by {@linkplain Model.PROPKEY_LOCATION}, converted
+	 * to lowercase.
 	 * 
 	 * @param element
 	 *            the Acme element whose location to retrieve
@@ -288,8 +277,7 @@ public class RainbowModel implements Model, ModelRepository {
 		IAcmeResource ar = m_path2Resource.get(resName);
 		if (ar == null) {
 			try {
-				ar = StandaloneResourceProvider.instance()
-						.acmeResourceForString(resName);
+				ar = StandaloneResourceProvider.instance().acmeResourceForString(resName);
 				m_path2Resource.put(resName, ar);
 			} catch (ParsingFailureException e) {
 				m_logger.error("Failed acquiring model from " + resName, e);
@@ -312,22 +300,17 @@ public class RainbowModel implements Model, ModelRepository {
 			if (snapshot == null) {
 				// create a temporary file and generate a new model, then copy
 				// model elements
-				String prefix = "tmpSnapshot_" + System.currentTimeMillis()
-						+ "-";
+				String prefix = "tmpSnapshot_" + System.currentTimeMillis() + "-";
 				try {
 					File f = File.createTempFile(prefix, ".acme");
 					f.deleteOnExit();
-					Object snapshotObj = getModelForResource(f
-							.getCanonicalPath());
+					Object snapshotObj = getModelForResource(f.getCanonicalPath());
 					if (snapshotObj instanceof IAcmeModel) {
 						snapshot = (IAcmeModel) snapshotObj;
 						m_model2Snapshot.put(model, snapshot);
 					}
 				} catch (IOException e) {
-					m_logger
-							.error(
-									"Failed to create temporary file for model snapshot!",
-									e);
+					m_logger.error("Failed to create temporary file for model snapshot!", e);
 				}
 			} else {
 				// clear all families and systems
@@ -337,38 +320,28 @@ public class RainbowModel implements Model, ModelRepository {
 			// populate snapshot model by copying elements from source model
 			// first, the families
 			for (IAcmeFamily fam : model.getFamilies()) {
-				IAcmeFamilyCreateCommand createCmd = snapshot
-						.getCommandFactory().familyCreateCommand(fam.getName());
+				IAcmeFamilyCreateCommand createCmd = snapshot.getCommandFactory().familyCreateCommand(fam.getName());
 				try {
 					IAcmeFamily snapshotFam = createCmd.execute();
-					IAcmeElementCopyCommand copyCmd = snapshot
-							.getCommandFactory().copyElementCommand(
-									snapshotFam, fam);
+					IAcmeElementCopyCommand copyCmd = snapshot.getCommandFactory().copyElementCommand(snapshotFam, fam);
 					copyCmd.execute();
 				} catch (IllegalStateException e) {
-					m_logger.error("Failed to create snapshot family for "
-							+ fam.getName(), e);
+					m_logger.error("Failed to create snapshot family for " + fam.getName(), e);
 				} catch (AcmeException e) {
-					m_logger.error("Failed to create snapshot family for "
-							+ fam.getName(), e);
+					m_logger.error("Failed to create snapshot family for " + fam.getName(), e);
 				}
 			}
 			// next the systems
 			for (IAcmeSystem sys : model.getSystems()) {
-				IAcmeSystemCreateCommand createCmd = snapshot
-						.getCommandFactory().systemCreateCommand(sys.getName());
+				IAcmeSystemCreateCommand createCmd = snapshot.getCommandFactory().systemCreateCommand(sys.getName());
 				try {
 					IAcmeSystem snapshotSys = createCmd.execute();
-					IAcmeElementCopyCommand copyCmd = snapshot
-							.getCommandFactory().copyElementCommand(
-									snapshotSys, sys);
+					IAcmeElementCopyCommand copyCmd = snapshot.getCommandFactory().copyElementCommand(snapshotSys, sys);
 					copyCmd.execute();
 				} catch (IllegalStateException e) {
-					m_logger.error("Failed to create snapshot system for "
-							+ sys.getName(), e);
+					m_logger.error("Failed to create snapshot system for " + sys.getName(), e);
 				} catch (AcmeException e) {
-					m_logger.error("Failed to create snapshot system for "
-							+ sys.getName(), e);
+					m_logger.error("Failed to create snapshot system for " + sys.getName(), e);
 				}
 			}
 		}
@@ -394,8 +367,7 @@ public class RainbowModel implements Model, ModelRepository {
 		File profPath = null;
 		String pathStr = Rainbow.property(Rainbow.PROPKEY_TACTIC_PROFILE_PATH);
 		if (pathStr != null) {
-			profPath = Util.getRelativeToPath(Rainbow.instance()
-					.getTargetPath(), pathStr);
+			profPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), pathStr);
 		}
 		return profPath;
 	}
@@ -451,8 +423,8 @@ public class RainbowModel implements Model, ModelRepository {
 	}
 
 	/**
-	 * Gets current or predicted property, depending on whether prediction is
-	 * enabled and future duration is greater than 0.
+	 * Gets current or predicted property, depending on whether prediction is enabled and future duration is greater
+	 * than 0.
 	 * 
 	 * @param id
 	 *            the identifier fo the property to get value for
@@ -471,8 +443,7 @@ public class RainbowModel implements Model, ModelRepository {
 			int idxStart = EXP_AVG_KEY.length();
 			int idxDot = id.indexOf(".");
 			if (idxDot == -1) { // property ID not of expected form
-				m_logger.error("Unrecognized form of Average Property name! "
-						+ id);
+				m_logger.error("Unrecognized form of Average Property name! " + id);
 				return null;
 			}
 			String typeName = id.substring(idxStart, idxDot);
@@ -487,8 +458,7 @@ public class RainbowModel implements Model, ModelRepository {
 				for (String k : propKeys) {
 					if (Rainbow.predictionEnabled() && dur > 0L) {
 						// grab predicted value from the "target system"
-						sum += (Double) Oracle.instance().targetSystem()
-								.predictProperty(k, dur, StatType.SINGLE);
+						sum += (Double) Oracle.instance().targetSystem().predictProperty(k, dur, StatType.SINGLE);
 					} else {
 						sum += m_propExpAvg.get(k);
 					}
@@ -497,9 +467,7 @@ public class RainbowModel implements Model, ModelRepository {
 				prop = Double.valueOf(sum / propKeys.size());
 			}
 			if (m_logger.isTraceEnabled()) {
-				m_logger.trace("ExpAvg Prop " + id
-						+ (dur > 0 ? "(+" + dur + ") " : "") + " requested == "
-						+ prop);
+				m_logger.trace("ExpAvg Prop " + id + (dur > 0 ? "(+" + dur + ") " : "") + " requested == " + prop);
 			}
 		} else if (id.startsWith(PENALTY_KEY)) {
 			prop = m_moreProp.get(id);
@@ -512,8 +480,7 @@ public class RainbowModel implements Model, ModelRepository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.sa.rainbow.model.Model#updateProperty(java.lang.String,
-	 *      java.lang.Object)
+	 * @see org.sa.rainbow.model.Model#updateProperty(java.lang.String, java.lang.Object)
 	 */
 	public void updateProperty(String iden, Object value) {
 		if (m_acme == null) {
@@ -524,24 +491,19 @@ public class RainbowModel implements Model, ModelRepository {
 		if (obj instanceof IAcmeProperty) {
 			IAcmeProperty prop = (IAcmeProperty) obj;
 			if (m_logger.isDebugEnabled()) {
-				m_logger.debug("Upd prop: " + prop.getQualifiedName() + " = "
-						+ value.toString());
+				m_logger.debug("Upd prop: " + prop.getQualifiedName() + " = " + value.toString());
 			}
 			try {
-				IAcmePropertyValue pVal = StandaloneLanguagePackHelper
-						.defaultLanguageHelper().propertyValueFromString(
-								value.toString(), null);
-				IAcmeCommand<?> cmd = m_acmeSys.getCommandFactory()
-						.propertyValueSetCommand(prop, pVal);
+				IAcmePropertyValue pVal = StandaloneLanguagePackHelper.defaultLanguageHelper().propertyValueFromString(
+						value.toString(), null);
+				IAcmeCommand<?> cmd = m_acmeSys.getCommandFactory().propertyValueSetCommand(prop, pVal);
 				cmd.execute();
 				m_propChanged = true;
 
 				if (pVal.getType() != null) {
-					if (pVal.getType().getName().equals("float")
-							|| pVal.getType().getName().equals("int")) {
+					if (pVal.getType().getName().equals("float") || pVal.getType().getName().equals("int")) {
 						// update exponential average
-						updateExponentialAverage(iden, Double.parseDouble(value
-								.toString()));
+						updateExponentialAverage(iden, Double.parseDouble(value.toString()));
 					}
 				}
 			} catch (Exception e) {
@@ -585,8 +547,7 @@ public class RainbowModel implements Model, ModelRepository {
 			m_constraintViolated = !synchChecker.typechecks(m_acmeSys);
 			if (m_constraintViolated) {
 				Set<?> errors = m_acmeEnv.getAllRegisteredErrors();
-				Oracle.instance().writeEvaluatorPanel(m_logger,
-						errors.toString());
+				Oracle.instance().writeEvaluatorPanel(m_logger, errors.toString());
 			}
 		}
 	}
@@ -616,8 +577,7 @@ public class RainbowModel implements Model, ModelRepository {
 	private void updateExponentialAverage(String iden, double val) {
 		double avg = 0.0;
 		// retrieve the exponential alpha
-		double alpha = Double.parseDouble(Rainbow
-				.property(Rainbow.PROPKEY_MODEL_ALPHA));
+		double alpha = Double.parseDouble(Rainbow.property(Rainbow.PROPKEY_MODEL_ALPHA));
 		if (m_propExpAvg.containsKey(iden)) {
 			avg = m_propExpAvg.get(iden);
 			// compute the new exponential average value
@@ -626,18 +586,16 @@ public class RainbowModel implements Model, ModelRepository {
 			avg = val;
 		}
 		if (m_logger.isTraceEnabled()) {
-			m_logger.trace("(iden,val,alpha,avg) == (" + iden + "," + val + ","
-					+ alpha + "," + avg + ")");
+			m_logger.trace("(iden,val,alpha,avg) == (" + iden + "," + val + "," + alpha + "," + avg + ")");
 		}
 		// store new/updated exp.avg value
 		m_propExpAvg.put(iden, avg);
 	}
 
 	/**
-	 * Iterates through model's systems to collect all instances that either
-	 * declares or instantiates the specified type name, then for all instances
-	 * found that also have the specified property names, collect the fully
-	 * qualified property names
+	 * Iterates through model's systems to collect all instances that either declares or instantiates the specified type
+	 * name, then for all instances found that also have the specified property names, collect the fully qualified
+	 * property names
 	 * 
 	 * @param typeName
 	 *            the specified element type name
@@ -662,8 +620,7 @@ public class RainbowModel implements Model, ModelRepository {
 			children.addAll(sys.getRoles());
 			for (IAcmeElementInstance<?, ?> child : children) {
 				// seek element with specified type AND specified property
-				if (child.declaresType(typeName)
-						|| child.instantiatesType(typeName)) {
+				if (child.declaresType(typeName) || child.instantiatesType(typeName)) {
 					IAcmeProperty childProp = child.getProperty(propName);
 					if (childProp != null) {
 						String qName = childProp.getQualifiedName();
