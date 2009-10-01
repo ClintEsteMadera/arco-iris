@@ -1,0 +1,10 @@
+# use this file as base set of properties
+sim.include = znewspred/znews.sim
+
+## Scenario:  A transient drop in bandwidth for 5-sec
+#
+sim.0 = 1:ZNewsSys.s0.fidelity:5,101:ZNewsSys.s0.fidelity:5,201:ZNewsSys.s0.fidelity:5,301:ZNewsSys.s0.fidelity:5,401:ZNewsSys.s0.fidelity:5,501:ZNewsSys.s0.fidelity:5
+sim.1 = 2001:ZNewsSys.conn1.bandwidth.down:10,2001:ZNewsSys.conn1.bandwidth.up:10
+sim.2 = 3001:ZNewsSys.conn1.bandwidth.down:192,3001:ZNewsSys.conn1.bandwidth.up:192
+sim.3 = 15000:sim:terminate
+sim.size = 4

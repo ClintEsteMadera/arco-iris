@@ -1,0 +1,5 @@
+# use this file as base set of properties
+sim.include = znews/znews.sim
+
+sim.0 = 1000000000:sim:terminate
+sim.size = 1
