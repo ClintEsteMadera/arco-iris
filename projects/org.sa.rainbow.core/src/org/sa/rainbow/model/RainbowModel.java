@@ -14,6 +14,8 @@ import java.util.Set;
 
 import org.acmestudio.acme.core.IAcmeObject;
 import org.acmestudio.acme.core.exception.AcmeException;
+import org.acmestudio.acme.core.exception.AcmeIllegalNameException;
+import org.acmestudio.acme.core.globals.ExpressionOperator;
 import org.acmestudio.acme.core.resource.IAcmeResource;
 import org.acmestudio.acme.core.resource.ParsingFailureException;
 import org.acmestudio.acme.core.type.IAcmeStringValue;
@@ -21,6 +23,7 @@ import org.acmestudio.acme.element.IAcmeElement;
 import org.acmestudio.acme.element.IAcmeElementInstance;
 import org.acmestudio.acme.element.IAcmeFamily;
 import org.acmestudio.acme.element.IAcmeSystem;
+import org.acmestudio.acme.element.IAcmeDesignRule.DesignRuleType;
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
 import org.acmestudio.acme.model.IAcmeModel;
@@ -28,9 +31,16 @@ import org.acmestudio.acme.model.command.IAcmeCommand;
 import org.acmestudio.acme.model.command.IAcmeElementCopyCommand;
 import org.acmestudio.acme.model.command.IAcmeFamilyCreateCommand;
 import org.acmestudio.acme.model.command.IAcmeSystemCreateCommand;
+import org.acmestudio.acme.model.root.property.RootProperties;
+import org.acmestudio.acme.rule.node.IExpressionNode;
+import org.acmestudio.acme.rule.node.NumericBinaryRelationalExpressionNode;
+import org.acmestudio.acme.rule.node.NumericLiteralNode;
+import org.acmestudio.acme.rule.node.TypeReferenceNode;
 import org.acmestudio.acme.type.IAcmeTypeChecker;
 import org.acmestudio.acme.type.verification.SynchronousTypeChecker;
 import org.acmestudio.basicmodel.core.AcmeStringValue;
+import org.acmestudio.basicmodel.element.AcmeComponent;
+import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.standalone.environment.StandaloneEnvironment;
 import org.acmestudio.standalone.environment.StandaloneEnvironment.TypeCheckerType;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
@@ -124,9 +134,9 @@ public class RainbowModel implements Model, ModelRepository {
 					StandaloneResourceProvider.FAMILY_SEARCH_PATH, modelDir
 							.getParent());
 			String modelPath = modelDir.toString();
-			// add constraints to Acme Model before Rainbow loading
-			addScenariosConstraintsToAcmeModel(modelPath);
 			m_acme = (IAcmeModel) getModelForResource(modelPath);
+			// add constraints to the loaded Acme Model
+			addScenariosConstraintsToAcmeModel();
 			m_acmeEnv.getTypeChecker().registerModel(m_acme);
 			m_acmeSys = m_acme.getSystems().iterator().next();
 		} catch (IOException e) {
@@ -180,9 +190,39 @@ public class RainbowModel implements Model, ModelRepository {
 	 * 
 	 * @param modelPath
 	 */
-	private void addScenariosConstraintsToAcmeModel(String modelPath) {
-		// TODO Auto-generated method stub
+	private void addScenariosConstraintsToAcmeModel() {
+		String systemName = "ZNewsSys";
+		String artifactName = "c1";
+		AcmeComponent client1 = (AcmeComponent) m_acme.getSystem(systemName)
+				.getComponent(artifactName);
+		if (client1 == null) {
+			throw new RuntimeException("No se encontro el componente "
+					+ artifactName);
+		}
+		m_logger.info("Se encontro el componente " + artifactName);
+		// Hasta aca funciona
+		try {
+			AcmeDesignRule createdRule = client1
+					.createDesignRule("clientePerformanceRule");
+			createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
+			NumericBinaryRelationalExpressionNode expression = new NumericBinaryRelationalExpressionNode(
+					client1.getContext());
+			expression
+					.setExpressionType(NumericBinaryRelationalExpressionNode.INT_TYPE);
+			TypeReferenceNode first = new TypeReferenceNode(client1
+					.getContext());
+			RootProperties.PropertyType acmeType = new RootProperties.PropertyType();
+			first.setBasicTypeRef(acmeType);
 
+			expression.setFirstChild(first);
+			expression.setOperator(ExpressionOperator.GREATER_OR_EQUAL_OP);
+			IExpressionNode second = new NumericLiteralNode(5, client1
+					.getContext());
+			expression.setSecondChild(second);
+			createdRule.setDesignRuleExpression(expression);
+		} catch (AcmeIllegalNameException e) {
+			m_logger.error("Error creating rule from Scenario", e);
+		}
 	}
 
 	/**
