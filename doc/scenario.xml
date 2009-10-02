@@ -12,7 +12,7 @@
 	<stimulus>createAccount</stimulus>
 	
 	<artifact>
-		<artifact>accountManager</artifact>
+		<artifact>AccountManager</artifact>
 	</artifact>
 	<environment>PEAK_HOURS</environment>
 
@@ -20,11 +20,11 @@
 	
 	<responseMeasure>
 		<description>Account created in less than 500 ms.</description>
-		<invariant>accountManager.accountCreationResponseTime &lt; 500</invariant>
+		<invariant>accountCreationResponseTime &lt; 500</invariant>
 	</responseMeasure>
 	
 	<strategies>
-		<strategy name="responseTimeStrategy" params="accountManager,loadBalancer">
+		<strategy name="responseTimeStrategy">
 			<tradeoffs>
 				<affects>scenario1,scenario2</affects>
 				<breaks>scenario3</breaks>
