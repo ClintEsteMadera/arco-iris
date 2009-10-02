@@ -11,10 +11,9 @@
 	
 	<stimulus>createAccount</stimulus>
 	
-	<artifacts>
+	<artifact>
 		<artifact>accountManager</artifact>
-		<artifact>loadBalancer</artifact>
-	</artifacts>
+	</artifact>
 	<environment>PEAK_HOURS</environment>
 
 	<response>Account Created</response>
