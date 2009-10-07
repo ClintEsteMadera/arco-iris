@@ -11,7 +11,7 @@ public class PageRenderer extends Component {
 
 	private boolean active;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( { "unchecked", "synthetic-access" })
 	public PageRenderer() {
 		super(PageRenderer.class.getSimpleName());
 		this.load = 0;
