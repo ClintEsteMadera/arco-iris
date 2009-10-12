@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Self Healing Scenarios for Rainbow Framework
+Bundle-SymbolicName: org.sa.rainbow.scenario;singleton:=true
+Bundle-Version: 1.2.2.qualifier
+Bundle-Vendor: Jonathan Chiocchio & Gabriel Tursi
+Require-Bundle: org.sa.rainbow.stitch,
+ org.sa.rainbow.common,
+ org.sa.rainbow.deploy,
+ org.sa.rainbow.core,
+ org.acmestudio.acme;resolution:=optional
+Eclipse-LazyStart: false
+Export-Package: org.sa.rainbow.scenario
+Bundle-ClassPath: .
