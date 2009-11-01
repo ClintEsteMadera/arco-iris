@@ -114,9 +114,8 @@ public class Oracle implements IDisposable {
 	 * Not for instantiation.
 	 */
 	private Oracle() {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui = new RainbowGUI();
-		}
 		Rainbow.setIsMaster(true); // declare this to be the master Rainbow component
 		ARainbowLoggerFactory.reset(); // activate the relevant logger factory
 		Rainbow.instance().serviceManager(); // activate the RainbowServiceManager
@@ -233,65 +232,56 @@ public class Oracle implements IDisposable {
 	}
 
 	public void writeManagerPanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_MODEL_MANAGER, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeEvaluatorPanelSL(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeTextSL(RainbowGUI.ID_ARCH_EVALUATOR, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeEvaluatorPanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_ARCH_EVALUATOR, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeEnginePanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_ADAPTATION_MANAGER, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeExecutorPanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_EXECUTOR, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeSystemPanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_TARGET_SYSTEM, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeTranslatorPanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_TRANSLATOR, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeEventPanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_EVENT_BUSES, text);
-		}
 		logger.info(text);
 	}
 
 	public void writeOraclePanel(RainbowLogger logger, String text) {
-		if (m_showGui) {
+		if (m_showGui)
 			m_gui.writeText(RainbowGUI.ID_ORACLE_MESSAGE, text);
-		}
 		logger.info(text);
 	}
 
