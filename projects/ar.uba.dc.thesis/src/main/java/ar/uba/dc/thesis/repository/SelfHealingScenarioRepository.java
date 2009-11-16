@@ -5,66 +5,51 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import ar.uba.dc.thesis.acme.Component;
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
-import ar.uba.dc.thesis.component.dummy.PageRenderer;
-import ar.uba.dc.thesis.component.dummy.PageRenderer.RenderPage;
+import ar.uba.dc.thesis.component.znn.Proxy;
+import ar.uba.dc.thesis.component.znn.Proxy.GetActiveServersAmount;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.Constraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class SelfHealingScenarioRepository {
 
-	public static SelfHealingScenario USABILITY_SCENARIO = createUsabilityScenario();
+	// TODO Agregar al menos otro escenario de acuerdo a lo escrito en el paper de znn
 
-	public static SelfHealingScenario HEAVY_LOAD_SCENARIO = createHeavyLoadScenario();
+	public static SelfHealingScenario SERVER_COST_SCENARIO = createServerCostScenario();
 
 	public static List<SelfHealingScenario> scenarios = new ArrayList<SelfHealingScenario>();
+
 	static {
-		HEAVY_LOAD_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getDisableVideosRepairStrategy());
-		HEAVY_LOAD_SCENARIO
-				.addRepairStrategySpec(RepairStrategySpecRepository.getDisableDynamicContentRepairStrategy());
-		scenarios.add(USABILITY_SCENARIO);
-		scenarios.add(HEAVY_LOAD_SCENARIO);
+		SERVER_COST_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getReduceOverallCostRepairStrategy());
+		scenarios.add(SERVER_COST_SCENARIO);
 	}
 
-	private static SelfHealingScenario createUsabilityScenario() {
-		String scenarioName = "Page loaded with all content enabled";
-		String stimulusSource = "Simple User";
+	private static SelfHealingScenario createServerCostScenario() {
+		String scenarioName = "Server Cost Scenario";
+		String stimulusSource = "A Server cost analizer";
+		Proxy proxy = ComponentRepository.getProxy();
+		GetActiveServersAmount stimulus = (GetActiveServersAmount) proxy.getOperation(GetActiveServersAmount.class
+				.getSimpleName());
 		String environment = "Normal";
-		PageRenderer pageRenderer = ComponentRepository.getPageRenderer();
-		String response = "Page loaded with all content enabled";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Page loaded with all content enabled", new Constraint(
-				pageRenderer.getName() + ".allContentEnabled == true"));
+		String response = "Active servers amount";
+		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
+				new Constraint(proxy.getName() + ".getActiveServersAmount() < 3"));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
-		int priority = 1;
+		int priority = 2;
 
-		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, pageRenderer
-				.getOperation(RenderPage.class.getSimpleName()), environment, pageRenderer, response, responseMeasure,
-				archDecisions, enabled, priority);
+		return new SelfHealingScenario(scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
+				environment, proxy, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
-	private static SelfHealingScenario createHeavyLoadScenario() {
-		String scenarioName = "Page loaded - Heavy Load";
-		String stimulusSource = "Simple User";
-		String environment = "Heavy Load";
-		Component pageRenderer = ComponentRepository.getPageRenderer();
-		String response = "Page fully loaded";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Page loaded in less than 5 seconds", new Constraint(
-				pageRenderer.getName() + ".responseTime<= 5000ms"));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
-		int priority = 1;
-
-		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, pageRenderer
-				.getOperation(RenderPage.class.getSimpleName()), environment, pageRenderer, response, responseMeasure,
-				archDecisions, enabled, priority);
-	}
-
+	/**
+	 * It is assumed that we are not using this Repository for holding scenarios for more than one application.<br>
+	 * <b>Be careful!</b>
+	 */
 	public static Collection<SelfHealingScenario> getEnabledScenarios() {
-		//TODO evitar recorrer toda la lista, mantener una lista actualizada de escenarios habilitados
+		// TODO evitar recorrer toda la lista, mantener una lista actualizada de escenarios habilitados
 		List<SelfHealingScenario> enabledScenarios = new ArrayList<SelfHealingScenario>();
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.isEnabled()) {

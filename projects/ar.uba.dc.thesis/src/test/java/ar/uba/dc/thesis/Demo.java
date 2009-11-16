@@ -11,7 +11,7 @@ public class Demo {
 	private static final int DEFAULT_CHECK_INTERVAL = 10000;
 
 	public static void main(String[] args) {
-		Architecture architecture = ArchitectureRepository.getDummyArchitecture();
+		Architecture architecture = ArchitectureRepository.getZnnArchitecture();
 		RepairHandler repairHandler = new RepairHandler(architecture, new OrderedRepairStrategySelector());
 		new ConstraintEvaluator(architecture, repairHandler, DEFAULT_CHECK_INTERVAL).start();
 	}
