@@ -12,6 +12,7 @@ public class PageRenderer extends Component {
 	private boolean active;
 
 	@SuppressWarnings( { "unchecked", "synthetic-access" })
+	@Deprecated
 	public PageRenderer() {
 		super(PageRenderer.class.getSimpleName());
 		this.load = 0;

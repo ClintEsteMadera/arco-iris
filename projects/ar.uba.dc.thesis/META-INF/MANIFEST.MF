@@ -8,6 +8,7 @@ Require-Bundle: org.sa.rainbow.stitch,
  org.sa.rainbow.common,
  org.sa.rainbow.deploy,
  org.sa.rainbow.core,
+ org.sa.rainbow.config,
  org.acmestudio.acme;resolution:=optional
 Eclipse-LazyStart: false
 Export-Package: org.sa.rainbow.scenario

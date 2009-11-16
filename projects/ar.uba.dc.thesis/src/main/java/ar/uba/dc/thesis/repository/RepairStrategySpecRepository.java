@@ -8,20 +8,16 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingTradeoff;
 
 public class RepairStrategySpecRepository {
 
-	public static RepairStrategySpecification createRepairStrategySpec(SelfHealingScenario affectedScenario,
+	public static RepairStrategySpecification getReduceOverallCostRepairStrategy() {
+		return createRepairStrategySpec(SelfHealingScenarioRepository.SERVER_COST_SCENARIO, "reduceOverallCost");
+	}
+
+	private static RepairStrategySpecification createRepairStrategySpec(SelfHealingScenario affectedScenario,
 			String repairStrategyName) {
 
 		SelfHealingTradeoff tradeoff = new SelfHealingTradeoff(Collections.singletonList(affectedScenario), Collections
 				.<SelfHealingScenario> emptyList());
 
 		return new RepairStrategySpecification(repairStrategyName, new String[] {}, tradeoff);
-	}
-
-	public static RepairStrategySpecification getDisableVideosRepairStrategy() {
-		return createRepairStrategySpec(SelfHealingScenarioRepository.USABILITY_SCENARIO, "disableVideos");
-	}
-
-	public static RepairStrategySpecification getDisableDynamicContentRepairStrategy() {
-		return createRepairStrategySpec(SelfHealingScenarioRepository.USABILITY_SCENARIO, "disableDynamicContent");
 	}
 }

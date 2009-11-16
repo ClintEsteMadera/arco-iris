@@ -31,6 +31,11 @@ public class Server extends Component {
 		this.active = false;
 	}
 
+	public void getNewsContent() {
+		// TODO Implement this method!!!
+		System.out.println(this.getName() + ": Serving content...");
+	}
+
 	/**
 	 * Server specific definition of "fidelity"
 	 */
@@ -80,6 +85,21 @@ public class Server extends Component {
 		@Override
 		public void execute() {
 			this.getComponent().deactivate();
+		}
+	}
+
+	/**
+	 * Server specific Operation: ServeContent
+	 */
+	public class ServeContent extends Operation<Server> {
+
+		private ServeContent(Server server) {
+			super(Activate.class.getSimpleName(), server);
+		}
+
+		@Override
+		public void execute() {
+			this.getComponent().getNewsContent();
 		}
 	}
 }

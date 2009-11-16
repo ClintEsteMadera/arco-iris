@@ -16,12 +16,12 @@ import org.sa.rainbow.gui.RainbowGUI;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.Model;
 import org.sa.rainbow.model.RainbowModel;
-import org.sa.rainbow.model.evaluator.ArchEvaluator;
+import org.sa.rainbow.model.evaluator.ArchEvaluatorWithEscenarios;
 import org.sa.rainbow.model.manager.ModelManager;
 import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
-import org.sa.rainbow.scenario.model.SelfHealingRainbowModel;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.util.ARainbowLoggerFactory;
 import org.sa.rainbow.util.RainbowLogger;
@@ -166,7 +166,7 @@ public class Oracle implements IDisposable {
 
 	public Model rainbowModel() {
 		if (m_model == null) {
-			m_model = new SelfHealingRainbowModel();
+			m_model = new RainbowModelWithScenarios();
 			// initialize the model as a repository to the language module
 			Ohana.instance().setModelRepository(m_model);
 		}
@@ -193,7 +193,7 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable archEvaluator() {
 		if ((m_evaluator == null || m_evaluator.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_evaluator = new ArchEvaluator();
+			m_evaluator = new ArchEvaluatorWithEscenarios();
 		}
 		return m_evaluator;
 	}

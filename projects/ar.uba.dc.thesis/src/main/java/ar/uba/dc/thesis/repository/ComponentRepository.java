@@ -1,12 +1,12 @@
 package ar.uba.dc.thesis.repository;
 
-import ar.uba.dc.thesis.component.dummy.PageRenderer;
+import ar.uba.dc.thesis.component.znn.Proxy;
 
 public class ComponentRepository {
 
-	private static final PageRenderer PAGE_RENDERER = new PageRenderer();
+	private static final Proxy PROXY = new Proxy(1);
 
-	public static PageRenderer getPageRenderer() {
-		return PAGE_RENDERER;
+	public static Proxy getProxy() {
+		return PROXY;
 	}
 }

@@ -26,7 +26,7 @@ public class RepairStrategyRepository {
 	}
 
 	private static void initRepairStrategies() {
-		String pageRendererName = ComponentRepository.getPageRenderer().getName();
+		String pageRendererName = ComponentRepository.getProxy().getName();
 		String code = pageRendererName + "." + DISABLE_VIDEOS_OPERATION_NAME + ";" + pageRendererName + "."
 				+ DISABLE_FLASH_OPERATION_NAME;
 		RepairStrategy disableDynamicContent = new RepairStrategy("disableDynamicContent", code);
