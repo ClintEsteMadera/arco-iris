@@ -42,15 +42,16 @@ public class PageRenderer extends Component {
 	/**
 	 * Server specific Operation: Activate
 	 */
-	public class RenderPage extends Operation<PageRenderer> {
+	public class RenderPage extends Operation<PageRenderer, Object> {
 
 		private RenderPage(PageRenderer server) {
 			super(RenderPage.class.getSimpleName(), server);
 		}
 
 		@Override
-		public void execute() {
+		public Object execute() {
 			this.getComponent().renderPage();
+			return null;
 		}
 	}
 

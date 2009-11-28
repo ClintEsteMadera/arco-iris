@@ -2,7 +2,7 @@ package ar.uba.dc.thesis.acme;
 
 import ar.uba.dc.thesis.atam.Stimulus;
 
-public abstract class Operation<C extends Component> implements Stimulus {
+public abstract class Operation<C extends Component, RETURN_TYPE> implements Stimulus {
 
 	private final String name;
 	private final C component;
@@ -22,5 +22,5 @@ public abstract class Operation<C extends Component> implements Stimulus {
 		return this.component;
 	}
 
-	public abstract void execute();
+	public abstract RETURN_TYPE execute();
 }

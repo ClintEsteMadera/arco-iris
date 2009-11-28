@@ -16,7 +16,8 @@ public class Server extends Component {
 		super(name);
 		this.load = 0;
 		this.fidelity = Fidelity.HIGH;
-		super.addOperations(new Activate(this), new Deactivate(this), new SetFidelityLevel(this));
+		super.addOperations(new ActivateOperation(this), new DeactivateOperation(this), new SetFidelityLevelOperation(
+				this, null));
 	}
 
 	public boolean isActive() {
@@ -31,9 +32,14 @@ public class Server extends Component {
 		this.active = false;
 	}
 
-	public void getNewsContent() {
+	public void setFidelityLevel(Fidelity fidelityLevel) {
+		this.fidelity = fidelityLevel;
+	}
+
+	public Object getNewsContent() {
 		// TODO Implement this method!!!
 		System.out.println(this.getName() + ": Serving content...");
+		return null;
 	}
 
 	/**
@@ -46,60 +52,70 @@ public class Server extends Component {
 	/**
 	 * Server specific Operation: Activate
 	 */
-	public class Activate extends Operation<Server> {
+	public class ActivateOperation extends Operation<Server, Object> {
 
-		private Activate(Server server) {
-			super(Activate.class.getSimpleName(), server);
+		private ActivateOperation(Server server) {
+			super(ActivateOperation.class.getSimpleName(), server);
 		}
 
 		@Override
-		public void execute() {
+		public Object execute() {
 			this.getComponent().activate();
+			return null;
 		}
 	}
 
 	/**
 	 * Server specific Operation: Deactivate
 	 */
-	public class Deactivate extends Operation<Server> {
+	public class DeactivateOperation extends Operation<Server, Object> {
 
-		private Deactivate(Server server) {
-			super(Activate.class.getSimpleName(), server);
+		private DeactivateOperation(Server server) {
+			super(ActivateOperation.class.getSimpleName(), server);
 		}
 
 		@Override
-		public void execute() {
+		public Object execute() {
 			this.getComponent().deactivate();
+			return null;
 		}
 	}
 
 	/**
 	 * Server specific Operation: SetFidelityLevel
 	 */
-	public class SetFidelityLevel extends Operation<Server> {
+	public class SetFidelityLevelOperation extends Operation<Server, Object> {
 
-		private SetFidelityLevel(Server server) {
-			super(Activate.class.getSimpleName(), server);
+		private Fidelity fidelityLevel;
+
+		private SetFidelityLevelOperation(Server server, Fidelity fidelityLevel) {
+			super(ActivateOperation.class.getSimpleName(), server);
+			this.fidelityLevel = fidelityLevel;
+		}
+
+		public void setFidelityLevel(Fidelity fidelityLevel) {
+			this.fidelityLevel = fidelityLevel;
 		}
 
 		@Override
-		public void execute() {
-			this.getComponent().deactivate();
+		public Object execute() {
+			this.getComponent().setFidelityLevel(this.fidelityLevel);
+			return null;
 		}
 	}
 
 	/**
 	 * Server specific Operation: ServeContent
 	 */
-	public class ServeContent extends Operation<Server> {
+	public class ServeContentOperation extends Operation<Server, Object> {
 
-		private ServeContent(Server server) {
-			super(Activate.class.getSimpleName(), server);
+		private ServeContentOperation(Server server) {
+			super(ActivateOperation.class.getSimpleName(), server);
 		}
 
 		@Override
-		public void execute() {
-			this.getComponent().getNewsContent();
+		public Object execute() {
+			return this.getComponent().getNewsContent();
 		}
 	}
 }
