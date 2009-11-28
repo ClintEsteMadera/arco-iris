@@ -18,11 +18,11 @@ public class Proxy extends Component {
 			throw new IllegalArgumentException("At least one server is mandatory");
 		}
 		this.init(activeServers);
-		super.addOperations(new GetNewsContent(this), new GetActiveServersAmount(this));
+		super.addOperations(new GetNewsContentProxyOperation(this), new GetActiveServersAmountOperation(this));
 	}
 
-	public void getNewsContent() {
-		this.servers.get(this.currentServer).getNewsContent();
+	public Object getNewsContent() {
+		return this.servers.get(this.currentServer).getNewsContent();
 	}
 
 	public void activateAnotherServer() {
@@ -46,30 +46,30 @@ public class Proxy extends Component {
 	/**
 	 * Proxy specific Operation: GetNewsContent
 	 */
-	public class GetNewsContent extends Operation<Proxy> {
+	public class GetNewsContentProxyOperation extends Operation<Proxy, Object> {
 
-		private GetNewsContent(Proxy proxy) {
-			super(GetNewsContent.class.getSimpleName(), proxy);
+		private GetNewsContentProxyOperation(Proxy proxy) {
+			super(GetNewsContentProxyOperation.class.getSimpleName(), proxy);
 		}
 
 		@Override
-		public void execute() {
-			this.getComponent().getNewsContent();
+		public Object execute() {
+			return this.getComponent().getNewsContent();
 		}
 	}
 
 	/**
 	 * Proxy specific Operation: GetActiveServersAmount
 	 */
-	public class GetActiveServersAmount extends Operation<Proxy> {
+	public class GetActiveServersAmountOperation extends Operation<Proxy, Object> {
 
-		private GetActiveServersAmount(Proxy proxy) {
-			super(GetNewsContent.class.getSimpleName(), proxy);
+		private GetActiveServersAmountOperation(Proxy proxy) {
+			super(GetNewsContentProxyOperation.class.getSimpleName(), proxy);
 		}
 
 		@Override
-		public void execute() {
-			this.getComponent().getActiveServersAmount();
+		public Integer execute() {
+			return this.getComponent().getActiveServersAmount();
 		}
 	}
 }

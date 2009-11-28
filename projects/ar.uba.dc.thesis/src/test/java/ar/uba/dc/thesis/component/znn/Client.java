@@ -12,7 +12,7 @@ public class Client extends Component {
 	public Client(String name, Proxy proxy) {
 		super(name);
 		this.proxy = proxy;
-		this.addOperations(new GetNewsContentOperation(this));
+		this.addOperations(new GetNewsContentClientOperation(this));
 	}
 
 	public long getExperienceResponseTime() {
@@ -31,16 +31,31 @@ public class Client extends Component {
 	}
 
 	/**
-	 * Specific Client operation
+	 * Specific Client operation: GetNewsContentOperation
 	 */
-	public class GetNewsContentOperation extends Operation<Client> {
-		public GetNewsContentOperation(Client component) {
-			super(GetNewsContentOperation.class.getSimpleName(), component);
+	public class GetNewsContentClientOperation extends Operation<Client, Object> {
+		public GetNewsContentClientOperation(Client component) {
+			super(GetNewsContentClientOperation.class.getSimpleName(), component);
 		}
 
 		@Override
-		public void execute() {
+		public Object execute() {
 			this.getComponent().executeGetNewsContentOperation(this.getComponent().getProxy());
+			return null;
+		}
+	}
+
+	/**
+	 * Specific Client operation: GetExperienceResponseTime
+	 */
+	public class GetExperiencedResponseTimeOperation extends Operation<Client, Long> {
+		public GetExperiencedResponseTimeOperation(Client component) {
+			super(GetExperiencedResponseTimeOperation.class.getSimpleName(), component);
+		}
+
+		@Override
+		public Long execute() {
+			return this.getComponent().getExperienceResponseTime();
 		}
 	}
 }

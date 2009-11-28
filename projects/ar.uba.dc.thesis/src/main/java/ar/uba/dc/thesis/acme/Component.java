@@ -6,11 +6,12 @@ import java.util.Collection;
 
 import ar.uba.dc.thesis.atam.Artifact;
 
+@SuppressWarnings("unchecked")
 public class Component implements Artifact {
 
 	private final String name;
 
-	private final Collection<Operation<? extends Artifact>> operations = new ArrayList<Operation<? extends Artifact>>();
+	private final Collection<Operation> operations = new ArrayList<Operation>();
 
 	public Component(String name) {
 		super();
@@ -21,20 +22,20 @@ public class Component implements Artifact {
 		return this.name;
 	}
 
-	public Collection<Operation<? extends Artifact>> getOperations() {
+	public Collection<Operation> getOperations() {
 		return this.operations;
 	}
 
-	public Operation<? extends Artifact> getOperation(String operationName) {
-		for (Operation<? extends Artifact> operation : this.operations) {
-			if (operation.getName().equals(operationName)) {
+	public Operation getOperation(Class<? extends Operation> clazz) {
+		for (Operation operation : this.operations) {
+			if (operation.getClass().equals(clazz)) {
 				return operation;
 			}
 		}
-		throw new RuntimeException("The operation " + operationName + " does not belong to this artifact.");
+		throw new RuntimeException("The operation " + clazz + " does not belong to this artifact.");
 	}
 
-	public void addOperations(Operation<? extends Component>... operations) {
+	public void addOperations(Operation<? extends Component, ? extends Object>... operations) {
 		this.operations.addAll(Arrays.asList(operations));
 	}
 }
