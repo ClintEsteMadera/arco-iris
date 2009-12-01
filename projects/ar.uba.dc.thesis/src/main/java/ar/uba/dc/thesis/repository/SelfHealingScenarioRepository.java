@@ -44,6 +44,9 @@ public class SelfHealingScenarioRepository {
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new Constraint(artifact.getName() + ".getActiveServersAmount() < 3"));
+		// TODO tipamos la constraint para evitar parsear el string? Ejemplo:
+		// new Constraint(artifact.getName(), "getActiveServersAmount()", "<", "3"));
+		// el operador deberia ser un ExpressionNode?
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 2;
