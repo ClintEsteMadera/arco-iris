@@ -9,8 +9,8 @@ public class Client extends Component {
 	private final Proxy proxy;
 
 	@SuppressWarnings("unchecked")
-	public Client(String name, Proxy proxy) {
-		super(name);
+	public Client(String systemName, String name, Proxy proxy) {
+		super(systemName, name);
 		this.proxy = proxy;
 		this.addOperations(new GetNewsContentClientOperation(this));
 	}

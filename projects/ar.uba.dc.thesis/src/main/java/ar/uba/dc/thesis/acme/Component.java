@@ -13,13 +13,20 @@ public class Component implements Artifact {
 
 	private final Collection<Operation> operations = new ArrayList<Operation>();
 
-	public Component(String name) {
+	private final String systemName;
+
+	public Component(String systemName, String name) {
 		super();
+		this.systemName = systemName;
 		this.name = name;
 	}
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getSystemName() {
+		return systemName;
 	}
 
 	public Collection<Operation> getOperations() {
@@ -38,4 +45,5 @@ public class Component implements Artifact {
 	public void addOperations(Operation<? extends Component, ? extends Object>... operations) {
 		this.operations.addAll(Arrays.asList(operations));
 	}
+
 }
