@@ -12,8 +12,8 @@ public class Server extends Component {
 	private boolean active;
 
 	@SuppressWarnings( { "unchecked", "synthetic-access" })
-	public Server(String name) {
-		super(name);
+	public Server(String systemName, String name) {
+		super(systemName, name);
 		this.load = 0;
 		this.fidelity = Fidelity.HIGH;
 		super.addOperations(new ActivateOperation(this), new DeactivateOperation(this), new SetFidelityLevelOperation(

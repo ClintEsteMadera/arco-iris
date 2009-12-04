@@ -5,6 +5,8 @@ import java.util.Collection;
 import ar.uba.dc.thesis.acme.Operation;
 
 public interface Artifact {
+	public String getSystemName();
+
 	public String getName();
 
 	@SuppressWarnings("unchecked")

@@ -12,8 +12,8 @@ public class Proxy extends Component {
 	private int currentServer;
 
 	@SuppressWarnings("unchecked")
-	public Proxy(int activeServers) {
-		super(Proxy.class.getSimpleName());
+	public Proxy(String systemName, int activeServers) {
+		super(systemName, Proxy.class.getSimpleName());
 		if (activeServers < 1) {
 			throw new IllegalArgumentException("At least one server is mandatory");
 		}
@@ -40,7 +40,7 @@ public class Proxy extends Component {
 	}
 
 	private void addServerNumber(int i) {
-		this.servers.add(new Server("Server " + i));
+		this.servers.add(new Server(this.getSystemName(), "Server " + i));
 	}
 
 	/**
