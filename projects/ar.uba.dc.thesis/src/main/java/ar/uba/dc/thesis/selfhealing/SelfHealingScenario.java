@@ -19,10 +19,14 @@ public class SelfHealingScenario extends AtamScenario {
 
 	private final List<RepairStrategySpecification> strategySpecs = new ArrayList<RepairStrategySpecification>();
 
-	public SelfHealingScenario(String name, Concern concern, String stimulusSource, Stimulus stimulus,
+	public SelfHealingScenario() {
+		super();
+	}
+
+	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, Stimulus stimulus,
 			String environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
-		super(name, concern, stimulusSource, stimulus, environment, artifact, response, responseMeasure,
+		super(id, name, concern, stimulusSource, stimulus, environment, artifact, response, responseMeasure,
 				architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
