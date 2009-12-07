@@ -1,0 +1,49 @@
+<project name="sba-core" default="generar-jar" basedir=".">
+	<description>
+		Build file para generar el jar de la librería "sba-core".
+    </description>
+
+	<property name="src" location="src/main/java" />
+	<property name="resources" location="src/main/resources" />
+	<property name="build" value="build" />
+	<property name="dist" value="dist" />
+	<property name="lib" value="lib" />
+
+	<property name="jar.filename" value="sba-core-0.0.1.jar" />
+	
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compila los fuentes">
+		<javac srcdir="${src}" destdir="${build}" target="1.5">
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="genera la distribución">
+		<mkdir dir="${dist}" />
+
+		<jar jarfile="${dist}/${jar.filename}" basedir="${build}">
+			<fileset dir="${resources}" />
+		</jar>
+	</target>
+
+	<target name="clean" description="Limpia el directorio de build">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="generar-jar" depends="dist,clean" description="Genera el jar de sba-core" />
+	
+	<target name="publicar" depends="dist,clean"
+		description="Genera el jar de sba-core y lo copia a los proyectos que utilizan dicho jar" >
+		<copy file="${dist}/${jar.filename}" todir="../Backend_EMES/lib"></copy>
+		<copy file="${dist}/${jar.filename}" todir="../GUI_EMES/lib"></copy>
+		<copy file="${dist}/${jar.filename}" todir="../Gui_SWT/lib"></copy>
+		<copy file="${dist}/${jar.filename}" todir="../emes-batch/lib"></copy>
+	</target>
+</project>

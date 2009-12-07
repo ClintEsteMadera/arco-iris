@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" package="sba.common.domicilio">
+
+	<class name="DomicilioSimple" table="DOMICILIO_SIMPLE">
+
+		<id name="id">
+			<generator class="sequence" />
+		</id>
+
+		<version name="persistenceVersion" column="VERSION_NUMBER" />
+
+		<property name="domicilio" length="500"/>
+
+		<property name="codigoPostal" column="CODIGO_POSTAL" length="50" />
+
+		<property name="pais" length="2" column="PAIS">
+			<type name="sba.common.persistence.EnumUserType">
+				<param name="enumClassName">
+					sba.common.pais.Country
+				</param>
+			</type>
+		</property>
+
+	</class>
+
+</hibernate-mapping>
