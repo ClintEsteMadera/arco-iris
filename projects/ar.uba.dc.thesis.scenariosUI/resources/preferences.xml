@@ -1,0 +1,10 @@
+<preferences>
+	<tables>
+    	<table name="CONSULTA_EMISORES" order="denominacion">
+	      	<column label="DENOMINACION" name="denominacion" alignment="LEFT" width="150"/>
+	      	<column label="TIPO" name="tipo" alignment="LEFT" width="150"/>
+	      	<column label="ESTADO" name="estado" alignment="LEFT" width="80"/>
+	      	<column label="FECHA_ALTA_EMISOR" name="fechaAlta" alignment="LEFT" width="150"/>
+		</table>
+	</tables>
+</preferences>
