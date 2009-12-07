@@ -51,7 +51,7 @@ public class SelfHealingScenarioRepository {
 		boolean enabled = true;
 		int priority = 2;
 
-		return new SelfHealingScenario(scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
+		return new SelfHealingScenario(1L, scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
 				environment, artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
@@ -69,7 +69,7 @@ public class SelfHealingScenarioRepository {
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environment,
+		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environment,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 

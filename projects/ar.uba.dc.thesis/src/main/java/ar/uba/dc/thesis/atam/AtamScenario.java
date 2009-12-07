@@ -6,28 +6,31 @@ import ar.uba.dc.thesis.qa.Concern;
 
 public class AtamScenario {
 
-	private final String name;
+	private Long id;
 
-	private final Concern concern;
+	private String name;
 
-	private final String stimulusSource;
+	private Concern concern;
 
-	private final Stimulus stimulus;
+	private String stimulusSource;
 
-	private final String environment;
+	private Stimulus stimulus;
 
-	private final Artifact artifact;
+	private String environment;
 
-	private final String response;
+	private Artifact artifact;
 
-	private final ResponseMeasure responseMeasure;
+	private String response;
 
-	private final Collection<ArchitecturalDecision> architecturalDecisions;
+	private ResponseMeasure responseMeasure;
 
-	public AtamScenario(String name, Concern concern, String stimulusSource, Stimulus stimulus, String environment,
-			Artifact artifact, String response, ResponseMeasure responseMeasure,
+	private Collection<ArchitecturalDecision> architecturalDecisions;
+
+	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, Stimulus stimulus,
+			String environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.concern = concern;
 		this.stimulusSource = stimulusSource;
@@ -37,6 +40,10 @@ public class AtamScenario {
 		this.response = response;
 		this.responseMeasure = responseMeasure;
 		this.architecturalDecisions = architecturalDecisions;
+	}
+
+	public AtamScenario() {
+		super();
 	}
 
 	public String getName() {
@@ -93,5 +100,9 @@ public class AtamScenario {
 
 	protected void append(StringBuilder sb, String fieldName, String fieldValue) {
 		sb.append("\t").append(fieldName).append(": ").append(fieldValue).append("\n");
+	}
+
+	public Long getId() {
+		return id;
 	}
 }
