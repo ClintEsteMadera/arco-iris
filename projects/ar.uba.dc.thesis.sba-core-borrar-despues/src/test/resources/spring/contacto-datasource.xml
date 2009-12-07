@@ -1,0 +1,21 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- DataSource -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@negdb.cajval.sba.com.ar:1521:DESANEG"/>
+        <property name="username" value="JCHIOCHIO"/>
+        <property name="password" value="JCHIOCHIO"/>
+        <property name="initialSize" value="2"/>
+        <property name="maxActive" value="30"/>
+        <property name="maxIdle" value="10"/>
+        <property name="minIdle" value="2"/>
+		<property name="timeBetweenEvictionRunsMillis" value="10000"/>
+		<property name="testWhileIdle" value="true"/>
+        <!-- Espera x milisegundos, si el pool no puede devolver ninguna instancia lanza una exception -->
+        <property name="maxWait" value="15000"/>
+    </bean>
+
+</beans>

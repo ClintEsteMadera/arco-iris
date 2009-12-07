@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" package="sba.common.persona.core">
+
+	<subclass name="PersonaFisica" extends="Parte" discriminator-value="PERSONA_FISICA">
+
+		<property name="apellido" />
+
+		<property name="nombre" />
+
+		<property name="nacionalidad" column="NACIONALIDAD">
+			<type name="sba.common.persistence.EnumUserType">
+				<param name="enumClassName">
+					sba.common.pais.Country
+				</param>
+			</type>
+		</property>
+
+		<component name="identificadorDePersonaFisica" unique="true" lazy="false"
+			class="sba.common.persona.identificacion.IdentificadorDePersonaFisica" access="field">
+			<property name="numero" />
+
+			<property name="tipoIdentificadorPersonaFisica" column="TIPO_IDENTIF_PF">
+				<type name="sba.common.persistence.EnumUserType">
+					<param name="enumClassName">
+						sba.common.persona.identificacion.TipoIdentificadorPersonaFisica
+					</param>
+				</type>
+			</property>
+		</component>
+
+		<many-to-one name="informacionImpositiva"
+			column="INFO_IMPOSITIVA_ID"
+			class="sba.common.persona.identificacion.InformacionImpositiva"
+			unique="true" not-null="true" cascade="all" lazy="false" access="field"/>
+
+	</subclass>
+
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="sba.common.persona.core">
+
+	<class name="RepresentanteLegal" table="REPRESENTANTE_LEGAL">
+		<id name="id">
+			<generator class="sequence" />
+		</id>
+
+		<version name="persistenceVersion" column="VERSION_NUMBER" />
+
+		<property name="nombre"></property>
+
+		<property name="apellido"></property>
+
+		<property name="numeroInscripcion" column="NRO_INSCRIPCION"/>
+
+		<many-to-one name="domicilio" column="DOMICILIO_ID"
+			class="sba.common.domicilio.Domicilio" unique="true" not-null="true"
+			cascade="all" lazy="false" access="field" />
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<assembly>
+	<id>test</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>target/test-classes</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>sba/common/contacto/core/ContactoCompareHelper*</include>
+				<include>**/*Factory*</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

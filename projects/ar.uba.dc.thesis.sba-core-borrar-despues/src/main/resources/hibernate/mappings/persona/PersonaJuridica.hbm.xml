@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" package="sba.common.persona.core">
+
+	<subclass abstract="true" name="PersonaJuridica" extends="Parte"
+		discriminator-value="PERSONA_JURIDICA">
+
+		<property name="denominacion" column="denominacion" />
+
+		<property name="numeroInscripcion" column="NRO_INSCRIPCION_PJ" />
+
+		<component name="constitucionPersonaJuridica"
+			class="sba.common.persona.core.ConstitucionPersonaJuridica" lazy="false" access="field">
+			<property name="fechaConstitucion" column="FECHA_CONSTITUCION_PJ" />
+
+			<property name="duracion" length="2"/>
+
+			<property name="descripcion" length="1000"/>
+
+			<property name="mesCierreEjercicio"	column="MES_CIERRE_EJERCICIO_PJ">
+				<type name="sba.common.persistence.EnumUserType">
+					<param name="enumClassName">
+						sba.common.datetime.Mes
+					</param>
+				</type>
+			</property>
+		</component>
+
+		<list name="actas" table="PERSONA_JURIDICA_ACTA" lazy="false">
+			<key column="id" />
+			<list-index column="NRO_ORDEN" />
+			<composite-element class="Acta">
+				<property name="fechaCreacion" column="FECHA_CREACION" />
+				<property name="fechaVencimiento" column="FECHA_VENCIMIENTO" />
+				<property name="descripcion" />
+			</composite-element>
+		</list>
+
+		<subclass name="PersonaJuridicaNacional" discriminator-value="PERSONA_JURIDICA_NACIONAL">
+			<many-to-one name="informacionImpositiva"
+				column="INFO_IMPOSITIVA_ID"
+				class="sba.common.persona.identificacion.InformacionImpositiva"
+				unique="true" cascade="all" lazy="false" access="field"/>
+
+			<component name="rpc" class="sba.common.persona.identificacion.Rpc" lazy="false" access="field">
+				<property name="numeroRPC" column="RPC_NRO"/>
+				<property name="lugar" column="RPC_LUGAR"/>
+			</component>
+
+			<property name="tipoInscripcionPersonaJuridicaNacional"	column="TIPO_INSCR_PJN">
+				<type name="sba.common.persistence.EnumUserType">
+					<param name="enumClassName">
+						sba.common.persona.identificacion.TipoInscripcionPersonaJuridicaNacional
+					</param>
+				</type>
+			</property>
+		</subclass>
+
+		<subclass name="PersonaJuridicaExtranjera"
+			discriminator-value="PERSONA_JURIDICA_EXTRANJERA">
+			<property name="nacionalidad" length="2" column="NACIONALIDAD_PJE">
+				<type name="sba.common.persistence.EnumUserType">
+					<param name="enumClassName">
+						sba.common.pais.Country
+					</param>
+				</type>
+			</property>
+
+			<many-to-one name="representanteLegal"
+				column="REPRESENTANTE_LEGAL_PJE"
+				class="sba.common.persona.core.RepresentanteLegal"
+				unique="true"
+				cascade="all"
+				lazy="false"
+				access="field" />
+
+			<property name="zona" />
+		</subclass>
+	</subclass>
+
+</hibernate-mapping>

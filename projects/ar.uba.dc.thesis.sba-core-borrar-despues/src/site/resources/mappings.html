@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Project License</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body class="composite">
+    <div id="banner">
+                          <a href="${maven.distribution.site.public.url}/sba/commons/sba-persona/" id="bannerLeft">
+    
+            Persona
+    
+            </a>
+                          <span id="bannerRight">
+    
+            Persona
+    
+            </span>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+      <div class="xleft">Last Published: Thu May 18 16:04:20 GMT-03:00 2006</div>
+      <div class="xright">  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn"><div id="navcolumn">      <h5>Mappings</h5>
+    <ul>
+              
+    <li class="none">
+          <a href="./mappings.html">Mappings</a>
+        </li>
+          </ul>
+      <h5>Project Documentation</h5>
+    <ul>
+              
+    <li class="none">
+          <a href="index.html">About Persona</a>
+        </li>
+              
+                
+        <li class="collapsed">
+          <a href="project-info.html">Project Info</a>
+                
+          <ul>
+                  
+    <li class="none">
+          <a href="dependencies.html">Dependencies</a>
+        </li>
+                  
+    <li class="none">
+          <strong><a href="license.html">Project License</a></strong>
+        </li>
+                  
+    <li class="none">
+          <a href="team-list.html">Project Team</a>
+        </li>
+                  
+    <li class="none">
+          <a href="source-repository.html">Source Repository</a>
+        </li>
+              </ul>
+        </li>
+              
+                
+        <li class="collapsed">
+          <a href="maven-reports.html">Project Reports</a>
+                
+      
+              
+        </li>
+          </ul>
+  <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+              <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+            </a>
+    </div></div>
+
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>Overview</h2><p>Aquí se indica un conjunto de mappings de referencia para persistencia basada en Hibernate</p></div><div class="section"><h2>Mappings para Hibernate</h2>
+		<div class="section">
+
+		<div class="source">
+		<div class="section"><h3>Persona.hbm.xml</h3><p></div>
+		<pre>
+			&lt;?xml version="1.0"?&gt;
+			&lt;!DOCTYPE hibernate-mapping PUBLIC
+				"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+				"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;
+
+			&lt;hibernate-mapping default-access="field" package="sba.common.persona.core.domain"&gt;
+
+				&lt;class abstract="true" name="Persona" table="PERSONA"&gt;
+
+					&lt;id name="id"&gt;
+						&lt;generator class="sequence"/&gt;
+					&lt;/id&gt;
+					&lt;discriminator column="TIPO_PERSONA" type="string" length="20"/&gt;
+					&lt;version name="version" column="VERSION_NUMBER"/&gt;
+
+				&lt;/class&gt;
+
+			&lt;/hibernate-mapping&gt;
+		</pre>
+		</div>
+
+		<div class="source">
+		<h3>PersonaFisica.hbm.xml</h3><p>
+		<pre>
+		&lt;?xml version="1.0"?&gt;
+		&lt;!DOCTYPE hibernate-mapping PUBLIC
+			"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;
+
+		&lt;hibernate-mapping default-access="field" package="sba.common.persona.core.domain"&gt;
+
+			&lt;subclass name="PersonaFisica"
+					extends="Persona" discriminator-value="PERSONA_FISICA"&gt;
+				
+				&lt;property name="nombre" length="50"/&gt;
+				&lt;property name="apellido" length="50"/&gt;
+				
+				&lt;component name="dni" class="sba.common.persona.identificacion.domain.NroDNI"&gt; 
+						&lt;property name="numero" column="DNI"/&gt;
+				&lt;/component&gt; 
+				
+			
+			&lt;/subclass&gt;
+
+		&lt;/hibernate-mapping&gt;
+		</pre>
+		</div>
+
+
+		<div class="source">
+		<h3>PersonaJuridica.hbm.xml</h3><p>
+		<pre>
+		&lt;?xml version="1.0"?&gt;
+		&lt;!DOCTYPE hibernate-mapping PUBLIC
+			"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;
+
+		&lt;hibernate-mapping default-access="field" package="sba.common.persona.core.domain"&gt;
+
+			&lt;subclass name="PersonaJuridica" 
+				extends="Persona" discriminator-value="PERSONA_JURIDICA"&gt;
+				
+				&lt;property name="denominacion" unique="true" length="50"/&gt;
+				
+				&lt;component name="cuit" class="sba.common.persona.identificacion.domain.NroCUIT"&gt; 
+						&lt;property name="numero" column="CUIT"/&gt;
+				&lt;/component&gt; 
+				
+			&lt;/subclass&gt;
+
+		&lt;/hibernate-mapping&gt;
+		</pre>
+		</div>
+
+</div></div>
+    
+	  </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+
+    <div id="footer">
+      <div class="xright">&#169;  
+          2006
+    
+          Caja de Valores S.A.
+      </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    
+	</div>
+
+
+  </body>
+</html>

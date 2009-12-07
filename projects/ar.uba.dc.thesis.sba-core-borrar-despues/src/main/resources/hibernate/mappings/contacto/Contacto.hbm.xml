@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="sba.common.contacto">
+
+	<class name="Contacto" table="CONTACTO">
+		<id name="id">
+			<generator class="sequence" />
+		</id>
+
+		<version name="persistenceVersion" column="VERSION_NUMBER" />
+
+		<property name="denominacion" />
+
+		<property name="tipoContacto" length="20" column="TIPO_CONTACTO">
+			<type name="sba.common.persistence.EnumUserType">
+				<param name="enumClassName">
+					sba.common.contacto.TipoContacto
+				</param>
+			</type>
+		</property>
+
+		<property name="tipoMedioContacto" length="10" column="TIPO_MEDIO_CONTACTO">
+			<type name="sba.common.persistence.EnumUserType">
+				<param name="enumClassName">
+					sba.common.contacto.TipoMedioContacto
+				</param>
+			</type>
+		</property>
+
+		<property name="descripcion" />
+	</class>
+
+</hibernate-mapping>
