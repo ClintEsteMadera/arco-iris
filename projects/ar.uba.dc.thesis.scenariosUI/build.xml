@@ -1,0 +1,40 @@
+<project name="Gui_SWT" default="generar-jar" basedir=".">
+	<description>
+			Build file para generar el jar de la librería "Gui_SWT".
+	    </description>
+
+	<property name="src" location="src" />
+	<property name="resources" location="resources" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compila los fuentes">
+		<javac srcdir="${src}" destdir="${build}" target="1.5">
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="genera la distribución">
+		<mkdir dir="${dist}" />
+
+		<jar jarfile="${dist}/Gui_SWT.jar" basedir="${build}">
+			<fileset dir="${src}" excludes="**/*.java" />
+			<fileset dir="${resources}" excludes="log4j.xml" />
+		</jar>
+	</target>
+
+	<target name="clean" description="Limpia el directorio de build">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="generar-jar" depends="dist,clean" description="Genera el jar de Gui_SWT" />
+</project>

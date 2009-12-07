@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/core_commands.jar" sourcepath="lib/lib-src/core_commands_src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/equinox_common.jar" sourcepath="lib/lib-src/equinox_common_src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/jface.jar" sourcepath="lib/lib-src/jface_src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/native-lib-win32.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/osgi.jar" sourcepath="lib/lib-src/osgi_src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/swt.jar" sourcepath="lib/lib-src/swt_src.zip">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Gui_SWT/lib/swt_jface"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.1.jar" sourcepath="lib/lib-src/commons-lang-2.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-1.2.8.jar" sourcepath="lib/lib-src/spring-src-1.2.8.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/swtcalendar.jar" sourcepath="lib/lib-src/swtcalendar-src-0.5.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/sba-session-1.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/acegi-security-1.0.2.jar" sourcepath="lib/lib-src/acegi-security-1.0.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/acegi-security-tiger-1.0.2.jar" sourcepath="lib/lib-src/acegi-security-tiger-1.0.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/sba-security-0.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/oc4jclient-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/swt_jface/forms.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/ejb-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/framework_app-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/usuarios-stubs.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.2.2.jar" sourcepath="lib/lib-src/xstream-distribution-1.2.2-src.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ar.uba.dc.thesis"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ar.uba.dc.thesis.sba-core-borrar-despues"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

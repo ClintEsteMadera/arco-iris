@@ -1,0 +1,4 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="eventosService" class="sba.cajval.emes.eventos.service.EventosServiceImpl" />
+</beans>

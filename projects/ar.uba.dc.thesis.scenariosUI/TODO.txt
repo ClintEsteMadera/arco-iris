@@ -1,0 +1,24 @@
+- Implementar value model en los componentes custom
+(RadioButtonGroup, Calendar, etc)
+
+- Agregar TRIM a el formateo en strings
+
+- Unificar RadioButtonGroupMetaInfo y ComboMetaInfo (deberían ser lo mismo)
+
+- BeanAttribute: soportar mejor polimorfismo (se tendría que poder
+construir con un "prototipo" para obtener los métodos que no estan visibles
+en la clase base)
+
+- Tablas: unificar lo que ya existe con el framework swing
+(incorpora la meta-info, los tipos de datos, propiedades 'artificiales' y data-binding
+bidireccional)
+
+- Menues: reutilizar lo hecho para swing
+
+- Agregar a ValueModel la propiedad "readOnly" de esta forma no hace falta
+pasar el parámetro readOnly a los factories de widget (lo podrían tomar de ahí)
+Tendríamos que tener un manager que decida que valor es read only en un objeto dependiendo del contexto.
+
+Por ejemplo: manager.isReadOnly(modelClass, "ALTA")
+
+Este manager podría tener en cuenta (por ejemplo) el rol del usuario.
