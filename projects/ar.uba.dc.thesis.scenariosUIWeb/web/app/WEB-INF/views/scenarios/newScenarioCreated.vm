@@ -1,0 +1,22 @@
+<html>
+<head>
+	#parse("common_header.vm")
+</head>
+<body">
+	#title("New Scenario Created")
+
+	#details([
+		[ 'scenario', 'name' ],
+		[ 'scenario', 'concern' ],
+		[ 'scenario', 'stimulusSource' ],
+		[ 'scenario', 'stimulus' ],
+		[ 'scenario', 'environment' ],
+		[ 'scenario', 'response' ],
+		[ 'scenario', 'priority' ],
+		[ 'scenario', 'enabled']
+	])
+
+	<input type="button" value="Generate Scenario XML" onclick="alert('working...')"/>
+
+</body>
+</html>

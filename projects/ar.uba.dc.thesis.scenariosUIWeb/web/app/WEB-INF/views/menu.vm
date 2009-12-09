@@ -1,0 +1,50 @@
+<html>
+<head>
+	#parse("common_header.vm")
+	<title>Sistema de Administración de Posiciones y Garantías</title>
+	<base target="frame_content">
+	<script type="text/javascript">
+	<!--
+		window.onload = openMenu;
+		function openMenu(id) {
+			var d = document.getElementById(id);
+			var submenu;
+			for (var i = ${firstId}; i < ${lastId}; i++) {
+				submenu = document.getElementById('smenu' + i);
+				if (submenu) {
+					submenu.style.display = 'none';
+				}
+			}
+			if (d) {
+				d.style.display = 'block';
+			}
+		}
+	//-->
+	</script>
+</head>
+<body class="MERVAL_BACKGROUND">
+	<table height="100%" cellspacing=0 cellpadding=0 width="100%" style="border:1px dashed #6699cc;">
+	<tr>
+		<td valign="top" align="left">
+			<dl id="menu">
+#foreach ($menuLine in $menuLines)
+#if (! ${menuLine.url})
+		</ul>
+	</dd>
+	<dt onclick="javascript:openMenu('smenu${menuLine.id}')">${menuLine.title}</dt>
+	<dd id="smenu${menuLine.id}">
+		<ul>
+#else
+			<li>
+				#authAnchor(${menuLine.url} "&nbsp;&nbsp;&nbsp; ${menuLine.title}" '' ${menuLine.title})
+			</li>
+#end
+#end
+		</ul>
+	</dd>
+</dl>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

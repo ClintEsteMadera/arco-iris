@@ -1,0 +1,29 @@
+<html>
+<head>
+	#parse("common_header.vm")
+</head>
+<body>
+	#title("New Scenario")
+
+	<form action="#springUrl('/service/newScenario')" method="POST">
+		<table>
+			#input('scenario' 'name')
+			<tr>
+				<td class="label">#springMessage("concern"):</td>
+				<td>#springFormEnumSelect('scenario.concern' $concerns)</td>
+			</tr>
+			#input('scenario' 'stimulusSource')
+			#input('scenario' 'stimulus')
+			#input('scenario' 'priority')
+			#input('scenario' 'environment')
+			#input('scenario' 'response')
+			<tr>
+				<td class="label">#springMessage("enabled"):</td>
+				<td>#springFormBoolean('scenario.enabled')</td>
+			</tr>
+		</table>
+
+		<input type="submit" class="button" value="Continue">
+	</form>
+</body>
+</html>
