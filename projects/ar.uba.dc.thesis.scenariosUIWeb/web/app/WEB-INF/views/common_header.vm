@@ -1,0 +1,28 @@
+<meta http-equiv="Cache-Control" CONTENT="no-cache"/>
+<meta http-equiv="Pragma" CONTENT="no-cache"/>
+<meta http-equiv="Expires" CONTENT="0"/>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+<link rel="stylesheet" href="#springUrl('/css/style.css')" type="text/css"/>
+<link rel="stylesheet" href="#springUrl('/css/calendar.css')" type="text/css"/>
+<script type="text/javascript" src="#springUrl('/js/lib.js')"></script>
+<script type="text/javascript" src="#springUrl('/js/tabs.js')"></script>
+<script type="text/javascript" src="#springUrl('/js/calendar.js')"></script>
+<script type="text/javascript" src="#springUrl('/js/calendar-es.js')"></script>
+<script type="text/javascript" src="#springUrl('/js/calendar-setup.js')"></script>
+	<script type="text/javascript">
+	<!--
+		function userNotification() {
+			#if($userNotificationMessageKey)
+				alert("#springMessage($userNotificationMessageKey)");
+			#end
+		}
+		window.onload = userNotification;
+
+		function confirmCancel(cancelUrl) {
+			var cancel = window.confirm('#springMessage("confirm.cancel")')
+			if(cancel){
+				location.href=cancelUrl
+			}
+		}
+		-->
+	</script>

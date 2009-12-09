@@ -1,0 +1,365 @@
+#macro(authAnchor $url $text $attributes $alt)
+	#set ($authOK = "#auth($url)")
+	#if ($authOK == "true")
+		<a href=#springUrl($url) $!{attributes} >${text}</a>
+	#else
+		${alt}
+	#end
+#end
+
+#macro(formattedNumber $value)
+	#set ($formatter = $numbertool.getNumberFormat('', $numbertool.getLocale()))
+	${formatter.setMinimumFractionDigits(2)}
+	${formatter.setMaximumFractionDigits(2)}
+	#if ($value != 0)
+		${formatter.format($value)}
+	#else
+		0$formatter.format($value)
+	#end
+#end
+
+#macro(date $value)
+	#if ($value)
+		$datetool.format('dd/MM/yyyy', $value)
+	#end
+#end
+
+#macro(title $text)
+	<table height="4%" cellspacing=0 cellpadding=0 width="100%">
+	<tr>
+		<td valign="center" align="left" width="100%" class="titulo" height="100%">
+			<p>&nbsp;&nbsp;$text</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" align="left" width="100%" height="5em">
+		</td>
+	</tr>
+	</table>
+#end
+
+#**
+ * ver springFormSingleSelect en org.springframework.web.servlet.view.velocity.spring.vm
+ * en spring-webmcv.jar
+*#
+#macro(springFormEnumSelect $path $options $attributes)
+	#springBind($path)
+	<select id="${status.expression}" name="${status.expression}" $!{attributes}>
+	#foreach ($option in $options)
+		#if("$!status.value" == "$option")
+			<option value="$option.name()" selected>$option</option>
+		#else
+			<option value="$option.name()">$option</option>
+		#end
+	#end
+	</select>
+#end
+
+#macro(springFormBoolean $path $disabled $attributes)
+	#springBind($path)
+	<input type="hidden" name="_${status.expression}" value="visible" />
+	<input type="checkbox" name="${status.expression}" value="true"
+		#if(${status.value} == "true")
+			checked
+		#end
+		#if($!{disabled} == "disabled")
+			disabled="disabled"
+		#else
+			class="enabled_checkbox"
+		#end
+	$!{attributes} #springCloseTag()
+#end
+
+#macro(beginTabs $tabs)
+	<div class="tabs">
+		#foreach($tab in $tabs)
+		<span id="tab$velocityCount" class="tab tabActive">$tab</span>
+		#end
+	</div>
+#end
+
+#macro(endTabs)
+	<script type="text/javascript">
+	<!--
+		tabInit();
+	-->
+	</script>
+#end
+
+#**
+ * details
+ *
+ * Toma un array de fields. Ver composición de cada field en doc de detail.
+ *#
+#macro(details $fields)
+	<table class="form">
+	#foreach($field in $fields)
+		#if ($field.size() == 3)
+			#detail($field.get(0) $field.get(1) $field.get(2))
+		#else
+			#detail($field.get(0) $field.get(1))
+		#end
+	#end
+	</table>
+#end
+
+#**
+ * detail
+ *
+ * Recibe como parametros:
+ * 		1) El nombre del objeto del modelo a mostrar (ej: persona)
+ *		2) La propiedad a mostrar (pueden ser anidadas, ej: direccion.calle)
+ *      3) (Opcional) El key del message a mostrar como label, si no se
+ * 			especifica se usa como key la property definida en 2).
+ *#
+#macro(detail $model $property $key)
+	#set ($modelProperty =  $model + '.' + $property)
+	#set($fieldValue = '#if($' +$modelProperty+ '.getClass().getName()=="java.util.GregorianCalendar")'
+						+ '#date($' + $modelProperty + ')'
+						+ '#elseif($' + $modelProperty + '=="true")Sí#elseif($' + $modelProperty + '=="false")No'
+						+ '#{else}$!{' + $modelProperty + '}#end')
+
+	<tr>
+		#if ($key)
+			<td class="label">#springMessage($key):</td>
+		#else
+			<td class="label">#springMessage($property):</td>
+		#end
+		<td>#evaluate($fieldValue)</td>
+	</tr>
+#end
+
+#macro(cancelButton $url)
+	<input type="button" class="button" value="#springMessageText('cancelar' 'Cancelar')"
+		onclick="confirmCancel('#springUrl($url)')">
+#end
+
+#macro(backButton $url)
+	<input type="button" class="button" value="#springMessageText('volver' 'Volver')"
+		onclick="location.href='#springUrl($url)'">
+#end
+
+
+#macro(deleteUpdateAndBackButtons $model)
+	<table>
+	<tr>
+	#if($solicitudId)
+		#set ($backUrl = '/service/solicitudTable')
+		#if($estadoSolicitud == "Pendiente")
+			#solicitudButtons($model)
+		#end
+	#else
+		#set ($recordIdString = '$' + $model + '.id')
+		#set ($deleteUrl = '/service/' + $model + 'DetailDelete')
+		#set ($updateUrl = '/service/' + $model + 'AddUpdate')
+		#set ($backUrl = '/service/' + $model + 'Table')
+
+		#if("#auth($updateUrl)" == "true")
+			<td>
+				<form action="#springUrl(${updateUrl})" method="POST">
+					<input type="hidden" name="id" value="#evaluate($recordIdString)"/>
+					<input type="hidden" name="action" value="update"/>
+					<input type="submit" class="button" value="#springMessageText('modificar' 'Modificar')"/>
+				</form>
+			</td>
+		#end
+		#if("#auth($deleteUrl)" == "true")
+			<td>
+				<form action="#springUrl(${deleteUrl})" method="POST">
+					<input type="hidden" name="id" value="#evaluate($recordIdString)"/>
+					<input type="submit" class="button" value="#springMessageText('eliminar' 'Eliminar')"
+							onclick="#confirmDelete()"/>
+				</form>
+			</td>
+		#end
+	#end
+		<td>
+			<form>#backButton($backUrl)</form>
+		</td>
+	</tr>
+	</table>
+#end
+
+#macro(saveAndCancelButtons $model)
+	#set($modelId = '$' + $model + '.id')
+	#set($cancelUrl = "#springUrl('/service/')" + $model +
+		'#if(' + $modelId + ')DetailDelete?id=' + $modelId + '#{else}Table#end')
+	<script>
+	<!--
+		function setSave(form) {
+		   var input = document.createElement("INPUT");
+		   input.name = 'action';
+		   input.value = 'save';
+		   input.type = 'hidden';
+		   form.appendChild(input);
+		}
+	-->
+	</script>
+	<input type="submit" class="button" value="#springMessageText('action.save' 'Guardar')"
+			onclick="setSave(this.form);#confirmarAddUpdate()">
+	<input type="button" class="button" value="#springMessageText('cancelar' 'Cancelar')"
+			onclick="confirmCancel('#evaluate($cancelUrl)')">
+	#mostrarErrores()
+#end
+
+#macro(solicitudButtons $model)
+	#set ($adminSolicitudUrl = '/service/solicitudDetailDelete')
+
+	#if("#auth($adminSolicitudUrl)" == "true")
+		<td>
+			<form action="#springUrl($adminSolicitudUrl)" method="POST">
+				<input type="hidden" name="id" value="$solicitudId"/>
+				<input type="hidden" name="action" value="autorizar"/>
+				<input type="submit" class="button" value="#springMessageText('autorizar' 'Autorizar')"
+						onclick="#confirmarAutorizacionSolicitud()"/>
+			</form>
+		</td>
+		<td>
+			<form action="#springUrl($adminSolicitudUrl)" method="POST">
+				<input type="hidden" name="id" value="$solicitudId"/>
+				<input type="hidden" name="action" value="rechazarSolicitud"/>
+				<input type="submit" class="button" value="#springMessageText('rechazarSolicitud' 'Rechazar')"
+						onclick="#confirmarRechazoSolicitud()"/>
+			</form>
+		</td>
+	#end
+#end
+
+#macro (mostrarErrores)
+	#if($status.errors.getFieldErrorCount() > 0)
+		<p class="error">
+			#if($status.errors.getFieldErrorCount() == 1)
+				Atención: se ha detectado $status.errors.getFieldErrorCount() error
+			#else
+				Atención: se han detectado $status.errors.getFieldErrorCount() errores
+			#end
+		<p>
+	#end
+#end
+#macro(calendar $property)
+	#set ($buttonName = $property + '_trigger')
+	<img src="#springUrl('/images/calendar.gif')" id="$buttonName"
+     style="cursor: pointer; border: 1px solid red;"
+     title="Seleccionar Fecha"
+     onmouseover="this.style.background='red'"
+     onmouseout="this.style.background=''"/>
+	<script type="text/javascript">
+	    Calendar.setup({
+	        inputField : "$property",
+	        button : "$buttonName",
+	        align : "BR",
+	        ifFormat : "%d/%m/%Y"
+	    });
+	</script>
+#end
+
+#macro(confirmDelete)
+	#onClickConfirm('confirm.delete')
+#end
+
+#macro(confirmarRechazoSolicitud)
+	#onClickConfirm('confirmarRechazoSolicitud')
+#end
+
+#macro(confirmarAddUpdate)
+	#onClickConfirm('confirmarAddUpdate')
+#end
+
+#macro(confirmarAutorizacionSolicitud)
+	#onClickConfirm('confirmarAutorizacionSolicitud')
+#end
+
+#macro(onClickConfirm $messageKey)
+	return window.confirm('#springMessage($messageKey)')
+#end
+
+
+#macro(input $model $property $key)
+<tr>
+	#if ($key)
+	<td class="label">#springMessage($key):</td>
+	#else
+	<td class="label">#springMessage($property):</td>
+	#end
+	<td>#springFormInput("$model.$property" '')#springShowErrors2("<br>" "error")</td>
+</tr>
+#end
+
+#**
+ * springShowErrors2 modificado para que ponga el separator antes de cada elemento y no después.
+*#
+#macro(springShowErrors2 $separator $classOrStyle )
+    #foreach($error in $status.errorMessages)
+        ${separator}
+        #if($classOrStyle == "")
+            <b>${error}</b>
+        #else
+            #if($classOrStyle.indexOf(":") == -1)
+                #set($attr="class")
+            #else
+                #set($attr="style")
+            #end
+            <span ${attr}="${classOrStyle}">${error}</span>
+        #end
+    #end
+#end
+
+#macro(springFormEnumCheckboxes $path $enums $disabled)
+	#springBind($path)
+	<input type="hidden" name="_${status.expression}" value="on" />
+	<table>
+		#foreach ($enum in $enums)
+			<tr>
+				<td>$enum</td>
+				<td>
+					#set( $selected = "false" )
+					#foreach($selectedEnum in $status.value)
+						#if ($selectedEnum == $enum)
+							#set( $selected = "true" )
+						#end
+					#end
+					<input type="checkbox" name="${status.expression}" value="$enum.name()"
+					#if($selected == "true")
+						 checked="checked"
+					#end
+					#if($!{disabled} == "disabled")
+						disabled="disabled"
+					#else
+						class="enabled_checkbox"
+					#end
+					>
+				<td>
+			<tr>
+		#end
+	</table>
+#end
+
+#macro(habilitacionFormasOperativas $model $disabled)
+	<table class="form">
+		<tr>
+			<td><b>Habilitación General:</b>
+				#if($!{disabled} == "disabled")
+					<input type="checkbox" disabled="disabled"
+						#set ($habilitado = '#if ($' + $model + '.habilitado)
+												checked="checked"
+											#end')
+						#evaluate($habilitado)
+						>
+				#else
+					#set ($habilitadoProperty = $model + '.habilitado')
+					#springFormBoolean($habilitadoProperty)
+				#end
+				<br><br>
+			</td>
+		</tr
+		<tr>
+			<td><b>Habilitación por Forma Operativa</b><br><br></td>
+		</tr
+		<tr>
+			<td>
+				#set ($formasOperativasHabilitadas = $model + '.formasOperativasHabilitadas')
+				#springFormEnumCheckboxes($formasOperativasHabilitadas $formasOperativas $!{disabled})
+			</td>
+		</tr>
+	</table>
+#end

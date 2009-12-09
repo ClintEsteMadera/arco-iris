@@ -1,0 +1,48 @@
+<html>
+<head>
+	#parse("common_header.vm")
+</head>
+<body">
+	#title("Detalle del Agente: $!{agente.denominacion}")
+
+	#beginTabs(['Agente', 'Habilitación', 'Datos Personales', 'Domicilio', 'Contactos'])
+		<div id="content1" class="content">
+			#details([
+				[ 'agente', 'codigo' ],
+				[ 'agente', 'denominacion'],
+				[ 'agente', 'cantidadAcciones'],
+				[ 'agente', 'subcuentaFondoCVSA'],
+				[ 'agente', 'cuentaBancoValores'],
+				[ 'agente', 'cuentaLiquidacionMVBA'],
+				[ 'agente', 'cuentaGarantiaCVSA'],
+				[ 'agente', 'cuentaGarantiaFiduciaria']
+			])
+		</div>
+
+		<div id="content2" class="content">
+			#habilitacionFormasOperativas('agente' 'disabled')
+		</div>
+
+		<div id="content3" class="content">
+			#details([
+				[ 'agente', 'nombre', 'nombreRazonSocial' ],
+				[ 'agente', 'telefono'],
+				[ 'agente', 'fax'],
+				[ 'agente', 'email']
+				])
+		</div>
+
+		<div id="content4" class="content">
+			#set($domicilio = $!{agente.domicilio})
+			#parse("domicilioDetail.vm")
+		</div>
+
+		<div id="content5" class="content">
+			#set($contactos = $!{agente.contactos})
+			#parse("contactosDetail.vm")
+		</div>
+	#endTabs()
+
+	#deleteUpdateAndBackButtons('agente')
+</body>
+</html>

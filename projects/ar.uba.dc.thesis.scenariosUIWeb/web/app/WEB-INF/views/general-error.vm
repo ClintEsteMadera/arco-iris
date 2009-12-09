@@ -1,0 +1,8 @@
+<html>
+	<head>
+		#parse("common_header.vm")
+	</head>
+	<body>
+	<h3 class="error" align="center">Se ha detectado un error en la aplicación</h3>
+</body>
+</html>
