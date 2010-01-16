@@ -1,9 +1,13 @@
 package ar.uba.dc.thesis.repository;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import org.sa.rainbow.core.Rainbow;
+import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
@@ -13,64 +17,23 @@ import ar.uba.dc.thesis.component.znn.Client.GetNewsContentClientOperation;
 import ar.uba.dc.thesis.component.znn.Proxy.GetActiveServersAmountOperation;
 import ar.uba.dc.thesis.component.znn.Proxy.GetNewsContentProxyOperation;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.rainbow.Constraint;
+import ar.uba.dc.thesis.rainbow.NumericBinaryOperator;
+import ar.uba.dc.thesis.rainbow.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class SelfHealingScenarioRepository {
 
-	public static SelfHealingScenario SERVER_COST_SCENARIO = createServerCostScenario();
+	public static SelfHealingScenario SERVER_COST_SCENARIO;
 
-	public static SelfHealingScenario CLIENT_RESPONSE_TIME_SCENARIO = createClientResponseTimeScenario();
+	public static SelfHealingScenario CLIENT_RESPONSE_TIME_SCENARIO;
 
-	public static List<SelfHealingScenario> scenarios = new ArrayList<SelfHealingScenario>();
+	private static final String SCENARIO_SPEC_PATH = "customize.scenario.path";
+
+	public static List<SelfHealingScenario> scenarios;
 
 	static {
-		SERVER_COST_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getReduceOverallCostRepairStrategy());
-
-		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository
-				.getSimpleReduceResponseTimeRepairStrategy());
-
-		scenarios.add(SERVER_COST_SCENARIO);
-		scenarios.add(CLIENT_RESPONSE_TIME_SCENARIO);
-	}
-
-	private static SelfHealingScenario createServerCostScenario() {
-		String scenarioName = "Server Cost Scenario";
-		String stimulusSource = "A Server cost analizer";
-		Proxy artifact = ComponentRepository.getProxy();
-		GetActiveServersAmountOperation stimulus = (GetActiveServersAmountOperation) artifact
-				.getOperation(GetActiveServersAmountOperation.class);
-		String environment = "Normal";
-		String response = "Active servers amount";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new Constraint(artifact.getName() + ".getActiveServersAmount() < 3"));
-		// TODO tipamos la constraint para evitar parsear el string? Ejemplo:
-		// new Constraint(artifact.getName(), "getActiveServersAmount()", "<", "3"));
-		// el operador deberia ser un ExpressionNode?
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
-		int priority = 2;
-
-		return new SelfHealingScenario(1L, scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
-				environment, artifact, response, responseMeasure, archDecisions, enabled, priority);
-	}
-
-	private static SelfHealingScenario createClientResponseTimeScenario() {
-		String scenarioName = "Client Experienced Response Time Scenario";
-		String stimulusSource = "Any Client requesting news content";
-		Client artifact = ComponentRepository.getClient();
-		GetNewsContentProxyOperation stimulus = (GetNewsContentProxyOperation) artifact
-				.getOperation(GetNewsContentClientOperation.class);
-		String environment = "Normal";
-		String response = "Requested News Content";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within 4 seconds",
-				new Constraint(artifact.getName() + ".getExperienceResponseTime() < 4"));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
-		int priority = 1;
-
-		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environment,
-				artifact, response, responseMeasure, archDecisions, enabled, priority);
+		createMockScenarios();
+		// loadScenariosFromFile();
 	}
 
 	/**
@@ -88,4 +51,65 @@ public class SelfHealingScenarioRepository {
 		return enabledScenarios;
 	}
 
+	private static void createMockScenarios() {
+		SERVER_COST_SCENARIO = createServerCostScenario();
+		CLIENT_RESPONSE_TIME_SCENARIO = createClientResponseTimeScenario();
+
+		SERVER_COST_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getReduceOverallCostRepairStrategy());
+		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository
+				.getSimpleReduceResponseTimeRepairStrategy());
+
+		scenarios = new ArrayList<SelfHealingScenario>();
+		scenarios.add(SERVER_COST_SCENARIO);
+		scenarios.add(CLIENT_RESPONSE_TIME_SCENARIO);
+	}
+
+	/**
+	 * TODO: This method will be used when we finish the XML parser for scenarios.
+	 */
+	@SuppressWarnings("unused")
+	private static List<SelfHealingScenario> loadScenariosFromFile() {
+		@SuppressWarnings("unused")
+		File scenarioSpec = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
+				.property(SCENARIO_SPEC_PATH));
+		// TODO: Transformar de XML a una Lista de Escenarios.
+		return Collections.emptyList();
+	}
+
+	private static SelfHealingScenario createServerCostScenario() {
+		String scenarioName = "Server Cost Scenario";
+		String stimulusSource = "A Server cost analizer";
+		Proxy artifact = ComponentRepository.getProxy();
+		GetActiveServersAmountOperation stimulus = (GetActiveServersAmountOperation) artifact
+				.getOperation(GetActiveServersAmountOperation.class);
+		String environment = "Normal";
+		String response = "Active servers amount";
+		// TODO el operador deberia ser un ExpressionNode?
+		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
+				new NumericBinaryRelationalConstraint("activeServersAmount", NumericBinaryOperator.LESS_THAN, 3));
+		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
+		boolean enabled = true;
+		int priority = 2;
+
+		return new SelfHealingScenario(1L, scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
+				environment, artifact, response, responseMeasure, archDecisions, enabled, priority);
+	}
+
+	private static SelfHealingScenario createClientResponseTimeScenario() {
+		String scenarioName = "Client Experienced Response Time Scenario";
+		String stimulusSource = "Any Client requesting news content";
+		Client artifact = ComponentRepository.getClient();
+		GetNewsContentProxyOperation stimulus = (GetNewsContentProxyOperation) artifact
+				.getOperation(GetNewsContentClientOperation.class);
+		String environment = "Normal";
+		String response = "Requested News Content";
+		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
+				new NumericBinaryRelationalConstraint("experienceResponseTime", NumericBinaryOperator.LESS_THAN, 4));
+		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
+		boolean enabled = true;
+		int priority = 1;
+
+		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environment,
+				artifact, response, responseMeasure, archDecisions, enabled, priority);
+	}
 }
