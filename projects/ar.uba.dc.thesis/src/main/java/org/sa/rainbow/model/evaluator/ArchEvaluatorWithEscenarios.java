@@ -4,12 +4,9 @@
 package org.sa.rainbow.model.evaluator;
 
 import org.sa.rainbow.adaptation.AdaptationManager;
-import org.sa.rainbow.core.AbstractRainbowRunnable;
-import org.sa.rainbow.core.IRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
-import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
-import org.sa.rainbow.model.Model;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.Util;
 
 /**
@@ -18,72 +15,59 @@ import org.sa.rainbow.util.Util;
  * @author Jonathan Chiocchio
  * @author Gabriel Tursi
  */
-public class ArchEvaluatorWithEscenarios extends AbstractRainbowRunnable {
+public class ArchEvaluatorWithEscenarios extends ArchEvaluator {
 
-	public static final String NAME = "Rainbow Architecture Evaluator - QAW Scenarios centry";
-
-	private Model rainbowModel;
+	/** Reference to the Rainbow model */
+	private final RainbowModelWithScenarios rainbowModel;
 
 	public ArchEvaluatorWithEscenarios() {
-		super(NAME);
-
-		this.rainbowModel = Oracle.instance().rainbowModel();
-		String evaluationPeriod = Rainbow.property(Rainbow.PROPKEY_MODEL_EVAL_PERIOD);
-		if (evaluationPeriod != null) {
-			setSleepTime(Long.parseLong(evaluationPeriod));
-		} else { // default to using the long sleep value
-			setSleepTime(IRainbowRunnable.LONG_SLEEP_TIME);
-		}
+		super();
+		/*
+		 * We take advantage of *knowing* that the super class uses the same reference (this has to be done this way
+		 * since ArchEvaluator does not provide a getter to access the Rainbow Model. We also *know* that the mentioned
+		 * Rainbow model is instance of RainbowModelWithScenarios.
+		 */
+		rainbowModel = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 	}
 
 	/**
-	 * @see org.sa.rainbow.core.IDisposable#dispose()
-	 */
-	public void dispose() {
-		this.rainbowModel = null;
-	}
-
-	/**
-	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#log(java.lang.String)
-	 */
-	@Override
-	protected void log(String txt) {
-		Oracle.instance().writeEvaluatorPanel(m_logger, txt);
-	}
-
-	/**
-	 * This method asks to the Rainbow Model whether or not some scenario's stimulus was invoked in runtime. If so, it
-	 * triggers the evaluation of the corresponding scenario's response measure. In the event of finding a broken
+	 * This method asks the Rainbow Model for invocations in runtime on any scenario's stimulus. If so, it triggers the
+	 * evaluation of the corresponding response measure(s) of the scenario(s). In the event of finding a broken
 	 * scenario, the proper adaptation is triggered.
 	 * 
-	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#runAction()
+	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#runAction() <br>
+	 *      TODO: See if Rainbow's usual behavior should take precedence over our the scenario's specific behavior.
 	 */
 	@Override
 	protected void runAction() {
+		super.runAction(); // perform Rainbow's usual behavior
 		AdaptationManager adaptationManager = (AdaptationManager) Oracle.instance().adaptationManager();
-		if (rainbowModel.hasPropertyChanged()) {
-			rainbowModel.clearPropertyChanged();
-			// evaluate constraints only if adaptation not already taking place
-			if (!adaptationManager.adaptationInProgress()) {
-				Oracle.instance().writeEvaluatorPanelSL(m_logger, "Prop changed, eval constraints...");
-				// evaluate model for conformance to constraints
-				Util.dataLogger().info(IRainbowHealthProtocol.DATA_CONSTRAINT_BEGIN);
-				rainbowModel.evaluateConstraints();
-				Util.dataLogger().info(IRainbowHealthProtocol.DATA_CONSTRAINT_END);
-				if (rainbowModel.isConstraintViolated()) {
-					Oracle.instance().writeEvaluatorPanel(m_logger, "violated!");
-				} else {
-					Oracle.instance().writeEvaluatorPanel(m_logger, "pass");
-				}
+
+		if (rainbowModel.hasAnStimulusBeenInvoked() && !adaptationManager.adaptationInProgress()) {
+			this.evaluateInvolvedScenariosConstraints();
+
+			if (rainbowModel.isAnyResponseMeasureNotBeingMet()) {
+				Oracle.instance().writeEvaluatorPanel(m_logger, "violated!");
+			} else {
+				Oracle.instance().writeEvaluatorPanel(m_logger, "pass");
 			}
 		}
-
-		// trigger adaptation if any violation
-		// independent if branch allows for adaptation even if no property update occurred
-		if (rainbowModel.isConstraintViolated() && !adaptationManager.adaptationInProgress()) {
-			log("Detecting constraint violation!! Triggering adaptation.");
+		if (rainbowModel.isAnyResponseMeasureNotBeingMet() && !adaptationManager.adaptationInProgress()) {
+			log("Detecting response measure not being met!! Triggering adaptation.");
 			adaptationManager.triggerAdaptation();
 		}
 	}
 
+	/**
+	 * Makes the rainbow model to evaluate the constraints imposed by several scenario's response measures (those whose
+	 * stimulus has been invoked)
+	 */
+	private void evaluateInvolvedScenariosConstraints() {
+		Oracle.instance().writeEvaluatorPanelSL(m_logger, "Stimulus invoked, evaluating corresponding constraints...");
+		Util.dataLogger().info(IRainbowHealthProtocol.DATA_CONSTRAINT_BEGIN);
+
+		rainbowModel.evaluateResponseMeasuresConstraints();
+
+		Util.dataLogger().info(IRainbowHealthProtocol.DATA_CONSTRAINT_END);
+	}
 }

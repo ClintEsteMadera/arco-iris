@@ -32,10 +32,42 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	private Map<Stimulus, List<SelfHealingScenario>> scenariosMap;
 
+	private Stimulus lastStimulusInvoked;
+
+	private boolean thereIsSomeResponseMeasureNotBeingMet;
+
 	public RainbowModelWithScenarios() {
 		super();
 		Collection<SelfHealingScenario> enabledScenarios = this.loadScenarios();
 		this.addAcmeRulesToScenarios(enabledScenarios);
+	}
+
+	/**
+	 * TODO: Falta implementar este método!!!
+	 */
+	@Override
+	public void evaluateResponseMeasuresConstraints() {
+		if (m_acmeEnv == null)
+			return;
+
+		IAcmeTypeChecker typechecker = m_acmeEnv.getTypeChecker();
+		if (typechecker instanceof SynchronousTypeChecker) {
+			SynchronousTypeChecker synchChecker = (SynchronousTypeChecker) typechecker;
+			synchChecker.typecheckAllModelsNow();
+			m_constraintViolated = !synchChecker.typechecks(m_acmeSys);
+			if (m_constraintViolated) {
+				Set<?> errors = m_acmeEnv.getAllRegisteredErrors();
+				Oracle.instance().writeEvaluatorPanel(logger, errors.toString());
+			}
+		}
+	}
+
+	public boolean hasAnStimulusBeenInvoked() {
+		return this.lastStimulusInvoked != null;
+	}
+
+	public boolean isAnyResponseMeasureNotBeingMet() {
+		return this.thereIsSomeResponseMeasureNotBeingMet;
 	}
 
 	/**
@@ -61,7 +93,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	}
 
 	/**
-	 * This method tells each constraint present on each scenario to create an Acme Rule object. This rule object is
+	 * This method instructs each constraint present on each scenario to create an Acme Rule object. This rule object is
 	 * stored on each Constraint object.
 	 */
 	private void addAcmeRulesToScenarios(Collection<SelfHealingScenario> enabledScenarios) {
@@ -73,23 +105,6 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			// for now, the rule name is just the scenario's name
 			final String ruleName = scenario.getName();
 			constraint.createAndAddAcmeRule(ruleName, (AcmeModel) this.m_acme, acmeComponent);
-		}
-	}
-
-	@Override
-	public void evaluateConstraints() {
-		if (m_acmeEnv == null)
-			return;
-
-		IAcmeTypeChecker typechecker = m_acmeEnv.getTypeChecker();
-		if (typechecker instanceof SynchronousTypeChecker) {
-			SynchronousTypeChecker synchChecker = (SynchronousTypeChecker) typechecker;
-			synchChecker.typecheckAllModelsNow();
-			m_constraintViolated = !synchChecker.typechecks(m_acmeSys);
-			if (m_constraintViolated) {
-				Set<?> errors = m_acmeEnv.getAllRegisteredErrors();
-				Oracle.instance().writeEvaluatorPanel(logger, errors.toString());
-			}
 		}
 	}
 
