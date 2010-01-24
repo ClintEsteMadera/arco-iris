@@ -45,7 +45,6 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	/**
 	 * TODO: Falta implementar este método!!!
 	 */
-	@Override
 	public void evaluateResponseMeasuresConstraints() {
 		if (m_acmeEnv == null)
 			return;
