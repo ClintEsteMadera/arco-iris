@@ -9,36 +9,24 @@ import org.acmestudio.acme.core.globals.ExpressionOperator;
  * 
  */
 public enum NumericBinaryOperator {
-	LESS_THAN() {
-		@Override
-		public ExpressionOperator getRainbowExpressionOperator() {
-			return ExpressionOperator.LESS_THAN_OP;
-		}
-	},
-	LESS_THAN_OR_EQUALS() {
-		@Override
-		public ExpressionOperator getRainbowExpressionOperator() {
-			return ExpressionOperator.LESS_OR_EQUAL_OP;
-		}
-	},
-	GREATER_THAN() {
-		@Override
-		public ExpressionOperator getRainbowExpressionOperator() {
-			return ExpressionOperator.GREATER_THAN_OP;
-		}
-	},
-	GREATER_THAN_OR_EQUALS() {
-		@Override
-		public ExpressionOperator getRainbowExpressionOperator() {
-			return ExpressionOperator.GREATER_OR_EQUAL_OP;
-		}
-	},
-	EQUALS() {
-		@Override
-		public ExpressionOperator getRainbowExpressionOperator() {
-			return ExpressionOperator.EQUALS_OP;
-		}
-	};
 
-	public abstract ExpressionOperator getRainbowExpressionOperator();
+	LESS_THAN(ExpressionOperator.LESS_THAN_OP),
+
+	LESS_THAN_OR_EQUALS(ExpressionOperator.LESS_OR_EQUAL_OP),
+
+	GREATER_THAN(ExpressionOperator.GREATER_THAN_OP),
+
+	GREATER_THAN_OR_EQUALS(ExpressionOperator.GREATER_OR_EQUAL_OP),
+
+	EQUALS(ExpressionOperator.EQUALS_OP);
+
+	public ExpressionOperator getRainbowExpressionOperator() {
+		return rainbowExpressionOperator;
+	}
+
+	private NumericBinaryOperator(ExpressionOperator rainbowExpressionOperator) {
+		this.rainbowExpressionOperator = rainbowExpressionOperator;
+	}
+
+	private final ExpressionOperator rainbowExpressionOperator;
 }
