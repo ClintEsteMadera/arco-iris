@@ -20,23 +20,11 @@ import org.sa.rainbow.util.Util;
  */
 public class ClientProxyProbeWithStimulus extends AbstractRunnableProbe {
 
-	public static final String PROBE_TYPE = "clientproxy";
+	public static final String PROBE_TYPE = "clientproxywithstimulus";
 
-	private String[] m_tgtUrls = {};
+	private final String[] m_tgtUrls;
 
-	private String[] m_stimulusNames = {};
-
-	/**
-	 * Default Constructor, setting ID and sleep time
-	 * 
-	 * @param id
-	 *            the unique name@location identifier of the IProbe
-	 * @param sleepTime
-	 *            milliseconds to sleep per cycle
-	 */
-	public ClientProxyProbeWithStimulus(String id, long sleepTime) {
-		super(id, PROBE_TYPE, Kind.JAVA, sleepTime);
-	}
+	private final String[] m_stimulusNames;
 
 	/**
 	 * Constructor to supply with array of target URLs.
@@ -48,13 +36,18 @@ public class ClientProxyProbeWithStimulus extends AbstractRunnableProbe {
 	 * @param args
 	 *            String array of target URLs against which to check time
 	 */
-	public ClientProxyProbeWithStimulus(String id, long sleepTime, String[] targetUrls, String[] stimulusNames) {
-		this(id, sleepTime);
-		if (targetUrls.length != stimulusNames.length) {
-			throw new IllegalArgumentException("Provide an stimulus name for each url");
+	public ClientProxyProbeWithStimulus(String id, long sleepTime, String[] args) {
+		super(id, PROBE_TYPE, Kind.JAVA, sleepTime);
+		if ((args.length % 2) != 0) {
+			throw new IllegalArgumentException("Provide the stimulus name for each url");
 		}
-		m_tgtUrls = targetUrls;
-		m_stimulusNames = stimulusNames;
+		int urlsCounter = args.length / 2;
+		m_tgtUrls = new String[urlsCounter];
+		m_stimulusNames = new String[urlsCounter];
+		for (int i = 0; i < urlsCounter; i++) {
+			m_tgtUrls[i] = args[i * 2];
+			m_stimulusNames[i] = args[i * 2 + 1];
+		}
 	}
 
 	public void run() {
