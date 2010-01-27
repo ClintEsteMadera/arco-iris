@@ -54,7 +54,7 @@ import org.sa.rainbow.util.ValuePropertyMappingPair;
  * </ol>
  * TODO: This object has to be injected to the ModelManager class. Otherwise, Rainbow will use the original one.
  */
-public class GaugeCoordinatorWithEscenarios implements IDisposable, IGaugeConsumer {
+public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsumer {
 
 	private RainbowLogger m_logger = null;
 	private String m_id = null;
@@ -67,7 +67,7 @@ public class GaugeCoordinatorWithEscenarios implements IDisposable, IGaugeConsum
 	/**
 	 * Default Constructor.
 	 */
-	public GaugeCoordinatorWithEscenarios() {
+	public GaugeCoordinatorWithScenarios() {
 		m_logger = RainbowLoggerFactory.logger(getClass());
 		m_id = Util.genID(getClass());
 		m_sys = (SystemDelegate) Oracle.instance().targetSystem();
@@ -281,7 +281,6 @@ public class GaugeCoordinatorWithEscenarios implements IDisposable, IGaugeConsum
 			String removeId = null; // avoids nested synchronized block
 			synchronized (instSpec) {
 				if (m_id2Inst.containsKey(instSpec.id()) && instSpec.isAlive() && instSpec.beacon().isExpired()) {
-					// TODO: action besides reporting when gauge dies...
 					m_logger.error("GC: Gauge ID[" + instSpec.id() + "] seems to have died, removing!");
 					removeId = instSpec.id();
 				}
