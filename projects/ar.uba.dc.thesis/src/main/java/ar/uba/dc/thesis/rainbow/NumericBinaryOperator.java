@@ -5,8 +5,6 @@ import org.acmestudio.acme.core.globals.ExpressionOperator;
 /**
  * This class is intended to provide a type-safe way to specify operators.
  * 
- * @author Jonathan
- * 
  */
 public enum NumericBinaryOperator {
 

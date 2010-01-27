@@ -13,9 +13,6 @@ import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
 import ar.uba.dc.thesis.component.znn.Client;
 import ar.uba.dc.thesis.component.znn.Proxy;
-import ar.uba.dc.thesis.component.znn.Client.GetNewsContentClientOperation;
-import ar.uba.dc.thesis.component.znn.Proxy.GetActiveServersAmountOperation;
-import ar.uba.dc.thesis.component.znn.Proxy.GetNewsContentProxyOperation;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.NumericBinaryOperator;
 import ar.uba.dc.thesis.rainbow.NumericBinaryRelationalConstraint;
@@ -80,8 +77,7 @@ public class SelfHealingScenarioRepository {
 		String scenarioName = "Server Cost Scenario";
 		String stimulusSource = "A Server cost analizer";
 		Proxy artifact = ComponentRepository.getProxy();
-		GetActiveServersAmountOperation stimulus = (GetActiveServersAmountOperation) artifact
-				.getOperation(GetActiveServersAmountOperation.class);
+		String stimulus = artifact.buildFullStimulusName("GetActiveServersAmountOperation");
 		String environment = "Normal";
 		String response = "Active servers amount";
 		// TODO el operador deberia ser un ExpressionNode?
@@ -99,8 +95,7 @@ public class SelfHealingScenarioRepository {
 		String scenarioName = "Client Experienced Response Time Scenario";
 		String stimulusSource = "Any Client requesting news content";
 		Client artifact = ComponentRepository.getClient();
-		GetNewsContentProxyOperation stimulus = (GetNewsContentProxyOperation) artifact
-				.getOperation(GetNewsContentClientOperation.class);
+		String stimulus = artifact.buildFullStimulusName("GetNewsContentProxyOperation");
 		String environment = "Normal";
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",

@@ -15,8 +15,6 @@ import org.sa.rainbow.util.Util;
 /**
  * A probe that acts like an end-user client connecting to the newssite, to help determine client's experienced response
  * time, taking into account the corresponding simulated stimulus.
- * 
- * @author Gabriel Tursi
  */
 public class ClientProxyProbeWithStimulus extends AbstractRunnableProbe {
 
