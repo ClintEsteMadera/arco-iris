@@ -17,8 +17,10 @@ import org.sa.rainbow.util.Util;
 import org.sa.rainbow.util.ValuePropertyMappingPair;
 
 /**
- * Gauge for estimating end-to-end response time of a server request when being invoked by a scenario's stimulus, as
+ * Gauge for estimating end-to-end response time of a server request after being invocated by an stimulus, as
  * experienced by a proxy client.
+ * 
+ * @author Gabriel Tursi
  */
 public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 
@@ -63,14 +65,15 @@ public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 				return;
 			double dur = Double.parseDouble(m.group(4));
 			String stimulusName = m.group(5);
+			String hostAndStimulus = host + ":" + stimulusName;
 			// setup data struct for host:stimulusName if new
-			if (!m_historyMap.containsKey(host)) {
-				m_historyMap.put(host, new LinkedList<Double>());
-				m_cumulationMap.put(host, 0.0);
+			if (!m_historyMap.containsKey(hostAndStimulus)) {
+				m_historyMap.put(hostAndStimulus, new LinkedList<Double>());
+				m_cumulationMap.put(hostAndStimulus, 0.0);
 			}
 
-			Queue<Double> history = m_historyMap.get(host);
-			double cumulation = m_cumulationMap.get(host);
+			Queue<Double> history = m_historyMap.get(hostAndStimulus);
+			double cumulation = m_cumulationMap.get(hostAndStimulus);
 			// add value to cumulation and enqueue
 			cumulation += dur;
 			history.offer(dur);
@@ -79,7 +82,7 @@ public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 				// dequeue and delete oldest value and report average
 				cumulation -= history.poll();
 			}
-			m_cumulationMap.put(host, cumulation); // store updated cumulation
+			m_cumulationMap.put(hostAndStimulus, cumulation); // store updated cumulation
 			dur = cumulation / history.size();
 			if (m_logger.isDebugEnabled())
 				m_logger.debug(id() + ": " + cumulation + ", hist" + Arrays.toString(history.toArray()));
