@@ -80,7 +80,6 @@ public class SelfHealingScenarioRepository {
 		String stimulus = artifact.buildFullStimulusName("GetActiveServersAmountOperation");
 		String environment = "Normal";
 		String response = "Active servers amount";
-		// TODO el operador deberia ser un ExpressionNode?
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint("activeServersAmount", NumericBinaryOperator.LESS_THAN, 3));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();

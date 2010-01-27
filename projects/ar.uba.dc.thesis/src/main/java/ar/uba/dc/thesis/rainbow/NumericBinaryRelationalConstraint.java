@@ -58,7 +58,6 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 		final IExpressionNode rightHandOperand = new NumericLiteralNode(this.getValue(), context);
 		expression.setSecondChild(rightHandOperand);
 
-		// TODO is it always "invariant" or can it be "heuristic" too?
 		createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
 		createdRule.setDesignRuleExpression(expression);
 
