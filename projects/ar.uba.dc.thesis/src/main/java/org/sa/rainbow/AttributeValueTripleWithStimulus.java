@@ -22,4 +22,9 @@ public class AttributeValueTripleWithStimulus extends AttributeValueTriple {
 	public String getStimulus() {
 		return stimulus;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " (stimulus: " + this.getStimulus();
+	}
 }
