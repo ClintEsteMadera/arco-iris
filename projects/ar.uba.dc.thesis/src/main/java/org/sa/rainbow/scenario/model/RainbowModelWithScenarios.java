@@ -150,17 +150,16 @@ public class RainbowModelWithScenarios extends RainbowModel {
 				Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " broken!");
 				brokenScenarios.add(scenario);
 			} else {
-				Oracle.instance().writeEvaluatorPanel(logger, "pass");
+				Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " pass");
 			}
 		}
 		return brokenScenarios;
 	}
 
 	/**
-	 * TODO: Falta implementar este método!!!
+	 * TODO: implementar metodo que defina si se ha roto un escenario
 	 */
 	private boolean isBroken(SelfHealingScenario scenario) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

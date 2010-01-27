@@ -33,7 +33,6 @@ public class Server extends Component {
 	}
 
 	public Object getNewsContent() {
-		// TODO Implement this method!!!
 		System.out.println(this.getName() + ": Serving content...");
 		return null;
 	}

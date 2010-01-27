@@ -155,8 +155,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
-		// TODO Auto-generated method stub
+		// TODO implementar triggerAdaptation en base a los escenarios que se rompieron
+		// ver AdaptationManager.doAdaptation()
+		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_BEGIN);
 		throw new RuntimeException("Implement me!!!!!!!!!!!!");
+		// Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
 	}
 
 	public boolean adaptationInProgress() {
@@ -269,11 +272,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	/*
-	 * Algorithm: - Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to
-	 * current system condition NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic
-	 * is true TODO: Need to check if above is good assumption - Calculate scores of the enabled strategies = this
-	 * involves evaluating the meta-information of the tactics in each strategy - Select and execute the highest scoring
-	 * strategy
+	 * Algorithm: 1) Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to
+	 * current system condition. NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic
+	 * is true. 2) Calculate scores of the enabled strategies (this involves evaluating the meta-information of the
+	 * tactics in each strategy). 3) Select and execute the highest scoring strategy
 	 */
 	private void doAdaptation() {
 		log("Adaptation triggered, let's begin!");
