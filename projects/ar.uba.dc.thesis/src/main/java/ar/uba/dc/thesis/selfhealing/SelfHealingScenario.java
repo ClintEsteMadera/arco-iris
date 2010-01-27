@@ -8,7 +8,6 @@ import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.atam.AtamScenario;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
-import ar.uba.dc.thesis.atam.Stimulus;
 import ar.uba.dc.thesis.qa.Concern;
 
 public class SelfHealingScenario extends AtamScenario {
@@ -23,7 +22,7 @@ public class SelfHealingScenario extends AtamScenario {
 		super();
 	}
 
-	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, Stimulus stimulus,
+	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
 			String environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
 		super(id, name, concern, stimulusSource, stimulus, environment, artifact, response, responseMeasure,

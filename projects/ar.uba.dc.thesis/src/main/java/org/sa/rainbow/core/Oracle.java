@@ -4,7 +4,7 @@
 package org.sa.rainbow.core;
 
 import org.acmestudio.standalone.environment.StandaloneEnvironment;
-import org.sa.rainbow.adaptation.AdaptationManager;
+import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.adaptation.executor.Executor;
 import org.sa.rainbow.event.EventTypeFilter;
 import org.sa.rainbow.event.IEventService;
@@ -16,7 +16,7 @@ import org.sa.rainbow.gui.RainbowGUI;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.Model;
 import org.sa.rainbow.model.RainbowModel;
-import org.sa.rainbow.model.evaluator.ArchEvaluatorWithEscenarios;
+import org.sa.rainbow.model.evaluator.ArchEvaluator;
 import org.sa.rainbow.model.manager.ModelManager;
 import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
@@ -30,8 +30,6 @@ import org.sa.rainbow.util.Util;
 
 /**
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
- * 
- * @author Shang-Wen Cheng (zensoul@cs.cmu.edu)
  */
 public class Oracle implements IDisposable {
 
@@ -193,14 +191,14 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable archEvaluator() {
 		if ((m_evaluator == null || m_evaluator.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_evaluator = new ArchEvaluatorWithEscenarios();
+			m_evaluator = new ArchEvaluator();
 		}
 		return m_evaluator;
 	}
 
 	public IRainbowRunnable adaptationManager() {
 		if ((m_adaptmgr == null || m_adaptmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_adaptmgr = new AdaptationManager();
+			m_adaptmgr = new AdaptationManagerWithScenarios();
 		}
 		return m_adaptmgr;
 	}

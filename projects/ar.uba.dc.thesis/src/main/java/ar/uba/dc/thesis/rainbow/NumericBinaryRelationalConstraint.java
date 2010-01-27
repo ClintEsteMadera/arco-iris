@@ -16,8 +16,6 @@ import org.apache.commons.lang.StringUtils;
 /**
  * TODO: We can contemplate an abstraction for the operands so that we do not force an specific order (i.e. left side =
  * property, right side=literal value)
- * 
- * @author Jonathan
  */
 public class NumericBinaryRelationalConstraint implements Constraint {
 
