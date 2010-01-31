@@ -24,7 +24,6 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 	private final String property;
 	private final NumericBinaryOperator binaryOperator;
 	private final long value;
-	private AcmeDesignRule acmeDesignRule;
 
 	public NumericBinaryRelationalConstraint(String property, NumericBinaryOperator binaryOperator, long value) {
 		super();
@@ -60,12 +59,6 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 
 		createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
 		createdRule.setDesignRuleExpression(expression);
-
-		this.acmeDesignRule = createdRule;
-	}
-
-	public AcmeDesignRule getAcmeDesignRule() {
-		return acmeDesignRule;
 	}
 
 	public String getProperty() {

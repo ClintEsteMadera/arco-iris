@@ -16,8 +16,8 @@ import org.sa.rainbow.gui.RainbowGUI;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.Model;
 import org.sa.rainbow.model.RainbowModel;
-import org.sa.rainbow.model.evaluator.ArchEvaluator;
-import org.sa.rainbow.model.manager.ModelManager;
+import org.sa.rainbow.model.evaluator.ArchEvaluatorWithScenarios;
+import org.sa.rainbow.model.manager.ModelManagerWithScenarios;
 import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
@@ -184,14 +184,14 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable modelManager() {
 		if ((m_modelmgr == null || m_modelmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_modelmgr = new ModelManager();
+			m_modelmgr = new ModelManagerWithScenarios();
 		}
 		return m_modelmgr;
 	}
 
 	public IRainbowRunnable archEvaluator() {
 		if ((m_evaluator == null || m_evaluator.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_evaluator = new ArchEvaluator();
+			m_evaluator = new ArchEvaluatorWithScenarios();
 		}
 		return m_evaluator;
 	}

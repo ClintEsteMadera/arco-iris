@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/ar.uba.dc.thesis/src/org/sa/rainbow/core/Oracle.java"/>
+<listEntry value="/ar.uba.dc.thesis/src/main/java/org/sa/rainbow/core/Oracle.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -18,5 +18,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.sa.rainbow.core.Oracle"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ar.uba.dc.thesis"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Drainbow.config=org.sa.rainbow.config -Drainbow.target=znews0"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Drainbow.config=configs -Drainbow.target=znews0"/>
 </launchConfiguration>
