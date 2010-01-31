@@ -38,12 +38,16 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	private final Queue<Pair<String, Object>> propertiesToUpdateQueue;
 
+	private RainbowLogger m_logger = null;
+
 	public RainbowModelWithScenarios() {
 		super();
+		m_logger = RainbowLoggerFactory.logger(getClass());
 		Collection<SelfHealingScenario> enabledScenarios = this.loadScenarios();
 		this.addAcmeRulesToScenarios(enabledScenarios);
 		this.isPropertyUpdateAllowed = true;
 		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();
+		Oracle.instance().writeManagerPanel(m_logger, "Rainbow Model With Scenario replaces Rainbow Model!");
 	}
 
 	/**

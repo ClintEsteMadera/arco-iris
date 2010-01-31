@@ -54,7 +54,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	 * Default Constructor.
 	 */
 	public ModelManagerWithScenarios() {
-		super(NAME);
+		super(NAME + " With Scenarios");
 
 		m_model = Oracle.instance().rainbowModel();
 		String per = Rainbow.property(Rainbow.PROPKEY_MODEL_EVAL_PERIOD);
