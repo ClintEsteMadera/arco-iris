@@ -1,18 +1,19 @@
 package ar.uba.dc.thesis.component.znn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.uba.dc.thesis.acme.Component;
 
 public class Proxy extends Component {
 
-	private List<Server> servers;
+	private final List<Server> servers = new ArrayList<Server>();
 
 	private int currentServer;
 
 	@SuppressWarnings("unchecked")
-	public Proxy(String systemName, int activeServers) {
-		super(systemName, Proxy.class.getSimpleName());
+	public Proxy(String systemName, String proxyName, int activeServers) {
+		super(systemName, proxyName);
 		if (activeServers < 1) {
 			throw new IllegalArgumentException("At least one server is mandatory");
 		}
