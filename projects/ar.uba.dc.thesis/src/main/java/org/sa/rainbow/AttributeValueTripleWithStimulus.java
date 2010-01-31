@@ -25,6 +25,6 @@ public class AttributeValueTripleWithStimulus extends AttributeValueTriple {
 
 	@Override
 	public String toString() {
-		return super.toString() + " (stimulus: " + this.getStimulus();
+		return super.toString() + " (stimulus: " + this.getStimulus() + ")";
 	}
 }
