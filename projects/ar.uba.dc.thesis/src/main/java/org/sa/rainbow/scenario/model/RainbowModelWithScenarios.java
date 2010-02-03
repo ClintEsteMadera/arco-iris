@@ -7,11 +7,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
+import org.acmestudio.acme.environment.error.AcmeError;
 import org.acmestudio.acme.model.command.IAcmeCommand;
+import org.acmestudio.acme.type.verification.SimpleModelTypeChecker;
+import org.acmestudio.acme.type.verification.TypeCheckingState;
 import org.acmestudio.basicmodel.element.AcmeComponent;
+import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
@@ -38,16 +43,13 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	private final Queue<Pair<String, Object>> propertiesToUpdateQueue;
 
-	private RainbowLogger m_logger = null;
-
 	public RainbowModelWithScenarios() {
 		super();
-		m_logger = RainbowLoggerFactory.logger(getClass());
 		Collection<SelfHealingScenario> enabledScenarios = this.loadScenarios();
 		this.addAcmeRulesToScenarios(enabledScenarios);
 		this.isPropertyUpdateAllowed = true;
 		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();
-		Oracle.instance().writeManagerPanel(m_logger, "Rainbow Model With Scenario replaces Rainbow Model!");
+		Oracle.instance().writeManagerPanel(logger, "Rainbow Model With Scenarios started");
 	}
 
 	/**
@@ -149,9 +151,10 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.scenariosMap.get(stimulus);
 
+		Stack<AcmeError> collectedErrors = new Stack<AcmeError>();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
-			if (this.isBroken(scenario)) {
-				Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " broken!");
+			if (this.isBroken(scenario, collectedErrors)) {
+				this.logErrors(collectedErrors, scenario);
 				brokenScenarios.add(scenario);
 			} else {
 				Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " pass");
@@ -160,11 +163,23 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		return brokenScenarios;
 	}
 
-	/**
-	 * TODO: implementar metodo que defina si se ha roto un escenario
-	 */
-	private boolean isBroken(SelfHealingScenario scenario) {
-		return false;
+	private boolean isBroken(SelfHealingScenario scenario, Stack<AcmeError> collectedErrors) {
+		AcmeDesignRule context = scenario.getResponseMeasure().getConstraint().getAcmeDesignRule();
+
+		SimpleModelTypeChecker typeChecker = new SimpleModelTypeChecker();
+		typeChecker.registerModel(this.getAcmeModel());
+
+		TypeCheckingState typeCheckingState = typeChecker.typecheckDesignRuleExpression(context, context
+				.getDesignRuleExpression(), collectedErrors);
+
+		return typeCheckingState.typechecks();
+	}
+
+	private void logErrors(Stack<AcmeError> collectedErrors, SelfHealingScenario scenario) {
+		Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " broken!");
+		while (!collectedErrors.isEmpty()) {
+			Oracle.instance().writeEvaluatorPanel(logger, collectedErrors.pop().toString());
+		}
 	}
 
 	/**
