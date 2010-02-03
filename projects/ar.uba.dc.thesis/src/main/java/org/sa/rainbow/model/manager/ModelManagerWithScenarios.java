@@ -39,16 +39,16 @@ import org.sa.rainbow.util.Util;
  */
 public class ModelManagerWithScenarios extends AbstractRainbowRunnable implements IModelManager {
 
-	private SimulationRunner m_sim = null;
-	private SystemDelegate m_sys = null;
-	private Model m_model = null;
-	private GaugeCoordinator m_gaugeCoord = null;
-	private IRainbowEventListener m_healthListener = null;
+	private SimulationRunner m_sim;
+	private SystemDelegate m_sys;
+	private Model m_model;
+	private GaugeCoordinatorWithScenarios m_gaugeCoord;
+	private IRainbowEventListener m_healthListener;
 
 	/** Beacon used as interval for computing accrued system utility */
-	private Beacon m_beacon = null;
+	private Beacon m_beacon;
 	/** Array of system utilities, with the 0th element being the accurred */
-	private List<Double> m_accruedList = null;
+	private List<Double> m_accruedList;
 
 	/**
 	 * Default Constructor.
@@ -70,7 +70,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 		} else {
 			// now get the delegate of target system
 			m_sys = (SystemDelegate) Oracle.instance().targetSystem();
-			m_gaugeCoord = new GaugeCoordinator();
+			m_gaugeCoord = new GaugeCoordinatorWithScenarios();
 			m_healthListener = healthListener(Util.genID(getClass()));
 			Rainbow.eventService().listen(IEventService.TOPIC_RAINBOW_HEALTH, m_healthListener);
 		}
