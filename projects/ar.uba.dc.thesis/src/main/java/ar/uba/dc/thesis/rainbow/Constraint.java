@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.rainbow;
 
 import org.acmestudio.basicmodel.element.AcmeComponent;
+import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 
 public interface Constraint {
@@ -21,4 +22,12 @@ public interface Constraint {
 	 * Validates the instance and throws an Exception (typically {@link IllegalArgumentException} if something is wrong.
 	 */
 	void validate();
+
+	/**
+	 * Provides the Acme design rule. This object is usually used for evaluating constraints in some particular
+	 * architectural model
+	 * 
+	 * @return the Acme design rule
+	 */
+	AcmeDesignRule getAcmeDesignRule();
 }
