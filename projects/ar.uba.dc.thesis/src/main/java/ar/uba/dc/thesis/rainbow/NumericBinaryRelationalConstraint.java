@@ -19,11 +19,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public class NumericBinaryRelationalConstraint implements Constraint {
 
-	// private static RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
-
 	private final String property;
+
 	private final NumericBinaryOperator binaryOperator;
+
 	private final long value;
+
+	private AcmeDesignRule acmeDesignRule;
 
 	public NumericBinaryRelationalConstraint(String property, NumericBinaryOperator binaryOperator, long value) {
 		super();
@@ -35,23 +37,21 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 	}
 
 	public void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final AcmeComponent acmeComponent) {
-		AcmeDesignRule createdRule = null;
-		// ESTO AGREGA LA RULE AL MODELO!!! (borrar este comentario cuando te convenzas de que esto no va...)
+		// The following adds the rule to the component, among several other things...
 		/*
 		 * try { createdRule = acmeComponent.createDesignRule(ruleName); } catch (final AcmeIllegalNameException e) {
 		 * logger.error("Error creating rule from Scenario", e); throw new RuntimeException(e); }
 		 */
 		IAcmeResource context = acmeComponent.getContext();
-		createdRule = new AcmeDesignRule(context, acmeModel, ruleName);
+		AcmeDesignRule createdRule = new AcmeDesignRule(context, acmeModel, ruleName);
 		final NumericBinaryRelationalExpressionNode expression = new NumericBinaryRelationalExpressionNode(context);
 		// an integer is an special case of a float, therefore, we can use always FLOAT
 		expression.setExpressionType(NumericBinaryRelationalExpressionNode.FLOAT_TYPE);
 
-		// TODO: the "context" param used to be NULL, is this doesn't work, change it back to NULL
+		// TODO: the "context" param used to be NULL, if this doesn't work, change it back to NULL
 		final ReferenceNode leftHandOperand = new ReferenceNode(context);
 		leftHandOperand.setReference(Arrays.asList("self", this.getProperty()));
 		expression.setFirstChild(leftHandOperand);
-
 		expression.setOperator(this.getBinaryOperator().getRainbowExpressionOperator());
 
 		final IExpressionNode rightHandOperand = new NumericLiteralNode(this.getValue(), context);
@@ -59,6 +59,12 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 
 		createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
 		createdRule.setDesignRuleExpression(expression);
+
+		this.acmeDesignRule = createdRule;
+	}
+
+	public AcmeDesignRule getAcmeDesignRule() {
+		return acmeDesignRule;
 	}
 
 	public String getProperty() {
