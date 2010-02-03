@@ -33,7 +33,7 @@ import org.sa.rainbow.util.Util;
  */
 public class Oracle implements IDisposable {
 
-	public static final String NAME = "The Rainbow Oracle";
+	public static final String NAME = "The Rainbow Oracle With Scenarios";
 	public static final String JAR_NAME = "app.rainbow.oracle.jar";
 
 	public static void main(String[] args) {
