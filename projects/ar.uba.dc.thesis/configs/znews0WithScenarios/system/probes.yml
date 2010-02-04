@@ -11,6 +11,6 @@ probes:
     javaInfo:
       class: ar.uba.dc.thesis.znn.probes.ClientProxyProbeWithStimulus
       period: 2000
-      args.length: 1
+      args.length: 2
       args.0: "http://delegate.oracle/"
-      args.1: "GetNewsContentClientOperation"
+      args.1: "GetNewsContentClientStimulus"

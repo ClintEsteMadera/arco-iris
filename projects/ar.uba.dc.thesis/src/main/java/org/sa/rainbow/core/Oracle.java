@@ -14,8 +14,6 @@ import org.sa.rainbow.event.IRainbowMessage;
 import org.sa.rainbow.event.RainbowEventAdapter;
 import org.sa.rainbow.gui.RainbowGUI;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
-import org.sa.rainbow.model.Model;
-import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.model.evaluator.ArchEvaluatorWithScenarios;
 import org.sa.rainbow.model.manager.ModelManagerWithScenarios;
 import org.sa.rainbow.monitor.SystemDelegate;
@@ -98,7 +96,7 @@ public class Oracle implements IDisposable {
 	/** Intentional package-level visibility for testing access. */
 	RainbowLogger m_logger = null;
 	private RainbowGUI m_gui = null;
-	private RainbowModel m_model = null;
+	private RainbowModelWithScenarios m_model = null;
 	private TargetSystem m_system = null;
 
 	private IRainbowRunnable m_modelmgr = null;
@@ -162,7 +160,7 @@ public class Oracle implements IDisposable {
 		return m_instance == null;
 	}
 
-	public Model rainbowModel() {
+	public RainbowModelWithScenarios rainbowModel() {
 		if (m_model == null) {
 			m_model = new RainbowModelWithScenarios();
 			// initialize the model as a repository to the language module

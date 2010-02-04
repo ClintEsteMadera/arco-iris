@@ -32,6 +32,7 @@ import org.sa.rainbow.model.Model;
 import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.Util;
 
 /**
@@ -41,7 +42,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	private SimulationRunner m_sim;
 	private SystemDelegate m_sys;
-	private Model m_model;
+	private RainbowModelWithScenarios m_model;
 	private GaugeCoordinatorWithScenarios m_gaugeCoord;
 	private IRainbowEventListener m_healthListener;
 
@@ -149,7 +150,13 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			// fetch info from monitoring infra, update model with fresh properties
 			if (!m_sim.isTerminated()) {
 				for (Entry<String, Object> e : m_sim.getChangedProperties().entrySet()) {
-					m_model.updateProperty(e.getKey(), e.getValue());
+					// FIXME hardcodeamos el estimulo en la simulacion!
+					if (e.getKey() != null && e.getKey().matches("ZNewsSys\\.c[0-9]\\.experRespTime")) {
+						m_model.updateProperty(e.getKey(), e.getValue(), "GetNewsContentClientStimulus");
+					} else {
+						m_model.updateProperty(e.getKey(), e.getValue());
+					}
+
 				}
 			}
 		} else {
@@ -197,7 +204,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 		Set<IAcmeElementInstance<?, ?>> services = new HashSet<IAcmeElementInstance<?, ?>>();
 		// Find available services matching criteria thru env't model.
 		filters.put(Model.PROPKEY_ARCH_ENABLED, String.valueOf(false));
-		IAcmeModel acmeModel = (IAcmeModel) m_model.getAcmeModel();
+		IAcmeModel acmeModel = m_model.getAcmeModel();
 		// 1. iterate through AcmeSystems
 		Set<? extends IAcmeSystem> systems = acmeModel.getSystems();
 		for (IAcmeSystem sys : systems) {

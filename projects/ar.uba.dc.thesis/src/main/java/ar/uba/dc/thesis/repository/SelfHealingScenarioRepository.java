@@ -77,7 +77,7 @@ public class SelfHealingScenarioRepository {
 		String scenarioName = "Server Cost Scenario";
 		String stimulusSource = "A Server cost analizer";
 		Proxy artifact = ComponentRepository.getProxy();
-		String stimulus = artifact.buildFullStimulusName("GetActiveServersAmountOperation");
+		String stimulus = "GetActiveServersAmountOperation";
 		String environment = "Normal";
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
@@ -94,11 +94,11 @@ public class SelfHealingScenarioRepository {
 		String scenarioName = "Client Experienced Response Time Scenario";
 		String stimulusSource = "Any Client requesting news content";
 		Client artifact = ComponentRepository.getClient();
-		String stimulus = artifact.buildFullStimulusName("GetNewsContentProxyOperation");
+		String stimulus = "GetNewsContentClientStimulus";
 		String environment = "Normal";
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint("experienceResponseTime", NumericBinaryOperator.LESS_THAN, 4));
+				new NumericBinaryRelationalConstraint("experRespTime", NumericBinaryOperator.LESS_THAN, 10000));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;
