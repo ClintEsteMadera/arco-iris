@@ -23,7 +23,4 @@ public class Component implements Artifact {
 		return systemName;
 	}
 
-	public String buildFullStimulusName(String stimulusName) {
-		return this.getSystemName() + "|" + this.getName() + "|" + stimulusName;
-	}
 }

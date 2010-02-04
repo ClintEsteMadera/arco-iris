@@ -172,7 +172,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		TypeCheckingState typeCheckingState = typeChecker.typecheckDesignRuleExpression(context, context
 				.getDesignRuleExpression(), collectedErrors);
 
-		return typeCheckingState.typechecks();
+		return !typeCheckingState.typechecks();
 	}
 
 	private void logErrors(Stack<AcmeError> collectedErrors, SelfHealingScenario scenario) {
@@ -198,6 +198,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 				scenarioList = this.scenariosMap.get(stimulus);
 			} else {
 				scenarioList = new ArrayList<SelfHealingScenario>();
+				this.scenariosMap.put(stimulus, scenarioList);
 			}
 			scenarioList.add(currentScenario);
 		}
