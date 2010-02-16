@@ -151,8 +151,12 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			if (!m_sim.isTerminated()) {
 				for (Entry<String, Object> e : m_sim.getChangedProperties().entrySet()) {
 					// FIXME hardcodeamos el estimulo en la simulacion!
-					if (e.getKey() != null && e.getKey().matches("ZNewsSys\\.c[0-9]\\.experRespTime")) {
-						m_model.updateProperty(e.getKey(), e.getValue(), "GetNewsContentClientStimulus");
+					// if (e.getKey() != null && e.getKey().matches("ZNewsSys\\.c[0-9]\\.experRespTime")) {
+					List<String> stimulusForProperty = m_model.getStimulusPerProperty(e.getKey());
+					if (!stimulusForProperty.isEmpty()) {
+						for (String stimulus : stimulusForProperty) {
+							m_model.updateProperty(e.getKey(), e.getValue(), stimulus);
+						}
 					} else {
 						m_model.updateProperty(e.getKey(), e.getValue());
 					}

@@ -2,20 +2,25 @@ package org.sa.rainbow.scenario.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
+import org.acmestudio.acme.element.IAcmeComponent;
+import org.acmestudio.acme.element.IAcmeSystem;
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
 import org.acmestudio.acme.environment.error.AcmeError;
 import org.acmestudio.acme.model.command.IAcmeCommand;
 import org.acmestudio.acme.type.verification.SimpleModelTypeChecker;
 import org.acmestudio.acme.type.verification.TypeCheckingState;
-import org.acmestudio.basicmodel.element.AcmeComponent;
+import org.acmestudio.basicmodel.element.AcmeComponentType;
 import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
@@ -38,6 +43,11 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	/** Holds a list of Scenarios keyed by their corresponding stimulus name */
 	private Map<String, List<SelfHealingScenario>> scenariosMap;
+
+	/**
+	 * Holds a list of Stimulus keyed by the property involved in the Response Measure Used for simulation only
+	 */
+	private Map<String, List<String>> stimulusPerProperty;
 
 	private boolean isPropertyUpdateAllowed;
 
@@ -126,6 +136,15 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		this.isPropertyUpdateAllowed = isPropertyUpdateAllowed;
 	}
 
+	public List<String> getStimulusPerProperty(String property) {
+		if (property.contains(".")) {
+			// takes the name of the property only
+			property = property.replaceFirst(".*\\.", "");
+		}
+		List<String> stimulusPerProperty = this.stimulusPerProperty.get(property);
+		return stimulusPerProperty == null ? Collections.EMPTY_LIST : stimulusPerProperty;
+	}
+
 	/**
 	 * Same behavior as superclass, we copied and pasted this method since it is private.<br>
 	 * {@inheritDoc}
@@ -190,9 +209,14 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		Collection<SelfHealingScenario> scenarios = SelfHealingScenarioRepository.getEnabledScenarios();
 
 		this.scenariosMap = new HashMap<String, List<SelfHealingScenario>>();
+		this.stimulusPerProperty = new HashMap<String, List<String>>();
+
 		for (SelfHealingScenario currentScenario : scenarios) {
 			String stimulus = currentScenario.getStimulus();
 			List<SelfHealingScenario> scenarioList;
+			List<String> stimulusPerScenarioList;
+
+			loadStimulusPerProperty(currentScenario, stimulus);
 
 			if (this.scenariosMap.containsKey(stimulus)) {
 				scenarioList = this.scenariosMap.get(stimulus);
@@ -205,6 +229,18 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		return scenarios;
 	}
 
+	private void loadStimulusPerProperty(SelfHealingScenario currentScenario, String stimulus) {
+		List<String> stimulusPerScenarioList;
+		String responseMeasureProperty = currentScenario.getResponseMeasure().getConstraint().getProperty();
+		if (this.stimulusPerProperty.containsKey(responseMeasureProperty)) {
+			stimulusPerScenarioList = this.stimulusPerProperty.get(responseMeasureProperty);
+		} else {
+			stimulusPerScenarioList = new ArrayList<String>();
+			stimulusPerProperty.put(responseMeasureProperty, stimulusPerScenarioList);
+		}
+		stimulusPerScenarioList.add(stimulus);
+	}
+
 	/**
 	 * This method instructs each constraint present on each scenario to create an Acme Rule object. This rule object is
 	 * stored on each Constraint object.
@@ -214,22 +250,31 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			Constraint constraint = scenario.getResponseMeasure().getConstraint();
 			Artifact artifact = scenario.getArtifact();
 
-			final AcmeComponent acmeComponent = this.getAcmeComponent(artifact);
+			final Set<IAcmeComponent> acmeComponents = this.getAcmeComponents(artifact);
 			// for now, the rule name is just the scenario's name
 			final String ruleName = scenario.getName();
-			constraint.createAndAddAcmeRule(ruleName, (AcmeModel) this.m_acme, acmeComponent);
+			for (IAcmeComponent anAcmeComponent : acmeComponents) {
+				constraint.createAndAddAcmeRule(ruleName, (AcmeModel) this.m_acme, anAcmeComponent);
+			}
 		}
 	}
 
-	private AcmeComponent getAcmeComponent(Artifact artifact) {
-		final AcmeComponent component = (AcmeComponent) this.m_acme.getSystem(artifact.getSystemName()).getComponent(
-				artifact.getName());
-		if (component == null) {
-			throw new RuntimeException("Could not find component " + artifact.getName() + " in the ACME model");
+	private Set<IAcmeComponent> getAcmeComponents(Artifact artifact) {
+		Set<IAcmeComponent> result = new HashSet<IAcmeComponent>();
+		String artifactName = artifact.getName();
+		for (IAcmeSystem aSystem : m_acme.getSystems()) {
+			for (IAcmeComponent aComponent : aSystem.getComponents()) {
+				String componentType = ((AcmeComponentType) aComponent.getInstantiatedTypes().iterator().next()
+						.getTarget()).getName();
+				if (artifactName.equals(componentType)) {
+					result.add(aComponent);
+				}
+			}
 		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("Found component: " + artifact.getName());
+		if (result.isEmpty()) {
+			throw new RuntimeException("Could not find component of type " + artifactName + " in the ACME model");
 		}
-		return component;
+		return result;
 	}
+
 }

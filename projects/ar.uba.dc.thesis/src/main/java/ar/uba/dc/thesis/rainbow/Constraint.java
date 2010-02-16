@@ -1,6 +1,6 @@
 package ar.uba.dc.thesis.rainbow;
 
-import org.acmestudio.basicmodel.element.AcmeComponent;
+import org.acmestudio.acme.element.IAcmeComponent;
 import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 
@@ -16,7 +16,7 @@ public interface Constraint {
 	 * @param acmeComponent
 	 *            the main component involved on this rule.
 	 */
-	void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final AcmeComponent acmeComponent);
+	void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final IAcmeComponent acmeComponent);
 
 	/**
 	 * Validates the instance and throws an Exception (typically {@link IllegalArgumentException} if something is wrong.
@@ -30,4 +30,7 @@ public interface Constraint {
 	 * @return the Acme design rule
 	 */
 	AcmeDesignRule getAcmeDesignRule();
+
+	String getProperty();
+
 }
