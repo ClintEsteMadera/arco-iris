@@ -3,12 +3,12 @@ package ar.uba.dc.thesis.rainbow;
 import java.util.Arrays;
 
 import org.acmestudio.acme.core.resource.IAcmeResource;
+import org.acmestudio.acme.element.IAcmeComponent;
 import org.acmestudio.acme.element.IAcmeDesignRule.DesignRuleType;
 import org.acmestudio.acme.rule.node.IExpressionNode;
 import org.acmestudio.acme.rule.node.NumericBinaryRelationalExpressionNode;
 import org.acmestudio.acme.rule.node.NumericLiteralNode;
 import org.acmestudio.acme.rule.node.ReferenceNode;
-import org.acmestudio.basicmodel.element.AcmeComponent;
 import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 import org.apache.commons.lang.StringUtils;
@@ -36,7 +36,7 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 		this.validate();
 	}
 
-	public void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final AcmeComponent acmeComponent) {
+	public void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final IAcmeComponent acmeComponent) {
 		// The following adds the rule to the component, among several other things...
 		/*
 		 * try { createdRule = acmeComponent.createDesignRule(ruleName); } catch (final AcmeIllegalNameException e) {

@@ -20,7 +20,7 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class SelfHealingScenarioRepository {
 
-	public static SelfHealingScenario SERVER_COST_SCENARIO;
+	// public static SelfHealingScenario SERVER_COST_SCENARIO;
 
 	public static SelfHealingScenario CLIENT_RESPONSE_TIME_SCENARIO;
 
@@ -49,15 +49,15 @@ public class SelfHealingScenarioRepository {
 	}
 
 	private static void createMockScenarios() {
-		SERVER_COST_SCENARIO = createServerCostScenario();
+		// SERVER_COST_SCENARIO = createServerCostScenario();
 		CLIENT_RESPONSE_TIME_SCENARIO = createClientResponseTimeScenario();
 
-		SERVER_COST_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getReduceOverallCostRepairStrategy());
+		// SERVER_COST_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository.getReduceOverallCostRepairStrategy());
 		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategySpec(RepairStrategySpecRepository
 				.getSimpleReduceResponseTimeRepairStrategy());
 
 		scenarios = new ArrayList<SelfHealingScenario>();
-		scenarios.add(SERVER_COST_SCENARIO);
+		// scenarios.add(SERVER_COST_SCENARIO);
 		scenarios.add(CLIENT_RESPONSE_TIME_SCENARIO);
 	}
 
