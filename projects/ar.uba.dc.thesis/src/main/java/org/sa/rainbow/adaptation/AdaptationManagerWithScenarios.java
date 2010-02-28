@@ -423,6 +423,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					conds[i] = ((Double) condVal).doubleValue();
 					items[i] += conds[i];
 				}
+				// TODO agregar peso segun prioridad
 				// now compute the utility, apply weight, and accumulate to sum
 				score += weights.get(k) * u.f(items[i]);
 

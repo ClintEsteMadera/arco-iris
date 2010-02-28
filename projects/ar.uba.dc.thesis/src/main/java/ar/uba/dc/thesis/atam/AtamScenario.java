@@ -16,7 +16,7 @@ public class AtamScenario {
 
 	private String stimulus;
 
-	private String environment;
+	private Environment environment;
 
 	private Artifact artifact;
 
@@ -27,7 +27,7 @@ public class AtamScenario {
 	private Collection<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			String environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
+			Environment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
 		this.id = id;
@@ -78,7 +78,7 @@ public class AtamScenario {
 		return this.architecturalDecisions;
 	}
 
-	public String getEnvironment() {
+	public Environment getEnvironment() {
 		return this.environment;
 	}
 
@@ -93,7 +93,7 @@ public class AtamScenario {
 		sb.append("Scenario: ").append(this.name).append("\n");
 		this.append(sb, "stimulus source", this.stimulusSource);
 		this.append(sb, "stimulus", this.stimulus);
-		this.append(sb, "environment", this.environment);
+		this.append(sb, "environment", this.environment.getName());
 		this.append(sb, "response", this.response);
 		this.append(sb, "response measure", this.responseMeasure.getDescription());
 	}
