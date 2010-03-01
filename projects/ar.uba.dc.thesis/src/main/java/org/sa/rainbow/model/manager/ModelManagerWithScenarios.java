@@ -150,8 +150,6 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			// fetch info from monitoring infra, update model with fresh properties
 			if (!m_sim.isTerminated()) {
 				for (Entry<String, Object> e : m_sim.getChangedProperties().entrySet()) {
-					// FIXME hardcodeamos el estimulo en la simulacion!
-					// if (e.getKey() != null && e.getKey().matches("ZNewsSys\\.c[0-9]\\.experRespTime")) {
 					List<String> stimulusForProperty = m_model.getStimulusPerProperty(e.getKey());
 					if (!stimulusForProperty.isEmpty()) {
 						for (String stimulus : stimulusForProperty) {
@@ -160,7 +158,6 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 					} else {
 						m_model.updateProperty(e.getKey(), e.getValue());
 					}
-
 				}
 			}
 		} else {
