@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -29,6 +31,7 @@ import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.StopWatch;
 import org.sa.rainbow.util.Util;
 
+import ar.uba.dc.thesis.selfhealing.RepairStrategySpecification;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -154,14 +157,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		m_adaptNeeded = true;
 	}
 
-	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
-		// TODO implementar triggerAdaptation en base a los escenarios que se rompieron
-		// ver AdaptationManager.doAdaptation()
-		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_BEGIN);
-		throw new RuntimeException("Implement me!!!!!!!!!!!!");
-		// Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
-	}
-
 	public boolean adaptationInProgress() {
 		return m_adaptNeeded;
 	}
@@ -271,29 +266,44 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		defineAttributes(stitch, attrVectorMap);
 	}
 
+	private void doAdaptation() {
+		// nothing to do, avoid doing Rainbow adaptatio
+	}
+
 	/*
 	 * Algorithm: 1) Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to
 	 * current system condition. NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic
 	 * is true. 2) Calculate scores of the enabled strategies (this involves evaluating the meta-information of the
 	 * tactics in each strategy). 3) Select and execute the highest scoring strategy
 	 */
-	private void doAdaptation() {
+	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
+
 		log("Adaptation triggered, let's begin!");
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
-		int availCnt = 0;
+		Set<String> scenariosStrategies = new HashSet<String>();
+		// recolect scenarios strategies
+		for (SelfHealingScenario scenario : brokenScenarios) {
+			for (RepairStrategySpecification repairStrategySpec : scenario.getRepairStrategySpecs()) {
+				scenariosStrategies.add(repairStrategySpec.getRepairStrategyName());
+			}
+		}
+
+		int availCnt = scenariosStrategies.size();
 		Map<String, Strategy> appSubsetByName = new HashMap<String, Strategy>();
+
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel((IAcmeModel) m_model.getAcmeModel())) {
 				if (m_logger.isDebugEnabled())
 					m_logger.debug("x. skipping " + stitch.script.getName());
 				continue; // skip checking this script
 			}
+
 			for (Strategy strategy : stitch.script.strategies) {
-				++availCnt;
-				// check first for prior failures
-				if (getFailureRate(strategy) > FAILURE_RATE_THRESHOLD) {
+				// check first for applicabilty and failures threshold
+				if (!scenariosStrategies.contains(strategy.getName())
+						|| getFailureRate(strategy) > FAILURE_RATE_THRESHOLD) {
 					continue; // don't consider this Strategy
 				}
 				// get estimated time cost for predicted property
@@ -311,11 +321,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		}
 		if (appSubsetByName.size() == 0) { // can't do adaptation
 			log("No applicable Strategies to do adaptation!");
-			m_adaptNeeded = false;
-			m_model.clearConstraintViolated();
+			// m_adaptNeeded = false;
+			// m_model.clearConstraintViolated();
 			return;
 		}
 
+		// TODO ver que es esto de las multi-strategies???
 		// check for leap-version strategy to see whether to "chain" util computation
 		for (String name : appSubsetByName.keySet().toArray(new String[0])) {
 			Strategy strategy = appSubsetByName.get(name);
@@ -380,6 +391,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 *            the subset of condition-applicable Strategies to score, in the form of a name-strategy map
 	 * @return a map of score-strategy pairs, sorted in increasing order by score.
 	 */
+	// TODO calcular score de las estrategias teniendo en cuenta el Environment en que se encuentra el sistema (o el env
+	// del escenario?)
 	private SortedMap<Double, Strategy> scoreStrategies(Map<String, Strategy> subset) {
 		SortedMap<Double, Strategy> scored = new TreeMap<Double, Strategy>();
 		boolean predictionEnabled = Rainbow.predictionEnabled() && Rainbow.utilityPredictionDuration() > 0;
