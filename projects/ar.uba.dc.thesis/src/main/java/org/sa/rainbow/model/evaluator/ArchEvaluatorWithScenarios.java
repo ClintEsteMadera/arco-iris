@@ -1,5 +1,6 @@
 package org.sa.rainbow.model.evaluator;
 
+import org.sa.rainbow.adaptation.AdaptationManager;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.IRainbowRunnable;
@@ -10,10 +11,10 @@ import org.sa.rainbow.model.Model;
 import org.sa.rainbow.util.Util;
 
 /**
- * ArchEvaluatorWithScenarios replaces ArchEvaluator because the last one references directly to AdaptationManager, but
- * its necessary to use AdaptationManagerWithScenarios. This could be avoided by defining an interface
- * (IAdaptationManager) with the following methods: adaptationInProgress and triggerAdaptation, and making Oracle to
- * return the interface instead of the concrete class.
+ * ArchEvaluatorWithScenarios replaces {@link ArchEvaluator} because the last one references directly to
+ * {@link AdaptationManager}, but its necessary to use {@link AdaptationManagerWithScenarios}. This could be avoided
+ * by defining an interface (IAdaptationManager) with the following methods: adaptationInProgress and triggerAdaptation,
+ * and making {@link Oracle} to return the interface instead of the concrete class.
  */
 public class ArchEvaluatorWithScenarios extends AbstractRainbowRunnable {
 

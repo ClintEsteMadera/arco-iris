@@ -1,20 +1,21 @@
 package ar.uba.dc.thesis.selfhealing;
 
+import org.apache.commons.lang.StringUtils;
 
-public class RepairStrategySpecification {
+import ar.uba.dc.thesis.common.ThesisPojo;
+
+public class RepairStrategySpecification extends ThesisPojo {
 
 	private final String repairStrategyName;
 
 	private final String[] params;
 
-	private final SelfHealingTradeoff selfHealingTradeoff;
-
-	public RepairStrategySpecification(String repairStrategyName, String[] params,
-			SelfHealingTradeoff selfHealingTradeoff) {
+	public RepairStrategySpecification(String repairStrategyName, String[] params) {
 		super();
 		this.repairStrategyName = repairStrategyName;
 		this.params = params;
-		this.selfHealingTradeoff = selfHealingTradeoff;
+
+		this.validate();
 	}
 
 	public String getRepairStrategyName() {
@@ -25,7 +26,9 @@ public class RepairStrategySpecification {
 		return this.params;
 	}
 
-	public SelfHealingTradeoff getSelfHealingTradeoff() {
-		return this.selfHealingTradeoff;
+	public void validate() {
+		if (StringUtils.isBlank(this.getRepairStrategyName())) {
+			throw new IllegalArgumentException("The name of the repair strategy cannot be empty");
+		}
 	}
 }

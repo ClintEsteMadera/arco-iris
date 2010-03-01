@@ -8,6 +8,7 @@ import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.atam.AtamScenario;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
+import ar.uba.dc.thesis.atam.ScenarioEnvironment;
 import ar.uba.dc.thesis.qa.Concern;
 
 public class SelfHealingScenario extends AtamScenario {
@@ -23,13 +24,14 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			ar.uba.dc.thesis.atam.Environment environment, Artifact artifact, String response,
-			ResponseMeasure responseMeasure, Collection<ArchitecturalDecision> architecturalDecisions, boolean enabled,
-			int priority) {
+			ScenarioEnvironment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
+			Collection<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
 		super(id, name, concern, stimulusSource, stimulus, environment, artifact, response, responseMeasure,
 				architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
+
+		this.validate();
 	}
 
 	public boolean isEnabled() {
@@ -54,15 +56,5 @@ public class SelfHealingScenario extends AtamScenario {
 
 	public void addRepairStrategySpec(RepairStrategySpecification spec) {
 		this.strategySpecs.add(spec);
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		super.toString(sb);
-		this.append(sb, "enabled", String.valueOf(this.enabled));
-		this.append(sb, "priority", String.valueOf(this.priority));
-
-		return sb.toString();
 	}
 }

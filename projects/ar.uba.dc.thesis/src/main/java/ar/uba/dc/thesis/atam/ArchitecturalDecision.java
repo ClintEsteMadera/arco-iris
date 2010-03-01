@@ -2,27 +2,30 @@ package ar.uba.dc.thesis.atam;
 
 import java.util.Collection;
 
-public class ArchitecturalDecision {
+import ar.uba.dc.thesis.common.ThesisPojo;
 
-	private String description;
+public class ArchitecturalDecision extends ThesisPojo {
 
-	private Collection<String> sensitivityPoints;
+	private final String description;
 
-	private Collection<String> tradeoffs;
+	private final Collection<String> sensitivityPoints;
 
-	private Collection<String> risks;
+	private final Collection<String> tradeoffs;
 
-	private Collection<String> nonRisks;
+	private final Collection<String> risks;
 
-	public ArchitecturalDecision(String description,
-			Collection<String> sensitivityPoints, Collection<String> tradeoffs,
-			Collection<String> risks, Collection<String> nonRisks) {
+	private final Collection<String> nonRisks;
+
+	public ArchitecturalDecision(String description, Collection<String> sensitivityPoints,
+			Collection<String> tradeoffs, Collection<String> risks, Collection<String> nonRisks) {
 		super();
 		this.description = description;
 		this.sensitivityPoints = sensitivityPoints;
 		this.tradeoffs = tradeoffs;
 		this.risks = risks;
 		this.nonRisks = nonRisks;
+
+		this.validate();
 	}
 
 	public String getDescription() {
@@ -43,5 +46,9 @@ public class ArchitecturalDecision {
 
 	public Collection<String> getNonRisks() {
 		return this.nonRisks;
+	}
+
+	public void validate() {
+		// TODO Implement me!
 	}
 }

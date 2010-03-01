@@ -1,10 +1,12 @@
-package ar.uba.dc.thesis.rainbow;
+package ar.uba.dc.thesis.rainbow.constraint;
 
 import org.acmestudio.acme.element.IAcmeComponent;
 import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 
-public interface Constraint {
+import ar.uba.dc.thesis.common.Validatable;
+
+public interface Constraint extends Validatable {
 
 	/**
 	 * Creates an ACME rule based on the provided parameters and sets that rule to itself.
@@ -19,18 +21,10 @@ public interface Constraint {
 	void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final IAcmeComponent acmeComponent);
 
 	/**
-	 * Validates the instance and throws an Exception (typically {@link IllegalArgumentException} if something is wrong.
-	 */
-	void validate();
-
-	/**
 	 * Provides the Acme design rule. This object is usually used for evaluating constraints in some particular
 	 * architectural model
 	 * 
 	 * @return the Acme design rule
 	 */
 	AcmeDesignRule getAcmeDesignRule();
-
-	String getProperty();
-
 }

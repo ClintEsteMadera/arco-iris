@@ -1,8 +1,29 @@
 package ar.uba.dc.thesis.atam;
 
+import ar.uba.dc.thesis.common.ThesisPojo;
 
-public interface Artifact {
-	public String getSystemName();
+public class Artifact extends ThesisPojo {
+	private final String name;
 
-	public String getName();
+	private final String systemName;
+
+	public Artifact(String systemName, String name) {
+		super();
+		this.systemName = systemName;
+		this.name = name;
+
+		this.validate();
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void validate() {
+		// TODO Implement me!
+	}
 }
