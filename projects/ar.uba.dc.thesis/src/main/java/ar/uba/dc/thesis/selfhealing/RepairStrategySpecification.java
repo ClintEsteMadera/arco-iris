@@ -8,6 +8,7 @@ public class RepairStrategySpecification extends ThesisPojo {
 
 	private final String repairStrategyName;
 
+	// TODO es necesario los parametros en la estrategia?
 	private final String[] params;
 
 	public RepairStrategySpecification(String repairStrategyName, String[] params) {
