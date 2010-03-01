@@ -2,9 +2,10 @@ package ar.uba.dc.thesis.atam;
 
 import java.util.Collection;
 
+import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 
-public class AtamScenario {
+public abstract class AtamScenario extends ThesisPojo {
 
 	private Long id;
 
@@ -16,7 +17,7 @@ public class AtamScenario {
 
 	private String stimulus;
 
-	private Environment environment;
+	private ScenarioEnvironment environment;
 
 	private Artifact artifact;
 
@@ -27,7 +28,7 @@ public class AtamScenario {
 	private Collection<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			Environment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
+			ScenarioEnvironment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
 		this.id = id;
@@ -78,31 +79,15 @@ public class AtamScenario {
 		return this.architecturalDecisions;
 	}
 
-	public Environment getEnvironment() {
+	public ScenarioEnvironment getEnvironment() {
 		return this.environment;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		this.toString(sb);
-		return sb.toString();
-	}
-
-	protected void toString(StringBuilder sb) {
-		sb.append("Scenario: ").append(this.name).append("\n");
-		this.append(sb, "stimulus source", this.stimulusSource);
-		this.append(sb, "stimulus", this.stimulus);
-		this.append(sb, "environment", this.environment.getName());
-		this.append(sb, "response", this.response);
-		this.append(sb, "response measure", this.responseMeasure.getDescription());
-	}
-
-	protected void append(StringBuilder sb, String fieldName, String fieldValue) {
-		sb.append("\t").append(fieldName).append(": ").append(fieldValue).append("\n");
 	}
 
 	public Long getId() {
 		return id;
+	}
+
+	public void validate() {
+		// TODO Implement me!
 	}
 }

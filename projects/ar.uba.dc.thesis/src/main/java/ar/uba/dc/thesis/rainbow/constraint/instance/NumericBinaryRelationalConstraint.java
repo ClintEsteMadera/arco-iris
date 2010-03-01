@@ -1,4 +1,4 @@
-package ar.uba.dc.thesis.rainbow;
+package ar.uba.dc.thesis.rainbow.constraint.instance;
 
 import java.util.Arrays;
 
@@ -13,11 +13,17 @@ import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 import org.apache.commons.lang.StringUtils;
 
+import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
+import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
+
 /**
  * TODO: We can contemplate an abstraction for the operands so that we do not force an specific order (i.e. left side =
  * property, right side=literal value)
  */
-public class NumericBinaryRelationalConstraint implements Constraint {
+public class NumericBinaryRelationalConstraint extends ThesisPojo implements SinglePropertyInvolvedConstraint {
+
+	private static final String SPACE = " ";
 
 	private final String property;
 
@@ -83,8 +89,13 @@ public class NumericBinaryRelationalConstraint implements Constraint {
 		if (StringUtils.isBlank(this.getProperty())) {
 			throw new IllegalArgumentException("The property involved in the comparison cannot be blank");
 		}
-		if (this.getBinaryOperator() == null) {
-			throw new IllegalArgumentException("The binary comparator involved in the comparison cannot be null");
-		}
+		this.getBinaryOperator().validate();
 	}
+
+	@Override
+	public String toString() {
+		return new StringBuffer().append("(").append(this.getProperty()).append(SPACE).append(this.getBinaryOperator())
+				.append(SPACE).append(this.getValue()).append(")").toString();
+	}
+
 }

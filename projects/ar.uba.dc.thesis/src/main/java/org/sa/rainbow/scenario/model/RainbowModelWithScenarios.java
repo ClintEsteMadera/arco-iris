@@ -33,7 +33,7 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.Artifact;
-import ar.uba.dc.thesis.rainbow.Constraint;
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
@@ -142,7 +142,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			property = property.replaceFirst(".*\\.", "");
 		}
 		List<String> stimulusPerProperty = this.stimulusPerProperty.get(property);
-		return stimulusPerProperty == null ? Collections.EMPTY_LIST : stimulusPerProperty;
+		return stimulusPerProperty == null ? Collections.<String> emptyList() : stimulusPerProperty;
 	}
 
 	/**
@@ -220,7 +220,6 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		for (SelfHealingScenario currentScenario : scenarios) {
 			String stimulus = currentScenario.getStimulus();
 			List<SelfHealingScenario> scenarioList;
-			List<String> stimulusPerScenarioList;
 
 			loadStimulusPerProperty(currentScenario, stimulus);
 
