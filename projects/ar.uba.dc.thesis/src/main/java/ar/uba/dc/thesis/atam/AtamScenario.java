@@ -17,7 +17,7 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private String stimulus;
 
-	private ScenarioEnvironment environment;
+	private Environment environment;
 
 	private Artifact artifact;
 
@@ -28,7 +28,7 @@ public abstract class AtamScenario extends ThesisPojo {
 	private Collection<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			ScenarioEnvironment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
+			Environment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
 		this.id = id;
@@ -79,7 +79,7 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.architecturalDecisions;
 	}
 
-	public ScenarioEnvironment getEnvironment() {
+	public Environment getEnvironment() {
 		return this.environment;
 	}
 

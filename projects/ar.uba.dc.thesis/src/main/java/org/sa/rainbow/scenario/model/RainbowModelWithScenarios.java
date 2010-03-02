@@ -185,10 +185,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	// TODO mover isBroken a SelfHealingScenario?
 	private boolean isBroken(SelfHealingScenario scenario, Stack<AcmeError> collectedErrors) {
 		AcmeDesignRule rule = scenario.getResponseMeasure().getConstraint().getAcmeDesignRule();
-		Set<AcmeDesignRule> envRules = new HashSet<AcmeDesignRule>();
-		for (Constraint constraint : scenario.getEnvironment().getConditions()) {
-			envRules.add(constraint.getAcmeDesignRule());
-		}
+		Set<AcmeDesignRule> envRules = this.collectEnvironmentRules(scenario);
 
 		// FIXME chequear las condiciones del Environment tambien (envRules)
 		SimpleModelTypeChecker typeChecker = new SimpleModelTypeChecker();
@@ -198,6 +195,14 @@ public class RainbowModelWithScenarios extends RainbowModel {
 				.getDesignRuleExpression(), collectedErrors);
 
 		return !typeCheckingState.typechecks();
+	}
+
+	private Set<AcmeDesignRule> collectEnvironmentRules(SelfHealingScenario scenario) {
+		Set<AcmeDesignRule> envRules = new HashSet<AcmeDesignRule>();
+		for (Constraint constraint : scenario.getEnvironment().getConditions()) {
+			envRules.add(constraint.getAcmeDesignRule());
+		}
+		return envRules;
 	}
 
 	private void logErrors(Stack<AcmeError> collectedErrors, SelfHealingScenario scenario) {
