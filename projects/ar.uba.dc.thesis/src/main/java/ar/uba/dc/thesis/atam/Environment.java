@@ -9,7 +9,7 @@ import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
-public class ScenarioEnvironment extends ThesisPojo {
+public class Environment extends ThesisPojo {
 
 	private final String name;
 
@@ -17,7 +17,7 @@ public class ScenarioEnvironment extends ThesisPojo {
 
 	private final Map<Concern, Float> weights;
 
-	public ScenarioEnvironment(String name, List<? extends Constraint> conditions, Map<Concern, Float> weights) {
+	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Float> weights) {
 		super();
 		this.name = name;
 		this.conditions = conditions;

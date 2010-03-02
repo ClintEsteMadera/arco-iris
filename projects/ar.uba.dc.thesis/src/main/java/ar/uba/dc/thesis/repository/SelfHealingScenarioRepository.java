@@ -11,17 +11,14 @@ import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.atam.ResponseMeasure;
-import ar.uba.dc.thesis.atam.ScenarioEnvironment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.instance.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
-import ar.uba.dc.thesis.selfhealing.RepairStrategySpecification;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public final class SelfHealingScenarioRepository {
-
-	private static final String[] NO_PARAMS = new String[] {};
 
 	// public static SelfHealingScenario SERVER_COST_SCENARIO;
 
@@ -63,8 +60,7 @@ public final class SelfHealingScenarioRepository {
 		CLIENT_RESPONSE_TIME_SCENARIO = createClientResponseTimeScenario();
 
 		// SERVER_COST_SCENARIO.addRepairStrategySpec(new RepairStrategySpecification("reduceOverallCost", NO_PARAMS));
-		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategySpec(new RepairStrategySpecification("simpleReduceResponseTime",
-				NO_PARAMS));
+		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategy("simpleReduceResponseTime");
 
 		scenarios = new ArrayList<SelfHealingScenario>();
 		// scenarios.add(SERVER_COST_SCENARIO);
@@ -89,7 +85,7 @@ public final class SelfHealingScenarioRepository {
 		String stimulusSource = "A Server cost analizer";
 		Artifact artifact = ArtifactRepository.getProxy();
 		String stimulus = "GetActiveServersAmountOperation";
-		ScenarioEnvironment environment = ScenarioEnvironmentRepository.NORMAL;
+		Environment environment = ScenarioEnvironmentRepository.NORMAL;
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint("activeServersAmount", NumericBinaryOperator.LESS_THAN, 3));
@@ -106,7 +102,7 @@ public final class SelfHealingScenarioRepository {
 		String stimulusSource = "Any Client requesting news content";
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = "GetNewsContentClientStimulus";
-		ScenarioEnvironment environment = ScenarioEnvironmentRepository.NORMAL;
+		Environment environment = ScenarioEnvironmentRepository.NORMAL;
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint("experRespTime", NumericBinaryOperator.LESS_THAN, 10000));

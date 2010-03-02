@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import ar.uba.dc.thesis.atam.ScenarioEnvironment;
+import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.instance.BooleanLiteralConstraint;
 
@@ -23,10 +23,10 @@ public final class ScenarioEnvironmentRepository {
 		highLoadConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.2F);
 	}
 
-	public static final ScenarioEnvironment NORMAL = new ScenarioEnvironment("NORMAL", Collections
+	public static final Environment NORMAL = new Environment("NORMAL", Collections
 			.singletonList(BooleanLiteralConstraint.TRUE), normalConcernMultiplierMap);
 
-	public static final ScenarioEnvironment HIGH_LOAD = new ScenarioEnvironment("HIGH LOAD", Collections
+	public static final Environment HIGH_LOAD = new Environment("HIGH LOAD", Collections
 			.singletonList(BooleanLiteralConstraint.TRUE), highLoadConcernMultiplierMap);
 
 	/**

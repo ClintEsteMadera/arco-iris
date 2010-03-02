@@ -56,7 +56,7 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 
 		// TODO: the "context" param used to be NULL, if this doesn't work, change it back to NULL
 		final ReferenceNode leftHandOperand = new ReferenceNode(context);
-		leftHandOperand.setReference(Arrays.asList("self", this.getProperty()));
+		leftHandOperand.setReference(Arrays.asList(acmeComponent.getQualifiedName(), this.getProperty()));
 		expression.setFirstChild(leftHandOperand);
 		expression.setOperator(this.getBinaryOperator().getRainbowExpressionOperator());
 
