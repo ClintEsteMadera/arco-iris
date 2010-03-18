@@ -185,6 +185,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	// TODO mover isBroken a SelfHealingScenario?
 	private boolean isBroken(SelfHealingScenario scenario, Stack<AcmeError> collectedErrors) {
 		AcmeDesignRule rule = scenario.getResponseMeasure().getConstraint().getAcmeDesignRule();
+		@SuppressWarnings("unused")
 		Set<AcmeDesignRule> envRules = this.collectEnvironmentRules(scenario);
 
 		// FIXME chequear las condiciones del Environment tambien (envRules)

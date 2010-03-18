@@ -5,11 +5,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -31,12 +30,16 @@ import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.StopWatch;
 import org.sa.rainbow.util.Util;
 
+import ar.uba.dc.thesis.atam.Environment;
+import ar.uba.dc.thesis.qa.Concern;
+import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
  * The Rainbow Adaptation Engine... <br>
  * NOTE: This class is based on the original <code>AdaptationManager</code> code since it is final and thus, it cannot
  * be extended.<br>
+ * TODO: IMPLEMENT FUNCTIONALITY!!!!!!!!!!!!!!!!!!!!!!!
  */
 public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
@@ -264,116 +267,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		defineAttributes(stitch, attrVectorMap);
 	}
 
-	/*
-	 * Algorithm: 1) Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to
-	 * current system condition. NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic
-	 * is true. 2) Calculate scores of the enabled strategies (this involves evaluating the meta-information of the
-	 * tactics in each strategy). 3) Select and execute the highest scoring strategy
-	 */
 	private void doAdaptation() {
-		log("Adaptation triggered, let's begin!");
-		if (_stopWatchForTesting != null)
-			_stopWatchForTesting.start();
-
-		Map<String, Strategy> applicableStrategies = this.getApplicableStrategies();
-
-		SortedMap<Double, Strategy> scoredStrategies = this.scoreStrategies(applicableStrategies);
-
-		this.applyStrategyWithHigherScore(scoredStrategies);
-	}
-
-	private Map<String, Strategy> getApplicableStrategies() {
-		int availCnt = 0;
-		Map<String, Strategy> appSubsetByName = new HashMap<String, Strategy>();
-		for (Stitch stitch : m_repertoire) {
-			if (!stitch.script.isApplicableForModel((IAcmeModel) m_model.getAcmeModel())) {
-				if (m_logger.isDebugEnabled())
-					m_logger.debug("x. skipping " + stitch.script.getName());
-				continue; // skip checking this script
-			}
-			for (Strategy strategy : stitch.script.strategies) {
-				++availCnt;
-				// check first for prior failures
-				if (getFailureRate(strategy) > FAILURE_RATE_THRESHOLD) {
-					continue; // don't consider this Strategy
-				}
-				// get estimated time cost for predicted property
-				long dur = 0L;
-				if (Rainbow.predictionEnabled()) { // provide future duration
-					dur = strategy.estimateAvgTimeCost();
-				}
-				Map<String, Object> moreVars = new HashMap<String, Object>();
-				moreVars.put("_dur_", dur);
-				// check condition of Strategy applicability
-				if (strategy.isApplicable(moreVars)) {
-					appSubsetByName.put(strategy.getName(), strategy);
-				}
-			}
-		}
-		if (appSubsetByName.isEmpty()) { // can't do adaptation
-			log("No applicable Strategies to do adaptation!");
-			m_adaptNeeded = false;
-			m_model.clearConstraintViolated();
-			return new HashMap<String, Strategy>(0);
-		}
-
-		// check for leap-version strategy to see whether to "chain" util computation
-		for (String name : appSubsetByName.keySet().toArray(new String[0])) {
-			Strategy strategy = appSubsetByName.get(name);
-			Strategy leap = appSubsetByName.get(LEAP_STRATEGY_PREFIX + name);
-			if (leap != null) { // Leap-version exists
-				/*
-				 * To chain: Determine the integer multiple N of Leap over this, then compute aggregate attributes using
-				 * previous attributes as the starting point, repeating N-1 times.
-				 */
-				// HACK: use the first argument of the tactic closest to root
-				int factor = 1;
-				double stratArgVal = strategy.getFirstTacticArgumentValue();
-				double leapArgVal = leap.getFirstTacticArgumentValue();
-				if (stratArgVal != Double.NaN && leapArgVal != Double.NaN) {
-					// compute multiple now
-					factor = (int) (leapArgVal / stratArgVal);
-				}
-				Strategy multi = strategy.clone();
-				multi.setName(MULTI_STRATEGY_PREFIX + strategy.getName());
-				multi.multiples = factor;
-				appSubsetByName.put(multi.getName(), multi);
-				++availCnt;
-			}
-		}
-		log(">> repertoire: " + appSubsetByName.size() + " / " + availCnt + " strateg" + (availCnt > 1 ? "ies" : "y"));
-		return appSubsetByName;
-	}
-
-	private void applyStrategyWithHigherScore(SortedMap<Double, Strategy> scoredStrategies) {
-		if (Util.dataLogger().isInfoEnabled()) {
-			StringBuffer buf = new StringBuffer();
-			buf.append("  [\n");
-			for (Map.Entry<Double, Strategy> entry : scoredStrategies.entrySet()) {
-				buf.append("   ").append(entry.getValue().getName()).append(":");
-				buf.append(entry.getKey()).append("\n");
-			}
-			buf.append("  ]\n");
-			log(buf.toString());
-			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_SCORE + buf.toString());
-		}
-
-		if (_stopWatchForTesting != null)
-			_stopWatchForTesting.stop();
-		if (scoredStrategies.size() > 0) {
-			Strategy selectedStrategy = scoredStrategies.get(scoredStrategies.lastKey());
-			log(">> do strategy: " + selectedStrategy.getName());
-			// strategy args removed...
-			Object[] args = new Object[0];
-			m_pendingStrategies.add(selectedStrategy);
-			((Executor) Oracle.instance().strategyExecutor()).enqueueStrategy(selectedStrategy, args);
-			log("<< Adaptation cycle awaits Executor...");
-		} else {
-			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
-			log("<< NO applicable strategy, adaptation cycle ended.");
-			m_adaptNeeded = false;
-			m_model.clearConstraintViolated();
-		}
+		// nothing to do, avoid doing Rainbow adaptatio
 	}
 
 	/*
@@ -388,14 +283,19 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
-		// collect scenarios strategies
-		Set<String> scenariosStrategies = new HashSet<String>();
+		// a stratagy can be used in many environments, so each strategy could be related with many environments
+		Map<String, List<Environment>> environmentsPerStrategies = new HashMap<String, List<Environment>>();
+		// collect scenarios strategies and its environments
 		for (SelfHealingScenario scenario : brokenScenarios) {
-			scenariosStrategies.addAll(scenario.getRepairStrategies());
+			for (String repairStrategy : scenario.getRepairStrategies()) {
+				List<Environment> environments = environmentsPerStrategies.get(repairStrategy);
+				if (environments == null) {
+					environments = new ArrayList<Environment>();
+					environmentsPerStrategies.put(repairStrategy, environments);
+				}
+				environments.add(scenario.getEnvironment());
+			}
 		}
-
-		int availCnt = scenariosStrategies.size();
-		Map<String, Strategy> applicableStrategies = new HashMap<String, Strategy>();
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel((IAcmeModel) m_model.getAcmeModel())) {
@@ -404,164 +304,218 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				continue; // skip checking this script
 			}
 
+			double maxScore4Strategy = 0L;
+			Strategy selectedStrategy = null;
 			for (Strategy strategy : stitch.script.strategies) {
 				// check first for applicabilty and failures threshold
-				if (!scenariosStrategies.contains(strategy.getName())
-						|| getFailureRate(strategy) > FAILURE_RATE_THRESHOLD) {
+				List<Environment> environments = environmentsPerStrategies.get(strategy.getName());
+				if (environments == null || getFailureRate(strategy) > FAILURE_RATE_THRESHOLD) {
 					continue; // don't consider this Strategy
 				}
-				// get estimated time cost for predicted property
-				long dur = 0L;
-				if (Rainbow.predictionEnabled()) { // provide future duration
-					dur = strategy.estimateAvgTimeCost();
-				}
-				Map<String, Object> moreVars = new HashMap<String, Object>();
-				moreVars.put("_dur_", dur);
-				// check condition of Strategy applicability
-				if (strategy.isApplicable(moreVars)) {
-					applicableStrategies.put(strategy.getName(), strategy);
+				Model simulationModel = this.clone(this.m_model.getAcmeModel());
+				// TODO simular aplicacion de estrategia sobre simulationModel!
+
+				// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
+				// de esta manera se pueden seguir aprovechando las Utility curves configuradas
+				double scenariosSolutionWeight = 1;
+				int rainbowSolutionWeight = 0;
+
+				// consider the strategy within each environment
+				for (Environment environment : environments) {
+					Map<Concern, Double> weights = environment.getWeights();
+					Map<String, Double> weights4Rainbow = translateConcernWeights(weights);
+					double scenariosScore = 0;
+					if (scenariosSolutionWeight > 0) {
+						scenariosScore = scoreStrategyWithScenarios(
+								SelfHealingScenarioRepository.getEnabledScenarios(), weights, simulationModel);
+					}
+					double rainbowScoreStrategy = 0;
+					if (rainbowSolutionWeight > 0) {
+						rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
+					}
+					@SuppressWarnings("unused")
+					double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
+							+ rainbowSolutionWeight;
+					if (scenariosScore > maxScore4Strategy) {
+						maxScore4Strategy = scenariosScore;
+						selectedStrategy = strategy;
+					}
 				}
 			}
-		}
-		if (applicableStrategies.isEmpty()) { // can't do adaptation
-			log("No applicable Strategies to do adaptation!");
-			// m_adaptNeeded = false;
-			// m_model.clearConstraintViolated();
-			return;
-		}
-
-		// TODO ver que es esto de las multi-strategies???
-		// check for leap-version strategy to see whether to "chain" util computation
-		for (String name : applicableStrategies.keySet().toArray(new String[0])) {
-			Strategy strategy = applicableStrategies.get(name);
-			Strategy leap = applicableStrategies.get(LEAP_STRATEGY_PREFIX + name);
-			if (leap != null) { // Leap-version exists
-				/*
-				 * To chain: Determine the integer multiple N of Leap over this, then compute aggregate attributes using
-				 * previous attributes as the starting point, repeating N-1 times.
-				 */
-				// HACK: use the first argument of the tactic closest to root
-				int factor = 1;
-				double stratArgVal = strategy.getFirstTacticArgumentValue();
-				double leapArgVal = leap.getFirstTacticArgumentValue();
-				if (stratArgVal != Double.NaN && leapArgVal != Double.NaN) {
-					// compute multiple now
-					factor = (int) (leapArgVal / stratArgVal);
-				}
-				Strategy multi = strategy.clone();
-				multi.setName(MULTI_STRATEGY_PREFIX + strategy.getName());
-				multi.multiples = factor;
-				applicableStrategies.put(multi.getName(), multi);
-				++availCnt;
+			// TODO lo siguiente es tomado de rainbow tal cual (ver)
+			if (_stopWatchForTesting != null)
+				_stopWatchForTesting.stop();
+			if (selectedStrategy != null) {
+				log(">> do strategy: " + selectedStrategy.getName());
+				// strategy args removed...
+				Object[] args = new Object[0];
+				m_pendingStrategies.add(selectedStrategy);
+				((Executor) Oracle.instance().strategyExecutor()).enqueueStrategy(selectedStrategy, args);
+				log("<< Adaptation cycle awaits Executor...");
+			} else {
+				Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
+				log("<< NO applicable strategy, adaptation cycle ended.");
+				m_adaptNeeded = false;
+				m_model.clearConstraintViolated();
 			}
 		}
-		log(">> repertoire: " + applicableStrategies.size() + " / " + availCnt + " strateg"
-				+ (availCnt > 1 ? "ies" : "y"));
+	}
 
-		SortedMap<Double, Strategy> scoredStrategies = this.scoreStrategies(applicableStrategies);
+	private Model clone(Object acmeModel) {
+		throw new RuntimeException("Method not yet implemented!");
+	}
 
-		this.applyStrategyWithHigherScore(scoredStrategies);
+	/**
+	 * Rainbow works with concern as Strings, so a translation is needed
+	 * 
+	 * @param weights
+	 * @return
+	 */
+	private Map<String, Double> translateConcernWeights(Map<Concern, Double> weights) {
+		Map<String, Double> result = new HashMap<String, Double>();
+		for (Concern concern : weights.keySet()) {
+			result.put(concern.getRainbowName(), weights.get(concern));
+		}
+		return result;
+	}
+
+	private Double scoreStrategyWithScenarios(Collection<SelfHealingScenario> scenarios,
+			Map<Concern, Double> weightsPerScenario, Model simulationModel) {
+		double score = 0L;
+		for (SelfHealingScenario scenario : scenarios) {
+			boolean scenarioSatisfiedInSimulation = !scenario.isBroken((IAcmeModel) this.m_model.getAcmeModel());
+			if (scenarioSatisfiedInSimulation) {
+				Double concernWeight = weightsPerScenario.get(scenario.getConcern());
+				if (concernWeight == null) {
+					// if there is no weight for the concern then its weight it is assumed to be zero
+					concernWeight = new Double(0);
+				}
+				double scenarioWeight = scenarioWeight(scenario.getPriority(), concernWeight);
+				score = +scenarioWeight;
+			}
+		}
+		return score;
+	}
+
+	private double scenarioWeight(int priority, double concernWeight) {
+		// TODO tomar el maximo (mas uno para evitar que pese cero) numero de prioridad de entre todos los escenarios?
+		int MAX_PRIORITY = 1000;
+		// TODO ver como pesar prioridades (ojo con outliers en las prioridades)
+		double priorityWeight = (MAX_PRIORITY - priority) / MAX_PRIORITY;
+		// TODO idea: el usuario puede pesar la importancia de los concerns vs la de las prioridades
+		// por ahora pesan lo mismo los pesos de los concerns que la prioridad:
+		double concernsPerEnvironmentWeight = 0.5;
+		double scenariosPrioritiesWeight = 0.5;
+		return concernWeight * concernsPerEnvironmentWeight + priorityWeight * scenariosPrioritiesWeight;
 	}
 
 	/**
 	 * Iterate through the supplied set of strategies, compute aggregate attributes, and use the aggregate values plus
 	 * stakeholder utility preferences to compute an integer score for each Strategy, between 0 and 100.
 	 * 
-	 * @param applicableStrategies
+	 * @param subset
 	 *            the subset of condition-applicable Strategies to score, in the form of a name-strategy map
 	 * @return a map of score-strategy pairs, sorted in increasing order by score.
 	 */
-	// TODO calcular score de las estrategias teniendo en cuenta el Environment en que se encuentra el sistema (o el env
-	// del escenario?)
-	private SortedMap<Double, Strategy> scoreStrategies(Map<String, Strategy> applicableStrategies) {
-
+	@SuppressWarnings("unused")
+	private SortedMap<Double, Strategy> scoreStrategies(Map<String, Strategy> subset) {
 		SortedMap<Double, Strategy> scored = new TreeMap<Double, Strategy>();
-		boolean predictionEnabled = Rainbow.predictionEnabled() && Rainbow.utilityPredictionDuration() > 0;
+		// boolean predictionEnabled = Rainbow.predictionEnabled() && Rainbow.utilityPredictionDuration() > 0;
 		double[] conds = null; // store the conditions to output for diagnosis
-		double[] condsPred = null; // store predicted conditions
+		// double[] condsPred = null; // store predicted conditions
 		// find the weights of the applicable scenario
 		Map<String, Double> weights = Rainbow.instance().preferenceDesc().weights.get(Rainbow
 				.property(Rainbow.PROPKEY_SCENARIO));
-		for (Strategy strategy : applicableStrategies.values()) {
-			SortedMap<String, Double> aggAtt = strategy.computeAggregateAttributes();
-			// add the strategy failure history as another attribute
-			accountForStrategyHistory(aggAtt, strategy);
-			String s = strategy.getName() + aggAtt;
-			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR + s);
-			log("aggAttr: " + s);
-			/*
-			 * compute utility values from attributes that combines values representing current condition, then
-			 * accumulate the weighted utility sum
-			 */
-			double[] items = new double[aggAtt.size()];
-			double[] itemsPred = new double[aggAtt.size()];
-			if (conds == null)
-				conds = new double[aggAtt.size()];
-			if (condsPred == null)
-				condsPred = new double[aggAtt.size()];
-			int i = 0;
-			double score = 0.0;
-			double scorePred = 0.0; // score based on predictions
-			for (String k : aggAtt.keySet()) {
-				double v = aggAtt.get(k);
-				// find the applicable utility function
-				UtilityFunction u = m_utils.get(k);
-				Object condVal = null;
-				Object condValPred = null;
-				// add attribute value from CURRENT condition to accumulated agg value
-				condVal = m_model.getProperty(u.mapping());
-				items[i] = v;
-				if (condVal != null && condVal instanceof Double) {
-					if (m_logger.isTraceEnabled())
-						m_logger.trace("Avg value of prop: " + u.mapping() + " == " + condVal);
-					conds[i] = ((Double) condVal).doubleValue();
-					items[i] += conds[i];
-				}
-				// TODO agregar peso segun prioridad
-				// now compute the utility, apply weight, and accumulate to sum
-				score += weights.get(k) * u.f(items[i]);
-
-				// if applicable, process the same set of info using predicted values
-				if (predictionEnabled) {
-					// add attribute value from FUTURE condition to accumulated agg value
-					condValPred = m_model.predictProperty(u.mapping(), Rainbow.utilityPredictionDuration());
-					itemsPred[i] = v;
-					if (condValPred != null && condValPred instanceof Double) {
-						// if (m_logger.isTraceEnabled())
-						m_logger.info("Avg value of predicted prop: " + u.mapping() + " == " + condValPred);
-						condsPred[i] = ((Double) condValPred).doubleValue();
-						itemsPred[i] += condsPred[i];
-					}
-					// now compute the utility, apply weight, and accumulate to sum
-					scorePred += weights.get(k) * u.f(itemsPred[i]);
-				}
-				++i;
-			}
-
-			if (predictionEnabled) {
-				// compare and pick higher score
-				if (scorePred > .9 * score) { // score based on prediction prevails
-					log("cur-cond score " + score + " was lower, discarding: " + Arrays.toString(items));
-					score = scorePred;
-					items = itemsPred;
-				}
-			}
-
-			// log this
-			s = Arrays.toString(items);
-			if (score < m_minUtilityThreshold) {
-				// utility score too low, don't consider for adaptation
-				log("score " + score + " below threshold, discarding: " + s);
-			} else {
-				scored.put(score, strategy);
-			}
-			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR2 + s);
-			log("aggAtt': " + s);
+		for (Strategy strategy : subset.values()) {
+			scored.put(scoreStrategy(strategy, weights), strategy);
 		}
 		log("cond   : " + Arrays.toString(conds));
-		if (predictionEnabled)
-			log("condP! : " + Arrays.toString(condsPred));
+		// if (predictionEnabled)
+		// log("condP! : " + Arrays.toString(condsPred));
 		return scored;
+	}
+
+	/**
+	 * The Rainbow's calculus for the score of a strategy
+	 * 
+	 * @return the score of the strategy calculated by Rainbow
+	 */
+	private double scoreStrategy(Strategy strategy, Map<String, Double> weights) {
+		double[] conds = null;
+		SortedMap<String, Double> aggAtt = strategy.computeAggregateAttributes();
+		// add the strategy failure history as another attribute
+		accountForStrategyHistory(aggAtt, strategy);
+		String s = strategy.getName() + aggAtt;
+		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR + s);
+		log("aggAttr: " + s);
+		/*
+		 * compute utility values from attributes that combines values representing current condition, then accumulate
+		 * the weighted utility sum
+		 */
+		double[] items = new double[aggAtt.size()];
+		// double[] itemsPred = new double[aggAtt.size()];
+		if (conds == null)
+			conds = new double[aggAtt.size()];
+		// if (condsPred == null)
+		// condsPred = new double[aggAtt.size()];
+		int i = 0;
+		double score = 0.0;
+		// double scorePred = 0.0; // score based on predictions
+		for (String k : aggAtt.keySet()) {
+			double v = aggAtt.get(k);
+			// find the applicable utility function
+			UtilityFunction u = m_utils.get(k);
+			Object condVal = null;
+			// Object condValPred = null;
+			// add attribute value from CURRENT condition to accumulated agg value
+			condVal = m_model.getProperty(u.mapping());
+			items[i] = v;
+			if (condVal != null && condVal instanceof Double) {
+				if (m_logger.isTraceEnabled())
+					m_logger.trace("Avg value of prop: " + u.mapping() + " == " + condVal);
+				conds[i] = ((Double) condVal).doubleValue();
+				items[i] += conds[i];
+			}
+			// TODO agregar peso segun prioridad
+			// now compute the utility, apply weight, and accumulate to sum
+			score += weights.get(k) * u.f(items[i]);
+
+			// if applicable, process the same set of info using predicted values
+			// if (predictionEnabled) {
+			// // add attribute value from FUTURE condition to accumulated agg value
+			// condValPred = m_model.predictProperty(u.mapping(), Rainbow.utilityPredictionDuration());
+			// itemsPred[i] = v;
+			// if (condValPred != null && condValPred instanceof Double) {
+			// // if (m_logger.isTraceEnabled())
+			// m_logger.info("Avg value of predicted prop: " + u.mapping() + " == " + condValPred);
+			// condsPred[i] = ((Double) condValPred).doubleValue();
+			// itemsPred[i] += condsPred[i];
+			// }
+			// // now compute the utility, apply weight, and accumulate to sum
+			// scorePred += weights.get(k) * u.f(itemsPred[i]);
+			// }
+			++i;
+		}
+
+		// if (predictionEnabled) {
+		// // compare and pick higher score
+		// if (scorePred > .9 * score) { // score based on prediction prevails
+		// log("cur-cond score " + score + " was lower, discarding: " + Arrays.toString(items));
+		// score = scorePred;
+		// items = itemsPred;
+		// }
+		// }
+
+		// log this
+		s = Arrays.toString(items);
+		if (score < m_minUtilityThreshold) {
+			// utility score too low, don't consider for adaptation
+			log("score " + score + " below threshold, discarding: " + s);
+			// TODO descartar estrategia?
+		}
+		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR2 + s);
+		log("aggAtt': " + s);
+		return score;
 	}
 
 	/**
