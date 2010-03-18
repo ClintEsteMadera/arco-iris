@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.acmestudio.acme.model.IAcmeModel;
+
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.atam.AtamScenario;
@@ -56,5 +58,9 @@ public class SelfHealingScenario extends AtamScenario {
 
 	public void addRepairStrategy(String repairStrategy) {
 		this.repairStrategies.add(repairStrategy);
+	}
+
+	public boolean isBroken(IAcmeModel acmeModel) {
+		throw new RuntimeException("Method not yet implemented!");
 	}
 }

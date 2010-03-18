@@ -15,9 +15,9 @@ public class Environment extends ThesisPojo {
 
 	private final List<? extends Constraint> conditions;
 
-	private final Map<Concern, Float> weights;
+	private final Map<Concern, Double> weights;
 
-	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Float> weights) {
+	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Double> weights) {
 		super();
 		this.name = name;
 		this.conditions = conditions;
@@ -34,7 +34,7 @@ public class Environment extends ThesisPojo {
 		return conditions;
 	}
 
-	public Map<Concern, Float> getWeights() {
+	public Map<Concern, Double> getWeights() {
 		return weights;
 	}
 

@@ -10,17 +10,17 @@ import ar.uba.dc.thesis.rainbow.constraint.instance.BooleanLiteralConstraint;
 
 public final class ScenarioEnvironmentRepository {
 
-	private static final Map<Concern, Float> normalConcernMultiplierMap = new HashMap<Concern, Float>();
+	private static final Map<Concern, Double> normalConcernMultiplierMap = new HashMap<Concern, Double>();
 
-	private static final Map<Concern, Float> highLoadConcernMultiplierMap = new HashMap<Concern, Float>();
+	private static final Map<Concern, Double> highLoadConcernMultiplierMap = new HashMap<Concern, Double>();
 
 	// TODO: Include all the other concerns?
 	static {
-		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.5F);
-		normalConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.5F);
+		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.5D);
+		normalConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.5D);
 
-		highLoadConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.8F);
-		highLoadConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.2F);
+		highLoadConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.8D);
+		highLoadConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.2D);
 	}
 
 	public static final Environment NORMAL = new Environment("NORMAL", Collections
