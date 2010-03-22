@@ -283,7 +283,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
-		// a stratagy can be used in many environments, so each strategy could be related with many environments
+		// a strategy can be used in many environments, so each strategy can be related with many environments
 		Map<String, List<Environment>> environmentsPerStrategies = new HashMap<String, List<Environment>>();
 		// collect scenarios strategies and its environments
 		for (SelfHealingScenario scenario : brokenScenarios) {
@@ -293,7 +293,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					environments = new ArrayList<Environment>();
 					environmentsPerStrategies.put(repairStrategy, environments);
 				}
-				environments.add(scenario.getEnvironment());
+				environments.addAll(scenario.getEnvironments());
 			}
 		}
 

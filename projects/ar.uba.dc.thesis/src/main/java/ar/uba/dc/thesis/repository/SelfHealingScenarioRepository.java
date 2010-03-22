@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.util.Util;
@@ -85,7 +87,8 @@ public final class SelfHealingScenarioRepository {
 		String stimulusSource = "A Server cost analizer";
 		Artifact artifact = ArtifactRepository.getProxy();
 		String stimulus = "GetActiveServersAmountOperation";
-		Environment environment = ScenarioEnvironmentRepository.NORMAL;
+		Set<Environment> environments = new HashSet<Environment>();
+		environments.add(ScenarioEnvironmentRepository.NORMAL);
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint("activeServersAmount", NumericBinaryOperator.LESS_THAN, 3));
@@ -94,7 +97,7 @@ public final class SelfHealingScenarioRepository {
 		int priority = 2;
 
 		return new SelfHealingScenario(1L, scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
-				environment, artifact, response, responseMeasure, archDecisions, enabled, priority);
+				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
 	private static SelfHealingScenario createClientResponseTimeScenario() {
@@ -102,7 +105,8 @@ public final class SelfHealingScenarioRepository {
 		String stimulusSource = "Any Client requesting news content";
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = "GetNewsContentClientStimulus";
-		Environment environment = ScenarioEnvironmentRepository.NORMAL;
+		Set<Environment> environments = new HashSet<Environment>();
+		environments.add(ScenarioEnvironmentRepository.NORMAL);
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint("experRespTime", NumericBinaryOperator.LESS_THAN, 10000));
@@ -110,7 +114,7 @@ public final class SelfHealingScenarioRepository {
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environment,
+		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 }

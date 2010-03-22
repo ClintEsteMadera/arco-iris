@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.atam;
 
 import java.util.Collection;
+import java.util.Set;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
@@ -17,7 +18,7 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private String stimulus;
 
-	private Environment environment;
+	private Set<Environment> environments;
 
 	private Artifact artifact;
 
@@ -28,7 +29,7 @@ public abstract class AtamScenario extends ThesisPojo {
 	private Collection<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			Environment environment, Artifact artifact, String response, ResponseMeasure responseMeasure,
+			Set<Environment> environments, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Collection<ArchitecturalDecision> architecturalDecisions) {
 		super();
 		this.id = id;
@@ -36,7 +37,7 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.concern = concern;
 		this.stimulusSource = stimulusSource;
 		this.stimulus = stimulus;
-		this.environment = environment;
+		this.environments = environments;
 		this.artifact = artifact;
 		this.response = response;
 		this.responseMeasure = responseMeasure;
@@ -79,8 +80,8 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.architecturalDecisions;
 	}
 
-	public Environment getEnvironment() {
-		return this.environment;
+	public Set<Environment> getEnvironments() {
+		return this.environments;
 	}
 
 	public Long getId() {

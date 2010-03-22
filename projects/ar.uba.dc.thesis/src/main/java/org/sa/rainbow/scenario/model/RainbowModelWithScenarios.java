@@ -33,6 +33,7 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -198,10 +199,13 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		return !typeCheckingState.typechecks();
 	}
 
+	// TODO: Reveer si hacer esto tiene sentido o hay una logica un poco mas compleja
 	private Set<AcmeDesignRule> collectEnvironmentRules(SelfHealingScenario scenario) {
 		Set<AcmeDesignRule> envRules = new HashSet<AcmeDesignRule>();
-		for (Constraint constraint : scenario.getEnvironment().getConditions()) {
-			envRules.add(constraint.getAcmeDesignRule());
+		for (Environment environment : scenario.getEnvironments()) {
+			for (Constraint constraint : environment.getConditions()) {
+				envRules.add(constraint.getAcmeDesignRule());
+			}
 		}
 		return envRules;
 	}
