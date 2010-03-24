@@ -18,10 +18,7 @@ import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
 import org.acmestudio.acme.environment.error.AcmeError;
 import org.acmestudio.acme.model.command.IAcmeCommand;
-import org.acmestudio.acme.type.verification.SimpleModelTypeChecker;
-import org.acmestudio.acme.type.verification.TypeCheckingState;
 import org.acmestudio.basicmodel.element.AcmeComponentType;
-import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
@@ -33,7 +30,6 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.Artifact;
-import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -173,7 +169,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 		Stack<AcmeError> collectedErrors = new Stack<AcmeError>();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
-			if (this.isBroken(scenario, collectedErrors)) {
+			if (scenario.isBroken(this.getAcmeModel())) {
 				this.logErrors(collectedErrors, scenario);
 				brokenScenarios.add(scenario);
 			} else {
@@ -181,33 +177,6 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			}
 		}
 		return brokenScenarios;
-	}
-
-	// TODO mover isBroken a SelfHealingScenario?
-	private boolean isBroken(SelfHealingScenario scenario, Stack<AcmeError> collectedErrors) {
-		AcmeDesignRule rule = scenario.getResponseMeasure().getConstraint().getAcmeDesignRule();
-		@SuppressWarnings("unused")
-		Set<AcmeDesignRule> envRules = this.collectEnvironmentRules(scenario);
-
-		// FIXME chequear las condiciones del Environment tambien (envRules)
-		SimpleModelTypeChecker typeChecker = new SimpleModelTypeChecker();
-		typeChecker.registerModel(this.getAcmeModel());
-
-		TypeCheckingState typeCheckingState = typeChecker.typecheckDesignRuleExpression(rule, rule
-				.getDesignRuleExpression(), collectedErrors);
-
-		return !typeCheckingState.typechecks();
-	}
-
-	// TODO: Reveer si hacer esto tiene sentido o hay una logica un poco mas compleja
-	private Set<AcmeDesignRule> collectEnvironmentRules(SelfHealingScenario scenario) {
-		Set<AcmeDesignRule> envRules = new HashSet<AcmeDesignRule>();
-		for (Environment environment : scenario.getEnvironments()) {
-			for (Constraint constraint : environment.getConditions()) {
-				envRules.add(constraint.getAcmeDesignRule());
-			}
-		}
-		return envRules;
 	}
 
 	private void logErrors(Stack<AcmeError> collectedErrors, SelfHealingScenario scenario) {
