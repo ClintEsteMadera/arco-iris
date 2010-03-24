@@ -287,7 +287,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
-		Map<Concern, Double> weights = systemEnvironment(this.m_model.getAcmeModel()).getWeights();
+		Environment systemEnvironment = systemEnvironment(this.m_model.getAcmeModel());
+		Map<Concern, Double> weights = systemEnvironment.getWeights();
 		Map<String, Double> weights4Rainbow = translateConcernWeights(weights);
 
 		double maxScore4Strategy = 0L;
@@ -316,7 +317,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				double scenariosScore = 0;
 				if (scenariosSolutionWeight > 0) {
 					scenariosScore = scoreStrategyWithScenarios(SelfHealingScenarioRepository.getEnabledScenarios(),
-							weights, simulationModel);
+							systemEnvironment, simulationModel);
 				}
 
 				double rainbowScoreStrategy = 0;
@@ -393,19 +394,22 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return result;
 	}
 
-	private Double scoreStrategyWithScenarios(Collection<SelfHealingScenario> scenarios,
-			Map<Concern, Double> weightsPerScenario, IAcmeModel simulationModel) {
+	private Double scoreStrategyWithScenarios(Collection<SelfHealingScenario> scenarios, Environment systemEnvironment,
+			IAcmeModel simulationModel) {
 		double score = 0L;
+		Map<Concern, Double> weights = systemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
-			boolean scenarioSatisfiedInSimulation = !scenario.isBroken(simulationModel);
-			if (scenarioSatisfiedInSimulation) {
-				Double concernWeight = weightsPerScenario.get(scenario.getConcern());
-				if (concernWeight == null) {
-					// if there is no weight for the concern then its weight it is assumed to be zero
-					concernWeight = new Double(0);
+			if (scenario.applyFor(systemEnvironment)) {
+				boolean scenarioSatisfiedInSimulation = !scenario.isBroken(simulationModel);
+				if (scenarioSatisfiedInSimulation) {
+					Double concernWeight = weights.get(scenario.getConcern());
+					if (concernWeight == null) {
+						// if there is no weight for the concern then its weight it is assumed to be zero
+						concernWeight = new Double(0);
+					}
+					double scenarioWeight = scenarioWeight(scenario.getPriority(), concernWeight);
+					score = +scenarioWeight;
 				}
-				double scenarioWeight = scenarioWeight(scenario.getPriority(), concernWeight);
-				score = +scenarioWeight;
 			}
 		}
 		return score;
