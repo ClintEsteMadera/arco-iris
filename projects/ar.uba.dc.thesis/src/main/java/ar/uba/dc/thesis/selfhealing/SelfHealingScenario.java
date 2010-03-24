@@ -64,4 +64,8 @@ public class SelfHealingScenario extends AtamScenario {
 	public boolean isBroken(IAcmeModel acmeModel) {
 		throw new RuntimeException("Method not yet implemented!");
 	}
+
+	public boolean applyFor(Environment environment) {
+		return getEnvironments().contains(environment);
+	}
 }
