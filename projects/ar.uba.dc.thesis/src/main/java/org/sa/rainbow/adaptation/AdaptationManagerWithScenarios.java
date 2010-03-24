@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -283,19 +285,18 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
-		// a strategy can be used in many environments, so each strategy can be related with many environments
-		Map<String, List<Environment>> environmentsPerStrategies = new HashMap<String, List<Environment>>();
-		// collect scenarios strategies and its environments
-		for (SelfHealingScenario scenario : brokenScenarios) {
-			for (String repairStrategy : scenario.getRepairStrategies()) {
-				List<Environment> environments = environmentsPerStrategies.get(repairStrategy);
-				if (environments == null) {
-					environments = new ArrayList<Environment>();
-					environmentsPerStrategies.put(repairStrategy, environments);
-				}
-				environments.addAll(scenario.getEnvironments());
-			}
-		}
+		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
+
+		Map<Concern, Double> weights = systemEnvironment(this.m_model.getAcmeModel()).getWeights();
+		Map<String, Double> weights4Rainbow = translateConcernWeights(weights);
+
+		double maxScore4Strategy = 0L;
+		Strategy selectedStrategy = null;
+
+		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
+		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
+		double scenariosSolutionWeight = 1;
+		int rainbowSolutionWeight = 0;
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel((IAcmeModel) m_model.getAcmeModel())) {
@@ -304,44 +305,33 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				continue; // skip checking this script
 			}
 
-			double maxScore4Strategy = 0L;
-			Strategy selectedStrategy = null;
 			for (Strategy strategy : stitch.script.strategies) {
-				// check first for applicabilty and failures threshold
-				List<Environment> environments = environmentsPerStrategies.get(strategy.getName());
-				if (environments == null || getFailureRate(strategy) > FAILURE_RATE_THRESHOLD) {
+				// check first for failures threshold
+				if (!candidateStrategies.contains(strategy.getName())
+						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
 					continue; // don't consider this Strategy
 				}
-				Model simulationModel = this.clone(this.m_model.getAcmeModel());
-				// TODO simular aplicacion de estrategia sobre simulationModel!
+				IAcmeModel simulationModel = simulateStrategyApplication(strategy, this.m_model.getAcmeModel());
 
-				// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
-				// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-				double scenariosSolutionWeight = 1;
-				int rainbowSolutionWeight = 0;
+				double scenariosScore = 0;
+				if (scenariosSolutionWeight > 0) {
+					scenariosScore = scoreStrategyWithScenarios(SelfHealingScenarioRepository.getEnabledScenarios(),
+							weights, simulationModel);
+				}
 
-				// consider the strategy within each environment
-				for (Environment environment : environments) {
-					Map<Concern, Double> weights = environment.getWeights();
-					Map<String, Double> weights4Rainbow = translateConcernWeights(weights);
-					double scenariosScore = 0;
-					if (scenariosSolutionWeight > 0) {
-						scenariosScore = scoreStrategyWithScenarios(
-								SelfHealingScenarioRepository.getEnabledScenarios(), weights, simulationModel);
-					}
-					double rainbowScoreStrategy = 0;
-					if (rainbowSolutionWeight > 0) {
-						rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
-					}
-					@SuppressWarnings("unused")
-					double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
-							+ rainbowSolutionWeight;
-					if (scenariosScore > maxScore4Strategy) {
-						maxScore4Strategy = scenariosScore;
-						selectedStrategy = strategy;
-					}
+				double rainbowScoreStrategy = 0;
+				if (rainbowSolutionWeight > 0) {
+					rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
+				}
+
+				double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
+						+ rainbowSolutionWeight;
+				if (weightedScore > maxScore4Strategy) {
+					maxScore4Strategy = weightedScore;
+					selectedStrategy = strategy;
 				}
 			}
+
 			// TODO lo siguiente es tomado de rainbow tal cual (ver)
 			if (_stopWatchForTesting != null)
 				_stopWatchForTesting.stop();
@@ -361,7 +351,31 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		}
 	}
 
-	private Model clone(Object acmeModel) {
+	private Set<String> collectCandidateStrategies(List<SelfHealingScenario> brokenScenarios) {
+		Set<String> candidateStrategies = new HashSet<String>();
+		for (SelfHealingScenario brokenScenario : brokenScenarios) {
+			candidateStrategies.addAll(brokenScenario.getRepairStrategies());
+		}
+		return candidateStrategies;
+	}
+
+	/**
+	 * @return the current system enviroment
+	 */
+	private Environment systemEnvironment(Object acmeModel) {
+		// TODO obtener el environment actual del sistema
+		throw new RuntimeException("Method not yet implemented!");
+	}
+
+	private IAcmeModel simulateStrategyApplication(Strategy strategy, Object acmeModel) {
+		IAcmeModel simulationModel = this.clone((IAcmeModel) this.m_model.getAcmeModel());
+		// TODO simular aplicacion de estrategia sobre simulationModel!
+		throw new RuntimeException("Method not yet implemented!");
+		// return simulationModel;
+	}
+
+	private IAcmeModel clone(IAcmeModel acmeModel) {
+		// TODO clonar el model
 		throw new RuntimeException("Method not yet implemented!");
 	}
 
@@ -380,10 +394,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private Double scoreStrategyWithScenarios(Collection<SelfHealingScenario> scenarios,
-			Map<Concern, Double> weightsPerScenario, Model simulationModel) {
+			Map<Concern, Double> weightsPerScenario, IAcmeModel simulationModel) {
 		double score = 0L;
 		for (SelfHealingScenario scenario : scenarios) {
-			boolean scenarioSatisfiedInSimulation = !scenario.isBroken((IAcmeModel) this.m_model.getAcmeModel());
+			boolean scenarioSatisfiedInSimulation = !scenario.isBroken(simulationModel);
 			if (scenarioSatisfiedInSimulation) {
 				Double concernWeight = weightsPerScenario.get(scenario.getConcern());
 				if (concernWeight == null) {
@@ -454,8 +468,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		 */
 		double[] items = new double[aggAtt.size()];
 		// double[] itemsPred = new double[aggAtt.size()];
-		if (conds == null)
-			conds = new double[aggAtt.size()];
+		conds = new double[aggAtt.size()];
 		// if (condsPred == null)
 		// condsPred = new double[aggAtt.size()];
 		int i = 0;
