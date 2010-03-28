@@ -15,6 +15,7 @@
 \usepackage{graphicx}                                                    % permite insertar gráficos
 \usepackage{color}                                                       % permite el uso de colores en el documento
 \usepackage{url}                                                         % permite el uso de urls
+\usepackage{ulem}                                                        % permite el poder tachar texto
 \usepackage[pdfcreator={LaTeX2e},
 			pdfauthor={Jonathan Chiocchio, Gabriel Tursi},
 			pdftitle={Hacia un modelo m'as flexible para la implementaci'on de la auto reparaci'on de sistemas de software basada en Arquitectura},
@@ -37,8 +38,10 @@
 %\addtolength{\textwidth}{4cm}
 %\addtolength{\textheight}{2cm}
 
-% macro 'todo' para To-Do's
+% macros
 \def\todo#1{\textcolor{red}{#1}}
+\def\tachar#1{\textcolor{red}{\sout{#1}}}
+
 
 % Macro 'borde' para un texto con borde
 \newsavebox{\fmbox}
@@ -49,6 +52,8 @@
 %%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%
 
 \begin{document}
+
+\normalem                            % Esto impide que el paquete ulem sobreescriba el formateo por defecto del comando ``emph''
 
 \materia{Tesis de Licenciatura en\\[0.3em]Ciencias de la Computación}
 \titulo{Hacia un modelo m'as flexible para la implementaci'on de la auto reparaci'on de sistemas de software basada en Arquitectura}
@@ -72,54 +77,67 @@ La adaptación en Rainbow es lograda a través de varios módulos que colaboran par
 
 	\begin{itemize}
 		\item \textbf{Monitor}: es el módulo que se encarga de obtener la información sobre el funcionamiento del sistema en tiempo de ejecución.
-		\item \textbf{Evaluador de Restricciones}: es el que determina si alguna de las variables que se están monitoreando violó alguna de las restricciones planteadas (por ejemplo, que la performance de un proceso dejó de ser aceptable).
+		\item \textbf{Evaluador de Restricciones}: es el que determina si el valor de alguna de las variables que se están monitoreando violó alguna de las restricciones planteadas (por ejemplo, que la \emph{performance} de un proceso dejó de ser aceptable).
 		\item \textbf{Modelo de Arquitectura}: es el módulo que contiene una representación en un ADL (Architecture Description Language) de la arquitectura del sistema que se quiere adaptar.
 		\item \textbf{Manejador de Reparaciones}: es el módulo que se ocupa de determinar la forma en la que se va a “reparar” o “adaptar” el sistema en función de los problemas detectados.
-		\item \textbf{Intérprete}: es el módulo que permite armar la estrategia de reparación a partir de la información del modelo de arquitectura. Es decir, es el que “traduce” la arquitectura para poder elegir la reparación.
-		%\todo{ver definicion de interprete}
+		\item \textbf{Intérprete}: es el módulo que interpreta los cambios ocurridos en tiempo de ejecución y los ``traduce'' a cambios en el modelo de arquitectura.
 		\item \textbf{Administrador de Runtime}: es el módulo que implementa en tiempo de ejecución el cambio en el comportamiento de la aplicación.
 	\end{itemize}
 	  
-		Todos estos mecanismos funcionan de manera externa a la aplicación. Este enfoque tiene varias ventajas, siendo la principal el hecho de contar con un Framework reusable que pueda ser conectado a distintos tipos de aplicaciones para que implementen mecanismos de adaptación, minimizando el impacto en la aplicación.
+		Todos estos mecanismos funcionan de manera externa a la aplicación. Este enfoque tiene varias ventajas, siendo la principal el hecho de contar con un \emph{framework} reusable que pueda ser conectado a distintos tipos de aplicaciones para que implementen mecanismos de adaptación, minimizando el impacto en la aplicación.\\
+		El caracter externo de Rainbow representa una ventaja también cuando se desea implementar auto reparación en sistemas cuyo código fuente no está disponible o no es plausible de ser modificado.
 
-Dado que estos sistemas y sus conceptos son relativamente novedosos,  pensemos un ejemplo de auto-reparación:
+		A pesar de intentar implementar un mecanismo genérico de auto-reparación, Rainbow tiene varios componentes con conocimiento fijo\footnote{Más conocido comúnmente como ``hardcodeado'' o ``cableado''.} sobre las reparaciones. Por ejemplo, cuáles son las tácticas para la reparación que se deben implementar cuando una determinada restricción es violada.
+		
+	\subsection{Breve ejemplo de auto-reparación}
+		Dado que estos sistemas y sus conceptos son relativamente novedosos, proponemos un pequeño ejemplo de auto-reparación para afirmar conceptos:
 
-	\begin{itemize}
-		\item Una aplicación Web brinda servicios a millones de usuarios. Es crítico que el tiempo de respuesta ante un pedido de una página se mantenga dentro de rangos razonables.
-		\item El sistema está compuesto por varias páginas, siendo la más crítica su página principal. Esta página está formada por varias ``partes'', cada una con su respectiva funcionalidad.
-    \item  El sistema implementa un mecanismo de monitoreo del tiempo de respuesta ante un pedido, y lo informa al \emph{Evaluador de Restricciones}.
-    \item Cuando no se respeta el tiempo máximo durante una predeterminada cantidad de veces, el sistema decide implementar una auto-reparación.
-    \item El \emph{Manejador de Reparaciones}, en función de su conocimiento de la estructura del sistema, decide \textbf{desactivar cierta funcionalidad de la página principal}, resignando funcionalidad para ganar en \emph{performance}.
-    \item Ese cambio se implementa a través del \emph{Administrador de Run-Time}.
-    \item  Al desactivar esa funcionalidad, la performance del sistema mejora.
-	\end{itemize}
+		\begin{itemize}
+			\item Supongamos una aplicación Web que brinda servicios a millones de usuarios. Es crítico que el tiempo de respuesta ante un pedido de una página se mantenga dentro de rangos razonables.
+			\item El sistema está compuesto por varias páginas, siendo la más crítica su página principal. Esta página está formada por varias ``partes'', cada una con su respectiva funcionalidad.
+	    \item El \emph{Monitor} implementa un mecanismo de monitoreo del tiempo de respuesta del sistema ante un pedido, y lo informa al \emph{Intérprete}, el que a su vez se encarga de traducir dicha información en cambios en las propiedades del sistema. e.g.\\
+	    ``el tiempo de respuesta fue 4.300 ms. $\Rightarrow$ \verb@client.experiencedResponseTime@ $\leftarrow$ \verb@4300@''
+	    \item El \emph{Evaluador de Restricciones} determina si las restricciones del sistema siguen cumpliendose o no. Cuando no se respeta el tiempo máximo durante una predeterminada cantidad de veces, decide implementar una auto-reparación.
+	    \item El \emph{Manejador de Reparaciones}, en función de su conocimiento de la arquitectura del sistema, decide \textbf{desactivar cierta funcionalidad de la página principal}, resignando funcionalidad para ganar en \emph{performance}.
+	    \item Ese cambio se implementa a través del \emph{Administrador de Run-Time}.
+	    \item  Al desactivar esa funcionalidad, la performance del sistema mejora.
+		\end{itemize}
 	
-		A pesar de intentar implementar un mecanismo genérico de auto-reparación, Rainbow tiene varios componentes con conocimiento fijo\footnote{Más conocido en la jerga como ``hardcodeado'' o ``cableado''.} sobre las reparaciones. Por ejemplo, cuáles son las tácticas para la reparación que se deben implementar cuando una determinada restricción es violada.
-
 \section{Alcance de la tesis}
-		La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto-reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de prioridades y/o estrategias a considerar en la auto-reparación del sistema.
+		La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto-reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de escenarios uso real del sistema y su relación con los atributos de calidad requeridos para el mismo; y en la definición de prioridades y/o estrategias a considerar en la auto-reparación del sistema.
 		
 		Esto se pretende lograr con cambios importantes en varios de sus módulos:
 
 	\begin{itemize}
-		\item En el módulo de Modelo de Arquitectura, la idea es implementar dos tipos de mejoras:
-			\begin{itemize}
-          \item Extender el ADL usado por Rainbow (éste es Acme\cite{Acme}) para permitir que la descripción de la arquitectura incluya información sobre los atributos de calidad que la arquitectura implementa y que son relevantes en runtime. Por ejemplo, describir la importancia de la performance, o de la usabilidad, o de la disponibilidad. Esto puede lograrse especificando \textbf{Escenarios de Atributos de Calidad} (de ahora en más, simplemente ``Escenarios''), ante los cuales deba responder el sistema. Los escenarios están compuestos por la siguiente información:
-			\begin{itemize}
-          \item Fuente del Estímulo
-          \item Estímulo
-					\item Artefacto
-          \item Entorno
-          \item Respuesta
-          \item Cuantificación de la Respuesta
-		\end{itemize}
+		\item Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de arquitectura (expresado en el ADL Acme\cite{Acme}). Uno de los objetivos de este trabajo es extender dicho conocimiento, para eso, en el módulo de \emph{Modelo de Arquitectura}, se implementarán las siguiente mejoras:
+			% BEGIN MEJORAS MODELO ARQUITECTURA -------------------------
+			\begin{enumerate}
+          \item  Incluir información sobre los atributos de calidad que la arquitectura implementa y que son relevantes \emph{para el o los stakeholders del sistema} en tiempo de ejecución. Por ejemplo, poder describir la importancia (relativa) de la \emph{performance}, la usabilidad, la disponibilidad, etc.\\
+          Nuestro enfoque para lograr esto consiste en especificar  \textbf{Escenarios de Atributos de Calidad} (de ahora en más, simplemente ``Escenarios''), un concepto ya especificado por ATAM\cite{ATAM} \cite{ATAM2} (Architecture Tradeoff Analysis Method) en el contexto de los ``Workshops de Atributos de Calidad'' (Quality Attribute Workshops QAW\cite{QAW}).\\
+          Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de una manera esperada. Los escenarios están compuestos por la siguiente información:
+					\begin{itemize}
+		          \item Fuente del Estímulo
+		          \item Estímulo
+							\item Artefacto
+		          \item Entorno
+		          \item Respuesta
+		          \item Cuantificación de la Respuesta
+					\end{itemize}
 		
-		\indent De todos estos atributos, son particularmente importantes el \textbf{Artefacto} y la \textbf{Cuantificación de la Respuesta}. El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que en Acme se especifican los componentes y conectores del sistema, el escenario tendría entonces una vinculación directa en la especificación con los componentes afectados. La \textbf{Cuantificación de la Respuesta} es también importante ya que de ella surgen las restricciones que deben ser evaluadas por el \emph{Evaluador de Restricciones}. Al hacer estos cambios, las restricciones que se usaban anteriormente en Rainbow pasarían en realidad a ser una parte de un Escenario de Atributo de Calidad.
-					\item Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto-reparación, esta no comprometa a alguna otra funcionalidad de la aplicación considerada más importante para el usuario.
-          \item Relacionar estos Escenarios (en realidad los artefactos afectados por el escenario) con los modelos de la arquitectura usando la terminología de ATAM\cite{ATAM} (Architecture Tradeoff Analysis Method), para indicar cuáles son los puntos sensibles y los puntos de tradeoff dentro de la arquitectura para los distintos escenarios. De esta manera, el \emph{Manejador de Reparaciones} puede saber dónde debe cambiar el sistema si un escenario no se está cumpliendo.
-  		\end{itemize}
-    \item En el módulo \emph{Evaluador de Restricciones} se deberá tomar la información de restricciones vigentes a partir de los Escenarios (la cuantificación de la respuesta) que figuren como activos en el modelo de arquitectura.
+					\indent De todos estos atributos, son particularmente importantes el \textbf{Artefacto} y la \textbf{Cuantificación de la Respuesta}.
+					
+					El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que en Acme se especifican los componentes y conectores del sistema, el escenario tendría entonces una vinculación directa en la especificación con los componentes afectados.
+
+					La \textbf{Cuantificación de la Respuesta} es también importante ya que de ella surgen las restricciones que deben ser evaluadas por el \emph{Evaluador de Restricciones}. Al hacer estos cambios, las restricciones que se usaban anteriormente en Rainbow pasarían a ser en realidad una parte de un Escenario de Atributo de Calidad.
+					\item Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto-reparación, se tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de modo tal que la estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación considerada más importante para el usuario.
+          \item \tachar{Relacionar estos Escenarios (en realidad los artefactos afectados por el escenario) con los modelos de la arquitectura usando la terminología de ATAM\cite{ATAM} (Architecture Tradeoff Analysis Method), para indicar cuáles son los puntos sensibles y los puntos de tradeoff dentro de la arquitectura para los distintos escenarios. De esta manera, el \emph{Manejador de Reparaciones} puede saber dónde debe cambiar el sistema si un escenario no se está cumpliendo.}
+			\end{enumerate}
+			% END MEJORAS MODELO ARQUITECTURA -------------------------
+
+    \item El módulo \emph{Evaluador de Restricciones} se extenderá para que evalúe la información de restricciones, presentes en la cuantificación de la respuesta, asociadas a los Escenarios que figuren como activos en el modelo de arquitectura.
+
     \item En el módulo \emph{Manejador de Reparaciones}, utilizar el conocimiento plasmado en los escenarios para optar por la estrategia de reparación a aplicar, teniendo en cuenta los puntos sensibles, los puntos de tradeoff relacionados y las prioridades de los escenarios, con el objetivo de, además de reparar el inconveniente hallado, evitar perjudicar algún otro escenario de mayor prioridad.
+
     \item Una última idea que puede resultar interesante es la de asociar las reparaciones a los escenarios. Por ejemplo, un escenario podría incluir información del estilo ``Si este escenario se ve comprometido, implementar tal reparación''. Esto agrega la ventaja de que ahora los problemas y las soluciones (estrategias), gracias a los escenarios, pueden ser visibles a los usuarios y stakeholders de la aplicación. Dichas estrategias (podrían ser más de una, ordenadas por prioridad al igual que los escenarios) también deberían declarar que otros concerns perjudican, para que el \emph{Manejador de Reparaciones} pueda contemplar tradeoffs y decidir la mejor estrategia que no perjudique otros escenarios con dichos concerns.
 	\end{itemize}
 
@@ -155,8 +173,14 @@ En resumidas palabras, el alcance del trabajo consiste en:
 	\bibitem{Acme} Proyecto Acme de la Universidad de Carnegie Mellon.\\
 	 \url{http://www.cs.cmu.edu/~acme}
 
-	\bibitem{ATAM} The Architecture Tradeoff Analysis Method (ATAM), Software Engineering Institute (SEI)\\
-	 \url{http://www.sei.cmu.edu/architecture/ata_method.html}
+	\bibitem{ATAM} ATAM: Method for Architecture Evaluation, Software Engineering Institute (SEI)\\
+	 \url{http://www.sei.cmu.edu/library/abstracts/reports/00tr004.cfm}
+	 
+	\bibitem{ATAM2} The Architecture Tradeoff Analysis Method (ATAM), Software Engineering Institute (SEI)\\
+	 \url{http://tinyurl.com/ye5ub9l}
+
+	\bibitem{QAW} Quality Attribute Workshops (QAWs), Third Edition, Software Engineering Institute (SEI)\\
+	 \url{http://www.sei.cmu.edu/library/abstracts/reports/03tr016.cfm}
 
 \end{thebibliography}
 
