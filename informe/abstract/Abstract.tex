@@ -73,17 +73,17 @@
 \section{Introducción}
 
 	\subsection{Motivación para este trabajo}
-		La complejidad creciente de los sistemas desafía de forma permanente el estado del arte de las Ciencias de la Computación y la Ingeniería del Software. La velocidad con la que se producen los cambios, la criticidad de las fallas que aparecen y la necesidad de mantener sistemas funcionando de manera continua a pesar de no pertenecer a lo que tradicionalmente se conoce como ``sistemas de misión crítica'' ha llevado a los investigadores a buscar novedosas formas de resolver estos desafíos. Una de ellas es la tendencia hacia los sistemas autónomos, que recibe distintos nombres como ``Computación Autómona'', ``Software consciente'' o ``Sistemas Auto–Reparables'' (o ``Self Healing'' en inglés). Existe una cantidad en aumento de especialistas en el mundo \cite{GAN/03} que creen que esta necesidad de implementar este tipo de mecanismos está dando lugar al nacimiento de una nueva era en los sistemas de información.
+		La complejidad creciente de los sistemas desafía de forma permanente el estado del arte de las Ciencias de la Computación y la Ingeniería del Software. La velocidad con la que se producen los cambios, la criticidad de las fallas que aparecen y la necesidad de mantener sistemas funcionando de manera continua a pesar de no pertenecer a lo que tradicionalmente se conoce como ``sistemas de misión crítica'' ha llevado a los investigadores a buscar novedosas formas de resolver estos desafíos. Una de ellas es la tendencia hacia los sistemas autónomos, que recibe distintos nombres como ``Computación Autómona'', ``Software consciente'' o ``Sistemas Auto–Reparables'' (o ``Self Healing'' en inglés). Existe una cantidad en aumento de especialistas en el mundo \cite{GAN/03} que creen que la necesidad de implementar este tipo de mecanismos está dando lugar al nacimiento de una nueva era en los sistemas de software.
 
-		La idea subyacente detrás de estos nombres es que los sistemas incluyan mecanismos para ajustar su comportamiento a partir de fallas o necesidades cambiantes de sus usuarios y/o el entorno en el que operan. De esta forma, un sistema puede repararse u optimizarse sin intervención humana. Una de las formas de implementar estos mecanismos es la llamada ``Adaptación Basada en Arquitecturas''. En este tipo de soluciones, el sistema tiene un módulo que conoce su arquitectura, y, en base a este conocimiento y al problema detectado, toma una cierta decisión.
+		La idea subyacente detrás de estos nombres es que los sistemas incluyan mecanismos para ajustar su comportamiento a partir de fallas o necesidades cambiantes de sus usuarios y/o el entorno en el que operan. De esta forma, un sistema puede repararse u optimizarse sin intervención humana. Una de las formas de implementar estos mecanismos es la llamada ``Adaptación Basada en Arquitecturas''. En este tipo de soluciones, el sistema tiene un módulo que conoce su arquitectura, y, sobre la base de este conocimiento y el problema detectado, toma una decisión sobre cómo auto repararse.
 
 	\subsection{Acme}
-		\textbf{Acme}\cite{Acme} es un simple y genérico ADL (Architecture Description Language), es decir, un lenguaje para describir arquitecturas de sistemas de software, utilizando la vista de C\&C. (componentes y conectores) \textbf{Acme} está desarrollado por el grupo \textbf{Able}\cite{Able} de la Universidad de Carnegie Mellon (UCM) en Estados Unidos y fue pensado para proveer un formato común de intercambio entre distintos programas de diseño de arquitecturas; así también como para servir de base a futuros programas de este tipo.
+		\textbf{Acme}\cite{Acme} es un simple y genérico ADL (Architecture Description Language), es decir, un lenguaje para describir arquitecturas de sistemas de software, utilizando la vista de C\&C. (componentes y conectores) \textbf{Acme} está desarrollado por el grupo \textbf{Able}\cite{Able} de la Universidad de Carnegie Mellon (CMU) en Estados Unidos y fue pensado para proveer un formato común de intercambio entre distintos programas de diseño de arquitecturas; así también como para servir de base a futuros programas de este tipo.
 		
 	\subsection{Rainbow}		
-		 Uno de los grupos más activos en investigación en materia de auto-reparación es el proyecto \textbf{Rainbow}\cite{Rainbow}, enmarcado dentro del proyecto \textbf{Able} de la Universidad de Carnegie Mellon (UCM) en Estados Unidos que, como mencionamos anteriormente, también desarrolla \textbf{Acme}.
+		 Uno de los grupos más importantes en investigación en materia de auto-reparación es el proyecto \textbf{Rainbow}\cite{Rainbow}, enmarcado dentro del proyecto \textbf{Able}, también de la Universidad de Carnegie Mellon (CMU).
 		 
-		 Rainbow es un \emph{framework} (desarrollado en Java) cuya finalidad es proveer un mecanismo de adaptación para sistemas de software basado en arquitecturas. La adaptación es lograda a través de varios módulos que colaboran para lograr este objetivo. Estos son:
+		 Rainbow es un \emph{framework} desarrollado en Java cuya finalidad es proveer un mecanismo de adaptación basado en arquitecturas para sistemas de software. La adaptación es lograda a través de varios módulos que colaboran para lograr este objetivo. Estos son:
 
 		\begin{itemize}
 			\item \textbf{Monitor}: es el módulo que se encarga de obtener la información sobre el funcionamiento del sistema en tiempo de ejecución.
@@ -104,7 +104,7 @@
 		Dado que estos sistemas y sus conceptos son relativamente novedosos, proponemos un pequeño ejemplo de auto-reparación para afirmar conceptos:
 
 		\begin{itemize}
-			\item Supongamos una aplicación Web que brinda servicios a millones de usuarios. Es crítico que el tiempo de respuesta ante un pedido de una página se mantenga dentro de rangos razonables.
+			\item Supongamos que tenemos una aplicación Web que brinda servicios a millones de usuarios. Es crítico que el tiempo de respuesta ante un pedido de una página se mantenga dentro de rangos razonables.
 			\item El sistema está compuesto por varias páginas, siendo la más crítica su página principal. Esta página está formada por varias ``partes'', cada una con su respectiva funcionalidad.
 	    \item El \emph{Monitor} implementa un mecanismo de monitoreo del tiempo de respuesta del sistema ante un pedido, y lo informa al \emph{Intérprete}, el que a su vez se encarga de traducir dicha información en cambios en las propiedades del sistema. e.g.\\
 	    ``el tiempo de respuesta fue 4.300 ms. $\Rightarrow$ \verb@client.experiencedResponseTime@ $\leftarrow$ \verb@4300@''
@@ -115,9 +115,9 @@
 		\end{itemize}
 
 	\subsection{ATAM y QAW}
-		Antes de ahondar en el objetivo de nuestro trabajo, es necesario explicar brevemente dos métodos existentes para analizar y razonar sobre arquitecturas de software y su relación con los atributos de calidad requeridos para un sistema; los cuales utilizaremos posteriormente.
+		Antes de profundizar en el objetivo de nuestro trabajo, es necesario explicar brevemente dos métodos existentes para analizar y razonar sobre arquitecturas de software y su relación con los atributos de calidad requeridos para un sistema. Estos métodos son importantes para el desarrollo de la tesis.
 		
-		\textbf{ATAM}\cite{ATAM}\cite{ATAM2} es el acrónimo para ``Architecture Tradeoff Analysis Method'', es decir, es un método de análisis de arquitecturas que hace foco en el balance que hay hacer al momento de tomar decisiones arquitectónicas para satisfacer ciertos atributos de calidad sin descuidar otros (esto es más conocido en la jerga como hacer ``trade-offs'') puesto que normalmente es virtualmente imposible satisfacer todos los atributos de calidad al mismo tiempo. (e.g. mas seguridad usualmente conlleva a tener menor \emph{performance})
+		\textbf{ATAM}\cite{ATAM}\cite{ATAM2} es el acrónimo para ``Architecture Tradeoff Analysis Method'', es decir, es un método de análisis de arquitecturas que hace foco en el balance que hay hacer al momento de tomar decisiones arquitectónicas para satisfacer ciertos atributos de calidad sin descuidar otros (esto es más conocido en la jerga como hacer ``trade-offs'') puesto que normalmente es virtualmente imposible satisfacer todos los atributos de calidad al mismo tiempo. (e.g. más seguridad o más flexibilidad usualmente conllevan a tener peor \emph{performance})
 
 		Algunos de los objetivos más importantes ATAM son: analizar en una etapa temprana del desarrollo cómo las decisiones arquitecturales satisfacen los atributos de calidad requeridos para un sistema, así también como posibles riesgos, puntos sensibles y trade-offs entre ellas.
 		
@@ -149,17 +149,17 @@
 
 \section{Alcance de la tesis}
 	\subsection{Idea Básica}
-		La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto-reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de escenarios uso real del sistema y su relación con los atributos de calidad requeridos para el mismo; y en la definición de prioridades y/o estrategias a considerar en la auto-reparación del sistema.
+		La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto-reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo; y en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto-reparación del sistema cuando uno de los escenarios no se cumple.
 		
-		Lo antedicho se pretende lograr con cambios importantes en varios de sus módulos. A continuación, el detalle de dichos cambios.
+		Lo antedicho se pretende lograr con cambios importantes en varios de sus módulos. A continuación se detallan los cambios propuestos.
 
 	\subsection{Cambios en el \emph{Modelo de Arquitectura}}
-		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de arquitectura (expresado en \textbf{Acme}). Uno de los objetivos de este trabajo es extender dicho conocimiento, para eso, en el módulo de \textbf{Modelo de Arquitectura}, se implementarán las siguiente mejoras:
+		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de arquitectura expresado en \textbf{Acme}. Uno de los objetivos de este trabajo es extender el conocimiento que el framework de reparación tiene sobre el sistema en general. Para eso, en el módulo de \textbf{Modelo de Arquitectura}, se implementarán las siguiente mejoras:
 
 			\begin{enumerate}
           \item Incluir información sobre los atributos de calidad que la arquitectura implementa y que son relevantes \emph{para el o los stakeholders del sistema} en tiempo de ejecución. Por ejemplo, poder describir la importancia (relativa) de la \emph{performance}, la usabilidad, la disponibilidad, etc.
           
-          Nuestro enfoque para lograr esto consiste en especificar \textbf{Escenarios de Atributos de Calidad} (de ahora en más, simplemente ``Escenarios''), tal cual fueron descriptos en la sección anterior, aunque con algunos agregados de información orientados a la auto reparación.
+          Nuestro enfoque para lograr esto consiste en especificar \textbf{Escenarios de Atributos de Calidad} (de ahora en más, simplemente ``Escenarios'' ++ Pongan referencia al libro de BAss y Clements, Capítulo 4)+++), tal cual fueron descriptos en la sección anterior, aunque con algunos agregados de información orientados a la auto reparación.
 
           Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de una manera esperada. Los escenarios están compuestos por la siguiente información:
 					\begin{itemize}
@@ -182,13 +182,13 @@
 					La \textbf{Cuantificación de la Respuesta} es también importante ya que de ella surgen las restricciones que deben ser evaluadas por el \emph{Evaluador de Restricciones}. Al hacer estos cambios, las restricciones que se usaban anteriormente en Rainbow pasarían a ser en realidad una parte de un Escenario de Atributo de Calidad.
 					\item Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto-reparación, se tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de modo tal que la estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación considerada más importante para el usuario.
 					
-					\item Asociar las estrategias de reparación a los escenarios. Por ejemplo, un escenario podría incluir información del estilo ``Si este escenario se ve comprometido, implementar tal reparación''. Esto agrega la ventaja de que ahora, gracias a los escenarios, los problemas y sus posibles soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Dichas estrategias (serían más de una, ordenadas por prioridad al igual que los escenarios) poseen la información necesaria para que el \textbf{Manejador de Reparaciones} pueda simular su aplicación y estimar cómo quedaría el sistema luego de haber aplicado dicha estrategia. (estimación de la nueva ``utilidad del sistema'')		
+					\item Asociar las estrategias de reparación a los escenarios. Por ejemplo, un escenario podría incluir información del estilo ``Si este escenario se ve comprometido, implementar tal reparación''. Esto agrega la ventaja de que ahora, gracias a los escenarios, los problemas y sus posibles soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Dichas estrategias (serían más de una, ordenadas por prioridad al igual que los escenarios) poseen la información necesaria para que el \textbf{Manejador de Reparaciones} pueda simular su aplicación y estimar cómo quedaría el sistema luego de haber aplicado dicha estrategia. (estimación de la nueva ``utilidad del sistema''). Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o no de los escenarios requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas. 		
 			\end{enumerate}
 
 	\subsection{Cambios en el \emph{Evaluador de Restricciones}}
-		Debido a que, con este nuevo enfoque, todo pasa por el concepto de escenario, es necesario establecer cambios en la lógica de evaluación de restricciones (o invariantes) del sistema. Dichas restricciones ya no estarían más embebidas en los componentes de la arquitectura (modelados con Acme) sino que las \emph{constraints} a evaluar serían aquellas presentes en la cuantificación de la respuesta de cada escenario.
+		Debido a que, con este nuevo enfoque, todo pasa por el concepto de escenario, es necesario establecer cambios en la lógica de evaluación de restricciones (o invariantes) del sistema. Dichas restricciones ya no estarían más embebidas en los componentes de la arquitectura (modelados con ACME) sino que las \emph{constraints} a evaluar serían aquellas presentes en la cuantificación de la respuesta de cada escenario.
 		
-		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en Acme) e invoca finalmente al \textbf{Evaluador de Restricciones} para que busque aquellos escenarios que posean al estímulo ejecutado y que estén definidos para el \textbf{Entorno} de ejecución actual y que las restricciones asociadas a sus \textbf{Cuantificaciones de Respuesta} no se cumplan. Aquellos escenarios que cumplan dichas condiciones serán aquellos escenarios que el Manejador de Reparaciones deberá intentar reparar.
+		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en ACME) e invoca finalmente al \textbf{Evaluador de Restricciones} para que busque aquellos escenarios que posean al estímulo ejecutado y que estén definidos para el \textbf{Entorno} de ejecución actual y que las restricciones asociadas a sus \textbf{Cuantificaciones de Respuesta} no se cumplan. Aquellos escenarios que cumplan dichas condiciones serán aquellos escenarios que el Manejador de Reparaciones deberá intentar reparar.
 
 	\subsection{Cambios en el \emph{Manejador de Reparaciones}}
     El módulo \emph{Manejador de Reparaciones} se modificará para que utilice el conocimiento plasmado en los escenarios para optar por la estrategia de reparación a aplicar, teniendo en cuenta:
@@ -202,6 +202,11 @@
 
 	\subsection{Desarrollo de una GUI}
 		Se propone el desarrollo de una interfaz de usuario gráfica (GUI, de sus siglas en inglés: Graphical User Interface) para que los distintos \emph{stakeholders} (incluyendo usuarios y arquitectos) puedan colaborar creando y editando escenarios que luego serán importados y utilizados por Rainbow.
+
+
+	\subsection{Eliminación de limitaciones}
+		En la implementación actual de Rainbow, la cantidad de restricciones evaluada es fija. En nuestra versión, los stakeholders podrán cargar una cantidad ilimitada de escenarios y cambiar prioridades relativas y posibles estrategias de reparación. Esto hará que sólo el sistema pueda evaluar correctamente todos los factores a tener en cuenta al momento de aplicar la auto-reparación.
+
 
 	\subsection{Resúmen}
 		En resumidas palabras, el alcance del trabajo consiste en:
@@ -219,8 +224,11 @@
 		\end{itemize}
 
 		\todo{Plantear la coexistencia de Rainbow with Scenarios con el Rainbow de siempre? Si hacemos eso, podríamos poner el diagramita ``Rainbow Architecture With Scenarios'' hecho en Enterprise Architect...}
+
+CREO QUE PONDRIA UNA FRASE DEL ESTILO. SE EVALUARA LA FACTIBILIDAD DE PERMITIR QUE LA NUEVA VERSION DE RAINBOW SEA COMPATIBLE CON LA ANTERIOR.
+
 				
-		Todo lo antedicho tiene como consecuencia que los usuarios tendrán más control sobre lo que el sistema decida hacer para auto-repararse: sólo con modificar la información de los escenarios el sistema modificará su comportamiento. Como contrapartida, las extensiones propuestas en este trabajo hacen que el sistema se comporte de manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el procedimiento de auto-reparación se vuelve más complejo, complicando el seguimiento de las decisiones tomadas por el \emph{framework}.
+		Todo lo antedicho tiene como consecuencia que los usuarios tendrán más herramientas para influir sobre lo que el sistema decida hacer para auto-repararse: sólo con modificar la información de los escenarios el sistema modificará su comportamiento. Como contrapartida, las extensiones propuestas en este trabajo hacen que el sistema se comporte de manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el procedimiento de auto-reparación se vuelve más complejo, complicando el seguimiento de las decisiones tomadas por el \emph{framework}.
 		
 		Por otro lado, luego de la extensión, muchos aspectos del framework de auto-reparación serán más automáticos y no estarán tan fijos como lo están actualmente en Rainbow. Asímismo, se agregan nuevos conceptos que amplían la participación y visibilidad de los usuarios, lo que conlleva múltiples beneficios asociados.
 
@@ -228,6 +236,8 @@
 	Actualmente existe una herramienta de creación y edición de arquitecturas modeladas en Acme, llamado AcmeStudio\cite{AcmeStudio} la cual se encuentra integrada en la popular herramienta de desarrollo Eclipse\cite{Eclipse} como un \emph{plug-in}.
 
 	Se propone como trabajo a futuro extender la herramienta AcmeStudio para que dé soporte a las extensiones propuestas en el presente trabajo, permitiendo así la integración del modelado de la arquitectura con el modelado de los escenarios que la complementan, utilizando la misma herramienta.
+
+	CREO QUE NO ENUMERARIA TODAS LAS PUNTAS... SIMPLEMENTE DIRIA QUE NUESTRO TRABAJO VA A DEJAR MUCHAS POSIBLES MEJORAS QUE SERAN NECESARIAS ANTES DE LA IMPLEMENTACION DE ESTOS FRAMEWORKS COMO HERRAMIENTAS DE USO GENERALIZADO EN LA INDUSTRIA.
 
 	\todo{Enumerar las posibles ``puntas''???}
 \newpage
