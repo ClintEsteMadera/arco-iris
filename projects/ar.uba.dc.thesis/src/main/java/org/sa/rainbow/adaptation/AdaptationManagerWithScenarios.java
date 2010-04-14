@@ -41,7 +41,6 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
  * The Rainbow Adaptation Engine... <br>
  * NOTE: This class is based on the original <code>AdaptationManager</code> code since it is final and thus, it cannot
  * be extended.<br>
- * TODO: IMPLEMENT FUNCTIONALITY!!!!!!!!!!!!!!!!!!!!!!!
  */
 public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
@@ -270,7 +269,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private void doAdaptation() {
-		// nothing to do, avoid doing Rainbow adaptatio
+		// nothing to do, avoid doing Rainbow adaptation
 	}
 
 	/*
@@ -407,50 +406,27 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						// if there is no weight for the concern then its weight it is assumed to be zero
 						concernWeight = new Double(0);
 					}
-					double scenarioWeight = scenarioWeight(scenario.getPriority(), concernWeight);
-					score = +scenarioWeight;
+					score = score + scenarioWeight(scenario.getPriority(), concernWeight);
 				}
 			}
 		}
 		return score;
 	}
 
+	// TODO Analizar e implementar la utilización de la prioridad del escenario en el cálculo del score de la
+	// estrategia.
 	private double scenarioWeight(int priority, double concernWeight) {
-		// TODO tomar el maximo (mas uno para evitar que pese cero) numero de prioridad de entre todos los escenarios?
-		int MAX_PRIORITY = 1000;
+		// TODO tomar la ultima prioridad (mas uno para evitar que pese cero) de entre todos los escenarios?
+		int LAST_PRIORITY = 1000;
 		// TODO ver como pesar prioridades (ojo con outliers en las prioridades)
-		double priorityWeight = (MAX_PRIORITY - priority) / MAX_PRIORITY;
+		double priorityWeight = (LAST_PRIORITY - priority) / LAST_PRIORITY;
 		// TODO idea: el usuario puede pesar la importancia de los concerns vs la de las prioridades
 		// por ahora pesan lo mismo los pesos de los concerns que la prioridad:
 		double concernsPerEnvironmentWeight = 0.5;
 		double scenariosPrioritiesWeight = 0.5;
+		// TODO: Analizar la utilización del peso del concern del escenario en el cálculo del score de la estrategia.
+		// por ahora solamente se esta sumando el peso del concern (si el concern pesa 0.6 suma 0.6)
 		return concernWeight * concernsPerEnvironmentWeight + priorityWeight * scenariosPrioritiesWeight;
-	}
-
-	/**
-	 * Iterate through the supplied set of strategies, compute aggregate attributes, and use the aggregate values plus
-	 * stakeholder utility preferences to compute an integer score for each Strategy, between 0 and 100.
-	 * 
-	 * @param subset
-	 *            the subset of condition-applicable Strategies to score, in the form of a name-strategy map
-	 * @return a map of score-strategy pairs, sorted in increasing order by score.
-	 */
-	@SuppressWarnings("unused")
-	private SortedMap<Double, Strategy> scoreStrategies(Map<String, Strategy> subset) {
-		SortedMap<Double, Strategy> scored = new TreeMap<Double, Strategy>();
-		// boolean predictionEnabled = Rainbow.predictionEnabled() && Rainbow.utilityPredictionDuration() > 0;
-		double[] conds = null; // store the conditions to output for diagnosis
-		// double[] condsPred = null; // store predicted conditions
-		// find the weights of the applicable scenario
-		Map<String, Double> weights = Rainbow.instance().preferenceDesc().weights.get(Rainbow
-				.property(Rainbow.PROPKEY_SCENARIO));
-		for (Strategy strategy : subset.values()) {
-			scored.put(scoreStrategy(strategy, weights), strategy);
-		}
-		log("cond   : " + Arrays.toString(conds));
-		// if (predictionEnabled)
-		// log("condP! : " + Arrays.toString(condsPred));
-		return scored;
 	}
 
 	/**
@@ -494,41 +470,20 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				items[i] += conds[i];
 			}
 			// TODO agregar peso segun prioridad
+			// Idea: sumar un valor fijo para que su peso no sea tan importante, i.e: estrategia nro 1 suma 100, nro 2
+			// suma 50, etc
+
 			// now compute the utility, apply weight, and accumulate to sum
 			score += weights.get(k) * u.f(items[i]);
-
-			// if applicable, process the same set of info using predicted values
-			// if (predictionEnabled) {
-			// // add attribute value from FUTURE condition to accumulated agg value
-			// condValPred = m_model.predictProperty(u.mapping(), Rainbow.utilityPredictionDuration());
-			// itemsPred[i] = v;
-			// if (condValPred != null && condValPred instanceof Double) {
-			// // if (m_logger.isTraceEnabled())
-			// m_logger.info("Avg value of predicted prop: " + u.mapping() + " == " + condValPred);
-			// condsPred[i] = ((Double) condValPred).doubleValue();
-			// itemsPred[i] += condsPred[i];
-			// }
-			// // now compute the utility, apply weight, and accumulate to sum
-			// scorePred += weights.get(k) * u.f(itemsPred[i]);
-			// }
 			++i;
 		}
-
-		// if (predictionEnabled) {
-		// // compare and pick higher score
-		// if (scorePred > .9 * score) { // score based on prediction prevails
-		// log("cur-cond score " + score + " was lower, discarding: " + Arrays.toString(items));
-		// score = scorePred;
-		// items = itemsPred;
-		// }
-		// }
 
 		// log this
 		s = Arrays.toString(items);
 		if (score < m_minUtilityThreshold) {
 			// utility score too low, don't consider for adaptation
 			log("score " + score + " below threshold, discarding: " + s);
-			// TODO descartar estrategia?
+			// TODO descartar estrategia, no calcular su score directamente
 		}
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR2 + s);
 		log("aggAtt': " + s);
