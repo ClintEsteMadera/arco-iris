@@ -48,7 +48,7 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 		 * try { createdRule = acmeComponent.createDesignRule(ruleName); } catch (final AcmeIllegalNameException e) {
 		 * logger.error("Error creating rule from Scenario", e); throw new RuntimeException(e); }
 		 */
-		IAcmeResource context = acmeComponent.getContext();
+		IAcmeResource context = acmeModel.getContext();
 		AcmeDesignRule createdRule = new AcmeDesignRule(context, acmeModel, ruleName);
 		final NumericBinaryRelationalExpressionNode expression = new NumericBinaryRelationalExpressionNode(context);
 		// an integer is an special case of a float, therefore, we can use always FLOAT
@@ -58,6 +58,7 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 		final ReferenceNode leftHandOperand = new ReferenceNode(context);
 		leftHandOperand.setReference(Arrays.asList(acmeComponent.getQualifiedName(), this.getProperty()));
 		expression.setFirstChild(leftHandOperand);
+
 		expression.setOperator(this.getBinaryOperator().getRainbowExpressionOperator());
 
 		final IExpressionNode rightHandOperand = new NumericLiteralNode(this.getValue(), context);
