@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
+import org.acmestudio.acme.core.exception.AcmeException;
+import org.acmestudio.acme.environment.error.AcmeError;
 import org.acmestudio.acme.model.IAcmeModel;
+import org.acmestudio.acme.type.verification.NodeScopeLookup;
+import org.acmestudio.acme.type.verification.RuleTypeChecker;
+import org.acmestudio.basicmodel.element.AcmeDesignRule;
 
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
@@ -62,7 +68,14 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public boolean isBroken(IAcmeModel acmeModel) {
-		throw new RuntimeException("Method not yet implemented!");
+		AcmeDesignRule rule = getResponseMeasure().getConstraint().getAcmeDesignRule();
+		try {
+			return RuleTypeChecker.evaluateAsBoolean(rule, rule, rule.getDesignRuleExpression(),
+					new Stack<AcmeError>(), new NodeScopeLookup());
+		} catch (AcmeException ae) {
+			ae.printStackTrace();
+			throw new RuntimeException("Error while checking for scenario state");
+		}
 	}
 
 	public boolean applyFor(Environment environment) {
