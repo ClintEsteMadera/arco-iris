@@ -1,16 +1,9 @@
 package ar.uba.dc.thesis.rainbow.constraint.instance;
 
-import java.util.Arrays;
-
-import org.acmestudio.acme.core.resource.IAcmeResource;
-import org.acmestudio.acme.element.IAcmeComponent;
-import org.acmestudio.acme.element.IAcmeDesignRule.DesignRuleType;
-import org.acmestudio.acme.rule.node.IExpressionNode;
-import org.acmestudio.acme.rule.node.NumericBinaryRelationalExpressionNode;
-import org.acmestudio.acme.rule.node.NumericLiteralNode;
-import org.acmestudio.acme.rule.node.ReferenceNode;
-import org.acmestudio.basicmodel.element.AcmeDesignRule;
-import org.acmestudio.basicmodel.model.AcmeModel;
+import org.acmestudio.acme.model.IAcmeModel;
+import org.acmestudio.basicmodel.core.AcmeFloatValue;
+import org.acmestudio.basicmodel.core.AcmeIntValue;
+import org.acmestudio.basicmodel.element.property.AcmeProperty;
 import org.apache.commons.lang.StringUtils;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
@@ -31,8 +24,6 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 
 	private final long value;
 
-	private AcmeDesignRule acmeDesignRule;
-
 	public NumericBinaryRelationalConstraint(String property, NumericBinaryOperator binaryOperator, long value) {
 		super();
 		this.property = property;
@@ -40,38 +31,6 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 		this.value = value;
 
 		this.validate();
-	}
-
-	public void createAndAddAcmeRule(String ruleName, AcmeModel acmeModel, final IAcmeComponent acmeComponent) {
-		// The following adds the rule to the component, among several other things...
-		/*
-		 * try { createdRule = acmeComponent.createDesignRule(ruleName); } catch (final AcmeIllegalNameException e) {
-		 * logger.error("Error creating rule from Scenario", e); throw new RuntimeException(e); }
-		 */
-		IAcmeResource context = acmeModel.getContext();
-		AcmeDesignRule createdRule = new AcmeDesignRule(context, acmeModel, ruleName);
-		final NumericBinaryRelationalExpressionNode expression = new NumericBinaryRelationalExpressionNode(context);
-		// an integer is an special case of a float, therefore, we can use always FLOAT
-		expression.setExpressionType(NumericBinaryRelationalExpressionNode.FLOAT_TYPE);
-
-		// TODO: the "context" param used to be NULL, if this doesn't work, change it back to NULL
-		final ReferenceNode leftHandOperand = new ReferenceNode(context);
-		leftHandOperand.setReference(Arrays.asList(acmeComponent.getQualifiedName(), this.getProperty()));
-		expression.setFirstChild(leftHandOperand);
-
-		expression.setOperator(this.getBinaryOperator().getRainbowExpressionOperator());
-
-		final IExpressionNode rightHandOperand = new NumericLiteralNode(this.getValue(), context);
-		expression.setSecondChild(rightHandOperand);
-
-		createdRule.setDesignRuleType(DesignRuleType.INVARIANT);
-		createdRule.setDesignRuleExpression(expression);
-
-		this.acmeDesignRule = createdRule;
-	}
-
-	public AcmeDesignRule getAcmeDesignRule() {
-		return acmeDesignRule;
 	}
 
 	public String getProperty() {
@@ -86,6 +45,33 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 		return value;
 	}
 
+	public boolean holds(IAcmeModel acmeModel) {
+		Number propertyValue = this.getPropertyValueFrom(acmeModel, this.getProperty());
+
+		return this.getBinaryOperator().performOperation(propertyValue, this.getValue());
+	}
+
+	/**
+	 * TODO: Improve the reliability of this method!
+	 * 
+	 * @param acmeModel
+	 * @param propertyName
+	 * @return
+	 */
+	private Number getPropertyValueFrom(IAcmeModel acmeModel, String propertyName) {
+		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, propertyName);
+		if (property.getValue() instanceof AcmeIntValue) {
+			AcmeIntValue propertyValue = (AcmeIntValue) property.getValue();
+			return propertyValue.getValue();
+		} else if (property.getValue() instanceof AcmeFloatValue) {
+			AcmeFloatValue propertyValue = (AcmeFloatValue) property.getValue();
+			return propertyValue.getValue();
+		} else {
+			throw new RuntimeException("Cannot determine the type of value corresponding to the '" + propertyName
+					+ "' property");
+		}
+	}
+
 	public void validate() {
 		if (StringUtils.isBlank(this.getProperty())) {
 			throw new IllegalArgumentException("The property involved in the comparison cannot be blank");
@@ -98,5 +84,4 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 		return new StringBuffer().append("(").append(this.getProperty()).append(SPACE).append(this.getBinaryOperator())
 				.append(SPACE).append(this.getValue()).append(")").toString();
 	}
-
 }

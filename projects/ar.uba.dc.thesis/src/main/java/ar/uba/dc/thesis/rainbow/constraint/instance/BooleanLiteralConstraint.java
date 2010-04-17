@@ -3,6 +3,7 @@ package ar.uba.dc.thesis.rainbow.constraint.instance;
 import org.acmestudio.acme.core.resource.IAcmeResource;
 import org.acmestudio.acme.element.IAcmeComponent;
 import org.acmestudio.acme.element.IAcmeDesignRule.DesignRuleType;
+import org.acmestudio.acme.model.IAcmeModel;
 import org.acmestudio.acme.rule.node.BooleanLiteralNode;
 import org.acmestudio.basicmodel.element.AcmeDesignRule;
 import org.acmestudio.basicmodel.model.AcmeModel;
@@ -41,6 +42,10 @@ public class BooleanLiteralConstraint extends ThesisPojo implements Constraint {
 
 	public AcmeDesignRule getAcmeDesignRule() {
 		return this.acmeDesignRule;
+	}
+
+	public boolean holds(IAcmeModel acmeModel) {
+		return this.literalValue;
 	}
 
 	public void validate() {

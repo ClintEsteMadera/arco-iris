@@ -375,7 +375,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private IAcmeModel clone(IAcmeModel acmeModel) {
-		// TODO clonar el model
+		// TODO clonar el model (solo bastaría con clonar las properties con sus valores?)
 		throw new RuntimeException("Method not yet implemented!");
 	}
 

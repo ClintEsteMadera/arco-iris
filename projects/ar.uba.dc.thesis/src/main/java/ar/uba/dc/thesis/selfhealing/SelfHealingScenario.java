@@ -4,14 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
-import org.acmestudio.acme.core.exception.AcmeException;
-import org.acmestudio.acme.environment.error.AcmeError;
 import org.acmestudio.acme.model.IAcmeModel;
-import org.acmestudio.acme.type.verification.NodeScopeLookup;
-import org.acmestudio.acme.type.verification.RuleTypeChecker;
-import org.acmestudio.basicmodel.element.AcmeDesignRule;
 
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
@@ -67,16 +61,44 @@ public class SelfHealingScenario extends AtamScenario {
 		this.repairStrategies.add(repairStrategy);
 	}
 
-	public boolean isBroken(IAcmeModel acmeModel) {
-		AcmeDesignRule rule = getResponseMeasure().getConstraint().getAcmeDesignRule();
-		try {
-			return RuleTypeChecker.evaluateAsBoolean(rule, rule, rule.getDesignRuleExpression(),
-					new Stack<AcmeError>(), new NodeScopeLookup());
-		} catch (AcmeException ae) {
-			ae.printStackTrace();
-			throw new RuntimeException("Error while checking for scenario state");
+	/**
+	 * Checks whether this scenario is broken or not, based on the current state of the model.
+	 * 
+	 * @param acmeModel
+	 * @return
+	 */
+	public boolean isBroken(final IAcmeModel acmeModel) {
+		boolean isBroken = false;
+		if (anyEnvironmentApplies(acmeModel)) {
+			isBroken = !getResponseMeasure().getConstraint().holds(acmeModel);
 		}
+		return isBroken;
 	}
+
+	private boolean anyEnvironmentApplies(final IAcmeModel acmeModel) {
+		boolean anyEnvironmentApplies = false;
+
+		for (Environment environment : this.getEnvironments()) {
+			anyEnvironmentApplies = anyEnvironmentApplies || environment.holds(acmeModel);
+		}
+		return anyEnvironmentApplies;
+	}
+
+	// /**
+	// * Versión usando type checkers
+	// *
+	// * @param acmeModel
+	// * @return
+	// */
+	// public boolean isBroken(IAcmeModel acmeModel) {
+	// SimpleModelTypeChecker typeChecker = new SimpleModelTypeChecker();
+	// typeChecker.registerModel(acmeModel);
+	// AcmeDesignRule rule = getResponseMeasure().getConstraint().getAcmeDesignRule();
+	// TypeCheckingState typeCheckingState = typeChecker.evaluateExpressionInContext(null, rule
+	// .getDesignRuleExpression(), new Stack<AcmeError>());
+	//
+	// return !typeCheckingState.typechecks();
+	// }
 
 	public boolean applyFor(Environment environment) {
 		return getEnvironments().contains(environment);
