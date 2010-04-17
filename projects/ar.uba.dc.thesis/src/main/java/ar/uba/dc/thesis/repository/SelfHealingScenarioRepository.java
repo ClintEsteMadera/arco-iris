@@ -1,55 +1,31 @@
 package ar.uba.dc.thesis.repository;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.sa.rainbow.core.Rainbow;
-import org.sa.rainbow.util.Util;
-
-import ar.uba.dc.thesis.atam.ArchitecturalDecision;
-import ar.uba.dc.thesis.atam.Artifact;
-import ar.uba.dc.thesis.atam.Environment;
-import ar.uba.dc.thesis.atam.ResponseMeasure;
-import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.rainbow.constraint.instance.NumericBinaryRelationalConstraint;
-import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
+import ar.uba.dc.thesis.dao.SelfHealingScenarioDao;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
-public final class SelfHealingScenarioRepository {
+public class SelfHealingScenarioRepository {
 
-	// public static SelfHealingScenario SERVER_COST_SCENARIO;
+	private final List<SelfHealingScenario> scenarios;
 
-	public static SelfHealingScenario CLIENT_RESPONSE_TIME_SCENARIO;
+	private final List<SelfHealingScenario> enabledScenarios;
 
-	private static final String SCENARIO_SPEC_PATH = "customize.scenario.path";
+	private final SelfHealingScenarioDao dao;
 
-	public static List<SelfHealingScenario> scenarios;
-
-	static {
-		createMockScenarios();
-		// loadScenariosFromFile();
-	}
-
-	/**
-	 * This class is not intended to be extended.
-	 */
-	private SelfHealingScenarioRepository() {
+	public SelfHealingScenarioRepository(SelfHealingScenarioDao selfHealingScenarioDao) {
 		super();
+		this.dao = selfHealingScenarioDao;
+		this.scenarios = this.dao.getAllScenarios();
+		this.enabledScenarios = this.selectEnabledScenarios();
 	}
 
-	/**
-	 * It is assumed that we are not using this Repository for holding scenarios for more than one application.<br>
-	 * <b>Be careful!</b>
-	 */
-	public static Collection<SelfHealingScenario> getEnabledScenarios() {
-		// TODO evitar recorrer toda la lista, mantener una lista actualizada de escenarios habilitados
+	private List<SelfHealingScenario> selectEnabledScenarios() {
 		List<SelfHealingScenario> enabledScenarios = new ArrayList<SelfHealingScenario>();
-		for (SelfHealingScenario scenario : scenarios) {
+
+		for (SelfHealingScenario scenario : this.scenarios) {
 			if (scenario.isEnabled()) {
 				enabledScenarios.add(scenario);
 			}
@@ -57,65 +33,15 @@ public final class SelfHealingScenarioRepository {
 		return enabledScenarios;
 	}
 
-	private static void createMockScenarios() {
-		// SERVER_COST_SCENARIO = createServerCostScenario();
-		CLIENT_RESPONSE_TIME_SCENARIO = createClientResponseTimeScenario();
-
-		// SERVER_COST_SCENARIO.addRepairStrategySpec(new RepairStrategySpecification("reduceOverallCost", NO_PARAMS));
-		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategy("simpleReduceResponseTime");
-
-		scenarios = new ArrayList<SelfHealingScenario>();
-		// scenarios.add(SERVER_COST_SCENARIO);
-		scenarios.add(CLIENT_RESPONSE_TIME_SCENARIO);
+	public Collection<SelfHealingScenario> getAllScenarios() {
+		return this.scenarios;
 	}
 
 	/**
-	 * TODO: This method will be used when we finish the XML parser for scenarios.
+	 * <b>Important Note:</b>It is assumed that we are not using this Repository for holding scenarios for more than
+	 * one application.<br>
 	 */
-	@SuppressWarnings("unused")
-	private static List<SelfHealingScenario> loadScenariosFromFile() {
-		File scenarioSpec = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
-				.property(SCENARIO_SPEC_PATH));
-		// TODO: Transformar de XML a una Lista de Escenarios.
-		return Collections.emptyList();
-	}
-
-	@SuppressWarnings("unused")
-	private static SelfHealingScenario createServerCostScenario() {
-		String scenarioName = "Server Cost Scenario";
-		String stimulusSource = "A Server cost analizer";
-		Artifact artifact = ArtifactRepository.getProxy();
-		String stimulus = "GetActiveServersAmountOperation";
-		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(ScenarioEnvironmentRepository.NORMAL);
-		String response = "Active servers amount";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new NumericBinaryRelationalConstraint("ZNewsSys.p0.activeServersAmount",
-						NumericBinaryOperator.LESS_THAN, 3));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
-		int priority = 2;
-
-		return new SelfHealingScenario(1L, scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
-				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
-	}
-
-	private static SelfHealingScenario createClientResponseTimeScenario() {
-		String scenarioName = "Client Experienced Response Time Scenario";
-		String stimulusSource = "Any Client requesting news content";
-		Artifact artifact = ArtifactRepository.getClient();
-		String stimulus = "GetNewsContentClientStimulus";
-		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(ScenarioEnvironmentRepository.NORMAL);
-		String response = "Requested News Content";
-		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint("ZNewsSys.c0.experRespTime", NumericBinaryOperator.LESS_THAN,
-						10000));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
-		int priority = 1;
-
-		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
-				artifact, response, responseMeasure, archDecisions, enabled, priority);
+	public Collection<SelfHealingScenario> getEnabledScenarios() {
+		return this.enabledScenarios;
 	}
 }

@@ -52,7 +52,6 @@ import org.sa.rainbow.util.ValuePropertyMappingPair;
  * <li> Clean-up: delete gauges (actually, would already be done by the
  * {@link org.sa.rainbow.translator.RainbowDelegate <code>RainbowDelegate</code>}!)
  * </ol>
- * TODO: This object has to be injected to the ModelManager class. Otherwise, Rainbow will use the original one.
  */
 public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsumer {
 

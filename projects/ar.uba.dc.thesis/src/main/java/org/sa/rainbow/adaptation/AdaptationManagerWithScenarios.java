@@ -239,6 +239,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 */
 	StopWatch _stopWatchForTesting = null;
 
+	private SelfHealingScenarioRepository selfHealingScenarioRepository;
+
 	/**
 	 * For JUnit testing, allows fetching the strategy repertoire. NOT for public use!
 	 * 
@@ -315,8 +317,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 				double scenariosScore = 0;
 				if (scenariosSolutionWeight > 0) {
-					scenariosScore = scoreStrategyWithScenarios(SelfHealingScenarioRepository.getEnabledScenarios(),
-							systemEnvironment, simulationModel);
+					scenariosScore = scoreStrategyWithScenarios(this.selfHealingScenarioRepository
+							.getEnabledScenarios(), systemEnvironment, simulationModel);
 				}
 
 				double rainbowScoreStrategy = 0;
@@ -368,6 +370,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private IAcmeModel simulateStrategyApplication(Strategy strategy, Object acmeModel) {
+		@SuppressWarnings("unused")
 		IAcmeModel simulationModel = this.clone((IAcmeModel) this.m_model.getAcmeModel());
 		// TODO simular aplicacion de estrategia sobre simulationModel!
 		throw new RuntimeException("Method not yet implemented!");

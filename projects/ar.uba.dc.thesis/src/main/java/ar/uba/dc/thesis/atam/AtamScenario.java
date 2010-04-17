@@ -89,6 +89,6 @@ public abstract class AtamScenario extends ThesisPojo {
 	}
 
 	public void validate() {
-		// TODO Implement me!
+		// Do nothing
 	}
 }

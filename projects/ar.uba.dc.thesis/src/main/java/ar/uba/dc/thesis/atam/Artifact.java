@@ -24,6 +24,6 @@ public class Artifact extends ThesisPojo {
 	}
 
 	public void validate() {
-		// TODO Implement me!
+		// Do nothing
 	}
 }

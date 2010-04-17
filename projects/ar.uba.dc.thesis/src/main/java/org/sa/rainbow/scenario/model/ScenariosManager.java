@@ -29,10 +29,19 @@ public class ScenariosManager {
 
 	private final IAcmeModel acmeModel;
 
+	private final SelfHealingScenarioRepository selfHealingScenarioRepository;
+
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(ScenariosManager.class);
 
-	public ScenariosManager(IAcmeModel acmeModel) {
+	/**
+	 * Constructor
+	 * 
+	 * @param selfHealingScenarioRepository
+	 * @param acmeModel
+	 */
+	public ScenariosManager(SelfHealingScenarioRepository selfHealingScenarioRepository, IAcmeModel acmeModel) {
 		super();
+		this.selfHealingScenarioRepository = selfHealingScenarioRepository;
 		this.acmeModel = acmeModel;
 	}
 
@@ -41,7 +50,7 @@ public class ScenariosManager {
 	 * {@link SelfHealingScenarioRepository#getEnabledScenarios()} and puts them on a map keyed by its stimulus.
 	 */
 	public Collection<SelfHealingScenario> loadScenarios() {
-		Collection<SelfHealingScenario> scenarios = SelfHealingScenarioRepository.getEnabledScenarios();
+		Collection<SelfHealingScenario> scenarios = this.selfHealingScenarioRepository.getEnabledScenarios();
 
 		this.scenariosMap = new HashMap<String, List<SelfHealingScenario>>();
 		this.stimulusByPropertyMap = new HashMap<String, List<String>>();
