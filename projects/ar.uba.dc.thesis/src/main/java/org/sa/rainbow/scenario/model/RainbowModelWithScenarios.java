@@ -16,6 +16,7 @@ import org.sa.rainbow.util.Pair;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
+import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RainbowModelWithScenarios extends RainbowModel {
@@ -28,9 +29,9 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	private final Queue<Pair<String, Object>> propertiesToUpdateQueue;
 
-	public RainbowModelWithScenarios() {
+	public RainbowModelWithScenarios(SelfHealingScenarioRepository scenariosRepository) {
 		super();
-		this.scenariosManager = new ScenariosManager(this.getAcmeModel());
+		this.scenariosManager = new ScenariosManager(scenariosRepository, this.getAcmeModel());
 		this.scenariosManager.loadScenarios();
 		this.isPropertyUpdateAllowed = true;
 		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();

@@ -1,5 +1,7 @@
 package ar.uba.dc.thesis.atam;
 
+import org.acmestudio.acme.model.IAcmeModel;
+
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
 
@@ -26,6 +28,10 @@ public class ResponseMeasure extends ThesisPojo {
 	}
 
 	public void validate() {
-		// TODO Implement me!
+		// Do nothing
+	}
+
+	public boolean holds(IAcmeModel acmeModel) {
+		return this.constraint.holds(acmeModel);
 	}
 }

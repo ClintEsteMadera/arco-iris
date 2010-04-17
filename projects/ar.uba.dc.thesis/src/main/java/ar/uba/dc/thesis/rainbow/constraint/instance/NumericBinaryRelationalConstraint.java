@@ -3,6 +3,7 @@ package ar.uba.dc.thesis.rainbow.constraint.instance;
 import org.acmestudio.acme.model.IAcmeModel;
 import org.acmestudio.basicmodel.core.AcmeFloatValue;
 import org.acmestudio.basicmodel.core.AcmeIntValue;
+import org.acmestudio.basicmodel.core.AcmePropertyValue;
 import org.acmestudio.basicmodel.element.property.AcmeProperty;
 import org.apache.commons.lang.StringUtils;
 
@@ -10,10 +11,6 @@ import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
-/**
- * TODO: We can contemplate an abstraction for the operands so that we do not force an specific order (i.e. left side =
- * property, right side=literal value)
- */
 public class NumericBinaryRelationalConstraint extends ThesisPojo implements SinglePropertyInvolvedConstraint {
 
 	private static final String SPACE = " ";
@@ -51,24 +48,21 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 		return this.getBinaryOperator().performOperation(propertyValue, this.getValue());
 	}
 
-	/**
-	 * TODO: Improve the reliability of this method!
-	 * 
-	 * @param acmeModel
-	 * @param propertyName
-	 * @return
-	 */
 	private Number getPropertyValueFrom(IAcmeModel acmeModel, String propertyName) {
 		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, propertyName);
-		if (property.getValue() instanceof AcmeIntValue) {
-			AcmeIntValue propertyValue = (AcmeIntValue) property.getValue();
-			return propertyValue.getValue();
-		} else if (property.getValue() instanceof AcmeFloatValue) {
-			AcmeFloatValue propertyValue = (AcmeFloatValue) property.getValue();
-			return propertyValue.getValue();
+		if (property == null) {
+			throw new RuntimeException("Could not find in the model the property '" + propertyName + "'");
 		} else {
-			throw new RuntimeException("Cannot determine the type of value corresponding to the '" + propertyName
-					+ "' property");
+			AcmePropertyValue propertyValue = property.getValue();
+
+			if (propertyValue instanceof AcmeIntValue) {
+				return ((AcmeIntValue) propertyValue).getValue();
+			} else if (propertyValue instanceof AcmeFloatValue) {
+				return ((AcmeFloatValue) propertyValue).getValue();
+			} else {
+				throw new RuntimeException("The type " + propertyValue.getClass().getName()
+						+ "in not a valid numeric type");
+			}
 		}
 	}
 

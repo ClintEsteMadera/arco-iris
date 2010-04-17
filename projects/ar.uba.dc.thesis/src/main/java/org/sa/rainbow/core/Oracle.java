@@ -26,6 +26,9 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
+import ar.uba.dc.thesis.dao.TestSelfHealingScenarioDao;
+import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
+
 /**
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
  */
@@ -162,7 +165,7 @@ public class Oracle implements IDisposable {
 
 	public RainbowModelWithScenarios rainbowModel() {
 		if (m_model == null) {
-			m_model = new RainbowModelWithScenarios();
+			m_model = new RainbowModelWithScenarios(new SelfHealingScenarioRepository(new TestSelfHealingScenarioDao()));
 			// initialize the model as a repository to the language module
 			Ohana.instance().setModelRepository(m_model);
 		}

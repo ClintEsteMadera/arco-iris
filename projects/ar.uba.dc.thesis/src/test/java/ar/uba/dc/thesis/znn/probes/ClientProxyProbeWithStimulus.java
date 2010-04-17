@@ -91,7 +91,6 @@ public class ClientProxyProbeWithStimulus extends AbstractRunnableProbe {
 						}
 					}
 					long endTime = System.currentTimeMillis();
-					// TODO evaluar la ubicacion del estimulo en el string a loggear:
 					String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + url.getHost() + "<stimulus:"
 							+ stimulusName + ">:" + (endTime - startTime) + "ms";
 					reportData(rpt);

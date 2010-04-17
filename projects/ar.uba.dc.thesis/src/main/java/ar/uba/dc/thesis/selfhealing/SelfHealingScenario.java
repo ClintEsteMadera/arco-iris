@@ -70,7 +70,7 @@ public class SelfHealingScenario extends AtamScenario {
 	public boolean isBroken(final IAcmeModel acmeModel) {
 		boolean isBroken = false;
 		if (anyEnvironmentApplies(acmeModel)) {
-			isBroken = !getResponseMeasure().getConstraint().holds(acmeModel);
+			isBroken = !getResponseMeasure().holds(acmeModel);
 		}
 		return isBroken;
 	}
