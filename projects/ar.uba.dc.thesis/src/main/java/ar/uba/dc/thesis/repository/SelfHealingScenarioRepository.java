@@ -74,7 +74,6 @@ public final class SelfHealingScenarioRepository {
 	 */
 	@SuppressWarnings("unused")
 	private static List<SelfHealingScenario> loadScenariosFromFile() {
-		@SuppressWarnings("unused")
 		File scenarioSpec = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
 				.property(SCENARIO_SPEC_PATH));
 		// TODO: Transformar de XML a una Lista de Escenarios.
@@ -91,7 +90,8 @@ public final class SelfHealingScenarioRepository {
 		environments.add(ScenarioEnvironmentRepository.NORMAL);
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new NumericBinaryRelationalConstraint("activeServersAmount", NumericBinaryOperator.LESS_THAN, 3));
+				new NumericBinaryRelationalConstraint("ZNewsSys.p0.activeServersAmount",
+						NumericBinaryOperator.LESS_THAN, 3));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 2;
@@ -109,7 +109,8 @@ public final class SelfHealingScenarioRepository {
 		environments.add(ScenarioEnvironmentRepository.NORMAL);
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint("experRespTime", NumericBinaryOperator.LESS_THAN, 10000));
+				new NumericBinaryRelationalConstraint("ZNewsSys.c0.experRespTime", NumericBinaryOperator.LESS_THAN,
+						10000));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;

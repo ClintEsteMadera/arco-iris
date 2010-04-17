@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.acmestudio.acme.model.IAcmeModel;
 import org.apache.commons.lang.StringUtils;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
@@ -40,6 +41,14 @@ public class Environment extends ThesisPojo {
 
 	public Map<Concern, Double> getWeights() {
 		return weights;
+	}
+
+	public boolean holds(IAcmeModel acmeModel) {
+		boolean holds = true;
+		for (Constraint constraint : this.getConditions()) {
+			holds = holds && constraint.holds(acmeModel);
+		}
+		return holds;
 	}
 
 	public void validate() {

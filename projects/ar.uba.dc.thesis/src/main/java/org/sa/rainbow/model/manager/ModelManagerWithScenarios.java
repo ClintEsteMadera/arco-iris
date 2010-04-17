@@ -150,7 +150,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			// fetch info from monitoring infra, update model with fresh properties
 			if (!m_sim.isTerminated()) {
 				for (Entry<String, Object> e : m_sim.getChangedProperties().entrySet()) {
-					List<String> stimulusForProperty = m_model.getStimulusPerProperty(e.getKey());
+					List<String> stimulusForProperty = m_model.getStimulus(e.getKey());
 					if (!stimulusForProperty.isEmpty()) {
 						for (String stimulus : stimulusForProperty) {
 							m_model.updateProperty(e.getKey(), e.getValue(), stimulus);

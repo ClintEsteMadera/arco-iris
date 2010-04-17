@@ -1,6 +1,5 @@
 package ar.uba.dc.thesis.rainbow.constraint.operator;
 
-import org.acmestudio.acme.core.globals.ExpressionOperator;
 import org.apache.commons.lang.StringUtils;
 
 import ar.uba.dc.thesis.common.Validatable;
@@ -11,27 +10,41 @@ import ar.uba.dc.thesis.common.Validatable;
  */
 public enum NumericBinaryOperator implements Validatable {
 
-	LESS_THAN("<", ExpressionOperator.LESS_THAN_OP),
-
-	LESS_THAN_OR_EQUALS("<=", ExpressionOperator.LESS_OR_EQUAL_OP),
-
-	GREATER_THAN(">", ExpressionOperator.GREATER_THAN_OP),
-
-	GREATER_THAN_OR_EQUALS(">=", ExpressionOperator.GREATER_OR_EQUAL_OP),
-
-	EQUALS("==", ExpressionOperator.EQUALS_OP);
+	LESS_THAN("<") {
+		@Override
+		public boolean performOperation(Number value1, Number value2) {
+			return value1.floatValue() < value2.floatValue();
+		}
+	},
+	LESS_THAN_OR_EQUALS("<=") {
+		@Override
+		public boolean performOperation(Number value1, Number value2) {
+			return value1.floatValue() <= value2.floatValue();
+		}
+	},
+	GREATER_THAN(">") {
+		@Override
+		public boolean performOperation(Number value1, Number value2) {
+			return value1.floatValue() > value2.floatValue();
+		}
+	},
+	GREATER_THAN_OR_EQUALS(">=") {
+		@Override
+		public boolean performOperation(Number value1, Number value2) {
+			return value1.floatValue() >= value2.floatValue();
+		}
+	},
+	EQUALS("==") {
+		@Override
+		public boolean performOperation(Number value1, Number value2) {
+			return value1.floatValue() == value2.floatValue();
+		}
+	};
 
 	private final String symbol;
 
-	private final ExpressionOperator rainbowExpressionOperator;
-
-	public ExpressionOperator getRainbowExpressionOperator() {
-		return rainbowExpressionOperator;
-	}
-
-	private NumericBinaryOperator(String symbol, ExpressionOperator rainbowExpressionOperator) {
+	private NumericBinaryOperator(String symbol) {
 		this.symbol = symbol;
-		this.rainbowExpressionOperator = rainbowExpressionOperator;
 
 		this.validate();
 	}
@@ -45,8 +58,7 @@ public enum NumericBinaryOperator implements Validatable {
 		if (StringUtils.isBlank(this.symbol)) {
 			throw new IllegalArgumentException("Operator's symbol cannot be empty");
 		}
-		if (this.getRainbowExpressionOperator() == null) {
-			throw new IllegalArgumentException("Rainbow Expression Operator cannot be null");
-		}
 	}
+
+	public abstract boolean performOperation(Number value1, Number value2);
 }
