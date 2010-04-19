@@ -20,13 +20,17 @@ import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
+import org.sa.rainbow.scenario.model.ScenariosManager;
 import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.util.ARainbowLoggerFactory;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
+import ar.uba.dc.thesis.dao.ScenarioEnvironmentDao;
+import ar.uba.dc.thesis.dao.TestScenarioEnvironmentDao;
 import ar.uba.dc.thesis.dao.TestSelfHealingScenarioDao;
+import ar.uba.dc.thesis.repository.ScenarioEnvironmentRepository;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 
 /**
@@ -96,6 +100,8 @@ public class Oracle implements IDisposable {
 		return m_instance;
 	}
 
+	private final ScenariosManager scenariosManager;
+
 	/** Intentional package-level visibility for testing access. */
 	RainbowLogger m_logger = null;
 	private RainbowGUI m_gui = null;
@@ -119,6 +125,15 @@ public class Oracle implements IDisposable {
 		ARainbowLoggerFactory.reset(); // activate the relevant logger factory
 		Rainbow.instance().serviceManager(); // activate the RainbowServiceManager
 		m_logger = RainbowLoggerFactory.logger(getClass());
+
+		ScenarioEnvironmentDao scenarioEnvironmentDao = new TestScenarioEnvironmentDao();
+		ScenarioEnvironmentRepository scenarioEnvironmentRepository = new ScenarioEnvironmentRepository(
+				scenarioEnvironmentDao);
+
+		SelfHealingScenarioRepository scenarioRepository = new SelfHealingScenarioRepository(
+				new TestSelfHealingScenarioDao(scenarioEnvironmentDao));
+
+		this.scenariosManager = new ScenariosManager(scenarioRepository, scenarioEnvironmentRepository);
 
 		// mark the init of Rainbow
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_RAINBOW_INIT);
@@ -165,7 +180,7 @@ public class Oracle implements IDisposable {
 
 	public RainbowModelWithScenarios rainbowModel() {
 		if (m_model == null) {
-			m_model = new RainbowModelWithScenarios(new SelfHealingScenarioRepository(new TestSelfHealingScenarioDao()));
+			m_model = new RainbowModelWithScenarios(scenariosManager);
 			// initialize the model as a repository to the language module
 			Ohana.instance().setModelRepository(m_model);
 		}
@@ -199,7 +214,7 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable adaptationManager() {
 		if ((m_adaptmgr == null || m_adaptmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_adaptmgr = new AdaptationManagerWithScenarios();
+			m_adaptmgr = new AdaptationManagerWithScenarios(this.scenariosManager);
 		}
 		return m_adaptmgr;
 	}
