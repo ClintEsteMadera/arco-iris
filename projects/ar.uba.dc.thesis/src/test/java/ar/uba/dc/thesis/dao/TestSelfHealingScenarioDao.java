@@ -14,7 +14,6 @@ import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.instance.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 import ar.uba.dc.thesis.repository.ArtifactRepository;
-import ar.uba.dc.thesis.repository.ScenarioEnvironmentRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
@@ -25,13 +24,25 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private final List<SelfHealingScenario> scenarios;
 
-	public TestSelfHealingScenarioDao() {
+	private final Set<Environment> environments = new HashSet<Environment>();
+
+	private final ScenarioEnvironmentDao scenarioEnvironmentDao;
+
+	public TestSelfHealingScenarioDao(ScenarioEnvironmentDao scenarioEnvironmentDao) {
 		super();
+		this.scenarioEnvironmentDao = scenarioEnvironmentDao;
 		this.scenarios = this.createTestScenarios();
+		for (SelfHealingScenario scenario : scenarios) {
+			this.environments.addAll(scenario.getEnvironments());
+		}
 	}
 
 	public List<SelfHealingScenario> getAllScenarios() {
 		return scenarios;
+	}
+
+	public Set<Environment> getAllEnvironments() {
+		return environments;
 	}
 
 	private List<SelfHealingScenario> createTestScenarios() {
@@ -49,13 +60,13 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 	}
 
 	@SuppressWarnings("unused")
-	private static SelfHealingScenario createServerCostScenario() {
+	private SelfHealingScenario createServerCostScenario() {
 		String scenarioName = "Server Cost Scenario";
 		String stimulusSource = "A Server cost analizer";
 		Artifact artifact = ArtifactRepository.getProxy();
 		String stimulus = "GetActiveServersAmountOperation";
 		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(ScenarioEnvironmentRepository.NORMAL);
+		environments.add(scenarioEnvironmentDao.getEnvironment("NORMAL"));
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint("ZNewsSys.p0.activeServersAmount",
@@ -68,17 +79,16 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
-	private static SelfHealingScenario createClientResponseTimeScenario() {
+	private SelfHealingScenario createClientResponseTimeScenario() {
 		String scenarioName = "Client Experienced Response Time Scenario";
 		String stimulusSource = "Any Client requesting news content";
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = "GetNewsContentClientStimulus";
 		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(ScenarioEnvironmentRepository.NORMAL);
+		environments.add(scenarioEnvironmentDao.getEnvironment("NORMAL"));
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint("ZNewsSys.c0.experRespTime", NumericBinaryOperator.LESS_THAN,
-						10000));
+				new NumericBinaryRelationalConstraint("ZNewsSys.c0.experRespTime", NumericBinaryOperator.LESS_THAN, 1));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;

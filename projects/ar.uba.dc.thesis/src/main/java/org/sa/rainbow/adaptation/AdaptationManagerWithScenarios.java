@@ -21,8 +21,9 @@ import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.health.Beacon;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
-import org.sa.rainbow.model.Model;
 import org.sa.rainbow.model.UtilityPreferenceDescription.UtilityAttributes;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
+import org.sa.rainbow.scenario.model.ScenariosManager;
 import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.stitch.core.Strategy;
 import org.sa.rainbow.stitch.core.Tactic;
@@ -34,6 +35,7 @@ import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.qa.Concern;
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
@@ -47,6 +49,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public enum Mode {
 		SERIAL, MULTI_PRONE
 	};
+
+	private final ScenariosManager scenariosManager;
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 	public static final double FAILURE_RATE_THRESHOLD = 0.95;
@@ -65,7 +69,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static final String MULTI_STRATEGY_PREFIX = "Multi-";
 
 	private final Mode m_mode = Mode.SERIAL;
-	private Model m_model = null;
+	private RainbowModelWithScenarios m_model = null;
 	private boolean m_adaptNeeded = false; // treat as synonymous with constraint being violated
 	private boolean m_adaptEnabled = true; // by default, we adapt
 	private List<Stitch> m_repertoire = null;
@@ -80,9 +84,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	/**
 	 * Default constructor.
 	 */
-	public AdaptationManagerWithScenarios() {
+	public AdaptationManagerWithScenarios(ScenariosManager scenariosManager) {
 		super(NAME);
 
+		this.scenariosManager = scenariosManager;
 		m_model = Oracle.instance().rainbowModel();
 		m_repertoire = new ArrayList<Stitch>();
 		m_utils = new TreeMap<String, UtilityFunction>();
@@ -301,7 +306,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		int rainbowSolutionWeight = 0;
 
 		for (Stitch stitch : m_repertoire) {
-			if (!stitch.script.isApplicableForModel((IAcmeModel) m_model.getAcmeModel())) {
+			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
 				if (m_logger.isDebugEnabled())
 					m_logger.debug("x. skipping " + stitch.script.getName());
 				continue; // skip checking this script
@@ -364,14 +369,25 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	/**
 	 * @return the current system enviroment
 	 */
-	private Environment systemEnvironment(Object acmeModel) {
-		// TODO obtener el environment actual del sistema
-		throw new RuntimeException("Method not yet implemented!");
+	private Environment systemEnvironment(IAcmeModel acmeModel) {
+		Collection<Environment> environments = this.scenariosManager.getAllEnvironments();
+		for (Environment environment : environments) {
+			boolean currentEnvironment = true;
+			for (Constraint condition : environment.getConditions()) {
+				currentEnvironment = currentEnvironment && condition.holds(acmeModel);
+			}
+			if (currentEnvironment) {
+				log("Current environment: " + environment.getName());
+				return environment;
+			}
+		}
+		log("System is currently in default environment");
+		return scenariosManager.getDefaultEnvironment();
 	}
 
 	private IAcmeModel simulateStrategyApplication(Strategy strategy, Object acmeModel) {
 		@SuppressWarnings("unused")
-		IAcmeModel simulationModel = this.clone((IAcmeModel) this.m_model.getAcmeModel());
+		IAcmeModel simulationModel = this.clone(this.m_model.getAcmeModel());
 		// TODO simular aplicacion de estrategia sobre simulationModel!
 		throw new RuntimeException("Method not yet implemented!");
 		// return simulationModel;

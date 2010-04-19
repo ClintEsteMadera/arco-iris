@@ -14,10 +14,14 @@ import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
+import ar.uba.dc.thesis.atam.Environment;
+import ar.uba.dc.thesis.repository.ScenarioEnvironmentRepository;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class ScenariosManager {
+
+	private static final String DEFAULT_ENV_NAME = "DEFAULT";
 
 	/** Holds a list of Scenarios keyed by their corresponding stimulus name */
 	private Map<String, List<SelfHealingScenario>> scenariosMap;
@@ -27,9 +31,9 @@ public class ScenariosManager {
 	 */
 	private Map<String, List<String>> stimulusByPropertyMap;
 
-	private final IAcmeModel acmeModel;
-
 	private final SelfHealingScenarioRepository selfHealingScenarioRepository;
+
+	private final ScenarioEnvironmentRepository scenarioEnvironmentRepository;
 
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(ScenariosManager.class);
 
@@ -39,10 +43,23 @@ public class ScenariosManager {
 	 * @param selfHealingScenarioRepository
 	 * @param acmeModel
 	 */
-	public ScenariosManager(SelfHealingScenarioRepository selfHealingScenarioRepository, IAcmeModel acmeModel) {
+	public ScenariosManager(SelfHealingScenarioRepository selfHealingScenarioRepository,
+			ScenarioEnvironmentRepository scenarioEnvironmentRepository) {
 		super();
 		this.selfHealingScenarioRepository = selfHealingScenarioRepository;
-		this.acmeModel = acmeModel;
+		this.scenarioEnvironmentRepository = scenarioEnvironmentRepository;
+	}
+
+	public Collection<Environment> getAllEnvironments() {
+		return this.scenarioEnvironmentRepository.getAllEnvironments();
+	}
+
+	public Environment getEnvironment(String name) {
+		return this.scenarioEnvironmentRepository.getEnvironment(name);
+	}
+
+	public Environment getDefaultEnvironment() {
+		return this.getEnvironment(DEFAULT_ENV_NAME);
 	}
 
 	/**
@@ -95,13 +112,13 @@ public class ScenariosManager {
 		return this.scenariosMap.get(stimulus);
 	}
 
-	public List<SelfHealingScenario> findBrokenScenarios(String stimulus) {
+	public List<SelfHealingScenario> findBrokenScenarios(IAcmeModel acmeModel, String stimulus) {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
 
 		Stack<AcmeError> collectedErrors = new Stack<AcmeError>();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
-			if (scenario.isBroken(this.acmeModel)) {
+			if (scenario.isBroken(acmeModel)) {
 				this.logErrors(collectedErrors, scenario);
 				brokenScenarios.add(scenario);
 			} else {

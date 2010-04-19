@@ -16,7 +16,6 @@ import org.sa.rainbow.util.Pair;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RainbowModelWithScenarios extends RainbowModel {
@@ -29,9 +28,9 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	private final Queue<Pair<String, Object>> propertiesToUpdateQueue;
 
-	public RainbowModelWithScenarios(SelfHealingScenarioRepository scenariosRepository) {
+	public RainbowModelWithScenarios(ScenariosManager scenariosManager) {
 		super();
-		this.scenariosManager = new ScenariosManager(scenariosRepository, this.getAcmeModel());
+		this.scenariosManager = scenariosManager;
 		this.scenariosManager.loadScenarios();
 		this.isPropertyUpdateAllowed = true;
 		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();
@@ -56,7 +55,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		List<SelfHealingScenario> brokenScenarios;
 		// done this way in order to avoid the same else block twice
 		if (!adaptationManager.adaptationInProgress()
-				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(stimulus)).isEmpty()) {
+				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(getAcmeModel(), stimulus)).isEmpty()) {
 			/*
 			 * pass control to adaptation manager, who will be responsible for turning the flag
 			 * (isPropertyUpdateAllowed) on again...
