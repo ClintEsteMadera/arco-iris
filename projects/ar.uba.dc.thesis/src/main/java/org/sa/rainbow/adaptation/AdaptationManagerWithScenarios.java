@@ -318,12 +318,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
 					continue; // don't consider this Strategy
 				}
-				IAcmeModel simulationModel = simulateStrategyApplication(strategy, this.m_model.getAcmeModel());
+				IAcmeModel simulationModel = simulateStrategyApplication(strategy);
 
 				double scenariosScore = 0;
 				if (scenariosSolutionWeight > 0) {
-					scenariosScore = scoreStrategyWithScenarios(this.selfHealingScenarioRepository
-							.getEnabledScenarios(), systemEnvironment, simulationModel);
+					scenariosScore = scoreStrategyWithScenarios(this.scenariosManager.getEnabledScenarios(),
+							systemEnvironment, simulationModel);
 				}
 
 				double rainbowScoreStrategy = 0;
@@ -385,17 +385,18 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return scenariosManager.getDefaultEnvironment();
 	}
 
-	private IAcmeModel simulateStrategyApplication(Strategy strategy, Object acmeModel) {
+	private IAcmeModel simulateStrategyApplication(Strategy strategy) {
 		@SuppressWarnings("unused")
 		IAcmeModel simulationModel = this.clone(this.m_model.getAcmeModel());
 		// TODO simular aplicacion de estrategia sobre simulationModel!
-		throw new RuntimeException("Method not yet implemented!");
-		// return simulationModel;
+		strategy.evaluate(null);
+		// System.out.println(strategy.modelElementsUsed());
+		return simulationModel;
 	}
 
 	private IAcmeModel clone(IAcmeModel acmeModel) {
 		// TODO clonar el model (solo bastaría con clonar las properties con sus valores?)
-		throw new RuntimeException("Method not yet implemented!");
+		return acmeModel;
 	}
 
 	/**
@@ -419,6 +420,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.applyFor(systemEnvironment)) {
 				boolean scenarioSatisfiedInSimulation = !scenario.isBroken(simulationModel);
+				// FIXME scenarioSatisfiedInSimulation da siempre false, ver si cambia el modelo al aplicar la
+				// estrategia
 				if (scenarioSatisfiedInSimulation) {
 					Double concernWeight = weights.get(scenario.getConcern());
 					if (concernWeight == null) {
