@@ -62,7 +62,7 @@ public class TestScenarioEnvironmentDao implements ScenarioEnvironmentDao {
 		for (Concern concern : values) {
 			equallyDistributedWeights.put(concern, aWeight);
 		}
-		return new Environment("Any", Collections.<Constraint> emptyList(), equallyDistributedWeights);
+		return new Environment("DEFAULT", Collections.<Constraint> emptyList(), equallyDistributedWeights);
 	}
 
 }
