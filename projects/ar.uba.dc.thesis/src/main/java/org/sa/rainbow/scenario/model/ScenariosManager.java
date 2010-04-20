@@ -128,10 +128,15 @@ public class ScenariosManager {
 		return brokenScenarios;
 	}
 
+	public Collection<SelfHealingScenario> getEnabledScenarios() {
+		return this.selfHealingScenarioRepository.getEnabledScenarios();
+	}
+
 	private void logErrors(Stack<AcmeError> collectedErrors, SelfHealingScenario scenario) {
 		Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " broken!");
 		while (!collectedErrors.isEmpty()) {
 			Oracle.instance().writeEvaluatorPanel(logger, collectedErrors.pop().toString());
 		}
 	}
+
 }
