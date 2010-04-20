@@ -51,7 +51,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		CLIENT_RESPONSE_TIME_SCENARIO = createClientResponseTimeScenario();
 
 		// SERVER_COST_SCENARIO.addRepairStrategySpec(new RepairStrategySpecification("reduceOverallCost", NO_PARAMS));
-		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategy("simpleReduceResponseTime");
+		CLIENT_RESPONSE_TIME_SCENARIO.addRepairStrategy("QuickDirtyReduceResponseTime");
 
 		// scenarios.add(SERVER_COST_SCENARIO);
 		testScenarios.add(CLIENT_RESPONSE_TIME_SCENARIO);
