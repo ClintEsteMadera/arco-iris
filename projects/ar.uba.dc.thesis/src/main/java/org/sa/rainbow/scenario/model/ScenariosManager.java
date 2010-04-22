@@ -71,7 +71,7 @@ public class ScenariosManager {
 
 	public void loadStimulusPerProperty(SelfHealingScenario currentScenario, String stimulus) {
 		List<String> stimulusPerScenarioList;
-		String responseMeasureProperty = currentScenario.getResponseMeasure().getConstraint().getProperty();
+		String responseMeasureProperty = currentScenario.getResponseMeasure().getConstraint().getFullyQualifiedPropertyName();
 
 		if (this.stimulusByPropertyMap.containsKey(responseMeasureProperty)) {
 			stimulusPerScenarioList = this.stimulusByPropertyMap.get(responseMeasureProperty);

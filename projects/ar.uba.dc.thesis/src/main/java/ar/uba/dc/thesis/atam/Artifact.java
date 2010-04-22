@@ -3,20 +3,21 @@ package ar.uba.dc.thesis.atam;
 import ar.uba.dc.thesis.common.ThesisPojo;
 
 public class Artifact extends ThesisPojo {
-	private final String name;
+
+	private final String typeName;
 
 	private final String systemName;
 
 	public Artifact(String systemName, String typeName) {
 		super();
 		this.systemName = systemName;
-		this.name = typeName;
+		this.typeName = typeName;
 
 		this.validate();
 	}
 
-	public String getName() {
-		return this.name;
+	public String getTypeName() {
+		return this.typeName;
 	}
 
 	public String getSystemName() {

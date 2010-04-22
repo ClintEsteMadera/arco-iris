@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.sa.rainbow.core.Oracle;
-
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.atam.Environment;
@@ -28,10 +26,11 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private final Set<Environment> environments = new HashSet<Environment>();
 
-	private final EnvironmentDao environmentDao = Oracle.getEnvironmentDao();
+	private final EnvironmentDao environmentDao;
 
-	public TestSelfHealingScenarioDao() {
+	public TestSelfHealingScenarioDao(EnvironmentDao environmentDao) {
 		super();
+		this.environmentDao = environmentDao;
 		this.scenarios = this.createTestScenarios();
 		for (SelfHealingScenario scenario : scenarios) {
 			this.environments.addAll(scenario.getEnvironments());
