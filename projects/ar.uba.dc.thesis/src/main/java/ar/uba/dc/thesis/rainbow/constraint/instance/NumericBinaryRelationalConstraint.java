@@ -7,11 +7,10 @@ import org.acmestudio.basicmodel.core.AcmePropertyValue;
 import org.acmestudio.basicmodel.element.property.AcmeProperty;
 import org.apache.commons.lang.StringUtils;
 
-import ar.uba.dc.thesis.common.ThesisPojo;
-import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
+import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
-public class NumericBinaryRelationalConstraint extends ThesisPojo implements SinglePropertyInvolvedConstraint {
+public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
 	private static final String SPACE = " ";
 
@@ -21,8 +20,9 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 
 	private final long value;
 
-	public NumericBinaryRelationalConstraint(String property, NumericBinaryOperator binaryOperator, long value) {
-		super();
+	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
+			long value) {
+		super(artifact);
 		this.property = property;
 		this.binaryOperator = binaryOperator;
 		this.value = value;
@@ -49,24 +49,23 @@ public class NumericBinaryRelationalConstraint extends ThesisPojo implements Sin
 	}
 
 	private Number getPropertyValueFrom(IAcmeModel acmeModel, String propertyName) {
-		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, propertyName);
-		if (property == null) {
-			throw new RuntimeException("Could not find in the model the property '" + propertyName + "'");
-		} else {
-			AcmePropertyValue propertyValue = property.getValue();
+		AcmeProperty property = this.findAcmePropertyInAcme(acmeModel, propertyName);
 
-			if (propertyValue instanceof AcmeIntValue) {
-				return ((AcmeIntValue) propertyValue).getValue();
-			} else if (propertyValue instanceof AcmeFloatValue) {
-				return ((AcmeFloatValue) propertyValue).getValue();
-			} else {
-				throw new RuntimeException("The type " + propertyValue.getClass().getName()
-						+ "in not a valid numeric type");
-			}
+		AcmePropertyValue propertyValue = property.getValue();
+
+		if (propertyValue instanceof AcmeIntValue) {
+			return ((AcmeIntValue) propertyValue).getValue();
+		} else if (propertyValue instanceof AcmeFloatValue) {
+			return ((AcmeFloatValue) propertyValue).getValue();
+		} else {
+			throw new RuntimeException("The type " + propertyValue.getClass().getName() + "in not a valid numeric type");
 		}
 	}
 
+	@Override
 	public void validate() {
+		super.validate();
+
 		if (StringUtils.isBlank(this.getProperty())) {
 			throw new IllegalArgumentException("The property involved in the comparison cannot be blank");
 		}

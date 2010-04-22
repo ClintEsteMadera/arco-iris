@@ -35,8 +35,7 @@ import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.rainbow.constraint.Constraint;
-import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
+import ar.uba.dc.thesis.repository.EnvironmentRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -51,6 +50,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	};
 
 	private final ScenariosManager scenariosManager;
+
+	private final EnvironmentRepository environmentRepository;
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 	public static final double FAILURE_RATE_THRESHOLD = 0.95;
@@ -84,10 +85,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	/**
 	 * Default constructor.
 	 */
-	public AdaptationManagerWithScenarios(ScenariosManager scenariosManager) {
+	public AdaptationManagerWithScenarios(ScenariosManager scenariosManager, EnvironmentRepository environmentRepository) {
 		super(NAME);
 
 		this.scenariosManager = scenariosManager;
+		this.environmentRepository = environmentRepository;
 		m_model = Oracle.instance().rainbowModel();
 		m_repertoire = new ArrayList<Stitch>();
 		m_utils = new TreeMap<String, UtilityFunction>();
@@ -244,8 +246,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 */
 	StopWatch _stopWatchForTesting = null;
 
-	private SelfHealingScenarioRepository selfHealingScenarioRepository;
-
 	/**
 	 * For JUnit testing, allows fetching the strategy repertoire. NOT for public use!
 	 * 
@@ -293,7 +293,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
-		Environment systemEnvironment = systemEnvironment(this.m_model.getAcmeModel());
+		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model.getAcmeModel());
 		Map<Concern, Double> weights = systemEnvironment.getWeights();
 		Map<String, Double> weights4Rainbow = translateConcernWeights(weights);
 
@@ -369,20 +369,16 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	/**
 	 * @return the current system enviroment
 	 */
-	private Environment systemEnvironment(IAcmeModel acmeModel) {
-		Collection<Environment> environments = this.scenariosManager.getAllEnvironments();
+	private Environment detectCurrentSystemEnvironment(IAcmeModel acmeModel) {
+		Collection<Environment> environments = this.environmentRepository.getAllEnvironments();
 		for (Environment environment : environments) {
-			boolean currentEnvironment = true;
-			for (Constraint condition : environment.getConditions()) {
-				currentEnvironment = currentEnvironment && condition.holds(acmeModel);
-			}
-			if (currentEnvironment) {
+			if (environment.holds(acmeModel)) {
 				log("Current environment: " + environment.getName());
 				return environment;
 			}
 		}
 		log("System is currently in default environment");
-		return scenariosManager.getDefaultEnvironment();
+		return environmentRepository.getDefaultEnvironment();
 	}
 
 	private IAcmeModel simulateStrategyApplication(Strategy strategy) {

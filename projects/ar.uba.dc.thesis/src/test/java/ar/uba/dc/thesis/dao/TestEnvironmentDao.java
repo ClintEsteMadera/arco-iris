@@ -11,15 +11,16 @@ import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.instance.BooleanLiteralConstraint;
 
-public class TestScenarioEnvironmentDao implements ScenarioEnvironmentDao {
+public class TestEnvironmentDao implements EnvironmentDao {
 
 	private final Collection<Environment> environments = new HashSet<Environment>();
 
+	private static final Environment DEFAULT_ENVIRONMENT = createAnyEnvironment();
+
 	// TODO: Include all the other concerns?
-	public TestScenarioEnvironmentDao() {
+	public TestEnvironmentDao() {
 		this.environments.add(createNormalEnvironment());
 		this.environments.add(createHighLoadEnvironment());
-		this.environments.add(createAnyEnvironment());
 	}
 
 	public Collection<Environment> getAllEnvironments() {
@@ -33,6 +34,10 @@ public class TestScenarioEnvironmentDao implements ScenarioEnvironmentDao {
 			}
 		}
 		throw new RuntimeException("Environment " + name + " not defined.");
+	}
+
+	public Environment getDefaultEnvironment() {
+		return DEFAULT_ENVIRONMENT;
 	}
 
 	// TODO: setear las condiciones de los environments(deben ser excluyentes)

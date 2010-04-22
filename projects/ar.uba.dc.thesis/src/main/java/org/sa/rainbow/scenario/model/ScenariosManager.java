@@ -14,14 +14,10 @@ import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.atam.Environment;
-import ar.uba.dc.thesis.repository.ScenarioEnvironmentRepository;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class ScenariosManager {
-
-	private static final String DEFAULT_ENV_NAME = "DEFAULT";
 
 	/** Holds a list of Scenarios keyed by their corresponding stimulus name */
 	private Map<String, List<SelfHealingScenario>> scenariosMap;
@@ -33,8 +29,6 @@ public class ScenariosManager {
 
 	private final SelfHealingScenarioRepository selfHealingScenarioRepository;
 
-	private final ScenarioEnvironmentRepository scenarioEnvironmentRepository;
-
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(ScenariosManager.class);
 
 	/**
@@ -43,23 +37,9 @@ public class ScenariosManager {
 	 * @param selfHealingScenarioRepository
 	 * @param acmeModel
 	 */
-	public ScenariosManager(SelfHealingScenarioRepository selfHealingScenarioRepository,
-			ScenarioEnvironmentRepository scenarioEnvironmentRepository) {
+	public ScenariosManager(SelfHealingScenarioRepository selfHealingScenarioRepository) {
 		super();
 		this.selfHealingScenarioRepository = selfHealingScenarioRepository;
-		this.scenarioEnvironmentRepository = scenarioEnvironmentRepository;
-	}
-
-	public Collection<Environment> getAllEnvironments() {
-		return this.scenarioEnvironmentRepository.getAllEnvironments();
-	}
-
-	public Environment getEnvironment(String name) {
-		return this.scenarioEnvironmentRepository.getEnvironment(name);
-	}
-
-	public Environment getDefaultEnvironment() {
-		return this.getEnvironment(DEFAULT_ENV_NAME);
 	}
 
 	/**

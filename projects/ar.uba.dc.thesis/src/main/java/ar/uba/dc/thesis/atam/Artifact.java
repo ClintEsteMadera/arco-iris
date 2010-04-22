@@ -7,10 +7,10 @@ public class Artifact extends ThesisPojo {
 
 	private final String systemName;
 
-	public Artifact(String systemName, String name) {
+	public Artifact(String systemName, String typeName) {
 		super();
 		this.systemName = systemName;
-		this.name = name;
+		this.name = typeName;
 
 		this.validate();
 	}
