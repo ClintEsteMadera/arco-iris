@@ -4,10 +4,11 @@ import java.util.Collection;
 
 import ar.uba.dc.thesis.atam.Environment;
 
-public interface ScenarioEnvironmentDao {
+public interface EnvironmentDao {
 
 	Collection<Environment> getAllEnvironments();
 
 	Environment getEnvironment(String name);
 
+	Environment getDefaultEnvironment();
 }

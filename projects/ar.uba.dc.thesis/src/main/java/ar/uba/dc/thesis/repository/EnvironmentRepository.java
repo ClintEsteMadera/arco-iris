@@ -3,13 +3,13 @@ package ar.uba.dc.thesis.repository;
 import java.util.Collection;
 
 import ar.uba.dc.thesis.atam.Environment;
-import ar.uba.dc.thesis.dao.ScenarioEnvironmentDao;
+import ar.uba.dc.thesis.dao.EnvironmentDao;
 
-public final class ScenarioEnvironmentRepository {
+public final class EnvironmentRepository {
 
-	private final ScenarioEnvironmentDao scenarioEnvironmentDao;
+	private final EnvironmentDao scenarioEnvironmentDao;
 
-	public ScenarioEnvironmentRepository(ScenarioEnvironmentDao scenarioEnvironmentDao) {
+	public EnvironmentRepository(EnvironmentDao scenarioEnvironmentDao) {
 		super();
 		this.scenarioEnvironmentDao = scenarioEnvironmentDao;
 	}
@@ -20,6 +20,10 @@ public final class ScenarioEnvironmentRepository {
 
 	public Environment getEnvironment(String name) {
 		return this.scenarioEnvironmentDao.getEnvironment(name);
+	}
+
+	public Environment getDefaultEnvironment() {
+		return this.scenarioEnvironmentDao.getDefaultEnvironment();
 	}
 
 }

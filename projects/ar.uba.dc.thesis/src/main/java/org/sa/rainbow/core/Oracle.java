@@ -27,10 +27,10 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
-import ar.uba.dc.thesis.dao.ScenarioEnvironmentDao;
-import ar.uba.dc.thesis.dao.TestScenarioEnvironmentDao;
+import ar.uba.dc.thesis.dao.EnvironmentDao;
+import ar.uba.dc.thesis.dao.TestEnvironmentDao;
 import ar.uba.dc.thesis.dao.TestSelfHealingScenarioDao;
-import ar.uba.dc.thesis.repository.ScenarioEnvironmentRepository;
+import ar.uba.dc.thesis.repository.EnvironmentRepository;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 
 /**
@@ -38,7 +38,10 @@ import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
  */
 public class Oracle implements IDisposable {
 
+	private static TestEnvironmentDao environmentDao = new TestEnvironmentDao();
+
 	public static final String NAME = "The Rainbow Oracle With Scenarios";
+
 	public static final String JAR_NAME = "app.rainbow.oracle.jar";
 
 	public static void main(String[] args) {
@@ -112,6 +115,7 @@ public class Oracle implements IDisposable {
 	private IRainbowRunnable m_evaluator = null;
 	private IRainbowRunnable m_executor = null;
 	private IRainbowRunnable m_adaptmgr = null;
+	private final EnvironmentRepository environmentRepository;
 
 	// private ILearner m_learner = null;
 
@@ -126,14 +130,12 @@ public class Oracle implements IDisposable {
 		Rainbow.instance().serviceManager(); // activate the RainbowServiceManager
 		m_logger = RainbowLoggerFactory.logger(getClass());
 
-		ScenarioEnvironmentDao scenarioEnvironmentDao = new TestScenarioEnvironmentDao();
-		ScenarioEnvironmentRepository scenarioEnvironmentRepository = new ScenarioEnvironmentRepository(
-				scenarioEnvironmentDao);
-
 		SelfHealingScenarioRepository scenarioRepository = new SelfHealingScenarioRepository(
-				new TestSelfHealingScenarioDao(scenarioEnvironmentDao));
+				new TestSelfHealingScenarioDao());
 
-		this.scenariosManager = new ScenariosManager(scenarioRepository, scenarioEnvironmentRepository);
+		this.scenariosManager = new ScenariosManager(scenarioRepository);
+
+		this.environmentRepository = new EnvironmentRepository(getEnvironmentDao());
 
 		// mark the init of Rainbow
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_RAINBOW_INIT);
@@ -214,7 +216,7 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable adaptationManager() {
 		if ((m_adaptmgr == null || m_adaptmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_adaptmgr = new AdaptationManagerWithScenarios(this.scenariosManager);
+			m_adaptmgr = new AdaptationManagerWithScenarios(this.scenariosManager, this.environmentRepository);
 		}
 		return m_adaptmgr;
 	}
@@ -228,6 +230,10 @@ public class Oracle implements IDisposable {
 			m_executor = executor;
 		}
 		return m_executor;
+	}
+
+	public static EnvironmentDao getEnvironmentDao() {
+		return environmentDao;
 	}
 
 	/*

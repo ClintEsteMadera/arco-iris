@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.sa.rainbow.core.Oracle;
+
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.atam.Environment;
@@ -26,11 +28,10 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private final Set<Environment> environments = new HashSet<Environment>();
 
-	private final ScenarioEnvironmentDao scenarioEnvironmentDao;
+	private final EnvironmentDao environmentDao = Oracle.getEnvironmentDao();
 
-	public TestSelfHealingScenarioDao(ScenarioEnvironmentDao scenarioEnvironmentDao) {
+	public TestSelfHealingScenarioDao() {
 		super();
-		this.scenarioEnvironmentDao = scenarioEnvironmentDao;
 		this.scenarios = this.createTestScenarios();
 		for (SelfHealingScenario scenario : scenarios) {
 			this.environments.addAll(scenario.getEnvironments());
@@ -66,11 +67,11 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		Artifact artifact = ArtifactRepository.getProxy();
 		String stimulus = "GetActiveServersAmountOperation";
 		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(scenarioEnvironmentDao.getEnvironment("NORMAL"));
+		environments.add(environmentDao.getEnvironment("NORMAL"));
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new NumericBinaryRelationalConstraint("ZNewsSys.p0.activeServersAmount",
-						NumericBinaryOperator.LESS_THAN, 3));
+				new NumericBinaryRelationalConstraint(artifact, "activeServersAmount", NumericBinaryOperator.LESS_THAN,
+						3));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 2;
@@ -85,10 +86,10 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = "GetNewsContentClientStimulus";
 		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(scenarioEnvironmentDao.getEnvironment("NORMAL"));
+		environments.add(environmentDao.getEnvironment("NORMAL"));
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint("ZNewsSys.c0.experRespTime", NumericBinaryOperator.LESS_THAN, 1));
+				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN, 1));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;
