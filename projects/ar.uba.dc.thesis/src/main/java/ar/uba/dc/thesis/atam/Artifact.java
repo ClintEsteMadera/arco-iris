@@ -4,20 +4,20 @@ import ar.uba.dc.thesis.common.ThesisPojo;
 
 public class Artifact extends ThesisPojo {
 
-	private final String typeName;
+	private final String name;
 
 	private final String systemName;
 
-	public Artifact(String systemName, String typeName) {
+	public Artifact(String systemName, String name) {
 		super();
 		this.systemName = systemName;
-		this.typeName = typeName;
+		this.name = name;
 
 		this.validate();
 	}
 
-	public String getTypeName() {
-		return this.typeName;
+	public String getName() {
+		return this.name;
 	}
 
 	public String getSystemName() {
