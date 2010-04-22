@@ -15,7 +15,7 @@ public class TestEnvironmentDao implements EnvironmentDao {
 
 	private final Collection<Environment> environments = new HashSet<Environment>();
 
-	private static final Environment DEFAULT_ENVIRONMENT = createAnyEnvironment();
+	private static final Environment DEFAULT_ENVIRONMENT = createDefaultEnvironment();
 
 	// TODO: Include all the other concerns?
 	public TestEnvironmentDao() {
@@ -59,7 +59,7 @@ public class TestEnvironmentDao implements EnvironmentDao {
 		return highLoadEnv;
 	}
 
-	private static Environment createAnyEnvironment() {
+	private static Environment createDefaultEnvironment() {
 		Map<Concern, Double> equallyDistributedWeights = new HashMap<Concern, Double>();
 		// TODO: let user defined weights
 		Concern[] values = Concern.values();
