@@ -94,7 +94,7 @@ public class Environment extends ThesisPojo {
 	}
 
 	/**
-	 * Adds the value to the history. If the history has reached its maximum size, then the oldest value if overriden
+	 * Adds the value to the history. If the history has reached its maximum size, then the oldest value is overriden
 	 * (FIFO Cache)
 	 * 
 	 * @param holds
