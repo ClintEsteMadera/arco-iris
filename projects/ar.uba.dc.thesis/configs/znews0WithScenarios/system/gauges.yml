@@ -33,7 +33,7 @@ gauge-instances:
     type:  ResponseTimeGaugeT
     model: "ZNewsSys:Acme"
     mappings:
-      "end2endRespTimeWithStimulus(delegate.oracle)" : c0.experRespTime
+      "end2endRespTimeWithStimulus(delegate.oracle)" : ClientT.experRespTime
     setupValues:
       targetIP: "${customize.system.target.0}"
     configValues:

@@ -6,6 +6,6 @@ package ar.uba.dc.thesis.rainbow.constraint;
  */
 public interface SinglePropertyInvolvedConstraint extends Constraint {
 
-	String getProperty();
+	String getFullyQualifiedPropertyName();
 
 }

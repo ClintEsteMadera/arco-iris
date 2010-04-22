@@ -10,30 +10,33 @@ import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
 public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo implements
 		SinglePropertyInvolvedConstraint {
 
+	private static final String DOT = ".";
+
 	private final Artifact artifact;
 
-	public BaseSinglePropertyInvolvedConstraint(Artifact artifact) {
+	private final String property;
+
+	public BaseSinglePropertyInvolvedConstraint(Artifact artifact, String property) {
 		super();
 		this.artifact = artifact;
+		this.property = property;
+	}
+
+	protected AcmeProperty findAcmePropertyInAcme(IAcmeModel acmeModel) {
+		AcmeProperty property = (AcmeProperty) acmeModel
+				.findNamedObject(acmeModel, this.getFullyQualifiedPropertyName());
+		if (property == null) {
+			throw new RuntimeException("Could not find in the model the property '"
+					+ this.getFullyQualifiedPropertyName() + "'");
+		}
+		return property;
 	}
 
 	/**
-	 * Uses the Property Name, in addition to the System and Type Name present in this Constraint's artifact, and looks
-	 * for that particular property in the Acme Model.
-	 * 
-	 * @param acmeModel
-	 *            the model where to look for the property
-	 * @param propertyName
-	 *            the name of the property (it will be prepended with the system name and the type name of the property,
-	 *            both taken from the artifact present in this constraint)
-	 * @return
+	 * Returns the full qualified property name prepending the System and Type name of it.
 	 */
-	protected AcmeProperty findAcmePropertyInAcme(IAcmeModel acmeModel, String propertyName) {
-		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, propertyName);
-		if (property == null) {
-			throw new RuntimeException("Could not find in the model the property '" + propertyName + "'");
-		}
-		return property;
+	public String getFullyQualifiedPropertyName() {
+		return this.artifact.getSystemName() + DOT + this.artifact.getTypeName() + DOT + this.property;
 	}
 
 	public void validate() {

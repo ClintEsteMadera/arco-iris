@@ -37,12 +37,39 @@ import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
  */
 public class Oracle implements IDisposable {
-
-	private static TestEnvironmentDao environmentDao = new TestEnvironmentDao();
-
 	public static final String NAME = "The Rainbow Oracle With Scenarios";
 
 	public static final String JAR_NAME = "app.rainbow.oracle.jar";
+
+	// Singleton instance
+	private static Oracle m_instance = null;
+
+	static boolean m_showGui = true; // allows package-level change
+
+	/** Intentional package-level visibility for testing access. */
+	RainbowLogger m_logger = null;
+
+	private RainbowGUI m_gui = null;
+
+	private RainbowModelWithScenarios m_model = null;
+
+	private TargetSystem m_system = null;
+
+	private IRainbowRunnable m_modelmgr = null;
+
+	private IRainbowRunnable m_evaluator = null;
+
+	private IRainbowRunnable m_executor = null;
+
+	private IRainbowRunnable m_adaptmgr = null;
+
+	private ScenariosManager scenariosManager;
+
+	private EnvironmentDao environmentDao;
+
+	private EnvironmentRepository environmentRepository;
+
+	// private ILearner m_learner = null;
 
 	public static void main(String[] args) {
 		boolean showHelp = false;
@@ -92,32 +119,12 @@ public class Oracle implements IDisposable {
 		System.exit(Rainbow.exitValue());
 	}
 
-	// Singleton instance
-	private static Oracle m_instance = null;
-	static boolean m_showGui = true; // allows package-level change
-
 	public static Oracle instance() {
 		if (m_instance == null) {
 			m_instance = new Oracle();
 		}
 		return m_instance;
 	}
-
-	private final ScenariosManager scenariosManager;
-
-	/** Intentional package-level visibility for testing access. */
-	RainbowLogger m_logger = null;
-	private RainbowGUI m_gui = null;
-	private RainbowModelWithScenarios m_model = null;
-	private TargetSystem m_system = null;
-
-	private IRainbowRunnable m_modelmgr = null;
-	private IRainbowRunnable m_evaluator = null;
-	private IRainbowRunnable m_executor = null;
-	private IRainbowRunnable m_adaptmgr = null;
-	private final EnvironmentRepository environmentRepository;
-
-	// private ILearner m_learner = null;
 
 	/**
 	 * Not for instantiation.
@@ -129,13 +136,6 @@ public class Oracle implements IDisposable {
 		ARainbowLoggerFactory.reset(); // activate the relevant logger factory
 		Rainbow.instance().serviceManager(); // activate the RainbowServiceManager
 		m_logger = RainbowLoggerFactory.logger(getClass());
-
-		SelfHealingScenarioRepository scenarioRepository = new SelfHealingScenarioRepository(
-				new TestSelfHealingScenarioDao());
-
-		this.scenariosManager = new ScenariosManager(scenarioRepository);
-
-		this.environmentRepository = new EnvironmentRepository(getEnvironmentDao());
 
 		// mark the init of Rainbow
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_RAINBOW_INIT);
@@ -182,7 +182,7 @@ public class Oracle implements IDisposable {
 
 	public RainbowModelWithScenarios rainbowModel() {
 		if (m_model == null) {
-			m_model = new RainbowModelWithScenarios(scenariosManager);
+			m_model = new RainbowModelWithScenarios(scenariosManager());
 			// initialize the model as a repository to the language module
 			Ohana.instance().setModelRepository(m_model);
 		}
@@ -216,7 +216,7 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable adaptationManager() {
 		if ((m_adaptmgr == null || m_adaptmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_adaptmgr = new AdaptationManagerWithScenarios(this.scenariosManager, this.environmentRepository);
+			m_adaptmgr = new AdaptationManagerWithScenarios(scenariosManager(), environmentRepository());
 		}
 		return m_adaptmgr;
 	}
@@ -232,8 +232,27 @@ public class Oracle implements IDisposable {
 		return m_executor;
 	}
 
-	public static EnvironmentDao getEnvironmentDao() {
-		return environmentDao;
+	public EnvironmentDao environmentDao() {
+		if (this.environmentDao == null) {
+			this.environmentDao = new TestEnvironmentDao();
+		}
+		return this.environmentDao;
+	}
+
+	public ScenariosManager scenariosManager() {
+		if (this.scenariosManager == null) {
+			SelfHealingScenarioRepository scenarioRepository = new SelfHealingScenarioRepository(
+					new TestSelfHealingScenarioDao(environmentDao()));
+			this.scenariosManager = new ScenariosManager(scenarioRepository);
+		}
+		return this.scenariosManager;
+	}
+
+	public EnvironmentRepository environmentRepository() {
+		if (this.environmentRepository == null) {
+			this.environmentRepository = new EnvironmentRepository(environmentDao());
+		}
+		return this.environmentRepository;
 	}
 
 	/*
