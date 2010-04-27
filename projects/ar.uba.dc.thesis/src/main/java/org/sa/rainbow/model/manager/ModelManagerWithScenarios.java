@@ -10,11 +10,16 @@ import java.util.Map.Entry;
 
 import org.acmestudio.acme.ModelHelper;
 import org.acmestudio.acme.core.IAcmeObject;
+import org.acmestudio.acme.element.IAcmeComponent;
+import org.acmestudio.acme.element.IAcmeComponentType;
+import org.acmestudio.acme.element.IAcmeElement;
 import org.acmestudio.acme.element.IAcmeElementInstance;
 import org.acmestudio.acme.element.IAcmeElementType;
+import org.acmestudio.acme.element.IAcmeElementTypeRef;
 import org.acmestudio.acme.element.IAcmeSystem;
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.model.IAcmeModel;
+import org.acmestudio.basicmodel.element.AcmeComponentType;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.IModelManager;
@@ -150,13 +155,20 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			// fetch info from monitoring infra, update model with fresh properties
 			if (!m_sim.isTerminated()) {
 				for (Entry<String, Object> e : m_sim.getChangedProperties().entrySet()) {
-					List<String> stimulusForProperty = m_model.getStimulus(e.getKey());
-					if (!stimulusForProperty.isEmpty()) {
-						for (String stimulus : stimulusForProperty) {
-							m_model.updateProperty(e.getKey(), e.getValue(), stimulus);
+					String key = e.getKey();
+					String qualifiedPropertyName = getQualifiedPropertyName(key);
+					if (qualifiedPropertyName != null) {
+						String involvedArtifactName = getArtifactName(key);
+						log("Property modified (qualified name): " + qualifiedPropertyName + " - artifact: "
+								+ involvedArtifactName);
+						List<String> stimulusForProperty = m_model.getStimulus(qualifiedPropertyName);
+						if (!stimulusForProperty.isEmpty()) {
+							for (String stimulus : stimulusForProperty) {
+								m_model.updateProperty(key, e.getValue(), stimulus, involvedArtifactName);
+							}
 						}
 					} else {
-						m_model.updateProperty(e.getKey(), e.getValue());
+						m_model.updateProperty(key, e.getValue());
 					}
 				}
 			}
@@ -170,6 +182,46 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			}
 			m_gaugeCoord.checkGauges();
 		}
+	}
+
+	private String getArtifactName(String qualifiedProperty) {
+		String[] split = qualifiedProperty.split("\\.");
+		return split[1];
+	}
+
+	/**
+	 * Returns the full path of the property with the component type instead of the instance of the component. Example:
+	 * for ZNewSys.c0.experRespTime returns ZNewSys.ClientT.experRespTime
+	 * 
+	 * @param qualifiedPropertyInstance
+	 *            e.g: ZNewsSys.ClientT.experRespTime
+	 * @return
+	 */
+	private String getQualifiedPropertyName(String qualifiedPropertyInstance) {
+		String result = null;
+		String[] split = qualifiedPropertyInstance.split("\\.");
+		if (split.length != 3) {
+			return result;
+		}
+		Object obj = m_model.getAcmeModel().findNamedObject(m_model.getAcmeModel(), qualifiedPropertyInstance);
+		if (obj instanceof IAcmeProperty) {
+			IAcmeProperty acmeProperty = (IAcmeProperty) obj;
+			IAcmeElement parent = acmeProperty.getParent();
+			if (parent instanceof IAcmeComponent) {
+				IAcmeComponent acmeComponent = (IAcmeComponent) parent;
+				Set<? extends IAcmeElementTypeRef<IAcmeComponentType>> declaredTypesRefs = acmeComponent
+						.getDeclaredTypes();
+				for (IAcmeElementTypeRef<IAcmeComponentType> acmeComponentTypeRef : declaredTypesRefs) {
+					if (acmeComponentTypeRef.getTarget() instanceof AcmeComponentType) {
+						// TODO: warning, SystemT has also the type ArchElementT
+						result = qualifiedPropertyInstance.replace(split[1], ((AcmeComponentType) acmeComponentTypeRef
+								.getTarget()).getName());
+					}
+				}
+
+			}
+		}
+		return result;
 	}
 
 	/*

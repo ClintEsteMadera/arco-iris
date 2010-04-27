@@ -28,6 +28,7 @@ import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.stitch.core.Strategy;
 import org.sa.rainbow.stitch.core.Tactic;
 import org.sa.rainbow.stitch.core.UtilityFunction;
+import org.sa.rainbow.stitch.core.Strategy.Outcome;
 import org.sa.rainbow.stitch.error.DummyStitchProblemHandler;
 import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.StopWatch;
@@ -370,7 +371,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * @return the current system enviroment
 	 */
 	private Environment detectCurrentSystemEnvironment(IAcmeModel acmeModel) {
-		Collection<Environment> environments = this.environmentRepository.getAllEnvironments();
+		Collection<Environment> environments = this.environmentRepository.getAllNonDefaultEnvironments();
 		for (Environment environment : environments) {
 			if (environment.holds(acmeModel)) {
 				log("Current environment: " + environment.getName());
@@ -382,11 +383,17 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private IAcmeModel simulateStrategyApplication(Strategy strategy) {
+		log("Simulating " + strategy.getName() + " strategy begin...");
 		@SuppressWarnings("unused")
 		IAcmeModel simulationModel = this.clone(this.m_model.getAcmeModel());
 		// TODO simular aplicacion de estrategia sobre simulationModel!
-		strategy.evaluate(null);
-		// System.out.println(strategy.modelElementsUsed());
+		Outcome simulationResult = (Outcome) strategy.evaluate(null);
+		if (simulationResult == Outcome.SUCCESS) {
+			log("Simulating " + strategy.getName() + " strategy end...");
+		} else {
+			log("Error simulating " + strategy.getName() + " strategy. The strategy won't be selected.");
+		}
+		// System.out.println(strategy.modelElementsUsed());TODO ver strategy.modelElementsUsed()!
 		return simulationModel;
 	}
 

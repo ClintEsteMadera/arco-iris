@@ -67,6 +67,14 @@ public class SelfHealingScenario extends AtamScenario {
 	 * @param acmeModel
 	 * @return
 	 */
+	public boolean isBroken(final IAcmeModel acmeModel, final String involvedArtifactName) {
+		boolean isBroken = false;
+		if (anyEnvironmentApplies(acmeModel)) {
+			isBroken = !getResponseMeasure().holds(acmeModel, involvedArtifactName);
+		}
+		return isBroken;
+	}
+
 	public boolean isBroken(final IAcmeModel acmeModel) {
 		boolean isBroken = false;
 		if (anyEnvironmentApplies(acmeModel)) {

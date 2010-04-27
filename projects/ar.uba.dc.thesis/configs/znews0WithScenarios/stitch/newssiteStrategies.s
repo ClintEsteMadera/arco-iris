@@ -30,9 +30,9 @@ define boolean lowFi = avgFidelity < M.THRESHOLD_FIDELITY;
  * In the presence of Brute, this strategy probably won't ever get picked.
  */
 strategy QuickDirtyReduceResponseTime
-[ styleApplies && cViolation ] {
-  t0: (/*hiLoad*/ cViolation) -> lowerFidelity(2, 100) @[2000 /*ms*/] {
-    t1: (!cViolation) -> done;
+[ styleApplies ] {
+  t0: (true) -> lowerFidelity(2, 100) @[2000 /*ms*/]{
+  	t1: (default) -> TNULL;
   }
 }
 

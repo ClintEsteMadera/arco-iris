@@ -6,7 +6,7 @@ import ar.uba.dc.thesis.atam.Environment;
 
 public interface EnvironmentDao {
 
-	Collection<Environment> getAllEnvironments();
+	Collection<Environment> getAllNonDefaultEnvironments();
 
 	Environment getEnvironment(String name);
 
