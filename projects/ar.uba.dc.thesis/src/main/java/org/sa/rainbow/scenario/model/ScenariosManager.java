@@ -71,7 +71,8 @@ public class ScenariosManager {
 
 	public void loadStimulusPerProperty(SelfHealingScenario currentScenario, String stimulus) {
 		List<String> stimulusPerScenarioList;
-		String responseMeasureProperty = currentScenario.getResponseMeasure().getConstraint().getFullyQualifiedPropertyName();
+		String responseMeasureProperty = currentScenario.getResponseMeasure().getConstraint()
+				.getFullyQualifiedPropertyName();
 
 		if (this.stimulusByPropertyMap.containsKey(responseMeasureProperty)) {
 			stimulusPerScenarioList = this.stimulusByPropertyMap.get(responseMeasureProperty);
@@ -82,9 +83,8 @@ public class ScenariosManager {
 		stimulusPerScenarioList.add(stimulus);
 	}
 
-	public List<String> getStimulus(String property) {
-		List<String> stimulusPerProperty = this.stimulusByPropertyMap.get(property);
-
+	public List<String> getStimulus(String qualifiedPropertyNAme) {
+		List<String> stimulusPerProperty = this.stimulusByPropertyMap.get(qualifiedPropertyNAme);
 		return stimulusPerProperty == null ? Collections.<String> emptyList() : stimulusPerProperty;
 	}
 
@@ -92,13 +92,14 @@ public class ScenariosManager {
 		return this.scenariosMap.get(stimulus);
 	}
 
-	public List<SelfHealingScenario> findBrokenScenarios(IAcmeModel acmeModel, String stimulus) {
+	public List<SelfHealingScenario> findBrokenScenarios(IAcmeModel acmeModel, String stimulus,
+			String involvedArtifactName) {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
 
 		Stack<AcmeError> collectedErrors = new Stack<AcmeError>();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
-			if (scenario.isBroken(acmeModel)) {
+			if (scenario.isBroken(acmeModel, involvedArtifactName)) {
 				this.logErrors(collectedErrors, scenario);
 				brokenScenarios.add(scenario);
 			} else {

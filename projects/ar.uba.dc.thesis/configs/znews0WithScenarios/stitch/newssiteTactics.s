@@ -58,7 +58,7 @@ tactic dischargeServers (int n) {
 tactic lowerFidelity (int step, float fracReq) {
 	condition {
 		// some client should be experiencing high response time
-		exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+		// exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
 		// exists server with fidelity to lower
 		exists s : T.ServerT in M.components | s.fidelity > step;
 	}

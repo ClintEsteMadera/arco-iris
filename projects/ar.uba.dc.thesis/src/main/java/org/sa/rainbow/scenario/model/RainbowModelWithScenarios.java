@@ -1,11 +1,16 @@
 package org.sa.rainbow.scenario.model;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
+import org.acmestudio.acme.element.IAcmeElementInstance;
+import org.acmestudio.acme.element.IAcmeSystem;
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
+import org.acmestudio.acme.model.IAcmeModel;
 import org.acmestudio.acme.model.command.IAcmeCommand;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
@@ -47,7 +52,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	 * @param stimulus
 	 *            the stimulus who caused the update.
 	 */
-	public void updateProperty(String type, Object value, String stimulus) {
+	public void updateProperty(String type, Object value, String stimulus, String involvedArtifactName) {
 		this.updateProperty(type, value);
 		this.isPropertyUpdateAllowed = false;
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
@@ -55,7 +60,8 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		List<SelfHealingScenario> brokenScenarios;
 		// done this way in order to avoid the same else block twice
 		if (!adaptationManager.adaptationInProgress()
-				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(getAcmeModel(), stimulus)).isEmpty()) {
+				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(getAcmeModel(), stimulus,
+						involvedArtifactName)).isEmpty()) {
 			/*
 			 * pass control to adaptation manager, who will be responsible for turning the flag
 			 * (isPropertyUpdateAllowed) on again...
@@ -137,4 +143,33 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		// store new/updated exp.avg value
 		m_propExpAvg.put(iden, avg);
 	}
+
+	/**
+	 * Same behavior as superclass, we copied and pasted this method since it is private.<br>
+	 */
+	public static Set<String> collectInstanceProps(String systemName, String typeName, String propName,
+			IAcmeModel acmeModel) {
+		Set<String> propKeys = new HashSet<String>();
+
+		IAcmeSystem acmeSystem = acmeModel.getSystem(systemName);
+		if (acmeSystem != null) {
+			Set<IAcmeElementInstance<?, ?>> children = new HashSet<IAcmeElementInstance<?, ?>>();
+			children.addAll(acmeSystem.getComponents());
+			children.addAll(acmeSystem.getConnectors());
+			children.addAll(acmeSystem.getPorts());
+			children.addAll(acmeSystem.getRoles());
+			for (IAcmeElementInstance<?, ?> child : children) {
+				// seek element with specified type AND specified property
+				if (child.declaresType(typeName) || child.instantiatesType(typeName)) {
+					IAcmeProperty childProp = child.getProperty(propName);
+					if (childProp != null) {
+						String qName = childProp.getQualifiedName();
+						propKeys.add(qName);
+					}
+				}
+			}
+		}
+		return propKeys;
+	}
+
 }

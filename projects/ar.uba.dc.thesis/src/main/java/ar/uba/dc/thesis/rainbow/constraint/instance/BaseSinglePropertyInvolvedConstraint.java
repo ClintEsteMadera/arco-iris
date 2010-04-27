@@ -21,12 +21,24 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		this.property = property;
 	}
 
-	protected AcmeProperty findAcmePropertyInAcme(IAcmeModel acmeModel) {
-		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, this
-				.getFullyQualifiedPropertyName());
+	public Artifact getArtifact() {
+		return artifact;
+	}
+
+	/**
+	 * Uses the Property Name, in addition to the System and Type Name present in this Constraint's artifact, and looks
+	 * for that particular property in the Acme Model.
+	 * 
+	 * @param acmeModel
+	 *            the model where to look for the property
+	 * @param propertyFullPath
+	 *            the name of the property, includes the system and type name of the property,
+	 * @return
+	 */
+	protected AcmeProperty findAcmePropertyInAcme(IAcmeModel acmeModel, String propertyFullPath) {
+		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, propertyFullPath);
 		if (property == null) {
-			throw new RuntimeException("Could not find in the model the property '"
-					+ this.getFullyQualifiedPropertyName() + "'");
+			throw new RuntimeException("Could not find in the model the property '" + propertyFullPath + "'");
 		}
 		return property;
 	}

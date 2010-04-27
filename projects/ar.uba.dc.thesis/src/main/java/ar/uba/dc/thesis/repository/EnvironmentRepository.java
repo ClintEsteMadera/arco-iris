@@ -14,8 +14,8 @@ public final class EnvironmentRepository {
 		this.scenarioEnvironmentDao = scenarioEnvironmentDao;
 	}
 
-	public Collection<Environment> getAllEnvironments() {
-		return this.scenarioEnvironmentDao.getAllEnvironments();
+	public Collection<Environment> getAllNonDefaultEnvironments() {
+		return this.scenarioEnvironmentDao.getAllNonDefaultEnvironments();
 	}
 
 	public Environment getEnvironment(String name) {

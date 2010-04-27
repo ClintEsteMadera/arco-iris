@@ -4,10 +4,9 @@ import ar.uba.dc.thesis.atam.Artifact;
 
 public final class ArtifactRepository {
 
-	// FIXME We should work with types instead of concrete instances...
-	private static final String CLIENT_INSTANCE_NAME = "c0";
+	private static final String CLIENT_INSTANCE_NAME = "ClientT";
 
-	private static final String PROXY_INSTANCE_NAME = "p0";
+	private static final String PROXY_INSTANCE_NAME = "ProxyT";
 
 	private static final String SYSTEM_NAME = "ZNewsSys";
 

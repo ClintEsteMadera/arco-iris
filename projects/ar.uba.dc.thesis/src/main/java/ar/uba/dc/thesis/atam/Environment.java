@@ -58,7 +58,7 @@ public class Environment extends ThesisPojo {
 		boolean holds = true;
 
 		for (Constraint constraint : this.getConditions()) {
-			holds = holds && constraint.holds(acmeModel);
+			holds = holds && constraint.holds(acmeModel, HeuristicType.MOST);
 		}
 		holds = this.getHeuristicAccordingToHistory(holds);
 

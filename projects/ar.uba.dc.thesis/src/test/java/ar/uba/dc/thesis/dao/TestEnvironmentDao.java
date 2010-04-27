@@ -23,7 +23,7 @@ public class TestEnvironmentDao implements EnvironmentDao {
 		this.environments.add(createHighLoadEnvironment());
 	}
 
-	public Collection<Environment> getAllEnvironments() {
+	public Collection<Environment> getAllNonDefaultEnvironments() {
 		return this.environments;
 	}
 
