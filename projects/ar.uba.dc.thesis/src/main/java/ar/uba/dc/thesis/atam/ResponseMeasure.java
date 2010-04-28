@@ -23,11 +23,7 @@ public class ResponseMeasure extends ThesisPojo {
 	}
 
 	public ResponseMeasure(String description, SinglePropertyInvolvedConstraint constraint) {
-		super();
-		this.description = description;
-		this.constraint = constraint;
-		this.heuristicType = HeuristicType.MOST;
-		this.validate();
+		this(description, constraint, HeuristicType.MOST);
 	}
 
 	public String getPropertyMeasured() {
