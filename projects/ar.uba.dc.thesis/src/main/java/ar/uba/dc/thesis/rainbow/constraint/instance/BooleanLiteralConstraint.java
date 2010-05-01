@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.rainbow.constraint.instance;
 
 import org.acmestudio.acme.model.IAcmeModel;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.atam.Environment.HeuristicType;
 import ar.uba.dc.thesis.common.ThesisPojo;
@@ -19,11 +20,11 @@ public class BooleanLiteralConstraint extends ThesisPojo implements Constraint {
 		this.literalValue = literalValue;
 	}
 
-	public boolean holds(IAcmeModel acmeModel, String involvedArtifactName) {
+	public boolean holds(IAcmeModel acmeModel, HeuristicType heuristicType) {
 		return this.literalValue;
 	}
 
-	public boolean holds(IAcmeModel acmeModel, HeuristicType heuristicType) {
+	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, HeuristicType most) {
 		return this.literalValue;
 	}
 

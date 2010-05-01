@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.acmestudio.acme.model.IAcmeModel;
 import org.apache.commons.lang.StringUtils;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
@@ -54,11 +54,11 @@ public class Environment extends ThesisPojo {
 		return weights;
 	}
 
-	public boolean holds(IAcmeModel acmeModel) {
+	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean holds = true;
 
 		for (Constraint constraint : this.getConditions()) {
-			holds = holds && constraint.holds(acmeModel, HeuristicType.MOST);
+			holds = holds && constraint.holds(rainbowModelWithScenarios, HeuristicType.MOST);
 		}
 		holds = this.getHeuristicAccordingToHistory(holds);
 

@@ -1,7 +1,6 @@
 package ar.uba.dc.thesis.rainbow.constraint.instance;
 
-import org.acmestudio.acme.model.IAcmeModel;
-import org.acmestudio.basicmodel.element.property.AcmeProperty;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.Artifact;
@@ -35,8 +34,8 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 	 *            the name of the property, includes the system and type name of the property,
 	 * @return
 	 */
-	protected AcmeProperty findAcmePropertyInAcme(IAcmeModel acmeModel, String propertyFullPath) {
-		AcmeProperty property = (AcmeProperty) acmeModel.findNamedObject(acmeModel, propertyFullPath);
+	protected Object findAcmePropertyInAcme(RainbowModelWithScenarios rainbowModelWithScenarios, String propertyFullPath) {
+		Object property = rainbowModelWithScenarios.getProperty(propertyFullPath);
 		if (property == null) {
 			throw new RuntimeException("Could not find in the model the property '" + propertyFullPath + "'");
 		}

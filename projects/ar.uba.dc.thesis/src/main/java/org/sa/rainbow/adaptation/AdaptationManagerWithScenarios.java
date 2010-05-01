@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.acmestudio.acme.model.IAcmeModel;
 import org.sa.rainbow.adaptation.executor.Executor;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
@@ -280,11 +279,15 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		// nothing to do, avoid doing Rainbow adaptation
 	}
 
-	/*
-	 * Algorithm: 1) Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to
-	 * current system condition. NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic
-	 * is true. 2) Calculate scores of the enabled strategies (this involves evaluating the meta-information of the
-	 * tactics in each strategy). 3) Select and execute the highest scoring strategy
+	/**
+	 * Algorithm:
+	 * <ol>
+	 * <li> Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to current
+	 * system condition. NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic is
+	 * true.
+	 * <li> Calculate scores of the enabled strategies (this involves evaluating the meta-information of the tactics in
+	 * each strategy).
+	 * <li> Select and execute the highest scoring strategy
 	 */
 	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
 
@@ -294,9 +297,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
-		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model.getAcmeModel());
-		Map<Concern, Double> weights = systemEnvironment.getWeights();
-		Map<String, Double> weights4Rainbow = translateConcernWeights(weights);
+		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
+		Map<String, Double> weights4Rainbow = extractConcernWeights(systemEnvironment);
 
 		double maxScore4Strategy = 0L;
 		Strategy selectedStrategy = null;
@@ -319,7 +321,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
 					continue; // don't consider this Strategy
 				}
-				IAcmeModel simulationModel = simulateStrategyApplication(strategy);
+				RainbowModelWithScenarios simulationModel = simulateStrategyApplication(strategy);
 
 				double scenariosScore = 0;
 				if (scenariosSolutionWeight > 0) {
@@ -368,12 +370,17 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	/**
+	 * Detect the current system environment taking into account all the non-default ones. The first environment that
+	 * holds is returned, or the default environment if no one holds.
+	 * <p>
+	 * <b>NOTE: We assume the environments are mutually exclusive.</b>
+	 * 
 	 * @return the current system enviroment
 	 */
-	private Environment detectCurrentSystemEnvironment(IAcmeModel acmeModel) {
+	private Environment detectCurrentSystemEnvironment(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		Collection<Environment> environments = this.environmentRepository.getAllNonDefaultEnvironments();
 		for (Environment environment : environments) {
-			if (environment.holds(acmeModel)) {
+			if (environment.holds(rainbowModelWithScenarios)) {
 				log("Current environment: " + environment.getName());
 				return environment;
 			}
@@ -382,10 +389,16 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return environmentRepository.getDefaultEnvironment();
 	}
 
-	private IAcmeModel simulateStrategyApplication(Strategy strategy) {
+	private RainbowModelWithScenarios simulateStrategyApplication(Strategy strategy) {
 		log("Simulating " + strategy.getName() + " strategy begin...");
-		@SuppressWarnings("unused")
-		IAcmeModel simulationModel = this.clone(this.m_model.getAcmeModel());
+
+		RainbowModelWithScenarios simulationModel = null;
+		try {
+			// TODO Ver si es necesario hacer esto!!
+			simulationModel = this.m_model.clone();
+		} catch (CloneNotSupportedException e) {
+			log(e.getMessage());
+		}
 		// TODO simular aplicacion de estrategia sobre simulationModel!
 		Outcome simulationResult = (Outcome) strategy.evaluate(null);
 		if (simulationResult == Outcome.SUCCESS) {
@@ -397,19 +410,16 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return simulationModel;
 	}
 
-	private IAcmeModel clone(IAcmeModel acmeModel) {
-		// TODO clonar el model (solo bastaría con clonar las properties con sus valores?)
-		return acmeModel;
-	}
-
 	/**
 	 * Rainbow works with concern as Strings, so a translation is needed
 	 * 
 	 * @param weights
 	 * @return
 	 */
-	private Map<String, Double> translateConcernWeights(Map<Concern, Double> weights) {
-		Map<String, Double> result = new HashMap<String, Double>();
+	private Map<String, Double> extractConcernWeights(Environment environment) {
+		Map<Concern, Double> weights = environment.getWeights();
+
+		Map<String, Double> result = new HashMap<String, Double>(weights.size());
 		for (Concern concern : weights.keySet()) {
 			result.put(concern.getRainbowName(), weights.get(concern));
 		}
@@ -417,7 +427,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private Double scoreStrategyWithScenarios(Collection<SelfHealingScenario> scenarios, Environment systemEnvironment,
-			IAcmeModel simulationModel) {
+			RainbowModelWithScenarios simulationModel) {
 		double score = 0L;
 		Map<Concern, Double> weights = systemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {

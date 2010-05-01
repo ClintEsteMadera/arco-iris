@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.atam;
 
 import org.acmestudio.acme.model.IAcmeModel;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.atam.Environment.HeuristicType;
 import ar.uba.dc.thesis.common.ThesisPojo;
@@ -38,15 +39,16 @@ public class ResponseMeasure extends ThesisPojo {
 		return this.constraint;
 	}
 
+	public boolean holds(IAcmeModel acmeModel) {
+		return this.constraint.holds(acmeModel, this.heuristicType);
+	}
+
+	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
+		return this.constraint.holds(rainbowModelWithScenarios, this.heuristicType);
+	}
+
 	public void validate() {
 		// Do nothing
 	}
 
-	public boolean holds(IAcmeModel acmeModel, String involvedArtifactName) {
-		return this.constraint.holds(acmeModel, involvedArtifactName);
-	}
-
-	public boolean holds(IAcmeModel acmeModel) {
-		return this.constraint.holds(acmeModel, this.heuristicType);
-	}
 }
