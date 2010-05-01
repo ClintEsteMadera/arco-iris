@@ -1,8 +1,10 @@
 package org.sa.rainbow.scenario.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -23,7 +25,7 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
-public class RainbowModelWithScenarios extends RainbowModel {
+public class RainbowModelWithScenarios extends RainbowModel implements Cloneable {
 
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(RainbowModelWithScenarios.class);
 
@@ -146,7 +148,10 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	/**
 	 * Same behavior as superclass, we copied and pasted this method since it is private.<br>
+	 * 
+	 * @deprecated
 	 */
+	@Deprecated
 	public static Set<String> collectInstanceProps(String systemName, String typeName, String propName,
 			IAcmeModel acmeModel) {
 		Set<String> propKeys = new HashSet<String>();
@@ -170,6 +175,16 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			}
 		}
 		return propKeys;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Deprecated
+	public RainbowModelWithScenarios clone() throws CloneNotSupportedException {
+		RainbowModelWithScenarios clone = (RainbowModelWithScenarios) super.clone();
+		clone.m_propExpAvg = ((Map<String, Double>) ((HashMap<String, Double>) this.m_propExpAvg).clone());
+
+		return clone;
 	}
 
 }
