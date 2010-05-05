@@ -158,13 +158,10 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 					String key = e.getKey();
 					String qualifiedPropertyName = getQualifiedPropertyName(key);
 					if (qualifiedPropertyName != null) {
-						String involvedArtifactName = getArtifactName(key);
-						log("Property modified (qualified name): " + qualifiedPropertyName + " - artifact: "
-								+ involvedArtifactName);
 						List<String> stimulusForProperty = m_model.getStimulus(qualifiedPropertyName);
 						if (!stimulusForProperty.isEmpty()) {
 							for (String stimulus : stimulusForProperty) {
-								m_model.updateProperty(key, e.getValue(), stimulus, involvedArtifactName);
+								m_model.updateProperty(key, e.getValue(), stimulus);
 							}
 						}
 					} else {
@@ -182,11 +179,6 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			}
 			m_gaugeCoord.checkGauges();
 		}
-	}
-
-	private String getArtifactName(String qualifiedProperty) {
-		String[] split = qualifiedProperty.split("\\.");
-		return split[1];
 	}
 
 	/**

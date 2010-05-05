@@ -1,6 +1,5 @@
 package ar.uba.dc.thesis.rainbow.constraint.instance;
 
-import org.acmestudio.acme.model.IAcmeModel;
 import org.apache.commons.lang.StringUtils;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
@@ -35,32 +34,19 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		return value;
 	}
 
-	@Deprecated
-	public boolean holds(IAcmeModel acmeModel, HeuristicType heuristicType) {
-		Number propertyValue = 200;// this.getPropertyValueFrom(acmeModel);
-
-		return this.getBinaryOperator().performOperation(propertyValue, this.getValue());
-	}
-
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, HeuristicType most) {
 		Number propertyValue = this.getPropertyValueFrom(rainbowModelWithScenarios);
-
 		return this.getBinaryOperator().performOperation(propertyValue, this.getValue());
 	}
 
-	private Number getPropertyValueFrom(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		Double propertyValue = (Double) this.findAcmePropertyInAcme(rainbowModelWithScenarios, this.avgPropertyName);
+	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, double concernDiffAfterStrategy) {
+		double propertyValue = this.getPropertyValueFrom(rainbowModelWithScenarios);
+		double propertyValueAfterStrategy = propertyValue + concernDiffAfterStrategy;
+		return this.getBinaryOperator().performOperation(propertyValueAfterStrategy, this.getValue());
+	}
 
-		// AcmePropertyValue propertyValue = property.getValue();
-		//
-		// if (propertyValue instanceof AcmeIntValue) {
-		// return ((AcmeIntValue) propertyValue).getValue();
-		// } else if (propertyValue instanceof AcmeFloatValue) {
-		// return ((AcmeFloatValue) propertyValue).getValue();
-		// } else {
-		// throw new RuntimeException("The type " + propertyValue.getClass().getName() + "in not a valid numeric type");
-		// }
-		return propertyValue;
+	private double getPropertyValueFrom(RainbowModelWithScenarios rainbowModelWithScenarios) {
+		return (Double) this.findAcmePropertyInAcme(rainbowModelWithScenarios, this.avgPropertyName);
 	}
 
 	@Override

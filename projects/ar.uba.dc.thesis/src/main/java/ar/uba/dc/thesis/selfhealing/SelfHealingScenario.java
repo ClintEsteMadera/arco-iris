@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedMap;
 
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
@@ -69,6 +70,24 @@ public class SelfHealingScenario extends AtamScenario {
 		return isBroken;
 	}
 
+	/**
+	 * Tiene en cuenta la aplicacion de la estrategia sobre las properties involucradas
+	 */
+	public boolean isBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
+			SortedMap<String, Double> strategyAggregateAttributes) {
+		boolean isBroken = false;
+		if (anyEnvironmentApplies(rainbowModelWithScenarios)) {
+			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
+			boolean strategyAffectsConcern = concernDiffAfterStrategy != null && !concernDiffAfterStrategy.equals(0.0);
+			if (strategyAffectsConcern) {
+				isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios, concernDiffAfterStrategy);
+			} else {
+				isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios);
+			}
+		}
+		return isBroken;
+	}
+
 	private boolean anyEnvironmentApplies(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean anyEnvironmentApplies = false;
 
@@ -81,4 +100,5 @@ public class SelfHealingScenario extends AtamScenario {
 	public boolean applyFor(Environment environment) {
 		return getEnvironments().contains(environment);
 	}
+
 }

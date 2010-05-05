@@ -67,6 +67,9 @@ tactic lowerFidelity (int step, float fracReq) {
 			S.setFidelity(s, s.fidelity - step);
 		}
 	}
+	effect {
+		// EFFECT HAS NO SENSE WITH SCENARIOS APPROACH
+	}
 }
 
 /**

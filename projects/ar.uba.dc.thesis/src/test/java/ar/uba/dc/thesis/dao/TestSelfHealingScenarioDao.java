@@ -75,7 +75,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 2;
 
-		return new SelfHealingScenario(1L, scenarioName, Concern.NUMBER_OF_ACTIVE_SERVERS, stimulusSource, stimulus,
+		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus,
 				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 

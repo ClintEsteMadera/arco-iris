@@ -392,8 +392,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 
 		if (value instanceof AttributeValueTripleWithStimulus) {
 			String stimulus = ((AttributeValueTripleWithStimulus) value).getStimulus();
-			((RainbowModelWithScenarios) rainbowModel).updateProperty(value.type(), value.value(), stimulus,
-					getArtifactName(value.type()));
+			((RainbowModelWithScenarios) rainbowModel).updateProperty(value.type(), value.value(), stimulus);
 			updMsg += " / stimulus: " + stimulus;
 		} else {
 			// Rainbow's usual behavior
@@ -402,11 +401,6 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 		// log info
 		Oracle.instance().writeSystemPanel(m_logger, updMsg);
 		Util.dataLogger().info(updMsg);
-	}
-
-	private String getArtifactName(String qualifiedProperty) {
-		String[] split = qualifiedProperty.split("\\.");
-		return split[1];
 	}
 
 	private void log(String msg) {
