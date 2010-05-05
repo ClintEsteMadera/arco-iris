@@ -55,6 +55,7 @@ public class TestEnvironmentDao implements EnvironmentDao {
 		Map<Concern, Double> highLoadConcernMultiplierMap = new HashMap<Concern, Double>();
 		highLoadConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.8D);
 		highLoadConcernMultiplierMap.put(Concern.SERVER_COST, 0.2D);
+		highLoadConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.0D); // this one SHOULD exist in the map
 		Environment highLoadEnv = new Environment("HIGH LOAD",
 				Collections.singletonList(BooleanLiteralConstraint.TRUE), highLoadConcernMultiplierMap);
 		return highLoadEnv;

@@ -19,7 +19,7 @@ public class BooleanLiteralConstraint extends ThesisPojo implements Constraint {
 		this.literalValue = literalValue;
 	}
 
-	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, HeuristicType most) {
+	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, HeuristicType heuristicType) {
 		return this.literalValue;
 	}
 

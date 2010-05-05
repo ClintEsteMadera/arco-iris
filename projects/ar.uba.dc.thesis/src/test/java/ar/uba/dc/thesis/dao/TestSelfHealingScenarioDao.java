@@ -65,8 +65,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = "A Server cost analizer";
 		Artifact artifact = ArtifactRepository.getProxy();
 		String stimulus = "GetActiveServersAmountOperation";
-		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(environmentDao.getEnvironment("NORMAL"));
+		Set<Environment> environments = Collections.singleton(environmentDao.getEnvironment("NORMAL"));
 		String response = "Active servers amount";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint(artifact, "activeServersAmount", NumericBinaryOperator.LESS_THAN,
@@ -75,8 +74,8 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 2;
 
-		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus,
-				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
+		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
+				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
 	private SelfHealingScenario createClientResponseTimeScenario() {
@@ -84,8 +83,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = "Any Client requesting news content";
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = "GetNewsContentClientStimulus";
-		Set<Environment> environments = new HashSet<Environment>();
-		environments.add(environmentDao.getEnvironment("NORMAL"));
+		Set<Environment> environments = Collections.singleton(environmentDao.getEnvironment("NORMAL"));
 		String response = "Requested News Content";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN, 1));

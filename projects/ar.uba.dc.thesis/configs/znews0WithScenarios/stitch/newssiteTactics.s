@@ -68,7 +68,7 @@ tactic lowerFidelity (int step, float fracReq) {
 		}
 	}
 	effect {
-		// EFFECT HAS NO SENSE WITH SCENARIOS APPROACH
+		// IN THIS 'SCENARIO-CENTRY' APPROACH, THERE IS NO POINT IN SPECIFYING THE 'EFFECT'
 	}
 }
 
