@@ -1,10 +1,8 @@
 package org.sa.rainbow.scenario.model;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -54,7 +52,7 @@ public class RainbowModelWithScenarios extends RainbowModel implements Cloneable
 	 * @param stimulus
 	 *            the stimulus who caused the update.
 	 */
-	public void updateProperty(String type, Object value, String stimulus, String involvedArtifactName) {
+	public void updateProperty(String type, Object value, String stimulus) {
 		this.updateProperty(type, value);
 		this.isPropertyUpdateAllowed = false;
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
@@ -62,8 +60,7 @@ public class RainbowModelWithScenarios extends RainbowModel implements Cloneable
 		List<SelfHealingScenario> brokenScenarios;
 		// done this way in order to avoid the same else block twice
 		if (!adaptationManager.adaptationInProgress()
-				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(getAcmeModel(), stimulus,
-						involvedArtifactName)).isEmpty()) {
+				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(stimulus)).isEmpty()) {
 			/*
 			 * pass control to adaptation manager, who will be responsible for turning the flag
 			 * (isPropertyUpdateAllowed) on again...
@@ -175,16 +172,6 @@ public class RainbowModelWithScenarios extends RainbowModel implements Cloneable
 			}
 		}
 		return propKeys;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public RainbowModelWithScenarios clone() throws CloneNotSupportedException {
-		RainbowModelWithScenarios clone = (RainbowModelWithScenarios) super.clone();
-		clone.m_propExpAvg = ((Map<String, Double>) ((HashMap<String, Double>) this.m_propExpAvg).clone());
-
-		return clone;
 	}
 
 }

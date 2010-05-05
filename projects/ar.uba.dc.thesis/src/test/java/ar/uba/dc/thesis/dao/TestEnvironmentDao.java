@@ -43,8 +43,9 @@ public class TestEnvironmentDao implements EnvironmentDao {
 	// TODO: setear las condiciones de los environments(deben ser excluyentes)
 	private Environment createNormalEnvironment() {
 		Map<Concern, Double> normalConcernMultiplierMap = new HashMap<Concern, Double>();
-		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.5D);
-		normalConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.5D);
+		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.6D);
+		normalConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.3D);
+		normalConcernMultiplierMap.put(Concern.SERVER_COST, 0.1D);
 		Environment normalEnv = new Environment("NORMAL", Collections.singletonList(BooleanLiteralConstraint.TRUE),
 				normalConcernMultiplierMap);
 		return normalEnv;
@@ -53,7 +54,7 @@ public class TestEnvironmentDao implements EnvironmentDao {
 	private Environment createHighLoadEnvironment() {
 		Map<Concern, Double> highLoadConcernMultiplierMap = new HashMap<Concern, Double>();
 		highLoadConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.8D);
-		highLoadConcernMultiplierMap.put(Concern.SERVER_LOAD, 0.2D);
+		highLoadConcernMultiplierMap.put(Concern.SERVER_COST, 0.2D);
 		Environment highLoadEnv = new Environment("HIGH LOAD",
 				Collections.singletonList(BooleanLiteralConstraint.TRUE), highLoadConcernMultiplierMap);
 		return highLoadEnv;

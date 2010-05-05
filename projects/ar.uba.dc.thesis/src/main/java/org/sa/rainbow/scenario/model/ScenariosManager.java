@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.acmestudio.acme.environment.error.AcmeError;
-import org.acmestudio.acme.model.IAcmeModel;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -92,8 +91,7 @@ public class ScenariosManager {
 		return this.scenariosMap.get(stimulus);
 	}
 
-	public List<SelfHealingScenario> findBrokenScenarios(IAcmeModel acmeModel, String stimulus,
-			String involvedArtifactName) {
+	public List<SelfHealingScenario> findBrokenScenarios(String stimulus) {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
 

@@ -27,6 +27,7 @@ public class Environment extends ThesisPojo {
 
 	private final HeuristicType heuristicType;
 
+	// TODO la historia no deberia ser estatica? Pueden existir varios environments iguales?
 	private final List<Boolean> history;
 
 	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Double> weights) {
@@ -77,6 +78,11 @@ public class Environment extends ThesisPojo {
 		if (this.getWeights() == null) {
 			throw new IllegalArgumentException("Concern-Multiplier map cannot be null");
 		}
+	}
+
+	@Override
+	protected String[] getEqualsAndHashCodeExcludedFields() {
+		return new String[] { "history" };
 	}
 
 	/**

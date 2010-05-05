@@ -27,7 +27,6 @@ import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.stitch.core.Strategy;
 import org.sa.rainbow.stitch.core.Tactic;
 import org.sa.rainbow.stitch.core.UtilityFunction;
-import org.sa.rainbow.stitch.core.Strategy.Outcome;
 import org.sa.rainbow.stitch.error.DummyStitchProblemHandler;
 import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.StopWatch;
@@ -305,8 +304,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
 		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double scenariosSolutionWeight = 1;
-		int rainbowSolutionWeight = 0;
+		double scenariosSolutionWeight = 0.5;
+		double rainbowSolutionWeight = 0.5;
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
@@ -321,12 +320,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
 					continue; // don't consider this Strategy
 				}
-				RainbowModelWithScenarios simulationModel = simulateStrategyApplication(strategy);
 
 				double scenariosScore = 0;
 				if (scenariosSolutionWeight > 0) {
-					scenariosScore = scoreStrategyWithScenarios(this.scenariosManager.getEnabledScenarios(),
-							systemEnvironment, simulationModel);
+					scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
 				}
 
 				double rainbowScoreStrategy = 0;
@@ -389,27 +386,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return environmentRepository.getDefaultEnvironment();
 	}
 
-	private RainbowModelWithScenarios simulateStrategyApplication(Strategy strategy) {
-		log("Simulating " + strategy.getName() + " strategy begin...");
-
-		RainbowModelWithScenarios simulationModel = null;
-		try {
-			// TODO Ver si es necesario hacer esto!!
-			simulationModel = this.m_model.clone();
-		} catch (CloneNotSupportedException e) {
-			log(e.getMessage());
-		}
-		// TODO simular aplicacion de estrategia sobre simulationModel!
-		Outcome simulationResult = (Outcome) strategy.evaluate(null);
-		if (simulationResult == Outcome.SUCCESS) {
-			log("Simulating " + strategy.getName() + " strategy end...");
-		} else {
-			log("Error simulating " + strategy.getName() + " strategy. The strategy won't be selected.");
-		}
-		// System.out.println(strategy.modelElementsUsed());TODO ver strategy.modelElementsUsed()!
-		return simulationModel;
-	}
-
 	/**
 	 * Rainbow works with concern as Strings, so a translation is needed
 	 * 
@@ -426,15 +402,14 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return result;
 	}
 
-	private Double scoreStrategyWithScenarios(Collection<SelfHealingScenario> scenarios, Environment systemEnvironment,
-			RainbowModelWithScenarios simulationModel) {
+	private Double scoreStrategyWithScenarios(Environment systemEnvironment, Strategy strategy) {
 		double score = 0L;
+		Collection<SelfHealingScenario> scenarios = this.scenariosManager.getEnabledScenarios();
 		Map<Concern, Double> weights = systemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.applyFor(systemEnvironment)) {
-				boolean scenarioSatisfiedInSimulation = !scenario.isBroken(simulationModel);
-				// FIXME scenarioSatisfiedInSimulation da siempre false, ver si cambia el modelo al aplicar la
-				// estrategia
+				boolean scenarioSatisfiedInSimulation = !scenario.isBroken(this.m_model, strategy
+						.computeAggregateAttributes());
 				if (scenarioSatisfiedInSimulation) {
 					Double concernWeight = weights.get(scenario.getConcern());
 					if (concernWeight == null) {
