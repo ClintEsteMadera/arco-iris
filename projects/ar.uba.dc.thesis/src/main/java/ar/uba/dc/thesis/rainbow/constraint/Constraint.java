@@ -7,5 +7,5 @@ import ar.uba.dc.thesis.common.Validatable;
 
 public interface Constraint extends Validatable {
 
-	boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, HeuristicType most);
+	boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, HeuristicType heuristicType);
 }
