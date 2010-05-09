@@ -22,8 +22,6 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		super();
 		this.artifact = artifact;
 		this.property = property;
-
-		this.validate();
 	}
 
 	public Artifact getArtifact() {
