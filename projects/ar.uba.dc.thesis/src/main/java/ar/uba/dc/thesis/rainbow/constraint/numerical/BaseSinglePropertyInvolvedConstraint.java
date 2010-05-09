@@ -28,6 +28,10 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		return artifact;
 	}
 
+	public String getProperty() {
+		return property;
+	}
+
 	/**
 	 * Uses the Property Name, in addition to the System and Type Name present in this Constraint's artifact, and looks
 	 * for that particular property in the Acme Model.

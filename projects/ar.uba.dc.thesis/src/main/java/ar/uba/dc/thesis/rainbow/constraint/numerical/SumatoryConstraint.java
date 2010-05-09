@@ -31,7 +31,7 @@ public class SumatoryConstraint extends BaseSinglePropertyInvolvedConstraint {
 		Set<IAcmeElementInstance<?, ?>> typeMatchingComponents = getTypeMatchingComponents(typeName,
 				rainbowModelWithScenarios);
 
-		return this.constraint.holds(Model.sumOverProperty(typeName, typeMatchingComponents));
+		return this.constraint.holds(Model.sumOverProperty(this.getProperty(), typeMatchingComponents));
 	}
 
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, double concernDiffAfterStrategy) {
@@ -40,7 +40,8 @@ public class SumatoryConstraint extends BaseSinglePropertyInvolvedConstraint {
 				rainbowModelWithScenarios);
 
 		double concernDiffSumatory = typeMatchingComponents.size() * concernDiffAfterStrategy;
-		return this.constraint.holds(Model.sumOverProperty(typeName, typeMatchingComponents) + concernDiffSumatory);
+		return this.constraint.holds(Model.sumOverProperty(this.getProperty(), typeMatchingComponents)
+				+ concernDiffSumatory);
 	}
 
 	public boolean holds(Number value) {
