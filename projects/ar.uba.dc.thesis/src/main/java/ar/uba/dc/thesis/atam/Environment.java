@@ -1,23 +1,22 @@
 package ar.uba.dc.thesis.atam;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
+import ar.uba.dc.thesis.common.Heuristic;
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
-/**
- * FIXME Extract the heuristic calculation to another object
- */
 public class Environment extends ThesisPojo {
-
-	private static final int HISTORY_SIZE = 10;
 
 	private final String name;
 
@@ -25,22 +24,66 @@ public class Environment extends ThesisPojo {
 
 	private final Map<Concern, Double> weights;
 
-	private final HeuristicType heuristicType;
+	private final HashMap<String, Double> weightsForRainbow;
 
-	// TODO la historia no deberia ser estatica? Pueden existir varios environments iguales?
+	private final Heuristic heuristic;
+
 	private final List<Boolean> history;
 
+	public static final Environment DEFAULT_ENVIRONMENT = createAnyEnvironment();
+
+	private static final int DEFAULT_HISTORY_SIZE = 10;
+
+	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
+
+	/**
+	 * This constructor has the same effect than invoking {@link #Environment(String, List, Map, Integer, Heuristic)}
+	 * with the latest two parameters in <code>null</code>
+	 * 
+	 * @param name
+	 *            the environment's name
+	 * @param conditions
+	 *            the conditions that need to hold in order to consider this Environment applicable
+	 * @param weights
+	 *            how Concerns are weightened in this particular Environment <b>NOTE: ALL concerns must be present,
+	 *            otherwise, an exception will be thrown</b>
+	 */
 	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Double> weights) {
+		this(name, conditions, weights, null, null);
+	}
+
+	/**
+	 * /** This constructor has the same effect than invoking
+	 * {@link #Environment(String, List, Map, Integer, Heuristic)} with the latest two parameters in <code>null</code>
+	 * 
+	 * @param name
+	 *            the environment's name
+	 * @param conditions
+	 *            the conditions that need to hold in order to consider this Environment applicable
+	 * @param weights
+	 *            how Concerns are weightened in this particular Environment <b>NOTE: ALL concerns must be present,
+	 *            otherwise, an exception will be thrown</b>
+	 * @param historySize
+	 *            the size of the collection holding the latest N past evaluations of environment's constraints.
+	 * @param heuristic
+	 *            the Heuristic that needs to be used when weightening past evaluations of environment's constraints.
+	 */
+	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Double> weights,
+			Integer historySize, Heuristic heuristic) {
 		super();
 		this.name = name;
 		this.conditions = conditions;
 		this.weights = weights;
 
-		// TODO: Let the history size and heuristicType to be configured by the user and update validate() accordingly
-		this.history = new ArrayList<Boolean>(HISTORY_SIZE);
-		this.heuristicType = HeuristicType.MOST;
+		this.history = new ArrayList<Boolean>(historySize == null ? DEFAULT_HISTORY_SIZE : historySize);
+		this.heuristic = heuristic == null ? DEFAULT_HEURISTIC : heuristic;
 
 		this.validate();
+
+		this.weightsForRainbow = new HashMap<String, Double>(this.weights.size());
+		for (Concern concern : weights.keySet()) {
+			this.weightsForRainbow.put(concern.getRainbowName(), weights.get(concern));
+		}
 	}
 
 	public String getName() {
@@ -55,13 +98,17 @@ public class Environment extends ThesisPojo {
 		return weights;
 	}
 
+	public Map<String, Double> getWeightsForRainbow() {
+		return this.weightsForRainbow;
+	}
+
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean holds = true;
 
 		for (Constraint constraint : this.getConditions()) {
-			holds = holds && constraint.holds(rainbowModelWithScenarios, HeuristicType.MOST);
+			holds = holds && constraint.holds(rainbowModelWithScenarios);
 		}
-		holds = this.getHeuristicAccordingToHistory(holds);
+		holds = this.weightCurrentEvaluationUsingHistory(holds);
 
 		this.addToHistory(holds);
 
@@ -78,6 +125,10 @@ public class Environment extends ThesisPojo {
 		if (this.getWeights() == null) {
 			throw new IllegalArgumentException("Concern-Multiplier map cannot be null");
 		}
+		Set<Concern> allDefinedConcerns = this.getWeights().keySet();
+		List<Concern> allPossibleConcerns = Arrays.asList(Concern.values());
+
+		allDefinedConcerns.containsAll(allPossibleConcerns);
 	}
 
 	@Override
@@ -95,8 +146,8 @@ public class Environment extends ThesisPojo {
 	 * @return a (hopefully) more accurate value than the last one obtained recently (i.e.
 	 *         <code>currentConstraintsEvaluation</code>)
 	 */
-	private boolean getHeuristicAccordingToHistory(boolean currentConstraintsEvaluation) {
-		return this.heuristicType.run(currentConstraintsEvaluation, this.history);
+	private boolean weightCurrentEvaluationUsingHistory(boolean currentConstraintsEvaluation) {
+		return this.heuristic.run(currentConstraintsEvaluation, this.history);
 	}
 
 	/**
@@ -106,53 +157,28 @@ public class Environment extends ThesisPojo {
 	 * @param holds
 	 */
 	private void addToHistory(boolean holds) {
-		if (this.history.size() == HISTORY_SIZE) {
+		if (this.history.size() == DEFAULT_HISTORY_SIZE) {
 			this.history.add(0, holds);
 		} else {
 			this.history.add(holds);
 		}
 	}
 
-	public enum HeuristicType {
-		ALL {
-			@Override
-			public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
-				boolean result = currentConstraintsEvaluation;
-				Iterator<Boolean> it = history.iterator();
-				while (result && it.hasNext()) {
-					result = result && it.next();
-				}
-				return result;
-			}
-		},
-		MOST {
-			@Override
-			public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
-				int holded = currentConstraintsEvaluation ? 1 : 0;
-				int notHolded = currentConstraintsEvaluation ? 0 : 1;
-				for (boolean historicalItem : history) {
-					if (historicalItem) {
-						holded++;
-					} else {
-						notHolded++;
-					}
-				}
-				return holded > notHolded;
-			}
-		},
-		AT_LEAST_ONE {
-			@Override
-			public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
-				boolean result = currentConstraintsEvaluation;
-				Iterator<Boolean> it = history.iterator();
-				while (!result && it.hasNext()) {
-					result = result || it.next();
-				}
-				return result;
-			}
-		};
-
-		public abstract boolean run(boolean currentConstraintsEvaluation, List<Boolean> history);
+	/**
+	 * This method creates an Environment which is intended to be used as a wildcard (i.e. "this scenario applies for
+	 * <b>any</b> environment")
+	 * 
+	 * @return an Environment in which its weights are equally distributed considering the amount of concerns returned
+	 *         by {@link Concern#values()}
+	 */
+	private static Environment createAnyEnvironment() {
+		Map<Concern, Double> equallyDistributedWeights = new HashMap<Concern, Double>();
+		Concern[] values = Concern.values();
+		Double aWeight = (double) 1 / values.length;
+		for (Concern concern : values) {
+			equallyDistributedWeights.put(concern, aWeight);
+		}
+		return new Environment("ANY", Collections.<Constraint> emptyList(), equallyDistributedWeights);
 	}
 
 }

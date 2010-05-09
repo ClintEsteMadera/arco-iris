@@ -2,44 +2,37 @@ package ar.uba.dc.thesis.atam;
 
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
-import ar.uba.dc.thesis.atam.Environment.HeuristicType;
+import ar.uba.dc.thesis.common.Heuristic;
 import ar.uba.dc.thesis.common.ThesisPojo;
-import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
 public class ResponseMeasure extends ThesisPojo {
 
 	private final String description;
 
-	private final SinglePropertyInvolvedConstraint constraint;
+	private final Constraint constraint;
 
-	private final HeuristicType heuristicType;
+	public ResponseMeasure(String description, Constraint constraint) {
+		this(description, constraint, Heuristic.MOST);
+	}
 
-	public ResponseMeasure(String description, SinglePropertyInvolvedConstraint constraint, HeuristicType heuristicType) {
+	public ResponseMeasure(String description, Constraint constraint, Heuristic heuristic) {
 		super();
 		this.description = description;
 		this.constraint = constraint;
-		this.heuristicType = heuristicType;
 		this.validate();
-	}
-
-	public ResponseMeasure(String description, SinglePropertyInvolvedConstraint constraint) {
-		this(description, constraint, HeuristicType.MOST);
-	}
-
-	public String getPropertyMeasured() {
-		return this.getConstraint().getFullyQualifiedPropertyName();
 	}
 
 	public String getDescription() {
 		return this.description;
 	}
 
-	public SinglePropertyInvolvedConstraint getConstraint() {
+	public Constraint getConstraint() {
 		return this.constraint;
 	}
 
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		return this.constraint.holds(rainbowModelWithScenarios, this.heuristicType);
+		return this.constraint.holds(rainbowModelWithScenarios);
 	}
 
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, double concernDiffAfterStrategy) {

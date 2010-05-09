@@ -297,7 +297,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
 		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
-		Map<String, Double> weights4Rainbow = extractConcernWeights(systemEnvironment);
+		Map<String, Double> weights4Rainbow = systemEnvironment.getWeightsForRainbow();
 
 		double maxScore4Strategy = 0L;
 		Strategy selectedStrategy = null;
@@ -384,22 +384,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		}
 		log("System is currently in default environment");
 		return environmentRepository.getDefaultEnvironment();
-	}
-
-	/**
-	 * Rainbow works with concern as Strings, so a translation is needed
-	 * 
-	 * @param weights
-	 * @return
-	 */
-	private Map<String, Double> extractConcernWeights(Environment environment) {
-		Map<Concern, Double> weights = environment.getWeights();
-
-		Map<String, Double> result = new HashMap<String, Double>(weights.size());
-		for (Concern concern : weights.keySet()) {
-			result.put(concern.getRainbowName(), weights.get(concern));
-		}
-		return result;
 	}
 
 	private Double scoreStrategyWithScenarios(Environment systemEnvironment, Strategy strategy) {
