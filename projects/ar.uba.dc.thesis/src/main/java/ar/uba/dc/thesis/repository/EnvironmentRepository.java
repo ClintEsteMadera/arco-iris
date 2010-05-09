@@ -23,7 +23,6 @@ public final class EnvironmentRepository {
 	}
 
 	public Environment getDefaultEnvironment() {
-		return this.scenarioEnvironmentDao.getDefaultEnvironment();
+		return Environment.DEFAULT_ENVIRONMENT;
 	}
-
 }

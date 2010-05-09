@@ -1,14 +1,18 @@
-package ar.uba.dc.thesis.rainbow.constraint.instance;
+package ar.uba.dc.thesis.rainbow.constraint.numerical;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.acmestudio.acme.element.IAcmeElementInstance;
+import org.acmestudio.acme.element.IAcmeSystem;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.common.ThesisPojo;
-import ar.uba.dc.thesis.rainbow.constraint.SinglePropertyInvolvedConstraint;
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
-public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo implements
-		SinglePropertyInvolvedConstraint {
+public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo implements Constraint {
 
 	private final Artifact artifact;
 
@@ -18,6 +22,8 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		super();
 		this.artifact = artifact;
 		this.property = property;
+
+		this.validate();
 	}
 
 	public Artifact getArtifact() {
@@ -34,7 +40,8 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 	 *            the name of the property, includes the system and type name of the property,
 	 * @return
 	 */
-	protected Object findAcmePropertyInAcme(RainbowModelWithScenarios rainbowModelWithScenarios, String propertyFullPath) {
+	protected final Object findAcmePropertyInAcme(RainbowModelWithScenarios rainbowModelWithScenarios,
+			String propertyFullPath) {
 		Object property = rainbowModelWithScenarios.getProperty(propertyFullPath);
 		if (property == null) {
 			throw new RuntimeException("Could not find in the model the property '" + propertyFullPath + "'");
@@ -42,11 +49,24 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		return property;
 	}
 
+	protected Set<IAcmeElementInstance<?, ?>> getTypeMatchingComponents(String typeName,
+			RainbowModelWithScenarios rainbowModelWithScenarios) {
+		IAcmeSystem system = rainbowModelWithScenarios.getAcmeModel().getSystems().iterator().next();
+
+		Set<IAcmeElementInstance<?, ?>> typeMatchingComponents = new HashSet<IAcmeElementInstance<?, ?>>();
+
+		for (IAcmeElementInstance<?, ?> component : system.getComponents()) {
+			if (component.declaresType(typeName) || component.instantiatesType(typeName)) {
+				typeMatchingComponents.add(component);
+			}
+		}
+		return typeMatchingComponents;
+	}
+
 	/**
-	 * Returns the full qualified property name prepending the System and Type name of it.
+	 * Returns the fully qualified property name prepending the System and Type name of it.
 	 */
 	public String getFullyQualifiedPropertyName() {
-		// FIXME this still does not work with types' properties. This seems to be hardcoded in the ACME model (.acme)
 		return this.artifact.getSystemName() + Util.DOT + this.artifact.getName() + Util.DOT + this.property;
 	}
 

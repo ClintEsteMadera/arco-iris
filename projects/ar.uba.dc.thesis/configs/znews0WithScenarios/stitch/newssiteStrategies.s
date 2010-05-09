@@ -22,6 +22,7 @@ define boolean lowRespTime = exists c : T.ClientT in M.components | c.experRespT
 define float totalCost = Model.sumOverProperty("cost", servers);
 define boolean hiCost = totalCost >= M.THRESHOLD_COST;
 
+/*TO-DO: agregar logica en el ResponseMeasure para que soporte esto*/
 define float avgFidelity = Model.sumOverProperty("fidelity", servers) / Set.size(servers);
 define boolean lowFi = avgFidelity < M.THRESHOLD_FIDELITY;
 
@@ -145,9 +146,9 @@ strategy ReduceOverallCost
  */
 strategy ImproveOverallFidelity
 [ styleApplies && lowFi ] {
-  t0: (lowFi) -> raiseFidelity(2, 100) @[800 /*ms*/] {
-    t1: (!lowFi) -> done;
-    t2: (lowRespTime && lowFi) -> do[1] t0;
+  t0: (true) -> raiseFidelity(2, 100) @[800 /*ms*/] {
+    t1: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
+    t2: (lowRespTime && CURRENT_SCENARIO_STILL_BROKEN) -> do[1] t0;
     t3: (default) -> TNULL;
   }
 }

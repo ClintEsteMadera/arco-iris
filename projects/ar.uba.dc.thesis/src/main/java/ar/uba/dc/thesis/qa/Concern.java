@@ -1,13 +1,9 @@
 package ar.uba.dc.thesis.qa;
 
-
 public enum Concern {
 
 	RESPONSE_TIME("Response time", QualityAttribute.PERFORMANCE, "uR"),
 
-	/* no se mapean con ningun concern definido en utilities.xml */
-	// SERVER_LOAD("Server Load", QualityAttribute.PERFORMANCE, null),
-	// CONNECTION_BANDWIDTH("Connection Bandwidth", QualityAttribute.PERFORMANCE, null),
 	SERVER_COST("Number of active servers", QualityAttribute.COST, "uC"),
 
 	CONTENT_FIDELITY("Content Fidelity", QualityAttribute.USABILITY, "uF");

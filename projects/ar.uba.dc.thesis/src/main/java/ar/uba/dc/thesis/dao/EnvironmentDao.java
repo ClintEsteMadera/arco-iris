@@ -9,6 +9,4 @@ public interface EnvironmentDao {
 	Collection<Environment> getAllNonDefaultEnvironments();
 
 	Environment getEnvironment(String name);
-
-	Environment getDefaultEnvironment();
 }

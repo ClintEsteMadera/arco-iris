@@ -44,7 +44,7 @@ public class RainbowModelWithScenarios extends RainbowModel implements Cloneable
 
 	/**
 	 * Updates one property as a result of a stimulus invocation.
-	 * 
+	 *
 	 * @param type
 	 *            the name of the property to update.
 	 * @param value
@@ -145,10 +145,7 @@ public class RainbowModelWithScenarios extends RainbowModel implements Cloneable
 
 	/**
 	 * Same behavior as superclass, we copied and pasted this method since it is private.<br>
-	 * 
-	 * @deprecated
 	 */
-	@Deprecated
 	public static Set<String> collectInstanceProps(String systemName, String typeName, String propName,
 			IAcmeModel acmeModel) {
 		Set<String> propKeys = new HashSet<String>();
