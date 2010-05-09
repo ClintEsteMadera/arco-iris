@@ -30,11 +30,11 @@ public class Environment extends ThesisPojo {
 
 	private final List<Boolean> history;
 
+	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
+
 	public static final Environment DEFAULT_ENVIRONMENT = createAnyEnvironment();
 
 	private static final int DEFAULT_HISTORY_SIZE = 10;
-
-	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
 
 	/**
 	 * This constructor has the same effect than invoking {@link #Environment(String, List, Map, Integer, Heuristic)}
