@@ -42,11 +42,11 @@ strategy QuickDirtyReduceResponseTime
  * Note:  Tested successfully in simulation, znews-brute
  */
 strategy BruteReduceResponseTime
-[ styleApplies && cViolation ] {
-  t0: (/*hiLoad*/ cViolation) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
-    t1: (!cViolation) -> done;
-    t2: (/*hiRespTime*/ cViolation) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
-      t2a: (!cViolation) -> done;
+[ styleApplies ] {
+  t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
+    t1: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
+    t2: (CURRENT_SCENARIO_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+      t2a: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
       t2b: (default) -> TNULL;  // in this case, we have no more steps to take
     }
   }
@@ -131,10 +131,10 @@ strategy SophisticatedReduceResponseTime
  * Note:  Tested successfully in simulation, znews-reducecost + znews-improvefidelity
  */
 strategy ReduceOverallCost
-[ styleApplies && hiCost ] {
-  t0: (hiCost) -> dischargeServers(1) @[2000 /*ms*/] {
-    t1: (!hiCost) -> done;
-    t2: (lowRespTime && hiCost) -> do[2] t0;
+[ styleApplies ] {
+  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
+    t1: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
+    t2: (lowRespTime && CURRENT_SCENARIO_STILL_BROKEN) -> do[2] t0;
     t3: (default) -> TNULL;
   }
 }

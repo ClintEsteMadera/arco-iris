@@ -44,11 +44,7 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 	 */
 	protected final Object findAcmePropertyInAcme(RainbowModelWithScenarios rainbowModelWithScenarios,
 			String propertyFullPath) {
-		Object property = rainbowModelWithScenarios.getProperty(propertyFullPath);
-		if (property == null) {
-			throw new RuntimeException("Could not find in the model the property '" + propertyFullPath + "'");
-		}
-		return property;
+		return rainbowModelWithScenarios.getProperty(propertyFullPath);
 	}
 
 	protected Set<IAcmeElementInstance<?, ?>> getTypeMatchingComponents(String typeName,

@@ -88,6 +88,11 @@ public abstract class AtamScenario extends ThesisPojo {
 		return id;
 	}
 
+	@Override
+	public String toString() {
+		return "\"" + this.getName() + "\" " + super.toString();
+	}
+
 	public void validate() {
 		// Do nothing
 	}
