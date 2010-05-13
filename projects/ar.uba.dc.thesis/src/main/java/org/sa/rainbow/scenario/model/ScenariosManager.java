@@ -97,7 +97,8 @@ public class ScenariosManager {
 
 		Stack<AcmeError> collectedErrors = new Stack<AcmeError>();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
-			if (scenario.isBroken(Oracle.instance().rainbowModel())) {
+			RainbowModelWithScenarios rainbowModel = Oracle.instance().rainbowModel();
+			if (scenario.isBroken(rainbowModel)) {
 				this.logErrors(collectedErrors, scenario);
 				brokenScenarios.add(scenario);
 			} else {

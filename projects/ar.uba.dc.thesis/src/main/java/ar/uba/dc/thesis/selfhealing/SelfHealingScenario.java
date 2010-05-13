@@ -58,8 +58,9 @@ public class SelfHealingScenario extends AtamScenario {
 		return this.repairStrategies;
 	}
 
-	public void addRepairStrategy(String repairStrategy) {
+	public SelfHealingScenario addRepairStrategy(String repairStrategy) {
 		this.repairStrategies.add(repairStrategy);
+		return this;
 	}
 
 	public boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {

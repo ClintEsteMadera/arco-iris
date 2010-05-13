@@ -1,6 +1,8 @@
 package ar.uba.dc.thesis.rainbow.constraint.numerical;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.atam.Artifact;
@@ -21,7 +23,7 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		super(artifact, property);
 		this.binaryOperator = binaryOperator;
 		this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
-		this.avgPropertyName = "[EAvg]" + artifact.getName() + "." + property;
+		this.avgPropertyName = RainbowModel.EXP_AVG_KEY + artifact.getName() + "." + property;
 		this.validate();
 	}
 
@@ -55,7 +57,9 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 	}
 
 	private double getPropertyValueFrom(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		return (Double) this.findAcmePropertyInAcme(rainbowModelWithScenarios, this.avgPropertyName);
+		Double propertyValue = (Double) this.findAcmePropertyInAcme(rainbowModelWithScenarios, this.avgPropertyName);
+
+		return propertyValue != null ? propertyValue : NumberUtils.DOUBLE_ZERO;
 	}
 
 	@Override
