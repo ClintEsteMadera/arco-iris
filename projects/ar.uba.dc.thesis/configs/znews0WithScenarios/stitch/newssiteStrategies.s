@@ -26,6 +26,7 @@ define boolean hiCost = totalCost >= M.THRESHOLD_COST;
 define float avgFidelity = Model.sumOverProperty("fidelity", servers) / Set.size(servers);
 define boolean lowFi = avgFidelity < M.THRESHOLD_FIDELITY;
 
+define boolean CONCERN_STILL_BROKEN = org.sa.rainbow.adaptation.AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
 
 /* For baseline, this Strategy drops the fidelity one notch, and that's it.
  * In the presence of Brute, this strategy probably won't ever get picked.
@@ -44,9 +45,9 @@ strategy QuickDirtyReduceResponseTime
 strategy BruteReduceResponseTime
 [ styleApplies ] {
   t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
-    t1: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
-    t2: (CURRENT_SCENARIO_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
-      t2a: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
+    t1: (!CONCERN_STILL_BROKEN) -> done;
+    t2: (CONCERN_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+      t2a: (!CONCERN_STILL_BROKEN) -> done;
       t2b: (default) -> TNULL;  // in this case, we have no more steps to take
     }
   }
@@ -133,8 +134,8 @@ strategy SophisticatedReduceResponseTime
 strategy ReduceOverallCost
 [ styleApplies ] {
   t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
-    t1: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
-    t2: (lowRespTime && CURRENT_SCENARIO_STILL_BROKEN) -> do[2] t0;
+    t1: (!CONCERN_STILL_BROKEN) -> done;
+    t2: (lowRespTime && CONCERN_STILL_BROKEN) -> do[2] t0;
     t3: (default) -> TNULL;
   }
 }
@@ -147,8 +148,8 @@ strategy ReduceOverallCost
 strategy ImproveOverallFidelity
 [ styleApplies && lowFi ] {
   t0: (true) -> raiseFidelity(2, 100) @[800 /*ms*/] {
-    t1: (!CURRENT_SCENARIO_STILL_BROKEN) -> done;
-    t2: (lowRespTime && CURRENT_SCENARIO_STILL_BROKEN) -> do[1] t0;
+    t1: (!CONCERN_STILL_BROKEN) -> done;
+    t2: (lowRespTime && CONCERN_STILL_BROKEN) -> do[1] t0;
     t3: (default) -> TNULL;
   }
 }
