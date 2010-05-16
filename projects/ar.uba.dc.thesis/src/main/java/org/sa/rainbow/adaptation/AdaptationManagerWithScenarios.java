@@ -52,6 +52,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private final EnvironmentRepository environmentRepository;
 
+	private List<SelfHealingScenario> currentBrokenScenarios;
+
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 	public static final double FAILURE_RATE_THRESHOLD = 0.95;
 	public static final double MIN_UTILITY_THRESHOLD = 0.40;
@@ -288,7 +290,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * each strategy).
 	 * <li> Select and execute the highest scoring strategy
 	 */
-	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
+	public synchronized void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
+
+		// TODO lo importante es que lo pueda referenciar el Strategy Executor, asi q el synchronized no sirve
+		currentBrokenScenarios = brokenScenarios;
 
 		log("Adaptation triggered, let's begin!");
 		if (_stopWatchForTesting != null)
@@ -304,8 +309,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
 		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double scenariosSolutionWeight = 0.5;
-		double rainbowSolutionWeight = 0.5;
+		double scenariosSolutionWeight = 1;
+		double rainbowSolutionWeight = 0;
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
@@ -355,6 +360,25 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				m_adaptNeeded = false;
 				m_model.clearConstraintViolated();
 			}
+		}
+	}
+
+	public boolean isCurrentScenarioStillBroken(String concernString) {
+		try {
+			Concern concern = Concern.valueOf(concernString);
+			for (SelfHealingScenario scenario : currentBrokenScenarios) {
+				if (scenario.getConcern().equals(concern)) {
+					// ver como tener en cuenta la simulacion de la estrategia hasta el paso anterior
+					scenario.isBroken(this.m_model);
+				}
+			}
+			return true;
+		} catch (NullPointerException e) {
+			log("Concern not specified");
+			throw e;
+		} catch (IllegalArgumentException e) {
+			log("Concern " + concernString + " does not exist");
+			throw e;
 		}
 	}
 
