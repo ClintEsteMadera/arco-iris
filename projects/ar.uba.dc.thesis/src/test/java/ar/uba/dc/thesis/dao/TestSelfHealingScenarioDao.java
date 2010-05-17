@@ -72,7 +72,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
-		Set<Environment> environments = Collections.singleton(Environment.DEFAULT_ENVIRONMENT);
+		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN, 1));
@@ -107,7 +107,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
 		Artifact artifact = ArtifactRepository.getServer();
 		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
-		Set<Environment> environments = Collections.singleton(Environment.DEFAULT_ENVIRONMENT);
+		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Content Fidelity is within threshold",
 				new SumatoryConstraint(artifact, "fidelity", new NumericBinaryRelationalConstraint(artifact,
