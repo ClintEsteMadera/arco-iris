@@ -32,7 +32,7 @@ public class Environment extends ThesisPojo {
 
 	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
 
-	public static final Environment DEFAULT_ENVIRONMENT = createAnyEnvironment();
+	public static final Environment ANY_ENVIRONMENT = createAnyEnvironment();
 
 	private static final int DEFAULT_HISTORY_SIZE = 10;
 
