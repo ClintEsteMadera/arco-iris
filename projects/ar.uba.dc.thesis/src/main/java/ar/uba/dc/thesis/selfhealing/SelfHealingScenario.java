@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 
+import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
+import org.sa.rainbow.util.RainbowLogger;
+import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.Artifact;
@@ -22,6 +25,8 @@ public class SelfHealingScenario extends AtamScenario {
 	private int priority;
 
 	private final List<String> repairStrategies = new ArrayList<String>();
+
+	private static RainbowLogger m_logger = RainbowLoggerFactory.logger(SelfHealingScenario.class);
 
 	public SelfHealingScenario() {
 		super();
@@ -86,6 +91,7 @@ public class SelfHealingScenario extends AtamScenario {
 				isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios);
 			}
 		}
+		log("Scenario " + this.getName() + " broken? " + isBroken);
 		return isBroken;
 	}
 
@@ -99,7 +105,11 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public boolean applyFor(Environment environment) {
-		return getEnvironments().contains(environment);
+		return getEnvironments().contains(Environment.ANY_ENVIRONMENT) || getEnvironments().contains(environment);
+	}
+
+	protected void log(String txt) {
+		Oracle.instance().writeEnginePanel(m_logger, txt);
 	}
 
 }
