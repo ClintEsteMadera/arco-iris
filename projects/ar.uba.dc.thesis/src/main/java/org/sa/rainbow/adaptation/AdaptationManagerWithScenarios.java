@@ -29,6 +29,8 @@ import org.sa.rainbow.stitch.core.Tactic;
 import org.sa.rainbow.stitch.core.UtilityFunction;
 import org.sa.rainbow.stitch.error.DummyStitchProblemHandler;
 import org.sa.rainbow.stitch.visitor.Stitch;
+import org.sa.rainbow.util.RainbowLogger;
+import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.StopWatch;
 import org.sa.rainbow.util.Util;
 
@@ -47,6 +49,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public enum Mode {
 		SERIAL, MULTI_PRONE
 	};
+
+	protected RainbowLogger m_logger = null;
 
 	private final ScenariosManager scenariosManager;
 
@@ -88,7 +92,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 */
 	public AdaptationManagerWithScenarios(ScenariosManager scenariosManager, EnvironmentRepository environmentRepository) {
 		super(NAME);
-
+		m_logger = RainbowLoggerFactory.logger(getClass());
 		this.scenariosManager = scenariosManager;
 		this.environmentRepository = environmentRepository;
 		m_model = Oracle.instance().rainbowModel();
@@ -320,19 +324,24 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			}
 
 			for (Strategy strategy : stitch.script.strategies) {
+				log("Evaluating strategy " + strategy.getName());
 				// check first for failures threshold
 				if (!candidateStrategies.contains(strategy.getName())
 						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
+					log(strategy.getName() + " does not apply");
 					continue; // don't consider this Strategy
 				}
 
 				double scenariosScore = 0;
 				if (scenariosSolutionWeight > 0) {
+					log("Scoring " + strategy.getName() + " with scenarios approach");
 					scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
+					log("Scenarios approach score for " + strategy.getName() + ": " + scenariosScore);
 				}
 
 				double rainbowScoreStrategy = 0;
 				if (rainbowSolutionWeight > 0) {
+					log("Scoring " + strategy.getName() + " with rainbow approach");
 					rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
 				}
 
@@ -419,13 +428,19 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				boolean scenarioSatisfiedInSimulation = !scenario.isBroken(this.m_model, strategy
 						.computeAggregateAttributes());
 				if (scenarioSatisfiedInSimulation) {
+					log("Scenario " + scenario.getName() + " satisfied in simulation");
 					Double concernWeight = weights.get(scenario.getConcern());
 					if (concernWeight == null) {
 						// if there is no weight for the concern then its weight it is assumed to be zero
 						concernWeight = new Double(0);
 					}
 					score = score + scenarioWeight(scenario.getPriority(), concernWeight);
+				} else {
+					log("Scenario " + scenario.getName() + " NOT satisfied in simulation");
 				}
+			} else {
+				log("Scenario " + scenario.getName() + " does not apply for current system environment("
+						+ systemEnvironment.getName() + ")");
 			}
 		}
 		return score;
