@@ -23,6 +23,6 @@ public final class EnvironmentRepository {
 	}
 
 	public Environment getDefaultEnvironment() {
-		return Environment.DEFAULT_ENVIRONMENT;
+		return Environment.ANY_ENVIRONMENT;
 	}
 }
