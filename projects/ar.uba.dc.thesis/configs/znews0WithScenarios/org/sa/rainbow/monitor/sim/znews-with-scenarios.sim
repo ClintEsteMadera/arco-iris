@@ -1,0 +1,50 @@
+## Simulation plan for znews "With Self Healing Scenarios"
+
+# Property file defining the system and simulation plan
+sim.class = org.sa.rainbow.monitor.sim.znews.ZNewsSim
+
+# each simulation point element is a comma-delimited list of colon-delimited tuples of:
+#   <timestamp>:<element to change>:<new value to set>
+
+#- start with high server load
+sim.0 = 1000:c0.connection.bandwidth:50
+
+# terminate system at 30 seconds
+sim.1 = 30000:sim:terminate
+
+sim.size = 2
+
+# list the elements on which to explicitly check rules
+elements = ZNewsSys.lbproxy, ZNewsSys.s0, ZNewSys.c0, ZNewsSys.conn0, ZNewsSys.proxyconn0
+elements.check = ZNewsSys.c0
+client.count = 1
+server.count = 1
+
+# whether loads are balanced, which means servers are treated as if replicated
+perf.load.balanced = true
+
+# average request and response size, in kilobytes (KB)
+perf.request.size = 10
+perf.response.size = 100
+# this is the alpha factor to compute exponential average
+alpha = 0.30
+
+### initial properties and performance simulation SEED VALUES
+ZNewsSys.lbproxy.load = 0.01
+
+## client 0, first client; bw in kbps, time in ms, rate in req/s
+ZNewsSys.c0.experRespTime = 50
+ZNewsSys.conn0.bandwidth.up = 384
+ZNewsSys.conn0.bandwidth.down = 384
+ZNewsSys.c0.perf.service.time = 100
+ZNewsSys.c0.perf.arrival.rate = 3
+ZNewsSys.c0.connection.target = ZNewsSys.s0
+
+## server 0
+ZNewsSys.s0.isArchEnabled = true
+ZNewsSys.s0.type = ZNewsFam.ServerT
+ZNewsSys.s0.load = 0.01
+ZNewsSys.s0.cost = 1.0
+ZNewsSys.s0.fidelity = 5
+ZNewsSys.s0.replication = 1
+ZNewsSys.s0.perf.service.time = 11

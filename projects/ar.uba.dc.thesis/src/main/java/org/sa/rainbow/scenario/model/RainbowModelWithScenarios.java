@@ -18,7 +18,7 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
-public class RainbowModelWithScenarios extends RainbowModel implements Cloneable {
+public class RainbowModelWithScenarios extends RainbowModel {
 
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(RainbowModelWithScenarios.class);
 
