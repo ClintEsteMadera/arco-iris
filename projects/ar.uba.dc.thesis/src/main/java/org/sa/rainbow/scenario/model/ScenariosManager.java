@@ -6,9 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
-import org.acmestudio.acme.environment.error.AcmeError;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -95,11 +93,10 @@ public class ScenariosManager {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
 
-		Stack<AcmeError> collectedErrors = new Stack<AcmeError>();
 		RainbowModelWithScenarios rainbowModel = Oracle.instance().rainbowModel();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
 			if (scenario.isBroken(rainbowModel)) {
-				this.logErrors(collectedErrors, scenario);
+				Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " broken!");
 				brokenScenarios.add(scenario);
 			} else {
 				Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " pass");
@@ -110,13 +107,6 @@ public class ScenariosManager {
 
 	public Collection<SelfHealingScenario> getEnabledScenarios() {
 		return this.selfHealingScenarioRepository.getEnabledScenarios();
-	}
-
-	private void logErrors(Stack<AcmeError> collectedErrors, SelfHealingScenario scenario) {
-		Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + " broken!");
-		while (!collectedErrors.isEmpty()) {
-			Oracle.instance().writeEvaluatorPanel(logger, collectedErrors.pop().toString());
-		}
 	}
 
 }
