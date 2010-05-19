@@ -50,13 +50,13 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		SERIAL, MULTI_PRONE
 	};
 
-	protected RainbowLogger m_logger = null;
+	protected static RainbowLogger m_logger = null;
 
 	private final ScenariosManager scenariosManager;
 
 	private final EnvironmentRepository environmentRepository;
 
-	private List<SelfHealingScenario> currentBrokenScenarios;
+	private static List<SelfHealingScenario> currentBrokenScenarios;
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 	public static final double FAILURE_RATE_THRESHOLD = 0.95;
@@ -372,21 +372,22 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		}
 	}
 
-	public boolean isCurrentScenarioStillBroken(String concernString) {
+	public static boolean isCurrentScenarioStillBroken(String concernString) {
 		try {
 			Concern concern = Concern.valueOf(concernString);
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)) {
 					// ver como tener en cuenta la simulacion de la estrategia hasta el paso anterior
-					scenario.isBroken(this.m_model);
+					scenario.isBroken(null/* m_model */);
 				}
 			}
 			return true;
 		} catch (NullPointerException e) {
-			log("Concern not specified");
+			Oracle.instance().writeEnginePanel(m_logger, "Concern not specified");
 			throw e;
 		} catch (IllegalArgumentException e) {
-			log("Concern " + concernString + " does not exist");
+			String msg = "Concern " + concernString + " does not exist";
+			Oracle.instance().writeEnginePanel(m_logger, msg);
 			throw e;
 		}
 	}
