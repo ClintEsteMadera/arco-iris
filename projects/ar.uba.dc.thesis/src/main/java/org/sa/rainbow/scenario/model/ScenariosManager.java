@@ -93,7 +93,7 @@ public class ScenariosManager {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
 
-		RainbowModelWithScenarios rainbowModel = Oracle.instance().rainbowModel();
+		RainbowModelWithScenarios rainbowModel = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
 			String scenarioStatus = " pass";
 			if (scenario.isBroken(rainbowModel)) {

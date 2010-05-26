@@ -14,6 +14,7 @@ import org.sa.rainbow.event.IRainbowMessage;
 import org.sa.rainbow.event.RainbowEventAdapter;
 import org.sa.rainbow.gui.RainbowGUI;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
+import org.sa.rainbow.model.Model;
 import org.sa.rainbow.model.evaluator.ArchEvaluatorWithScenarios;
 import org.sa.rainbow.model.manager.ModelManagerWithScenarios;
 import org.sa.rainbow.monitor.SystemDelegate;
@@ -180,7 +181,7 @@ public class Oracle implements IDisposable {
 		return m_instance == null;
 	}
 
-	public RainbowModelWithScenarios rainbowModel() {
+	public Model rainbowModel() {
 		if (m_model == null) {
 			m_model = new RainbowModelWithScenarios(scenariosManager());
 			// initialize the model as a repository to the language module

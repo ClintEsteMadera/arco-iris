@@ -26,7 +26,7 @@ define boolean hiCost = totalCost >= M.THRESHOLD_COST;
 define float avgFidelity = Model.sumOverProperty("fidelity", servers) / Set.size(servers);
 define boolean lowFi = avgFidelity < M.THRESHOLD_FIDELITY;
 
-define boolean CONCERN_STILL_BROKEN = org.sa.rainbow.adaptation.AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
+define boolean CONCERN_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
 
 /* For baseline, this Strategy drops the fidelity one notch, and that's it.
  * In the presence of Brute, this strategy probably won't ever get picked.

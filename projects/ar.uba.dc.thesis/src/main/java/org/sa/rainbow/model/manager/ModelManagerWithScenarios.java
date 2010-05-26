@@ -62,7 +62,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	public ModelManagerWithScenarios() {
 		super(NAME + " With Scenarios");
 
-		m_model = Oracle.instance().rainbowModel();
+		m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		String per = Rainbow.property(Rainbow.PROPKEY_MODEL_EVAL_PERIOD);
 		if (per != null) {
 			m_beacon = new Beacon(Long.parseLong(per));

@@ -95,7 +95,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		m_logger = RainbowLoggerFactory.logger(getClass());
 		this.scenariosManager = scenariosManager;
 		this.environmentRepository = environmentRepository;
-		m_model = Oracle.instance().rainbowModel();
+		m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		m_repertoire = new ArrayList<Stitch>();
 		m_utils = new TreeMap<String, UtilityFunction>();
 		m_pendingStrategies = new ArrayList<Strategy>();
@@ -117,6 +117,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			m_utils.put(k, uf);
 		}
 		initAdaptationRepertoire();
+	}
+
+	public static boolean isConcernStillBroken(String concern) {
+		System.out.println("AdaptationManagerWithScenarios.isConcernStillBroken<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		// TODO implementar este metodo!
+		return true;
 	}
 
 	/*
