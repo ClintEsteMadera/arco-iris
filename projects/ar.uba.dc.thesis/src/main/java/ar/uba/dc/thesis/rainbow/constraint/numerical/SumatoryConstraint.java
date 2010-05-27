@@ -58,4 +58,8 @@ public class SumatoryConstraint extends BaseSinglePropertyInvolvedConstraint {
 			throw new RuntimeException("The constraint to apply cannot be null");
 		}
 	}
+
+	public boolean holds4AllInstances(RainbowModelWithScenarios rainbowModelWithScenarios) {
+		throw new RuntimeException("Implementar!!!!!!!!!!!!");
+	}
 }

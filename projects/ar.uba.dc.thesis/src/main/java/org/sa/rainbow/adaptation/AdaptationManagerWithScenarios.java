@@ -119,10 +119,25 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		initAdaptationRepertoire();
 	}
 
-	public static boolean isConcernStillBroken(String concern) {
-		System.out.println("AdaptationManagerWithScenarios.isConcernStillBroken<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-		// TODO implementar este metodo!
-		return true;
+	public static boolean isConcernStillBroken(String concernString) {
+		try {
+			Concern concern = Concern.valueOf(concernString);
+			for (SelfHealingScenario scenario : currentBrokenScenarios) {
+				if (scenario.getConcern().equals(concern)) {
+					if (!scenario.satisfied4AllInstances(null/* TODO obtener el model!!! */)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (NullPointerException e) {
+			Oracle.instance().writeEnginePanel(m_logger, "Concern not specified");
+			throw e;
+		} catch (IllegalArgumentException e) {
+			String msg = "Concern " + concernString + " does not exist";
+			Oracle.instance().writeEnginePanel(m_logger, msg);
+			throw e;
+		}
 	}
 
 	/*
@@ -334,7 +349,9 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				// check first for failures threshold
 				if (!candidateStrategies.contains(strategy.getName())
 						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
-					log(strategy.getName() + " does not apply");
+					String cause = !candidateStrategies.contains(strategy.getName()) ? "Strategy not selected in broken scenarios"
+							: "Failure rate threshold reached";
+					log(strategy.getName() + " does not apply because: " + cause);
 					continue; // don't consider this Strategy
 				}
 
@@ -375,26 +392,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				m_adaptNeeded = false;
 				m_model.clearConstraintViolated();
 			}
-		}
-	}
-
-	public static boolean isCurrentScenarioStillBroken(String concernString) {
-		try {
-			Concern concern = Concern.valueOf(concernString);
-			for (SelfHealingScenario scenario : currentBrokenScenarios) {
-				if (scenario.getConcern().equals(concern)) {
-					// ver como tener en cuenta la simulacion de la estrategia hasta el paso anterior
-					scenario.isBroken(null/* m_model */);
-				}
-			}
-			return true;
-		} catch (NullPointerException e) {
-			Oracle.instance().writeEnginePanel(m_logger, "Concern not specified");
-			throw e;
-		} catch (IllegalArgumentException e) {
-			String msg = "Concern " + concernString + " does not exist";
-			Oracle.instance().writeEnginePanel(m_logger, msg);
-			throw e;
 		}
 	}
 

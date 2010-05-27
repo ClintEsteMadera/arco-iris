@@ -1,5 +1,7 @@
 package ar.uba.dc.thesis.rainbow.constraint.numerical;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.sa.rainbow.model.RainbowModel;
@@ -76,5 +78,15 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 	public String toString() {
 		return new StringBuffer().append("(").append(this.getFullyQualifiedPropertyName()).append(SPACE).append(
 				this.binaryOperator).append(SPACE).append(this.constantToCompareThePropertyWith).append(")").toString();
+	}
+
+	public boolean holds4AllInstances(RainbowModelWithScenarios rainbowModelWithScenarios) {
+		boolean satisfied = true;
+		List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues(getArtifact().getSystemName(),
+				getArtifact().getName(), getProperty());
+		for (Number propertyValue : values) {
+			satisfied = satisfied && this.holds(propertyValue);
+		}
+		return satisfied;
 	}
 }

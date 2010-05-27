@@ -13,4 +13,6 @@ public interface Constraint extends Validatable {
 	boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, double concernDiffAfterStrategy);
 
 	String getFullyQualifiedPropertyName();
+
+	boolean holds4AllInstances(RainbowModelWithScenarios rainbowModelWithScenarios);
 }

@@ -76,6 +76,12 @@ public class SelfHealingScenario extends AtamScenario {
 		return isBroken;
 	}
 
+	public boolean satisfied4AllInstances(final RainbowModelWithScenarios rainbowModelWithScenarios) {
+		// TODO tener en cuenta el environment?
+		// if (anyEnvironmentApplies(rainbowModelWithScenarios)) {
+		return getResponseMeasure().getConstraint().holds4AllInstances(rainbowModelWithScenarios);
+	}
+
 	/**
 	 * Tiene en cuenta la aplicacion de la estrategia sobre las properties involucradas
 	 */
