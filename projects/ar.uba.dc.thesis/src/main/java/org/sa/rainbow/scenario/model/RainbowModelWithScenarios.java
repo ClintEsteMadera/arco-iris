@@ -1,9 +1,15 @@
 package org.sa.rainbow.scenario.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
+import org.acmestudio.acme.core.type.IAcmeFloatValue;
+import org.acmestudio.acme.element.IAcmeElementInstance;
+import org.acmestudio.acme.element.IAcmeSystem;
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
 import org.acmestudio.acme.model.command.IAcmeCommand;
@@ -136,6 +142,32 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			logger.trace("(iden,val,alpha,avg) == (" + iden + "," + val + "," + alpha + "," + avg + ")");
 		// store new/updated exp.avg value
 		m_propExpAvg.put(iden, avg);
+	}
+
+	public List<Number> getAllInstancesPropertyValues(String systemName, String name, String property) {
+		List<Number> propertyValues = new ArrayList<Number>();
+		IAcmeSystem system = m_acme.getSystem(systemName);
+		Set<IAcmeElementInstance<?, ?>> children = new HashSet<IAcmeElementInstance<?, ?>>();
+		children.addAll(system.getComponents());
+		children.addAll(system.getConnectors());
+		children.addAll(system.getPorts());
+		children.addAll(system.getRoles());
+		for (IAcmeElementInstance<?, ?> child : children) {
+			// seek element with specified type AND specified property
+			if (child.declaresType(name) || child.instantiatesType(name)) {
+				IAcmeProperty childProp = child.getProperty(property);
+				if (childProp != null) {
+					if (childProp.getValue() instanceof IAcmeFloatValue) {
+						propertyValues.add(((IAcmeFloatValue) childProp.getValue()).getValue());
+					} else {
+						// TODO tener en cuenta otros tipos ademas de float (si hace falta)
+						throw new RuntimeException("Soportar properties del tipo: " + childProp.getClass().getName());
+					}
+				}
+			}
+		}
+
+		return propertyValues;
 	}
 
 }
