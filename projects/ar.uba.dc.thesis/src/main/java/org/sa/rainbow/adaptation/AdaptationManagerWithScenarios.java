@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +57,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private final EnvironmentRepository environmentRepository;
 
-	private static List<SelfHealingScenario> currentBrokenScenarios;
+	private static List<SelfHealingScenario> currentBrokenScenarios = Collections.emptyList();
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 	public static final double FAILURE_RATE_THRESHOLD = 0.95;
@@ -122,20 +123,20 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static boolean isConcernStillBroken(String concernString) {
 		try {
 			Concern concern = Concern.valueOf(concernString);
+			RainbowModelWithScenarios rainbowModelWithScenarios = (RainbowModelWithScenarios) Oracle.instance()
+					.rainbowModel();
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
-				if (scenario.getConcern().equals(concern)) {
-					if (!scenario.satisfied4AllInstances(null/* TODO obtener el model!!! */)) {
-						return true;
-					}
+				if (scenario.getConcern().equals(concern)
+						&& !scenario.satisfied4AllInstances(rainbowModelWithScenarios)) {
+					return true;
 				}
 			}
 			return false;
 		} catch (NullPointerException e) {
-			Oracle.instance().writeEnginePanel(m_logger, "Concern not specified");
+			doLog("Concern not specified");
 			throw e;
 		} catch (IllegalArgumentException e) {
-			String msg = "Concern " + concernString + " does not exist";
-			Oracle.instance().writeEnginePanel(m_logger, msg);
+			doLog("Concern " + concernString + " does not exist");
 			throw e;
 		}
 	}
@@ -174,7 +175,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 */
 	@Override
 	protected void log(String txt) {
-		Oracle.instance().writeEnginePanel(m_logger, txt);
+		doLog(txt);
+	}
+
+	protected static void doLog(String txt) {
+		// Oracle.instance().writeEnginePanel(m_logger, txt);
 	}
 
 	public boolean adaptationEnabled() {
@@ -315,68 +320,69 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * each strategy).
 	 * <li> Select and execute the highest scoring strategy
 	 */
-	public synchronized void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
+	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
+		synchronized (currentBrokenScenarios) {
+			m_adaptNeeded = true;
+			currentBrokenScenarios = brokenScenarios;
 
-		// TODO lo importante es que lo pueda referenciar el Strategy Executor, asi q el synchronized no sirve
-		currentBrokenScenarios = brokenScenarios;
+			log("Adaptation triggered, let's begin!");
+			if (_stopWatchForTesting != null)
+				_stopWatchForTesting.start();
 
-		log("Adaptation triggered, let's begin!");
-		if (_stopWatchForTesting != null)
-			_stopWatchForTesting.start();
+			Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
-		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
+			Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
+			Map<String, Double> weights4Rainbow = systemEnvironment.getWeightsForRainbow();
 
-		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
-		Map<String, Double> weights4Rainbow = systemEnvironment.getWeightsForRainbow();
+			double maxScore4Strategy = 0L;
+			Strategy selectedStrategy = null;
 
-		double maxScore4Strategy = 0L;
-		Strategy selectedStrategy = null;
+			// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
+			// de esta manera se pueden seguir aprovechando las Utility curves configuradas
+			double scenariosSolutionWeight = 1;
+			double rainbowSolutionWeight = 0;
 
-		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
-		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double scenariosSolutionWeight = 1;
-		double rainbowSolutionWeight = 0;
+			for (Stitch stitch : m_repertoire) {
+				if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
+					if (m_logger.isDebugEnabled())
+						m_logger.debug("x. skipping " + stitch.script.getName());
+					continue; // skip checking this script
+				}
 
-		for (Stitch stitch : m_repertoire) {
-			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
-				if (m_logger.isDebugEnabled())
-					m_logger.debug("x. skipping " + stitch.script.getName());
-				continue; // skip checking this script
+				for (Strategy strategy : stitch.script.strategies) {
+					log("Evaluating strategy " + strategy.getName());
+					// check first for failures threshold
+					if (!candidateStrategies.contains(strategy.getName())
+							|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
+						String cause = !candidateStrategies.contains(strategy.getName()) ? "Strategy not selected in broken scenarios"
+								: "Failure rate threshold reached";
+						log(strategy.getName() + " does not apply because: " + cause);
+						continue; // don't consider this Strategy
+					}
+
+					double scenariosScore = 0;
+					if (scenariosSolutionWeight > 0) {
+						log("Scoring " + strategy.getName() + " with scenarios approach");
+						scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
+						log("Scenarios approach score for " + strategy.getName() + ": " + scenariosScore);
+					}
+
+					double rainbowScoreStrategy = 0;
+					if (rainbowSolutionWeight > 0) {
+						log("Scoring " + strategy.getName() + " with rainbow approach");
+						rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
+					}
+
+					double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
+							+ rainbowSolutionWeight;
+					if (weightedScore > maxScore4Strategy) {
+						maxScore4Strategy = weightedScore;
+						selectedStrategy = strategy;
+					}
+				}
 			}
 
-			for (Strategy strategy : stitch.script.strategies) {
-				log("Evaluating strategy " + strategy.getName());
-				// check first for failures threshold
-				if (!candidateStrategies.contains(strategy.getName())
-						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
-					String cause = !candidateStrategies.contains(strategy.getName()) ? "Strategy not selected in broken scenarios"
-							: "Failure rate threshold reached";
-					log(strategy.getName() + " does not apply because: " + cause);
-					continue; // don't consider this Strategy
-				}
-
-				double scenariosScore = 0;
-				if (scenariosSolutionWeight > 0) {
-					log("Scoring " + strategy.getName() + " with scenarios approach");
-					scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
-					log("Scenarios approach score for " + strategy.getName() + ": " + scenariosScore);
-				}
-
-				double rainbowScoreStrategy = 0;
-				if (rainbowSolutionWeight > 0) {
-					log("Scoring " + strategy.getName() + " with rainbow approach");
-					rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
-				}
-
-				double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
-						+ rainbowSolutionWeight;
-				if (weightedScore > maxScore4Strategy) {
-					maxScore4Strategy = weightedScore;
-					selectedStrategy = strategy;
-				}
-			}
-
-			// TODO lo siguiente es tomado de rainbow tal cual (ver)
+			// TODO lo siguiente es tomado de rainbow CASI tal cual (ver)
 			if (_stopWatchForTesting != null)
 				_stopWatchForTesting.stop();
 			if (selectedStrategy != null) {
@@ -461,7 +467,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		// por ahora pesan lo mismo los pesos de los concerns que la prioridad:
 		double concernsPerEnvironmentWeight = 0.5;
 		double scenariosPrioritiesWeight = 0.5;
-		// TODO: Analizar la utilización del peso del concern del escenario en el cálculo del score de la estrategia.
+		// TODO Analizar la utilización del peso del concern del escenario en el cálculo del score de la estrategia.
 		// por ahora solamente se esta sumando el peso del concern (si el concern pesa 0.6 suma 0.6)
 		return concernWeight * concernsPerEnvironmentWeight + priorityWeight * scenariosPrioritiesWeight;
 	}

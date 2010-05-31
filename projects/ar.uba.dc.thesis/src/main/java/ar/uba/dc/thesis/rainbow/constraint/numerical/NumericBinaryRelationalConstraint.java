@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
+import org.sa.rainbow.util.RainbowLogger;
+import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
@@ -13,6 +16,8 @@ import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
 	private static final String SPACE = " ";
+
+	private final RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
 
 	private final NumericBinaryOperator binaryOperator;
 
@@ -43,6 +48,8 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 	 */
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		Number propertyValue = this.getPropertyValueFrom(rainbowModelWithScenarios);
+
+		Oracle.instance().writeEvaluatorPanel(logger, this.avgPropertyName + ": " + propertyValue);
 
 		return this.holds(propertyValue);
 	}

@@ -205,7 +205,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 						.getDeclaredTypes();
 				for (IAcmeElementTypeRef<IAcmeComponentType> acmeComponentTypeRef : declaredTypesRefs) {
 					if (acmeComponentTypeRef.getTarget() instanceof AcmeComponentType) {
-						// TODO: warning, SystemT has also the type ArchElementT
+						// TODO warning, SystemT has also the type ArchElementT
 						result = qualifiedPropertyInstance.replace(split[1], ((AcmeComponentType) acmeComponentTypeRef
 								.getTarget()).getName());
 					}
@@ -236,7 +236,12 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	 */
 	public int availableServices(IAcmeElementType<?, ?> type) {
 		Map<String, String> filters = new HashMap<String, String>();
-		return findServices(type, filters).size();
+		Set<IAcmeElementInstance<?, ?>> services = findServices(type, filters);
+
+		//FIXME No loguear esto como INFO
+		m_logger.info("Available Services ---> " + services.toString());
+
+		return services.size();
 	}
 
 	/*

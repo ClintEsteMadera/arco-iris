@@ -61,10 +61,10 @@ strategy BruteReduceResponseTime
  */
 strategy VariedReduceResponseTime
 [ styleApplies && cViolation ] {
-  t0: (/*hiLoad*/ cViolation) -> enlistServers(1) @[1000 /*ms*/] {
-    t1: (!cViolation) -> done;
-    t2: (/*hiRespTime*/ cViolation) -> lowerFidelity(2, 100) @[3000 /*ms*/] {
-      t2a: (!cViolation) -> done;
+  t0: (true) -> enlistServers(1) @[1000 /*ms*/] {
+    t1: (!CONCERN_STILL_BROKEN) -> done;
+    t2: (CONCERN_STILL_BROKEN) -> lowerFidelity(2, 100) @[3000 /*ms*/] {
+      t2a: (!CONCERN_STILL_BROKEN) -> done;
       t2b: (default) -> TNULL;  // in this case, we have no more steps to take
     }
   }
