@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.acmestudio.acme.core.type.IAcmeFloatValue;
+import org.acmestudio.acme.core.type.IAcmeIntValue;
 import org.acmestudio.acme.element.IAcmeElementInstance;
 import org.acmestudio.acme.element.IAcmeSystem;
 import org.acmestudio.acme.element.property.IAcmeProperty;
@@ -159,9 +160,11 @@ public class RainbowModelWithScenarios extends RainbowModel {
 				if (childProp != null) {
 					if (childProp.getValue() instanceof IAcmeFloatValue) {
 						propertyValues.add(((IAcmeFloatValue) childProp.getValue()).getValue());
+					} else if (childProp.getValue() instanceof IAcmeIntValue) {
+						propertyValues.add(((IAcmeIntValue) childProp.getValue()).getValue());
 					} else {
-						// TODO tener en cuenta otros tipos ademas de float (si hace falta)
-						throw new RuntimeException("Soportar properties del tipo: " + childProp.getClass().getName());
+						throw new RuntimeException("The type " + childProp.getValue().getClass().getName()
+								+ " is not currently supported");
 					}
 				}
 			}

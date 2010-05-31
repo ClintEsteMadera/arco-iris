@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 
-import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -77,8 +76,10 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public boolean satisfied4AllInstances(final RainbowModelWithScenarios rainbowModelWithScenarios) {
-		// TODO tener en cuenta el environment?
-		// if (anyEnvironmentApplies(rainbowModelWithScenarios)) {
+		/*
+		 * It is not necessary to check the environment at this point because this scenario was already selected for
+		 * being repaired
+		 */
 		return getResponseMeasure().getConstraint().holds4AllInstances(rainbowModelWithScenarios);
 	}
 
@@ -115,7 +116,7 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	protected void log(String txt) {
-		Oracle.instance().writeEnginePanel(m_logger, txt);
+		// Oracle.instance().writeEnginePanel(m_logger, txt);
 	}
 
 }

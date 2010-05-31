@@ -13,7 +13,8 @@ import op "org.sa.rainbow.adaptation.AdaptationManagerWithScenarios";
 tactic enlistServers (int n) {
 	condition {
 		// some client should be experiencing high response time
-		exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+		// commented out since this is not valid for a scenario-centry solution
+		// exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
 		// there should be enough available server resources
 		Model.availableServices(T.ServerT) >= n;
 	}
@@ -25,7 +26,8 @@ tactic enlistServers (int n) {
 	}
 	effect {
 		// response time decreasing below threshold should result
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
+		// IN THIS 'SCENARIO-CENTRY' APPROACH, THERE IS NO POINT IN SPECIFYING THE 'EFFECT'
+		// forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
 	}
 }
 

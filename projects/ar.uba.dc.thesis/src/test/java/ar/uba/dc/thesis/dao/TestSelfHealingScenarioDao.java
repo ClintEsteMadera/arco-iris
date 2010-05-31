@@ -19,6 +19,8 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
+	private static final int THRESHOLD_RESPONSE_TIME = 300; /* ms. */
+
 	// This value is the same as the one specified in ZNewsSys.acme
 	private static final double MAX_UTIL = 0.75;
 
@@ -33,7 +35,6 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private final List<SelfHealingScenario> scenarios;
 
-	// TODO See whether it makes sense or not having *a set* of environments...
 	private final Set<Environment> environments = new HashSet<Environment>();
 
 	private final EnvironmentDao environmentDao;
@@ -57,14 +58,15 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private List<SelfHealingScenario> createTestScenarios() {
 		// TODO Add more repair strategies for this one
+		// The following one is still not enough to make the scenario being repared, we need to keep trying ;-)
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario().addRepairStrategy(
-				"SimpleReduceResponseTime").addRepairStrategy("BruteReduceResponseTime");
+				"VariedReduceResponseTime");
 
-		SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
+		// SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
+		//
+		// SelfHealingScenario fidelityScenario = createFidelityScenario().addRepairStrategy("ImproveOverallFidelity");
 
-		SelfHealingScenario fidelityScenario = createFidelityScenario().addRepairStrategy("ImproveOverallFidelity");
-
-		return Arrays.asList(clientResponseTimeScenario, serverCostScenario, fidelityScenario);
+		return Arrays.asList(clientResponseTimeScenario/* , serverCostScenario, fidelityScenario */);
 	}
 
 	private SelfHealingScenario createClientResponseTimeScenario() {
@@ -75,7 +77,8 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN, 1));
+				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN,
+						THRESHOLD_RESPONSE_TIME));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
 		int priority = 1;
