@@ -125,7 +125,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			Concern concern = Concern.valueOf(concernString);
 			RainbowModelWithScenarios rainbowModelWithScenarios = (RainbowModelWithScenarios) Oracle.instance()
 					.rainbowModel();
-			// FIXME: asegurarse que sean los mismos escenarios que dispararon la ejecucion de la estrategia?
+			// FIXME asegurarse que sean los mismos escenarios que dispararon la ejecucion de la estrategia?
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
 						&& !scenario.satisfied4AllInstances(rainbowModelWithScenarios)) {
