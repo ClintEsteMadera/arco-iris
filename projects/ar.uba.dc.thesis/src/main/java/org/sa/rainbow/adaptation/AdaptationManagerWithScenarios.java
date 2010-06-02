@@ -125,6 +125,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			Concern concern = Concern.valueOf(concernString);
 			RainbowModelWithScenarios rainbowModelWithScenarios = (RainbowModelWithScenarios) Oracle.instance()
 					.rainbowModel();
+			// FIXME: asegurarse que sean los mismos escenarios que dispararon la ejecucion de la estrategia?
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
 						&& !scenario.satisfied4AllInstances(rainbowModelWithScenarios)) {
@@ -321,64 +322,62 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * <li> Select and execute the highest scoring strategy
 	 */
 	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
-		synchronized (currentBrokenScenarios) {
-			m_adaptNeeded = true;
-			currentBrokenScenarios = brokenScenarios;
+		m_adaptNeeded = true;
+		currentBrokenScenarios = brokenScenarios;
 
-			log("Adaptation triggered, let's begin!");
-			if (_stopWatchForTesting != null)
-				_stopWatchForTesting.start();
+		log("Adaptation triggered, let's begin!");
+		if (_stopWatchForTesting != null)
+			_stopWatchForTesting.start();
 
-			Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
+		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
-			Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
-			Map<String, Double> weights4Rainbow = systemEnvironment.getWeightsForRainbow();
+		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
+		Map<String, Double> weights4Rainbow = systemEnvironment.getWeightsForRainbow();
 
-			double maxScore4Strategy = 0L;
-			Strategy selectedStrategy = null;
+		double maxScore4Strategy = 0L;
+		Strategy selectedStrategy = null;
 
-			// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
-			// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-			double scenariosSolutionWeight = 1;
-			double rainbowSolutionWeight = 0;
+		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
+		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
+		double scenariosSolutionWeight = 1;
+		double rainbowSolutionWeight = 0;
 
-			for (Stitch stitch : m_repertoire) {
-				if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
-					if (m_logger.isDebugEnabled())
-						m_logger.debug("x. skipping " + stitch.script.getName());
-					continue; // skip checking this script
+		for (Stitch stitch : m_repertoire) {
+			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
+				if (m_logger.isDebugEnabled())
+					m_logger.debug("x. skipping " + stitch.script.getName());
+				continue; // skip checking this script
+			}
+
+			for (Strategy strategy : stitch.script.strategies) {
+				log("Evaluating strategy " + strategy.getName());
+				// check first for failures threshold
+				if (!candidateStrategies.contains(strategy.getName())
+						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
+					String cause = !candidateStrategies.contains(strategy.getName()) ? "Strategy not selected in broken scenarios"
+							: "Failure rate threshold reached";
+					log(strategy.getName() + " does not apply because: " + cause);
+					continue; // don't consider this Strategy
 				}
 
-				for (Strategy strategy : stitch.script.strategies) {
-					log("Evaluating strategy " + strategy.getName());
-					// check first for failures threshold
-					if (!candidateStrategies.contains(strategy.getName())
-							|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
-						String cause = !candidateStrategies.contains(strategy.getName()) ? "Strategy not selected in broken scenarios"
-								: "Failure rate threshold reached";
-						log(strategy.getName() + " does not apply because: " + cause);
-						continue; // don't consider this Strategy
-					}
+				double scenariosScore = 0;
+				if (scenariosSolutionWeight > 0) {
+					log("Scoring " + strategy.getName() + " with scenarios approach");
+					scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
+					log("Scenarios approach score for " + strategy.getName() + ": " + scenariosScore);
+				}
 
-					double scenariosScore = 0;
-					if (scenariosSolutionWeight > 0) {
-						log("Scoring " + strategy.getName() + " with scenarios approach");
-						scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
-						log("Scenarios approach score for " + strategy.getName() + ": " + scenariosScore);
-					}
+				double rainbowScoreStrategy = 0;
+				if (rainbowSolutionWeight > 0) {
+					log("Scoring " + strategy.getName() + " with rainbow approach");
+					rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
+				}
 
-					double rainbowScoreStrategy = 0;
-					if (rainbowSolutionWeight > 0) {
-						log("Scoring " + strategy.getName() + " with rainbow approach");
-						rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
-					}
-
-					double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
-							+ rainbowSolutionWeight;
-					if (weightedScore > maxScore4Strategy) {
-						maxScore4Strategy = weightedScore;
-						selectedStrategy = strategy;
-					}
+				double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
+						+ rainbowSolutionWeight;
+				if (weightedScore > maxScore4Strategy) {
+					maxScore4Strategy = weightedScore;
+					selectedStrategy = strategy;
 				}
 			}
 
