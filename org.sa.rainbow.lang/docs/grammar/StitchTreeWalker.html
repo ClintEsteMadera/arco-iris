@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Grammar C:\eclipse\data\rainbow\org.sa.rainbow.lang\src\org\sa\rainbow\stitch\parser/stitchT.g</TITLE>
+</HEAD>
+<BODY>
+<table summary="" border="1" cellpadding="5">
+<tr>
+<td>
+<font size="+2">Grammar StitchTreeWalker</font><br>
+<a href="http://www.ANTLR.org">ANTLR</a>-generated HTML file from C:\eclipse\data\rainbow\org.sa.rainbow.lang\src\org\sa\rainbow\stitch\parser/stitchT.g
+<p>
+Terence Parr, <a href="http://www.magelang.com">MageLang Institute</a>
+<br>ANTLR Version 2.7.6 (2005-12-22); 1989-2005
+</td>
+</tr>
+</table>
+<PRE>
+
+
+Definition of tree parser StitchTreeWalker, which is a subclass of TreeParser.
+
+	
+	
+<a name="script">script</a>
+		:				 #( MODULE id:IDENTIFIER  beh.createModule(#id);  #( IMPORTS ( importSt )* )  beh.doImports();  functions #( TACTICS ( tactic )* ) #( STRATEGIES ( strategy )* ) ) 
+		;
+	
+	
+<a name="importSt">importSt</a>
+		:				 #( i1:IMPORT_LIB s1:STRING_LIT  imp = beh.createImport(#i1, #s1);  ( importRenames )* ) 
+		|				 #( i2:IMPORT_MODEL s2:STRING_LIT  imp = beh.createImport(#i2, #s2);  ( importRenames )* ) 
+		|				 #( i3:IMPORT_OP s3:STRING_LIT  imp = beh.createImport(#i3, #s3);  ( importRenames )* ) 
+		;
+	
+	
+<a name="functions">functions</a>
+		:				 #( FUNC_LIST ( var )* ) 
+		;
+	
+	
+<a name="tactic">tactic</a>
+		:				 #( TACTIC id:IDENTIFIER  beh.beginTactic(#id);  params vars condition action effect ) 
+		;
+	
+	
+<a name="strategy">strategy</a>
+		:				 #( STRATEGY id:IDENTIFIER  beh.beginStrategy(#id);  expr  beh.doStrategyCondition(Strategy.ConditionKind.APPLICABILITY);  functions ( strategyNode )* ) 
+		;
+	
+	
+<a name="importRenames">importRenames</a>
+		:				 #( AS id1:IDENTIFIER id2:IDENTIFIER ) 
+		;
+	
+	
+<a name="var">var</a>
+		:				 #( v:VAR_DEF  beh.beginStatement(#v);  t:TYPE id:IDENTIFIER ( #( ASSIGN expr ) | ) ) 
+		;
+	
+	
+<a name="params">params</a>
+		:				 #( PARAM_LIST ( param )* ) 
+		;
+	
+	
+<a name="vars">vars</a>
+		:				 #( VAR_LIST ( var )* ) 
+		;
+	
+	
+<a name="condition">condition</a>
+		:				 #( cn:CONDITION  beh.beginConditionBlock(#cn);  ( expr )* ) 
+		;
+	
+	
+<a name="action">action</a>
+		:				 #( ac:ACTION  beh.beginActionBlock(#ac);  ( statement )* ) 
+		;
+	
+	
+<a name="effect">effect</a>
+		:				 #( ef:EFFECT  beh.beginEffectBlock(#ef);  ( expr )* ) 
+		;
+	
+	
+<a name="expr">expr</a>
+		:	(					 #( EXPR expr ) 
+			|	<a href="StitchTreeWalker.html#quanExpr">quanExpr</a> 
+			|	<a href="StitchTreeWalker.html#setExpr">setExpr</a> 
+			|	<a href="StitchTreeWalker.html#assignExpr">assignExpr</a> 
+			|	<a href="StitchTreeWalker.html#logicalExpr">logicalExpr</a> 
+			|	<a href="StitchTreeWalker.html#relationalExpr">relationalExpr</a> 
+			|	<a href="StitchTreeWalker.html#arithmeticExpr">arithmeticExpr</a> 
+			|	<a href="StitchTreeWalker.html#unaryExpr">unaryExpr</a> 
+			|	<a href="StitchTreeWalker.html#idExpr">idExpr</a> 
+			) 
+			
+		;
+	
+	
+<a name="statement">statement</a>
+		:	(					 #( sl:STMT_LIST  beh.beginStatement(#sl);  ( statement )* ( errorHandler | ) ) 
+			|	<a href="StitchTreeWalker.html#var">var</a> 
+			|					 #( x:EXPR  beh.beginStatement(#x);  expr  beh.endStatement();  ) 
+			|	<a href="StitchTreeWalker.html#ifStmt">ifStmt</a> 
+			|	<a href="StitchTreeWalker.html#whileStmt">whileStmt</a> 
+			|	<a href="StitchTreeWalker.html#forStmt">forStmt</a> 
+			|	EMPTY_STMT 
+			) 
+		;
+	
+	
+<a name="strategyNode">strategyNode</a>
+		:				 #( l:IDENTIFIER  beh.beginStrategyNode(#l);  strategyCond tacticRef ) 
+		;
+	
+	
+<a name="strategyCond">strategyCond</a>
+		:				 #( STRATEGY_COND ( #( HASH ( #( pid1:IDENTIFIER ( pid2:IDENTIFIER | ) ) | pl:FLOAT_LIT ) )  beh.doStrategyProbability(#pid1, #pid2, #pl);  | ) ( expr  beh.doStrategyCondition(Strategy.ConditionKind.EXPRESSION);  | SUCCESS  beh.doStrategyCondition(Strategy.ConditionKind.SUCCESS);  | FAILURE  beh.doStrategyCondition(Strategy.ConditionKind.FAILURE);  | DEFAULT  beh.doStrategyCondition(Strategy.ConditionKind.DEFAULT);  ) ) 
+		;
+	
+	
+<a name="tacticRef">tacticRef</a>
+		:				 #( t1:IDENTIFIER  beh.beginReferencedTactic(#t1);  exprs ) 
+			(					 #( AT expr ) 
+			|	
+			) 
+			(	<a href="StitchTreeWalker.html#strategyBranch">strategyBranch</a> 
+			|	DONE 
+			) 
+		|	DONE 
+		|	NULLTACTIC 
+		|				 #( DO ( v:IDENTIFIER | i:INTEGER_LIT ) t2:IDENTIFIER  beh.doStrategyLoop(#v, #i, #t2);  ) 
+		|				 #( DO_UNSPEC t3:IDENTIFIER  beh.doStrategyLoop(null, null, #t3);  ) 
+		;
+	
+	
+<a name="exprs">exprs</a>
+		:				 #( EXPR_LIST ( expr )* ) 
+		;
+	
+	
+<a name="strategyBranch">strategyBranch</a>
+		:				 #( STRATEGY_BRANCH  beh.beginBranching();  ( strategyNode )+ ) 
+		;
+	
+	
+<a name="errorHandler">errorHandler</a>
+		:				 #( e:ERROR  beh.beginStatement(#e);  ( expr statement )* ) 
+		;
+	
+	
+<a name="ifStmt">ifStmt</a>
+		:				 #( si:IF  beh.beginStatement(#si);  expr statement ( statement | ) ) 
+		;
+	
+	
+<a name="whileStmt">whileStmt</a>
+		:				 #( w:WHILE  beh.beginStatement(#w);  expr statement ) 
+		;
+	
+	
+<a name="forStmt">forStmt</a>
+		:				 #( f:FOR  beh.beginStatement(#f);  ( forInit  beh.markForCondition();  forCond forIter statement | forEach  beh.markForEach();  statement ) ) 
+		;
+	
+	
+<a name="forInit">forInit</a>
+		:				 #( FOR_INIT ( ( var )+ | exprs | ) ) 
+		;
+	
+	
+<a name="forCond">forCond</a>
+		:				 #( FOR_COND ( expr | ) ) 
+		;
+	
+	
+<a name="forIter">forIter</a>
+		:				 #( FOR_ITER ( exprs | ) ) 
+		;
+	
+	
+<a name="forEach">forEach</a>
+		:				 #( FOR_EACH param expr ) 
+		;
+	
+	
+<a name="param">param</a>
+		:				 #( PARAM t:TYPE id:IDENTIFIER ) 
+		;
+	
+	
+<a name="quanExpr">quanExpr</a>
+		:				 #( fa:FORALL  beh.beginQuantifiedExpression();  params expr  beh.doQuantifiedExpression();  expr ) 
+		|				 #( e:EXISTS  beh.beginQuantifiedExpression();  params expr  beh.doQuantifiedExpression();  expr ) 
+		|				 #( eu:EXISTS_UNIQUE  beh.beginQuantifiedExpression();  params expr  beh.doQuantifiedExpression();  expr ) 
+		|				 #( s:SELECT  beh.beginQuantifiedExpression();  params expr  beh.doQuantifiedExpression();  expr ) 
+		;
+	
+	
+<a name="setExpr">setExpr</a>
+		:				 #( s:SET ( expr ( expr )* | ) ) 
+		;
+	
+	
+<a name="assignExpr">assignExpr</a>
+		:				 #( aa:ASSIGN beh.lOp(); expr beh.rOp(); expr ) 
+		;
+	
+	
+<a name="logicalExpr">logicalExpr</a>
+		:				 #( imp:IMPLIES beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( iff:IFF beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( lor:LOGICAL_OR beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( lnd:LOGICAL_AND beh.lOp(); expr beh.rOp(); expr ) 
+		;
+	
+	
+<a name="relationalExpr">relationalExpr</a>
+		:				 #( ne:NE beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( eq:EQ beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( lt:LT beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( le:LE beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( ge:GE beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( gt:GT beh.lOp(); expr beh.rOp(); expr ) 
+		;
+	
+	
+<a name="arithmeticExpr">arithmeticExpr</a>
+		:				 #( p:PLUS beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( m:MINUS beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( t:STAR beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( d:SLASH beh.lOp(); expr beh.rOp(); expr ) 
+		|				 #( r:MOD beh.lOp(); expr beh.rOp(); expr ) 
+		;
+	
+	
+<a name="unaryExpr">unaryExpr</a>
+		:				 #( ic:INCR beh.lOp(); expr ) 
+		|				 #( dc:DECR beh.lOp(); expr ) 
+		|				 #( um:UNARY_MINUS beh.lOp(); expr ) 
+		|				 #( up:UNARY_PLUS beh.lOp(); expr ) 
+		|				 #( ln:LOGICAL_NOT beh.lOp(); expr ) 
+		;
+	
+	
+<a name="idExpr">idExpr</a>
+		:	IDENTIFIER 
+		|	<a href="StitchTreeWalker.html#methodCall">methodCall</a> 
+		|	INTEGER_LIT 
+		|	FLOAT_LIT 
+		|	STRING_LIT 
+		|	CHAR_LIT 
+		|	TRUE 
+		|	FALSE 
+		|	NULL 
+		;
+	
+	
+<a name="methodCall">methodCall</a>
+		:				 #( mc:METHOD_CALL id:IDENTIFIER ( exprs | ) ) 
+		;
+

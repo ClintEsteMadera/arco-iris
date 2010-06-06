@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Grammar C:\eclipse\data\rainbow\org.sa.rainbow.lang\src\org\sa\rainbow\stitch\parser/stitchL.g</TITLE>
+</HEAD>
+<BODY>
+<table summary="" border="1" cellpadding="5">
+<tr>
+<td>
+<font size="+2">Grammar StitchLexer</font><br>
+<a href="http://www.ANTLR.org">ANTLR</a>-generated HTML file from C:\eclipse\data\rainbow\org.sa.rainbow.lang\src\org\sa\rainbow\stitch\parser/stitchL.g
+<p>
+Terence Parr, <a href="http://www.magelang.com">MageLang Institute</a>
+<br>ANTLR Version 2.7.6 (2005-12-22); 1989-2005
+</td>
+</tr>
+</table>
+<PRE>
+
+Definition of lexer StitchLexer, which is a subclass of CharScanner.
+
+/** Lexer nextToken rule:
+ *  The lexer nextToken rule is synthesized from all of the user-defined
+ *  lexer rules.  It logically consists of one big alternative block with
+ *  each user-defined rule being an alternative.
+ */
+<a href="StitchLexer.html#mIDENTIFIER">mIDENTIFIER</a> 
+|	<a href="StitchLexer.html#mDOT">mDOT</a> 
+|	<a href="StitchLexer.html#mMINUS">mMINUS</a> 
+|	<a href="StitchLexer.html#mSL_COMMENT">mSL_COMMENT</a> 
+|	<a href="StitchLexer.html#mNL">mNL</a> 
+|	<a href="StitchLexer.html#mML_COMMENT">mML_COMMENT</a> 
+|	<a href="StitchLexer.html#mINTEGER_LIT">mINTEGER_LIT</a> 
+|	<a href="StitchLexer.html#mSTRING_LIT">mSTRING_LIT</a> 
+|	<a href="StitchLexer.html#mDQUOTE">mDQUOTE</a> 
+|	<a href="StitchLexer.html#mCHAR_LIT">mCHAR_LIT</a> 
+|	<a href="StitchLexer.html#mSQUOTE">mSQUOTE</a> 
+|	<a href="StitchLexer.html#mLPAREN">mLPAREN</a> 
+|	<a href="StitchLexer.html#mRPAREN">mRPAREN</a> 
+|	<a href="StitchLexer.html#mLBRACKET">mLBRACKET</a> 
+|	<a href="StitchLexer.html#mRBRACKET">mRBRACKET</a> 
+|	<a href="StitchLexer.html#mLBRACE">mLBRACE</a> 
+|	<a href="StitchLexer.html#mRBRACE">mRBRACE</a> 
+|	<a href="StitchLexer.html#mCOLON">mCOLON</a> 
+|	<a href="StitchLexer.html#mSEMICOLON">mSEMICOLON</a> 
+|	<a href="StitchLexer.html#mCOMMA">mCOMMA</a> 
+|	<a href="StitchLexer.html#mBSLASH">mBSLASH</a> 
+|	<a href="StitchLexer.html#mBAR">mBAR</a> 
+|	<a href="StitchLexer.html#mHASH">mHASH</a> 
+|	<a href="StitchLexer.html#mAT">mAT</a> 
+|	<a href="StitchLexer.html#mDOLLAR">mDOLLAR</a> 
+|	<a href="StitchLexer.html#mASSIGN">mASSIGN</a> 
+|	<a href="StitchLexer.html#mPLUS_ASSIGN">mPLUS_ASSIGN</a> 
+|	<a href="StitchLexer.html#mMINUS_ASSIGN">mMINUS_ASSIGN</a> 
+|	<a href="StitchLexer.html#mSTAR_ASSIGN">mSTAR_ASSIGN</a> 
+|	<a href="StitchLexer.html#mDIV_ASSIGN">mDIV_ASSIGN</a> 
+|	<a href="StitchLexer.html#mMOD_ASSIGN">mMOD_ASSIGN</a> 
+|	<a href="StitchLexer.html#mCOLON_BANG">mCOLON_BANG</a> 
+|	<a href="StitchLexer.html#mLOGICAL_OR">mLOGICAL_OR</a> 
+|	<a href="StitchLexer.html#mLOGICAL_AND">mLOGICAL_AND</a> 
+|	<a href="StitchLexer.html#mEQ">mEQ</a> 
+|	<a href="StitchLexer.html#mNE">mNE</a> 
+|	<a href="StitchLexer.html#mLT">mLT</a> 
+|	<a href="StitchLexer.html#mLE">mLE</a> 
+|	<a href="StitchLexer.html#mGE">mGE</a> 
+|	<a href="StitchLexer.html#mGT">mGT</a> 
+|	<a href="StitchLexer.html#mPLUS">mPLUS</a> 
+|	<a href="StitchLexer.html#mSTAR">mSTAR</a> 
+|	<a href="StitchLexer.html#mSLASH">mSLASH</a> 
+|	<a href="StitchLexer.html#mMOD">mMOD</a> 
+|	<a href="StitchLexer.html#mINCR">mINCR</a> 
+|	<a href="StitchLexer.html#mDECR">mDECR</a> 
+|	<a href="StitchLexer.html#mLOGICAL_NOT">mLOGICAL_NOT</a> 
+|	<a href="StitchLexer.html#mIMPLIES">mIMPLIES</a> 
+|	<a href="StitchLexer.html#mIFF">mIFF</a> 
+|	<a href="StitchLexer.html#mWS">mWS</a> 
+<a name="mIDENTIFIER">mIDENTIFIER</a>
+	:	( <a href="StitchLexer.html#mUNDERSCORE">mUNDERSCORE</a> )* <a href="StitchLexer.html#mLETTER">mLETTER</a> 
+		(	<a href="StitchLexer.html#mUNDERSCORE">mUNDERSCORE</a> 
+		|	<a href="StitchLexer.html#mDOT">mDOT</a> 
+		|	<a href="StitchLexer.html#mLETTER">mLETTER</a> 
+		|	<a href="StitchLexer.html#mDIGIT">mDIGIT</a> 
+		|	<a href="StitchLexer.html#mMINUS">mMINUS</a> 
+		)* 
+	;
+
+protected <a name="mUNDERSCORE">mUNDERSCORE</a>
+	:	&#039;_&#039; 
+	;
+
+protected <a name="mLETTER">mLETTER</a>
+	:			'A'..'Z' 
+	|			'a'..'z' 
+	;
+
+<a name="mDOT">mDOT</a>
+	:	&#039;.&#039; 
+	;
+
+protected <a name="mDIGIT">mDIGIT</a>
+	:			'0'..'9' 
+	;
+
+<a name="mMINUS">mMINUS</a>
+	:	&#039;-&#039; 
+	;
+
+<a name="mSL_COMMENT">mSL_COMMENT</a>
+	:	&quot;//&quot; ( (	&#039;\r&#039; 
+			|	&#039;\n&#039; 
+			) )* <a href="StitchLexer.html#mNL">mNL</a> 
+	;
+
+<a name="mNL">mNL</a>
+	:	(	&#039;\r&#039; &#039;\n&#039; 
+		|	&#039;\r&#039; 
+		|	&#039;\n&#039; 
+		) 
+		
+	;
+
+<a name="mML_COMMENT">mML_COMMENT</a>
+	:	&quot;/*&quot; 
+		(	&#039;*&#039; 
+		|	<a href="StitchLexer.html#mNL">mNL</a> 
+		|	(	&#039;*&#039; 
+			|	&#039;\r&#039; 
+			|	&#039;\n&#039; 
+			) 
+		)* 
+		&quot;*/&quot; 
+	;
+
+<a name="mINTEGER_LIT">mINTEGER_LIT</a>
+	:	( <a href="StitchLexer.html#mDIGIT">mDIGIT</a> )+ 
+		(	<a href="StitchLexer.html#mDOT">mDOT</a> ( <a href="StitchLexer.html#mDIGIT">mDIGIT</a> )+ 
+		|	
+		) 
+	;
+
+<a name="mSTRING_LIT">mSTRING_LIT</a>
+	:	<a href="StitchLexer.html#mDQUOTE">mDQUOTE</a> ( ~&#039;&quot;&#039; )* <a href="StitchLexer.html#mDQUOTE">mDQUOTE</a> 
+	;
+
+<a name="mDQUOTE">mDQUOTE</a>
+	:	&#039;&quot;&#039; 
+	;
+
+<a name="mCHAR_LIT">mCHAR_LIT</a>
+	:	<a href="StitchLexer.html#mSQUOTE">mSQUOTE</a> ~&#039;\&#039;&#039; <a href="StitchLexer.html#mSQUOTE">mSQUOTE</a> 
+	;
+
+<a name="mSQUOTE">mSQUOTE</a>
+	:	&#039;\&#039;&#039; 
+	;
+
+<a name="mLPAREN">mLPAREN</a>
+	:	&#039;(&#039; 
+	;
+
+<a name="mRPAREN">mRPAREN</a>
+	:	&#039;)&#039; 
+	;
+
+<a name="mLBRACKET">mLBRACKET</a>
+	:	&#039;[&#039; 
+	;
+
+<a name="mRBRACKET">mRBRACKET</a>
+	:	&#039;]&#039; 
+	;
+
+<a name="mLBRACE">mLBRACE</a>
+	:	&#039;{&#039; 
+	;
+
+<a name="mRBRACE">mRBRACE</a>
+	:	&#039;}&#039; 
+	;
+
+<a name="mCOLON">mCOLON</a>
+	:	&#039;:&#039; 
+	;
+
+<a name="mSEMICOLON">mSEMICOLON</a>
+	:	&#039;;&#039; 
+	;
+
+<a name="mCOMMA">mCOMMA</a>
+	:	&#039;,&#039; 
+	;
+
+<a name="mBSLASH">mBSLASH</a>
+	:	&#039;\\&#039; 
+	;
+
+<a name="mBAR">mBAR</a>
+	:	&#039;|&#039; 
+	;
+
+<a name="mHASH">mHASH</a>
+	:	&#039;#&#039; 
+	;
+
+<a name="mAT">mAT</a>
+	:	&#039;@&#039; 
+	;
+
+<a name="mDOLLAR">mDOLLAR</a>
+	:	&#039;$&#039; 
+	;
+
+<a name="mASSIGN">mASSIGN</a>
+	:	&#039;=&#039; 
+	;
+
+<a name="mPLUS_ASSIGN">mPLUS_ASSIGN</a>
+	:	&quot;+=&quot; 
+	;
+
+<a name="mMINUS_ASSIGN">mMINUS_ASSIGN</a>
+	:	&quot;-=&quot; 
+	;
+
+<a name="mSTAR_ASSIGN">mSTAR_ASSIGN</a>
+	:	&quot;*=&quot; 
+	;
+
+<a name="mDIV_ASSIGN">mDIV_ASSIGN</a>
+	:	&quot;/=&quot; 
+	;
+
+<a name="mMOD_ASSIGN">mMOD_ASSIGN</a>
+	:	&quot;%=&quot; 
+	;
+
+<a name="mCOLON_BANG">mCOLON_BANG</a>
+	:	&quot;:!&quot; 
+	;
+
+<a name="mLOGICAL_OR">mLOGICAL_OR</a>
+	:	&quot;||&quot; 
+	;
+
+<a name="mLOGICAL_AND">mLOGICAL_AND</a>
+	:	&quot;&amp;&amp;&quot; 
+	;
+
+<a name="mEQ">mEQ</a>
+	:	&quot;==&quot; 
+	;
+
+<a name="mNE">mNE</a>
+	:	&quot;!=&quot; 
+	;
+
+<a name="mLT">mLT</a>
+	:	&quot;&lt;&quot; 
+	;
+
+<a name="mLE">mLE</a>
+	:	&quot;&lt;=&quot; 
+	;
+
+<a name="mGE">mGE</a>
+	:	&quot;&gt;=&quot; 
+	;
+
+<a name="mGT">mGT</a>
+	:	&quot;&gt;&quot; 
+	;
+
+<a name="mPLUS">mPLUS</a>
+	:	&#039;+&#039; 
+	;
+
+<a name="mSTAR">mSTAR</a>
+	:	&#039;*&#039; 
+	;
+
+<a name="mSLASH">mSLASH</a>
+	:	&#039;/&#039; 
+	;
+
+<a name="mMOD">mMOD</a>
+	:	&#039;%&#039; 
+	;
+
+<a name="mINCR">mINCR</a>
+	:	&quot;++&quot; 
+	;
+
+<a name="mDECR">mDECR</a>
+	:	&quot;--&quot; 
+	;
+
+<a name="mLOGICAL_NOT">mLOGICAL_NOT</a>
+	:	&#039;!&#039; 
+	;
+
+<a name="mIMPLIES">mIMPLIES</a>
+	:	&quot;-&gt;&quot; 
+	;
+
+<a name="mIFF">mIFF</a>
+	:	&quot;&lt;-&gt;&quot; 
+	;
+
+<a name="mWS">mWS</a>
+	:	(	&#039; &#039; 
+		|	&#039;\t&#039; 
+		) 
+		
+	;
