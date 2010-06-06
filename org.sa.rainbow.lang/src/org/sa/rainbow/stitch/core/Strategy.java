@@ -846,7 +846,7 @@ public class Strategy extends ScopedEntity implements IEvaluable {
 			if (Tool.logger().isInfoEnabled())
 				Tool.logger().info(Tool.TAB + Tool.TAB + tactic.getName()
 								+ " => awaitSettling [" + node.getDuration() + " ms.] "
-								+ (m_settlingCondition ? "OK" : "WRONG"));
+								+ (m_settlingCondition ? "OK" : "TIME-OUT"));
 			return m_settlingCondition.booleanValue();
 		}
 	}
