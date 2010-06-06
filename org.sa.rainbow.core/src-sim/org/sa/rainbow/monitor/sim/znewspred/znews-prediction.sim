@@ -1,0 +1,18 @@
+# use this file as base set of properties
+sim.include = znewspred/znews.sim
+
+## Scenario:  first, simulate high client-experienced response time, but only
+#  for a short couple seconds; next hit with high response time for 30 seconds;
+#  finally, hit with low response time for 30 seconds to get system restored,
+#  and then hit with high response time for 30 seconds but with a transient 4-sec
+#  drop in bandwidth.
+sim.0 = 1:ZNewsSys.s0.fidelity:5,101:ZNewsSys.s0.fidelity:5,201:ZNewsSys.s0.fidelity:5,301:ZNewsSys.s0.fidelity:5,401:ZNewsSys.s0.fidelity:5,501:ZNewsSys.s0.fidelity:5
+sim.1 = 2001:ZNewsSys.conn1.bandwidth.down:160,2001:ZNewsSys.conn1.bandwidth.up:160,2001:ZNewsSys.c1.perf.arrival.rate:10,2001:ZNewsSys.s0.perf.service.time:12
+sim.2 = 4001:ZNewsSys.conn1.bandwidth.down:384,4001:ZNewsSys.conn1.bandwidth.up:384,4001:ZNewsSys.c1.perf.arrival.rate:3,4001:ZNewsSys.s0.perf.service.time:10
+sim.3 = 10001:ZNewsSys.conn1.bandwidth.down:160,10001:ZNewsSys.conn1.bandwidth.up:160,10001:ZNewsSys.c1.perf.arrival.rate:10,10001:ZNewsSys.s0.perf.service.time:13
+sim.4 = 40001:ZNewsSys.conn1.bandwidth.down:384,40001:ZNewsSys.conn1.bandwidth.up:384,40001:ZNewsSys.c1.perf.arrival.rate:3,40001:ZNewsSys.s0.perf.service.time:10
+sim.5 = 70001:ZNewsSys.conn1.bandwidth.down:160,70001:ZNewsSys.conn1.bandwidth.up:160,70001:ZNewsSys.c1.perf.arrival.rate:10,70001:ZNewsSys.s0.perf.service.time:12
+sim.6 = 72001:ZNewsSys.conn1.bandwidth.down:10,72001:ZNewsSys.conn1.bandwidth.up:10
+sim.7 = 76001:ZNewsSys.conn1.bandwidth.down:160,76001:ZNewsSys.conn1.bandwidth.up:160
+sim.8 = 100000:sim:terminate
+sim.size = 9
