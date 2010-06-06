@@ -20,6 +20,7 @@ import org.sa.rainbow.model.manager.ModelManagerWithScenarios;
 import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
+import org.sa.rainbow.monitor.sim.SimulationRunnerWithScenarios;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.scenario.model.ScenariosManager;
 import org.sa.rainbow.stitch.Ohana;
@@ -193,7 +194,7 @@ public class Oracle implements IDisposable {
 	public TargetSystem targetSystem() {
 		if (m_system == null) {
 			if (Rainbow.inSimulation()) {
-				m_system = new SimulationRunner();
+				m_system = new SimulationRunnerWithScenarios();
 			} else {
 				m_system = new SystemDelegate();
 			}
