@@ -173,4 +173,13 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		return propertyValues;
 	}
 
+	/**
+	 * Same behavior as super class except that we log the disruption with TRACE level rather than INFO.
+	 */
+	@Override
+	public void markDisruption(double level) {
+		m_moreProp.put(PENALTY_KEY + "Disruption", level);
+		logger.trace("X_X disruption marked: " + level);
+	}
+
 }
