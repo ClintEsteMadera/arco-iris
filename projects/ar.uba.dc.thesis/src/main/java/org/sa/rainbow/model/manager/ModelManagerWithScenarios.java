@@ -38,6 +38,7 @@ import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
+import org.sa.rainbow.stitch.util.Tool;
 import org.sa.rainbow.util.Util;
 
 /**
@@ -238,8 +239,8 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 		Map<String, String> filters = new HashMap<String, String>();
 		Set<IAcmeElementInstance<?, ?>> services = findServices(type, filters);
 
-		//FIXME No loguear esto como INFO
-		m_logger.info("Available Services ---> " + services.toString());
+		// FIXME No loguear esto como INFO
+		m_logger.info(Tool.TAB + Tool.TAB + "Available Services ---> " + services.toString());
 
 		return services.size();
 	}

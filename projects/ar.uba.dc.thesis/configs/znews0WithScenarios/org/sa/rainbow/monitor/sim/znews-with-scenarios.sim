@@ -8,7 +8,7 @@ sim.0 =
 #sim.1 = 1000:c0.connection.bandwidth:50
 
 # terminate system at 5 seconds
-sim.1 = 4000:sim:terminate
+sim.1 = 5000:sim:terminate
 
 sim.size = 2
 
@@ -25,7 +25,7 @@ perf.load.balanced = true
 perf.request.size = 10
 perf.response.size = 100
 # this is the alpha factor to compute exponential average
-alpha = 0.30
+alpha = 1.00
 
 ### initial properties and performance simulation SEED VALUES
 ZNewsSys.lbproxy.load = 0.01

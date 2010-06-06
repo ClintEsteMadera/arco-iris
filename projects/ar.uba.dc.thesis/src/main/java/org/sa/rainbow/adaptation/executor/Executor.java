@@ -22,6 +22,7 @@ import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.stitch.core.Strategy;
 import org.sa.rainbow.stitch.core.Var;
 import org.sa.rainbow.stitch.model.ModelOperator;
+import org.sa.rainbow.stitch.util.Tool;
 import org.sa.rainbow.translator.effectors.IEffector;
 import org.sa.rainbow.translator.effectors.IEffector.Outcome;
 
@@ -92,7 +93,7 @@ public class Executor extends AbstractRainbowRunnable implements ModelOperator, 
 			// retrieve the next strategy in the queue and execute it
 			Strategy strategy = m_queue.poll();
 			Object[] args = m_args.remove(strategy);
-			log("Executing Strategy " + strategy.getName() + "...");
+			log("--> EXECUTING STRATEGY " + strategy.getName() + "...");
 			Strategy.Outcome o = null;
 			try {
 				// provide var for _dur_
@@ -117,7 +118,7 @@ public class Executor extends AbstractRainbowRunnable implements ModelOperator, 
 					throw e;
 				}
 			}
-			log(" - Outcome: " + o);
+			log(Tool.TAB + "Outcome: " + o);
 			if (!Rainbow.shouldTerminate()) {
 				// TODO Should we check for evaluation outcome?
 				((AdaptationManagerWithScenarios) Oracle.instance().adaptationManager()).markStrategyExecuted(strategy);

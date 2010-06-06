@@ -19,7 +19,7 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
-	private static final int THRESHOLD_RESPONSE_TIME = 300; /* ms. */
+	private static final int THRESHOLD_RESPONSE_TIME = 450; /* ms. */
 
 	// This value is the same as the one specified in ZNewsSys.acme
 	private static final double MAX_UTIL = 0.75;
