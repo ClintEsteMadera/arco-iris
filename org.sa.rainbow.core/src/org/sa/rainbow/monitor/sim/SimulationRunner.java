@@ -24,6 +24,7 @@ import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.ISimulation.PredictionMode;
 import org.sa.rainbow.stitch.util.Tool;
 import org.sa.rainbow.translator.effectors.IEffector;
+import org.sa.rainbow.util.Util;
 
 /**
  * A simulation system to test the Rainbow infrastructures.
@@ -224,7 +225,7 @@ implements TargetSystem, ISimulatedTargetSystem {
 		/* TODO if we can get ahold of "system response time", can use that
 		   to inform the effector time delay to simulate resource limitations */
 		// pause for random amount of time between 0.5 to 3 seconds
-		//FIXME Util.pause((long )(Math.random()*2500.0) + 501L);
+		Util.pause((long )(Math.random()*2500.0) + 501L);
 		return changeProperty(iden, value);
 	}
 
