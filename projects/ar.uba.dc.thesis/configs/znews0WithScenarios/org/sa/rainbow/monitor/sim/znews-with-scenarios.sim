@@ -24,7 +24,9 @@ perf.load.balanced = true
 # average request and response size, in kilobytes (KB)
 perf.request.size = 10
 perf.response.size = 100
+
 # this is the alpha factor to compute exponential average
+# We decided the simulation will reflect 100% the reality
 alpha = 1.00
 
 ### initial properties and performance simulation SEED VALUES
