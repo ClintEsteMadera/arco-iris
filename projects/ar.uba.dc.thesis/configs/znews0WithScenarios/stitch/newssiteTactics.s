@@ -6,6 +6,8 @@ import op "org.sa.rainbow.stitch.lib.Set";
 import op "org.sa.rainbow.stitch.lib.Model";
 import op "org.sa.rainbow.adaptation.AdaptationManagerWithScenarios";
 
+define boolean CONCERN_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
+
 /**
  * Enlist n free servers into service pool.
  * Utility: [v] R; [^] C; [<>] F
@@ -26,8 +28,7 @@ tactic enlistServers (int n) {
 	}
 	effect {
 		// response time decreasing below threshold should result
-		// IN THIS 'SCENARIO-CENTRY' APPROACH, THERE IS NO POINT IN SPECIFYING THE 'EFFECT'
-		// forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
+		!CONCERN_STILL_BROKEN;
 	}
 }
 
@@ -72,7 +73,7 @@ tactic lowerFidelity (int step, float fracReq) {
 		}
 	}
 	effect {
-		// IN THIS 'SCENARIO-CENTRY' APPROACH, THERE IS NO POINT IN SPECIFYING THE 'EFFECT'
+		!CONCERN_STILL_BROKEN;
 	}
 }
 
