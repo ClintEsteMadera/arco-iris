@@ -147,6 +147,10 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	public List<Number> getAllInstancesPropertyValues(String systemName, String name, String property) {
 		List<Number> propertyValues = new ArrayList<Number>();
+		// this is added in order to contemplate the case when the model is disposed.
+		if (m_acme == null) {
+			return propertyValues;
+		}
 		IAcmeSystem system = m_acme.getSystem(systemName);
 		Set<IAcmeElementInstance<?, ?>> children = new HashSet<IAcmeElementInstance<?, ?>>();
 		children.addAll(system.getComponents());
