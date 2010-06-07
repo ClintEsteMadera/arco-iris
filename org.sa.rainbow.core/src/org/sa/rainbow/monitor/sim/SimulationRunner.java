@@ -227,9 +227,9 @@ public class SimulationRunner extends AbstractRainbowRunnable implements TargetS
 				Double newV = Double.valueOf(value.toString());
 				Double oldV = Double.valueOf((String) m_props.get(iden));
 				Double diff = Math.abs(newV - oldV) / oldV;
-				if (diff > 0.005) { // report only if delta greater than 0.5%
-					log(Tool.TAB + Tool.TAB + "Change prop: " + iden + " = " + value);
-				}
+				// if (diff > 0.005) { // report only if delta greater than 0.5%
+				log(Tool.TAB + Tool.TAB + "Change prop: " + iden + " = " + value);
+				// }
 			} catch (NumberFormatException e) {
 				log(Tool.TAB + Tool.TAB + "Change prop: " + iden + " = " + value);
 			}
