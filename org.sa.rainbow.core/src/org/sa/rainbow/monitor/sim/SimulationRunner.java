@@ -27,17 +27,15 @@ import org.sa.rainbow.translator.effectors.IEffector;
 import org.sa.rainbow.util.Util;
 
 /**
- * A simulation system to test the Rainbow infrastructures.
- * TargetSystem configuration comes via a configuration file.
- *
+ * A simulation system to test the Rainbow infrastructures. TargetSystem configuration comes via a configuration file.
+ * 
  * @author Shang-Wen Cheng (zensoul@cs.cmu.edu)
  */
-public class SimulationRunner extends AbstractRainbowRunnable
-implements TargetSystem, ISimulatedTargetSystem {
+public class SimulationRunner extends AbstractRainbowRunnable implements TargetSystem, ISimulatedTargetSystem {
 
 	/**
 	 * @author Shang-Wen Cheng (zensoul@cs.cmu.edu)
-	 *
+	 * 
 	 * A simulation point gathered from the simulation config file.
 	 */
 	public static class SimPoint {
@@ -50,8 +48,9 @@ implements TargetSystem, ISimulatedTargetSystem {
 
 	public static final String NAME = "TargetSystem Simulation Runner";
 
-	/** Set to <code>true</code> to auto-simulate, or
-	 * <code>false</code> if sim points are advanced externally. */
+	/**
+	 * Set to <code>true</code> to auto-simulate, or <code>false</code> if sim points are advanced externally.
+	 */
 	public static final boolean TIME_SIMULATION = true;
 
 	private ISimulation m_sim = null;
@@ -67,19 +66,21 @@ implements TargetSystem, ISimulatedTargetSystem {
 	/**
 	 * Default constructor.
 	 */
-	public SimulationRunner () {
+	public SimulationRunner() {
 		super(NAME);
-		setSleepTime(500/*ms*/);
+		setSleepTime(500/* ms */);
 
 		m_simpoints = new ArrayList<SimPoint>();
 		m_props = new Properties();
 		m_changeProps = new ArrayList<String>();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.core.IDisposable#dispose()
 	 */
-	public void dispose () {
+	public void dispose() {
 		m_simpoints.clear();
 		m_props.clear();
 		m_changeProps.clear();
@@ -91,55 +92,70 @@ implements TargetSystem, ISimulatedTargetSystem {
 		m_changeProps = null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.TargetSystem#connect()
 	 */
-	public void connect () {
+	public void connect() {
 		// start the simulation runner
 		start();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.TargetSystem#getProperties()
 	 */
-	public Properties getProperties () {
+	public Properties getProperties() {
 		return m_props;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.TargetSystem#getChangedProperties()
 	 */
-	public Map<String,Object> getChangedProperties () {
-		Map<String,Object> propMap = new HashMap<String,Object>();
+	public Map<String, Object> getChangedProperties() {
+		Map<String, Object> propMap = new HashMap<String, Object>();
 		List<String> changedProps = new ArrayList<String>(m_changeProps);
-		m_changeProps.clear();  // clear list of props first
+		m_changeProps.clear(); // clear list of props first
 		for (String prop : changedProps) {
 			propMap.put(prop, m_props.get(prop));
 		}
 		return propMap;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.TargetSystem#queryProperty(java.lang.String)
 	 */
-	public Object queryProperty (String iden) {
+	public Object queryProperty(String iden) {
 		return m_props.getProperty(iden);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sa.rainbow.monitor.TargetSystem#predictProperty(java.lang.String, long, org.sa.rainbow.monitor.TargetSystem.StatType)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.sa.rainbow.monitor.TargetSystem#predictProperty(java.lang.String, long,
+	 *      org.sa.rainbow.monitor.TargetSystem.StatType)
 	 */
-	public Object predictProperty (String iden, long dur, StatType type) {
+	public Object predictProperty(String iden, long dur, StatType type) {
 		// if not time simulation, timed prediction doesn't have a meaning
-		if (! TIME_SIMULATION) return null;
+		if (!TIME_SIMULATION) {
+			return null;
+		}
 		// if prediction not enabled, return using current conditions
-		if (! Rainbow.predictionEnabled()) return Double.valueOf((String )queryProperty(iden));
+		if (!Rainbow.predictionEnabled()) {
+			return Double.valueOf((String) queryProperty(iden));
+		}
 		Double rv = null;
 		switch (type) {
 		case SINGLE:
-//			stop();
+			// stop();
 			// roll time forward from now to future duration and determine property
-			//   value by keeping track of the last set value
+			// value by keeping track of the last set value
 			long now = elapsedTime();
 			long future = now + dur;
 			List<SimPoint> simpts = new ArrayList<SimPoint>();
@@ -149,25 +165,29 @@ implements TargetSystem, ISimulatedTargetSystem {
 			// generate prediction properties into future time and obtain property of interest
 			Properties props = m_sim.predict(simpts, dur, PredictionMode.IMPERFECT);
 			rv = Double.valueOf(props.getProperty(iden));
-			if (m_logger.isInfoEnabled()) m_logger.info(now + "ms + " + dur + ": " + iden + " = " + rv);
-//			start();
+			if (m_logger.isInfoEnabled()) {
+				m_logger.info(now + "ms + " + dur + ": " + iden + " = " + rv);
+			}
+			// start();
 			return rv;
 		case MEAN:
 			// roll time forward from now and accumulate property value across
-			//   duration to derive the mean
+			// duration to derive the mean
 			throw new NotImplementedException("Sorry, AVG predictedProperty() function not yet implemented.");
-		case MAX:  // seek for max of property in time toward future duration
+		case MAX: // seek for max of property in time toward future duration
 			throw new NotImplementedException("Sorry, MAX predictedProperty() function not yet implemented.");
-		case MIN:  // seek for min of property in time toward future duration
+		case MIN: // seek for min of property in time toward future duration
 			throw new NotImplementedException("Sorry, MIN predictedProperty() function not yet implemented.");
 		}
 		return rv;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.TargetSystem#findServices(java.lang.String, java.util.Map)
 	 */
-	public Set<?> findServices (String type, Map<String,String> filters) {
+	public Set<?> findServices(String type, Map<String, String> filters) {
 		// let's return a set of strings
 		Set<String> svcNames = new HashSet<String>();
 
@@ -178,8 +198,7 @@ implements TargetSystem, ISimulatedTargetSystem {
 			String spareProp = name + ".spare";
 			String typeProp = name + ".type";
 			if (m_props.containsKey(spareProp) && m_props.containsKey(typeProp)) {
-				if (m_props.getProperty(typeProp).equals(type) &&
-						Boolean.parseBoolean(m_props.getProperty(spareProp))) {
+				if (m_props.getProperty(typeProp).equals(type) && Boolean.parseBoolean(m_props.getProperty(spareProp))) {
 					// spare element encountered! and type matches
 					svcNames.add(name);
 				}
@@ -188,23 +207,27 @@ implements TargetSystem, ISimulatedTargetSystem {
 		return svcNames;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.TargetSystem#getEffector(java.lang.String, java.lang.String)
 	 */
-	public IEffector getEffector (String name, String target) {
+	public IEffector getEffector(String name, String target) {
 		return IEffector.NULL_EFFECTOR;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.sim.ISimulatedTargetSystem#changeProperty(java.lang.String, java.lang.Object)
 	 */
-	public boolean changeProperty (String iden, Object value) {
+	public boolean changeProperty(String iden, Object value) {
 		if (m_props.containsKey(iden)) {
 			try {
 				Double newV = Double.valueOf(value.toString());
-				Double oldV = Double.valueOf((String )m_props.get(iden));
-				Double diff = Math.abs(newV-oldV)/oldV;
-				if (diff > 0.005) {  // report only if delta greater than 0.5%
+				Double oldV = Double.valueOf((String) m_props.get(iden));
+				Double diff = Math.abs(newV - oldV) / oldV;
+				if (diff > 0.005) { // report only if delta greater than 0.5%
 					log(Tool.TAB + Tool.TAB + "Change prop: " + iden + " = " + value);
 				}
 			} catch (NumberFormatException e) {
@@ -218,26 +241,36 @@ implements TargetSystem, ISimulatedTargetSystem {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.sim.ISimulatedTargetSystem#effectProperty(java.lang.String, java.lang.Object)
 	 */
-	public boolean effectProperty (String iden, Object value) {
-		/* TODO if we can get ahold of "system response time", can use that
-		   to inform the effector time delay to simulate resource limitations */
+	public boolean effectProperty(String iden, Object value) {
+		/*
+		 * TODO if we can get ahold of "system response time", can use that to inform the effector time delay to
+		 * simulate resource limitations
+		 */
 		// pause for random amount of time between 0.5 to 3 seconds
-		Util.pause((long )(Math.random()*2500.0) + 501L);
+		double pause = Math.random() * 2500.0 + 501L;
+		log(Tool.TAB + Tool.TAB + "Effector time delay to simulate resource limitations: " + pause);
+		Util.pause((long) (pause));
 		return changeProperty(iden, value);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#start()
 	 */
 	@Override
-	public void start () {
-		if (activeThread() == null || isTerminated()) return;
+	public void start() {
+		if (activeThread() == null || isTerminated()) {
+			return;
+		}
 
 		switch (state()) {
-		case RAW:  // not yet started
+		case RAW: // not yet started
 			m_simStartTime = System.currentTimeMillis();
 			break;
 		case STOPPED:
@@ -249,19 +282,25 @@ implements TargetSystem, ISimulatedTargetSystem {
 		super.start();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#doStop()
 	 */
 	@Override
-	protected void doStop () {
-		if (activeThread() == null || state() == State.RAW || isTerminated()) return;
+	protected void doStop() {
+		if (activeThread() == null || state() == State.RAW || isTerminated()) {
+			return;
+		}
 
 		m_lastTimeout = System.currentTimeMillis();
 
 		super.doStop();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#doTerminate()
 	 */
 	@Override
@@ -269,39 +308,49 @@ implements TargetSystem, ISimulatedTargetSystem {
 		if (m_sim != null) {
 			m_sim.terminate();
 			// we're terminating in the runnable's thread, safe to signalTerminate.
-			//Rainbow.signalTerminate();
+			// Rainbow.signalTerminate();
 		}
 
 		super.doTerminate();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#log(java.lang.String)
 	 */
 	@Override
-	protected void log (String txt) {
+	protected void log(String txt) {
 		Oracle.instance().writeSystemPanel(m_logger, txt);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#runAction()
 	 */
 	@Override
-	protected void runAction () {
-		m_logger.info("------------- Running ZNewsSim at "+ elapsedTime() + "------------");
+	protected void runAction() {
+		m_logger.info("------------- Running ZNewsSim at " + elapsedTime() + "------------");
 
-		if (m_simcnt >= m_simpoints.size()) return;
+		if (m_simcnt >= m_simpoints.size()) {
+			return;
+		}
 
 		SimPoint simpoint = m_simpoints.get(m_simcnt);
 		if (TIME_SIMULATION && elapsedTime() > simpoint.simTime && m_simindex < simpoint.index) {
-			++m_simindex;  // advance sim index automatically in TIME simulation
+			++m_simindex; // advance sim index automatically in TIME simulation
 		}
 		while (simpoint.index == m_simindex) {
-			if (simpoint.visited) continue;
-			if (TIME_SIMULATION && elapsedTime() < simpoint.simTime) break;  // not yet time
+			if (simpoint.visited) {
+				continue;
+			}
+			if (TIME_SIMULATION && elapsedTime() < simpoint.simTime) {
+				break; // not yet time
+			}
 
 			String msg = "[" + elapsedTime() + ":sim." + simpoint.index + "] ";
-			simpoint.visited = true;  // mark sim point as processed
+			simpoint.visited = true; // mark sim point as processed
 			if (simpoint.identifier.equals("sim") && simpoint.value.equals("terminate")) {
 				// done with simulation
 				msg += "Simulation terminated!";
@@ -326,7 +375,7 @@ implements TargetSystem, ISimulatedTargetSystem {
 		}
 	}
 
-	public void setSimFile (String filename) {
+	public void setSimFile(String filename) {
 		try {
 			// store for later reloading, if needed
 			m_props.load(this.getClass().getResourceAsStream(filename));
@@ -347,10 +396,10 @@ implements TargetSystem, ISimulatedTargetSystem {
 
 		// check for rainbow property settings
 		final String RBKEY = "rainbow.";
-		for (Map.Entry<Object,Object> entry : m_props.entrySet()) {
-			String key = (String )entry.getKey();
-			String val = (String )entry.getValue();
-			if (key.startsWith(RBKEY)) {  // set rainbow property
+		for (Map.Entry<Object, Object> entry : m_props.entrySet()) {
+			String key = (String) entry.getKey();
+			String val = (String) entry.getValue();
+			if (key.startsWith(RBKEY)) { // set rainbow property
 				String rainbowKey = key.substring(RBKEY.length());
 				Rainbow.instance().setProperty(rainbowKey, val);
 			}
@@ -368,14 +417,21 @@ implements TargetSystem, ISimulatedTargetSystem {
 			constArgs[0] = this;
 			constArgs[1] = m_props;
 			Constructor<?> cons = simClass.getConstructor(constParams);
-			m_sim = (ISimulation )cons.newInstance(constArgs);
-		} catch (ClassNotFoundException e) {  et = e;
-		} catch (InstantiationException e) {  et = e;
-		} catch (IllegalAccessException e) {  et = e;
-		} catch (SecurityException e) {  et = e;
-		} catch (NoSuchMethodException e) {  et = e;
-		} catch (IllegalArgumentException e) {  et = e;
-		} catch (InvocationTargetException e) {  et = e;
+			m_sim = (ISimulation) cons.newInstance(constArgs);
+		} catch (ClassNotFoundException e) {
+			et = e;
+		} catch (InstantiationException e) {
+			et = e;
+		} catch (IllegalAccessException e) {
+			et = e;
+		} catch (SecurityException e) {
+			et = e;
+		} catch (NoSuchMethodException e) {
+			et = e;
+		} catch (IllegalArgumentException e) {
+			et = e;
+		} catch (InvocationTargetException e) {
+			et = e;
 		} finally {
 			if (et != null) {
 				m_logger.error("Sim class instantiation failed!", et);
@@ -392,8 +448,9 @@ implements TargetSystem, ISimulatedTargetSystem {
 		int simSize = Integer.parseInt(m_props.getProperty("sim.size"));
 		for (int i = 0; i < simSize; i++) {
 			String sims = m_props.getProperty("sim." + i);
-			if (sims == null)
-				continue;  // this sim point wasn't defined
+			if (sims == null) {
+				continue; // this sim point wasn't defined
+			}
 			StringTokenizer tokens = new StringTokenizer(sims, ",");
 			while (tokens.hasMoreTokens()) {
 				String simToken = tokens.nextToken().trim();
@@ -408,15 +465,17 @@ implements TargetSystem, ISimulatedTargetSystem {
 		}
 	}
 
-	public long elapsedTime () {
+	public long elapsedTime() {
 		return System.currentTimeMillis() - m_simStartTime - m_accumTimeout;
 	}
 
-	public void nextSimPoint () {
-		if (m_simcnt >= m_simpoints.size()) return;
+	public void nextSimPoint() {
+		if (m_simcnt >= m_simpoints.size()) {
+			return;
+		}
 
 		if (state() == State.STARTED) {
-			doStop();  // pause simulation
+			doStop(); // pause simulation
 		}
 
 		SimPoint simpoint = m_simpoints.get(m_simcnt);
@@ -428,7 +487,7 @@ implements TargetSystem, ISimulatedTargetSystem {
 		}
 
 		if (state() == State.STOPPED) {
-			start();  // resume simulation
+			start(); // resume simulation
 		}
 	}
 
