@@ -67,12 +67,12 @@ public class SelfHealingScenario extends AtamScenario {
 		return this;
 	}
 
-	public boolean satisfied4AllInstancesAverage(final RainbowModelWithScenarios rainbowModelWithScenarios) {
+	public boolean holdsConsideringAllInstances(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		/*
 		 * It is not necessary to check the environment at this point because this scenario was already selected for
 		 * being repaired
 		 */
-		return getResponseMeasure().getConstraint().holds4AllInstances(rainbowModelWithScenarios);
+		return getResponseMeasure().getConstraint().holdsConsideringAllInstances(rainbowModelWithScenarios);
 	}
 
 	/**
@@ -81,23 +81,24 @@ public class SelfHealingScenario extends AtamScenario {
 	public boolean isEAvgBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
 			SortedMap<String, Double> strategyAggregateAttributes) {
 		boolean isBroken = false;
-		if (anyEnvironmentApplies(rainbowModelWithScenarios)) {
+		if (isThereAnyEnvironmentApplicable(rainbowModelWithScenarios)) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
 			concernDiffAfterStrategy = (concernDiffAfterStrategy == null) ? 0 : concernDiffAfterStrategy;
 
-			isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios, concernDiffAfterStrategy);
+			isBroken = !getResponseMeasure().holds4Scoring(rainbowModelWithScenarios, concernDiffAfterStrategy);
 		}
 		log("Scenario " + this.getName() + " broken? " + isBroken);
 		return isBroken;
 	}
 
-	private boolean anyEnvironmentApplies(final RainbowModelWithScenarios rainbowModelWithScenarios) {
-		boolean anyEnvironmentApplies = false;
+	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {
+		boolean thereIsAnEnvironmentApplicable = false;
 
 		for (Environment environment : this.getEnvironments()) {
-			anyEnvironmentApplies = anyEnvironmentApplies || environment.holds(rainbowModelWithScenarios);
+			thereIsAnEnvironmentApplicable = thereIsAnEnvironmentApplicable
+					|| environment.holds4Scoring(rainbowModelWithScenarios);
 		}
-		return anyEnvironmentApplies;
+		return thereIsAnEnvironmentApplicable;
 	}
 
 	public boolean applyFor(Environment environment) {
