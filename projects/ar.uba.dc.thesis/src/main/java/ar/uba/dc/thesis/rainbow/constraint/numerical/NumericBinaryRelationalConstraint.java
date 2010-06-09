@@ -88,12 +88,21 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 	}
 
 	public boolean holds4AllInstances(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		boolean satisfied = true;
 		List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues(getArtifact().getSystemName(),
 				getArtifact().getName(), getProperty());
+		boolean holds = this.holds(this.getAverage(values));
+
+		logger.info("Holds for average " + this.getAverage(values) + "? " + holds + "!!!!");
+
+		return holds;
+	}
+
+	private double getAverage(List<Number> values) {
+		double sum = 0;
 		for (Number propertyValue : values) {
-			satisfied = satisfied && this.holds(propertyValue);
+			sum += propertyValue.doubleValue();
 		}
-		return satisfied;
+		double average = sum / values.size();
+		return average;
 	}
 }

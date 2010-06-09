@@ -26,10 +26,6 @@ public class ResponseMeasure extends ThesisPojo {
 		return this.constraint;
 	}
 
-	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		return this.constraint.holds(rainbowModelWithScenarios);
-	}
-
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios, double concernDiffAfterStrategy) {
 		return this.constraint.holds(rainbowModelWithScenarios, concernDiffAfterStrategy);
 	}

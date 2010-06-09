@@ -147,8 +147,8 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 					.computeSystemInstantUtility();
 			StringBuffer umsg = new StringBuffer();
 			umsg.append("IU: ").append(util);
-			Util.dataLogger().info(umsg.toString());
-			m_logger.info(umsg.toString());
+			Util.dataLogger().debug(umsg.toString());
+			m_logger.debug(umsg.toString());
 			m_accruedList.add(util);
 			m_beacon.mark();
 		}
