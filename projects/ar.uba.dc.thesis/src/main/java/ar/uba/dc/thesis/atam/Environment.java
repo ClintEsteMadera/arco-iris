@@ -102,11 +102,11 @@ public class Environment extends ThesisPojo {
 		return this.weightsForRainbow;
 	}
 
-	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
+	public boolean holds4Scoring(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean holds = true;
 
 		for (Constraint constraint : this.getConditions()) {
-			holds = holds && constraint.holds(rainbowModelWithScenarios);
+			holds = holds && constraint.holds4Scoring(rainbowModelWithScenarios);
 		}
 		holds = this.weightCurrentEvaluationUsingHistory(holds);
 

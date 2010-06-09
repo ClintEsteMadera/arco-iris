@@ -1,16 +1,11 @@
 package ar.uba.dc.thesis.rainbow.constraint.numerical;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.acmestudio.acme.element.IAcmeElementInstance;
-import org.acmestudio.acme.element.IAcmeSystem;
-import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.Artifact;
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
+import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 
 public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo implements Constraint {
 
@@ -18,8 +13,11 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 
 	private final String property;
 
-	public BaseSinglePropertyInvolvedConstraint(Artifact artifact, String property) {
+	private final Quantifier quantifier;
+
+	public BaseSinglePropertyInvolvedConstraint(Quantifier quantifier, Artifact artifact, String property) {
 		super();
+		this.quantifier = quantifier;
 		this.artifact = artifact;
 		this.property = property;
 	}
@@ -32,33 +30,8 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		return property;
 	}
 
-	/**
-	 * Uses the Property Name, in addition to the System and Type Name present in this Constraint's artifact, and looks
-	 * for that particular property in the Acme Model.
-	 * 
-	 * @param acmeModel
-	 *            the model where to look for the property
-	 * @param propertyFullPath
-	 *            the name of the property, includes the system and type name of the property,
-	 * @return
-	 */
-	protected final Object findAcmePropertyInAcme(RainbowModelWithScenarios rainbowModelWithScenarios,
-			String propertyFullPath) {
-		return rainbowModelWithScenarios.getProperty(propertyFullPath);
-	}
-
-	protected Set<IAcmeElementInstance<?, ?>> getTypeMatchingComponents(String typeName,
-			RainbowModelWithScenarios rainbowModelWithScenarios) {
-		IAcmeSystem system = rainbowModelWithScenarios.getAcmeModel().getSystems().iterator().next();
-
-		Set<IAcmeElementInstance<?, ?>> typeMatchingComponents = new HashSet<IAcmeElementInstance<?, ?>>();
-
-		for (IAcmeElementInstance<?, ?> component : system.getComponents()) {
-			if (component.declaresType(typeName) || component.instantiatesType(typeName)) {
-				typeMatchingComponents.add(component);
-			}
-		}
-		return typeMatchingComponents;
+	public Quantifier getQuantifier() {
+		return quantifier;
 	}
 
 	/**

@@ -129,7 +129,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
-						&& !scenario.satisfied4AllInstancesAverage(rainbowModelWithScenarios)) {
+						&& !scenario.holdsConsideringAllInstances(rainbowModelWithScenarios)) {
 					result = true;
 				}
 			}
@@ -421,7 +421,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	private Environment detectCurrentSystemEnvironment(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		Collection<Environment> environments = this.environmentRepository.getAllNonDefaultEnvironments();
 		for (Environment environment : environments) {
-			if (environment.holds(rainbowModelWithScenarios)) {
+			if (environment.holds4Scoring(rainbowModelWithScenarios)) {
 				log("Current environment: " + environment.getName());
 				return environment;
 			}
