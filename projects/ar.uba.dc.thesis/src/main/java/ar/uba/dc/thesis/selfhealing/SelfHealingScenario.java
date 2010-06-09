@@ -67,15 +67,7 @@ public class SelfHealingScenario extends AtamScenario {
 		return this;
 	}
 
-	public boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
-		boolean isBroken = false;
-		if (anyEnvironmentApplies(rainbowModelWithScenarios)) {
-			isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios);
-		}
-		return isBroken;
-	}
-
-	public boolean satisfied4AllInstances(final RainbowModelWithScenarios rainbowModelWithScenarios) {
+	public boolean satisfied4AllInstancesAverage(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		/*
 		 * It is not necessary to check the environment at this point because this scenario was already selected for
 		 * being repaired
@@ -86,17 +78,14 @@ public class SelfHealingScenario extends AtamScenario {
 	/**
 	 * Tiene en cuenta la aplicacion de la estrategia sobre las properties involucradas
 	 */
-	public boolean isBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
+	public boolean isEAvgBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
 			SortedMap<String, Double> strategyAggregateAttributes) {
 		boolean isBroken = false;
 		if (anyEnvironmentApplies(rainbowModelWithScenarios)) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
-			boolean strategyAffectsConcern = concernDiffAfterStrategy != null && !concernDiffAfterStrategy.equals(0.0);
-			if (strategyAffectsConcern) {
-				isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios, concernDiffAfterStrategy);
-			} else {
-				isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios);
-			}
+			concernDiffAfterStrategy = (concernDiffAfterStrategy == null) ? 0 : concernDiffAfterStrategy;
+
+			isBroken = !getResponseMeasure().holds(rainbowModelWithScenarios, concernDiffAfterStrategy);
 		}
 		log("Scenario " + this.getName() + " broken? " + isBroken);
 		return isBroken;

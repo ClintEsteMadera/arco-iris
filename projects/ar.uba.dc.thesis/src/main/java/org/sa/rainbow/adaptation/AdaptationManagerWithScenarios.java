@@ -126,13 +126,15 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			RainbowModelWithScenarios rainbowModelWithScenarios = (RainbowModelWithScenarios) Oracle.instance()
 					.rainbowModel();
 			// FIXME asegurarse que sean los mismos escenarios que dispararon la ejecucion de la estrategia?
+			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
-						&& !scenario.satisfied4AllInstances(rainbowModelWithScenarios)) {
-					return true;
+						&& !scenario.satisfied4AllInstancesAverage(rainbowModelWithScenarios)) {
+					result = true;
 				}
 			}
-			return false;
+			System.out.println("isConcernStillBroken? " + result + " !!!!");
+			return result;
 		} catch (NullPointerException e) {
 			doLog("Concern not specified");
 			throw e;
@@ -360,20 +362,20 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					continue; // don't consider this Strategy
 				}
 
-				double scenariosScore = 0;
+				double strategyScore4Scenarios = 0;
 				if (scenariosSolutionWeight > 0) {
 					log("Scoring " + strategy.getName() + " with scenarios approach");
-					scenariosScore = scoreStrategyWithScenarios(systemEnvironment, strategy);
-					log("Scenarios approach score for " + strategy.getName() + ": " + scenariosScore);
+					strategyScore4Scenarios = scoreStrategyWithScenarios(systemEnvironment, strategy);
+					log("Scenarios approach score for " + strategy.getName() + ": " + strategyScore4Scenarios);
 				}
 
-				double rainbowScoreStrategy = 0;
+				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
 					log("Scoring " + strategy.getName() + " with rainbow approach");
-					rainbowScoreStrategy = scoreStrategy(strategy, weights4Rainbow);
+					strategyScore4Rainbow = scoreStrategyByRainbow(strategy, weights4Rainbow);
 				}
 
-				double weightedScore = scenariosScore * scenariosSolutionWeight + rainbowScoreStrategy
+				double weightedScore = strategyScore4Scenarios * scenariosSolutionWeight + strategyScore4Rainbow
 						+ rainbowSolutionWeight;
 				if (weightedScore > maxScore4Strategy) {
 					maxScore4Strategy = weightedScore;
@@ -434,7 +436,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Map<Concern, Double> weights = systemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.applyFor(systemEnvironment)) {
-				boolean scenarioSatisfiedInSimulation = !scenario.isBroken(this.m_model, strategy
+				boolean scenarioSatisfiedInSimulation = !scenario.isEAvgBroken(this.m_model, strategy
 						.computeAggregateAttributes());
 				if (scenarioSatisfiedInSimulation) {
 					log("Scenario " + scenario.getName() + " satisfied in simulation");
@@ -476,7 +478,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * 
 	 * @return the score of the strategy calculated by Rainbow
 	 */
-	private double scoreStrategy(Strategy strategy, Map<String, Double> weights) {
+	private double scoreStrategyByRainbow(Strategy strategy, Map<String, Double> weights) {
 		double[] conds = null;
 		SortedMap<String, Double> aggAtt = strategy.computeAggregateAttributes();
 		// add the strategy failure history as another attribute

@@ -96,7 +96,7 @@ public class ScenariosManager {
 		RainbowModelWithScenarios rainbowModel = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
 			String scenarioStatus = " --> PASSED";
-			if (scenario.isBroken(rainbowModel)) {
+			if (!scenario.satisfied4AllInstancesAverage(rainbowModel)) {
 				scenarioStatus = " --> BROKEN";
 				brokenScenarios.add(scenario);
 			}
