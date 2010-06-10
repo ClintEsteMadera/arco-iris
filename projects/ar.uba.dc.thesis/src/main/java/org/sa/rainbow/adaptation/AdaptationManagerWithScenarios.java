@@ -38,6 +38,7 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.thesis.atam.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.repository.EnvironmentRepository;
+import ar.uba.dc.thesis.repository.RepairStrategy;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -405,7 +406,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	private Set<String> collectCandidateStrategies(List<SelfHealingScenario> brokenScenarios) {
 		Set<String> candidateStrategies = new HashSet<String>();
 		for (SelfHealingScenario brokenScenario : brokenScenarios) {
-			candidateStrategies.addAll(brokenScenario.getRepairStrategies());
+			List<String> repairStrategies = brokenScenario.getRepairStrategies();
+			if (repairStrategies.isEmpty()) {
+				repairStrategies = RepairStrategy.getAllRepairStrategiesNames();
+			}
+			candidateStrategies.addAll(repairStrategies);
 		}
 		return candidateStrategies;
 	}
