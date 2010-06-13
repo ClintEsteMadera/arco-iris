@@ -30,10 +30,6 @@ public class SelfHealingScenarioRepository {
 		return enabledScenarios;
 	}
 
-	public Collection<SelfHealingScenario> getAllScenarios() {
-		return this.dao.getAllScenarios();
-	}
-
 	/**
 	 * <b>Important Note:</b>It is assumed that we are not using this Repository for holding scenarios for more than
 	 * one application.<br>

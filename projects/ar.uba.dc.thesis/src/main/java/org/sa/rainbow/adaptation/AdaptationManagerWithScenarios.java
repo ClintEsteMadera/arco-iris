@@ -48,6 +48,11 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
  */
 public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
+	// FIXME This should be extracted to a configuration file!!!
+	private static final int RAINBOW_SOLUTION_WEIGHT = 0;
+
+	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = 1;
+
 	public enum Mode {
 		SERIAL, MULTI_PRONE
 	};
@@ -334,16 +339,21 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
 
-		Environment systemEnvironment = detectCurrentSystemEnvironment(this.m_model);
-		Map<String, Double> weights4Rainbow = systemEnvironment.getWeightsForRainbow();
+		Environment currentSystemEnvironment = detectCurrentSystemEnvironment(this.m_model);
+		Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
 
-		double maxScore4Strategy = 0L;
+		// We don't want the "simulated" system utility to be less than the current real one.
+		ScenarioBrokenDetector scenarioBrokenDetector = new DefaultScenarioBrokenDetector(this.m_model);
+		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, scenarioBrokenDetector);
+
+		m_logger.info("-=-=-=-=-=-=-=-=-=-= Current System Utility: " + maxScore4Strategy);
+
 		Strategy selectedStrategy = null;
 
 		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
 		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double scenariosSolutionWeight = 1;
-		double rainbowSolutionWeight = 0;
+		double scenariosSolutionWeight = SCENARIOS_BASED_SOLUTION_WEIGHT;
+		double rainbowSolutionWeight = RAINBOW_SOLUTION_WEIGHT;
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
@@ -352,36 +362,46 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				continue; // skip checking this script
 			}
 
-			for (Strategy strategy : stitch.script.strategies) {
-				log("Evaluating strategy " + strategy.getName());
-				// check first for failures threshold
-				if (!candidateStrategies.contains(strategy.getName())
-						|| (getFailureRate(strategy) != 0.0 && getFailureRate(strategy) > FAILURE_RATE_THRESHOLD)) {
-					String cause = !candidateStrategies.contains(strategy.getName()) ? "Strategy not selected in broken scenarios"
+			for (Strategy currentStrategy : stitch.script.strategies) {
+				log("Evaluating strategy " + currentStrategy.getName());
+				if (!candidateStrategies.contains(currentStrategy.getName())
+						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
+					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "Strategy not selected in broken scenarios"
 							: "Failure rate threshold reached";
-					log(strategy.getName() + " does not apply because: " + cause);
+					log(currentStrategy.getName() + " does not apply because: " + cause);
 					continue; // don't consider this Strategy
 				}
 
 				double strategyScore4Scenarios = 0;
 				if (scenariosSolutionWeight > 0) {
-					log("Scoring " + strategy.getName() + " with scenarios approach");
-					strategyScore4Scenarios = scoreStrategyWithScenarios(systemEnvironment, strategy);
-					log("Scenarios approach score for " + strategy.getName() + ": " + strategyScore4Scenarios);
+					log("Scoring " + currentStrategy.getName() + " with scenarios approach");
+					ScenarioBrokenDetector simulationBrokenDetector = new InSimulationScenarioBrokenDetector(m_model,
+							currentStrategy);
+					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
+							simulationBrokenDetector);
+					log("Scenarios approach score for " + currentStrategy.getName() + ": " + strategyScore4Scenarios);
 				}
 
 				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
-					log("Scoring " + strategy.getName() + " with rainbow approach");
-					strategyScore4Rainbow = scoreStrategyByRainbow(strategy, weights4Rainbow);
+					log("Scoring " + currentStrategy.getName() + " with rainbow approach");
+					strategyScore4Rainbow = scoreStrategyByRainbow(currentStrategy, weights4Rainbow);
 				}
 
 				double weightedScore = strategyScore4Scenarios * scenariosSolutionWeight + strategyScore4Rainbow
 						+ rainbowSolutionWeight;
+
+				m_logger.info("-=-=-=-=-=-=-=-=-=-= current strategy weightedScore: " + weightedScore);
+
 				if (weightedScore > maxScore4Strategy) {
 					maxScore4Strategy = weightedScore;
-					selectedStrategy = strategy;
+					selectedStrategy = currentStrategy;
+				} else if (weightedScore == maxScore4Strategy) {
+					if (selectedStrategy != null && getFailureRate(currentStrategy) < getFailureRate(selectedStrategy)) {
+						selectedStrategy = currentStrategy;
+					}
 				}
+
 			}
 
 			// TODO lo siguiente es tomado de rainbow CASI tal cual (ver)
@@ -407,6 +427,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Set<String> candidateStrategies = new HashSet<String>();
 		for (SelfHealingScenario brokenScenario : brokenScenarios) {
 			List<String> repairStrategies = brokenScenario.getRepairStrategies();
+			// TODO Resolver esto de una manera mas prolija. NO en la GUI pues atamos la solución a que siempre editen usando la GUI.
 			if (repairStrategies.isEmpty()) {
 				repairStrategies = RepairStrategy.getAllRepairStrategiesNames();
 			}
@@ -435,47 +456,46 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return environmentRepository.getDefaultEnvironment();
 	}
 
-	private Double scoreStrategyWithScenarios(Environment systemEnvironment, Strategy strategy) {
+	private Double scoreStrategyWithScenarios(Environment currentSystemEnvironment,
+			ScenarioBrokenDetector scenarioBrokenDetector) {
 		double score = 0L;
 		Collection<SelfHealingScenario> scenarios = this.scenariosManager.getEnabledScenarios();
-		Map<Concern, Double> weights = systemEnvironment.getWeights();
+		Map<Concern, Double> weights = currentSystemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
-			if (scenario.applyFor(systemEnvironment)) {
-				boolean scenarioSatisfiedInSimulation = !scenario.isEAvgBroken(this.m_model, strategy
-						.computeAggregateAttributes());
-				if (scenarioSatisfiedInSimulation) {
-					log("Scenario " + scenario.getName() + " satisfied in simulation");
-					Double concernWeight = weights.get(scenario.getConcern());
-					if (concernWeight == null) {
+			if (scenario.applyFor(currentSystemEnvironment)) {
+				boolean scenarioSatisfied = !scenarioBrokenDetector.isBroken(scenario);
+
+				if (scenarioSatisfied) {
+					log("Scenario " + scenario.getName() + " satisfied");
+					Double concernWeight4CurrentEnvironment = weights.get(scenario.getConcern());
+					if (concernWeight4CurrentEnvironment == null) {
 						// if there is no weight for the concern then its weight it is assumed to be zero
-						concernWeight = new Double(0);
+						concernWeight4CurrentEnvironment = new Double(0);
 					}
-					score = score + scenarioWeight(scenario.getPriority(), concernWeight);
+					score = score + scenarioWeight(scenario.getPriority(), concernWeight4CurrentEnvironment);
 				} else {
-					log("Scenario " + scenario.getName() + " NOT satisfied in simulation");
+					log("Scenario " + scenario.getName() + " NOT satisfied");
 				}
 			} else {
 				log("Scenario " + scenario.getName() + " does not apply for current system environment("
-						+ systemEnvironment.getName() + ")");
+						+ currentSystemEnvironment.getName() + ")");
 			}
 		}
 		return score;
 	}
 
-	// TODO Analizar e implementar la utilización de la prioridad del escenario en el cálculo del score de la
-	// estrategia.
-	private double scenarioWeight(int priority, double concernWeight) {
-		// TODO tomar la ultima prioridad (mas uno para evitar que pese cero) de entre todos los escenarios?
-		int LAST_PRIORITY = 1000;
-		// TODO ver como pesar prioridades (ojo con outliers en las prioridades)
-		double priorityWeight = (LAST_PRIORITY - priority) / LAST_PRIORITY;
+	private double scenarioWeight(int scenarioPriority, double concernWeight4CurrentEnvironment) {
+		double scenariosRelativePriority = this.scenariosAssignedPriority2RelativePriority(scenarioPriority);
 		// TODO idea: el usuario puede pesar la importancia de los concerns vs la de las prioridades
 		// por ahora pesan lo mismo los pesos de los concerns que la prioridad:
-		double concernsPerEnvironmentWeight = 0.5;
-		double scenariosPrioritiesWeight = 0.5;
-		// TODO Analizar la utilización del peso del concern del escenario en el cálculo del score de la estrategia.
-		// por ahora solamente se esta sumando el peso del concern (si el concern pesa 0.6 suma 0.6)
-		return concernWeight * concernsPerEnvironmentWeight + priorityWeight * scenariosPrioritiesWeight;
+
+		return scenariosRelativePriority * concernWeight4CurrentEnvironment;
+	}
+
+	private double scenariosAssignedPriority2RelativePriority(int scenarioPriority) {
+		double maxPriority = this.scenariosManager.getMaxPriority() + 1;
+
+		return (maxPriority - scenarioPriority) / maxPriority;
 	}
 
 	/**
