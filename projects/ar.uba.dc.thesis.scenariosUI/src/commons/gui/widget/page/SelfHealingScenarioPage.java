@@ -52,45 +52,44 @@ public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScen
 		datosBasicosGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly);
 		Group swtGroup = datosBasicosGroup.getSwtGroup();
 
+		CompositeModel<SelfHealingScenario> underlyingScenario = super.getCompositeModel();
+
+		//TODO id ???
+
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.NAME, new BindingInfo(
-				super.getCompositeModel(), "name"), this.readOnly);
+				underlyingScenario, "name"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		ComboMetainfo comboMetainfo = ComboMetainfo.create(swtGroup, ScenariosUILabels.CONCERN, new BindingInfo(super
-				.getCompositeModel(), "concern"), this.readOnly);
+		ComboMetainfo comboMetainfo = ComboMetainfo.create(swtGroup, ScenariosUILabels.CONCERN, new BindingInfo(underlyingScenario, "concern"), this.readOnly);
 		ComboFactory.createCombo(comboMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.STIMULUS_SOURCE, new BindingInfo(super
-				.getCompositeModel(), "stimulusSource"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.STIMULUS_SOURCE, new BindingInfo(underlyingScenario, "stimulusSource"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		// TODO: Stimulus
-
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ENVIRONMENT, new BindingInfo(super
-				.getCompositeModel(), "environment"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.STIMULUS, new BindingInfo(underlyingScenario, "stimulus"), this.readOnly);
 		TextFactory.createText(textMetainfo);
+
+		// TODO: Environments
 
 		// TODO: Artifact
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ARTIFACT, new BindingInfo(super
-				.getCompositeModel(), "artifact"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ARTIFACT, new BindingInfo(underlyingScenario, "artifact"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.RESPONSE, new BindingInfo(super
-				.getCompositeModel(), "response"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.RESPONSE, new BindingInfo(underlyingScenario, "response"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
 		// TODO: Response Measure
 
 		// TODO: Architectural Decisions
 
-		BooleanFieldMetainfo metainfo = BooleanFieldMetainfo.create(parent, ScenariosUILabels.ENABLED, new BindingInfo(super
-				.getCompositeModel(), "enabled"), readOnly);
+		BooleanFieldMetainfo metainfo = BooleanFieldMetainfo.create(parent, ScenariosUILabels.ENABLED, new BindingInfo(underlyingScenario, "enabled"), readOnly);
 		BooleanFactory.createBoolean(metainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.PRIORITY, new BindingInfo(super
-				.getCompositeModel(), "priority"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.PRIORITY, new BindingInfo(underlyingScenario, "priority"), this.readOnly);
 		TextFactory.createText(textMetainfo);
+
+		// TODO: Repair Strategies
 	}
 
 	private final ScenariosUIProposito proposito;

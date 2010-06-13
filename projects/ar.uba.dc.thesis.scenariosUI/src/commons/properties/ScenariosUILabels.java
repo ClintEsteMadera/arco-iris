@@ -12,6 +12,7 @@ public enum ScenariosUILabels implements EnumProperty {
 	NAME,
 	CONCERN,
 	STIMULUS_SOURCE,
+	STIMULUS,
 	ENVIRONMENT,
 	ARTIFACT,
 	RESPONSE,
