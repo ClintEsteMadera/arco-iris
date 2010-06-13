@@ -3,6 +3,13 @@ package ar.uba.dc.thesis.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
+
+/**
+ * 
+ * TODO La GUI tiene que parsear el .s de estrategias (ver
+ * {@link AdaptationManagerWithScenarios#initAdaptationRepertoire}
+ */
 public enum RepairStrategy {
 
 	QUICK_DIRTY_REDUCE_RESPONSE_TIME("QuickDirtyReduceResponseTime"),

@@ -26,6 +26,8 @@ public class ScenariosManager {
 
 	private final SelfHealingScenarioRepository selfHealingScenarioRepository;
 
+	private int maxPriority;
+
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(ScenariosManager.class);
 
 	/**
@@ -62,7 +64,10 @@ public class ScenariosManager {
 				this.scenariosMap.put(stimulus, scenarioList);
 			}
 			scenarioList.add(currentScenario);
+
+			this.maxPriority = Math.max(currentScenario.getPriority(), this.maxPriority);
 		}
+
 		return scenarios;
 	}
 
@@ -107,6 +112,10 @@ public class ScenariosManager {
 
 	public Collection<SelfHealingScenario> getEnabledScenarios() {
 		return this.selfHealingScenarioRepository.getEnabledScenarios();
+	}
+
+	public int getMaxPriority() {
+		return maxPriority;
 	}
 
 }

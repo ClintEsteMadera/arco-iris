@@ -58,15 +58,14 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private List<SelfHealingScenario> createTestScenarios() {
 		// TODO Add more repair strategies for this one
-		// The following one is still not enough to make the scenario being repared, we need to keep trying ;-)
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario().addRepairStrategy(
 				"VariedReduceResponseTime");
 
-		// SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
-		//
-		// SelfHealingScenario fidelityScenario = createFidelityScenario().addRepairStrategy("ImproveOverallFidelity");
+		SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
 
-		return Arrays.asList(clientResponseTimeScenario/* , serverCostScenario, fidelityScenario */);
+		SelfHealingScenario fidelityScenario = createFidelityScenario().addRepairStrategy("ImproveOverallFidelity");
+
+		return Arrays.asList(clientResponseTimeScenario, serverCostScenario, fidelityScenario);
 	}
 
 	private SelfHealingScenario createClientResponseTimeScenario() {
@@ -98,7 +97,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 				new NumericBinaryRelationalConstraint(Quantifier.AVERAGE, artifact, "load",
 						NumericBinaryOperator.LESS_THAN, MAX_UTIL));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
+		boolean enabled = false;
 		int priority = 2;
 
 		return new SelfHealingScenario(2L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
@@ -116,7 +115,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 				new NumericBinaryRelationalConstraint(Quantifier.AVERAGE, artifact, "fidelity",
 						NumericBinaryOperator.LESS_THAN, THRESHOLD_FIDELITY));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
-		boolean enabled = true;
+		boolean enabled = false;
 		int priority = 3;
 
 		return new SelfHealingScenario(3L, scenarioName, Concern.CONTENT_FIDELITY, stimulusSource, stimulus,
