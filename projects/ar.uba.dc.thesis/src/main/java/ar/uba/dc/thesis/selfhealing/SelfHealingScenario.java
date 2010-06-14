@@ -10,11 +10,11 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.atam.ArchitecturalDecision;
-import ar.uba.dc.thesis.atam.Artifact;
-import ar.uba.dc.thesis.atam.AtamScenario;
-import ar.uba.dc.thesis.atam.Environment;
-import ar.uba.dc.thesis.atam.ResponseMeasure;
+import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.AtamScenario;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
 
 public class SelfHealingScenario extends AtamScenario {
@@ -67,18 +67,31 @@ public class SelfHealingScenario extends AtamScenario {
 		return this;
 	}
 
-	public boolean holdsConsideringAllInstances(final RainbowModelWithScenarios rainbowModelWithScenarios) {
+	public boolean applyFor(Environment environment) {
+		return getEnvironments().contains(Environment.ANY_ENVIRONMENT) || getEnvironments().contains(environment);
+	}
+
+	/**
+	 * Este método es el que normalmente se usa para determinar si un escenario está roto.
+	 * <p>
+	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
+	 * es protected.
+	 */
+	protected boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		/*
 		 * It is not necessary to check the environment at this point because this scenario was already selected for
 		 * being repaired
 		 */
-		return getResponseMeasure().getConstraint().holdsConsideringAllInstances(rainbowModelWithScenarios);
+		return !getResponseMeasure().getConstraint().holdsConsideringAllInstances(rainbowModelWithScenarios);
 	}
 
 	/**
-	 * Tiene en cuenta la aplicacion de la estrategia sobre las properties involucradas
+	 * Tiene en cuenta la aplicacion de la estrategia sobre las properties involucradas.
+	 * <p>
+	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
+	 * es protected.
 	 */
-	public boolean isEAvgBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
+	protected boolean isEAvgBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
 			SortedMap<String, Double> strategyAggregateAttributes) {
 		boolean isBroken = false;
 		if (isThereAnyEnvironmentApplicable(rainbowModelWithScenarios)) {
@@ -91,6 +104,10 @@ public class SelfHealingScenario extends AtamScenario {
 		return isBroken;
 	}
 
+	protected void log(String txt) {
+		// Oracle.instance().writeEnginePanel(m_logger, txt);
+	}
+
 	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean thereIsAnEnvironmentApplicable = false;
 
@@ -99,14 +116,6 @@ public class SelfHealingScenario extends AtamScenario {
 					|| environment.holds4Scoring(rainbowModelWithScenarios);
 		}
 		return thereIsAnEnvironmentApplicable;
-	}
-
-	public boolean applyFor(Environment environment) {
-		return getEnvironments().contains(Environment.ANY_ENVIRONMENT) || getEnvironments().contains(environment);
-	}
-
-	protected void log(String txt) {
-		// Oracle.instance().writeEnginePanel(m_logger, txt);
 	}
 
 }

@@ -1,6 +1,5 @@
-package org.sa.rainbow.adaptation;
+package ar.uba.dc.thesis.selfhealing;
 
-import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public interface ScenarioBrokenDetector {
 

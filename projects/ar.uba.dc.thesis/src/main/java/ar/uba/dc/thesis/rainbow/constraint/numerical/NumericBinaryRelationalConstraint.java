@@ -10,7 +10,7 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 

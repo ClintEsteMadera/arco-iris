@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
-import org.sa.rainbow.AttributeValueTripleWithStimulus;
 import org.sa.rainbow.core.IDisposable;
 import org.sa.rainbow.core.IRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
@@ -30,6 +29,8 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.TypeNamePair;
 import org.sa.rainbow.util.Util;
 import org.sa.rainbow.util.ValuePropertyMappingPair;
+
+import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
 
 /**
  * Coordinates the creation and deletion of, and coordination with, gauges. Communication with the gauges occur across

@@ -2,7 +2,7 @@ package ar.uba.dc.thesis.rainbow.constraint.numerical;
 
 import org.sa.rainbow.util.Util;
 
-import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.Quantifier;

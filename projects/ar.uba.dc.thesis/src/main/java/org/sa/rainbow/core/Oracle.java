@@ -22,18 +22,19 @@ import org.sa.rainbow.monitor.TargetSystem;
 import org.sa.rainbow.monitor.sim.SimulationRunner;
 import org.sa.rainbow.monitor.sim.SimulationRunnerWithScenarios;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
-import org.sa.rainbow.scenario.model.ScenariosManager;
 import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.util.ARainbowLoggerFactory;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
+import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
 import ar.uba.dc.thesis.dao.EnvironmentDao;
 import ar.uba.dc.thesis.dao.TestEnvironmentDao;
 import ar.uba.dc.thesis.dao.TestSelfHealingScenarioDao;
 import ar.uba.dc.thesis.repository.EnvironmentRepository;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
+import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
 
 /**
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
@@ -70,6 +71,8 @@ public class Oracle implements IDisposable {
 	private EnvironmentDao environmentDao;
 
 	private EnvironmentRepository environmentRepository;
+
+	private DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
 
 	// private ILearner m_learner = null;
 
@@ -255,6 +258,14 @@ public class Oracle implements IDisposable {
 			this.environmentRepository = new EnvironmentRepository(environmentDao());
 		}
 		return this.environmentRepository;
+	}
+
+	public DefaultScenarioBrokenDetector defaultScenarioBrokenDetector() {
+		if (this.defaultScenarioBrokenDetector == null) {
+			this.defaultScenarioBrokenDetector = new DefaultScenarioBrokenDetector((RainbowModelWithScenarios) this
+					.rainbowModel());
+		}
+		return this.defaultScenarioBrokenDetector;
 	}
 
 	/*

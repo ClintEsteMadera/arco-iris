@@ -9,12 +9,13 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.sa.rainbow.AttributeValueTripleWithStimulus;
 import org.sa.rainbow.translator.gauges.RegularPatternGauge;
 import org.sa.rainbow.util.AttributeValueTriple;
 import org.sa.rainbow.util.TypeNamePair;
 import org.sa.rainbow.util.Util;
 import org.sa.rainbow.util.ValuePropertyMappingPair;
+
+import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
 
 /**
  * Gauge for estimating end-to-end response time of a server request after being invocated by an stimulus, as

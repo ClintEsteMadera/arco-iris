@@ -1,4 +1,4 @@
-package ar.uba.dc.thesis.atam;
+package ar.uba.dc.thesis.atam.scenario.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package org.sa.rainbow;
+package ar.uba.dc.thesis.selfhealing;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

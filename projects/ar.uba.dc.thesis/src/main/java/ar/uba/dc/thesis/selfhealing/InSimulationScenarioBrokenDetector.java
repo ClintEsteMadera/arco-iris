@@ -1,9 +1,8 @@
-package org.sa.rainbow.adaptation;
+package ar.uba.dc.thesis.selfhealing;
 
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.stitch.core.Strategy;
 
-import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class InSimulationScenarioBrokenDetector implements ScenarioBrokenDetector {
 

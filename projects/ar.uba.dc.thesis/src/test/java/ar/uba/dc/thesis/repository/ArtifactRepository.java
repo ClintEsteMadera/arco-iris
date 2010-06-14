@@ -1,6 +1,6 @@
 package ar.uba.dc.thesis.repository;
 
-import ar.uba.dc.thesis.atam.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 
 public final class ArtifactRepository {
 
