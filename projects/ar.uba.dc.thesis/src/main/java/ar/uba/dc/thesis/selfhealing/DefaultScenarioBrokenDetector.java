@@ -2,7 +2,6 @@ package ar.uba.dc.thesis.selfhealing;
 
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
-
 public class DefaultScenarioBrokenDetector implements ScenarioBrokenDetector {
 
 	private final RainbowModelWithScenarios rainbowModelWithScenarios;
@@ -13,7 +12,7 @@ public class DefaultScenarioBrokenDetector implements ScenarioBrokenDetector {
 	}
 
 	public boolean isBroken(SelfHealingScenario scenario) {
-		return !scenario.isBroken(this.rainbowModelWithScenarios);
+		return scenario.isBroken(this.rainbowModelWithScenarios);
 	}
 
 }
