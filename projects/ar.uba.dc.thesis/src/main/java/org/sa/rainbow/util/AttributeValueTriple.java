@@ -6,7 +6,7 @@ package org.sa.rainbow.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.sa.rainbow.AttributeValueTripleWithStimulus;
+import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
 
 /**
  * A pair of type-name attribute, and a value.

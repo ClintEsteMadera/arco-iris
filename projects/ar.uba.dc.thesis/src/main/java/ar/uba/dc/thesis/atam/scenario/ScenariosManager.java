@@ -1,4 +1,4 @@
-package org.sa.rainbow.scenario.model;
+package ar.uba.dc.thesis.atam.scenario;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,11 +97,10 @@ public class ScenariosManager {
 	public List<SelfHealingScenario> findBrokenScenarios(String stimulus) {
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
-		RainbowModelWithScenarios rainbowModel = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
 			String scenarioStatus = " --> PASSED";
-			if (!scenario.holdsConsideringAllInstances(rainbowModel)) {
+			if (Oracle.instance().defaultScenarioBrokenDetector().isBroken(scenario)) {
 				scenarioStatus = " --> BROKEN";
 				brokenScenarios.add(scenario);
 			}

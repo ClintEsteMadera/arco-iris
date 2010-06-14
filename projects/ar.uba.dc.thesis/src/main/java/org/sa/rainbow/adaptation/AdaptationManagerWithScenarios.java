@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.sa.rainbow.adaptation.executor.Executor;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
@@ -23,7 +24,6 @@ import org.sa.rainbow.health.Beacon;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.UtilityPreferenceDescription.UtilityAttributes;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
-import org.sa.rainbow.scenario.model.ScenariosManager;
 import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.stitch.core.Strategy;
 import org.sa.rainbow.stitch.core.Tactic;
@@ -35,10 +35,14 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.StopWatch;
 import org.sa.rainbow.util.Util;
 
-import ar.uba.dc.thesis.atam.Environment;
+import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.repository.EnvironmentRepository;
 import ar.uba.dc.thesis.repository.RepairStrategy;
+import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
+import ar.uba.dc.thesis.selfhealing.InSimulationScenarioBrokenDetector;
+import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -49,9 +53,9 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	// FIXME This should be extracted to a configuration file!!!
-	private static final int RAINBOW_SOLUTION_WEIGHT = 0;
+	private static final int RAINBOW_SOLUTION_WEIGHT = NumberUtils.INTEGER_ZERO;
 
-	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = 1;
+	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
 
 	public enum Mode {
 		SERIAL, MULTI_PRONE
@@ -66,10 +70,15 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	private static List<SelfHealingScenario> currentBrokenScenarios = Collections.emptyList();
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
+
 	public static final double FAILURE_RATE_THRESHOLD = 0.95;
+
 	public static final double MIN_UTILITY_THRESHOLD = 0.40;
+
 	private static double m_minUtilityThreshold = 0.0;
+
 	public static final long FAILURE_EFFECTIVE_WINDOW = 2000 /* ms */;
+
 	public static final long FAILURE_WINDOW_CHUNK = 1000 /* ms */;
 	/**
 	 * The prefix to be used by the strategy which takes a "leap" by achieving a similar adaptation that would have
@@ -82,17 +91,28 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static final String MULTI_STRATEGY_PREFIX = "Multi-";
 
 	private final Mode m_mode = Mode.SERIAL;
+
 	private RainbowModelWithScenarios m_model = null;
+
 	private boolean m_adaptNeeded = false; // treat as synonymous with constraint being violated
+
 	private boolean m_adaptEnabled = true; // by default, we adapt
+
 	private List<Stitch> m_repertoire = null;
+
 	private SortedMap<String, UtilityFunction> m_utils = null;
+
 	private List<Strategy> m_pendingStrategies = null;
 
 	// track history
 	private String m_historyTrackUtilName = null;
+
 	private Map<String, int[]> m_historyCnt = null;
+
 	private Map<String, Beacon> m_failTimer = null;
+
+	private static DefaultScenarioBrokenDetector defaultScenarioBrokenDetector = Oracle.instance()
+			.defaultScenarioBrokenDetector();
 
 	/**
 	 * Default constructor.
@@ -129,13 +149,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static boolean isConcernStillBroken(String concernString) {
 		try {
 			Concern concern = Concern.valueOf(concernString);
-			RainbowModelWithScenarios rainbowModelWithScenarios = (RainbowModelWithScenarios) Oracle.instance()
-					.rainbowModel();
 			// FIXME asegurarse que sean los mismos escenarios que dispararon la ejecucion de la estrategia?
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
-				if (scenario.getConcern().equals(concern)
-						&& !scenario.holdsConsideringAllInstances(rainbowModelWithScenarios)) {
+				if (scenario.getConcern().equals(concern) && defaultScenarioBrokenDetector.isBroken(scenario)) {
 					result = true;
 				}
 			}
@@ -343,8 +360,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
 
 		// We don't want the "simulated" system utility to be less than the current real one.
-		ScenarioBrokenDetector scenarioBrokenDetector = new DefaultScenarioBrokenDetector(this.m_model);
-		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, scenarioBrokenDetector);
+		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, defaultScenarioBrokenDetector);
 
 		m_logger.info("-=-=-=-=-=-=-=-=-=-= Current System Utility: " + maxScore4Strategy);
 
@@ -375,10 +391,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				double strategyScore4Scenarios = 0;
 				if (scenariosSolutionWeight > 0) {
 					log("Scoring " + currentStrategy.getName() + " with scenarios approach");
-					ScenarioBrokenDetector simulationBrokenDetector = new InSimulationScenarioBrokenDetector(m_model,
-							currentStrategy);
+					ScenarioBrokenDetector inSimulationScenarioBrokenDetector = new InSimulationScenarioBrokenDetector(
+							m_model, currentStrategy);
 					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
-							simulationBrokenDetector);
+							inSimulationScenarioBrokenDetector);
 					log("Scenarios approach score for " + currentStrategy.getName() + ": " + strategyScore4Scenarios);
 				}
 
@@ -427,7 +443,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Set<String> candidateStrategies = new HashSet<String>();
 		for (SelfHealingScenario brokenScenario : brokenScenarios) {
 			List<String> repairStrategies = brokenScenario.getRepairStrategies();
-			// TODO Resolver esto de una manera mas prolija. NO en la GUI pues atamos la solución a que siempre editen usando la GUI.
+			// TODO Resolver esto de una manera mas prolija. NO en la GUI pues atamos la solución a que siempre editen
+			// usando la GUI.
 			if (repairStrategies.isEmpty()) {
 				repairStrategies = RepairStrategy.getAllRepairStrategiesNames();
 			}

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import ar.uba.dc.thesis.atam.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 

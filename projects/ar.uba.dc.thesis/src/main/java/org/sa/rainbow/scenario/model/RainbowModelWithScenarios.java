@@ -23,6 +23,7 @@ import org.sa.rainbow.util.Pair;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
+import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RainbowModelWithScenarios extends RainbowModel {

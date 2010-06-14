@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ar.uba.dc.thesis.atam.ArchitecturalDecision;
-import ar.uba.dc.thesis.atam.Artifact;
-import ar.uba.dc.thesis.atam.Environment;
-import ar.uba.dc.thesis.atam.ResponseMeasure;
+import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;

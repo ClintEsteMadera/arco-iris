@@ -2,7 +2,7 @@ package ar.uba.dc.thesis.repository;
 
 import java.util.Collection;
 
-import ar.uba.dc.thesis.atam.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.dao.EnvironmentDao;
 
 public final class EnvironmentRepository {
