@@ -28,7 +28,10 @@ public enum Quantifier {
 			}
 			Number average = values.isEmpty() ? sum : sum / values.size();
 			boolean holds = constraint.holds(average);
-			Oracle.instance().writeEvaluatorPanel(logger, "Holds for average " + average + "? " + holds + "!!!!");
+			Oracle.instance().writeEvaluatorPanel(
+					logger,
+					"Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
+							+ "!!!!");
 			return holds;
 		}
 	};

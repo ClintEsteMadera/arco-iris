@@ -53,7 +53,8 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		double propertyValue = this.getPropertyValueFrom(rainbowModelWithScenarios);
 		double propertyValueAfterStrategy = propertyValue + concernDiffAfterStrategy;
 
-		Oracle.instance().writeEvaluatorPanel(logger, this.eAvgPropertyName + ": " + propertyValueAfterStrategy);
+		Oracle.instance().writeEvaluatorPanel(logger,
+				this.eAvgPropertyName + " + concernDiffAfterStrategy: " + propertyValueAfterStrategy);
 
 		return this.holds(propertyValueAfterStrategy);
 	}
