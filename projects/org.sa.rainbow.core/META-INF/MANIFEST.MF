@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rainbow Framework Core
+Bundle-SymbolicName: org.sa.rainbow.core;singleton:=true
+Bundle-Version: 1.2.2.qualifier
+Bundle-Vendor: Carnegie Mellon University ABLE Group
+Require-Bundle: org.sa.rainbow.stitch,
+ org.sa.rainbow.common,
+ org.sa.rainbow.deploy,
+ org.acmestudio.acme;resolution:=optional
+Eclipse-LazyStart: false
+Export-Package: org.sa.rainbow.adaptation,
+ org.sa.rainbow.adaptation.executor,
+ org.sa.rainbow.core,
+ org.sa.rainbow.gui,
+ org.sa.rainbow.model,
+ org.sa.rainbow.model.evaluator,
+ org.sa.rainbow.model.manager,
+ org.sa.rainbow.monitor,
+ org.sa.rainbow.monitor.sim,
+ org.sa.rainbow.monitor.sim.cs,
+ org.sa.rainbow.monitor.sim.test,
+ org.sa.rainbow.monitor.sim.znews,
+ org.sa.rainbow.stitch.lib,
+ test.operator,
+ znews0.operator,
+ znews1.operator
+Bundle-ClassPath: .

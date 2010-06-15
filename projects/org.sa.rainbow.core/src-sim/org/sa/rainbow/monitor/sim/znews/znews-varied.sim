@@ -1,0 +1,13 @@
+# use this file as base set of properties
+sim.include = znews/znews.sim
+
+## Scenario:  high client experienced resp time to trigger Varied Strategy
+#- NOTE:  Use with scenario 2b
+rainbow.customize.utility.scenario = scenario 2b
+#- first, prime the expAverage of fidelity level
+sim.0 = 1:ZNewsSys.s0.fidelity:5,2001:ZNewsSys.s0.fidelity:5
+sim.1 = 3001:ZNewsSys.s0.fidelity:5,4001:ZNewsSys.s0.fidelity:5
+sim.2 = 5001:ZNewsSys.s0.fidelity:5,7001:ZNewsSys.s0.fidelity:5
+sim.3 = 10001:ZNewsSys.conn1.bandwidth.down:160,10001:ZNewsSys.conn1.bandwidth.up:160,10001:ZNewsSys.c1.perf.arrival.rate:10,10001:ZNewsSys.s0.perf.service.time:10
+sim.4 = 30000:sim:terminate
+sim.size = 5

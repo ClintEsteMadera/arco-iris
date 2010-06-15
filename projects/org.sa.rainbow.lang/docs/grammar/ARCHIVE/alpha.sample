@@ -1,0 +1,85 @@
+/*
+ * Created March 15, 2006
+ */
+module alpha;
+
+// method calls for the style operators
+import op "org.sa.rainbow.stitch.parser.test.Main";
+import model "CSSystem.acme" {Q as y, A as b};
+
+tactic me (int x1, int y1)
+//@attr 
+//@attr 
+{
+    int x2 = 1, y2;
+    float z;
+
+    condition {
+		// Acme and first-order pred logic syntax included here
+		exists unique g: GatewayT in M.sys.components | true;  // only one gateway in system
+		exists u: UserT in M.sys.components |
+		  (M.declaresType(u, NetMeetingT) &&
+		   (forall c : Component in M.sys.components |
+		     M.connected(u, c) == false
+		  ));
+    }
+    action {
+        {
+            for (int i=0; i < 5; x=0) {
+                ;
+            }
+        } fail {
+            (true) {
+                what();
+                know();
+            }
+        }
+        String x = "s";
+        Hash.Entry e = me;
+        for (String s: strs) {
+            print(s);
+        }
+        set mySet = { select g : GatewayT in M.sys.components | g.isActive(a, b) };
+        if (true)
+            die();
+        else if (false) {
+            live();
+            while (true) {
+                shoot();
+            }
+            kill();
+        } else {
+            limbo();
+            what();
+        }
+    }
+    effect {  // NOTE: these are effects anticipated at tactic design-time...
+		// Acme and first-order pred logic syntax included here
+		exists unique g1,g2 : GatewayT in M.sys.components |
+		  M.connected(u, g);
+    }
+}
+
+tactic me2 () {
+    condition {
+    }
+    action {
+    }
+    effect {
+    }
+}
+
+strategy you (int z) {
+	t0: (#[prob{t0}] true @[2000]) -> Ta(param) {
+		t1: (#[prob{t1}] success @[1000]) -> done;  // Ta's designated effect was achieved
+		t2: (#[prob{t2}] true @[1000]) -> Tb(param1, param2) (false @[10000]) {
+			t2b: (#[prob{t2b}] success @[50]) -> done;
+			t2c: (#[prob{t2c}] true @[50]) -> do[k] t0;  // repeat the branch rooted at t0 no more than k times
+		}
+		t3: (#[prob{t3}] true @[1000]) -> Tc() | done;  // don't care about effect of Tc, just after
+		t4: (#[prob{t4}] default) -> TNULL | done;  // none of the branches at this level matched, invoke null tactic and complete strategy
+	}
+}
+
+strategy you2 () {
+}
