@@ -350,7 +350,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		m_adaptNeeded = true;
 		currentBrokenScenarios = brokenScenarios;
 
-		log("Adaptation triggered, let's begin!");
+		m_logger.info("Adaptation triggered, let's begin!");
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
@@ -379,7 +379,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			}
 
 			for (Strategy currentStrategy : stitch.script.strategies) {
-				log("Evaluating strategy " + currentStrategy.getName());
 				if (!candidateStrategies.contains(currentStrategy.getName())
 						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "Strategy not selected in broken scenarios"
@@ -387,27 +386,28 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					log(currentStrategy.getName() + " does not apply because: " + cause);
 					continue; // don't consider this Strategy
 				}
+				m_logger.info("Evaluating strategy " + currentStrategy.getName() + "...");
 
 				double strategyScore4Scenarios = 0;
 				if (scenariosSolutionWeight > 0) {
-					log("Scoring " + currentStrategy.getName() + " with scenarios approach");
+					m_logger.info("Scoring " + currentStrategy.getName() + " with scenarios approach...");
+
 					ScenarioBrokenDetector inSimulationScenarioBrokenDetector = new InSimulationScenarioBrokenDetector(
 							m_model, currentStrategy);
 					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
 							inSimulationScenarioBrokenDetector);
-					log("Scenarios approach score for " + currentStrategy.getName() + ": " + strategyScore4Scenarios);
+					m_logger.info("Scenarios approach score for strategy " + currentStrategy.getName() + ": "
+							+ strategyScore4Scenarios);
 				}
 
 				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
-					log("Scoring " + currentStrategy.getName() + " with rainbow approach");
+					m_logger.info("Scoring " + currentStrategy.getName() + " with rainbow approach");
 					strategyScore4Rainbow = scoreStrategyByRainbow(currentStrategy, weights4Rainbow);
 				}
 
 				double weightedScore = strategyScore4Scenarios * scenariosSolutionWeight + strategyScore4Rainbow
 						+ rainbowSolutionWeight;
-
-				m_logger.info("Current strategy weightedScore: " + weightedScore);
 
 				if (weightedScore > maxScore4Strategy) {
 					maxScore4Strategy = weightedScore;
@@ -424,7 +424,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			if (_stopWatchForTesting != null)
 				_stopWatchForTesting.stop();
 			if (selectedStrategy != null) {
-				log(">> do strategy: " + selectedStrategy.getName());
+				m_logger.info("Selected strategy: " + selectedStrategy.getName() + "!!!");
 				// strategy args removed...
 				Object[] args = new Object[0];
 				m_pendingStrategies.add(selectedStrategy);
@@ -432,7 +432,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				log("<< Adaptation cycle awaits Executor...");
 			} else {
 				Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
-				log("<< NO applicable strategy, adaptation cycle ended.");
+				m_logger.info("NO applicable strategy, adaptation cycle ended.");
 				m_adaptNeeded = false;
 				m_model.clearConstraintViolated();
 			}
