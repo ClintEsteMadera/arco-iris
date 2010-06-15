@@ -1,0 +1,52 @@
+// $ANTLR 2.7.5 (20050201): zany.g -> ZanyTokenTypes.txt$
+/* [March 12, 2006]
+ *   - Deprecated usage
+ *   - Moved literals back inside Lexer grammar
+ */
+Zany    // output token vocab name
+
+/* Language Keywords */
+IMPORT     = "import"    = 4
+AS         = "as"        = 5
+STRATEGY   = "strategy"  = 6
+TACTIC     = "tactic"    = 7
+CONDITION  = "condition" = 8
+ACTION     = "action"    = 9
+EFFECT     = "effect"    = 10
+FAIL       = "fail"      = 11
+SUCCESS    = "success"   = 12
+DEFAULT    = "default"   = 13
+NULLTACTIC = "TNULL"     = 14
+DO         = "DO"        = 15
+DONE       = "done"      = 16
+
+/* Flow control */
+IF    = "if"    = 21
+ELSE  = "else"  = 22
+FOR   = "for"   = 23
+WHILE = "while" = 24
+
+/* Data types */
+OBJECT    = "object"   = 31
+INT       = "int"      = 32
+FLOAT     = "float"    = 33
+BOOLEAN   = "boolean"  = 34
+STRING    = "string"   = 35
+SET       = "set"      = 36
+SEQUENCE  = "sequence" = 37
+RECORD    = "record"   = 38
+ENUM      = "enum"     = 39
+
+/* First-order predicate constructs */
+FORALL    = "forall" = 41
+EXISTS    = "exists" = 42
+UNIQUE    = "unique" = 43
+SELECT    = "select" = 44
+AND       = "and"    = 45
+OR        = "or"     = 46
+IN        = "in"     = 47
+
+/* Literals */
+TRUE  = "true"  = 51
+FALSE = "false" = 52
+NULL  = "null"  = 53

@@ -1,0 +1,56 @@
+<project name="org.sa.rainbow.lang" default="build.grammar" basedir=".">
+	<property name="dir.src.parser" value="${basedir}"/>
+	<property name="dir.doc.parser" value="${basedir}/../../../../../../docs/grammar"/>
+	<property file="buildGrammar.properties"/>
+	<property name="lib.home" value="${antlr.home}"/>
+	<property name="langPrefix" value="stitch"/>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="${dir.src.parser}" includes="*.java"/>
+			<fileset dir="${dir.src.parser}" includes="*TokenTypes.txt"/>
+			<fileset dir="${dir.doc.parser}" includes="*.html"/>
+		</delete>
+	</target>
+	 
+	<target name="init">
+		<fail unless="lib.home">Plese create a file in this directory named buildGrammar.properties.  Add to it the definition of a antlr.home variable.  Do not check it into subversion.</fail>
+	</target>
+	
+	<target name="build.grammar" depends="clean,init">
+		<antcall target="run.tool">
+			<param name="grammar.file" value="${dir.src.parser}/${langPrefix}L.g"/>
+			<param name="html.options" value=""/>
+	    </antcall>
+		<antcall target="run.tool">
+			<param name="grammar.file" value="${dir.src.parser}/${langPrefix}P.g"/>
+			<param name="html.options" value=""/>
+	    </antcall>
+		<antcall target="run.tool">
+			<param name="grammar.file" value="${dir.src.parser}/${langPrefix}T.g"/>
+			<param name="html.options" value=""/>
+	    </antcall>
+
+		<antcall target="run.tool">
+			<param name="grammar.file" value="${dir.src.parser}/${langPrefix}L.g"/>
+			<param name="html.options" value="-o ${dir.doc.parser} -html"/>
+	    </antcall>
+		<antcall target="run.tool">
+			<param name="grammar.file" value="${dir.src.parser}/${langPrefix}P.g"/>
+			<param name="html.options" value="-o ${dir.doc.parser} -html"/>
+	    </antcall>
+		<antcall target="run.tool">
+			<param name="grammar.file" value="${dir.src.parser}/${langPrefix}T.g"/>
+			<param name="html.options" value="-o ${dir.doc.parser} -html"/>
+	    </antcall>
+	</target>
+
+	<target name="run.tool" depends="init">
+	    <java classname="antlr.Tool" fork="true">
+	      <arg line="${html.options} ${grammar.file}"/>
+	      <classpath>
+	        <pathelement location="${lib.home}"/>
+	      </classpath>
+	    </java>
+    </target>
+</project>
