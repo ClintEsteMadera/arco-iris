@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 
+import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -82,7 +83,11 @@ public class SelfHealingScenario extends AtamScenario {
 		 * It is not necessary to check the environment at this point because this scenario was already selected for
 		 * being repaired
 		 */
-		return !getResponseMeasure().getConstraint().holdsConsideringAllInstances(rainbowModelWithScenarios);
+		boolean isBroken = !getResponseMeasure().getConstraint()
+				.holdsConsideringAllInstances(rainbowModelWithScenarios);
+		log("Scenario " + this.getName() + " broken for quantifier "
+				+ getResponseMeasure().getConstraint().getQuantifier() + "? " + isBroken);
+		return isBroken;
 	}
 
 	/**
@@ -100,12 +105,12 @@ public class SelfHealingScenario extends AtamScenario {
 
 			isBroken = !getResponseMeasure().holds4Scoring(rainbowModelWithScenarios, concernDiffAfterStrategy);
 		}
-		log("Scenario " + this.getName() + " broken? " + isBroken);
+		log("Scenario " + this.getName() + " broken IN SIMULATION? " + isBroken);
 		return isBroken;
 	}
 
 	protected void log(String txt) {
-		// Oracle.instance().writeEnginePanel(m_logger, txt);
+		Oracle.instance().writeEnginePanel(m_logger, txt);
 	}
 
 	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {

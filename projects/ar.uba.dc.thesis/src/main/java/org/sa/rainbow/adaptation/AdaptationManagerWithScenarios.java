@@ -362,7 +362,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		// We don't want the "simulated" system utility to be less than the current real one.
 		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, defaultScenarioBrokenDetector);
 
-		m_logger.info("-=-=-=-=-=-=-=-=-=-= Current System Utility: " + maxScore4Strategy);
+		m_logger.info("Current System Utility: " + maxScore4Strategy);
 
 		Strategy selectedStrategy = null;
 
@@ -407,7 +407,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				double weightedScore = strategyScore4Scenarios * scenariosSolutionWeight + strategyScore4Rainbow
 						+ rainbowSolutionWeight;
 
-				m_logger.info("-=-=-=-=-=-=-=-=-=-= current strategy weightedScore: " + weightedScore);
+				m_logger.info("Current strategy weightedScore: " + weightedScore);
 
 				if (weightedScore > maxScore4Strategy) {
 					maxScore4Strategy = weightedScore;
