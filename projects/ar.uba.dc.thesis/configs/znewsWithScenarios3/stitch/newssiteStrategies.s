@@ -19,11 +19,8 @@ define boolean hiLoad = exists s : T.ServerT in M.components | s.load > M.MAX_UT
 define boolean hiRespTime = exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
 define boolean lowRespTime = exists c : T.ClientT in M.components | c.experRespTime < M.MIN_RESPTIME;
 
-/* define float totalCost = Model.sumOverProperty("cost", servers);
- * define boolean hiCost = totalCost >= M.THRESHOLD_COST;
- */
-define boolean CONCERN_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernStillBroken("SERVER_COST");
-
+define float totalCost = Model.sumOverProperty("cost", servers);
+define boolean hiCost = totalCost >= M.THRESHOLD_COST;
 
 /*TO-DO: agregar logica en el ResponseMeasure para que soporte esto*/
 define float avgFidelity = Model.sumOverProperty("fidelity", servers) / Set.size(servers);
@@ -63,8 +60,8 @@ strategy BruteReduceResponseTime
  * Note:  Tested successfully in simulation, znews-varied
  */
 strategy VariedReduceResponseTime
-[ styleApplies] {
-  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+[ styleApplies && cViolation ] {
+  t0: (true) -> enlistServers(4) @[5000 /*ms*/] {
     t1: (!CONCERN_STILL_BROKEN) -> done;
     t2: (CONCERN_STILL_BROKEN) -> lowerFidelity(2, 100) @[3000 /*ms*/] {
       t2a: (!CONCERN_STILL_BROKEN) -> done;
@@ -80,7 +77,7 @@ strategy VariedReduceResponseTime
  * Note:  Tested successfully in simulation, znews-smarter/2/3
  */
 strategy SmarterReduceResponseTime
-[ styleApplies ] {
+[ styleApplies && cViolation ] {
   define boolean unhappy = numUnhappyFloat/numClients > M.TOLERABLE_PERCENT_UNHAPPY;
 
   t0: (unhappy) -> enlistServers(1) @[500 /*ms*/] {
@@ -102,7 +99,7 @@ strategy SmarterReduceResponseTime
  * Note:  Tested ?? in simulation, znews-?
  */
 strategy SophisticatedReduceResponseTime
-[ styleApplies /*&& cViolation && M.SUPPORT_FRACTION_GRADIENT */] {
+[ styleApplies && cViolation && M.SUPPORT_FRACTION_GRADIENT ] {
   define boolean unhappy1 = numUnhappyFloat/numClients > M.UNHAPPY_GRADIENT_1;  // e.g., 10%
   define boolean unhappy2 = numUnhappyFloat/numClients > M.UNHAPPY_GRADIENT_2;  // e.g., 25%
   define boolean unhappy3 = numUnhappyFloat/numClients > M.UNHAPPY_GRADIENT_3;  // e.g., 50%
@@ -149,7 +146,7 @@ strategy ReduceOverallCost
  * Note:  Tested successfully in simulation, znews-improvefidelity
  */
 strategy ImproveOverallFidelity
-[ styleApplies /*&& lowFi */] {
+[ styleApplies && lowFi ] {
   t0: (true) -> raiseFidelity(2, 100) @[800 /*ms*/] {
     t1: (!CONCERN_STILL_BROKEN) -> done;
     t2: (lowRespTime && CONCERN_STILL_BROKEN) -> do[1] t0;

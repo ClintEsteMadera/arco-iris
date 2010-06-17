@@ -34,6 +34,21 @@ public enum Quantifier {
 							+ "!!!!");
 			return holds;
 		}
+	},
+	SUM {
+		@Override
+		public boolean holds(Constraint constraint, List<Number> values) {
+			double sum = NumberUtils.DOUBLE_ZERO;
+			for (Number number : values) {
+				sum += number.doubleValue();
+			}
+			boolean holds = constraint.holds(sum);
+			Oracle.instance().writeEvaluatorPanel(
+					logger,
+					"Holds for sum " + sum + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
+							+ "!!!!");
+			return holds;
+		}
 	};
 	private final static RainbowLogger logger = RainbowLoggerFactory.logger(Quantifier.class);
 

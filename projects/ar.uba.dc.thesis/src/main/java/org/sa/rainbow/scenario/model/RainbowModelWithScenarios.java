@@ -159,6 +159,8 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		children.addAll(system.getPorts());
 		children.addAll(system.getRoles());
 		for (IAcmeElementInstance<?, ?> child : children) {
+			// FIXME CHEQUEAR QUE EL ARTIFACT ESTE HABILITADO!
+			// AcmeElementInstance.getProperty("isArchEnabled")
 			// seek element with specified type AND specified property
 			if (child.declaresType(name) || child.instantiatesType(name)) {
 				IAcmeProperty childProp = child.getProperty(property);

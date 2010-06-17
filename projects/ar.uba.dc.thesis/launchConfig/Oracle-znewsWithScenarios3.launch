@@ -22,5 +22,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.sa.rainbow.core.Oracle"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ar.uba.dc.thesis"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Drainbow.config=configs -Drainbow.target=znewsWithScenarios2"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Drainbow.config=configs -Drainbow.target=znewsWithScenarios3"/>
 </launchConfiguration>
