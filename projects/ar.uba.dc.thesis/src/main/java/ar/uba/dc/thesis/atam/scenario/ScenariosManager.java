@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -104,7 +105,7 @@ public class ScenariosManager {
 				scenarioStatus = " --> BROKEN";
 				brokenScenarios.add(scenario);
 			}
-			Oracle.instance().writeEvaluatorPanel(logger, scenario.getName() + scenarioStatus + "!");
+			log(Level.INFO, scenario.getName() + scenarioStatus + "!");
 		}
 		return brokenScenarios;
 	}
@@ -117,4 +118,7 @@ public class ScenariosManager {
 		return maxPriority;
 	}
 
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEvaluatorPanel(logger, level, txt, t);
+	}
 }

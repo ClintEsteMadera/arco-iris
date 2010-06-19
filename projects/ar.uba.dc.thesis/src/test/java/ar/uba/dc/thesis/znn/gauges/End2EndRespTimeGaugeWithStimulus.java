@@ -9,6 +9,8 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Level;
+import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.translator.gauges.RegularPatternGauge;
 import org.sa.rainbow.util.AttributeValueTriple;
 import org.sa.rainbow.util.TypeNamePair;
@@ -21,7 +23,6 @@ import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
  * Gauge for estimating end-to-end response time of a server request after being invocated by an stimulus, as
  * experienced by a proxy client.
  * 
- * @author Gabriel Tursi
  */
 public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 
@@ -86,7 +87,7 @@ public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 			m_cumulationMap.put(hostAndStimulus, cumulation); // store updated cumulation
 			dur = cumulation / history.size();
 			if (m_logger.isDebugEnabled())
-				m_logger.debug(id() + ": " + cumulation + ", hist" + Arrays.toString(history.toArray()));
+				log(Level.DEBUG, id() + ": " + cumulation + ", hist" + Arrays.toString(history.toArray()));
 
 			// update connection in model with latency in seconds
 			for (String valueName : valueNames) {
@@ -96,7 +97,7 @@ public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 					// ZNewsSys.c0.experRespTime
 					String pExperRespTime = m_modelDesc.name() + Util.DOT + m_mappings.get(valueName);
 					if (m_logger.isTraceEnabled())
-						m_logger.trace("Updating " + pExperRespTime + " using " + valueName + " = " + dur);
+						log(Level.TRACE, "Updating " + pExperRespTime + " using " + valueName + " = " + dur);
 					eventHandler().reportValue(
 							new AttributeValueTripleWithStimulus(pExperRespTime, valueName, dur, stimulusName));
 				}
@@ -104,4 +105,7 @@ public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 		}
 	}
 
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeSystemPanel(m_logger, level, "[GC] " + txt, t);
+	}
 }

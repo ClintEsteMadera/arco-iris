@@ -20,6 +20,7 @@ import org.acmestudio.acme.element.IAcmeSystem;
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.model.IAcmeModel;
 import org.acmestudio.basicmodel.element.AcmeComponentType;
+import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.IModelManager;
@@ -124,14 +125,19 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 		super.doTerminate();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * This method logs in the Manager Panel with DEBUG level. For a more flexible log method, please see
+	 * {@link #log(Level, String)}
 	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#log(java.lang.String)
 	 */
 	@Override
 	protected void log(String txt) {
-		Oracle.instance().writeManagerPanel(m_logger, txt);
+		this.log(Level.DEBUG, txt);
+	}
+
+	private void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeManagerPanel(m_logger, level, txt, t);
 	}
 
 	/*
@@ -145,10 +151,9 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			// computes instantaneous system utility every model evaluation period
 			double util = ((AdaptationManagerWithScenarios) Oracle.instance().adaptationManager())
 					.computeSystemInstantUtility();
-			StringBuffer umsg = new StringBuffer();
-			umsg.append("IU: ").append(util);
-			Util.dataLogger().debug(umsg.toString());
-			m_logger.debug(umsg.toString());
+			String umsg = "IU: " + util;
+			Util.dataLogger().debug(umsg);
+			log(Level.DEBUG, umsg);
 			m_accruedList.add(util);
 			m_beacon.mark();
 		}
@@ -239,8 +244,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 		Map<String, String> filters = new HashMap<String, String>();
 		Set<IAcmeElementInstance<?, ?>> services = findServices(type, filters);
 
-		// FIXME No loguear esto como INFO
-		m_logger.info(Tool.TAB + Tool.TAB + "Available Services ---> " + services.toString());
+		log(Level.DEBUG, Tool.TAB + Tool.TAB + "Available Services ---> " + services.toString());
 
 		return services.size();
 	}
@@ -296,7 +300,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 				}
 			}
 		}
-		m_logger.trace("FindServices called! returned service set: " + services.toString());
+		log(Level.TRACE, "FindServices called! returned service set: " + services.toString());
 		return services;
 	}
 

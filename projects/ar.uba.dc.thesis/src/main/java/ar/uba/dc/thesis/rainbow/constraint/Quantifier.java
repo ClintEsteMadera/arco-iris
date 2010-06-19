@@ -3,6 +3,7 @@ package ar.uba.dc.thesis.rainbow.constraint;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -16,10 +17,12 @@ public enum Quantifier {
 			for (Number value : values) {
 				holds = holds && constraint.holds(value);
 			}
+			log(Level.INFO, "Holds " + constraint.getFullyQualifiedPropertyName() + " for all instances? " + holds
+					+ "!!!!");
 			return holds;
 		}
 	},
-	AVERAGE {
+	IN_AVERAGE {
 		@Override
 		public boolean holds(Constraint constraint, List<Number> values) {
 			double sum = NumberUtils.DOUBLE_ZERO;
@@ -28,14 +31,12 @@ public enum Quantifier {
 			}
 			Number average = values.isEmpty() ? sum : sum / values.size();
 			boolean holds = constraint.holds(average);
-			Oracle.instance().writeEvaluatorPanel(
-					logger,
-					"Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
-							+ "!!!!");
+			log(Level.INFO, "Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? "
+					+ holds + "!!!!");
 			return holds;
 		}
 	},
-	SUM {
+	IN_SUM {
 		@Override
 		public boolean holds(Constraint constraint, List<Number> values) {
 			double sum = NumberUtils.DOUBLE_ZERO;
@@ -43,14 +44,16 @@ public enum Quantifier {
 				sum += number.doubleValue();
 			}
 			boolean holds = constraint.holds(sum);
-			Oracle.instance().writeEvaluatorPanel(
-					logger,
-					"Holds for sum " + sum + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
-							+ "!!!!");
+			log(Level.INFO, "Holds for sum " + sum + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
+					+ "!!!!");
 			return holds;
 		}
 	};
 	private final static RainbowLogger logger = RainbowLoggerFactory.logger(Quantifier.class);
 
 	public abstract boolean holds(Constraint constraint, List<Number> values);
+
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEvaluatorPanel(logger, level, txt, t);
+	}
 }

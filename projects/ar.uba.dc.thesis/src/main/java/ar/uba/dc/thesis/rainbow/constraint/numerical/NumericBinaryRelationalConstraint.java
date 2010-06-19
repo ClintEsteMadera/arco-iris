@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
@@ -53,8 +54,7 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		double propertyValue = this.getPropertyValueFrom(rainbowModelWithScenarios);
 		double propertyValueAfterStrategy = propertyValue + concernDiffAfterStrategy;
 
-		Oracle.instance().writeEvaluatorPanel(logger,
-				this.eAvgPropertyName + " + concernDiffAfterStrategy: " + propertyValueAfterStrategy);
+		log(Level.INFO, this.eAvgPropertyName + " + concernDiffAfterStrategy: " + propertyValueAfterStrategy);
 
 		return this.holds(propertyValueAfterStrategy);
 	}
@@ -90,5 +90,9 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		Double propertyValue = (Double) rainbowModelWithScenarios.getProperty(this.eAvgPropertyName);
 
 		return propertyValue != null ? propertyValue : NumberUtils.DOUBLE_ZERO;
+	}
+
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEvaluatorPanel(logger, level, txt, t);
 	}
 }

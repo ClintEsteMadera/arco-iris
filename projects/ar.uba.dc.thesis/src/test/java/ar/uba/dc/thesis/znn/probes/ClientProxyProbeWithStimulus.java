@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.Level;
 import org.sa.rainbow.core.IRainbowRunnable;
+import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.health.Beacon;
 import org.sa.rainbow.translator.probes.AbstractRunnableProbe;
 import org.sa.rainbow.util.Util;
@@ -96,17 +98,18 @@ public class ClientProxyProbeWithStimulus extends AbstractRunnableProbe {
 					reportData(rpt);
 					Util.dataLogger().info(rpt);
 					if (m_logger.isTraceEnabled()) {
-						m_logger.trace("Content-type: " + httpConn.getContentType());
-						m_logger.trace("Content-length: " + httpConn.getContentLength());
-						m_logger.trace(baos.toString());
-						m_logger.trace("ClientProxyProbe " + id() + " queues \"" + rpt + "\"");
+						StringBuffer sb = new StringBuffer();
+						sb.append("Content-type: ").append(httpConn.getContentType()).append("\nContent-length: ")
+								.append(httpConn.getContentLength()).append(baos.toString()).append(
+										"\nClientProxyProbe " + id() + " queues \"" + rpt + "\"");
+						log(Level.TRACE, sb.toString());
 					}
 					httpConn.disconnect();
 				} catch (MalformedURLException e) {
-					m_logger.error("Bad URL provided in Probe Spec?", e);
+					log(Level.ERROR, "Bad URL provided in Probe Spec?", e);
 					tallyError();
 				} catch (IOException e) {
-					m_logger.error("HTTP connection error!", e);
+					log(Level.ERROR, "HTTP connection error!", e);
 					tallyError();
 				}
 			}
@@ -116,5 +119,9 @@ public class ClientProxyProbeWithStimulus extends AbstractRunnableProbe {
 				// intentional ignore
 			}
 		}
+	}
+
+	private void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeSystemPanel(m_logger, level, txt, t);
 	}
 }

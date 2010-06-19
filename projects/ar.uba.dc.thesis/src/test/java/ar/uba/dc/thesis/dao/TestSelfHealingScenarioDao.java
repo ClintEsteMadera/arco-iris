@@ -76,7 +76,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint(Quantifier.AVERAGE, artifact, "experRespTime",
+				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "experRespTime",
 						NumericBinaryOperator.LESS_THAN, THRESHOLD_RESPONSE_TIME));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = true;
@@ -94,7 +94,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		Set<Environment> environments = Collections.singleton(environmentDao.getEnvironment("NORMAL"));
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new NumericBinaryRelationalConstraint(Quantifier.AVERAGE, artifact, "load",
+				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "load",
 						NumericBinaryOperator.LESS_THAN, MAX_UTIL));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = false;
@@ -112,7 +112,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Content Fidelity is within threshold",
-				new NumericBinaryRelationalConstraint(Quantifier.AVERAGE, artifact, "fidelity",
+				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "fidelity",
 						NumericBinaryOperator.LESS_THAN, THRESHOLD_FIDELITY));
 		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
 		boolean enabled = false;

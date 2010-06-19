@@ -15,6 +15,7 @@ import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.acme.element.property.IAcmePropertyValue;
 import org.acmestudio.acme.model.command.IAcmeCommand;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
+import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.core.Rainbow;
@@ -42,7 +43,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		this.scenariosManager.loadScenarios();
 		this.isPropertyUpdateAllowed = true;
 		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();
-		Oracle.instance().writeManagerPanel(logger, "Rainbow Model With Scenarios started");
+		log(Level.INFO, "Rainbow Model With Scenarios started");
 	}
 
 	/**
@@ -86,8 +87,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			Object obj = m_acme.findNamedObject(m_acme, property);
 			if (obj instanceof IAcmeProperty) {
 				IAcmeProperty prop = (IAcmeProperty) obj;
-				if (logger.isDebugEnabled())
-					logger.debug("Upd prop: " + prop.getQualifiedName() + " = " + value.toString());
+				log(Level.DEBUG, "Upd prop: " + prop.getQualifiedName() + " = " + value.toString());
 				try {
 					IAcmePropertyValue pVal = StandaloneLanguagePackHelper.defaultLanguageHelper()
 							.propertyValueFromString(value.toString(), null);
@@ -105,7 +105,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 						}
 					}
 				} catch (Exception e) {
-					logger.error("Acme Command execution failed!", e);
+					log(Level.ERROR, "Acme Command execution failed!", e);
 				}
 			}
 		} else {
@@ -141,7 +141,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 			avg = val;
 		}
 		if (logger.isTraceEnabled())
-			logger.trace("(iden,val,alpha,avg) == (" + iden + "," + val + "," + alpha + "," + avg + ")");
+			log(Level.TRACE, "(iden,val,alpha,avg) == (" + iden + "," + val + "," + alpha + "," + avg + ")");
 		// store new/updated exp.avg value
 		m_propExpAvg.put(iden, avg);
 	}
@@ -186,7 +186,11 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	@Override
 	public void markDisruption(double level) {
 		m_moreProp.put(PENALTY_KEY + "Disruption", level);
-		logger.trace("X_X disruption marked: " + level);
+		log(Level.TRACE, "X_X disruption marked: " + level);
+	}
+
+	private void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeManagerPanel(logger, level, txt, t);
 	}
 
 }

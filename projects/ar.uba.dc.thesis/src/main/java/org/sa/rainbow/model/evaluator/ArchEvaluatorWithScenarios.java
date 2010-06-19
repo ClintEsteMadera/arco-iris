@@ -1,5 +1,6 @@
 package org.sa.rainbow.model.evaluator;
 
+import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.AdaptationManager;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
@@ -8,6 +9,8 @@ import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.Model;
+import org.sa.rainbow.util.RainbowLogger;
+import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
 /**
@@ -17,6 +20,8 @@ import org.sa.rainbow.util.Util;
  * and making {@link Oracle} to return the interface instead of the concrete class.
  */
 public class ArchEvaluatorWithScenarios extends AbstractRainbowRunnable {
+
+	protected RainbowLogger m_logger;
 
 	public static final String NAME = "Rainbow Architecture Evaluator With Scenarios";
 
@@ -29,6 +34,7 @@ public class ArchEvaluatorWithScenarios extends AbstractRainbowRunnable {
 	public ArchEvaluatorWithScenarios() {
 		super(NAME);
 
+		m_logger = RainbowLoggerFactory.logger(this.getClass());
 		m_model = Oracle.instance().rainbowModel();
 		String per = Rainbow.property(Rainbow.PROPKEY_MODEL_EVAL_PERIOD);
 		if (per != null) {
@@ -54,7 +60,11 @@ public class ArchEvaluatorWithScenarios extends AbstractRainbowRunnable {
 	 */
 	@Override
 	protected void log(String txt) {
-		Oracle.instance().writeEvaluatorPanel(m_logger, txt);
+		log(Level.INFO, txt);
+	}
+
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEvaluatorPanel(m_logger, level, txt, t);
 	}
 
 	/*
@@ -69,15 +79,15 @@ public class ArchEvaluatorWithScenarios extends AbstractRainbowRunnable {
 			m_model.clearPropertyChanged();
 			// evaluate constraints only if adaptation not already taking place
 			if (!am.adaptationInProgress()) {
-				Oracle.instance().writeEvaluatorPanelSL(m_logger, "Prop changed, eval constraints...");
+				log(Level.DEBUG, "Property changed, evaluating constraints...");
 				// evaluate model for conformance to constraints
 				Util.dataLogger().info(IRainbowHealthProtocol.DATA_CONSTRAINT_BEGIN);
 				m_model.evaluateConstraints();
 				Util.dataLogger().info(IRainbowHealthProtocol.DATA_CONSTRAINT_END);
 				if (m_model.isConstraintViolated()) {
-					Oracle.instance().writeEvaluatorPanel(m_logger, "violated!");
+					log(Level.DEBUG, "violated!");
 				} else {
-					Oracle.instance().writeEvaluatorPanel(m_logger, "pass");
+					log(Level.DEBUG, "pass");
 				}
 			}
 		}
@@ -85,7 +95,7 @@ public class ArchEvaluatorWithScenarios extends AbstractRainbowRunnable {
 		// trigger adaptation if any violation
 		// independent if branch allows for adaptation even if no property update occurred
 		if (m_model.isConstraintViolated() && !am.adaptationInProgress()) {
-			log("Detecting constraint violation!! Triggering adaptation.");
+			log(Level.INFO, "Constraint violation detected!! Triggering adaptation...");
 			am.triggerAdaptation();
 		}
 	}
