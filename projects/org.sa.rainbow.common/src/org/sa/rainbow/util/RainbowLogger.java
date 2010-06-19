@@ -3,14 +3,28 @@
  */
 package org.sa.rainbow.util;
 
+import org.apache.log4j.Level;
+
 
 /**
  * This class defines the methods of the Logger service for Rainbow.
  * This code is copied from Nicholas Sherman's implementation for Acme.
- * 
+ *
  * @author Shang-Wen Cheng (zensoul@cs.cmu.edu)
  */
 public abstract class RainbowLogger {
+
+	/**
+	 * We add this method to be able to specify the log level from the caller.
+	 *
+	 * @param level
+	 *            the desired log level
+	 * @param message
+	 *            the message to log
+	 */
+	public abstract void log(Level level, String message);
+
+	public abstract void log(Level level, String message, Throwable t);
 
     public abstract void trace(Object message);
     public abstract void trace(Object message, Throwable t);
@@ -29,6 +43,14 @@ public abstract class RainbowLogger {
     public abstract void fatal(Object message, Throwable t);
 
     public static class NoOpRainbowLogger extends RainbowLogger {
+
+    	@Override
+    	public void log(Level level, String message) {
+    	}
+
+    	@Override
+    	public void log(Level level, String message, Throwable t) {
+    	}
 
         @Override
         public void trace(Object message, Throwable t) {
@@ -69,7 +91,7 @@ public abstract class RainbowLogger {
         @Override
         public void warn(Object message) {
         }
-        
+
         @Override
         public void error(Object message, Throwable t) {
         }

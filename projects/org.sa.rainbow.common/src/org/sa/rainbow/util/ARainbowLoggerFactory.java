@@ -5,16 +5,17 @@ package org.sa.rainbow.util;
 
 import java.util.WeakHashMap;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
  * A substantive Logger service factory.
- * 
+ *
  * This class handles default values and initialization of the underlying log4j.
  * It stores a, perhaps redundant, instance of the resulting RainbowLogger.
- * 
+ *
  * The Util class stores an instance of the logger instance because all other
  * classes can access it for the logger service.
  *
@@ -70,9 +71,19 @@ public class ARainbowLoggerFactory extends RainbowLoggerFactory {
 
 	class ARainbowLogger extends RainbowLogger {
 		private Logger m_logger = null;
-		
+
 		public ARainbowLogger (Logger logger) {
 			m_logger = logger;
+		}
+
+		@Override
+		public void log(Level level, String message) {
+			m_logger.log(level, message);
+		}
+
+		@Override
+		public void log(Level level, String message, Throwable t) {
+			m_logger.log(level, message, t);
 		}
 
 		@Override
@@ -101,7 +112,7 @@ public class ARainbowLoggerFactory extends RainbowLoggerFactory {
 		public void warn (Object message) {
 			m_logger.warn(message);
 		}
-		
+
 		@Override
 		public void info (Object message, Throwable t) {
 			m_logger.info(message,t);
@@ -140,7 +151,6 @@ public class ARainbowLoggerFactory extends RainbowLoggerFactory {
 		public boolean isTraceEnabled() {
 			return m_logger.isTraceEnabled();
 		}
-
 	}
 
 }
