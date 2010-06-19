@@ -16,6 +16,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.executor.Executor;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
@@ -156,13 +157,13 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					result = true;
 				}
 			}
-			System.out.println("isConcernStillBroken? " + result + " !!!!");
+			doLog(Level.DEBUG, "isConcernStillBroken? " + result + " !!!!");
 			return result;
 		} catch (NullPointerException e) {
-			doLog("Concern not specified");
+			doLog(Level.ERROR, "Concern not specified");
 			throw e;
 		} catch (IllegalArgumentException e) {
-			doLog("Concern " + concernString + " does not exist");
+			doLog(Level.ERROR, "Concern " + concernString + " does not exist");
 			throw e;
 		}
 	}
@@ -201,11 +202,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 */
 	@Override
 	protected void log(String txt) {
-		doLog(txt);
+		doLog(Level.INFO, txt);
 	}
 
-	protected static void doLog(String txt) {
-		// Oracle.instance().writeEnginePanel(m_logger, txt);
+	protected static void doLog(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEnginePanel(m_logger, txt);
 	}
 
 	public boolean adaptationEnabled() {
@@ -238,7 +239,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		if (m_pendingStrategies.contains(strategy)) {
 			m_pendingStrategies.remove(strategy);
 			String s = strategy.getName() + ";" + strategy.outcome();
-			log("*S* outcome: " + s);
+			doLog(Level.TRACE, "*S* outcome: " + s);
 			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY + s);
 			tallyStrategyOutcome(strategy);
 		}
@@ -269,7 +270,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			Object condVal = m_model.getProperty(u.mapping());
 			if (condVal != null && condVal instanceof Double) {
 				if (m_logger.isTraceEnabled())
-					m_logger.trace("Avg value of prop: " + u.mapping() + " == " + condVal);
+					doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + condVal);
 				conds[i] = ((Double) condVal).doubleValue();
 				v += conds[i];
 			}
@@ -350,7 +351,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		m_adaptNeeded = true;
 		currentBrokenScenarios = brokenScenarios;
 
-		m_logger.info("Adaptation triggered, let's begin!");
+		doLog(Level.INFO, "Adaptation triggered, let's begin!");
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
@@ -362,7 +363,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		// We don't want the "simulated" system utility to be less than the current real one.
 		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, defaultScenarioBrokenDetector);
 
-		m_logger.info("Current System Utility: " + maxScore4Strategy);
+		doLog(Level.TRACE, "Current System Utility: " + maxScore4Strategy);
 
 		Strategy selectedStrategy = null;
 
@@ -374,7 +375,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
 				if (m_logger.isDebugEnabled())
-					m_logger.debug("x. skipping " + stitch.script.getName());
+					doLog(Level.DEBUG, "x. skipping " + stitch.script.getName());
 				continue; // skip checking this script
 			}
 
@@ -383,26 +384,26 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "Strategy not selected in broken scenarios"
 							: "Failure rate threshold reached";
-					log(currentStrategy.getName() + " does not apply because: " + cause);
+					doLog(Level.DEBUG, currentStrategy.getName() + " does not apply because: " + cause);
 					continue; // don't consider this Strategy
 				}
-				m_logger.info("Evaluating strategy " + currentStrategy.getName() + "...");
+				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
 
 				double strategyScore4Scenarios = 0;
 				if (scenariosSolutionWeight > 0) {
-					m_logger.info("Scoring " + currentStrategy.getName() + " with scenarios approach...");
+					doLog(Level.TRACE, "Scoring " + currentStrategy.getName() + " with scenarios approach...");
 
 					ScenarioBrokenDetector inSimulationScenarioBrokenDetector = new InSimulationScenarioBrokenDetector(
 							m_model, currentStrategy);
 					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
 							inSimulationScenarioBrokenDetector);
-					m_logger.info("Scenarios approach score for strategy " + currentStrategy.getName() + ": "
+					doLog(Level.TRACE, "Scenarios approach score for strategy " + currentStrategy.getName() + ": "
 							+ strategyScore4Scenarios);
 				}
 
 				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
-					m_logger.info("Scoring " + currentStrategy.getName() + " with rainbow approach");
+					doLog(Level.TRACE, "Scoring " + currentStrategy.getName() + " with Rainbow approach...");
 					strategyScore4Rainbow = scoreStrategyByRainbow(currentStrategy, weights4Rainbow);
 				}
 
@@ -424,15 +425,15 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			if (_stopWatchForTesting != null)
 				_stopWatchForTesting.stop();
 			if (selectedStrategy != null) {
-				m_logger.info("Selected strategy: " + selectedStrategy.getName() + "!!!");
+				doLog(Level.INFO, "Selected strategy: " + selectedStrategy.getName() + "!!!");
 				// strategy args removed...
 				Object[] args = new Object[0];
 				m_pendingStrategies.add(selectedStrategy);
 				((Executor) Oracle.instance().strategyExecutor()).enqueueStrategy(selectedStrategy, args);
-				log("<< Adaptation cycle awaits Executor...");
+				doLog(Level.TRACE, "<< Adaptation cycle awaits Executor...");
 			} else {
 				Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
-				m_logger.info("NO applicable strategy, adaptation cycle ended.");
+				doLog(Level.INFO, "NO applicable strategy, adaptation cycle ended.");
 				m_adaptNeeded = false;
 				m_model.clearConstraintViolated();
 			}
@@ -465,11 +466,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Collection<Environment> environments = this.environmentRepository.getAllNonDefaultEnvironments();
 		for (Environment environment : environments) {
 			if (environment.holds4Scoring(rainbowModelWithScenarios)) {
-				log("Current environment: " + environment.getName());
+				doLog(Level.INFO, "Current environment: " + environment.getName());
 				return environment;
 			}
 		}
-		log("System is currently in default environment");
+		doLog(Level.INFO, "System is currently in default environment");
 		return environmentRepository.getDefaultEnvironment();
 	}
 
@@ -483,7 +484,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				boolean scenarioSatisfied = !scenarioBrokenDetector.isBroken(scenario);
 
 				if (scenarioSatisfied) {
-					log("Scenario " + scenario.getName() + " satisfied");
+					doLog(Level.DEBUG, "Scenario " + scenario.getName() + " satisfied");
 					Double concernWeight4CurrentEnvironment = weights.get(scenario.getConcern());
 					if (concernWeight4CurrentEnvironment == null) {
 						// if there is no weight for the concern then its weight it is assumed to be zero
@@ -491,10 +492,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					}
 					score = score + scenarioWeight(scenario.getPriority(), concernWeight4CurrentEnvironment);
 				} else {
-					log("Scenario " + scenario.getName() + " NOT satisfied");
+					doLog(Level.DEBUG, "Scenario " + scenario.getName() + " NOT satisfied");
 				}
 			} else {
-				log("Scenario " + scenario.getName() + " does not apply for current system environment("
+				doLog(Level.DEBUG, "Scenario " + scenario.getName() + " does not apply for current system environment("
 						+ currentSystemEnvironment.getName() + ")");
 			}
 		}
@@ -527,7 +528,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		accountForStrategyHistory(aggAtt, strategy);
 		String s = strategy.getName() + aggAtt;
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR + s);
-		log("aggAttr: " + s);
+		doLog(Level.DEBUG, "aggAttr: " + s);
 		/*
 		 * compute utility values from attributes that combines values representing current condition, then accumulate
 		 * the weighted utility sum
@@ -551,7 +552,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			items[i] = v;
 			if (condVal != null && condVal instanceof Double) {
 				if (m_logger.isTraceEnabled())
-					m_logger.trace("Avg value of prop: " + u.mapping() + " == " + condVal);
+					doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + condVal);
 				conds[i] = ((Double) condVal).doubleValue();
 				items[i] += conds[i];
 			}
@@ -568,11 +569,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		s = Arrays.toString(items);
 		if (score < m_minUtilityThreshold) {
 			// utility score too low, don't consider for adaptation
-			log("score " + score + " below threshold, discarding: " + s);
+			doLog(Level.TRACE, "score " + score + " below threshold, discarding: " + s);
 			// TODO descartar estrategia, no calcular su score directamente
 		}
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR2 + s);
-		log("aggAtt': " + s);
+		doLog(Level.DEBUG, "aggAtt': " + s);
 		return score;
 	}
 
@@ -598,12 +599,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						// apply attribute vectors to tactics, if available
 						defineAttributes(stitch, Rainbow.instance().preferenceDesc().attributeVectors);
 						m_repertoire.add(stitch);
-						log("Parsed script " + stitch.path);
+						doLog(Level.DEBUG, "Parsed script " + stitch.path);
 					} else {
-						log("Previously known script " + stitch.path);
+						doLog(Level.DEBUG, "Previously known script " + stitch.path);
 					}
 				} catch (IOException e) {
-					m_logger.error("Obtaining file canonical path failed! " + f.getName(), e);
+					doLog(Level.ERROR, "Obtaining file canonical path failed! " + f.getName(), e);
 				}
 			}
 		}
@@ -615,11 +616,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			if (attributes != null) {
 				// found attribute def for tactic, save all key-value pairs
 				if (m_logger.isTraceEnabled())
-					m_logger.trace("Found attributes for tactic " + t.getName() + ", saving pairs...");
+					doLog(Level.TRACE, "Found attributes for tactic " + t.getName() + ", saving pairs...");
 				for (Map.Entry<String, Object> e : attributes.entrySet()) {
 					t.putAttribute(e.getKey(), e.getValue());
 					if (m_logger.isTraceEnabled())
-						m_logger.trace(" - (" + e.getKey() + ", " + e.getValue() + ")");
+						doLog(Level.TRACE, " - (" + e.getKey() + ", " + e.getValue() + ")");
 				}
 			}
 		}
@@ -667,7 +668,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			break;
 		}
 		String str = name + Arrays.toString(stat);
-		log("History: " + str);
+		doLog(Level.TRACE, "History: " + str);
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STAT + str);
 	}
 

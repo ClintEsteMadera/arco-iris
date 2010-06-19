@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 
+import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
@@ -85,7 +86,7 @@ public class SelfHealingScenario extends AtamScenario {
 		 */
 		boolean isBroken = !getResponseMeasure().getConstraint()
 				.holdsConsideringAllInstances(rainbowModelWithScenarios);
-		log("Scenario " + this.getName() + " broken for quantifier "
+		log(Level.INFO, "Scenario " + this.getName() + " broken "
 				+ getResponseMeasure().getConstraint().getQuantifier() + "? " + isBroken);
 		return isBroken;
 	}
@@ -105,12 +106,12 @@ public class SelfHealingScenario extends AtamScenario {
 
 			isBroken = !getResponseMeasure().holds4Scoring(rainbowModelWithScenarios, concernDiffAfterStrategy);
 		}
-		log("Scenario " + this.getName() + " broken IN SIMULATION? " + isBroken);
+		log(Level.INFO, "Scenario " + this.getName() + " broken IN SIMULATION? " + isBroken);
 		return isBroken;
 	}
 
-	protected void log(String txt) {
-		Oracle.instance().writeEnginePanel(m_logger, txt);
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
 	}
 
 	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {

@@ -4,6 +4,7 @@
 package org.sa.rainbow.core;
 
 import org.acmestudio.standalone.environment.StandaloneEnvironment;
+import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.adaptation.executor.Executor;
 import org.sa.rainbow.event.EventTypeFilter;
@@ -284,57 +285,93 @@ public class Oracle implements IDisposable {
 	}
 
 	public void writeManagerPanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_MODEL_MANAGER, text);
-		logger.info(text);
+		this.writeManagerPanel(logger, Level.INFO, text);
+	}
+
+	public void writeManagerPanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_MODEL_MANAGER, logger, level, text, t);
 	}
 
 	public void writeEvaluatorPanelSL(RainbowLogger logger, String text) {
-		if (m_showGui)
+		this.writeEvaluatorPanelSL(logger, Level.INFO, text);
+	}
+
+	public void writeEvaluatorPanelSL(RainbowLogger logger, Level level, String text, Throwable... t) {
+		if (m_showGui) {
 			m_gui.writeTextSL(RainbowGUI.ID_ARCH_EVALUATOR, text);
-		logger.info(text);
+		}
+		if (t != null && t.length > 0) {
+			logger.log(level, text, t[0]);
+		} else {
+			logger.log(level, text);
+		}
 	}
 
 	public void writeEvaluatorPanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_ARCH_EVALUATOR, text);
-		logger.info(text);
+		this.writeEvaluatorPanel(logger, Level.INFO, text);
+	}
+
+	public void writeEvaluatorPanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_ARCH_EVALUATOR, logger, level, text, t);
 	}
 
 	public void writeEnginePanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_ADAPTATION_MANAGER, text);
-		logger.info(text);
+		this.writeEnginePanel(logger, Level.INFO, text);
+	}
+
+	public void writeEnginePanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_ADAPTATION_MANAGER, logger, level, text, t);
 	}
 
 	public void writeExecutorPanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_EXECUTOR, text);
-		logger.info(text);
+		this.writeExecutorPanel(logger, Level.INFO, text);
+	}
+
+	public void writeExecutorPanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_EXECUTOR, logger, level, text, t);
 	}
 
 	public void writeSystemPanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_TARGET_SYSTEM, text);
-		logger.info(text);
+		this.writeSystemPanel(logger, Level.INFO, text);
+	}
+
+	public void writeSystemPanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_TARGET_SYSTEM, logger, level, text, t);
 	}
 
 	public void writeTranslatorPanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_TRANSLATOR, text);
-		logger.info(text);
+		this.writeTranslatorPanel(logger, Level.INFO, text);
+	}
+
+	public void writeTranslatorPanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_TRANSLATOR, logger, level, text, t);
 	}
 
 	public void writeEventPanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_EVENT_BUSES, text);
-		logger.info(text);
+		this.writeEventPanel(logger, Level.INFO, text);
+	}
+
+	public void writeEventPanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_EVENT_BUSES, logger, level, text, t);
 	}
 
 	public void writeOraclePanel(RainbowLogger logger, String text) {
-		if (m_showGui)
-			m_gui.writeText(RainbowGUI.ID_ORACLE_MESSAGE, text);
-		logger.info(text);
+		this.writeOraclePanel(logger, Level.INFO, text);
+	}
+
+	public void writeOraclePanel(RainbowLogger logger, Level level, String text, Throwable... t) {
+		this.writeInPanel(RainbowGUI.ID_ORACLE_MESSAGE, logger, level, text, t);
+	}
+
+	private void writeInPanel(int panelId, RainbowLogger logger, Level level, String text, Throwable... t) {
+		if (m_showGui) {
+			m_gui.writeText(panelId, text);
+		}
+		if (t != null && t.length > 0) {
+			logger.log(level, text, t[0]);
+		} else {
+			logger.log(level, text);
+		}
 	}
 
 	/**

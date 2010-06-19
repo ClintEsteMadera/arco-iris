@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.acmestudio.acme.element.property.IAcmeProperty;
 import org.acmestudio.standalone.resource.StandaloneLanguagePackHelper;
+import org.apache.log4j.Level;
 import org.sa.rainbow.core.IDisposable;
 import org.sa.rainbow.core.IRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
@@ -91,7 +92,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 			}
 		}
 		// wait only a little bit for gauge deletion notifications
-		log("Waiting a little for Gauge Deletion notifications...");
+		log(Level.TRACE, "Waiting a little for Gauge Deletion notifications...");
 		Beacon beacon = new Beacon(3 * IRainbowRunnable.LONG_SLEEP_TIME);
 		beacon.mark();
 		while (m_state != State.ALL_GAUGES_DELETED && !beacon.periodElapsed()) {
@@ -100,7 +101,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 
 		Rainbow.eventService().unlisten(m_eventHandler);
 		m_id2Inst.clear();
-		log("terminated.");
+		log(Level.TRACE, "terminated.");
 
 		// null-out data members
 		beacon = null;
@@ -162,7 +163,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 				// make sure we have a match
 				if (instSpec.gaugeType().equals(gaugeDesc.type()) && instSpec.modelDesc().equals(modelDesc)) {
 					// matched gauge! store ID and add Gauge to created-map
-					log("Gauge instance CREATED ID[" + id + "]");
+					log(Level.DEBUG, "Gauge instance CREATED ID[" + id + "]");
 					instSpec.setID(id);
 					instSpec.setState(GaugeInstanceDescription.State.CREATED);
 					proceed = true;
@@ -191,7 +192,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 				// make sure we have a gauge match
 				if (instSpec.gaugeName().equals(gaugeDesc.name()) && instSpec.modelDesc().equals(modelDesc)) {
 					// matched gauge! mark configured
-					log("Gauge instance CONFIGURED ID[" + id + "]");
+					log(Level.DEBUG, "Gauge instance CONFIGURED ID[" + id + "]");
 					instSpec.setState(GaugeInstanceDescription.State.ALIVE);
 				}
 			}
@@ -212,7 +213,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 				// make sure we have a gauge match
 				if (instSpec.gaugeName().equals(gaugeDesc.name()) && instSpec.modelDesc().equals(modelDesc)) {
 					// matched gauge! mark terminated
-					log("Gauge DELETED ID[" + id + "]");
+					log(Level.DEBUG, "Gauge DELETED ID[" + id + "]");
 					instSpec.setState(GaugeInstanceDescription.State.TERMINATED);
 					remove = true;
 				}
@@ -223,7 +224,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 					m_id2Inst.remove(id);
 					if (m_id2Inst.size() == 0) {
 						m_state = State.ALL_GAUGES_DELETED;
-						log("All Gauges DELETED!");
+						log(Level.DEBUG, "All Gauges DELETED!");
 					}
 				}
 			}
@@ -264,7 +265,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 				// make sure we have a gauge match
 				if (instSpec.gaugeName().equals(gaugeDesc.name()) && instSpec.modelDesc().equals(modelDesc)) {
 					// matched gauge! update rainbow model
-					log("Gauge ID[" + id + "]");
+					log(Level.DEBUG, "Gauge ID[" + id + "]");
 					for (AttributeValueTriple value : values) {
 						this.updateRainbowModelWith(value);
 					}
@@ -281,7 +282,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 			String removeId = null; // avoids nested synchronized block
 			synchronized (instSpec) {
 				if (m_id2Inst.containsKey(instSpec.id()) && instSpec.isAlive() && instSpec.beacon().isExpired()) {
-					m_logger.error("GC: Gauge ID[" + instSpec.id() + "] seems to have died, removing!");
+					log(Level.ERROR, "GC: Gauge ID[" + instSpec.id() + "] seems to have died, removing!");
 					removeId = instSpec.id();
 				}
 			}
@@ -310,7 +311,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 					if (location != null && m_sys.existsDelegateAtLocation(location)) {
 						instSpec.setState(GaugeInstanceDescription.State.CREATING);
 						if (m_logger.isTraceEnabled())
-							m_logger.trace("GC: creating gauge '" + instSpec.gaugeName() + "'");
+							log(Level.TRACE, "GC: creating gauge '" + instSpec.gaugeName() + "'");
 						m_eventHandler.createGauge(location, new TypeNamePair(instSpec.gaugeType(), instSpec
 								.gaugeName()), instSpec.modelDesc(), instSpec.setupParams(), instSpec.mappings());
 					}
@@ -330,7 +331,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 				&& Rainbow.instance().gaugeDesc().instSpec.size() == m_id2Inst.size()) {
 			// mark all gauges created
 			m_state = State.ALL_GAUGES_CREATED;
-			log("All Gauges CREATED!");
+			log(Level.DEBUG, "All Gauges CREATED!");
 		}
 	}
 
@@ -352,7 +353,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 					if (instSpec.id() != null) {
 						instSpec.setState(GaugeInstanceDescription.State.CONFIGURING);
 						if (m_logger.isTraceEnabled())
-							m_logger.trace("GC: configuring gauge '" + instSpec.gaugeName() + "'");
+							log(Level.TRACE, "configuring gauge '" + instSpec.gaugeName() + "'");
 						// retrieve any states of the mapped model properties
 						String modelName = instSpec.modelDesc().name();
 						for (ValuePropertyMappingPair vp : instSpec.mappings()) {
@@ -383,7 +384,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 				&& Rainbow.instance().gaugeDesc().instSpec.size() == m_id2Inst.size()) {
 			// mark all gauges ready
 			m_state = State.ALL_GAUGES_READY;
-			log("All Gauges READY!");
+			log(Level.TRACE, "All Gauges READY!");
 		}
 	}
 
@@ -399,14 +400,11 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 			// Rainbow's usual behavior
 			rainbowModel.updateProperty(value.type(), value.value());
 		}
-		// log info
-		Oracle.instance().writeSystemPanel(m_logger, updMsg);
+		log(Level.INFO, updMsg);
 		Util.dataLogger().info(updMsg);
 	}
 
-	private void log(String msg) {
-		if (m_logger.isInfoEnabled())
-			m_logger.info("[GC] " + msg);
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEnginePanel(m_logger, level, "[GC] " + txt, t);
 	}
-
 }
