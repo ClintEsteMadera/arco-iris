@@ -31,8 +31,8 @@ import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
 import ar.uba.dc.thesis.dao.EnvironmentDao;
+import ar.uba.dc.thesis.dao.FileSelfHealingScenarioDao;
 import ar.uba.dc.thesis.dao.TestEnvironmentDao;
-import ar.uba.dc.thesis.dao.TestSelfHealingScenarioDao;
 import ar.uba.dc.thesis.repository.EnvironmentRepository;
 import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
@@ -248,7 +248,7 @@ public class Oracle implements IDisposable {
 	public ScenariosManager scenariosManager() {
 		if (this.scenariosManager == null) {
 			SelfHealingScenarioRepository scenarioRepository = new SelfHealingScenarioRepository(
-					new TestSelfHealingScenarioDao(environmentDao()));
+					new FileSelfHealingScenarioDao());
 			this.scenariosManager = new ScenariosManager(scenarioRepository);
 		}
 		return this.scenariosManager;

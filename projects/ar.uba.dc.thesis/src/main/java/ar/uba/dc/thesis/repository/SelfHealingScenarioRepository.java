@@ -9,25 +9,11 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class SelfHealingScenarioRepository {
 
-	private final List<SelfHealingScenario> enabledScenarios;
-
-	private final SelfHealingScenarioDao dao;
+	private final List<SelfHealingScenario> enabledScenarios = new ArrayList<SelfHealingScenario>();
 
 	public SelfHealingScenarioRepository(SelfHealingScenarioDao selfHealingScenarioDao) {
 		super();
-		this.dao = selfHealingScenarioDao;
-		this.enabledScenarios = this.selectEnabledScenarios();
-	}
-
-	private List<SelfHealingScenario> selectEnabledScenarios() {
-		List<SelfHealingScenario> enabledScenarios = new ArrayList<SelfHealingScenario>();
-
-		for (SelfHealingScenario scenario : this.dao.getAllScenarios()) {
-			if (scenario.isEnabled()) {
-				enabledScenarios.add(scenario);
-			}
-		}
-		return enabledScenarios;
+		this.selectEnabledScenarios(selfHealingScenarioDao.getAllScenarios());
 	}
 
 	/**
@@ -36,5 +22,14 @@ public class SelfHealingScenarioRepository {
 	 */
 	public Collection<SelfHealingScenario> getEnabledScenarios() {
 		return this.enabledScenarios;
+	}
+
+	private void selectEnabledScenarios(List<SelfHealingScenario> scenarios) {
+		for (SelfHealingScenario scenario : scenarios) {
+			if (scenario.isEnabled()) {
+				this.enabledScenarios.add(scenario);
+			}
+		}
+		return;
 	}
 }
