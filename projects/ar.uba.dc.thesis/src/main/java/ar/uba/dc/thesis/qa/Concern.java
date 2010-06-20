@@ -1,5 +1,8 @@
 package ar.uba.dc.thesis.qa;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("concern")
 public enum Concern {
 
 	RESPONSE_TIME("Response time", QualityAttribute.PERFORMANCE, "uR"),

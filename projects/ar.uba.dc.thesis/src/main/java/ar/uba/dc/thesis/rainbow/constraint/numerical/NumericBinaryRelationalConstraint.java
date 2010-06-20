@@ -15,11 +15,14 @@ import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
 	private static final String SPACE = " ";
 
-	private final RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
+	private static final RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
 
 	private final NumericBinaryOperator binaryOperator;
 

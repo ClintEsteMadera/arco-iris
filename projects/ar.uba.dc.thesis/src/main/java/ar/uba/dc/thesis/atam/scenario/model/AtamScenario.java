@@ -1,15 +1,16 @@
 package ar.uba.dc.thesis.atam.scenario.model;
 
-import java.util.Collection;
 import java.util.Set;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 public abstract class AtamScenario extends ThesisPojo {
 
-	private Long id;
-
+	@XStreamAsAttribute
 	private String name;
 
 	private Concern concern;
@@ -18,6 +19,7 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private String stimulus;
 
+	@XStreamImplicit
 	private Set<Environment> environments;
 
 	private Artifact artifact;
@@ -26,13 +28,13 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private ResponseMeasure responseMeasure;
 
-	private Collection<ArchitecturalDecision> architecturalDecisions;
+	@XStreamImplicit
+	private Set<ArchitecturalDecision> architecturalDecisions;
 
-	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
+	public AtamScenario(String name, Concern concern, String stimulusSource, String stimulus,
 			Set<Environment> environments, Artifact artifact, String response, ResponseMeasure responseMeasure,
-			Collection<ArchitecturalDecision> architecturalDecisions) {
+			Set<ArchitecturalDecision> architecturalDecisions) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.concern = concern;
 		this.stimulusSource = stimulusSource;
@@ -76,16 +78,12 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.responseMeasure;
 	}
 
-	public Collection<ArchitecturalDecision> getArchitecturalDecisions() {
+	public Set<ArchitecturalDecision> getArchitecturalDecisions() {
 		return this.architecturalDecisions;
 	}
 
 	public Set<Environment> getEnvironments() {
 		return this.environments;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	@Override

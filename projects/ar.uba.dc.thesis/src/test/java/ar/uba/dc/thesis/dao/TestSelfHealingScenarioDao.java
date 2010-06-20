@@ -1,7 +1,5 @@
 package ar.uba.dc.thesis.dao;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +14,7 @@ import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalCons
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 import ar.uba.dc.thesis.repository.ArtifactRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.util.Collections;
 
 public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
@@ -59,13 +58,13 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 	private List<SelfHealingScenario> createTestScenarios() {
 		// TODO Add more repair strategies for this one
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario().addRepairStrategy(
-				"VariedReduceResponseTime");
+				"QuickDirtyReduceResponseTime").addRepairStrategy("VariedReduceResponseTime");
 
 		SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
 
 		SelfHealingScenario fidelityScenario = createFidelityScenario().addRepairStrategy("ImproveOverallFidelity");
 
-		return Arrays.asList(clientResponseTimeScenario, serverCostScenario, fidelityScenario);
+		return Collections.createList(clientResponseTimeScenario, serverCostScenario, fidelityScenario);
 	}
 
 	private SelfHealingScenario createClientResponseTimeScenario() {
@@ -73,16 +72,16 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
 		Artifact artifact = ArtifactRepository.getClient();
 		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
-		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
+		Set<Environment> environments = Collections.createSet(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "experRespTime",
 						NumericBinaryOperator.LESS_THAN, THRESHOLD_RESPONSE_TIME));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
+		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
+		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
@@ -91,16 +90,16 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = "Anyone";
 		Artifact artifact = ArtifactRepository.getServer();
 		String stimulus = "ANY";
-		Set<Environment> environments = Collections.singleton(environmentDao.getEnvironment("NORMAL"));
+		Set<Environment> environments = Collections.createSet(environmentDao.getEnvironment("NORMAL"));
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "load",
 						NumericBinaryOperator.LESS_THAN, MAX_UTIL));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
+		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = false;
 		int priority = 2;
 
-		return new SelfHealingScenario(2L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
+		return new SelfHealingScenario(scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
@@ -109,16 +108,16 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
 		Artifact artifact = ArtifactRepository.getServer();
 		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
-		Set<Environment> environments = Collections.singleton(Environment.ANY_ENVIRONMENT);
+		Set<Environment> environments = Collections.createSet(Environment.ANY_ENVIRONMENT);
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Content Fidelity is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "fidelity",
 						NumericBinaryOperator.LESS_THAN, THRESHOLD_FIDELITY));
-		List<ArchitecturalDecision> archDecisions = Collections.emptyList();
+		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = false;
 		int priority = 3;
 
-		return new SelfHealingScenario(3L, scenarioName, Concern.CONTENT_FIDELITY, stimulusSource, stimulus,
-				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
+		return new SelfHealingScenario(scenarioName, Concern.CONTENT_FIDELITY, stimulusSource, stimulus, environments,
+				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 }

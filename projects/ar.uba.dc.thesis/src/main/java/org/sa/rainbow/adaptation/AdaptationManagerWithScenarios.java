@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -68,7 +67,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private final EnvironmentRepository environmentRepository;
 
-	private static List<SelfHealingScenario> currentBrokenScenarios = Collections.emptyList();
+	private static List<SelfHealingScenario> currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 
