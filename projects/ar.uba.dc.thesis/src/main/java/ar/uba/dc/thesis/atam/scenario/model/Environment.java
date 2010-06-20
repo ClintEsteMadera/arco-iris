@@ -2,7 +2,6 @@ package ar.uba.dc.thesis.atam.scenario.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +15,22 @@ import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
+@XStreamAlias("environment")
 public class Environment extends ThesisPojo {
 
+	@XStreamAsAttribute
 	private final String name;
 
 	private final List<? extends Constraint> conditions;
 
 	private final Map<Concern, Double> weights;
 
-	private final HashMap<String, Double> weightsForRainbow;
+	@XStreamOmitField
+	private HashMap<String, Double> weightsForRainbow;
 
 	private final Heuristic heuristic;
 
@@ -79,11 +85,6 @@ public class Environment extends ThesisPojo {
 		this.heuristic = heuristic == null ? DEFAULT_HEURISTIC : heuristic;
 
 		this.validate();
-
-		this.weightsForRainbow = new HashMap<String, Double>(this.weights.size());
-		for (Concern concern : weights.keySet()) {
-			this.weightsForRainbow.put(concern.getRainbowName(), weights.get(concern));
-		}
 	}
 
 	public String getName() {
@@ -99,6 +100,12 @@ public class Environment extends ThesisPojo {
 	}
 
 	public Map<String, Double> getWeightsForRainbow() {
+		if (this.weightsForRainbow == null) {
+			this.weightsForRainbow = new HashMap<String, Double>(this.weights.size());
+			for (Concern concern : weights.keySet()) {
+				this.weightsForRainbow.put(concern.getRainbowName(), weights.get(concern));
+			}
+		}
 		return this.weightsForRainbow;
 	}
 
@@ -178,7 +185,7 @@ public class Environment extends ThesisPojo {
 		for (Concern concern : values) {
 			equallyDistributedWeights.put(concern, aWeight);
 		}
-		return new Environment("ANY", Collections.<Constraint> emptyList(), equallyDistributedWeights);
+		return new Environment("ANY", new ArrayList<Constraint>(), equallyDistributedWeights);
 	}
 
 }

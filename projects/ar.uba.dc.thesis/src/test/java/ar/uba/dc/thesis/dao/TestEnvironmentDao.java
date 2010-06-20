@@ -1,7 +1,7 @@
 package ar.uba.dc.thesis.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +15,7 @@ public class TestEnvironmentDao implements EnvironmentDao {
 
 	private final Collection<Environment> environments = new HashSet<Environment>();
 
-	private static final List<Constraint> EMPTY_CONDITION_LIST = Collections.emptyList();
+	private static final List<Constraint> EMPTY_CONDITION_LIST = new ArrayList<Constraint>(0);
 
 	public TestEnvironmentDao() {
 		this.environments.add(createNormalEnvironment());

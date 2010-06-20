@@ -2,7 +2,6 @@ package ar.uba.dc.thesis.atam.scenario;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class ScenariosManager {
 
 	public List<String> getStimulus(String qualifiedPropertyNAme) {
 		List<String> stimulusPerProperty = this.stimulusByPropertyMap.get(qualifiedPropertyNAme);
-		return stimulusPerProperty == null ? Collections.<String> emptyList() : stimulusPerProperty;
+		return stimulusPerProperty == null ? new ArrayList<String>(0) : stimulusPerProperty;
 	}
 
 	public List<SelfHealingScenario> getScenarios(String stimulus) {

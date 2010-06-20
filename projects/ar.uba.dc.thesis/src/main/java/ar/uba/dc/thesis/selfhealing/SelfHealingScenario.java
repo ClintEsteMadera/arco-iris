@@ -1,7 +1,6 @@
 package ar.uba.dc.thesis.selfhealing;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -19,27 +18,37 @@ import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+@XStreamAlias("selfHealingScenario")
 public class SelfHealingScenario extends AtamScenario {
 
+	@XStreamAsAttribute
 	private boolean enabled;
 
+	@XStreamAsAttribute
 	private int priority;
 
-	private final List<String> repairStrategies = new ArrayList<String>();
+	@XStreamImplicit(itemFieldName = "repairStrategy")
+	private final List<String> repairStrategies;
 
 	private static RainbowLogger m_logger = RainbowLoggerFactory.logger(SelfHealingScenario.class);
 
 	public SelfHealingScenario() {
 		super();
+		this.repairStrategies = new ArrayList<String>();
 	}
 
-	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
+	public SelfHealingScenario(String name, Concern concern, String stimulusSource, String stimulus,
 			Set<Environment> environments, Artifact artifact, String response, ResponseMeasure responseMeasure,
-			Collection<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
-		super(id, name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,
+			Set<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
+		super(name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,
 				architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
+		this.repairStrategies = new ArrayList<String>();
 
 		this.validate();
 	}
