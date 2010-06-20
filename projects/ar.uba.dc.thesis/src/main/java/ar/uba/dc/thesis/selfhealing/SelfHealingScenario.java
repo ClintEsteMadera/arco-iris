@@ -41,10 +41,10 @@ public class SelfHealingScenario extends AtamScenario {
 		this.repairStrategies = new ArrayList<String>();
 	}
 
-	public SelfHealingScenario(String name, Concern concern, String stimulusSource, String stimulus,
+	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
 			Set<Environment> environments, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Set<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
-		super(name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,
+		super(id, name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,
 				architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
