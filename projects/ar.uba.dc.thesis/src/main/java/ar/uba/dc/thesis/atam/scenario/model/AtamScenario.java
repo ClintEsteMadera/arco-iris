@@ -31,10 +31,13 @@ public abstract class AtamScenario extends ThesisPojo {
 	@XStreamImplicit
 	private Set<ArchitecturalDecision> architecturalDecisions;
 
-	public AtamScenario(String name, Concern concern, String stimulusSource, String stimulus,
+	private Long id;
+
+	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
 			Set<Environment> environments, Artifact artifact, String response, ResponseMeasure responseMeasure,
 			Set<ArchitecturalDecision> architecturalDecisions) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.concern = concern;
 		this.stimulusSource = stimulusSource;
@@ -93,5 +96,9 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	public void validate() {
 		// Do nothing
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

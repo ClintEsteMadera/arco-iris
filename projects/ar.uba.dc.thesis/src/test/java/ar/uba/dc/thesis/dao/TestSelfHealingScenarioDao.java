@@ -81,7 +81,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
+		return new SelfHealingScenario(1L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
@@ -99,7 +99,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		boolean enabled = false;
 		int priority = 2;
 
-		return new SelfHealingScenario(scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
+		return new SelfHealingScenario(2L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
@@ -117,7 +117,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		boolean enabled = false;
 		int priority = 3;
 
-		return new SelfHealingScenario(scenarioName, Concern.CONTENT_FIDELITY, stimulusSource, stimulus, environments,
-				artifact, response, responseMeasure, archDecisions, enabled, priority);
+		return new SelfHealingScenario(3L, scenarioName, Concern.CONTENT_FIDELITY, stimulusSource, stimulus,
+				environments, artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 }
