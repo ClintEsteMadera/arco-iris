@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import org.acmestudio.acme.core.type.IAcmeBooleanValue;
 import org.acmestudio.acme.core.type.IAcmeFloatValue;
 import org.acmestudio.acme.core.type.IAcmeIntValue;
 import org.acmestudio.acme.element.IAcmeElementInstance;
@@ -159,19 +160,22 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		children.addAll(system.getPorts());
 		children.addAll(system.getRoles());
 		for (IAcmeElementInstance<?, ?> child : children) {
-			// FIXME CHEQUEAR QUE EL ARTIFACT ESTE HABILITADO!
-			// AcmeElementInstance.getProperty("isArchEnabled")
-			// seek element with specified type AND specified property
-			if (child.declaresType(name) || child.instantiatesType(name)) {
-				IAcmeProperty childProp = child.getProperty(property);
-				if (childProp != null) {
-					if (childProp.getValue() instanceof IAcmeFloatValue) {
-						propertyValues.add(((IAcmeFloatValue) childProp.getValue()).getValue());
-					} else if (childProp.getValue() instanceof IAcmeIntValue) {
-						propertyValues.add(((IAcmeIntValue) childProp.getValue()).getValue());
-					} else {
-						throw new RuntimeException("The type " + childProp.getValue().getClass().getName()
-								+ " is not currently supported");
+			IAcmeProperty isArchEnabled = child.getProperty("isArchEnabled");
+			boolean artifactEnabled = isArchEnabled == null
+					|| ((IAcmeBooleanValue) isArchEnabled.getValue()).getValue();
+			if (artifactEnabled) {
+				// seek element with specified type AND specified property
+				if (child.declaresType(name) || child.instantiatesType(name)) {
+					IAcmeProperty childProp = child.getProperty(property);
+					if (childProp != null) {
+						if (childProp.getValue() instanceof IAcmeFloatValue) {
+							propertyValues.add(((IAcmeFloatValue) childProp.getValue()).getValue());
+						} else if (childProp.getValue() instanceof IAcmeIntValue) {
+							propertyValues.add(((IAcmeIntValue) childProp.getValue()).getValue());
+						} else {
+							throw new RuntimeException("The type " + childProp.getValue().getClass().getName()
+									+ " is not currently supported");
+						}
 					}
 				}
 			}
