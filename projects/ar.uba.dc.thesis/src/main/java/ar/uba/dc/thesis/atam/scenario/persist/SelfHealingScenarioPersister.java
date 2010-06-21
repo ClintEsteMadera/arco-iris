@@ -7,6 +7,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import ar.uba.dc.thesis.dao.SelfHealingScenarioDao;
+import ar.uba.dc.thesis.dao.TestEnvironmentDao;
+import ar.uba.dc.thesis.dao.TestSelfHealingScenarioDao;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 
@@ -23,6 +27,25 @@ public class SelfHealingScenarioPersister {
 		this.initXStream();
 	}
 
+	public SelfHealingConfiguration readFromFile(String scenariosInXmlFullPath) {
+		try {
+			forceClassLoading();
+
+			String scenariosInXml = FileUtils.readFileToString(new File(scenariosInXmlFullPath), CHARSET);
+			SelfHealingConfiguration configReadFromFile = (SelfHealingConfiguration) this.xstream
+					.fromXML(scenariosInXml);
+			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
+
+			return configReadFromFile;
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
+		} catch (XStreamException xstreamException) {
+			logger.error("Error while unmarshaling scenarios");
+			throw xstreamException;
+
+		}
+	}
+
 	public void saveToFile(SelfHealingConfiguration selfHealingConfig, String fileFullPath) {
 		String xml = this.xstream.toXML(selfHealingConfig);
 		try {
@@ -33,27 +56,16 @@ public class SelfHealingScenarioPersister {
 		}
 	}
 
-	public SelfHealingConfiguration readFromFile(String scenariosInXmlFullPath) {
-		try {
-			String scenariosInXml = FileUtils.readFileToString(new File(scenariosInXmlFullPath), CHARSET);
-			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
-
-			return (SelfHealingConfiguration) this.xstream.fromXML(scenariosInXml);
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
-		} catch (XStreamException xstreamException) {
-			logger.error("Error while unmarshaling scenarios");
-			throw xstreamException;
-
-		}
-	}
-
 	private void initXStream() {
 		this.xstream = new XStream();
 		this.xstream.autodetectAnnotations(true);
-		// this.xstream.aliasPackage("", "ar.uba.dc.thesis.atam.scenario.model");
-		// this.xstream.aliasPackage("", "ar.uba.dc.thesis.atam.scenario.persist");
-		// this.xstream.aliasPackage("", "ar.uba.dc.thesis.selfhealing");
-		// this.xstream.aliasPackage("", "ar.uba.dc.thesis.qa");
+	}
+
+	private void forceClassLoading() {
+		SelfHealingScenarioDao dao = new TestSelfHealingScenarioDao(new TestEnvironmentDao());
+		SelfHealingConfiguration configToMarshal = new SelfHealingConfiguration(dao.getAllScenarios());
+
+		this.saveToFile(configToMarshal, "C:\\tmp.xml");
+
 	}
 }
