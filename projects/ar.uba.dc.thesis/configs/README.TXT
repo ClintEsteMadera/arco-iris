@@ -12,3 +12,8 @@ znewsWithScenarios3:
 	2 escenarios con 1 estrategia cada, al comienzo ambos escenarios se satisfacen, luego de unos segundos se rompe el escenario de Response Time,
 	este se arregla con la estrategia VariedReduceResponseTime, que enlista 4 servidores, esto hace que se rompa el escenario de Server Cost,
 	la adaptacion lo arregla y queda el escenario de Response Time roto definitivamente.
+
+znewsWithScenarios4:
+	2 escenarios, el escenario de response time tiene 2 estrategias asociadas mientras que el de server cost ninguna, la estrategia
+	ExpensiveReduceResponseTime repara el escenario pero rompe el de server cost, mientras que BruteReduceResponseTime lo repara
+	sin romper el de server cost.
