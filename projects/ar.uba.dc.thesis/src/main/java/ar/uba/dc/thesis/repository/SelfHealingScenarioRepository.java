@@ -3,6 +3,7 @@ package ar.uba.dc.thesis.repository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import ar.uba.dc.thesis.dao.SelfHealingScenarioDao;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -24,7 +25,7 @@ public class SelfHealingScenarioRepository {
 		return this.enabledScenarios;
 	}
 
-	private void selectEnabledScenarios(List<SelfHealingScenario> scenarios) {
+	private void selectEnabledScenarios(Set<SelfHealingScenario> scenarios) {
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.isEnabled()) {
 				this.enabledScenarios.add(scenario);

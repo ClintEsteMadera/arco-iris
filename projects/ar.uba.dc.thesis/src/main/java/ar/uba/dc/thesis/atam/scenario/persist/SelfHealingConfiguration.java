@@ -1,7 +1,7 @@
 package ar.uba.dc.thesis.atam.scenario.persist;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -13,20 +13,20 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class SelfHealingConfiguration extends ThesisPojo {
 
 	@XStreamImplicit
-	private final List<SelfHealingScenario> scenarios;
+	private final Set<SelfHealingScenario> scenarios;
 
 	public SelfHealingConfiguration() {
-		this(new ArrayList<SelfHealingScenario>());
+		this(new HashSet<SelfHealingScenario>());
 	}
 
-	public SelfHealingConfiguration(List<SelfHealingScenario> scenarios) {
+	public SelfHealingConfiguration(Set<SelfHealingScenario> scenarios) {
 		super();
 		this.scenarios = scenarios;
 
 		this.validate();
 	}
 
-	public List<SelfHealingScenario> getScenarios() {
+	public Set<SelfHealingScenario> getScenarios() {
 		return scenarios;
 	}
 
