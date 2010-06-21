@@ -37,7 +37,7 @@ public class SelfHealingScenarioPersister {
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
 		} catch (XStreamException xstreamException) {
-			logger.error("Error while unmarshaling scenarios");
+			logger.error("Error while unmarshaling scenarios", xstreamException);
 			throw xstreamException;
 
 		}
