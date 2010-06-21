@@ -1,0 +1,45 @@
+<selfHealingConfiguration>
+  <selfHealingScenario name="Client Experienced Response Time Scenario" enabled="true" priority="1">
+    <concern>RESPONSE_TIME</concern>
+    <stimulusSource>Any Client requesting news content</stimulusSource>
+    <stimulus>GetNewsContentClientStimulus</stimulus>
+    <environments>
+      <environment name="ANY">
+        <conditions/>
+        <weights>
+          <entry>
+            <concern>SERVER_COST</concern>
+            <double>0.3333333333333333</double>
+          </entry>
+          <entry>
+            <concern>CONTENT_FIDELITY</concern>
+            <double>0.3333333333333333</double>
+          </entry>
+          <entry>
+            <concern>RESPONSE_TIME</concern>
+            <double>0.3333333333333333</double>
+          </entry>
+        </weights>
+        <heuristic>MOST</heuristic>
+        <history/>
+      </environment>
+    </environments>
+    <artifact name="ClientT" systemName="ZNewsSys"/>
+    <response>Requested News Content</response>
+    <responseMeasure>
+      <description>Experienced response time is within threshold</description>
+      <constraint class="numericBinaryRelationalConstraint">
+        <artifact reference="../../../artifact"/>
+        <property>experRespTime</property>
+        <quantifier>IN_AVERAGE</quantifier>
+        <binaryOperator>LESS_THAN</binaryOperator>
+        <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
+        <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
+      </constraint>
+    </responseMeasure>
+    <architecturalDecisions/>
+    <id>1</id>
+    <repairStrategy>VariedReduceResponseTime</repairStrategy>
+    <repairStrategy>BruteReduceResponseTime</repairStrategy>
+  </selfHealingScenario>
+</selfHealingConfiguration>
