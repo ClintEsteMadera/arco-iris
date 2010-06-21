@@ -39,7 +39,6 @@
     </responseMeasure>
     <architecturalDecisions/>
     <id>1</id>
-    <repairStrategy>QuickDirtyReduceResponseTime</repairStrategy>
     <repairStrategy>VariedReduceResponseTime</repairStrategy>
   </selfHealingScenario>
 </selfHealingConfiguration>
