@@ -25,6 +25,24 @@ public class SelfHealingScenarioPersister {
 		this.initXStream();
 	}
 
+	public SelfHealingConfiguration readFromFile(String scenariosInXmlFullPath) {
+		try {
+			logger.info("Loading Scenarios from " + scenariosInXmlFullPath + "...");
+			String scenariosInXml = FileUtils.readFileToString(new File(scenariosInXmlFullPath), CHARSET);
+			SelfHealingConfiguration scenariosLoadedFromXML = (SelfHealingConfiguration) this.xstream
+					.fromXML(scenariosInXml);
+			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
+
+			return scenariosLoadedFromXML;
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
+		} catch (XStreamException xstreamException) {
+			logger.error("Error while unmarshaling scenarios");
+			throw xstreamException;
+
+		}
+	}
+
 	public void saveToFile(SelfHealingConfiguration selfHealingConfig, String fileFullPath) {
 		String xml = this.xstream.toXML(selfHealingConfig);
 		try {
@@ -35,34 +53,10 @@ public class SelfHealingScenarioPersister {
 		}
 	}
 
-	public SelfHealingConfiguration readFromFile(String scenariosInXmlFullPath) {
-		try {
-			logger.info("Loading Scenarios from " + scenariosInXmlFullPath + "...");
-			String scenariosInXml = FileUtils.readFileToString(new File(scenariosInXmlFullPath), CHARSET);
-			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
-			return (SelfHealingConfiguration) this.xstream.fromXML(scenariosInXml);
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
-		} catch (XStreamException xstreamException) {
-			logger.error("Error while unmarshaling scenarios");
-			throw xstreamException;
-
-		}
-	}
-
 	private void initXStream() {
 		this.xstream = new XStream();
 		this.xstream.autodetectAnnotations(true);
-		addAlias(SelfHealingConfiguration.class);
-		addAlias(NumericBinaryRelationalConstraint.class);
-	}
-
-	private void addAlias(Class<?> aClass) {
-		this.xstream.alias(classToAlias(aClass), aClass);
-	}
-
-	private String classToAlias(Class<?> aClass) {
-		String simpleName = aClass.getSimpleName();
-		return simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1);
+		this.xstream.alias("selfHealingConfiguration", SelfHealingConfiguration.class);
+		this.xstream.alias("numericBinaryRelationalConstraint", NumericBinaryRelationalConstraint.class);
 	}
 }
