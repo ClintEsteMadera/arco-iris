@@ -95,10 +95,13 @@ public class ScenariosManager {
 	}
 
 	public List<SelfHealingScenario> findBrokenScenarios(String stimulus) {
+		log(Level.INFO, "Finding broken scenarios...");
+
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
 		List<SelfHealingScenario> scenariosWithStimulus = this.getScenarios(stimulus);
 
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
+			log(Level.INFO, "Is scenario " + scenario.getName() + " broken?");
 			String scenarioStatus = " --> PASSED";
 			if (Oracle.instance().defaultScenarioBrokenDetector().isBroken(scenario)) {
 				scenarioStatus = " --> BROKEN";
@@ -106,6 +109,7 @@ public class ScenariosManager {
 			}
 			log(Level.INFO, scenario.getName() + scenarioStatus + "!");
 		}
+		log(Level.INFO, "END Finding broken scenarios!");
 		return brokenScenarios;
 	}
 

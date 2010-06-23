@@ -33,12 +33,12 @@
         <property>cost</property>
         <quantifier>IN_SUM</quantifier>
         <binaryOperator>LESS_THAN</binaryOperator>
-        <constantToCompareThePropertyWith class="int">4</constantToCompareThePropertyWith>
+        <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
         <eAvgPropertyName>[EAvg]ServerT.cost</eAvgPropertyName>
       </constraint>
     </responseMeasure>
     <architecturalDecisions/>
-    <id>2</id>
+    <id>1</id>
     <repairStrategy>ReduceOverallCost</repairStrategy>
   </selfHealingScenario>
   <selfHealingScenario name="Client Experienced Response Time Scenario" enabled="true" priority="1">

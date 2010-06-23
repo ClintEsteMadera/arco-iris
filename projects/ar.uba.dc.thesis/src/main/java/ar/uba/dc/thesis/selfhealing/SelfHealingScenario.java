@@ -95,7 +95,7 @@ public class SelfHealingScenario extends AtamScenario {
 		 */
 		boolean isBroken = !getResponseMeasure().getConstraint()
 				.holdsConsideringAllInstances(rainbowModelWithScenarios);
-		log(Level.INFO, "Scenario " + this.getName() + " broken "
+		log(Level.DEBUG, "Scenario " + this.getName() + " broken "
 				+ getResponseMeasure().getConstraint().getQuantifier() + "? " + isBroken);
 		return isBroken;
 	}

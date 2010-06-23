@@ -237,8 +237,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public void markStrategyExecuted(Strategy strategy) {
 		if (m_pendingStrategies.contains(strategy)) {
 			m_pendingStrategies.remove(strategy);
+			doLog(Level.TRACE, "Strategy " + strategy.getName() + " outcome: " + strategy.outcome());
 			String s = strategy.getName() + ";" + strategy.outcome();
-			doLog(Level.TRACE, "*S* outcome: " + s);
 			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY + s);
 			tallyStrategyOutcome(strategy);
 		}
@@ -360,6 +360,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
 
 		// We don't want the "simulated" system utility to be less than the current real one.
+		doLog(Level.TRACE, "Computing Current System Utility...");
 		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, defaultScenarioBrokenDetector);
 
 		doLog(Level.TRACE, "Current System Utility: " + maxScore4Strategy);
@@ -381,9 +382,9 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			for (Strategy currentStrategy : stitch.script.strategies) {
 				if (!candidateStrategies.contains(currentStrategy.getName())
 						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
-					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "Strategy not selected in broken scenarios"
-							: "Failure rate threshold reached";
-					doLog(Level.DEBUG, currentStrategy.getName() + " does not apply because: " + cause);
+					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "not selected in broken scenarios"
+							: "failure rate threshold reached";
+					doLog(Level.DEBUG, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
 					continue; // don't consider this Strategy
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
