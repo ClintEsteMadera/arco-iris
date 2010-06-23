@@ -60,7 +60,7 @@ strategy BruteReduceResponseTime
  * Note:  Tested successfully in simulation, znews-varied
  */
 strategy VariedReduceResponseTime
-[ styleApplies && cViolation ] {
+[ styleApplies ] {
   t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
     t1: (!CONCERN_STILL_BROKEN) -> done;
     t2: (CONCERN_STILL_BROKEN) -> lowerFidelity(2, 100) @[3000 /*ms*/] {
@@ -77,7 +77,7 @@ strategy VariedReduceResponseTime
  * Note:  Tested successfully in simulation, znews-smarter/2/3
  */
 strategy SmarterReduceResponseTime
-[ styleApplies && cViolation ] {
+[ styleApplies ] {
   define boolean unhappy = numUnhappyFloat/numClients > M.TOLERABLE_PERCENT_UNHAPPY;
 
   t0: (unhappy) -> enlistServers(1) @[500 /*ms*/] {
@@ -146,7 +146,7 @@ strategy ReduceOverallCost
  * Note:  Tested successfully in simulation, znews-improvefidelity
  */
 strategy ImproveOverallFidelity
-[ styleApplies && lowFi ] {
+[ styleApplies ] {
   t0: (true) -> raiseFidelity(2, 100) @[800 /*ms*/] {
     t1: (!CONCERN_STILL_BROKEN) -> done;
     t2: (lowRespTime && CONCERN_STILL_BROKEN) -> do[1] t0;

@@ -59,6 +59,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	 */
 	public void updateProperty(String type, Object value, String stimulus) {
 		this.updateProperty(type, value);
+		log(Level.INFO, "Updated property because of stimulus: " + stimulus);
 		this.isPropertyUpdateAllowed = false;
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
 				.adaptationManager();
