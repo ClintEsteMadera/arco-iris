@@ -33,17 +33,17 @@ public enum CommonLabels implements EnumProperty {
 	EMPTY,
 	ACEPTAR,
 	CANCELAR,
-	CERRAR,
-	EDITAR,
-	VER,
+	CLOSE,
+	EDIT,
+	VIEW,
 	ACTIVAR,
 	ANULAR,
 	ELIMINAR,
-	ALTA,
+	CREATION,
 	BUSCAR,
 	SELECCIONAR,
 	NINGUNO,
-	GUARDAR,
+	SAVE,
 	LIMPIAR_FILTROS,
 	CODIGO,
 	DATOS_BASICOS,
@@ -51,7 +51,7 @@ public enum CommonLabels implements EnumProperty {
 	DATOS_NOVASCALE,
 	DENOMINACION,
 	DENOMINACION_ABREVIADA,
-	DESCRIPCION,
+	DESCRIPTION,
 	DESDE,
 	ESTADO,
 	FECHA,
@@ -66,7 +66,7 @@ public enum CommonLabels implements EnumProperty {
 	PORCENTAJE_SIMBOLO,
 	EJERCICIO,
 
-	ATENCION;
+	ATENTION;
 
 	@Override
 	public String toString() {

@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: SimpleComposite.java,v 1.9 2007/12/05 19:22:27 cvschioc Exp $
- */
-
 package commons.gui.widget.composite;
 
 import org.eclipse.swt.SWT;
@@ -27,9 +11,9 @@ import sba.common.properties.FakeEnumProperty;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.factory.LabelFactory;
 
-
 /**
  * Modela un composite básico.
+ * 
  * @author Jonathan Chiocchio
  * @version $Revision: 1.9 $ $Date: 2007/12/05 19:22:27 $
  */
@@ -51,7 +35,7 @@ public class SimpleComposite extends Composite {
 		this.columnsToSpan = columnsToSpan;
 		this.applyLayout();
 	}
-	
+
 	/**
 	 * Habilita todos los controles que tienen como padre a éste Composite.
 	 */
@@ -63,13 +47,13 @@ public class SimpleComposite extends Composite {
 		}
 		super.setEnabled(enabled);
 	}
-	
+
 	/**
 	 * Provee un layout por default, sobreescribir este método si se desea otro layout.
 	 */
 	protected void applyLayout() {
 		DefaultLayoutFactory.setDefaultGridLayout(this, getNumColumns());
-		GridData gridData =	(GridData)this.getLayoutData();
+		GridData gridData = (GridData) this.getLayoutData();
 		gridData.horizontalSpan = columnsToSpan;
 		GridLayout layout = (GridLayout) this.getLayout();
 		layout.marginLeft = 0;
@@ -77,10 +61,10 @@ public class SimpleComposite extends Composite {
 		layout.marginHeight = 0;
 	}
 
-	protected int getNumColumns(){
+	protected int getNumColumns() {
 		return numColumns;
 	}
-	
+
 	/**
 	 * Método Helper de conveniencia para las subclases.
 	 */
@@ -89,12 +73,12 @@ public class SimpleComposite extends Composite {
 	}
 
 	private static final int DEFAULT_COLUMN_NUMBER = 2;
-	
+
 	private static final int DEFAULT_COLUMN_SPAN = 1;
-	
+
 	protected boolean readOnly;
 
 	private final int numColumns;
-	
+
 	private final int columnsToSpan;
 }

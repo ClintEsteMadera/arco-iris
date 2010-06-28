@@ -1,36 +1,18 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: EmesProposito.java,v 1.18 2008/04/25 12:52:25 cvspasto Exp $
- */
-
-package commons.gui.util.proposito;
+package scenariosui.gui.util.purpose;
 
 import sba.common.properties.EnumProperty;
 
+import commons.gui.util.purpose.Purpose;
 import commons.properties.CommonLabels;
 
 /**
- * Especifica los distintos propósitos de apertura de un diálogo.
- *
- * @author Jonathan Chiocchio
- * @version $Revision: 1.18 $ $Date: 2008/04/25 12:52:25 $
+ * Specifies the different kinds of purposes when opening a dialog
  */
-public enum ScenariosUIProposito implements Proposito {
+public enum ScenariosUIPurpose implements Purpose {
 
-	ALTA("Alta", false, CommonLabels.ALTA) {
+	CREATION("Create", false, CommonLabels.CREATION) {
 		@Override
-		public boolean esAlta() {
+		public boolean isCreation() {
 			return true;
 		}
 
@@ -45,19 +27,24 @@ public enum ScenariosUIProposito implements Proposito {
 		}
 	},
 
-	EDICION("Edición", false, CommonLabels.EDITAR) {
+	EDIT("Edit", false, CommonLabels.EDIT) {
 		@Override
-		public boolean esEdicion() {
+		public boolean isEdition() {
 			return true;
 		}
 
 		@Override
 		public EnumProperty getAcceptButtonText() {
-			return CommonLabels.GUARDAR;
+			return CommonLabels.SAVE;
 		}
 	},
 
-	VER("Ver", true, CommonLabels.VER) {
+	VIEW("View", true, CommonLabels.VIEW) {
+		@Override
+		public boolean isView() {
+			return true;
+		}
+
 		@Override
 		public EnumProperty getAcceptButtonText() {
 			return null;
@@ -65,7 +52,7 @@ public enum ScenariosUIProposito implements Proposito {
 
 		@Override
 		public EnumProperty getCancelButtonText() {
-			return CommonLabels.CERRAR;
+			return CommonLabels.CLOSE;
 		}
 	},
 
@@ -76,13 +63,13 @@ public enum ScenariosUIProposito implements Proposito {
 		}
 	};
 
-	private ScenariosUIProposito(String descripcion, boolean readOnly, EnumProperty textForLauncherButton) {
+	private ScenariosUIPurpose(String descripcion, boolean readOnly, EnumProperty textForLauncherButton) {
 		this.descripcion = descripcion;
 		this.readOnly = readOnly;
 		this.textForLauncherButton = textForLauncherButton;
 	}
 
-	public boolean esReadOnly() {
+	public boolean isReadOnly() {
 		return this.readOnly;
 	}
 
@@ -98,14 +85,21 @@ public enum ScenariosUIProposito implements Proposito {
 	/**
 	 * Por defecto, los díalogos no son de "Alta"
 	 */
-	public boolean esAlta() {
+	public boolean isCreation() {
 		return false;
 	}
 
 	/**
 	 * Por defecto, los díalogos no son de "Edición"
 	 */
-	public boolean esEdicion() {
+	public boolean isEdition() {
+		return false;
+	}
+
+	/**
+	 * Por defecto, los díalogos no son de "View"
+	 */
+	public boolean isView() {
 		return false;
 	}
 
@@ -117,16 +111,16 @@ public enum ScenariosUIProposito implements Proposito {
 	}
 
 	/**
-	 * Por defecto, el texto del botón "Aceptar" en un diálogo que tenga este propósito, será <b>el
-	 * mismo</b> que el texto del botón utilizado para abrir dicho diálogo.
+	 * Por defecto, el texto del botón "Aceptar" en un diálogo que tenga este propósito, será <b>el mismo</b> que el
+	 * texto del botón utilizado para abrir dicho diálogo.
 	 */
 	public EnumProperty getAcceptButtonText() {
 		return this.textForLauncherButton;
 	}
 
 	/**
-	 * Por defecto, retorna <code>null</code>, lo que se interpreta como que no se desea
-	 * sobreescribir el texto por defecto del botón.
+	 * Por defecto, retorna <code>null</code>, lo que se interpreta como que no se desea sobreescribir el texto por
+	 * defecto del botón.
 	 */
 	public EnumProperty getCancelButtonText() {
 		return null;

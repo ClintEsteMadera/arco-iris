@@ -1,34 +1,17 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: EmesApplicationContext.java,v 1.12 2008/04/23 19:15:34 cvschioc Exp $
- */
-package commons.context;
+package scenariosui.context;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import commons.service.ScenariosUISystemConfiguration;
+import commons.context.BaseApplicationContext;
 
-/**
- * @author Jonathan Chiocchio
- * @version $Revision: 1.12 $ $Date: 2008/04/23 19:15:34 $
- */
+import scenariosui.service.ScenariosUISystemConfiguration;
+
 public class ScenariosUIApplicationContext extends BaseApplicationContext {
 
 	/**
 	 * Implementación obligatoria del método de la superclase.
-	 *
+	 * 
 	 * @see BaseApplicationContext#getEmesTypes()
 	 */
 	public static ScenariosUIApplicationContext getInstance() {

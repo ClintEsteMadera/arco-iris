@@ -1,18 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: QueryComposite.java,v 1.51 2008/05/12 19:19:42 cvschioc Exp $
- */
 package commons.gui.widget.composite;
 
 import java.util.List;
@@ -61,7 +46,7 @@ import commons.gui.model.bean.BeanModel;
 import commons.gui.table.GenericTable;
 import commons.gui.util.ListenerHelper;
 import commons.gui.util.PageHelper;
-import commons.gui.util.proposito.Proposito;
+import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.creation.binding.Binding;
 import commons.gui.widget.creation.binding.BindingInfo;
@@ -79,9 +64,9 @@ import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
 
 /**
- * Composite base para todas las consultas que tengan un filtro sobre lo consultado y acciones a
- * realizar sobre los items seleccionados.
- *
+ * Composite base para todas las consultas que tengan un filtro sobre lo consultado y acciones a realizar sobre los
+ * items seleccionados.
+ * 
  * @author Gabriel Tursi
  * @author Jonathan Chiocchio
  * @author Pablo Pastorino
@@ -89,13 +74,7 @@ import commons.properties.CommonMessages;
  */
 public abstract class QueryComposite<T> extends Composite {
 
-	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> aClass,
-			BaseCriterio criterioBusqueda) {
-		this(parent, tableName, aClass, criterioBusqueda, false, false);
-	}
-
-	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> aClass,
-			BaseCriterio criterioBusqueda, boolean crearNingunButton, boolean crearButton) {
+	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> aClass, BaseCriterio criterioBusqueda) {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
 		this.tableContentClass = aClass;
@@ -109,9 +88,8 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Refresca la consulta en la fila correspondiente al objeto con id igual al parámetro
-	 * <code>id</code>.
-	 *
+	 * Refresca la consulta en la fila correspondiente al objeto con id igual al parámetro <code>id</code>.
+	 * 
 	 * @param id
 	 *            el identificador del ítem que hay que refrescar.
 	 */
@@ -161,12 +139,12 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Agrega un item al menú contextual de la tabla, utilizando el texto y la acción asociada al
-	 * botón pasado por parámetro.
-	 *
+	 * Agrega un item al menú contextual de la tabla, utilizando el texto y la acción asociada al botón pasado por
+	 * parámetro.
+	 * 
 	 * @param button
-	 *            el botón del cual extraer el texto y la acción a realizar cuando se seleccione el
-	 *            MenuItem agregado al menú contextual.
+	 *            el botón del cual extraer el texto y la acción a realizar cuando se seleccione el MenuItem agregado al
+	 *            menú contextual.
 	 */
 	protected void addMenuItem2MenuContextual(final Button button) {
 		MenuItem item = new MenuItem(menuContextual, SWT.PUSH);
@@ -180,14 +158,14 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Habilita o deshabilita el botón pasado por parámetro, si el mismo no es nulo. También se
-	 * actualiza el ítem del menú contextual correspondiente (de existir el mismo).
-	 *
+	 * Habilita o deshabilita el botón pasado por parámetro, si el mismo no es nulo. También se actualiza el ítem del
+	 * menú contextual correspondiente (de existir el mismo).
+	 * 
 	 * @param button
 	 *            el botón al cuál cambiar el estado.
 	 * @param enabledState
-	 *            <code>true</code> indica que el control debe habilitarse, <code>false</code>
-	 *            indica que debe deshabilitarse.
+	 *            <code>true</code> indica que el control debe habilitarse, <code>false</code> indica que debe
+	 *            deshabilitarse.
 	 */
 	protected void setEnabledState(Button button, boolean enabledState) {
 		if (button != null) {
@@ -200,8 +178,7 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * La subclases deberán sobreescribir este método para especificar otro estilo distinto para la
-	 * tabla.
+	 * La subclases deberán sobreescribir este método para especificar otro estilo distinto para la tabla.
 	 */
 	protected int getTableStyle() {
 		return GenericTable.DEFAULT_TABLE_STYLE;
@@ -214,20 +191,20 @@ public abstract class QueryComposite<T> extends Composite {
 		boolean hayQueRefrescarSoloUnItem = this.getCriterio().getId() != null;
 
 		if (hayQueRefrescarSoloUnItem) {
-			List refreshList = this.executeQuery(); // pide a la persistencia el objeto que cambió
+			List<T> refreshList = this.executeQuery(); // pide a la persistencia el objeto que cambió
 			this.refreshItemsAccordingTo(refreshList);
 			this.getCriterio().setId(null);
 		} else {
 			// se refresca toda la tabla
-			List queryResult = this.executeQuery();
+			List<T> queryResult = this.executeQuery();
 			getTable().setInput(queryResult);
 
 			String message;
 			switch (queryResult.size()) {
 			case 0:
 				message = CommonMessages.QUERY_NO_RESULTS.toString();
-				//TODO: Ver si tiene sentido que se lance este pop up.
-				MessageDialog.openInformation(this.getShell(), CommonLabels.ATENCION.toString(), message);
+				// TODO: Ver si tiene sentido que se lance este pop up.
+				MessageDialog.openInformation(this.getShell(), CommonLabels.ATENTION.toString(), message);
 				break;
 			case 1:
 				message = CommonMessages.QUERY_ONLY_ONE_RESULT.toString(queryResult.size());
@@ -236,14 +213,13 @@ public abstract class QueryComposite<T> extends Composite {
 				message = CommonMessages.QUERY_MORE_THAN_ONE_RESULT.toString(queryResult.size());
 				break;
 			}
-			this.informationText
-					.setValue("[" + DateUtils.getCurrentTimeAsString() + "] " + message);
+			this.informationText.setValue("[" + DateUtils.getCurrentTimeAsString() + "] " + message);
 		}
 	}
 
 	/**
-	 * Por defecto, se agregan los botones de "Edición" y "Cerrar", si es que están soportados por
-	 * el QueryComposite concreto.
+	 * Por defecto, se agregan los botones de "Edición" y "Cerrar", si es que están soportados por el QueryComposite
+	 * concreto.
 	 */
 	protected void agregarBotones() {
 		if (permiteBotonEdicion()) {
@@ -257,20 +233,19 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Método para agregar fácilmente botones al QueryComposite, considerando la autorización
-	 * pertinente al usuario conectado. El método está pensado para no ser reescrito porque se
-	 * quiere garantizar el chequeo de permisos.
-	 *
+	 * Método para agregar fácilmente botones al QueryComposite, considerando la autorización pertinente al usuario
+	 * conectado. El método está pensado para no ser reescrito porque se quiere garantizar el chequeo de permisos.
+	 * 
 	 * @param action
 	 *            la acción asociada al botón
-	 * @return el botón recién agregado o <code>null</code> si el usuario conectado no posee
-	 *         permisos para efectuar la acción especificada por parámetro.
+	 * @return el botón recién agregado o <code>null</code> si el usuario conectado no posee permisos para efectuar la
+	 *         acción especificada por parámetro.
 	 */
 	protected final Button agregarBoton(OpenDialogWithPropositoAction action) {
 		Button button = null;
 		if (getAuthorizationHelper().isUserAuthorized(action)) {
 			button = new Button(this.leftButtonBarComposite, SWT.PUSH | SWT.CENTER);
-			Proposito proposito = action.getProposito();
+			Purpose proposito = action.getPurpose();
 
 			button.setText(proposito.getTextForLauncherButton().toString());
 			button.setFont(JFaceResources.getDialogFont());
@@ -283,8 +258,7 @@ public abstract class QueryComposite<T> extends Composite {
 		return button;
 	}
 
-	protected CalendarComposite agregarFiltroPorFecha(Composite parent, EnumProperty label,
-			String propertyName) {
+	protected CalendarComposite agregarFiltroPorFecha(Composite parent, EnumProperty label, String propertyName) {
 		BindingInfo bindingInfo = new BindingInfo(this.getCriterioWrapped(), propertyName);
 		CalendarMetainfo metainfo = CalendarMetainfo.create(parent, label, bindingInfo, false);
 		return CalendarFactory.createCalendar(metainfo);
@@ -303,8 +277,7 @@ public abstract class QueryComposite<T> extends Composite {
 		return agregarFiltroTexto(parent, label, propertyName, gridData);
 	}
 
-	protected Text agregarFiltroTexto(Composite parent, EnumProperty label, String propertyName,
-			GridData gridData) {
+	protected Text agregarFiltroTexto(Composite parent, EnumProperty label, String propertyName, GridData gridData) {
 		Binding binding = new BindingInfo(this.getCriterioWrapped(), propertyName);
 		TextFieldMetainfo metainfo = TextFieldMetainfo.create(parent, label, binding, false);
 		Control control = TextFactory.createText(metainfo);
@@ -316,8 +289,8 @@ public abstract class QueryComposite<T> extends Composite {
 		return this.agregarFiltroCombo(composite, label, propertyName, null);
 	}
 
-	protected Combo agregarFiltroCombo(Composite composite, EnumProperty label,
-			String propertyName, ComboValuesMetainfo comboValuesMetainfo) {
+	protected Combo agregarFiltroCombo(Composite composite, EnumProperty label, String propertyName,
+			ComboValuesMetainfo comboValuesMetainfo) {
 
 		Binding binding = new BindingInfo(this.getCriterioWrapped(), propertyName);
 		ComboMetainfo metainfo = ComboMetainfo.create(composite, label, binding, false);
@@ -348,7 +321,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	/**
 	 * Método que generaliza la limpieza de filtros.
-	 *
+	 * 
 	 * @return un listener que se activará cuando se seleccione el botón que limpia los filtros.
 	 */
 	protected SelectionListener getCleanUpListener() {
@@ -376,8 +349,7 @@ public abstract class QueryComposite<T> extends Composite {
 		};
 	}
 
-	protected SelectionListener getButtonSelectionListenerFor(
-			final OpenDialogWithPropositoAction action) {
+	protected SelectionListener getButtonSelectionListenerFor(final OpenDialogWithPropositoAction action) {
 		return new SelectionAdapter() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -399,10 +371,9 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Método encargado de crear el DoubleClickListener que utilizará la tabla. Por defecto se
-	 * lanzará la vista o edición (de acuerdo a los permisos que el usuario posea para efectuar
-	 * dichas operaciones)
-	 *
+	 * Método encargado de crear el DoubleClickListener que utilizará la tabla. Por defecto se lanzará la vista o
+	 * edición (de acuerdo a los permisos que el usuario posea para efectuar dichas operaciones)
+	 * 
 	 * @return DoubleClickListener que utilizará la tabla
 	 */
 	protected IDoubleClickListener getTableDoubleClickListener() {
@@ -423,23 +394,20 @@ public abstract class QueryComposite<T> extends Composite {
 	protected abstract ISelectionChangedListener getTableSelectionChangedListener();
 
 	/**
-	 * Con este método se indica si se permite el botón "Editar". Esto deberá decidirlo cada una de
-	 * las subclases considerando requerimientos funcionales y permisos del usuario para efectuar
-	 * dicha operación.
+	 * Con este método se indica si se permite el botón "Editar". Esto deberá decidirlo cada una de las subclases
+	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
 	protected abstract boolean permiteBotonEdicion();
 
 	/**
-	 * Con este método se indica si se permite el botón "Ver". Esto deberá decidirlo cada una de las
-	 * subclases considerando requerimientos funcionales y permisos del usuario para efectuar dicha
-	 * operación.
+	 * Con este método se indica si se permite el botón "Ver". Esto deberá decidirlo cada una de las subclases
+	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
 	protected abstract boolean permiteBotonVer();
 
 	/**
-	 * Con este método se indica si se permite el botón "Cerrar". Esto deberá decidirlo cada una de
-	 * las subclases considerando requerimientos funcionales y permisos del usuario para efectuar
-	 * dicha operación.
+	 * Con este método se indica si se permite el botón "Cerrar". Esto deberá decidirlo cada una de las subclases
+	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
 	protected abstract boolean permiteBotonCerrar();
 
@@ -455,11 +423,11 @@ public abstract class QueryComposite<T> extends Composite {
 
 	/**
 	 * Agrega los filtros específicos.
-	 *
+	 * 
 	 * @param grupoFiltros
 	 *            el grupo sobre el cual se agregarán dichos filtros.
 	 */
-	protected abstract void agregarFiltrosEspecificos(Group grupoFiltros);
+	protected abstract void addSpecificFilters(Group grupoFiltros);
 
 	/**
 	 * @return todos los controles de filtro (Texts, combos, etc)
@@ -468,12 +436,12 @@ public abstract class QueryComposite<T> extends Composite {
 
 	/**
 	 * Ejecuta la consulta asociada a este QueryComposite.
-	 *
+	 * 
 	 * @return una lista con el resultado de la consulta.
 	 */
-	protected abstract List executeQuery();
+	protected abstract List<T> executeQuery();
 
-	private QueryComposite init() {
+	private QueryComposite<T> init() {
 		this.setLayout(new GridLayout());
 		this.setLayoutData(new GridData(GridData.FILL_BOTH));
 		this.agregarFiltro(this);
@@ -485,28 +453,25 @@ public abstract class QueryComposite<T> extends Composite {
 
 	/**
 	 * Crea el composite de filtrado respectivo a la consulta a implementar.
-	 *
+	 * 
 	 * @param parent
 	 */
 	private void agregarFiltro(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		agregarFiltrosEspecificos((new SimpleGroup(composite, CommonLabels.FILTROS, false))
-				.getSwtGroup());
-		filterButtonsGroup = new FilterButtonsGroup(composite, getFilterListener(),
-				getCleanUpListener());
+		addSpecificFilters((new SimpleGroup(composite, CommonLabels.FILTROS, false)).getSwtGroup());
+		filterButtonsGroup = new FilterButtonsGroup(composite, getFilterListener(), getCleanUpListener());
 		agregarSelectionListener(getFilterControls());
 	}
 
 	/**
 	 * En este método se crea el objeto GenericTable con todos sus datos correspondientes
-	 *
+	 * 
 	 * @param parent
 	 *            composite sobre el cuál se creará la tabla.
 	 */
 	private void agregarTabla(Composite parent) {
-		GenericTable newTable = new GenericTable(parent, tableContentClass, tableName, null, true,
-				this.getTableStyle());
+		GenericTable newTable = new GenericTable(parent, tableContentClass, tableName, null, true, this.getTableStyle());
 
 		this.createMenuContextual(parent);
 		newTable.getTable().setMenu(this.menuContextual);
@@ -528,9 +493,9 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Agrega a todos los controles el listener para que al presionar <code>ENTER</code> sobre
-	 * ellos se dispare la consulta.
-	 *
+	 * Agrega a todos los controles el listener para que al presionar <code>ENTER</code> sobre ellos se dispare la
+	 * consulta.
+	 * 
 	 * @param controls
 	 *            Controles a los que se le agregará el listener.
 	 */
@@ -541,8 +506,7 @@ public abstract class QueryComposite<T> extends Composite {
 					@Override
 					public void keyPressed(KeyEvent event) {
 						if (event.keyCode == SWT.Selection || event.keyCode == SWT.KEYPAD_CR) {
-							filterButtonsGroup.getFilterButton().notifyListeners(SWT.Selection,
-									null);
+							filterButtonsGroup.getFilterButton().notifyListeners(SWT.Selection, null);
 						}
 					}
 				};
@@ -553,7 +517,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	/**
 	 * Crea un menú contextual vacío.
-	 *
+	 * 
 	 * @param parent
 	 */
 	private void createMenuContextual(Composite parent) {
@@ -573,11 +537,11 @@ public abstract class QueryComposite<T> extends Composite {
 
 	/**
 	 * Provee el ítem de menú que posee el texto pasado por parámetro.
-	 *
+	 * 
 	 * @param text
 	 *            el texto que debe tener el ítem buscado.
-	 * @return el ítem de menú que posee el texto pasado por parámetro en caso de existir un ítem
-	 *         con dicho texto o <code>null</code> en caso de no encontrar ninguno.
+	 * @return el ítem de menú que posee el texto pasado por parámetro en caso de existir un ítem con dicho texto o
+	 *         <code>null</code> en caso de no encontrar ninguno.
 	 */
 	private MenuItem getMenuContextualItem(String text) {
 		MenuItem result = null;
@@ -591,8 +555,7 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	private void configureButtonBar() {
-		SimpleComposite buttonBarsParent = new SimpleComposite(this.getTable().getControl()
-				.getParent(), false, 2);
+		SimpleComposite buttonBarsParent = new SimpleComposite(this.getTable().getControl().getParent(), false, 2);
 
 		RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 		layout.spacing = 5;
@@ -602,8 +565,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 		this.rightButtonBarComposite = new SimpleComposite(buttonBarsParent, false, 2);
 
-		LabelFactory.createValue(this.rightButtonBarComposite,
-				new BindingInfo(this.informationText), false);
+		LabelFactory.createValue(this.rightButtonBarComposite, new BindingInfo(this.informationText), false);
 
 		this.agregarBotones();
 	}
@@ -612,7 +574,7 @@ public abstract class QueryComposite<T> extends Composite {
 	private void refreshItemsAccordingTo(List refreshList) {
 		List<T> tableInput = (List<T>) getTable().getInput();
 
-		if(tableInput != null) {
+		if (tableInput != null) {
 			Long idItemARefrescar = this.getCriterio().getId();
 			if (refreshList.isEmpty()) {
 				// delete tableItem with id equals to "idItemARefrescar"
@@ -643,7 +605,7 @@ public abstract class QueryComposite<T> extends Composite {
 	private void agregarBotonCerrar() {
 		this.botonCerrar = new Button(this.rightButtonBarComposite, SWT.CENTER);
 		DefaultLayoutFactory.setButtonGridLayoutData(this.botonCerrar);
-		this.botonCerrar.setText(CommonLabels.CERRAR.toString());
+		this.botonCerrar.setText(CommonLabels.CLOSE.toString());
 		this.botonCerrar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -682,8 +644,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private ValueModel<String> informationText;
 
-	private static AuthorizationHelper authHelper = PageHelper.getMainWindow()
-			.getAuthorizationHelper();
+	private static AuthorizationHelper authHelper = PageHelper.getMainWindow().getAuthorizationHelper();
 
 	private static final Log log = LogFactory.getLog(QueryComposite.class);
 }

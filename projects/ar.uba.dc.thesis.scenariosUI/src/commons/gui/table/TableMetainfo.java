@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: TableMetainfo.java,v 1.3 2008/02/05 16:05:16 cvschioc Exp $
- */
-
 package commons.gui.table;
 
 import org.eclipse.swt.SWT;
@@ -25,13 +9,14 @@ import commons.gui.widget.creation.binding.BindingInfo;
 
 /**
  * Metainformacion para la creacion de tablas
+ * 
  * @author Pablo Pastorino
  * @version $Revision: 1.3 $ $Date: 2008/02/05 16:05:16 $
  */
-public class TableMetainfo {
+public class TableMetainfo<T> {
 
-	public TableMetainfo(Composite parent, EnumProperty tableName, Class itemClass,
-			BindingInfo bindingInfo, boolean readOnly) {
+	public TableMetainfo(Composite parent, EnumProperty tableName, Class<T> itemClass, BindingInfo bindingInfo,
+			boolean readOnly) {
 
 		this.parent = parent;
 		this.tableName = tableName;
@@ -50,7 +35,7 @@ public class TableMetainfo {
 
 	public EnumProperty tableName;
 
-	public Class itemClass;
+	public Class<T> itemClass;
 
 	public int tableStyle = DEFAULT_TABLE_STYLE;
 

@@ -14,25 +14,22 @@ import commons.gui.widget.creation.binding.Binding;
 
 /**
  * Modela la meta-información necesaria para crear un Campo de Texto.<br>
- * Nota: gracias al uso del objeto "FakeBinding", notar que es posible crear un Text field sin
- * necesidad de atarlo a ningún modelo.
+ * Nota: gracias al uso del objeto "FakeBinding", notar que es posible crear un Text field sin necesidad de atarlo a
+ * ningún modelo.
  * 
  * @author Gabriel Tursi
  */
 public class TextFieldMetainfo extends ControlMetainfo {
 
-	public static TextFieldMetainfo create(Composite composite, EnumProperty label,
-			Binding binding, boolean readOnly) {
+	public static TextFieldMetainfo create(Composite composite, EnumProperty label, Binding binding, boolean readOnly) {
 		instance.applyDefaults();
 		ControlMetainfo.setValues(instance, composite, label, binding, readOnly);
 		return instance;
 	}
 
-	public static TextFieldMetainfo create(Composite composite, EnumProperty label,
-			Binding binding, int readOnlyStyle) {
+	public static TextFieldMetainfo create(Composite composite, EnumProperty label, Binding binding, int readOnlyStyle) {
 		instance.applyDefaults();
-		ControlMetainfo.setValues(instance, composite, label, binding,
-				readOnlyStyle == READONLY_STYLE_LABEL);
+		ControlMetainfo.setValues(instance, composite, label, binding, readOnlyStyle == READONLY_STYLE_LABEL);
 		instance.readOnlyStyle = readOnlyStyle;
 		instance.readOnly = true;
 		return instance;
@@ -45,8 +42,7 @@ public class TextFieldMetainfo extends ControlMetainfo {
 	}
 
 	/**
-	 * Agrega los listenes especificados a la caja de texto. Estos listeners son reseteados una vez
-	 * creado el campo.
+	 * Agrega los listenes especificados a la caja de texto. Estos listeners son reseteados una vez creado el campo.
 	 * 
 	 * @param newListeners
 	 */
