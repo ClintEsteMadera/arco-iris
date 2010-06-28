@@ -22,6 +22,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("environment")
 public class Environment extends ThesisPojo {
 
+	private static final long serialVersionUID = 1L;
+
 	@XStreamAsAttribute
 	private final String name;
 

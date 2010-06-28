@@ -6,6 +6,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 public class Artifact extends ThesisPojo {
 
+	private static final long serialVersionUID = 1L;
+
 	@XStreamAsAttribute
 	private final String name;
 

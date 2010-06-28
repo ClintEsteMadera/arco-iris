@@ -6,6 +6,8 @@ import ar.uba.dc.thesis.common.ThesisPojo;
 
 public class ArchitecturalDecision extends ThesisPojo {
 
+	private static final long serialVersionUID = 1L;
+
 	private final String description;
 
 	private final Collection<String> sensitivityPoints;

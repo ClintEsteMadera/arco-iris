@@ -20,6 +20,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String SPACE = " ";
 
 	private static final RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
