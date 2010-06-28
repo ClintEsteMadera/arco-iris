@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.dao;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
@@ -28,7 +29,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private static final String NEWS_CONTENT_REQUEST_DESCRIPTION = "Any Client requesting news content";
 
-	private final Set<SelfHealingScenario> scenarios;
+	private final List<SelfHealingScenario> scenarios;
 
 	private final Set<Environment> environments = new HashSet<Environment>();
 
@@ -44,7 +45,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		}
 	}
 
-	public Set<SelfHealingScenario> getAllScenarios() {
+	public List<SelfHealingScenario> getAllScenarios() {
 		return scenarios;
 	}
 
@@ -52,14 +53,14 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		return environments;
 	}
 
-	private Set<SelfHealingScenario> createTestScenarios() {
+	private List<SelfHealingScenario> createTestScenarios() {
 		// TODO Add more repair strategies for this one
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario().addRepairStrategy(
 				"VariedReduceResponseTime");
 
 		SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
 
-		return Collections.createSet(clientResponseTimeScenario, serverCostScenario);
+		return Collections.createList(clientResponseTimeScenario, serverCostScenario);
 	}
 
 	private SelfHealingScenario createClientResponseTimeScenario() {
