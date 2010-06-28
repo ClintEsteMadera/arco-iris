@@ -89,6 +89,50 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.environments;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setConcern(Concern concern) {
+		this.concern = concern;
+	}
+
+	public void setStimulusSource(String stimulusSource) {
+		this.stimulusSource = stimulusSource;
+	}
+
+	public void setStimulus(String stimulus) {
+		this.stimulus = stimulus;
+	}
+
+	public void setEnvironments(Set<Environment> environments) {
+		this.environments = environments;
+	}
+
+	public void setArtifact(Artifact artifact) {
+		this.artifact = artifact;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	public void setResponseMeasure(ResponseMeasure responseMeasure) {
+		this.responseMeasure = responseMeasure;
+	}
+
+	public void setArchitecturalDecisions(Set<ArchitecturalDecision> architecturalDecisions) {
+		this.architecturalDecisions = architecturalDecisions;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return "\"" + this.getName() + "\" " + super.toString();
@@ -96,9 +140,5 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	public void validate() {
 		// Do nothing
-	}
-
-	public Long getId() {
-		return id;
 	}
 }

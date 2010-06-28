@@ -25,6 +25,8 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 @XStreamAlias("selfHealingScenario")
 public class SelfHealingScenario extends AtamScenario {
 
+	private static final long serialVersionUID = 1L;
+
 	@XStreamAsAttribute
 	private boolean enabled;
 

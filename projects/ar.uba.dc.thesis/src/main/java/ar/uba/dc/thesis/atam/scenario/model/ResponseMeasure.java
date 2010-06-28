@@ -7,6 +7,8 @@ import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
 public class ResponseMeasure extends ThesisPojo {
 
+	private static final long serialVersionUID = 1L;
+
 	private final String description;
 
 	private final Constraint constraint;

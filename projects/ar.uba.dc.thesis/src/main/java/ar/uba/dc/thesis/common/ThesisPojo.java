@@ -1,5 +1,7 @@
 package ar.uba.dc.thesis.common;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -7,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * Abstract behavior for all POJOs (Plain old Java objects) used in this project.
  */
-public abstract class ThesisPojo implements Validatable {
+public abstract class ThesisPojo implements Validatable, Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
