@@ -1,10 +1,9 @@
 <preferences>
 	<tables>
-    	<!--table name="CONSULTA_EMISORES" order="denominacion">
-	      	<column label="DENOMINACION" name="denominacion" alignment="LEFT" width="150"/>
-	      	<column label="TIPO" name="tipo" alignment="LEFT" width="150"/>
-	      	<column label="ESTADO" name="estado" alignment="LEFT" width="80"/>
-	      	<column label="FECHA_ALTA_EMISOR" name="fechaAlta" alignment="LEFT" width="150"/>
-		</table-->
+    	<table name="SCENARIOS" order="name">
+	      	<column label="ID" name="id" alignment="LEFT" width="50"/>
+	      	<column label="NAME" name="name" alignment="LEFT" width="100"/>
+	      	<column label="ENABLED" name="enabled" alignment="RIGHT" width="100"/>
+		</table>
 	</tables>
 </preferences>

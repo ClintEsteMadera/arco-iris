@@ -31,7 +31,7 @@ public interface GuiAction<T> {
 	 * Provee el identificador único de la acción. Comúnmente usado como "key" de Maps.El
 	 * conocimiento de la unicidad del identificador lo posee el objeto que crea la GuiAction.
 	 */
-	public String getIdentificadorUnico();
+	public String getUniqueId();
 
 	/**
 	 * Provee la acción concreta de SWT, para un modelo específico.

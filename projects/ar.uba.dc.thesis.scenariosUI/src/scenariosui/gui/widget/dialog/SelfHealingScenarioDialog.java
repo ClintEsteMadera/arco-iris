@@ -14,31 +14,31 @@
  * $Id: ActualizarJornadaDialog.java,v 1.2 2008/05/14 19:56:20 cvschioc Exp $
  */
 
-package commons.gui.widget.dialog;
+package scenariosui.gui.widget.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import sba.common.exception.ApplicationException;
 import sba.common.exception.ServiceException;
 import sba.common.properties.EnumProperty;
+import scenariosui.gui.util.purpose.ScenariosUIPurpose;
+import scenariosui.gui.widget.ScenariosUIWindow;
+import scenariosui.gui.widget.page.SelfHealingScenarioPage;
+import scenariosui.properties.ScenariosUILabels;
+import scenariosui.properties.TableConstants;
+import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.background.BackgroundInvocationException;
 import commons.gui.model.ComplexValueChangeEvent;
 import commons.gui.model.ComplexValueChangeListener;
-import commons.gui.util.proposito.ScenariosUIProposito;
-import commons.gui.widget.ScenariosUIWindow;
-import commons.gui.widget.page.SelfHealingScenarioPage;
 import commons.properties.CommonLabels;
 import commons.properties.Messages;
-import commons.properties.ScenariosUILabels;
-import commons.properties.TableConstants;
-import commons.service.ScenarioService;
 
-public class ScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealingScenario> {
+public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealingScenario> {
 
-	public ScenarioDialog(SelfHealingScenario model, EnumProperty title, ScenariosUIProposito proposito) {
-		super(model, title, proposito);
+	public SelfHealingScenarioDialog(SelfHealingScenario model, EnumProperty title, ScenariosUIPurpose purpose) {
+		super(model, title, purpose);
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class ScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealin
 	}
 
 	@Override
-	protected void crearNodos() {
-		addNode(null, "emisorEmpresaExtranjeraPage", new SelfHealingScenarioPage(super.getCompositeModel(),
-				ScenariosUILabels.SCENARIO, super.readOnly, super.proposito));
+	protected void createNodes() {
+		addNode(null, "selfHealingScenarioPage", new SelfHealingScenarioPage(super.getCompositeModel(),
+				ScenariosUILabels.SCENARIO, super.readOnly, super.purpose));
 
 		// chequeo de modificacion sobre el modelo
 		this.getCompositeModel().addComplexValueChangeListener(new ComplexValueChangeListener() {
@@ -66,8 +66,8 @@ public class ScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealin
 		boolean deseaAbandonarCambios = true;
 
 		if (this.modelDirty) {
-			deseaAbandonarCambios = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENCION.toString(),
-					"¿ Desea abandonar las modificaciones sobre el emisor ?");
+			deseaAbandonarCambios = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENTION.toString(),
+					"¿ Desea abandonar las modificaciones sobre el Scenario ?");
 		}
 		if (deseaAbandonarCambios) {
 			super.cancelPressed();
@@ -79,14 +79,14 @@ public class ScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealin
 		boolean okStatus = false;
 		String operacion = null;
 		try {
-			switch (super.proposito) {
-			case ALTA:
+			switch (super.purpose) {
+			case CREATION:
 				operacion = "creado";
-				this.getCompositeModel().setValue(ScenarioService.persistScenario(super.getModel()));
+				ScenariosUIController.saveSelfHealingConfiguration();
 				break;
-			case EDICION:
+			case EDIT:
 				operacion = "actualizado";
-				ScenarioService.updateScenario(super.getModel());
+				ScenariosUIController.saveSelfHealingConfiguration();
 				break;
 			default:
 				throw new RuntimeException("Se utilizó un Propósito no contemplado!!");
@@ -105,7 +105,7 @@ public class ScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealin
 		String denominacion = super.getModel().getName() != null ? super.getModel().getName() : "";
 		String mensaje = Messages.SUCCESSFUL_SCENARIO.toString(denominacion, operacion);
 		mostrarDialogoOperacionExitosa(mensaje);
-		ScenariosUIWindow.getInstance().resetConsulta(TableConstants.SCENARIOS_QUERY, super.getModel().getId());
+		ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS, super.getModel().getId());
 
 		return okStatus;
 	}

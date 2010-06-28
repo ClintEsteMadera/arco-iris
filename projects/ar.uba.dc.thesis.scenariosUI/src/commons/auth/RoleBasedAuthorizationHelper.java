@@ -39,7 +39,7 @@ public class RoleBasedAuthorizationHelper implements AuthorizationHelper {
 	public boolean isUserAuthorized(GuiAction guiAction) {
 		boolean authorized = false;
 		List<String> rolesDelUsuarioConectado = SessionHelper.rolesDelUsuarioConectado();
-		String[] rolesNecesarios = permisos.get(guiAction.getIdentificadorUnico());
+		String[] rolesNecesarios = permisos.get(guiAction.getUniqueId());
 
 		for (String rolDelUsuario : rolesDelUsuarioConectado) {
 			if (ArrayUtils.contains(rolesNecesarios, rolDelUsuario)) {

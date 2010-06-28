@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: ConsultaAction.java,v 1.1 2008/04/18 20:55:06 cvschioc Exp $
- */
-
 package commons.gui.action;
 
 import org.apache.commons.logging.Log;
@@ -32,12 +16,11 @@ import commons.gui.widget.composite.QueryComposite;
  * @version $Revision: 1.1 $ $Date: 2008/04/18 20:55:06 $
  */
 
-public abstract class ConsultaAction implements GuiAction {
+public abstract class QueryAction implements GuiAction {
 
-	protected ConsultaAction(String identificadorUnico, EnumProperty menuText,
-			EnumProperty tabItemText, Class<? extends QueryComposite> queryCompositeClass,
-			String shortcut) {
-		
+	protected QueryAction(String identificadorUnico, EnumProperty menuText, EnumProperty tabItemText,
+			Class<? extends QueryComposite> queryCompositeClass, String shortcut) {
+
 		this.identificadorUnico = identificadorUnico;
 		this.menuText = menuText;
 		this.tabItemText = tabItemText;
@@ -71,15 +54,14 @@ public abstract class ConsultaAction implements GuiAction {
 				try {
 					queryComposite = getQueryCompositeClass().newInstance();
 				} catch (Exception ex) {
-					log.fatal("No se ha podido instanciar la  clase "
-							+ getQueryCompositeClass().getSimpleName(), ex);
+					log.fatal("No se ha podido instanciar la  clase " + getQueryCompositeClass().getSimpleName(), ex);
 				}
 				return queryComposite;
 			}
 		};
 	}
 
-	public String getIdentificadorUnico() {
+	public String getUniqueId() {
 		return this.identificadorUnico;
 	}
 
@@ -113,5 +95,5 @@ public abstract class ConsultaAction implements GuiAction {
 
 	private String identificadorUnico;
 
-	private static final Log log = LogFactory.getLog(ConsultaAction.class);
+	private static final Log log = LogFactory.getLog(QueryAction.class);
 }

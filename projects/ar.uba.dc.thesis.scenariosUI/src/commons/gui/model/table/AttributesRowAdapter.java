@@ -1,26 +1,28 @@
 package commons.gui.model.table;
 
 import sba.common.properties.EnumProperty;
+
 import commons.gui.model.AbstractAttribute;
 import commons.gui.model.Attribute;
 import commons.gui.model.Attributes;
 import commons.gui.model.bean.BeanAttributes;
 
 /**
- * Extensión de {@link sba.ui.model.table.AbstractRowAdapter} que utiliza
- * "atributos" para asignar y obtener los valores de las columnas.
+ * Extensión de {@link sba.ui.model.table.AbstractRowAdapter} que utiliza "atributos" para asignar y obtener los valores
+ * de las columnas. <br>
  * <br>
- * <br>
- *  
- * @author P.Pastorino  
+ * 
+ * @author P.Pastorino
  */
 public class AttributesRowAdapter extends AbstractRowAdapter {
 
 	/**
 	 * Construye el adapter con una instancia de {@link sba.ui.model.bean.BeanAttributes}
 	 * 
-	 * @param beanClass Clase de los objetos a los que se aplica el adapter. 
-	 * @param properties Propiedades asociadas a cada columna.
+	 * @param beanClass
+	 *            Clase de los objetos a los que se aplica el adapter.
+	 * @param properties
+	 *            Propiedades asociadas a cada columna.
 	 */
 	public AttributesRowAdapter(Class beanClass, EnumProperty tableName) {
 		this(new BeanAttributes(beanClass), tableName);
@@ -29,8 +31,10 @@ public class AttributesRowAdapter extends AbstractRowAdapter {
 	/**
 	 * Construye el adapter en base a un conjunto de atributos.
 	 * 
-	 * @param attributeSet Conjunto de atributos. 
-	 * @param keys Claves asociadas a cada columna.
+	 * @param attributeSet
+	 *            Conjunto de atributos.
+	 * @param keys
+	 *            Claves asociadas a cada columna.
 	 */
 	@SuppressWarnings("unchecked")
 	public AttributesRowAdapter(Attributes attributeSet, EnumProperty tableName) {
@@ -45,7 +49,7 @@ public class AttributesRowAdapter extends AbstractRowAdapter {
 	public Object getValueAt(Object row, int col) {
 		Attribute attr = m_attributes[col];
 		return attr != null ? attr.getValue(row) : null;
-		
+
 	}
 
 	public void setValueAt(Object value, Object row, int col) {
@@ -65,11 +69,11 @@ public class AttributesRowAdapter extends AbstractRowAdapter {
 		Attribute attr = m_attributes[col];
 		return attr.getValueType().getClassConfiguration();
 	}
-	
+
 	/**
 	 * Obtiene el atributo asociado a una clave
 	 */
-	protected Attribute getAttribute(Object key){
+	protected Attribute getAttribute(Object key) {
 		final int i = getColumnIndex(key);
 		if (i >= 0) {
 			return m_attributes[i];
@@ -83,12 +87,12 @@ public class AttributesRowAdapter extends AbstractRowAdapter {
 	 * @param key
 	 * @param cfg
 	 */
-	protected void setAttributeEditConfiguration(Object key,String cfg){
-		Attribute attr=getAttribute(key);
-		if(key != null && attr instanceof AbstractAttribute){
-			((AbstractAttribute)attr).setEditConfiguration(cfg);
+	protected void setAttributeEditConfiguration(Object key, String cfg) {
+		Attribute attr = getAttribute(key);
+		if (key != null && attr instanceof AbstractAttribute) {
+			((AbstractAttribute) attr).setEditConfiguration(cfg);
 		}
 	}
-	
+
 	private Attribute[] m_attributes;
 }

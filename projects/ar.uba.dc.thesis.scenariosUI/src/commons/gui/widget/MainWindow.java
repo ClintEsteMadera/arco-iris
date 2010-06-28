@@ -76,6 +76,7 @@ public abstract class MainWindow extends ApplicationWindow {
 	private void agregarMenuArchivo(MenuManager menuManager) {
 		MenuManager fileMenu = new MenuManager(CommonLabels.MENU_FILE.toString());
 		menuManager.add(fileMenu);
+		addSpecificActionsToFileMenu(fileMenu);
 		fileMenu.add(new ChangePwdAction(getAuthenticationHelper()));
 		fileMenu.add(new ExitAction());
 	}
@@ -90,10 +91,19 @@ public abstract class MainWindow extends ApplicationWindow {
 
 	/**
 	 * Este método agrega los menúes especifícos de cada aplicación.
+	 * 
 	 * @param menuManager
 	 *            el objeto menuManager sobre el cual crear los menúes.
 	 */
 	protected abstract void agregarMenuesEspecificos(MenuManager menuManager);
+
+	/**
+	 * This method allow the concrete application to add one or more actions within the "File" menu.
+	 * 
+	 * @param fileMenu
+	 *            the menu where to add action(s)
+	 */
+	protected abstract void addSpecificActionsToFileMenu(MenuManager fileMenu);
 
 	public CTabItem getTabItem(EnumProperty tabItemText) {
 		CTabItem tabItem = null;
@@ -130,8 +140,8 @@ public abstract class MainWindow extends ApplicationWindow {
 		super.configureShell(shell);
 		shell.setMaximized(true);
 		String usuarioConectado = SessionHelper.nombreDeUsuarioConectado();
-		if(usuarioConectado == null) {
-			usuarioConectado = "Usuario Desconocido";
+		if (usuarioConectado == null) {
+			usuarioConectado = "Unknown User";
 		}
 		shell.setText(getDefaultStatusMessage() + " [" + usuarioConectado + "]");
 		shell.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_GRAY));
@@ -193,8 +203,7 @@ public abstract class MainWindow extends ApplicationWindow {
 		BaseSystemConfiguration config = this.getSystemConfiguration();
 		AuthenticationHelper authHelper = this.getAuthenticationHelper();
 		if (config.ambienteDesarrollo()) {
-			SecurityContextHolder
-					.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+			SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 			authHelper.authenticate(config.usuarioDesarrollo(), config.passwordDesarrollo());
 		} else {
 			LoginDialog loginDialog = new LoginDialog(getShell(), authHelper);
@@ -205,8 +214,7 @@ public abstract class MainWindow extends ApplicationWindow {
 	}
 
 	protected Image[] getImages() {
-		return new Image[] {
-				ImageDescriptor.createFromFile(MainWindow.class, "/images/16x16.png").createImage(),
+		return new Image[] { ImageDescriptor.createFromFile(MainWindow.class, "/images/16x16.png").createImage(),
 				ImageDescriptor.createFromFile(MainWindow.class, "/images/32x32.png").createImage(),
 				ImageDescriptor.createFromFile(MainWindow.class, "/images/48x48.png").createImage() };
 	}

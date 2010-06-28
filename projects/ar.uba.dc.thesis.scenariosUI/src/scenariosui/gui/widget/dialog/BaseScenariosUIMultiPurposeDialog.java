@@ -14,55 +14,56 @@
  * $Id: BaseEmesMultiPurposeDialog.java,v 1.8 2008/02/26 14:45:34 cvspasto Exp $
  */
 
-package commons.gui.widget.dialog;
+package scenariosui.gui.widget.dialog;
 
 import sba.common.properties.EnumProperty;
 import sba.common.properties.FakeEnumProperty;
+import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 
-import commons.gui.util.proposito.ScenariosUIProposito;
+import commons.gui.widget.dialog.BaseScenariosUIDialog;
 import commons.properties.CommonLabels;
 
 /**
- * Modela un diálogo básico dónde se puede saber si el mismo corresponde a un diálogo de Alta,
- * Edición u otro tipo , determinado por un tipo enumerado adecuado para tal fin.
+ * Modela un diálogo básico dónde se puede saber si el mismo corresponde a un diálogo de Alta, Edición u otro tipo ,
+ * determinado por un tipo enumerado adecuado para tal fin.
+ * 
  * @author Jonathan Chiocchio
  * @version $Revision: 1.8 $ $Date: 2008/02/26 14:45:34 $
  */
 
 public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenariosUIDialog<T> {
 
-	public BaseScenariosUIMultiPurposeDialog(T model, EnumProperty title, ScenariosUIProposito proposito) {
-		super(model, new FakeEnumProperty(title.toString() + " - " + proposito.toString()),
-				proposito.esReadOnly());
-		super.readOnly = this.esReadOnly(super.getModel(), proposito);
-		this.proposito = proposito;
+	public BaseScenariosUIMultiPurposeDialog(T model, EnumProperty title, ScenariosUIPurpose proposito) {
+		super(model, new FakeEnumProperty(title.toString() + " - " + proposito.toString()), proposito.isReadOnly());
+		super.readOnly = this.isReadOnly(super.getModel(), proposito);
+		this.purpose = proposito;
 	}
 
 	/**
-	 * Indica el estado de readOnly. Por defecto, el mismo está dado por el propósito, aunque dicho
-	 * comportamiento puede ser sobreescrito ante la necesidad de evaluar más condiciones
-	 * dependientes del modelo.
+	 * Indica el estado de readOnly. Por defecto, el mismo está dado por el propósito, aunque dicho comportamiento puede
+	 * ser sobreescrito ante la necesidad de evaluar más condiciones dependientes del modelo.
+	 * 
 	 * @param model
 	 *            el modelo involucrado en la apeertura del diálogo.
-	 * @param emesProposito
+	 * @param scenariosUIPurpose
 	 *            el proósito con el que se abre el diálogo.
 	 */
-	protected boolean esReadOnly(T model, ScenariosUIProposito emesProposito) {
-		return emesProposito.esReadOnly();
+	protected boolean isReadOnly(T model, ScenariosUIPurpose scenariosUIPurpose) {
+		return scenariosUIPurpose.isReadOnly();
 	}
 
 	@Override
 	protected boolean isOkButtonAllowed() {
-		boolean sinBotonAceptar = (this.esReadOnly(super.getModel(), this.proposito)
-				&& this.proposito.equals(ScenariosUIProposito.EDICION)) ||
-				this.proposito.equals(ScenariosUIProposito.VER);
+		boolean sinBotonAceptar = (this.isReadOnly(super.getModel(), this.purpose) && this.purpose
+				.equals(ScenariosUIPurpose.EDIT))
+				|| this.purpose.equals(ScenariosUIPurpose.VIEW);
 		return !sinBotonAceptar;
 	}
 
 	@Override
 	protected EnumProperty getAcceptButtonText() {
 		EnumProperty result = super.getAcceptButtonText();
-		EnumProperty acceptEnumProp = this.proposito.getAcceptButtonText();
+		EnumProperty acceptEnumProp = this.purpose.getAcceptButtonText();
 		if (acceptEnumProp != null) {
 			result = acceptEnumProp;
 		}
@@ -70,24 +71,25 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenarios
 	}
 
 	/**
-	 * Provee el texto para el botón "Cancelar". Por defecto, este valor está dado por el propósito,
-	 * siempre y cuando no sea nulo. Si dicho valor fuera nulo, y no existe el botón "Aceptar", el
-	 * texto es el dado por {@link #CERRAR(CommonLabels)}.<br>
+	 * Provee el texto para el botón "Cancelar". Por defecto, este valor está dado por el propósito, siempre y cuando no
+	 * sea nulo. Si dicho valor fuera nulo, y no existe el botón "Aceptar", el texto es el dado por
+	 * {@link #CLOSE(CommonLabels)}.<br>
 	 * Si no se cumplen las anteriores condiciones, el texto es el dado por la superclase
+	 * 
 	 * @see {@link #getCancelButtonText()BaseEmesDialog}
 	 */
 	@Override
 	protected EnumProperty getCancelButtonText() {
 		EnumProperty result = super.getCancelButtonText();
 
-		EnumProperty cancelEnumProp = this.proposito.getCancelButtonText();
+		EnumProperty cancelEnumProp = this.purpose.getCancelButtonText();
 		if (cancelEnumProp != null) {
 			result = cancelEnumProp;
-		} else if(!this.isOkButtonAllowed()) {
-			result = CommonLabels.CERRAR;
+		} else if (!this.isOkButtonAllowed()) {
+			result = CommonLabels.CLOSE;
 		}
 		return result;
 	}
 
-	protected ScenariosUIProposito proposito;
+	protected ScenariosUIPurpose purpose;
 }

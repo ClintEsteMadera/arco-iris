@@ -112,7 +112,7 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 
 	@Override
 	protected Control createContents(Composite parent) {
-		this.crearNodos();
+		this.createNodes();
 		return super.createContents(parent);
 	}
 
@@ -138,7 +138,7 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 	 * Crea Nodos asociados al dialogo (los mostrados a la izquierda de la página) y a cada uno le
 	 * asocia la {@link BasePreferencesPage} correspondiente
 	 */
-	protected abstract void crearNodos();
+	protected abstract void createNodes();
 
 	protected IPreferenceNode addNode(IPreferenceNode parent, String identif, PreferencePage page) {
 		PreferenceNode node = new PreferenceNode(identif, page);
