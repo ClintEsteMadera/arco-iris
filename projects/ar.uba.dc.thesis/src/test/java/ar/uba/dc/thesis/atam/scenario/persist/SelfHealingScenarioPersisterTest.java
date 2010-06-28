@@ -27,7 +27,7 @@ public class SelfHealingScenarioPersisterTest extends TestCase {
 	 */
 	public void testWholeProcess() {
 		SelfHealingScenarioDao dao = new TestSelfHealingScenarioDao(new TestEnvironmentDao());
-		SelfHealingConfiguration configToMarshal = new SelfHealingConfiguration(dao.getAllScenarios());
+		SelfHealingConfiguration configToMarshal = new SelfHealingConfiguration("test", dao.getAllScenarios());
 
 		SelfHealingScenarioPersister persister = new SelfHealingScenarioPersister();
 		persister.saveToFile(configToMarshal, SCENARIOS_IN_XML_FULL_PATH);
