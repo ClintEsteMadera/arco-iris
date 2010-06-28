@@ -31,6 +31,11 @@ public class ScenariosManager {
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(ScenariosManager.class);
 
 	/**
+	 * Reserved keyword for scenario's stimulus.
+	 */
+	private static final String ANY_STIMULUS_KEYWORD = "ANY";
+
+	/**
 	 * Constructor
 	 * 
 	 * @param selfHealingScenarioRepository
@@ -91,7 +96,11 @@ public class ScenariosManager {
 	}
 
 	public List<SelfHealingScenario> getScenarios(String stimulus) {
-		return this.scenariosMap.get(stimulus);
+		List<SelfHealingScenario> result = new ArrayList<SelfHealingScenario>(this.scenariosMap.get(stimulus));
+		if (!ANY_STIMULUS_KEYWORD.equals(stimulus)) {
+			result.addAll(this.scenariosMap.get(ANY_STIMULUS_KEYWORD));
+		}
+		return result;
 	}
 
 	public List<SelfHealingScenario> findBrokenScenarios(String stimulus) {
