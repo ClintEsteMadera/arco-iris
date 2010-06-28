@@ -1,7 +1,7 @@
 package ar.uba.dc.thesis.dao;
 
 import java.io.File;
-import java.util.Set;
+import java.util.List;
 
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.util.Util;
@@ -14,7 +14,7 @@ public class FileSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private static final String SCENARIO_SPEC_PATH = "customize.scenarios.path";
 
-	public Set<SelfHealingScenario> getAllScenarios() {
+	public List<SelfHealingScenario> getAllScenarios() {
 		File scenarioSpec = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
 				.property(SCENARIO_SPEC_PATH));
 		SelfHealingScenarioPersister persister = new SelfHealingScenarioPersister();
