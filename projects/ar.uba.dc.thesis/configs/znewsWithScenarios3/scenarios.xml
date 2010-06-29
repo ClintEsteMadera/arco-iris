@@ -63,6 +63,6 @@
     </responseMeasure>
     <architecturalDecisions/>
     <id>2</id>
-    <repairStrategy>VariedReduceResponseTime</repairStrategy>
+    <repairStrategy>EnlistServersResponseTime</repairStrategy>
   </selfHealingScenario>
 </selfHealingConfiguration>

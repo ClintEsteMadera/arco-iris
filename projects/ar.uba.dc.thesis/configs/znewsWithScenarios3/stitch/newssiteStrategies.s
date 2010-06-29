@@ -34,13 +34,24 @@ define boolean CONCERN_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernSt
  *
  * Note:  Tested successfully in simulation, znews-varied
  */
-strategy VariedReduceResponseTime
+strategy EnlistServersResponseTime
 [ styleApplies ] {
   t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
     t1: (!CONCERN_STILL_BROKEN) -> done;
-    t2: (CONCERN_STILL_BROKEN) -> lowerFidelity(2, 100) @[3000 /*ms*/] {
-      t2a: (!CONCERN_STILL_BROKEN) -> done;
-      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
-    }
+    t3: (default) -> TNULL;
+  }
+}
+
+/* This Strategy is triggered by the total server costs rising above acceptable
+ * threshold; this Strategy reduces the number of active servers
+ *
+ * Note:  Tested successfully in simulation, znews-reducecost + znews-improvefidelity
+ */
+strategy ReduceOverallCost
+[ styleApplies ] {
+  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
+    t1: (!CONCERN_STILL_BROKEN) -> done;
+    t2: (CONCERN_STILL_BROKEN) -> do[2] t0;
+    t3: (default) -> TNULL;
   }
 }
