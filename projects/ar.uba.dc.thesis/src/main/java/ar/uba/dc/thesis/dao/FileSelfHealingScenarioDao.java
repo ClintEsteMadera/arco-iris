@@ -2,6 +2,7 @@ package ar.uba.dc.thesis.dao;
 
 import java.io.File;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.util.Util;
@@ -19,6 +20,7 @@ public class FileSelfHealingScenarioDao implements SelfHealingScenarioDao {
 				.property(SCENARIO_SPEC_PATH));
 		SelfHealingScenarioPersister persister = new SelfHealingScenarioPersister();
 		SelfHealingConfiguration scenariosConfig = persister.readFromFile(scenarioSpec.getAbsolutePath());
-		return scenariosConfig.getScenarios();
+		return scenariosConfig.getScenarios() != null ? scenariosConfig.getScenarios()
+				: new ArrayList<SelfHealingScenario>();
 	}
 }
