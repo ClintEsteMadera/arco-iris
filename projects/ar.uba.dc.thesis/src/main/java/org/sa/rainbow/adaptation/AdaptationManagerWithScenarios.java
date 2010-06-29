@@ -52,7 +52,6 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
  */
 public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
-	// FIXME This should be extracted to a configuration file!!!
 	private static final int RAINBOW_SOLUTION_WEIGHT = NumberUtils.INTEGER_ZERO;
 
 	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
@@ -149,7 +148,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static boolean isConcernStillBroken(String concernString) {
 		try {
 			Concern concern = Concern.valueOf(concernString);
-			// FIXME asegurarse que sean los mismos escenarios que dispararon la ejecucion de la estrategia?
+
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern) && defaultScenarioBrokenDetector.isBroken(scenario)) {
@@ -380,6 +379,9 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			}
 
 			for (Strategy currentStrategy : stitch.script.strategies) {
+				// TODO Esto por el momento no funciona ya que hay que agregar una property a rainbow.properties:
+				// customize.utility.trackStrategy
+				// TODO Ver si esto no es muy fuerte (dilapidar una estrategia para siempre!!!)
 				if (!candidateStrategies.contains(currentStrategy.getName())
 						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "not selected in broken scenarios"
@@ -421,7 +423,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 			}
 
-			// TODO lo siguiente es tomado de rainbow CASI tal cual (ver)
 			if (_stopWatchForTesting != null)
 				_stopWatchForTesting.stop();
 			if (selectedStrategy != null) {
@@ -444,8 +445,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Set<String> candidateStrategies = new HashSet<String>();
 		for (SelfHealingScenario brokenScenario : brokenScenarios) {
 			List<String> repairStrategies = brokenScenario.getRepairStrategies();
-			// TODO Resolver esto de una manera mas prolija. NO en la GUI pues atamos la solución a que siempre editen
-			// usando la GUI.
+			// TODO Setearle al inicio a cada escenario que no tenga nada todas las estrategias, levantandolas del .s
+			// (ya esta hecho, ver this.stitch)
 			if (repairStrategies.isEmpty()) {
 				repairStrategies = RepairStrategy.getAllRepairStrategiesNames();
 			}
@@ -504,8 +505,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private double scenarioWeight(int scenarioPriority, double concernWeight4CurrentEnvironment) {
 		double scenariosRelativePriority = this.scenariosAssignedPriority2RelativePriority(scenarioPriority);
-		// TODO idea: el usuario puede pesar la importancia de los concerns vs la de las prioridades
-		// por ahora pesan lo mismo los pesos de los concerns que la prioridad:
 
 		return scenariosRelativePriority * concernWeight4CurrentEnvironment;
 	}
@@ -556,10 +555,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				conds[i] = ((Double) condVal).doubleValue();
 				items[i] += conds[i];
 			}
-			// TODO agregar peso segun prioridad
-			// Idea: sumar un valor fijo para que su peso no sea tan importante, i.e: estrategia nro 1 suma 100, nro 2
-			// suma 50, etc
-
 			// now compute the utility, apply weight, and accumulate to sum
 			score += weights.get(k) * u.f(items[i]);
 			++i;
@@ -570,7 +565,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		if (score < m_minUtilityThreshold) {
 			// utility score too low, don't consider for adaptation
 			doLog(Level.TRACE, "score " + score + " below threshold, discarding: " + s);
-			// TODO descartar estrategia, no calcular su score directamente
 		}
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR2 + s);
 		doLog(Level.DEBUG, "aggAtt': " + s);

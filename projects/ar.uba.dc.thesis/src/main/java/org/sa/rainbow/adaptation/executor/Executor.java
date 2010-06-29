@@ -120,7 +120,6 @@ public class Executor extends AbstractRainbowRunnable implements ModelOperator, 
 			}
 			log(Tool.TAB + "Outcome: " + o);
 			if (!Rainbow.shouldTerminate()) {
-				// TODO Should we check for evaluation outcome?
 				((AdaptationManagerWithScenarios) Oracle.instance().adaptationManager()).markStrategyExecuted(strategy);
 			}
 		}

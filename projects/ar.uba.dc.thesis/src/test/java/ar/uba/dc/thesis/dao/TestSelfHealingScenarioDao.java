@@ -54,7 +54,6 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 	}
 
 	private List<SelfHealingScenario> createTestScenarios() {
-		// TODO Add more repair strategies for this one
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario().addRepairStrategy(
 				"VariedReduceResponseTime");
 
