@@ -31,6 +31,7 @@ public abstract class AtamScenario extends ThesisPojo {
 	@XStreamImplicit
 	private Set<ArchitecturalDecision> architecturalDecisions;
 
+	@XStreamAsAttribute
 	private Long id;
 
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,

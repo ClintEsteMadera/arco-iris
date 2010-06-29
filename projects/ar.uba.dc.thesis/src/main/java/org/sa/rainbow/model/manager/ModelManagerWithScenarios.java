@@ -211,7 +211,6 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 						.getDeclaredTypes();
 				for (IAcmeElementTypeRef<IAcmeComponentType> acmeComponentTypeRef : declaredTypesRefs) {
 					if (acmeComponentTypeRef.getTarget() instanceof AcmeComponentType) {
-						// TODO warning, SystemT has also the type ArchElementT
 						result = qualifiedPropertyInstance.replace(split[1], ((AcmeComponentType) acmeComponentTypeRef
 								.getTarget()).getName());
 					}
