@@ -97,7 +97,7 @@ public class ScenariosManager {
 
 	public List<SelfHealingScenario> getScenarios(String stimulus) {
 		List<SelfHealingScenario> result = new ArrayList<SelfHealingScenario>(this.scenariosMap.get(stimulus));
-		if (!ANY_STIMULUS_KEYWORD.equals(stimulus)) {
+		if (!ANY_STIMULUS_KEYWORD.equals(stimulus) && this.scenariosMap.get(ANY_STIMULUS_KEYWORD) != null) {
 			result.addAll(this.scenariosMap.get(ANY_STIMULUS_KEYWORD));
 		}
 		return result;
