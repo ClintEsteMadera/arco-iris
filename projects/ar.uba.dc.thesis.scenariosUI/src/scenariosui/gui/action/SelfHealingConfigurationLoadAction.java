@@ -4,77 +4,81 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.springframework.util.Assert;
 
+import scenariosui.gui.widget.ScenariosUIWindow;
 import scenariosui.properties.ScenariosUILabels;
+import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 
-import commons.gui.action.GuiAction;
 import commons.gui.util.PageHelper;
+import commons.properties.CommonLabels;
 
-public class SelfHealingConfigurationLoadAction implements GuiAction<SelfHealingConfiguration> {
-
-	private final String shortcut;
-
-	private String uniqueId;
+public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseFileAction {
 
 	private final boolean createNewConfig;
 
 	protected SelfHealingConfigurationLoadAction(String uniqueId, String shortcut, boolean createNewConfig) {
-		super();
-		Assert.notNull(uniqueId, "The unique id cannot be null");
+		super(uniqueId, shortcut);
 
-		this.uniqueId = uniqueId;
-		this.shortcut = shortcut == null ? "" : shortcut;
 		this.createNewConfig = createNewConfig;
 	}
 
 	public Action getActionFor(final SelfHealingConfiguration model) {
-		return new Action() {
-			@Override
-			@SuppressWarnings("unchecked")
-			public void run() {
-				FileDialog dialog = this.createFileDialog();
+		return new LoadAction(this.getUniqueId());
+	}
 
+	private class LoadAction extends Action {
+
+		public LoadAction(String id) {
+			super();
+			this.setId(id);
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public void run() {
+			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
+			if (createNewConfig) {
+				FileDialog dialog = this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase());
 				String xmlFilePath = dialog.open();
-				if (createNewConfig) {
-					ScenariosUIController.newSelfHealingConfiguration(xmlFilePath);
-				} else {
-					ScenariosUIController.openSelfHealingConfiguration(xmlFilePath);
-				}
-
-				ScenariosUIActions.SCENARIOS_QUERY.getActionFor(model).run();
+				scenariosUIController.newSelfHealingConfiguration(xmlFilePath);
+			} else {
+				FileDialog dialog = this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase());
+				String xmlFilePath = dialog.open();
+				scenariosUIController.openSelfHealingConfiguration(xmlFilePath);
 			}
 
-			private FileDialog createFileDialog() {
-				Shell shell = PageHelper.getMainShell();
+			this.displayScenariosList(scenariosUIController);
 
-				String[] filterNames = new String[] { "XML Files" };
-				String[] filterExtensions = new String[] { "*.xml" };
-				String filterPath = "/";
-				String platform = SWT.getPlatform();
-				if (platform.equals("win32") || platform.equals("wpf")) {
-					filterPath = System.getProperty("env.CSIDL_DESKTOP");
-				}
+			setCloseActionEnabled(true);
+		}
 
-				FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-				dialog.setText("Please select XML File to save the new configuration to");
-				dialog.setFileName(ScenariosUILabels.SCENARIOS.toString() + ".xml");
-				dialog.setFilterNames(filterNames);
-				dialog.setFilterExtensions(filterExtensions);
-				dialog.setFilterPath(filterPath);
+		private void displayScenariosList(ScenariosUIController scenariosUIController) {
+			ScenariosUIActions.SCENARIOS_QUERY.getActionFor(scenariosUIController.getCurrentSelfHealingConfiguration())
+					.run();
+			ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS);
+		}
 
-				return dialog;
+		private FileDialog createFileDialog(String... replacements) {
+			Shell shell = PageHelper.getMainShell();
+
+			String[] filterNames = new String[] { "XML Files" };
+			String[] filterExtensions = new String[] { "*.xml" };
+			String filterPath = "/";
+			String platform = SWT.getPlatform();
+			if (platform.equals("win32") || platform.equals("wpf")) {
+				filterPath = System.getProperty("env.CSIDL_DESKTOP");
 			}
-		};
-	}
 
-	public String getUniqueId() {
-		return this.uniqueId;
-	}
+			FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+			dialog.setText(ScenariosUILabels.FILE_DIALOG_MESSAGE.toString(replacements));
+			dialog.setFileName(ScenariosUILabels.SCENARIOS.toString() + ".xml");
+			dialog.setFilterNames(filterNames);
+			dialog.setFilterExtensions(filterExtensions);
+			dialog.setFilterPath(filterPath);
 
-	public String getShortcut() {
-		return this.shortcut;
+			return dialog;
+		}
 	}
 }

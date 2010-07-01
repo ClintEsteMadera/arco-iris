@@ -22,12 +22,16 @@ public class SelfHealingConfiguration extends ThesisPojo {
 	private String description;
 
 	public SelfHealingConfiguration() {
-		this("", new ArrayList<SelfHealingScenario>());
+		this("", null);
 	}
 
 	public SelfHealingConfiguration(String description, List<SelfHealingScenario> scenarios) {
 		super();
 		this.description = description == null ? "" : description;
+
+		if (scenarios == null) {
+			scenarios = new ArrayList<SelfHealingScenario>();
+		}
 		this.scenarios = scenarios;
 
 		this.validate();
@@ -43,6 +47,10 @@ public class SelfHealingConfiguration extends ThesisPojo {
 
 	public void setScenarios(List<SelfHealingScenario> scenarios) {
 		this.scenarios = scenarios;
+	}
+
+	public void addScenario(SelfHealingScenario model) {
+		this.scenarios.add(model);
 	}
 
 	public void setDescription(String description) {

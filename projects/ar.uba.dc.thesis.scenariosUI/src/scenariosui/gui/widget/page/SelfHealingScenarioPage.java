@@ -35,7 +35,9 @@ public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScen
 
 		CompositeModel<SelfHealingScenario> underlyingScenario = super.getCompositeModel();
 
-		super.getModel().setId(ScenariosUIController.getNextId());
+		if (this.purpose.isCreation()) {
+			super.getModel().setId(ScenariosUIController.getInstance().getNextId());
+		}
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
 				underlyingScenario, "id"), true);

@@ -140,6 +140,8 @@ public abstract class AtamScenario extends ThesisPojo {
 	}
 
 	public void validate() {
-		// Do nothing
+		if (this.id == null) {
+			throw new RuntimeException("Self Healing Scenario's id cannot be null");
+		}
 	}
 }

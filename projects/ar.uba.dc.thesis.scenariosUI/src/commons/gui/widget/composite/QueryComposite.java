@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -39,7 +38,7 @@ import sba.common.utils.DateUtils;
 
 import commons.auth.AuthorizationHelper;
 import commons.gui.GuiStyle;
-import commons.gui.action.OpenDialogWithPropositoAction;
+import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.model.ValueHolder;
 import commons.gui.model.ValueModel;
 import commons.gui.model.bean.BeanModel;
@@ -203,8 +202,6 @@ public abstract class QueryComposite<T> extends Composite {
 			switch (queryResult.size()) {
 			case 0:
 				message = CommonMessages.QUERY_NO_RESULTS.toString();
-				// TODO: Ver si tiene sentido que se lance este pop up.
-				MessageDialog.openInformation(this.getShell(), CommonLabels.ATENTION.toString(), message);
 				break;
 			case 1:
 				message = CommonMessages.QUERY_ONLY_ONE_RESULT.toString(queryResult.size());
@@ -221,13 +218,13 @@ public abstract class QueryComposite<T> extends Composite {
 	 * Por defecto, se agregan los botones de "Edición" y "Cerrar", si es que están soportados por el QueryComposite
 	 * concreto.
 	 */
-	protected void agregarBotones() {
-		if (permiteBotonEdicion()) {
-			this.botonEdicion = agregarBoton(getEdicionAction());
-		} else if (permiteBotonVer()) {
-			this.botonVer = agregarBoton(getVerAction());
+	protected void addButtons() {
+		if (editionAllowed()) {
+			this.botonEdicion = addButton(getActionForEdit());
+		} else if (viewButtonAllowed()) {
+			this.botonVer = addButton(getActionForView());
 		}
-		if (permiteBotonCerrar()) {
+		if (closeButtonAllowed()) {
 			this.agregarBotonCerrar();
 		}
 	}
@@ -241,7 +238,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 * @return el botón recién agregado o <code>null</code> si el usuario conectado no posee permisos para efectuar la
 	 *         acción especificada por parámetro.
 	 */
-	protected final Button agregarBoton(OpenDialogWithPropositoAction action) {
+	protected final <P extends Purpose> Button addButton(OpenDialogWithPurposeAction<T, P> action) {
 		Button button = null;
 		if (getAuthorizationHelper().isUserAuthorized(action)) {
 			button = new Button(this.leftButtonBarComposite, SWT.PUSH | SWT.CENTER);
@@ -349,7 +346,8 @@ public abstract class QueryComposite<T> extends Composite {
 		};
 	}
 
-	protected SelectionListener getButtonSelectionListenerFor(final OpenDialogWithPropositoAction action) {
+	protected <P extends Purpose> SelectionListener getButtonSelectionListenerFor(
+			final OpenDialogWithPurposeAction<T, P> action) {
 		return new SelectionAdapter() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -362,10 +360,10 @@ public abstract class QueryComposite<T> extends Composite {
 	protected ISelectionChangedListener getEditButtonSelectionChangedListener() {
 		return new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				boolean hayAlgoSeleccionado = !getTable().getSelectedElements().isEmpty();
+				boolean thereIsSomethingSelected = !getTable().getSelectedElements().isEmpty();
 
-				setEnabledState(botonVer, hayAlgoSeleccionado);
-				setEnabledState(botonEdicion, hayAlgoSeleccionado);
+				setEnabledState(botonVer, thereIsSomethingSelected);
+				setEnabledState(botonEdicion, thereIsSomethingSelected);
 			}
 		};
 	}
@@ -379,9 +377,9 @@ public abstract class QueryComposite<T> extends Composite {
 	protected IDoubleClickListener getTableDoubleClickListener() {
 		return new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				if (permiteBotonEdicion()) {
+				if (editionAllowed()) {
 					botonEdicion.notifyListeners(SWT.Selection, null);
-				} else if (permiteBotonVer()) {
+				} else if (viewButtonAllowed()) {
 					botonVer.notifyListeners(SWT.Selection, null);
 				}
 			}
@@ -397,29 +395,29 @@ public abstract class QueryComposite<T> extends Composite {
 	 * Con este método se indica si se permite el botón "Editar". Esto deberá decidirlo cada una de las subclases
 	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
-	protected abstract boolean permiteBotonEdicion();
+	protected abstract boolean editionAllowed();
 
 	/**
 	 * Con este método se indica si se permite el botón "Ver". Esto deberá decidirlo cada una de las subclases
 	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
-	protected abstract boolean permiteBotonVer();
+	protected abstract boolean viewButtonAllowed();
 
 	/**
 	 * Con este método se indica si se permite el botón "Cerrar". Esto deberá decidirlo cada una de las subclases
 	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
-	protected abstract boolean permiteBotonCerrar();
+	protected abstract boolean closeButtonAllowed();
 
 	/**
 	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Editar"
 	 */
-	protected abstract OpenDialogWithPropositoAction getEdicionAction();
+	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForEdit();
 
 	/**
 	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Ver"
 	 */
-	protected abstract OpenDialogWithPropositoAction getVerAction();
+	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForView();
 
 	/**
 	 * Agrega los filtros específicos.
@@ -567,7 +565,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 		LabelFactory.createValue(this.rightButtonBarComposite, new BindingInfo(this.informationText), false);
 
-		this.agregarBotones();
+		this.addButtons();
 	}
 
 	@SuppressWarnings("unchecked")

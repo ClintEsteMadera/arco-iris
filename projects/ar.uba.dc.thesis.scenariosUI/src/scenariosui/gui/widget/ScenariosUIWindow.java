@@ -31,12 +31,12 @@ public class ScenariosUIWindow extends MainWindow {
 	}
 
 	@Override
-	protected void agregarMenuesEspecificos(MenuManager menuManager) {
+	protected void addSpecificMenus(MenuManager menuManager) {
 		// nothing for now
 	}
 
 	@Override
-	protected void addSpecificActionsToFileMenu(MenuManager fileMenu) {
+	protected void addSpecificItemsToFileMenu(MenuManager fileMenu) {
 		new SelfHealingConfigurationMenuCreator().createMenu(fileMenu);
 	}
 
@@ -89,10 +89,10 @@ public class ScenariosUIWindow extends MainWindow {
 	 * Método de conveniencia para realizar invocaciones más limpias (desde la perspectiva del usuario). Es equivalente
 	 * a invocar al método resetConsulta(TableConstants, Long) con el segundo parámetro en <code>null</code>.
 	 * 
-	 * @param nombreConsulta
+	 * @param queryName
 	 *            el nombre de la consulta. NO puede ser nulo.
 	 */
-	public void resetConsulta(TableConstants nombreConsulta) {
-		this.resetQuery(nombreConsulta, null);
+	public void resetQuery(TableConstants queryName) {
+		this.resetQuery(queryName, null);
 	}
 }

@@ -44,6 +44,7 @@ public enum CommonLabels implements EnumProperty {
 	SELECCIONAR,
 	NINGUNO,
 	SAVE,
+	LOAD,
 	LIMPIAR_FILTROS,
 	CODIGO,
 	DATOS_BASICOS,

@@ -33,10 +33,10 @@ import commons.properties.CommonLabels;
 
 public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenariosUIDialog<T> {
 
-	public BaseScenariosUIMultiPurposeDialog(T model, EnumProperty title, ScenariosUIPurpose proposito) {
-		super(model, new FakeEnumProperty(title.toString() + " - " + proposito.toString()), proposito.isReadOnly());
-		super.readOnly = this.isReadOnly(super.getModel(), proposito);
-		this.purpose = proposito;
+	public BaseScenariosUIMultiPurposeDialog(T model, EnumProperty title, ScenariosUIPurpose purpose) {
+		super(model, new FakeEnumProperty(title.toString() + " - " + purpose.toString()), purpose.isReadOnly());
+		super.readOnly = this.isReadOnly(super.getModel(), purpose);
+		this.purpose = purpose;
 	}
 
 	/**

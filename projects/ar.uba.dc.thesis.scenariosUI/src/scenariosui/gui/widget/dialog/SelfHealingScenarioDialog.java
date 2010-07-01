@@ -63,13 +63,16 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 
 	@Override
 	protected void cancelPressed() {
-		boolean deseaAbandonarCambios = true;
+		boolean abandonChanges = true;
 
 		if (this.modelDirty) {
-			deseaAbandonarCambios = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENTION.toString(),
-					"¿ Desea abandonar las modificaciones sobre el Scenario ?");
+			abandonChanges = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENTION.toString(),
+					"Do you wish to abandon the changes made to the scenario ?");
 		}
-		if (deseaAbandonarCambios) {
+		if (abandonChanges) {
+			if (this.purpose.isCreation()) {
+				ScenariosUIController.getInstance().returnRecentlyRequestedId(); // since we won't use it
+			}
 			super.cancelPressed();
 		}
 	}
@@ -79,14 +82,16 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 		boolean okStatus = false;
 		String operacion = null;
 		try {
+			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
 			switch (super.purpose) {
 			case CREATION:
 				operacion = "creado";
-				ScenariosUIController.saveSelfHealingConfiguration();
+				scenariosUIController.getCurrentSelfHealingConfiguration().addScenario(this.getModel());
+				scenariosUIController.saveSelfHealingConfiguration();
 				break;
 			case EDIT:
 				operacion = "actualizado";
-				ScenariosUIController.saveSelfHealingConfiguration();
+				scenariosUIController.saveSelfHealingConfiguration();
 				break;
 			default:
 				throw new RuntimeException("Se utilizó un Propósito no contemplado!!");
