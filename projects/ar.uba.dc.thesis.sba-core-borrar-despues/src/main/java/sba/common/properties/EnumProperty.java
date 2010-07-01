@@ -35,7 +35,7 @@ public interface EnumProperty extends Serializable {
 	 * Ver {@link Object#toString()}
 	 * @return el valor de la propiedad RESUELTO con los reemplazos hechos(i.e. listo para ser usado)
 	 */
-	public String toString(Object... reemplazos);
+	public <T> String toString(T... replacements);
 
 	/**
 	 * Ver {@link Enum#name()}

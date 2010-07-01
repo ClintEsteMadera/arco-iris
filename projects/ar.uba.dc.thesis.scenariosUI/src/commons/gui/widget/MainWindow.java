@@ -5,6 +5,9 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.PreferencePage;
@@ -66,23 +69,25 @@ public abstract class MainWindow extends ApplicationWindow {
 	@Override
 	protected MenuManager createMenuManager() {
 		MenuManager menuManager = new MenuManager();
-		agregarMenuArchivo(menuManager);
-		agregarMenuesEspecificos(menuManager);
-		agregarMenuAyuda(menuManager);
+		addFileMenu(menuManager);
+		addSpecificMenus(menuManager);
+		addHelpMenu(menuManager);
 
 		return menuManager;
 	}
 
-	private void agregarMenuArchivo(MenuManager menuManager) {
-		MenuManager fileMenu = new MenuManager(CommonLabels.MENU_FILE.toString());
+	private void addFileMenu(MenuManager menuManager) {
+		String menuId = CommonLabels.MENU_FILE.toString();
+		MenuManager fileMenu = new MenuManager(menuId, menuId);
 		menuManager.add(fileMenu);
-		addSpecificActionsToFileMenu(fileMenu);
+		addSpecificItemsToFileMenu(fileMenu);
 		fileMenu.add(new ChangePwdAction(getAuthenticationHelper()));
 		fileMenu.add(new ExitAction());
 	}
 
-	private void agregarMenuAyuda(MenuManager menuManager) {
-		MenuManager helpMenu = new MenuManager(CommonLabels.MENU_HELP.toString());
+	private void addHelpMenu(MenuManager menuManager) {
+		String menuId = CommonLabels.MENU_HELP.toString();
+		MenuManager helpMenu = new MenuManager(menuId, menuId);
 		menuManager.add(helpMenu);
 		helpMenu.add(new HelpAction());
 		helpMenu.add(SEPARATOR);
@@ -95,7 +100,7 @@ public abstract class MainWindow extends ApplicationWindow {
 	 * @param menuManager
 	 *            el objeto menuManager sobre el cual crear los menúes.
 	 */
-	protected abstract void agregarMenuesEspecificos(MenuManager menuManager);
+	protected abstract void addSpecificMenus(MenuManager menuManager);
 
 	/**
 	 * This method allow the concrete application to add one or more actions within the "File" menu.
@@ -103,7 +108,7 @@ public abstract class MainWindow extends ApplicationWindow {
 	 * @param fileMenu
 	 *            the menu where to add action(s)
 	 */
-	protected abstract void addSpecificActionsToFileMenu(MenuManager fileMenu);
+	protected abstract void addSpecificItemsToFileMenu(MenuManager fileMenu);
 
 	public CTabItem getTabItem(EnumProperty tabItemText) {
 		CTabItem tabItem = null;
@@ -115,6 +120,19 @@ public abstract class MainWindow extends ApplicationWindow {
 			}
 		}
 		return tabItem;
+	}
+
+	public IAction getMenuItem(String itemId, EnumProperty... menuNames) {
+		StringBuilder sb = new StringBuilder();
+		for (EnumProperty menuName : menuNames) {
+			sb.append(menuName.toString()).append("/");
+		}
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1); // delete the extra slash
+		}
+		IMenuManager specificMenu = this.getMenuBarManager().findMenuUsingPath(sb.toString());
+
+		return ((ActionContributionItem) specificMenu.find(itemId)).getAction();
 	}
 
 	@Override

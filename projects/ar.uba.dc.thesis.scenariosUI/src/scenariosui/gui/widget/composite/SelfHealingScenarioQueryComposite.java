@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -12,20 +11,19 @@ import org.eclipse.swt.widgets.Group;
 import sba.common.query.BaseCriterio;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.SelfHealingScenarioSearchCriteria;
-import scenariosui.gui.widget.ScenariosUIWindow;
+import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
-import commons.gui.action.OpenDialogWithPropositoAction;
+import commons.gui.action.OpenDialogWithPurposeAction;
+import commons.gui.util.PageHelper;
 import commons.gui.widget.composite.QueryComposite;
 
 public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealingScenario> {
 
-	private Button newButton;
-
 	public SelfHealingScenarioQueryComposite() {
-		this(ScenariosUIWindow.getInstance().mainTabFolder, new SelfHealingScenarioSearchCriteria());
+		this(PageHelper.getMainWindow().mainTabFolder, new SelfHealingScenarioSearchCriteria());
 	}
 
 	public SelfHealingScenarioQueryComposite(Composite parent, BaseCriterio criterioBusqueda) {
@@ -39,13 +37,17 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 
 	@Override
 	protected List<SelfHealingScenario> executeQuery() {
-		return ScenariosUIController.getCurrentSelfHealingConfiguration().getScenarios();
+		return ScenariosUIController.getInstance().getCurrentSelfHealingConfiguration().getScenarios();
 	}
 
 	@Override
-	protected OpenDialogWithPropositoAction getEdicionAction() {
-		// TODO Implement me!
-		return null;
+	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForEdit() {
+		return ScenariosUIActions.EDIT_SELF_HEALING_SCENARIO;
+	}
+
+	@Override
+	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForView() {
+		return ScenariosUIActions.VIEW_SELF_HEALING_SCENARIO;
 	}
 
 	@Override
@@ -60,29 +62,23 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 	}
 
 	@Override
-	protected OpenDialogWithPropositoAction getVerAction() {
-		// TODO Implement me!
-		return null;
+	protected boolean closeButtonAllowed() {
+		return true;
 	}
 
 	@Override
-	protected boolean permiteBotonCerrar() {
-		return false;
+	protected boolean editionAllowed() {
+		return true;
 	}
 
 	@Override
-	protected boolean permiteBotonEdicion() {
-		return false;
+	protected boolean viewButtonAllowed() {
+		return true;
 	}
 
 	@Override
-	protected boolean permiteBotonVer() {
-		return false;
-	}
-
-	@Override
-	protected void agregarBotones() {
-		super.agregarBotones();
-		super.agregarBoton(ScenariosUIActions.NEW_SELF_HEALING_SCENARIO);
+	protected void addButtons() {
+		super.addButtons();
+		super.addButton(ScenariosUIActions.NEW_SELF_HEALING_SCENARIO);
 	}
 }

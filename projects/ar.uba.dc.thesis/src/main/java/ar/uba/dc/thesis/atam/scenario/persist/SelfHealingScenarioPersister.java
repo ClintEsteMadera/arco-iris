@@ -2,12 +2,14 @@ package ar.uba.dc.thesis.atam.scenario.persist;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
+import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
@@ -32,6 +34,11 @@ public class SelfHealingScenarioPersister {
 			SelfHealingConfiguration scenariosLoadedFromXML = (SelfHealingConfiguration) this.xstream
 					.fromXML(scenariosInXml);
 			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
+
+			// this is important in order to hold the invariant of never having a null list of scenarios
+			if (scenariosLoadedFromXML.getScenarios() == null) {
+				scenariosLoadedFromXML.setScenarios(new ArrayList<SelfHealingScenario>());
+			}
 
 			return scenariosLoadedFromXML;
 		} catch (IOException e) {

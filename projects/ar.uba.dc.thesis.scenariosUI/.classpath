@@ -22,6 +22,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/oc4jclient-1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/swt_jface/forms.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar" sourcepath="lib/lib-src/commons-lang-2.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar" sourcepath="lib/lib-src/commons-collections-3.2.1-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/ejb-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/framework_app-1.0.jar"/>

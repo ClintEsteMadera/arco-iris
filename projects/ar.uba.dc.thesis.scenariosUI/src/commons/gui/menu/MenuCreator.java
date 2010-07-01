@@ -38,15 +38,21 @@ public abstract class MenuCreator {
 
 	@SuppressWarnings("unchecked")
 	protected void addMenuItem(MenuManager menu, Object menutext, GuiAction guiAction) {
+		this.addMenuItem(menu, menutext, guiAction, true);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void addMenuItem(MenuManager menu, Object menutext, GuiAction guiAction, boolean enabled) {
 		if (PageHelper.getMainWindow().getAuthorizationHelper().isUserAuthorized(guiAction)) {
 			Action action = guiAction.getActionFor(null); // no se dispone del modelo todavía
+			action.setEnabled(enabled);
 			action.setText(menutext.toString() + "@" + guiAction.getShortcut());
 			menu.add(action);
 		}
 	}
 
 	protected MenuManager addSubmenu(MenuManager parent, EnumProperty label) {
-		MenuManager menu = new MenuManager(label.toString());
+		MenuManager menu = new MenuManager(label.toString(), label.toString());
 		parent.add(menu);
 		return menu;
 	}

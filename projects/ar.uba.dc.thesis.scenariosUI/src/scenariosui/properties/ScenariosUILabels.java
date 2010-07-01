@@ -21,14 +21,15 @@ public enum ScenariosUILabels implements EnumProperty {
 	ARTIFACT,
 	RESPONSE,
 	ENABLED,
-	PRIORITY;
+	PRIORITY,
+	FILE_DIALOG_MESSAGE;
 
 	@Override
 	public String toString() {
 		return EnumPropertiesHelper.getString(scenariosUILabels, this.name());
 	}
 
-	public String toString(Object... replacements) {
+	public <T> String toString(T... replacements) {
 		return EnumPropertiesHelper.getString(scenariosUILabels, this.name(), replacements);
 	}
 
