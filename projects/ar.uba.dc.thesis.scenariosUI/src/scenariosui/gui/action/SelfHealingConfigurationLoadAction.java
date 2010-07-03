@@ -42,10 +42,16 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 			if (createNewConfig) {
 				FileDialog dialog = this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase());
 				String xmlFilePath = dialog.open();
+				if (xmlFilePath == null) {
+					return;
+				}
 				scenariosUIController.newSelfHealingConfiguration(xmlFilePath);
 			} else {
 				FileDialog dialog = this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase());
 				String xmlFilePath = dialog.open();
+				if (xmlFilePath == null) {
+					return;
+				}
 				scenariosUIController.openSelfHealingConfiguration(xmlFilePath);
 			}
 

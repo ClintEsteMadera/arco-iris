@@ -36,8 +36,17 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 	}
 
 	@Override
+	// FIXME workaround para que el update de scenarios se refleje correctamente en la tabla
 	protected List<SelfHealingScenario> executeQuery() {
-		return ScenariosUIController.getInstance().getCurrentSelfHealingConfiguration().getScenarios();
+		ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
+
+		if (this.getCriterio().getId() == null) {
+			return scenariosUIController.getCurrentSelfHealingConfiguration().getScenarios();
+		} else {
+			SelfHealingScenario scenario = scenariosUIController.findSelfHealingScenario(this.getCriterio().getId());
+			this.getCriterio().setId(null);
+			return Collections.singletonList(scenario);
+		}
 	}
 
 	@Override
