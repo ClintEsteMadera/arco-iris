@@ -18,10 +18,10 @@ package commons.gui.widget.creation.metainfo;
 
 import org.eclipse.swt.widgets.Composite;
 
-import sba.common.datetime.Hora;
-import sba.common.properties.EnumProperty;
 
+import commons.datetime.Hora;
 import commons.gui.widget.creation.binding.Binding;
+import commons.properties.EnumProperty;
 
 /**
  * @author Jonathan Chiocchio

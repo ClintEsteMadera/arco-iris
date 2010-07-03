@@ -33,10 +33,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.utils.DateUtils;
-import sba.common.validation.string.CharacterSet;
-import sba.common.validation.string.CompoundCharacterSet;
-import sba.common.validation.string.LiteralCharacterSet;
 
 import commons.gui.GuiStyle;
 import commons.gui.model.types.StringConfiguration;
@@ -46,6 +42,10 @@ import commons.gui.swt.text.StringTextFilter;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.dialog.SWTCalendarDialog;
 import commons.gui.widget.factory.LabelFactory;
+import commons.utils.DateUtils;
+import commons.validation.string.CharacterSet;
+import commons.validation.string.CompoundCharacterSet;
+import commons.validation.string.LiteralCharacterSet;
 
 /**
  * Modela un calendario.

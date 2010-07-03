@@ -1,8 +1,8 @@
 package commons.gui.model.types;
 
-import sba.common.validation.StringConstraints;
-import sba.common.validation.string.CharacterSet;
-import sba.common.validation.string.LiteralCharacterSet;
+import commons.validation.StringConstraints;
+import commons.validation.string.CharacterSet;
+import commons.validation.string.LiteralCharacterSet;
 
 /**
  * Parametros par la edicion de Strings.

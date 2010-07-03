@@ -1,6 +1,6 @@
 package commons.gui.util.purpose;
 
-import sba.common.properties.EnumProperty;
+import commons.properties.EnumProperty;
 
 public interface Purpose {
 

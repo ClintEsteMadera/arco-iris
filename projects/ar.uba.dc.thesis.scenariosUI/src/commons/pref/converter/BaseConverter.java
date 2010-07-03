@@ -16,13 +16,13 @@
 
 package commons.pref.converter;
 
-import sba.common.properties.EnumProperty;
-import sba.common.properties.EnumPropertyDirectory;
-import sba.common.properties.FakeEnumProperty;
 
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 
 import commons.gui.util.PageHelper;
+import commons.properties.EnumProperty;
+import commons.properties.EnumPropertyDirectory;
+import commons.properties.FakeEnumProperty;
 
 /**
  * Provee comportamiento común.

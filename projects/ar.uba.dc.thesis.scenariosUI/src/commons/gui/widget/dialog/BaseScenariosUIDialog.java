@@ -17,12 +17,12 @@ package commons.gui.widget.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.model.CompositeModel;
 import commons.gui.model.bean.BeanModel;
 import commons.gui.widget.dialog.BasePreferenceDialog;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
 
 /**
  * @author Jonathan Chiocchio

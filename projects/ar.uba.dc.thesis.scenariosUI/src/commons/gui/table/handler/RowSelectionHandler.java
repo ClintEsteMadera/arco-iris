@@ -3,10 +3,10 @@ package commons.gui.table.handler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sba.common.utils.ClassUtils;
 
 import commons.gui.Openable;
 import commons.gui.command.RowSelectionHandlerCommand;
+import commons.utils.ClassUtils;
 
 public class RowSelectionHandler<T extends Object, COMMAND extends RowSelectionHandlerCommand<T>> {
 

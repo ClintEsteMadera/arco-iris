@@ -3,11 +3,11 @@ package commons.gui.table;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import sba.common.utils.ClassUtils;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 
 import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.dialog.OpenableTrayDialog;
+import commons.utils.ClassUtils;
 
 /**
  * Handler generico que crea un dialogo por reflection cada vez que se invoca.

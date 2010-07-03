@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
-import sba.common.query.BaseCriterio;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.SelfHealingScenarioSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
@@ -19,6 +18,7 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.composite.QueryComposite;
+import commons.query.BaseCriterio;
 
 public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealingScenario> {
 

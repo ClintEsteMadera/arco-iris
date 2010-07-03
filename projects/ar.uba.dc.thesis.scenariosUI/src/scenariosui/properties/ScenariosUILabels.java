@@ -2,8 +2,9 @@ package scenariosui.properties;
 
 import java.util.ResourceBundle;
 
-import sba.common.properties.EnumPropertiesHelper;
-import sba.common.properties.EnumProperty;
+import commons.properties.EnumPropertiesHelper;
+import commons.properties.EnumProperty;
+
 
 public enum ScenariosUILabels implements EnumProperty {
 	SELF_HEALING_CONFIG,

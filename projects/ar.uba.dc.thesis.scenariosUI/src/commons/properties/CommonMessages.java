@@ -2,8 +2,6 @@ package commons.properties;
 
 import java.util.ResourceBundle;
 
-import sba.common.properties.EnumPropertiesHelper;
-import sba.common.properties.EnumProperty;
 
 public enum CommonMessages implements EnumProperty {
 

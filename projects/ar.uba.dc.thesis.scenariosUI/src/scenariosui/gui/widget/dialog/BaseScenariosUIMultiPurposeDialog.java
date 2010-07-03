@@ -16,12 +16,12 @@
 
 package scenariosui.gui.widget.dialog;
 
-import sba.common.properties.EnumProperty;
-import sba.common.properties.FakeEnumProperty;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 
 import commons.gui.widget.dialog.BaseScenariosUIDialog;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
+import commons.properties.FakeEnumProperty;
 
 /**
  * Modela un diálogo básico dónde se puede saber si el mismo corresponde a un diálogo de Alta, Edición u otro tipo ,

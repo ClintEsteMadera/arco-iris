@@ -21,11 +21,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.Binding;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
 
 /**
  * @author Gabriel Tursi

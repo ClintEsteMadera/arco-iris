@@ -2,8 +2,9 @@ package scenariosui.properties;
 
 import java.util.Properties;
 
-import sba.common.properties.EnumPropertiesHelper;
-import sba.common.properties.EnumProperty;
+import commons.properties.EnumPropertiesHelper;
+import commons.properties.EnumProperty;
+
 
 /**
  * These names will be used in the preferences xml file.

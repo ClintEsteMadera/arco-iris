@@ -22,7 +22,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sba.common.properties.EnumProperty;
+import commons.properties.EnumProperty;
+
 
 /**
  * Crea un composite en un area de texto, defeiniendo el titulo del grupo y las columnas que

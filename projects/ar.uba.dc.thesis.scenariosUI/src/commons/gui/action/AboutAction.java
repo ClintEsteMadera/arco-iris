@@ -5,8 +5,8 @@ import java.text.MessageFormat;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 
-import sba.common.properties.CommonConstants;
 
+import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 import commons.properties.CommonTooltips;
 

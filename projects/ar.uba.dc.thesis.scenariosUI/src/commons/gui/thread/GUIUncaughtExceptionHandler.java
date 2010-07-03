@@ -22,8 +22,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.dialogs.MessageDialog;
 
-import sba.common.exception.ValidationException;
 
+import commons.exception.ValidationException;
 import commons.gui.background.BackgroundInvocationException;
 import commons.gui.model.validation.ValidationSource;
 import commons.gui.util.PageHelper;

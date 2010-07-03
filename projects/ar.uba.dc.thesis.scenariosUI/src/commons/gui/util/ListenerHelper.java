@@ -34,11 +34,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.utils.ClassUtils;
-import sba.common.utils.SbaStringUtils;
 
 import commons.gui.GuiStyle;
 import commons.gui.validators.Validations;
+import commons.utils.ClassUtils;
+import commons.utils.SbaStringUtils;
 
 /**
  * @author Jonathan Chiocchio

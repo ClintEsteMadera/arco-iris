@@ -23,7 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 
-import sba.common.validation.string.CharacterSet;
+import commons.validation.string.CharacterSet;
+
 
 /**
  * 

@@ -21,8 +21,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import sba.common.exception.ValidationException;
-import sba.common.validation.EMailValidator;
+import commons.exception.ValidationException;
+import commons.validation.EMailValidator;
+
 
 /**
  *

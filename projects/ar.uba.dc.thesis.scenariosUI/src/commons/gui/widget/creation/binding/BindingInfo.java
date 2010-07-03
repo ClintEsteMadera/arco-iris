@@ -13,7 +13,6 @@
 
 package commons.gui.widget.creation.binding;
 
-import sba.common.utils.ClassUtils;
 
 import commons.gui.model.CompositeModel;
 import commons.gui.model.CompositeModelAdapter;
@@ -21,6 +20,7 @@ import commons.gui.model.ValueModel;
 import commons.gui.model.binding.ValueBinding;
 import commons.gui.model.binding.ValueBindingManager;
 import commons.gui.model.binding.ValueBindingUpdateListener;
+import commons.utils.ClassUtils;
 
 /**
  * @author Jonathan Chiocchio

@@ -11,8 +11,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.properties.EnumProperty;
-import sba.common.utils.SbaStringUtils;
 
 import commons.gui.GuiStyle;
 import commons.gui.model.ComplexModel;
@@ -30,6 +28,8 @@ import commons.gui.widget.creation.binding.Binding;
 import commons.gui.widget.creation.binding.FakeBinding;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
+import commons.utils.SbaStringUtils;
 
 public abstract class TextFactory {
 

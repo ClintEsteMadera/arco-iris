@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import sba.common.core.BaseSystemConfiguration;
+import commons.core.BaseSystemConfiguration;
 
 /**
  * @author Jonathan Chiocchio
@@ -46,7 +46,7 @@ public abstract class BaseApplicationContext extends ClassPathXmlApplicationCont
 	 * Provee la configuración del sistema concreta de la aplicación.
 	 */
 	public abstract BaseSystemConfiguration getSystemConfiguration();
-	
+
 	/**
 	 * Las subclases deben completar estáticamente esta lista con sus location particulares.
 	 */

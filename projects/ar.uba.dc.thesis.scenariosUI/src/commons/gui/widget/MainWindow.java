@@ -26,10 +26,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import sba.common.core.BaseSystemConfiguration;
-import sba.common.properties.CommonConstants;
-import sba.common.properties.EnumProperty;
-import sba.common.properties.EnumPropertyDirectory;
 import sba.common.session.SessionHelper;
 
 import commons.auth.AuthenticationHelper;
@@ -37,6 +33,7 @@ import commons.auth.AuthorizationHelper;
 import commons.auth.DummyAuthenticationHelper;
 import commons.auth.DummyAuthorizationHelper;
 import commons.context.BaseApplicationContext;
+import commons.core.BaseSystemConfiguration;
 import commons.gui.action.AboutAction;
 import commons.gui.action.ChangePwdAction;
 import commons.gui.action.ExitAction;
@@ -45,7 +42,10 @@ import commons.gui.thread.GUIUncaughtExceptionHandler;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.dialog.LoginDialog;
 import commons.pref.PreferencesManager;
+import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
+import commons.properties.EnumPropertyDirectory;
 
 public abstract class MainWindow extends ApplicationWindow {
 

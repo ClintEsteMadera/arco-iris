@@ -30,12 +30,12 @@ import org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBe
 import org.springframework.jndi.JndiTemplate;
 
 import sba.common.dao.DataIterator;
-import sba.common.exception.ApplicationException;
 import sba.common.security.exception.AuthenticationException;
 import sba.common.session.SessionHelper;
 import cajval.usuarios.service.ejb.ServiciosUsuariosRemote;
 import cajval.usuarios.service.to.RolTO;
 
+import commons.exception.ApplicationException;
 import commons.gui.widget.dialog.ChangePwdDialog;
 import commons.gui.widget.dialog.InternalErrorDialog;
 

@@ -18,12 +18,12 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.widgets.TableColumn;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.Alignment;
 import commons.pref.PreferencesManager;
 import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.TableInfo;
+import commons.properties.EnumProperty;
 
 /**
  * @author Margarita Buriano

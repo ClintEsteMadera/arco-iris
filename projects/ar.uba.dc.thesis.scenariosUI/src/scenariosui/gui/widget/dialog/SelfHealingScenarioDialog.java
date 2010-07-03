@@ -18,9 +18,6 @@ package scenariosui.gui.widget.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
-import sba.common.exception.ApplicationException;
-import sba.common.exception.ServiceException;
-import sba.common.properties.EnumProperty;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.gui.widget.ScenariosUIWindow;
 import scenariosui.gui.widget.page.SelfHealingScenarioPage;
@@ -29,10 +26,13 @@ import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
+import commons.exception.ApplicationException;
+import commons.exception.ServiceException;
 import commons.gui.background.BackgroundInvocationException;
 import commons.gui.model.ComplexValueChangeEvent;
 import commons.gui.model.ComplexValueChangeListener;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
 import commons.properties.Messages;
 
 public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealingScenario> {

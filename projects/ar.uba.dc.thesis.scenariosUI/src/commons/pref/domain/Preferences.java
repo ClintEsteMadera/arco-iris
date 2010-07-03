@@ -16,7 +16,7 @@
 
 package commons.pref.domain;
 
-import sba.common.properties.EnumProperty;
+import commons.properties.EnumProperty;
 
 /**
  * Modela las preferencias visuales del usuario.<br>

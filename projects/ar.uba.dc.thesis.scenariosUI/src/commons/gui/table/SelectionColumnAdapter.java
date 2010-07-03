@@ -18,10 +18,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.TableColumn;
 
-import sba.common.properties.EnumProperty;
 
 import commons.pref.PreferencesManager;
 import commons.pref.domain.TableInfo;
+import commons.properties.EnumProperty;
 
 /**
  * @version $Revision: 1.4 $ $Date: 2008/02/05 16:05:15 $

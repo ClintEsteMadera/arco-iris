@@ -1,8 +1,8 @@
 package commons.pref;
 
-import sba.common.properties.EnumProperty;
 import commons.pref.domain.Preferences;
 import commons.pref.domain.TableInfo;
+import commons.properties.EnumProperty;
 
 
 /**

@@ -18,7 +18,6 @@ package commons.gui.widget.factory;
 
 import org.eclipse.swt.widgets.Control;
 
-import sba.common.utils.ClassUtils;
 
 import commons.gui.model.types.EditConfiguration;
 import commons.gui.model.types.EditConfigurationManager;
@@ -27,6 +26,7 @@ import commons.gui.model.types.EnumConfiguration;
 import commons.gui.widget.RadioButtonGroup;
 import commons.gui.widget.creation.binding.Binding;
 import commons.gui.widget.creation.metainfo.RadioButtonMetainfo;
+import commons.utils.ClassUtils;
 
 /**
  * @author Jonathan Chiocchio

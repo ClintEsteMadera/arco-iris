@@ -13,11 +13,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import sba.common.core.Predicate;
-import sba.common.utils.Clonator;
-
+import commons.core.Predicate;
 import commons.gui.model.collection.ListValueModel;
 import commons.gui.widget.composite.SimpleComposite;
+import commons.utils.Clonator;
 
 /**
  * Composite que contiene una tabla y los controles para editarla.
@@ -46,14 +45,14 @@ public class CrudTableComposite extends SimpleComposite {
 
 	@SuppressWarnings("unchecked")
 	public CrudTableComposite(TableMetainfo metainfo, Class editDialogClass, int buttonFlags) {
-		this(metainfo, new GenericEditHandler(metainfo.parent.getShell(), editDialogClass,
-				metainfo.itemClass), buttonFlags);
+		this(metainfo, new GenericEditHandler(metainfo.parent.getShell(), editDialogClass, metainfo.itemClass),
+				buttonFlags);
 	}
 
 	@SuppressWarnings("unchecked")
 	public CrudTableComposite(TableMetainfo metainfo, Class editDialogClass) {
-		this(metainfo, new GenericEditHandler(metainfo.parent.getShell(), editDialogClass,
-				metainfo.itemClass), DEFAULT_BUTTONS);
+		this(metainfo, new GenericEditHandler(metainfo.parent.getShell(), editDialogClass, metainfo.itemClass),
+				DEFAULT_BUTTONS);
 	}
 
 	public CrudTableComposite(TableMetainfo metainfo, EditHandler handler, int buttonFlags) {
@@ -130,8 +129,7 @@ public class CrudTableComposite extends SimpleComposite {
 		};
 	}
 
-	protected void createButtonBarAndListeners(Composite parent, EditHandler rowSelectionHandler,
-			int buttonFlags) {
+	protected void createButtonBarAndListeners(Composite parent, EditHandler rowSelectionHandler, int buttonFlags) {
 
 		if ((buttonFlags & ADD_BUTTON) != 0) {
 			addButton = createButton("Agregar", "Agregar nuevo", Predicate.TRUE);
@@ -146,8 +144,7 @@ public class CrudTableComposite extends SimpleComposite {
 			editButton.addSelectionListener(getEditButtonListener(rowSelectionHandler));
 		}
 		if ((buttonFlags & REMOVE_BUTTON) != 0) {
-			deleteButton = createButton("Eliminar", "Eliminar item seleccionado",
-					Predicate.NOT_NULL);
+			deleteButton = createButton("Eliminar", "Eliminar item seleccionado", Predicate.NOT_NULL);
 			deleteButton.addSelectionListener(getDeleteButtonListener(parent, rowSelectionHandler));
 		}
 
@@ -169,16 +166,15 @@ public class CrudTableComposite extends SimpleComposite {
 		int modelIndex = model.indexOf(item);
 
 		if (modelIndex < 0) {
-			throw new IllegalStateException("No se encontro el elemento '" + item
-					+ "' en el modelo");
+			throw new IllegalStateException("No se encontro el elemento '" + item + "' en el modelo");
 		}
 
 		final Object clonedItem = Clonator.clone(item);
 
 		if (handler.handleUpdate(clonedItem, selectedIndex)) {
-			
-			int i=updateItem(model, modelIndex, selectedIndex, clonedItem);
-			
+
+			int i = updateItem(model, modelIndex, selectedIndex, clonedItem);
+
 			table.getTable().select(i);
 
 			// refresh de la seleccion
@@ -218,8 +214,7 @@ public class CrudTableComposite extends SimpleComposite {
 		return buttonsComposite;
 	}
 
-	protected IDoubleClickListener getReadOnlyDoubleClickListener(
-			final EditHandler rowSelectionHandler) {
+	protected IDoubleClickListener getReadOnlyDoubleClickListener(final EditHandler rowSelectionHandler) {
 		return new IDoubleClickListener() {
 			@SuppressWarnings("unchecked")
 			public void doubleClick(DoubleClickEvent event) {
@@ -228,8 +223,7 @@ public class CrudTableComposite extends SimpleComposite {
 		};
 	}
 
-	protected SelectionAdapter getAddButtonListener(final EditHandler handler,
-			final boolean addAtEnd) {
+	protected SelectionAdapter getAddButtonListener(final EditHandler handler, final boolean addAtEnd) {
 		return new SelectionAdapter() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -269,8 +263,7 @@ public class CrudTableComposite extends SimpleComposite {
 		};
 	}
 
-	protected SelectionAdapter getDeleteButtonListener(final Composite parent,
-			final EditHandler handler) {
+	protected SelectionAdapter getDeleteButtonListener(final Composite parent, final EditHandler handler) {
 		return new SelectionAdapter() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -292,15 +285,13 @@ public class CrudTableComposite extends SimpleComposite {
 		final int modelIndex = model.indexOf(item);
 
 		if (modelIndex < 0) {
-			throw new IllegalStateException("No se encontro el elemento '" + item
-					+ "' en el modelo");
+			throw new IllegalStateException("No se encontro el elemento '" + item + "' en el modelo");
 		}
 
 		if (handler.handleDelete(item, index)) {
 			removeItem(model, modelIndex, item);
 
-			index = (index < table.getTable().getItemCount()) ? index : table.getTable()
-					.getItemCount() - 1;
+			index = (index < table.getTable().getItemCount()) ? index : table.getTable().getItemCount() - 1;
 			if (index != -1) {
 				table.getTable().select(index);
 			}

@@ -5,7 +5,8 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import sba.common.validation.NumericConstraints;
+import commons.validation.NumericConstraints;
+
 
 /**
  * Parametros para la edicion de numeros.

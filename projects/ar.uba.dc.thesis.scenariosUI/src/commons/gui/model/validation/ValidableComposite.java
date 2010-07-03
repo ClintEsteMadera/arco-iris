@@ -23,7 +23,8 @@ import java.util.List;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import sba.common.validation.ValidationError;
+import commons.validation.ValidationError;
+
 
 /**
  * Wrapper para mostrar los errores de validación en un control visual

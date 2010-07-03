@@ -4,13 +4,13 @@ import java.util.Calendar;
 
 import org.eclipse.swt.widgets.DateTime;
 
-import sba.common.utils.DateUtils;
 
 import commons.gui.model.ValueModel;
 import commons.gui.model.binding.ValueBinding;
 import commons.gui.model.binding.ValueBindingUpdateEvent;
 import commons.gui.model.binding.ValueBindingUpdateListener;
 import commons.gui.model.binding.ValueModelAdapterBindingFactory;
+import commons.utils.DateUtils;
 
 public class DateTimeBindingFactory extends ValueModelAdapterBindingFactory {
 

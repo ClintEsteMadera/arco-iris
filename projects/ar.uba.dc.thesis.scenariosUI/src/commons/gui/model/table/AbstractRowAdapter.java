@@ -2,12 +2,12 @@ package commons.gui.model.table;
 
 import java.util.Arrays;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.model.types.EditConfigurationManager;
 import commons.pref.PreferencesManager;
 import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.TableInfo;
+import commons.properties.EnumProperty;
 
 /**
  * Clase base para la implementación de {@link sba.ui.model.table.TableRowAdapter}

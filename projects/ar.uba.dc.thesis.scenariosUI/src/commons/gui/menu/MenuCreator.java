@@ -19,10 +19,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.action.GuiAction;
 import commons.gui.util.PageHelper;
+import commons.properties.EnumProperty;
 
 /**
  * @author Gabriel Tursi

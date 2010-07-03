@@ -22,12 +22,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import sba.common.properties.EnumProperty;
-import sba.common.properties.FakeEnumProperty;
 
 import commons.gui.widget.creation.binding.FakeBinding;
 import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 import commons.gui.widget.factory.BooleanFactory;
+import commons.properties.EnumProperty;
+import commons.properties.FakeEnumProperty;
 
 /**
  * Modela un grupo con checkboxs.

@@ -22,9 +22,9 @@ import java.util.List;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.widgets.Composite;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.creation.binding.Binding;
+import commons.properties.EnumProperty;
 
 /**
  * @author Jonathan Chiocchio

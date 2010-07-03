@@ -31,10 +31,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.properties.EnumProperty;
-import sba.common.query.BaseCriterio;
-import sba.common.utils.ClassUtils;
-import sba.common.utils.DateUtils;
 
 import commons.auth.AuthorizationHelper;
 import commons.gui.GuiStyle;
@@ -61,6 +57,10 @@ import commons.gui.widget.group.SimpleGroup;
 import commons.gui.widget.group.query.FilterButtonsGroup;
 import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
+import commons.properties.EnumProperty;
+import commons.query.BaseCriterio;
+import commons.utils.ClassUtils;
+import commons.utils.DateUtils;
 
 /**
  * Composite base para todas las consultas que tengan un filtro sobre lo consultado y acciones a realizar sobre los

@@ -2,7 +2,8 @@ package commons.gui.model.types;
 
 import java.text.Format;
 
-import sba.common.utils.ConversionUtilities;
+import commons.utils.ConversionUtilities;
+
 
 
 /**

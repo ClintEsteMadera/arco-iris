@@ -17,9 +17,9 @@ package commons.gui.widget.creation.metainfo;
 
 import org.eclipse.swt.widgets.Composite;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.creation.binding.Binding;
+import commons.properties.EnumProperty;
 
 /**
  * Meta-información necesaria para la creación de un campo booleano
