@@ -11,13 +11,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Widget;
 
-import sba.common.utils.DateUtils;
 
 import commons.gui.model.ValueChangeEvent;
 import commons.gui.model.ValueChangeListener;
 import commons.gui.model.ValueModel;
 import commons.gui.model.binding.WidgetContainer;
 import commons.gui.model.types.EditType;
+import commons.utils.DateUtils;
 
 /**
  * Clase utilizada internamente para el binding de un DateTime

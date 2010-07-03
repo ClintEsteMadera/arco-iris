@@ -3,7 +3,6 @@ package scenariosui.gui.widget.page;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sba.common.properties.EnumProperty;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.service.ScenariosUIController;
@@ -19,6 +18,7 @@ import commons.gui.widget.factory.ComboFactory;
 import commons.gui.widget.factory.TextFactory;
 import commons.gui.widget.group.SimpleGroup;
 import commons.gui.widget.page.BasePreferencesPage;
+import commons.properties.EnumProperty;
 
 public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScenario> {
 

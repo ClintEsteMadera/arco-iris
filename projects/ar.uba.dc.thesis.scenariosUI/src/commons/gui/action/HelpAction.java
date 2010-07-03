@@ -3,9 +3,9 @@ package commons.gui.action;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import sba.common.properties.CommonConstants;
 
 import commons.gui.browser.BaseBrowser;
+import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 import commons.properties.CommonTooltips;
 

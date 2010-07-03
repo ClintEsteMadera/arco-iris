@@ -2,7 +2,8 @@ package commons.gui.model;
 
 import java.util.Iterator;
 
-import sba.common.dataestructures.LazyList;
+import commons.dataestructures.LazyList;
+
 
 
 /**

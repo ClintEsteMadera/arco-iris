@@ -3,11 +3,11 @@ package scenariosui.gui.action;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 
-import sba.common.properties.EnumProperty;
 import scenariosui.gui.widget.ScenariosUIWindow;
 
 import commons.gui.action.QueryAction;
 import commons.gui.widget.composite.QueryComposite;
+import commons.properties.EnumProperty;
 
 /**
  * @author Jonathan Chiocchio

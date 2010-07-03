@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import sba.common.core.BaseSystemConfiguration;
+import commons.core.BaseSystemConfiguration;
 
 public class ScenariosUISystemConfiguration extends BaseSystemConfiguration {
 

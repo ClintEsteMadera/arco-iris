@@ -19,16 +19,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.springframework.util.Assert;
 
-import sba.common.exception.ValidationException;
-import sba.common.properties.EnumProperty;
-import sba.common.properties.FakeEnumProperty;
 import sba.common.session.SessionHelper;
-import sba.common.validation.ValidationError;
 
 import commons.auth.AuthenticationHelper;
+import commons.exception.ValidationException;
 import commons.gui.GuiStyle;
 import commons.gui.widget.factory.LabelFactory;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
+import commons.properties.FakeEnumProperty;
+import commons.validation.ValidationError;
 
 public class ChangePwdDialog extends Dialog {
 

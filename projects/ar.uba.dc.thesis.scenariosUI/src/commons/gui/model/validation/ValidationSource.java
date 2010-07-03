@@ -16,7 +16,7 @@
 
 package commons.gui.model.validation;
 
-import sba.common.validation.ValidationError;
+import commons.validation.ValidationError;
 
 
 /**

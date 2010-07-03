@@ -3,9 +3,9 @@ package commons.gui.table;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.creation.binding.BindingInfo;
+import commons.properties.EnumProperty;
 
 /**
  * Metainformacion para la creacion de tablas

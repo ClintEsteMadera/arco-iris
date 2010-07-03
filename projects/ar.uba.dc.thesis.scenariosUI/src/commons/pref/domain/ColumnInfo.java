@@ -1,8 +1,8 @@
 package commons.pref.domain;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.Alignment;
+import commons.properties.EnumProperty;
 
 public class ColumnInfo {
 

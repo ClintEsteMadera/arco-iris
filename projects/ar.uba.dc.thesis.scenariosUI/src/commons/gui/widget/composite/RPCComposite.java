@@ -28,7 +28,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.utils.SbaStringUtils;
 
 import commons.gui.GuiStyle;
 import commons.gui.model.CompositeModel;
@@ -38,6 +37,7 @@ import commons.gui.model.ValueModel;
 import commons.gui.model.types.EditType;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.BindingInfo;
+import commons.utils.SbaStringUtils;
 
 /**
  * Modela los campos de RPC con las restricciones numéricas necesarias y el layout usual para este

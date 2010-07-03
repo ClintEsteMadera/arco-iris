@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import sba.common.utils.DateUtils;
+import commons.utils.DateUtils;
+
 
 /**
  * Parametros de configuracion de un valor de tipo Fecha.

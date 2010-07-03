@@ -16,10 +16,10 @@ package commons.gui.widget.creation.binding;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.model.bean.BeanModel;
 import commons.gui.model.binding.ValueBinding;
+import commons.properties.EnumProperty;
 
 /**
  * @author Jonathan Chiocchio

@@ -29,11 +29,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.model.CompositeModel;
 import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.factory.LabelFactory;
+import commons.properties.EnumProperty;
 
 /**
  * Modela una página genérica de selección de un Objeto de un Query Composite.

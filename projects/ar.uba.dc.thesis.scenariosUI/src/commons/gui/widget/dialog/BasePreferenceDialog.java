@@ -16,15 +16,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import sba.common.properties.EnumProperty;
-import sba.common.properties.FakeEnumProperty;
-import sba.common.validation.ValidationError;
 
 import commons.gui.model.validation.ValidationChangedListener;
 import commons.gui.model.validation.ValidationSource;
 import commons.gui.thread.GUIUncaughtExceptionHandler;
 import commons.gui.widget.PreferenceNode;
 import commons.gui.widget.page.BasePreferencesPage;
+import commons.properties.EnumProperty;
+import commons.properties.FakeEnumProperty;
+import commons.validation.ValidationError;
 
 public abstract class BasePreferenceDialog extends PreferenceDialog implements ValidationSource {
 

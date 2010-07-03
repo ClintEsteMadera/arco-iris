@@ -1,6 +1,6 @@
 package commons.gui.model;
 
-import sba.common.dataestructures.LazyMap;
+import commons.dataestructures.LazyMap;
 import commons.gui.model.types.EditType;
 
 /**

@@ -1,11 +1,11 @@
 package commons.gui.model.table;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.model.AbstractAttribute;
 import commons.gui.model.Attribute;
 import commons.gui.model.Attributes;
 import commons.gui.model.bean.BeanAttributes;
+import commons.properties.EnumProperty;
 
 /**
  * Extensión de {@link sba.ui.model.table.AbstractRowAdapter} que utiliza "atributos" para asignar y obtener los valores

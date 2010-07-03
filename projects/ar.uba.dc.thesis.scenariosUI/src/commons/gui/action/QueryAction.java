@@ -7,9 +7,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.composite.QueryComposite;
+import commons.properties.EnumProperty;
 
 /**
  * @author Jonathan Chiocchio

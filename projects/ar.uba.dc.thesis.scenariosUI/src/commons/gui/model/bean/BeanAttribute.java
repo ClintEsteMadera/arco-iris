@@ -7,8 +7,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 
-import sba.common.annotations.DataTypeAnnotation;
 
+import commons.annotations.DataTypeAnnotation;
 import commons.gui.model.AbstractAttribute;
 
 /**

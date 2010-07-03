@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.util.Calendar;
 
-import sba.common.utils.DateUtils;
 
 import commons.gui.model.ValueModel;
 import commons.gui.model.binding.ValueBinding;
@@ -13,6 +12,7 @@ import commons.gui.model.binding.ValueBindingUpdateListener;
 import commons.gui.model.binding.ValueModelAdapterBindingFactory;
 import commons.gui.model.types.EditConfigurationManager;
 import commons.gui.widget.composite.CalendarComposite;
+import commons.utils.DateUtils;
 
 public class CalendarBindingFactory extends ValueModelAdapterBindingFactory {
 

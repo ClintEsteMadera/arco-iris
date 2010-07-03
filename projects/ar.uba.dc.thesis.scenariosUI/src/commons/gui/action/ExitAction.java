@@ -6,9 +6,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
-import sba.common.properties.CommonConstants;
 
 import commons.gui.util.PageHelper;
+import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
 

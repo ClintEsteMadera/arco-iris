@@ -6,11 +6,11 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.TextFieldListenerType;
 import commons.gui.widget.creation.binding.Binding;
+import commons.properties.EnumProperty;
 
 /**
  * Modela la meta-información necesaria para crear un Campo de Texto.<br>

@@ -15,7 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.utils.DateUtils;
+import commons.utils.DateUtils;
+
 
 /**
  * Added a Details button to the MessageDialog to show the exception stack trace.

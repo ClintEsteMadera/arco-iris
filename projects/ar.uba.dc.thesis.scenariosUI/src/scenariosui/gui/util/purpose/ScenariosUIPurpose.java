@@ -1,9 +1,9 @@
 package scenariosui.gui.util.purpose;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.util.purpose.Purpose;
 import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
 
 /**
  * Specifies the different kinds of purposes when opening a dialog

@@ -6,10 +6,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import sba.common.properties.FakeEnumProperty;
 
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.factory.LabelFactory;
+import commons.properties.FakeEnumProperty;
 
 /**
  * Modela un composite básico.

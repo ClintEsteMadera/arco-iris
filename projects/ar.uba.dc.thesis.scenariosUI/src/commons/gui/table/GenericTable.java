@@ -24,22 +24,21 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import sba.common.properties.EnumProperty;
-
+import commons.core.Predicate;
 import commons.gui.model.table.AbstractRowAdapter;
 import commons.gui.model.table.AttributesRowAdapter;
 import commons.gui.model.table.TableRowAdapter;
 import commons.gui.model.types.EditConfiguration;
 import commons.gui.model.types.EditConfigurationManager;
 import commons.gui.model.types.EditType;
-import sba.common.core.Predicate;
+import commons.properties.EnumProperty;
 
 public class GenericTable extends TableViewer {
 
 	public static final int DEFAULT_TABLE_STYLE = SWT.FULL_SELECTION | SWT.BORDER;
 
-	public GenericTable(final Composite parent, final Class clazz, EnumProperty tableName,
-			Object elements, boolean sorteable, int style) {
+	public GenericTable(final Composite parent, final Class clazz, EnumProperty tableName, Object elements,
+			boolean sorteable, int style) {
 		this(parent, style, clazz, tableName, sorteable);
 		super.setInput(elements);
 
@@ -62,19 +61,17 @@ public class GenericTable extends TableViewer {
 		refresh();
 	}
 
-	public GenericTable(Composite parent, Class clazz, EnumProperty tableName, Object elements,
-			boolean sorteable) {
+	public GenericTable(Composite parent, Class clazz, EnumProperty tableName, Object elements, boolean sorteable) {
 		this(parent, clazz, tableName, elements, sorteable, DEFAULT_TABLE_STYLE);
 	}
 
-	public GenericTable(Composite composite, int style, Class itemClass, EnumProperty tableName,
-			boolean sorteable) {
+	public GenericTable(Composite composite, int style, Class itemClass, EnumProperty tableName, boolean sorteable) {
 		super(composite, style);
 		init(new AttributesRowAdapter(itemClass, tableName), sorteable, tableName);
 	}
 
-	public GenericTable(Composite composite, int style, TableRowAdapter rowAdapter,
-			EnumProperty tableName, boolean sorteable) {
+	public GenericTable(Composite composite, int style, TableRowAdapter rowAdapter, EnumProperty tableName,
+			boolean sorteable) {
 		super(composite, style);
 		init(rowAdapter, sorteable, tableName);
 	}
@@ -93,8 +90,7 @@ public class GenericTable extends TableViewer {
 	}
 
 	/**
-	 * Devuelve el primer elemento seleccionado o null si no hay ningún elemento
-	 * seleccionado
+	 * Devuelve el primer elemento seleccionado o null si no hay ningún elemento seleccionado
 	 */
 	public Object getSelectedElement() {
 		Object result = null;
@@ -219,7 +215,7 @@ public class GenericTable extends TableViewer {
 	}
 
 	protected void enableButtons(boolean enabled) {
-		for(Button b:buttonPredicates.keySet()){
+		for (Button b : buttonPredicates.keySet()) {
 			b.setEnabled(enabled);
 		}
 	}
@@ -273,8 +269,7 @@ public class GenericTable extends TableViewer {
 			int alignementStyle = SWT.LEFT;
 
 			final EditConfiguration eC = EditConfigurationManager.getInstance().getConfiguration(
-					new EditType(aRowAdapter.getColumnClass(i), aRowAdapter
-							.getColumnEditConfiguration(i)));
+					new EditType(aRowAdapter.getColumnClass(i), aRowAdapter.getColumnEditConfiguration(i)));
 
 			if (eC != null && eC.isRightAligned()) {
 				alignementStyle = SWT.RIGHT;
@@ -306,9 +301,7 @@ public class GenericTable extends TableViewer {
 			column.setWidth(width);
 			if (sorteable) {
 				final int columnIndex = i;
-				column
-						.addSelectionListener(new SelectionColumnAdapter(tableName, columnIndex,
-								this));
+				column.addSelectionListener(new SelectionColumnAdapter(tableName, columnIndex, this));
 				column.addControlListener(new SizeControlAdapter(tableName));
 			}
 
@@ -322,8 +315,7 @@ public class GenericTable extends TableViewer {
 		String protoText = null;
 
 		final EditConfiguration eC = EditConfigurationManager.getInstance().getConfiguration(
-				new EditType(aRowAdapter.getColumnClass(i), aRowAdapter
-						.getColumnEditConfiguration(i)));
+				new EditType(aRowAdapter.getColumnClass(i), aRowAdapter.getColumnEditConfiguration(i)));
 
 		if (eC != null) {
 			proto = eC.getColumnPrototype();

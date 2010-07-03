@@ -24,9 +24,9 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 
-import sba.common.properties.CommonConstants;
 
 import commons.gui.util.PageHelper;
+import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 
 /**

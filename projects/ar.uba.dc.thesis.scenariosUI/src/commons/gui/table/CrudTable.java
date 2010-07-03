@@ -15,9 +15,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.table.handler.RowSelectionHandler;
+import commons.properties.EnumProperty;
 
 /**
  * Modela una tabla con botones para un CRUD (Create Read Update Delete).

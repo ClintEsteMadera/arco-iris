@@ -16,7 +16,6 @@
 
 package commons.pref.converter;
 
-import sba.common.properties.EnumProperty;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -25,6 +24,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import commons.gui.widget.Alignment;
 import commons.pref.domain.ColumnInfo;
+import commons.properties.EnumProperty;
 
 /**
  * Converter para el objeto ColumnInfo. Su responsabilidad doble: dada una representación XML del

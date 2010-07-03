@@ -7,7 +7,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.model.CompositeModel;
 import commons.gui.model.validation.ValidableComposite;
@@ -15,6 +14,7 @@ import commons.gui.model.validation.ValidationChangedListener;
 import commons.gui.model.validation.ValidationSource;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.DefaultLayoutFactory;
+import commons.properties.EnumProperty;
 
 /**
  * @author Gabriel Tursi

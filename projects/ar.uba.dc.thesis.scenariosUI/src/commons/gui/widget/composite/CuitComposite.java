@@ -29,7 +29,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import sba.common.utils.SbaStringUtils;
 
 import commons.gui.GuiStyle;
 import commons.gui.model.ValueChangeEvent;
@@ -39,6 +38,7 @@ import commons.gui.model.types.EditType;
 import commons.gui.util.ListenerHelper;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.Binding;
+import commons.utils.SbaStringUtils;
 
 /**
  * Modela un campo de CUIT / CUIL con las restricciones numéricas necesarias y el layout usual para

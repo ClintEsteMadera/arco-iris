@@ -23,9 +23,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sba.common.properties.EnumProperty;
 
 import commons.gui.widget.DefaultLayoutFactory;
+import commons.properties.EnumProperty;
 
 /**
  * Grupo base del que heredan todos los grupos.

@@ -25,8 +25,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sba.common.properties.CommonConstants;
-import sba.common.utils.FileHelper;
 
 import com.thoughtworks.xstream.XStream;
 import commons.gui.widget.Alignment;
@@ -35,6 +33,8 @@ import commons.pref.converter.TableInfoConverter;
 import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.Preferences;
 import commons.pref.domain.TableInfo;
+import commons.properties.CommonConstants;
+import commons.utils.FileHelper;
 
 /**
  * Helper que facilita la lecto-escritura de las preferencias del usuario en archivos XML.

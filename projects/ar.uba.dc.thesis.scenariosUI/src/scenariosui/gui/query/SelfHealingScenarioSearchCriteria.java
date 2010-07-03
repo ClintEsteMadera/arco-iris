@@ -1,6 +1,6 @@
 package scenariosui.gui.query;
 
-import sba.common.query.BaseCriterio;
+import commons.query.BaseCriterio;
 
 public class SelfHealingScenarioSearchCriteria extends BaseCriterio {
 

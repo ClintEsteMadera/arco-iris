@@ -5,8 +5,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
-import sba.common.datetime.Hora;
 
+import commons.datetime.Hora;
 import commons.gui.model.validation.ValidationManager;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.composite.CalendarComposite;
