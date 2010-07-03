@@ -2,7 +2,6 @@ package commons.properties;
 
 import java.util.ResourceBundle;
 
-
 public enum CommonLabels implements EnumProperty {
 
 	AUTH_CHG_PWD,
@@ -63,7 +62,6 @@ public enum CommonLabels implements EnumProperty {
 	PORCENTAJE_LABEL,
 
 	PORCENTAJE_SIMBOLO,
-	EJERCICIO,
 
 	ATENTION;
 
