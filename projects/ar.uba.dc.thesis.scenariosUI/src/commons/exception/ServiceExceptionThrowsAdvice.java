@@ -59,7 +59,5 @@ public class ServiceExceptionThrowsAdvice implements ThrowsAdvice {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private static final String ROW_WAS_UPDATE_OR_DELETE_BY_ANOTHER_TRANSACTION = "Los datos que intenta modificar han sido modificados previamente por otro usuario";
-
 	private static final String ACCESS_DENIED_MESSAGE = "No posee permisos para ejecutar esta operación";
 }
