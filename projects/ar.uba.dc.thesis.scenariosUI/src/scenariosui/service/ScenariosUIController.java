@@ -57,6 +57,15 @@ public final class ScenariosUIController {
 		this.id = 0L;
 	}
 
+	public SelfHealingScenario findSelfHealingScenario(Long id) {
+		for (SelfHealingScenario selfHealingScenario : this.getCurrentSelfHealingConfiguration().getScenarios()) {
+			if (selfHealingScenario.getId().equals(id)) {
+				return selfHealingScenario;
+			}
+		}
+		throw new RuntimeException("Unable to find scenario with id " + id);
+	}
+
 	public synchronized SelfHealingConfiguration getCurrentSelfHealingConfiguration() {
 		return this.selfHealingConfiguration;
 	}

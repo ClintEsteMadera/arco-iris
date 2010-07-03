@@ -85,12 +85,12 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
 			switch (super.purpose) {
 			case CREATION:
-				operacion = "creado";
+				operacion = "created";
 				scenariosUIController.getCurrentSelfHealingConfiguration().addScenario(this.getModel());
 				scenariosUIController.saveSelfHealingConfiguration();
 				break;
 			case EDIT:
-				operacion = "actualizado";
+				operacion = "updated";
 				scenariosUIController.saveSelfHealingConfiguration();
 				break;
 			default:

@@ -1,6 +1,6 @@
 <preferences>
 	<tables>
-		<table name="SCENARIOS" order="name">
+		<table name="SCENARIOS" order="id">
 			<column label="ID" name="id" alignment="CENTER" width="25" />
 			<column label="NAME" name="name" alignment="LEFT" width="276" />
 			<column label="CONCERN" name="concern" alignment="LEFT" width="165" />
