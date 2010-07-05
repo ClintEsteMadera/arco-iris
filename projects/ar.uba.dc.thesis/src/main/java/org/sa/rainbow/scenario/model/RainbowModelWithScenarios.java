@@ -25,23 +25,22 @@ import org.sa.rainbow.util.Pair;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
+import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RainbowModelWithScenarios extends RainbowModel {
 
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(RainbowModelWithScenarios.class);
 
-	private final ScenariosManager scenariosManager;
+	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
 
 	private boolean isPropertyUpdateAllowed;
 
 	private final Queue<Pair<String, Object>> propertiesToUpdateQueue;
 
-	public RainbowModelWithScenarios(ScenariosManager scenariosManager) {
+	public RainbowModelWithScenarios(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super();
-		this.scenariosManager = scenariosManager;
-		this.scenariosManager.loadScenarios();
+		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
 		this.isPropertyUpdateAllowed = true;
 		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();
 		log(Level.INFO, "Rainbow Model With Scenarios started");
@@ -66,7 +65,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 		List<SelfHealingScenario> brokenScenarios;
 		// done this way in order to avoid the same else block twice
 		if (!adaptationManager.adaptationInProgress()
-				&& !(brokenScenarios = this.scenariosManager.findBrokenScenarios(stimulus)).isEmpty()) {
+				&& !(brokenScenarios = this.selfHealingConfigurationManager.findBrokenScenarios(stimulus)).isEmpty()) {
 			/*
 			 * pass control to adaptation manager, who will be responsible for turning the flag
 			 * (isPropertyUpdateAllowed) on again...
@@ -124,7 +123,7 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	}
 
 	public List<String> getStimulus(String property) {
-		return this.scenariosManager.getStimulus(property);
+		return this.selfHealingConfigurationManager.getStimulus(property);
 	}
 
 	/**

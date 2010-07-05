@@ -1,9 +1,11 @@
 package ar.uba.dc.thesis.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
@@ -12,11 +14,10 @@ import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
-import ar.uba.dc.thesis.repository.ArtifactRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 import ar.uba.dc.thesis.util.Collections;
 
-public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
+public class TestSelfHealingScenarioDao {
 
 	private static final int THRESHOLD_RESPONSE_TIME = 500; /* ms. */
 
@@ -31,14 +32,10 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 
 	private final List<SelfHealingScenario> scenarios;
 
-	private final Set<Environment> environments = new HashSet<Environment>();
+	private final List<Environment> environments = new ArrayList<Environment>();
 
-	@SuppressWarnings("unused")
-	private final EnvironmentDao environmentDao;
-
-	public TestSelfHealingScenarioDao(EnvironmentDao environmentDao) {
+	public TestSelfHealingScenarioDao() {
 		super();
-		this.environmentDao = environmentDao;
 		this.scenarios = this.createTestScenarios();
 		for (SelfHealingScenario scenario : scenarios) {
 			this.environments.addAll(scenario.getEnvironments());
@@ -49,7 +46,7 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 		return scenarios;
 	}
 
-	public Set<Environment> getAllEnvironments() {
+	public List<Environment> getAllEnvironments() {
 		return environments;
 	}
 
@@ -65,9 +62,9 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 	private SelfHealingScenario createClientResponseTimeScenario() {
 		String scenarioName = "Client Experienced Response Time Scenario";
 		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
-		Artifact artifact = ArtifactRepository.getClient();
+		Artifact artifact = TestArtifactDao.CLIENT;
 		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
-		Set<Environment> environments = Collections.createSet(Environment.ANY_ENVIRONMENT);
+		Set<? extends Environment> environments = Collections.createSet(DefaultEnvironment.getInstance());
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "experRespTime",
@@ -83,9 +80,9 @@ public class TestSelfHealingScenarioDao implements SelfHealingScenarioDao {
 	private SelfHealingScenario createServerCostScenario() {
 		String scenarioName = "Server Cost Scenario";
 		String stimulusSource = "Anyone";
-		Artifact artifact = ArtifactRepository.getServer();
+		Artifact artifact = TestArtifactDao.SERVER;
 		String stimulus = "ANY";
-		Set<Environment> environments = Collections.createSet(Environment.ANY_ENVIRONMENT);
+		Set<? extends Environment> environments = Collections.createSet(DefaultEnvironment.getInstance());
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_SUM, artifact, "cost",

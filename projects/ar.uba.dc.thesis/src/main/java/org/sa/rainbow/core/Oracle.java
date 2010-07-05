@@ -29,12 +29,10 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
-import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
-import ar.uba.dc.thesis.dao.EnvironmentDao;
-import ar.uba.dc.thesis.dao.FileSelfHealingScenarioDao;
-import ar.uba.dc.thesis.dao.TestEnvironmentDao;
-import ar.uba.dc.thesis.repository.EnvironmentRepository;
-import ar.uba.dc.thesis.repository.SelfHealingScenarioRepository;
+import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
+import ar.uba.dc.thesis.dao.FileSelfHealingConfigurationDao;
+import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
+import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
 
 /**
@@ -67,11 +65,11 @@ public class Oracle implements IDisposable {
 
 	private IRainbowRunnable m_adaptmgr = null;
 
-	private ScenariosManager scenariosManager;
+	private SelfHealingConfigurationManager selfHealingConfigurationManager;
 
-	private EnvironmentDao environmentDao;
+	private SelfHealingConfigurationDao selfHealingConfigurationDao;
 
-	private EnvironmentRepository environmentRepository;
+	private SelfHealingConfigurationRepository selfHealingConfigurationRepository;
 
 	private DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
 
@@ -188,7 +186,7 @@ public class Oracle implements IDisposable {
 
 	public Model rainbowModel() {
 		if (m_model == null) {
-			m_model = new RainbowModelWithScenarios(scenariosManager());
+			m_model = new RainbowModelWithScenarios(selfHealingConfigurationManager());
 			// initialize the model as a repository to the language module
 			Ohana.instance().setModelRepository(m_model);
 		}
@@ -222,7 +220,7 @@ public class Oracle implements IDisposable {
 
 	public IRainbowRunnable adaptationManager() {
 		if ((m_adaptmgr == null || m_adaptmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_adaptmgr = new AdaptationManagerWithScenarios(scenariosManager(), environmentRepository());
+			m_adaptmgr = new AdaptationManagerWithScenarios(selfHealingConfigurationManager());
 		}
 		return m_adaptmgr;
 	}
@@ -238,27 +236,27 @@ public class Oracle implements IDisposable {
 		return m_executor;
 	}
 
-	public EnvironmentDao environmentDao() {
-		if (this.environmentDao == null) {
-			this.environmentDao = new TestEnvironmentDao();
+	public SelfHealingConfigurationManager selfHealingConfigurationManager() {
+		if (this.selfHealingConfigurationManager == null) {
+			this.selfHealingConfigurationManager = new SelfHealingConfigurationManager(
+					selfHealingConfigurationRepository());
 		}
-		return this.environmentDao;
+		return this.selfHealingConfigurationManager;
 	}
 
-	public ScenariosManager scenariosManager() {
-		if (this.scenariosManager == null) {
-			SelfHealingScenarioRepository scenarioRepository = new SelfHealingScenarioRepository(
-					new FileSelfHealingScenarioDao());
-			this.scenariosManager = new ScenariosManager(scenarioRepository);
+	public SelfHealingConfigurationRepository selfHealingConfigurationRepository() {
+		if (this.selfHealingConfigurationRepository == null) {
+			this.selfHealingConfigurationRepository = new SelfHealingConfigurationRepository(
+					selfHealingConfigurationDao());
 		}
-		return this.scenariosManager;
+		return this.selfHealingConfigurationRepository;
 	}
 
-	public EnvironmentRepository environmentRepository() {
-		if (this.environmentRepository == null) {
-			this.environmentRepository = new EnvironmentRepository(environmentDao());
+	public SelfHealingConfigurationDao selfHealingConfigurationDao() {
+		if (this.selfHealingConfigurationDao == null) {
+			this.selfHealingConfigurationDao = new FileSelfHealingConfigurationDao();
 		}
-		return this.environmentRepository;
+		return this.selfHealingConfigurationDao;
 	}
 
 	public DefaultScenarioBrokenDetector defaultScenarioBrokenDetector() {
@@ -268,11 +266,6 @@ public class Oracle implements IDisposable {
 		}
 		return this.defaultScenarioBrokenDetector;
 	}
-
-	/*
-	 * public ILearner learner () { if (m_learner == null) { m_learner = new Learner((IRainbowLearner
-	 * )adaptationEngine()); } return m_learner; }
-	 */
 
 	/**
 	 * Check to make sure all threads are terminated. Used to determine whether to contineu next trial run.

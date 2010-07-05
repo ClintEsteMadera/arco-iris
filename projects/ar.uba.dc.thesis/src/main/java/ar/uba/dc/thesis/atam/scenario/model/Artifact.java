@@ -2,8 +2,10 @@ package ar.uba.dc.thesis.atam.scenario.model;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+@XStreamAlias("artifact")
 public class Artifact extends ThesisPojo {
 
 	private static final long serialVersionUID = 1L;
