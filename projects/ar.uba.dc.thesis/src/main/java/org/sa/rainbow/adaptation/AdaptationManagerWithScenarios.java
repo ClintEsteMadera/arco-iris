@@ -35,10 +35,9 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.StopWatch;
 import org.sa.rainbow.util.Util;
 
-import ar.uba.dc.thesis.atam.scenario.ScenariosManager;
+import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.repository.EnvironmentRepository;
 import ar.uba.dc.thesis.repository.RepairStrategy;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.InSimulationScenarioBrokenDetector;
@@ -62,9 +61,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	protected static RainbowLogger m_logger = null;
 
-	private final ScenariosManager scenariosManager;
-
-	private final EnvironmentRepository environmentRepository;
+	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
 
 	private static List<SelfHealingScenario> currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 
@@ -116,11 +113,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	/**
 	 * Default constructor.
 	 */
-	public AdaptationManagerWithScenarios(ScenariosManager scenariosManager, EnvironmentRepository environmentRepository) {
+	public AdaptationManagerWithScenarios(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super(NAME);
 		m_logger = RainbowLoggerFactory.logger(getClass());
-		this.scenariosManager = scenariosManager;
-		this.environmentRepository = environmentRepository;
+		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
 		m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		m_repertoire = new ArrayList<Stitch>();
 		m_utils = new TreeMap<String, UtilityFunction>();
@@ -464,7 +460,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * @return the current system enviroment
 	 */
 	private Environment detectCurrentSystemEnvironment(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		Collection<Environment> environments = this.environmentRepository.getAllNonDefaultEnvironments();
+		Collection<Environment> environments = this.selfHealingConfigurationManager.getAllNonDefaultEnvironments();
 		for (Environment environment : environments) {
 			if (environment.holds4Scoring(rainbowModelWithScenarios)) {
 				doLog(Level.INFO, "Current environment: " + environment.getName());
@@ -472,13 +468,13 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			}
 		}
 		doLog(Level.INFO, "System is currently in default environment");
-		return environmentRepository.getDefaultEnvironment();
+		return this.selfHealingConfigurationManager.getDefaultEnvironment();
 	}
 
 	private Double scoreStrategyWithScenarios(Environment currentSystemEnvironment,
 			ScenarioBrokenDetector scenarioBrokenDetector) {
 		double score = 0L;
-		Collection<SelfHealingScenario> scenarios = this.scenariosManager.getEnabledScenarios();
+		Collection<SelfHealingScenario> scenarios = this.selfHealingConfigurationManager.getEnabledScenarios();
 		Map<Concern, Double> weights = currentSystemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.applyFor(currentSystemEnvironment)) {
@@ -510,7 +506,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private double scenariosAssignedPriority2RelativePriority(int scenarioPriority) {
-		double maxPriority = this.scenariosManager.getMaxPriority() + 1;
+		double maxPriority = this.selfHealingConfigurationManager.getMaxPriority() + 1;
 
 		return (maxPriority - scenarioPriority) / maxPriority;
 	}

@@ -40,8 +40,6 @@ public class Environment extends ThesisPojo {
 
 	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
 
-	public static final Environment ANY_ENVIRONMENT = createAnyEnvironment();
-
 	private static final int DEFAULT_HISTORY_SIZE = 10;
 
 	/**
@@ -172,22 +170,4 @@ public class Environment extends ThesisPojo {
 			this.history.add(holds);
 		}
 	}
-
-	/**
-	 * This method creates an Environment which is intended to be used as a wildcard (i.e. "this scenario applies for
-	 * <b>any</b> environment")
-	 * 
-	 * @return an Environment in which its weights are equally distributed considering the amount of concerns returned
-	 *         by {@link Concern#values()}
-	 */
-	private static Environment createAnyEnvironment() {
-		Map<Concern, Double> equallyDistributedWeights = new HashMap<Concern, Double>();
-		Concern[] values = Concern.values();
-		Double aWeight = (double) 1 / values.length;
-		for (Concern concern : values) {
-			equallyDistributedWeights.put(concern, aWeight);
-		}
-		return new Environment("ANY", new ArrayList<Constraint>(), equallyDistributedWeights);
-	}
-
 }

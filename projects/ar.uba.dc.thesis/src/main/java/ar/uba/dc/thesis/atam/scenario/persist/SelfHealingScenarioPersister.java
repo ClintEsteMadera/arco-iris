@@ -8,6 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
@@ -31,16 +34,13 @@ public class SelfHealingScenarioPersister {
 		try {
 			logger.info("Loading Scenarios from " + scenariosInXmlFullPath + "...");
 			String scenariosInXml = FileUtils.readFileToString(new File(scenariosInXmlFullPath), CHARSET);
-			SelfHealingConfiguration scenariosLoadedFromXML = (SelfHealingConfiguration) this.xstream
+			SelfHealingConfiguration configLoadedFromXML = (SelfHealingConfiguration) this.xstream
 					.fromXML(scenariosInXml);
 			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
 
-			// this is important in order to hold the invariant of never having a null list of scenarios
-			if (scenariosLoadedFromXML.getScenarios() == null) {
-				scenariosLoadedFromXML.setScenarios(new ArrayList<SelfHealingScenario>());
-			}
+			this.preventNullLists(configLoadedFromXML);
 
-			return scenariosLoadedFromXML;
+			return configLoadedFromXML;
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
 		} catch (XStreamException xstreamException) {
@@ -60,10 +60,31 @@ public class SelfHealingScenarioPersister {
 		}
 	}
 
+	/**
+	 * In the event the scenarios, the environments or the artifacts are null, this method initializes them with an
+	 * empty list in order to preserver the invariant of never having a null list of scenarios or environments.
+	 * 
+	 * @param configLoadedFromXML
+	 *            a selfHealingConfiguration loaded from XML
+	 */
+	private void preventNullLists(SelfHealingConfiguration configLoadedFromXML) {
+		if (configLoadedFromXML.getScenarios() == null) {
+			configLoadedFromXML.setScenarios(new ArrayList<SelfHealingScenario>());
+		}
+		if (configLoadedFromXML.getEnvironments() == null) {
+			configLoadedFromXML.setEnvironments(new ArrayList<Environment>());
+		}
+		if (configLoadedFromXML.getArtifacts() == null) {
+			configLoadedFromXML.setArtifacts(new ArrayList<Artifact>());
+		}
+	}
+
 	private void initXStream() {
 		this.xstream = new XStream();
 		this.xstream.autodetectAnnotations(true);
 		this.xstream.alias("selfHealingConfiguration", SelfHealingConfiguration.class);
 		this.xstream.alias("numericBinaryRelationalConstraint", NumericBinaryRelationalConstraint.class);
+		this.xstream.alias("defaultEnvironment", DefaultEnvironment.class);
+		this.xstream.registerConverter(new DefaultEnvironmentConverter());
 	}
 }

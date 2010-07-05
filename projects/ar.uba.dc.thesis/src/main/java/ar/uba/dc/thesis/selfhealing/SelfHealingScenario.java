@@ -11,6 +11,7 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
+import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.AtamScenario;
@@ -44,8 +45,9 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			Set<Environment> environments, Artifact artifact, String response, ResponseMeasure responseMeasure,
-			Set<ArchitecturalDecision> architecturalDecisions, boolean enabled, int priority) {
+			Set<? extends Environment> environments, Artifact artifact, String response,
+			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions, boolean enabled,
+			int priority) {
 		super(id, name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,
 				architecturalDecisions);
 		this.enabled = enabled;
@@ -81,7 +83,7 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public boolean applyFor(Environment environment) {
-		return getEnvironments().contains(Environment.ANY_ENVIRONMENT) || getEnvironments().contains(environment);
+		return getEnvironments().contains(DefaultEnvironment.getInstance()) || getEnvironments().contains(environment);
 	}
 
 	/**
