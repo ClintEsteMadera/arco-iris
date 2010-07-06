@@ -11,12 +11,12 @@ import org.sa.rainbow.model.Model;
 import org.sa.rainbow.monitor.sim.AbstractSim;
 import org.sa.rainbow.monitor.sim.ISimulatedTargetSystem;
 import org.sa.rainbow.monitor.sim.QueuingTheoryUtil;
+import org.sa.rainbow.monitor.sim.graphics.GraphicGenerator;
 
 /**
  * @author Shang-Wen Cheng (zensoul@cs.cmu.edu)
- *
- * Simulation of a Test system with alpha component connected via conn to
- * Beta component.
+ * 
+ * Simulation of a Test system with alpha component connected via conn to Beta component.
  */
 public class ZNewsSim extends AbstractSim {
 
@@ -30,7 +30,7 @@ public class ZNewsSim extends AbstractSim {
 	/**
 	 * Default Constructor
 	 */
-	public ZNewsSim (ISimulatedTargetSystem runner, Properties props) {
+	public ZNewsSim(ISimulatedTargetSystem runner, Properties props) {
 		super("ZNews Simulation System", runner, props);
 
 		m_sysName = "ZNewsSys";
@@ -43,7 +43,9 @@ public class ZNewsSim extends AbstractSim {
 		m_thread.start();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.sa.rainbow.monitor.sim.AbstractSim#runAction()
 	 */
 	@Override
@@ -51,15 +53,15 @@ public class ZNewsSim extends AbstractSim {
 		// perform one sim step
 		double accumServerRespTme = 0.0;
 		List<String> activeList = new ArrayList<String>();
-		for (int i=0; i < m_serverCnt; i++) {  // count active servers
+		for (int i = 0; i < m_serverCnt; i++) { // count active servers
 			String elemName = m_sysName + ".s" + i;
 			// check if arch enabled
-			if (booleanProp(elemName + "." + Model.PROPKEY_ARCH_ENABLED)) {  // yep!
+			if (booleanProp(elemName + "." + Model.PROPKEY_ARCH_ENABLED)) { // yep!
 				activeList.add(elemName);
 			}
 		}
-		int serverFactor = Math.max(activeList.size(),1);
-		for (String elemName : activeList) {  // iterate active servers
+		int serverFactor = Math.max(activeList.size(), 1);
+		for (String elemName : activeList) { // iterate active servers
 			// compute arrival rate
 			int arrRate = computeArrivalRate(elemName, "perf.arrival.rate", serverFactor);
 			m_props.setProperty(elemName + ".perf.arrival.rate", String.valueOf(arrRate));
@@ -68,44 +70,55 @@ public class ZNewsSim extends AbstractSim {
 			double svcTime = doubleProp(elemName + ".perf.service.time") * fidelity;
 			int repl = intProp(elemName + ".replication");
 			double util = (arrRate * svcTime / 1000.0) / repl;
-			if (m_logger.isDebugEnabled()) m_logger.debug("** "+ elemName + ".load <== " + util);
+			if (m_logger.isDebugEnabled()) {
+				m_logger.debug("** " + elemName + ".load <== " + util);
+			}
 			m_runner.changeProperty(elemName + ".load", String.valueOf(util));
 			// compute server response time
-			double respTime = 1000.0 * QueuingTheoryUtil.responseTime(repl, util, arrRate, svcTime/1000.0);
+			double respTime = 1000.0 * QueuingTheoryUtil.responseTime(repl, util, arrRate, svcTime / 1000.0);
 			m_props.setProperty(elemName + ".perf.response.time", String.valueOf(respTime));
-			if (m_logger.isDebugEnabled()) m_logger.debug("** "+ elemName + ".perf.response.time <== " + respTime);
-			if (booleanProp("perf.load.balanced")) {  // accumulate server resp times
+			if (m_logger.isDebugEnabled()) {
+				m_logger.debug("** " + elemName + ".perf.response.time <== " + respTime);
+			}
+			if (booleanProp("perf.load.balanced")) { // accumulate server resp times
 				accumServerRespTme += respTime;
 			}
 		}
-		for (int i=0; i < m_clientCnt; i++) {  // iterate the clients
+		double globalAvgERT = 0;
+		for (int i = 0; i < m_clientCnt; i++) { // iterate the clients
 			String connElemName = m_sysName + ".conn" + i;
 			String elemName = m_sysName + ".c" + i;
 			// compute connection delay, accounting for both directions
 			int bwUp = intProp(connElemName + ".bandwidth.up");
 			int bwDown = intProp(connElemName + ".bandwidth.down");
-			//int reqps = intProp(elemName + ".perf.arrival.rate");
-			double connDelay = 1000.0/*(ms/s)*/ *
-					m_reqSize/(bwUp/10.0/*(b/B)*/) + m_respSize/(bwDown/10.0/*(b/B)*/);
+			// int reqps = intProp(elemName + ".perf.arrival.rate");
+			double connDelay = 1000.0/* (ms/s) */* m_reqSize / (bwUp / 10.0/* (b/B) */) + m_respSize
+					/ (bwDown / 10.0/* (b/B) */);
 			// compute current instantaneous latency
 			double sRespTime = doubleProp(elemName + ".perf.service.time") + connDelay;
-			if (booleanProp("perf.load.balanced")) {  // average all server resp times
+			if (booleanProp("perf.load.balanced")) { // average all server resp times
 				sRespTime += accumServerRespTme / serverFactor;
 			} else {
 				String tgtServer = m_props.getProperty(elemName + ".connection.target");
 				sRespTime += doubleProp(tgtServer + ".perf.response.time");
 			}
-			if (m_logger.isDebugEnabled()) m_logger.debug("** "+ elemName + ".perf.response.time <== " + sRespTime);
+			if (m_logger.isDebugEnabled()) {
+				m_logger.debug("** " + elemName + ".perf.response.time <== " + sRespTime);
+			}
 			// compute average experienced response time
 			double avgERT = doubleProp(elemName + ".experRespTime");
-			avgERT = m_alpha * sRespTime + (1-m_alpha) * avgERT;
+			avgERT = m_alpha * sRespTime + (1 - m_alpha) * avgERT;
+			globalAvgERT += avgERT;
 			m_runner.changeProperty(elemName + ".experRespTime", String.valueOf(avgERT));
 		}
+		// tomo el promedio pq sino el grafico es ininteligible
+		GraphicGenerator.getInstance().addPoint(m_runner.elapsedTime(), "experRespTime",
+				String.valueOf(globalAvgERT / m_clientCnt));
 	}
 
-	private int computeArrivalRate (String srv, String prop, int serverCount) {
+	private int computeArrivalRate(String srv, String prop, int serverCount) {
 		int rv = 0;
-		for (int i=0; i < m_clientCnt; i++) {
+		for (int i = 0; i < m_clientCnt; i++) {
 			String elemName = m_sysName + ".c" + i;
 			if (booleanProp("perf.load.balanced")) {
 				// load is balanced across servers, assume equally...
