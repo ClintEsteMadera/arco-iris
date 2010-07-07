@@ -10,6 +10,8 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 public abstract class AtamScenario extends ThesisPojo {
 
+	private static final long serialVersionUID = 1L;
+
 	@XStreamAsAttribute
 	private String name;
 

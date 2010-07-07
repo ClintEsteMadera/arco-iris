@@ -11,6 +11,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public abstract class ThesisPojo implements Validatable, Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public boolean equals(Object obj) {
 		return EqualsBuilder.reflectionEquals(this, obj, this.getEqualsAndHashCodeExcludedFields());
