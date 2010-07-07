@@ -9,6 +9,8 @@ import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 
 public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo implements Constraint {
 
+	private static final long serialVersionUID = 1L;
+
 	private final Artifact artifact;
 
 	private final String property;
