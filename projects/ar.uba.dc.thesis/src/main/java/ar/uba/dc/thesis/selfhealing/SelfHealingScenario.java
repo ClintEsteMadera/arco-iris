@@ -1,6 +1,7 @@
 package ar.uba.dc.thesis.selfhealing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -11,10 +12,10 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.AtamScenario;
+import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
@@ -77,9 +78,8 @@ public class SelfHealingScenario extends AtamScenario {
 		return this.repairStrategies;
 	}
 
-	public SelfHealingScenario addRepairStrategy(String repairStrategy) {
-		this.repairStrategies.add(repairStrategy);
-		return this;
+	public void addRepairStrategy(String... repairStrategy) {
+		this.repairStrategies.addAll(Arrays.asList(repairStrategy));
 	}
 
 	public boolean applyFor(Environment environment) {

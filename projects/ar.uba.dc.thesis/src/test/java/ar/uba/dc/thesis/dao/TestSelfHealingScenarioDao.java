@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
+import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
@@ -51,10 +51,11 @@ public class TestSelfHealingScenarioDao {
 	}
 
 	private List<SelfHealingScenario> createTestScenarios() {
-		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario().addRepairStrategy(
-				"VariedReduceResponseTime");
+		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario();
+		clientResponseTimeScenario.addRepairStrategy("VariedReduceResponseTime");
 
-		SelfHealingScenario serverCostScenario = createServerCostScenario().addRepairStrategy("ReduceOverallCost");
+		SelfHealingScenario serverCostScenario = createServerCostScenario();
+		serverCostScenario.addRepairStrategy("ReduceOverallCost");
 
 		return Collections.createList(clientResponseTimeScenario, serverCostScenario);
 	}

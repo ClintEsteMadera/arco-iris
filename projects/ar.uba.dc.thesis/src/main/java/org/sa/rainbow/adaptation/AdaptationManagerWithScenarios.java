@@ -1,8 +1,5 @@
 package org.sa.rainbow.adaptation;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,11 +21,8 @@ import org.sa.rainbow.health.Beacon;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.UtilityPreferenceDescription.UtilityAttributes;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
-import org.sa.rainbow.stitch.Ohana;
 import org.sa.rainbow.stitch.core.Strategy;
-import org.sa.rainbow.stitch.core.Tactic;
 import org.sa.rainbow.stitch.core.UtilityFunction;
-import org.sa.rainbow.stitch.error.DummyStitchProblemHandler;
 import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -38,7 +32,6 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.repository.RepairStrategy;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.InSimulationScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector;
@@ -118,7 +111,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		m_logger = RainbowLoggerFactory.logger(getClass());
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
 		m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
-		m_repertoire = new ArrayList<Stitch>();
 		m_utils = new TreeMap<String, UtilityFunction>();
 		m_pendingStrategies = new ArrayList<Strategy>();
 		m_historyTrackUtilName = Rainbow.property(Rainbow.PROPKEY_TRACK_STRATEGY);
@@ -138,7 +130,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			UtilityFunction uf = new UtilityFunction(k, ua.label, ua.mapping, ua.desc, ua.values);
 			m_utils.put(k, uf);
 		}
-		initAdaptationRepertoire();
+
+		this.m_repertoire = Oracle.instance().stitchParser().getParsedStitches();
 	}
 
 	public static boolean isConcernStillBroken(String concernString) {
@@ -316,17 +309,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return m_utils;
 	}
 
-	/**
-	 * For JUnit testing, allows re-invoking defineAttributes to artificially increase the number of quality dimensions
-	 * in tactic attribute vectors.
-	 * 
-	 * @param stitch
-	 * @param attrVectorMap
-	 */
-	void _defineAttributesFromTester(Stitch stitch, Map<String, Map<String, Object>> attrVectorMap) {
-		defineAttributes(stitch, attrVectorMap);
-	}
-
 	private void doAdaptation() {
 		// nothing to do, avoid doing Rainbow adaptation
 	}
@@ -440,13 +422,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	private Set<String> collectCandidateStrategies(List<SelfHealingScenario> brokenScenarios) {
 		Set<String> candidateStrategies = new HashSet<String>();
 		for (SelfHealingScenario brokenScenario : brokenScenarios) {
-			List<String> repairStrategies = brokenScenario.getRepairStrategies();
-			// TODO Setearle al inicio a cada escenario que no tenga nada todas las estrategias, levantandolas del .s
-			// (ya esta hecho, ver this.stitch)
-			if (repairStrategies.isEmpty()) {
-				repairStrategies = RepairStrategy.getAllRepairStrategiesNames();
-			}
-			candidateStrategies.addAll(repairStrategies);
+			candidateStrategies.addAll(brokenScenario.getRepairStrategies());
 		}
 		return candidateStrategies;
 	}
@@ -565,55 +541,6 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_STRATEGY_ATTR2 + s);
 		doLog(Level.DEBUG, "aggAtt': " + s);
 		return score;
-	}
-
-	/**
-	 * Retrieves the adaptation repertoire; for each tactic, store the respective tactic attribute vectors.
-	 */
-	private void initAdaptationRepertoire() {
-		File stitchPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
-				.property(Rainbow.PROPKEY_SCRIPT_PATH));
-		if (stitchPath.exists() && stitchPath.isDirectory()) {
-			FilenameFilter ff = new FilenameFilter() { // find only ".s" files
-				public boolean accept(File dir, String name) {
-					return name.endsWith(".s");
-				}
-			};
-			for (File f : stitchPath.listFiles(ff)) {
-				try {
-					// don't duplicate loading of script files
-					Stitch stitch = Ohana.instance().findStitch(f.getCanonicalPath());
-					if (stitch == null) {
-						stitch = Stitch.newInstance(f.getCanonicalPath(), new DummyStitchProblemHandler());
-						Ohana.instance().parseFile(stitch);
-						// apply attribute vectors to tactics, if available
-						defineAttributes(stitch, Rainbow.instance().preferenceDesc().attributeVectors);
-						m_repertoire.add(stitch);
-						doLog(Level.DEBUG, "Parsed script " + stitch.path);
-					} else {
-						doLog(Level.DEBUG, "Previously known script " + stitch.path);
-					}
-				} catch (IOException e) {
-					doLog(Level.ERROR, "Obtaining file canonical path failed! " + f.getName(), e);
-				}
-			}
-		}
-	}
-
-	private void defineAttributes(Stitch stitch, Map<String, Map<String, Object>> attrVectorMap) {
-		for (Tactic t : stitch.script.tactics) {
-			Map<String, Object> attributes = attrVectorMap.get(t.getName());
-			if (attributes != null) {
-				// found attribute def for tactic, save all key-value pairs
-				if (m_logger.isTraceEnabled())
-					doLog(Level.TRACE, "Found attributes for tactic " + t.getName() + ", saving pairs...");
-				for (Map.Entry<String, Object> e : attributes.entrySet()) {
-					t.putAttribute(e.getKey(), e.getValue());
-					if (m_logger.isTraceEnabled())
-						doLog(Level.TRACE, " - (" + e.getKey() + ", " + e.getValue() + ")");
-				}
-			}
-		}
 	}
 
 	private static final int I_RUN = 0;

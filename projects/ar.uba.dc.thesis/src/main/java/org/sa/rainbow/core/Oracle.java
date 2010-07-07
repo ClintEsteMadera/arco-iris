@@ -3,6 +3,8 @@
  */
 package org.sa.rainbow.core;
 
+import java.io.File;
+
 import org.acmestudio.standalone.environment.StandaloneEnvironment;
 import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
@@ -34,6 +36,7 @@ import ar.uba.dc.thesis.dao.FileSelfHealingConfigurationDao;
 import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
+import ar.uba.dc.thesis.selfhealing.StitchParser;
 
 /**
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
@@ -72,6 +75,8 @@ public class Oracle implements IDisposable {
 	private SelfHealingConfigurationRepository selfHealingConfigurationRepository;
 
 	private DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
+
+	private StitchParser stitchParser;
 
 	// private ILearner m_learner = null;
 
@@ -265,6 +270,16 @@ public class Oracle implements IDisposable {
 					.rainbowModel());
 		}
 		return this.defaultScenarioBrokenDetector;
+	}
+
+	public StitchParser stitchParser() {
+		if (this.stitchParser == null) {
+			File stitchPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
+					.property(Rainbow.PROPKEY_SCRIPT_PATH));
+
+			this.stitchParser = new StitchParser(stitchPath, true);
+		}
+		return this.stitchParser;
 	}
 
 	/**

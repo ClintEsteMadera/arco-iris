@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
@@ -125,6 +126,11 @@ public class SelfHealingConfigurationManager {
 			scenarioList.add(currentScenario);
 
 			this.maxPriority = Math.max(currentScenario.getPriority(), this.maxPriority);
+
+			// if the user does not specify any repair strategy, we consider all available ones
+			if (CollectionUtils.isEmpty(currentScenario.getRepairStrategies())) {
+				currentScenario.addRepairStrategy(Oracle.instance().stitchParser().getAllStrategyNames());
+			}
 		}
 
 		return scenarios;
