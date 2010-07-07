@@ -5,7 +5,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
-
 import commons.datetime.Hora;
 import commons.gui.model.validation.ValidationManager;
 import commons.gui.widget.DefaultLayoutFactory;
@@ -19,8 +18,7 @@ public abstract class CalendarFactory {
 		if (!CommonLabels.NO_LABEL.equals(metainfo.label)) {
 			LabelFactory.createLabel(metainfo.composite, metainfo.label, false, true);
 		}
-		CalendarComposite fechaComposite = (CalendarComposite) createControl(metainfo,
-				CALENDAR_CONTROL);
+		CalendarComposite fechaComposite = (CalendarComposite) createControl(metainfo, CALENDAR_CONTROL);
 		metainfo.binding.bind(fechaComposite);
 
 		metainfo.restoreDefaults();
@@ -30,8 +28,7 @@ public abstract class CalendarFactory {
 	public static Control createTimePicker(CalendarMetainfo metainfo) {
 		Control dateTime;
 		if (metainfo.readOnly) {
-			dateTime = LabelFactory.createReadOnlyField(metainfo.composite, metainfo.binding,
-					metainfo.label);
+			dateTime = LabelFactory.createReadOnlyField(metainfo.composite, metainfo.binding, metainfo.label);
 		} else {
 			LabelFactory.createLabel(metainfo.composite, metainfo.label, false, true);
 			dateTime = createControl(metainfo, DATE_TIME_CONTROL);
@@ -97,7 +94,6 @@ public abstract class CalendarFactory {
 		return new CalendarComposite(metainfo.composite, metainfo.readOnly);
 	}
 
-	@SuppressWarnings("unused")
 	private static final int CALENDAR_CONTROL = 0;
 
 	private static final int DATE_TIME_CONTROL = 1;

@@ -39,7 +39,7 @@ public class AnnotationManager {
 		this.handlers.put(annotationClass, handler);
 	}
 
-	@SuppressWarnings( { "unchecked", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public Pair<Annotation, ValidationHandler>[] getValidationAnnotations(Method method) {
 		ArrayList<Pair<Annotation, ValidationHandler>> list = new ArrayList<Pair<Annotation, ValidationHandler>>();
 
