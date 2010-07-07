@@ -311,14 +311,6 @@ public class GenericValidator implements Validator {
 			this.propertyName = propertyName;
 		}
 
-		public Class getPropertyClass() {
-			return propertyClass;
-		}
-
-		public String getPropertyName() {
-			return propertyName;
-		}
-
 		@Override
 		public boolean equals(Object obj) {
 			final PropertyKey k = (PropertyKey) obj;

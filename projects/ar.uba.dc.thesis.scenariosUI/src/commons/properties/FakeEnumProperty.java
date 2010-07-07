@@ -23,7 +23,7 @@ package commons.properties;
  * @version $Revision: 1.4 $ $Date: 2008/01/31 17:09:57 $
  */
 
-public class FakeEnumProperty implements EnumProperty{
+public class FakeEnumProperty implements EnumProperty {
 
 	public FakeEnumProperty(String label) {
 		super();
@@ -34,8 +34,7 @@ public class FakeEnumProperty implements EnumProperty{
 	public String toString() {
 		return label;
 	}
-	
-	@SuppressWarnings("unused")
+
 	public String toString(Object... reemplazos) {
 		return label;
 	}
@@ -43,8 +42,8 @@ public class FakeEnumProperty implements EnumProperty{
 	public String name() {
 		return label;
 	}
-	
+
 	private String label;
-	
+
 	private static final long serialVersionUID = 1L;
 }

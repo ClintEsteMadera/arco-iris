@@ -14,6 +14,8 @@ import commons.exception.ValidationException;
  */
 public abstract class EMailValidator implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Valida si un texto es válido para denotar una dirección de e-mail.
 	 * 

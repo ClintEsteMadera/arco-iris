@@ -46,8 +46,7 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 			this.displayFormat = format;
 
 			if (control instanceof Text) {
-				TextFormatterFactory formatterFactory = TextFormatterFactoryManager.getInstance()
-						.getFactory(editType);
+				TextFormatterFactory formatterFactory = TextFormatterFactoryManager.getInstance().getFactory(editType);
 
 				if (formatterFactory != null) {
 					formatter = formatterFactory.createFormatter(editType);
@@ -123,8 +122,8 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 	}
 
 	public void notifyChange() {
-		final ValueChangeEvent<String> changeEvent = new ValueChangeEvent<String>(this, null,
-				this.textControl.getText());
+		final ValueChangeEvent<String> changeEvent = new ValueChangeEvent<String>(this, null, this.textControl
+				.getText());
 
 		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(changeEvent);
@@ -186,7 +185,8 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 		};
 
 		this.textControl.getWidget().addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {}
+			public void focusGained(FocusEvent e) {
+			}
 
 			public void focusLost(FocusEvent e) {
 				if (textControl.getInputError()) {
@@ -264,10 +264,6 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 			return this.inputError;
 		}
 
-		public void addFocusListener(FocusListener listener) {
-			this.widget.addFocusListener(listener);
-		}
-
 		private Text widget;
 
 		private boolean inputError;
@@ -278,13 +274,15 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 			this.widget = widget;
 		}
 
-		public void addModifyListener(ModifyListener listener) {}
+		public void addModifyListener(ModifyListener listener) {
+		}
 
 		public String getText() {
 			return widget.getText();
 		}
 
-		public void removeModifyListener(ModifyListener listener) {}
+		public void removeModifyListener(ModifyListener listener) {
+		}
 
 		public void setText(String text) {
 			if (text == null) {
@@ -297,7 +295,8 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 			return widget;
 		}
 
-		public void setInputError(boolean b) {}
+		public void setInputError(boolean b) {
+		}
 
 		public boolean getInputError() {
 			return false;

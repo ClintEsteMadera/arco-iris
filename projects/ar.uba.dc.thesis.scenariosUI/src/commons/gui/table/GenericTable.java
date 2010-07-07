@@ -309,7 +309,6 @@ public class GenericTable extends TableViewer {
 		gc.dispose();
 	}
 
-	@SuppressWarnings( { "unchecked", "unchecked" })
 	private int calcPrototypeWidth(TableRowAdapter aRowAdapter, int i, GC gc) {
 		Object proto = null;
 		String protoText = null;
