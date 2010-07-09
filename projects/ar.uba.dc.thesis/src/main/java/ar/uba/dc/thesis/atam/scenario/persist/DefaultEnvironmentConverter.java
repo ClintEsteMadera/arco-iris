@@ -9,18 +9,15 @@ import com.thoughtworks.xstream.converters.SingleValueConverter;
  */
 public class DefaultEnvironmentConverter implements SingleValueConverter {
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public boolean canConvert(Class type) {
 		return type.equals(DefaultEnvironment.class);
 	}
 
-	@Override
 	public String toString(Object obj) {
 		return "";
 	}
 
-	@Override
 	public Object fromString(String str) {
 		return DefaultEnvironment.getInstance();
 	}

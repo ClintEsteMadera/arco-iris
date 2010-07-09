@@ -30,12 +30,10 @@ public class FileSelfHealingConfigurationDao implements SelfHealingConfiguration
 		return this.scenariosConfig.getScenarios();
 	}
 
-	@Override
 	public List<Environment> getAllNonDefaultEnvironments() {
 		return this.scenariosConfig.getEnvironments();
 	}
 
-	@Override
 	public Environment getEnvironment(String name) {
 		for (Environment environment : this.getAllNonDefaultEnvironments()) {
 			if (environment.getName().equals(name)) {
@@ -45,7 +43,6 @@ public class FileSelfHealingConfigurationDao implements SelfHealingConfiguration
 		throw new RuntimeException("Environment " + name + " not defined.");
 	}
 
-	@Override
 	public List<Artifact> getAllArtifacts() {
 		return this.scenariosConfig.getArtifacts();
 	}
