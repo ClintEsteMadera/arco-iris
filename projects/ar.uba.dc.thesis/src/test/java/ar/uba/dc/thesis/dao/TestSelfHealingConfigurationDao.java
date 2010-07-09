@@ -25,22 +25,18 @@ public class TestSelfHealingConfigurationDao implements SelfHealingConfiguration
 		this.artifactDao = new TestArtifactDao();
 	}
 
-	@Override
 	public List<SelfHealingScenario> getAllScenarios() {
 		return this.scenarioDao.getAllScenarios();
 	}
 
-	@Override
 	public List<Environment> getAllNonDefaultEnvironments() {
 		return this.environmentDao.getAllNonDefaultEnvironments();
 	}
 
-	@Override
 	public Environment getEnvironment(String name) {
 		return this.environmentDao.getEnvironment(name);
 	}
 
-	@Override
 	public List<Artifact> getAllArtifacts() {
 		return this.artifactDao.getAllArtifacts();
 	}
