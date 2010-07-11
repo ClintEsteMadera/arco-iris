@@ -1,5 +1,6 @@
 package ar.uba.dc.thesis.rainbow.constraint;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -7,6 +8,9 @@ import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
+
+import ar.uba.dc.thesis.rainbow.constraint.numerical.BaseSinglePropertyInvolvedConstraint;
+import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
 
 public enum Quantifier {
 
@@ -31,6 +35,10 @@ public enum Quantifier {
 			}
 			Number average = values.isEmpty() ? sum : sum / values.size();
 			boolean holds = constraint.holds(average);
+			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
+				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
+				(GraphicGenerator.getInstance()).addPoint(Calendar.getInstance().getTimeInMillis(), property, average);
+			}
 			log(Level.INFO, "Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? "
 					+ holds + "!!!!");
 			return holds;
@@ -44,6 +52,10 @@ public enum Quantifier {
 				sum += number.doubleValue();
 			}
 			boolean holds = constraint.holds(sum);
+			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
+				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
+				GraphicGenerator.getInstance().addPoint(Calendar.getInstance().getTimeInMillis(), property, sum);
+			}
 			log(Level.INFO, "Holds for sum " + sum + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
 					+ "!!!!");
 			return holds;
