@@ -5,6 +5,5 @@
 	<classpathentry excluding="org/sa/rainbow/CorePlugin.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="stitch"/>
 	<classpathentry kind="src" path="src-sim"/>
-	<classpathentry kind="lib" path="lib/velocity-1.6.4-dep.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
