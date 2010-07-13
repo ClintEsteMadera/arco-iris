@@ -131,7 +131,9 @@ public class ZNewsSim extends AbstractSim {
 				}
 			}
 		}
+		if (rv == 0) {
+			throw new RuntimeException("Null Arrival Rate!");
+		}
 		return rv;
 	}
-
 }
