@@ -39,20 +39,21 @@ tactic enlistServers (int n) {
 tactic dischargeServers (int n) {
 	condition {
 		// there should be NO client with high response time
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
+		// commented out since this is not valid for a scenario-centry solution
+		// forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
 		// there should be enough servers to discharge
-		Set.size({ select s : T.ServerT in M.components | s.load < M.MIN_UTIL }) >= n;
+		// Tactic condition of applicability NOT met!
+		// Set.size({ select s : T.ServerT in M.components | s.load < M.MIN_UTIL }) >= n;
 	}
 	action {
-		set lowUtilSvrs = { select s : T.ServerT in M.components | s.load < M.MIN_UTIL };
+        set lowUtilSvrs = { select s : T.ServerT in M.components | s.load < 1000 };
 		set subLowUtilSvrs = Set.randomSubset(lowUtilSvrs, n);
 		for (T.ServerT s : subLowUtilSvrs) {
 			S.deactivateServer(s);
 		}
 	}
 	effect {
-		// still NO client with high response time
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
+
 	}
 }
 

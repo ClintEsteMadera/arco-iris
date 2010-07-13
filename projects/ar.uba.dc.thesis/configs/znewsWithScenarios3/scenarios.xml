@@ -101,7 +101,7 @@
           <property>experRespTime</property>
           <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">550</constantToCompareThePropertyWith>
+          <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
           <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </constraint>
       </responseMeasure>

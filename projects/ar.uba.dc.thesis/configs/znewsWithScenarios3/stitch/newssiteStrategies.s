@@ -37,8 +37,11 @@ define boolean CONCERN_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernSt
 strategy EnlistServersResponseTime
 [ styleApplies ] {
   t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
-    t1: (!CONCERN_STILL_BROKEN) -> done;
-    t3: (default) -> TNULL;
+	  t1: (!CONCERN_STILL_BROKEN) -> done;
+	  t2: (true) -> enlistServers(1) @[5000 /*ms*/] {
+		t3: (default) -> done;
+	  }
+	  t4: (default) -> TNULL;
   }
 }
 
@@ -51,7 +54,6 @@ strategy ReduceOverallCost
 [ styleApplies ] {
   t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
     t1: (!CONCERN_STILL_BROKEN) -> done;
-    t2: (CONCERN_STILL_BROKEN) -> do[2] t0;
-    t3: (default) -> TNULL;
+    t2: (default) -> TNULL;
   }
 }
