@@ -1,8 +1,8 @@
 package ar.uba.dc.thesis.znn.sim.graphics;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -11,37 +11,24 @@ import java.util.Map.Entry;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.sa.rainbow.core.Oracle;
 
 public class GraphicGenerator {
 
-	public void addPoint(double simTime, String iden, Number avgValue) {
-		String pointsArrayName = iden + "Points";
-
-		StringBuffer points = pointsPerProperty.get(iden);
-		if (points == null) {
-			points = new StringBuffer();
-			pointsPerProperty.put(iden, points);
-			countPerProperty.put(iden, 0);
-		}
+	public synchronized void addPoint(String property, Number avgValue) {
+		StringBuffer points = getPointsFor(property);
 		try {
-			points.append(pointsArrayName + "[");
-			points.append(countPerProperty.get(iden));
-			countPerProperty.put(iden, countPerProperty.get(iden) + 1);
-			points.append("]=[");
-			points.append(simTime);
-			points.append(",");
-			points.append(avgValue);
-			points.append("];");
-			for (Entry<String, StringBuffer> entry : pointsPerProperty.entrySet()) {
-				context.put(entry.getKey() + "Points", entry.getValue());
-			}
-			String fileName = MessageFormat.format(OUTPUT, iden);
-			Writer writer = new FileWriter(fileName);
-			getVelocityEngine().mergeTemplate("graphic.vm", "UTF-8", context, writer);
-			writer.close();
+			addCurrentPointIntoArray(property, avgValue, points);
+			putPointsWithinContext();
+			putThresholdsWithinContext();
+			write();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setThreshold(String property, Number constant) {
+		this.thresholdPerProperty.put(property + "Threshold", constant);
 	}
 
 	public static GraphicGenerator getInstance() {
@@ -81,15 +68,60 @@ public class GraphicGenerator {
 		return engine;
 	}
 
+	private StringBuffer getPointsFor(String property) {
+		StringBuffer points = pointsPerProperty.get(property);
+		if (points == null) {
+			points = new StringBuffer();
+			pointsPerProperty.put(property, points);
+			countPerProperty.put(property, 0);
+		}
+		return points;
+	}
+
+	private void write() throws IOException, Exception {
+		Writer writer = new FileWriter(OUTPUT);
+		getVelocityEngine().mergeTemplate("graphic.vm", "UTF-8", context, writer);
+		writer.close();
+		writer = new FileWriter(STATIC_OUTPUT);
+		getVelocityEngine().mergeTemplate("graphic_static.vm", "UTF-8", context, writer);
+		writer.close();
+	}
+
+	private void addCurrentPointIntoArray(String property, Number avgValue, StringBuffer points) {
+		points.append(property + "Points[");
+		points.append(countPerProperty.get(property));
+		countPerProperty.put(property, countPerProperty.get(property) + 1);
+		points.append("]=[");
+		points.append(Oracle.instance().simTime());
+		points.append(",");
+		points.append(avgValue);
+		points.append("];");
+	}
+
+	private void putPointsWithinContext() {
+		for (Entry<String, StringBuffer> entry : pointsPerProperty.entrySet()) {
+			context.put(entry.getKey() + "Points", entry.getValue());
+		}
+	}
+
+	private void putThresholdsWithinContext() {
+		for (Entry<String, Number> entry : thresholdPerProperty.entrySet()) {
+			context.put(entry.getKey(), entry.getValue());
+		}
+	}
+
 	private final VelocityContext context;
 
 	private static GraphicGenerator instance;
 
 	private final Map<String, StringBuffer> pointsPerProperty = new HashMap<String, StringBuffer>();
 	private final Map<String, Integer> countPerProperty = new HashMap<String, Integer>();
+	private final Map<String, Number> thresholdPerProperty = new HashMap<String, Number>();
 
 	private static VelocityEngine engine;
 
-	private final static String OUTPUT = "graphics_output/grafico.html";
+	private final static String OUTPUT = "graphics_output/graphic.html";
+
+	private final static String STATIC_OUTPUT = "graphics_output/graphic_static.html";
 
 }

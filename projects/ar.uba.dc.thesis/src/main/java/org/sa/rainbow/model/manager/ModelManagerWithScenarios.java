@@ -86,7 +86,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.sa.rainbow.core.IDisposable#dispose()
 	 */
 	public void dispose() {
@@ -110,7 +110,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#doTerminate()
 	 */
 	@Override
@@ -128,7 +128,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	/**
 	 * This method logs in the Manager Panel with DEBUG level. For a more flexible log method, please see
 	 * {@link #log(Level, String)}
-	 * 
+	 *
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#log(java.lang.String)
 	 */
 	@Override
@@ -142,7 +142,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#runAction()
 	 */
 	@Override
@@ -169,6 +169,8 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 							for (String stimulus : stimulusForProperty) {
 								m_model.updateProperty(key, e.getValue(), stimulus);
 							}
+						}else{
+							m_model.updateProperty(key, e.getValue(), null);
 						}
 					} else {
 						m_model.updateProperty(key, e.getValue());
@@ -190,7 +192,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	/**
 	 * Returns the full path of the property with the component type instead of the instance of the component. Example:
 	 * for ZNewSys.c0.experRespTime returns ZNewSys.ClientT.experRespTime
-	 * 
+	 *
 	 * @param qualifiedPropertyInstance
 	 *            e.g: ZNewsSys.ClientT.experRespTime
 	 * @return
@@ -223,7 +225,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.sa.rainbow.model.manager.IModelManager#queryElementProperty(java.lang.String,
 	 *      org.acmestudio.acme.element.IAcmeElementInstance)
 	 */
@@ -236,7 +238,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.sa.rainbow.model.manager.IModelManager#availableServices(org.acmestudio.acme.element.IAcmeElementType)
 	 */
 	public int availableServices(IAcmeElementType<?, ?> type) {
@@ -250,7 +252,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.sa.rainbow.model.manager.IModelManager#findServices(org.acmestudio.acme.element.IAcmeElementType,
 	 *      java.util.Map)
 	 */

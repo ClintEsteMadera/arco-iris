@@ -42,7 +42,12 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		this.validate();
 	}
 
+	public Number getConstantToCompareThePropertyWith() {
+		return constantToCompareThePropertyWith;
+	}
+
 	/**
+	 * 
 	 * In this implementation, we always use the exponential average of the historical values (this is managed by the
 	 * Rainbow Model).
 	 * 
@@ -59,7 +64,8 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		double propertyValue = this.getPropertyValueFrom(rainbowModelWithScenarios);
 		double propertyValueAfterStrategy = propertyValue + concernDiffAfterStrategy;
 
-		log(Level.INFO, this.eAvgPropertyName + " + concernDiffAfterStrategy: " + propertyValueAfterStrategy);
+		log(Level.INFO, this.eAvgPropertyName + "(" + propertyValue + ") + concernDiffAfterStrategy("
+				+ concernDiffAfterStrategy + "): " + propertyValueAfterStrategy);
 
 		return this.holds(propertyValueAfterStrategy);
 	}
