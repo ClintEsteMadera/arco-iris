@@ -58,13 +58,25 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	 */
 	public void updateProperty(String type, Object value, String stimulus) {
 		this.updateProperty(type, value);
-		log(Level.INFO, "Updated property because of stimulus: " + stimulus);
+		//TODO dejar esta invocacion al GraphicGenerator?
+		// Double avgValue = null;
+		// String property = type.substring(type.lastIndexOf('.') + 1);
+		// if ("experRespTime".equals(property)) {
+		// avgValue = (Double) this.getProperty(RainbowModel.EXP_AVG_KEY + "ClientT" + "." + property);
+		// } else if ("cost".equals(property)) {
+		// avgValue = (Double) this.getProperty(RainbowModel.EXP_AVG_KEY + "ServerT." + property);
+		// }
+		// if (avgValue != null) {
+		// log(Level.DEBUG, "Adding point to graphic for " + property + ": " + avgValue);
+		// GraphicGenerator.getInstance().addPoint(property, avgValue);
+		// }
+		log(Level.INFO, "Updated property because of stimulus: " + stimulus == null ? "NO STIMULUS!" : stimulus);
 		this.isPropertyUpdateAllowed = false;
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
 				.adaptationManager();
 		List<SelfHealingScenario> brokenScenarios;
 		// done this way in order to avoid the same else block twice
-		if (!adaptationManager.adaptationInProgress()
+		if (!adaptationManager.adaptationInProgress() && stimulus != null
 				&& !(brokenScenarios = this.selfHealingConfigurationManager.findBrokenScenarios(stimulus)).isEmpty()) {
 			/*
 			 * pass control to adaptation manager, who will be responsible for turning the flag

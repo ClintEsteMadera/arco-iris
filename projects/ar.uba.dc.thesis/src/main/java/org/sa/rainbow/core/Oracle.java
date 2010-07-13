@@ -4,6 +4,7 @@
 package org.sa.rainbow.core;
 
 import java.io.File;
+import java.util.Calendar;
 
 import org.acmestudio.standalone.environment.StandaloneEnvironment;
 import org.apache.log4j.Level;
@@ -196,6 +197,14 @@ public class Oracle implements IDisposable {
 			Ohana.instance().setModelRepository(m_model);
 		}
 		return m_model;
+	}
+
+	public long simTime() {
+		if (m_system instanceof SimulationRunner) {
+			return ((SimulationRunner) m_system).elapsedTime();
+		} else {
+			return Calendar.getInstance().getTimeInMillis();
+		}
 	}
 
 	public TargetSystem targetSystem() {

@@ -1,6 +1,5 @@
 package ar.uba.dc.thesis.rainbow.constraint;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -37,7 +36,7 @@ public enum Quantifier {
 			boolean holds = constraint.holds(average);
 			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
 				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
-				(GraphicGenerator.getInstance()).addPoint(Calendar.getInstance().getTimeInMillis(), property, average);
+				(GraphicGenerator.getInstance()).addPoint(property, average);
 			}
 			log(Level.INFO, "Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? "
 					+ holds + "!!!!");
@@ -54,7 +53,7 @@ public enum Quantifier {
 			boolean holds = constraint.holds(sum);
 			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
 				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
-				GraphicGenerator.getInstance().addPoint(Calendar.getInstance().getTimeInMillis(), property, sum);
+				GraphicGenerator.getInstance().addPoint(property, sum);
 			}
 			log(Level.INFO, "Holds for sum " + sum + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
 					+ "!!!!");

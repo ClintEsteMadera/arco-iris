@@ -6,11 +6,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
-	<meta http-equiv="Refresh" content="2">
 </head>
 <body class="datos_sistema" leftmargin="0" topmargin="0" marginheight="0" marginwidth="10">
-
-	<input type="button" value="Stop" onclick="window.location='graphic_static.html'"/>
 
 	<h3>Experience Response Time</h3>
 
@@ -18,7 +15,7 @@
 
 	<h3>Server Cost</h3>
 
-	<div id="costDiv" style="width:1200px;height:350px;"></div>
+	<div id="costDiv" style="width:1200;height:350px;"></div>
 
 </body>
 
@@ -56,6 +53,7 @@ $(function () {
             lines: { show: true }
         }
     ]);
+
 });
 </script>
 
