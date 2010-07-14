@@ -36,7 +36,7 @@ public enum Quantifier {
 			boolean holds = constraint.holds(average);
 			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
 				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
-				(GraphicGenerator.getInstance()).addPoint(property, average);
+				GraphicGenerator.getInstance().addPoint(property, average);
 			}
 			log(Level.INFO, "Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? "
 					+ holds + "!!!!");
