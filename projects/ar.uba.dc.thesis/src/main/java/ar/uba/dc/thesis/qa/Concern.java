@@ -5,6 +5,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("concern")
 public enum Concern {
 
+	// TODO Externalizar esto al XML si hay tiempo (low priority)
+
 	RESPONSE_TIME("Response time", QualityAttribute.PERFORMANCE, "uR"),
 
 	SERVER_COST("Number of active servers", QualityAttribute.COST, "uC"),
