@@ -7,25 +7,25 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 
-
 import commons.gui.widget.composite.QueryComposite;
 import commons.properties.EnumProperty;
 
-/**
- * @author Jonathan Chiocchio
- * @version $Revision: 1.1 $ $Date: 2008/04/18 20:55:06 $
- */
+public abstract class QueryAction extends BaseGuiAction {
 
-public abstract class QueryAction implements GuiAction {
+	private EnumProperty menuText;
 
-	protected QueryAction(String identificadorUnico, EnumProperty menuText, EnumProperty tabItemText,
-			Class<? extends QueryComposite> queryCompositeClass, String shortcut) {
+	private EnumProperty tabItemText;
 
-		this.identificadorUnico = identificadorUnico;
+	private Class<? extends QueryComposite> queryCompositeClass;
+
+	private static final Log log = LogFactory.getLog(QueryAction.class);
+
+	protected QueryAction(String uniqueId, String shortcut, EnumProperty menuText, EnumProperty tabItemText,
+			Class<? extends QueryComposite> queryCompositeClass) {
+		super(uniqueId, shortcut);
 		this.menuText = menuText;
 		this.tabItemText = tabItemText;
 		this.queryCompositeClass = queryCompositeClass;
-		this.shortcut = shortcut;
 	}
 
 	public Action getActionFor(Object model) {
@@ -36,7 +36,7 @@ public abstract class QueryAction implements GuiAction {
 				CTabItem tabItem = getTabItem(getTabItemText());
 				QueryComposite queryComposite;
 				if (tabItem == null) {
-					tabItem = new CTabItem(mainTabFolder, SWT.CLOSE);
+					tabItem = new CTabItem(mainTabFolder, tabsAreCloseable() ? SWT.CLOSE : SWT.NONE);
 					queryComposite = getQueryCompositeInstance();
 					tabItem.setControl(queryComposite);
 					tabItem.setText(getTabItemText().toString());
@@ -61,10 +61,6 @@ public abstract class QueryAction implements GuiAction {
 		};
 	}
 
-	public String getUniqueId() {
-		return this.identificadorUnico;
-	}
-
 	public EnumProperty getMenuText() {
 		return this.menuText;
 	}
@@ -77,23 +73,9 @@ public abstract class QueryAction implements GuiAction {
 		return this.queryCompositeClass;
 	}
 
-	public String getShortcut() {
-		return shortcut;
-	}
-
 	protected abstract CTabFolder getMainTabFolder();
 
 	protected abstract CTabItem getTabItem(EnumProperty tabItemText);
 
-	private EnumProperty menuText;
-
-	private EnumProperty tabItemText;
-
-	private Class<? extends QueryComposite> queryCompositeClass;
-
-	private String shortcut;
-
-	private String identificadorUnico;
-
-	private static final Log log = LogFactory.getLog(QueryAction.class);
+	protected abstract boolean tabsAreCloseable();
 }

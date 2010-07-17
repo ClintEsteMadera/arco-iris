@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import commons.properties.EnumPropertiesHelper;
 import commons.properties.EnumProperty;
 
-
 public enum ScenariosUILabels implements EnumProperty {
 	SELF_HEALING_CONFIG,
 	CREATE_SELF_HEALING_CONFIG,
@@ -19,6 +18,7 @@ public enum ScenariosUILabels implements EnumProperty {
 	STIMULUS_SOURCE,
 	STIMULUS,
 	ENVIRONMENT,
+	ENVIRONMENTS,
 	ARTIFACT,
 	RESPONSE,
 	ENABLED,

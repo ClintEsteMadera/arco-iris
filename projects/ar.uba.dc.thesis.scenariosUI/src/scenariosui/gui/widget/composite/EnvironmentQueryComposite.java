@@ -8,26 +8,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
-import scenariosui.gui.action.ScenariosUIActions;
-import scenariosui.gui.query.SelfHealingScenarioSearchCriteria;
+import scenariosui.gui.query.EnvironmentSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
-import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.composite.QueryComposite;
 import commons.query.BaseCriteria;
 
-public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealingScenario> {
+public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 
-	public SelfHealingScenarioQueryComposite() {
-		this(PageHelper.getMainWindow().mainTabFolder, new SelfHealingScenarioSearchCriteria());
+	public EnvironmentQueryComposite() {
+		this(PageHelper.getMainWindow().mainTabFolder, new EnvironmentSearchCriteria());
 	}
 
-	public SelfHealingScenarioQueryComposite(Composite parent, BaseCriteria criterioBusqueda) {
-		super(parent, TableConstants.SCENARIOS, SelfHealingScenario.class, criterioBusqueda);
+	public EnvironmentQueryComposite(Composite parent, BaseCriteria searchCriteria) {
+		super(parent, TableConstants.ENVIRONMENTS, Environment.class, searchCriteria);
 	}
 
 	@Override
@@ -36,27 +35,27 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 	}
 
 	@Override
-	// FIXME workaround para que el update de scenarios se refleje correctamente en la tabla
-	protected List<SelfHealingScenario> executeQuery() {
+	// FIXME workaround para que el update de environments se refleje correctamente en la tabla
+	protected List<Environment> executeQuery() {
 		ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
 
 		if (this.getCriterio().getId() == null) {
-			return scenariosUIController.getCurrentSelfHealingConfiguration().getScenarios();
+			return scenariosUIController.getCurrentSelfHealingConfiguration().getEnvironments();
 		} else {
-			SelfHealingScenario scenario = scenariosUIController.findSelfHealingScenario(this.getCriterio().getId());
+			Environment environment = scenariosUIController.findEnvironment(this.getCriterio().getId());
 			this.getCriterio().setId(null);
-			return Collections.singletonList(scenario);
+			return Collections.singletonList(environment);
 		}
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForEdit() {
-		return ScenariosUIActions.EDIT_SELF_HEALING_SCENARIO;
+	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForEdit() {
+		throw new RuntimeException("Functionality not implemented yet");
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForView() {
-		return ScenariosUIActions.VIEW_SELF_HEALING_SCENARIO;
+	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForView() {
+		throw new RuntimeException("Functionality not implemented yet");
 	}
 
 	@Override
@@ -77,17 +76,17 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 
 	@Override
 	protected boolean editionAllowed() {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean viewButtonAllowed() {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected void addButtons() {
 		super.addButtons();
-		super.addButton(ScenariosUIActions.NEW_SELF_HEALING_SCENARIO);
+		// TODO super.addButton(ScenariosUIActions.NEW_ENVIRONMENT.getAction());
 	}
 }

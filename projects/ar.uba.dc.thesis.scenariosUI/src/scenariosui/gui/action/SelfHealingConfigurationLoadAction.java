@@ -29,6 +29,7 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 	}
 
 	private class LoadAction extends Action {
+		private ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
 
 		public LoadAction(String id) {
 			super();
@@ -38,32 +39,37 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 		@Override
 		@SuppressWarnings("unchecked")
 		public void run() {
-			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
 			if (createNewConfig) {
-				FileDialog dialog = this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase());
+				FileDialog dialog = this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase(), "from");
 				String xmlFilePath = dialog.open();
 				if (xmlFilePath == null) {
 					return;
 				}
 				scenariosUIController.newSelfHealingConfiguration(xmlFilePath);
 			} else {
-				FileDialog dialog = this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase());
+				FileDialog dialog = this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase(), "to");
 				String xmlFilePath = dialog.open();
 				if (xmlFilePath == null) {
 					return;
 				}
 				scenariosUIController.openSelfHealingConfiguration(xmlFilePath);
 			}
+			this.displayEnvironmentList();
+			this.displayScenariosList();
 
-			this.displayScenariosList(scenariosUIController);
-
-			setCloseActionEnabled(true);
+			// setCloseActionEnabled(true);
 		}
 
-		private void displayScenariosList(ScenariosUIController scenariosUIController) {
+		private void displayScenariosList() {
 			ScenariosUIActions.SCENARIOS_QUERY.getActionFor(scenariosUIController.getCurrentSelfHealingConfiguration())
 					.run();
 			ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS);
+		}
+
+		private void displayEnvironmentList() {
+			ScenariosUIActions.ENVIRONMENT_QUERY.getActionFor(
+					scenariosUIController.getCurrentSelfHealingConfiguration()).run();
+			ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS);
 		}
 
 		private FileDialog createFileDialog(String... replacements) {
@@ -79,7 +85,7 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 
 			FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 			dialog.setText(ScenariosUILabels.FILE_DIALOG_MESSAGE.toString(replacements));
-			dialog.setFileName(ScenariosUILabels.SCENARIOS.toString() + ".xml");
+			dialog.setFileName(ScenariosUILabels.SELF_HEALING_CONFIG.toString() + ".xml");
 			dialog.setFilterNames(filterNames);
 			dialog.setFilterExtensions(filterExtensions);
 			dialog.setFilterPath(filterPath);

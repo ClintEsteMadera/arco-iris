@@ -5,14 +5,13 @@ import java.util.Properties;
 import commons.properties.EnumPropertiesHelper;
 import commons.properties.EnumProperty;
 
-
 /**
  * These names will be used in the preferences xml file.
  */
 
 public enum TableConstants implements EnumProperty {
 
-	SCENARIOS;
+	SCENARIOS, ENVIRONMENTS;
 
 	@Override
 	public String toString() {

@@ -16,9 +16,9 @@ import commons.properties.EnumProperty;
 
 public class ScenariosUIQueryAction extends QueryAction {
 
-	public ScenariosUIQueryAction(String identificadorUnico, EnumProperty menuText, EnumProperty tabItemText,
-			Class<? extends QueryComposite> queryCompositeClass, String shortcut) {
-		super(identificadorUnico, menuText, tabItemText, queryCompositeClass, shortcut);
+	public ScenariosUIQueryAction(String uniqueId, String shortcut, EnumProperty menuText, EnumProperty tabItemText,
+			Class<? extends QueryComposite> queryCompositeClass) {
+		super(uniqueId, shortcut, menuText, tabItemText, queryCompositeClass);
 	}
 
 	@Override
@@ -29,5 +29,13 @@ public class ScenariosUIQueryAction extends QueryAction {
 	@Override
 	protected CTabItem getTabItem(EnumProperty tabItemText) {
 		return ScenariosUIWindow.getInstance().getTabItem(tabItemText);
+	}
+
+	/**
+	 * For this application, by design, we don't allow tabs to be closed.
+	 */
+	@Override
+	protected boolean tabsAreCloseable() {
+		return false;
 	}
 }
