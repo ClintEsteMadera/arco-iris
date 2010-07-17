@@ -33,8 +33,8 @@ import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
-import ar.uba.dc.thesis.selfhealing.InSimulationScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector;
+import ar.uba.dc.thesis.selfhealing.ScoringScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -373,10 +373,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				if (scenariosSolutionWeight > 0) {
 					doLog(Level.TRACE, "Scoring " + currentStrategy.getName() + " with scenarios approach...");
 
-					ScenarioBrokenDetector inSimulationScenarioBrokenDetector = new InSimulationScenarioBrokenDetector(
-							m_model, currentStrategy);
 					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
-							inSimulationScenarioBrokenDetector);
+							new ScoringScenarioBrokenDetector(m_model, currentStrategy));
 					doLog(Level.TRACE, "Scenarios approach score for strategy " + currentStrategy.getName() + ": "
 							+ strategyScore4Scenarios);
 				}
