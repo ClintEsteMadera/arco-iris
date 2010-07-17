@@ -38,6 +38,7 @@ import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.StitchParser;
+import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
 
 /**
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
@@ -412,6 +413,8 @@ public class Oracle implements IDisposable {
 		adaptationManager().start();
 		modelManager().start();
 		archEvaluator().start();
+		new GraphicGenerator((RainbowModelWithScenarios) this.rainbowModel()).start();
+
 		// ((IRainbowRunnable )learner()).start();
 		// - lastly, connect to the target system OR start simulation
 		sys.connect();

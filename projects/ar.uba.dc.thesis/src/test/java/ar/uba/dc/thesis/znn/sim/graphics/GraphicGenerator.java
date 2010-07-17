@@ -3,22 +3,71 @@ package ar.uba.dc.thesis.znn.sim.graphics;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.sa.rainbow.core.AbstractRainbowRunnable;
 import org.sa.rainbow.core.Oracle;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
-public class GraphicGenerator {
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
+import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
-	public synchronized void addPoint(String property, Number avgValue) {
-		StringBuffer points = getPointsFor(property);
+public class GraphicGenerator extends AbstractRainbowRunnable {
+
+	private RainbowModelWithScenarios rainbowModelWithScenarios;
+
+	@Override
+	protected void runAction() {
+		this.addPoints(getCostPoint(), getRespTimePoint());
+	}
+
+	private GraphicPoint getCostPoint() {
+		List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues("ZNewsSys", "ServerT", "cost");
+		double sum = NumberUtils.DOUBLE_ZERO;
+		for (Number number : values) {
+			sum += number.doubleValue();
+		}
+		GraphicPoint costPoint = new GraphicPoint("cost", sum);
+		return costPoint;
+	}
+
+	private GraphicPoint getRespTimePoint() {
+		List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues("ZNewsSys", "ClientT",
+				"experRespTime");
+		double sum = NumberUtils.DOUBLE_ZERO;
+		for (Number number : values) {
+			sum += number.doubleValue();
+		}
+		Number average = values.isEmpty() ? sum : sum / values.size();
+		GraphicPoint costPoint = new GraphicPoint("experRespTime", average);
+		return costPoint;
+	}
+
+	public void dispose() {
+		// nothing to do
+	}
+
+	@Override
+	protected void log(String txt) {
+		// nothing to do
+	}
+
+	private void addPoints(GraphicPoint... points) {
+		for (GraphicPoint point : points) {
+			StringBuffer propertyPoints = getPointsFor(point.getProperty());
+			addCurrentPointIntoArray(point.getProperty(), point.getAvgValue(), propertyPoints);
+		}
 		try {
-			addCurrentPointIntoArray(property, avgValue, points);
 			putPointsWithinContext();
 			putThresholdsWithinContext();
 			write();
@@ -31,22 +80,31 @@ public class GraphicGenerator {
 		this.thresholdPerProperty.put(property + "Threshold", constant);
 	}
 
-	public static GraphicGenerator getInstance() {
-		if (instance == null) {
-			try {
-				instance = new GraphicGenerator();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public GraphicGenerator(RainbowModelWithScenarios rainbowModel) {
+		super("Simulation Graphic Generator");
+		setSleepTime(500/* ms */);
+		this.rainbowModelWithScenarios = rainbowModel;
+		initializeThresholds();
+		try {
+			Velocity.init();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return instance;
-	}
-
-	private GraphicGenerator() throws Exception {
-		super();
-		Velocity.init();
 		context = new VelocityContext();
 		context.put("plot", "$.plot");
+	}
+
+	private void initializeThresholds() {
+		Collection<SelfHealingScenario> enabledScenarios = Oracle.instance().selfHealingConfigurationRepository()
+				.getEnabledScenarios();
+		for (SelfHealingScenario scenario : enabledScenarios) {
+			Constraint constraint = scenario.getResponseMeasure().getConstraint();
+			if (constraint instanceof NumericBinaryRelationalConstraint) {
+				NumericBinaryRelationalConstraint numericConstraint = ((NumericBinaryRelationalConstraint) constraint);
+				Number constantToCompareThePropertyWith = numericConstraint.getConstantToCompareThePropertyWith();
+				this.setThreshold(numericConstraint.getProperty(), constantToCompareThePropertyWith);
+			}
+		}
 	}
 
 	private static VelocityEngine getVelocityEngine() {
@@ -111,8 +169,6 @@ public class GraphicGenerator {
 	}
 
 	private final VelocityContext context;
-
-	private static GraphicGenerator instance;
 
 	private final Map<String, StringBuffer> pointsPerProperty = new HashMap<String, StringBuffer>();
 	private final Map<String, Integer> countPerProperty = new HashMap<String, Integer>();
