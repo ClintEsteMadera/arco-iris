@@ -1,10 +1,10 @@
 <selfHealingConfiguration description="test">
   <artifacts>
-    <artifact name="ClientT" systemName="ZNewsSys"/>
-    <artifact name="ServerT" systemName="ZNewsSys"/>
+    <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
+    <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
   </artifacts>
   <environments>
-    <environment name="NORMAL">
+    <environment id="0" name="NORMAL">
       <conditions>
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
@@ -32,7 +32,7 @@
       <heuristic>MOST</heuristic>
       <history/>
     </environment>
-    <environment name="HIGH LOAD">
+    <environment id="1" name="HIGH LOAD">
       <conditions>
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
@@ -62,7 +62,7 @@
     </environment>
   </environments>
   <scenarios>
-    <selfHealingScenario name="Client Experienced Response Time Scenario" id="2" enabled="true" priority="1">
+    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulusSource>Any Client requesting news content</stimulusSource>
       <stimulus>GetNewsContentClientStimulus</stimulus>

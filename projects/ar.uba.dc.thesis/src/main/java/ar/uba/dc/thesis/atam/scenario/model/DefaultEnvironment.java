@@ -21,6 +21,9 @@ public final class DefaultEnvironment extends Environment {
 
 	private static final String NAME = "DEFAULT";
 
+	// this id should not be used by any other environment, see validation in Environment's constructor.
+	static final Long ID = -1L;
+
 	private static final ArrayList<Constraint> CONDITIONS = new ArrayList<Constraint>();
 
 	private static final Map<Concern, Double> equallyDistributedWeights = initWeights();
@@ -31,8 +34,18 @@ public final class DefaultEnvironment extends Environment {
 		return instance;
 	}
 
+	/**
+	 * Nothing special to validate specially on this class.
+	 * 
+	 * @see super{@link #validateId()}
+	 */
+	@Override
+	protected void validateId() {
+		// we specifically want to do nothing on this case
+	}
+
 	private DefaultEnvironment() {
-		super(NAME, CONDITIONS, equallyDistributedWeights);
+		super(ID, NAME, CONDITIONS, equallyDistributedWeights);
 	}
 
 	private static Map<Concern, Double> initWeights() {

@@ -1,10 +1,10 @@
 <selfHealingConfiguration description="test">
   <artifacts>
-    <artifact name="ClientT" systemName="ZNewsSys"/>
-    <artifact name="ServerT" systemName="ZNewsSys"/>
+    <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
+    <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
   </artifacts>
   <environments>
-    <environment name="NORMAL">
+    <environment id="0" name="NORMAL">
       <conditions>
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
@@ -24,10 +24,6 @@
         </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
-        <entry>
-          <concern>SERVER_COST</concern>
-          <double>0.333</double>
-        </entry>
         <entry>
           <concern>CONTENT_FIDELITY</concern>
           <double>0.333</double>
@@ -36,11 +32,15 @@
           <concern>RESPONSE_TIME</concern>
           <double>0.333</double>
         </entry>
+        <entry>
+          <concern>SERVER_COST</concern>
+          <double>0.333</double>
+        </entry>
       </weights>
       <heuristic>MOST</heuristic>
       <history/>
     </environment>
-    <environment name="HIGH LOAD">
+    <environment id="1" name="HIGH LOAD">
       <conditions>
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
@@ -60,10 +60,6 @@
         </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
-        <entry>
-          <concern>SERVER_COST</concern>
-          <double>0.2</double>
-        </entry>
         <entry>
           <concern>CONTENT_FIDELITY</concern>
           <double>0.1</double>
@@ -72,13 +68,17 @@
           <concern>RESPONSE_TIME</concern>
           <double>0.7</double>
         </entry>
+        <entry>
+          <concern>SERVER_COST</concern>
+          <double>0.2</double>
+        </entry>
       </weights>
       <heuristic>MOST</heuristic>
       <history/>
     </environment>
   </environments>
   <scenarios>
-    <selfHealingScenario name="Client Experienced Response Time Scenario" id="2" enabled="true" priority="1">
+    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulusSource>Any Client requesting news content</stimulusSource>
       <stimulus>GetNewsContentClientStimulus</stimulus>
@@ -101,7 +101,7 @@
       <architecturalDecisions/>
       <repairStrategy>VariedReduceResponseTime</repairStrategy>
     </selfHealingScenario>
-    <selfHealingScenario name="Server Cost Scenario" id="2" enabled="true" priority="2">
+    <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
       <concern>SERVER_COST</concern>
       <stimulusSource>Anyone</stimulusSource>
       <stimulus>ANY</stimulus>
