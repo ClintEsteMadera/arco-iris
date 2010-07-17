@@ -27,7 +27,6 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
-import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
 
 public class RainbowModelWithScenarios extends RainbowModel {
 
@@ -59,18 +58,6 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	 */
 	public void updateProperty(String type, Object value, String stimulus) {
 		this.updateProperty(type, value);
-		// TODO dejar esta invocacion al GraphicGenerator?
-		Double avgValue = null;
-		String property = type.substring(type.lastIndexOf('.') + 1);
-		if ("experRespTime".equals(property)) {
-			avgValue = (Double) this.getProperty(RainbowModel.EXP_AVG_KEY + "ClientT" + "." + property);
-		} else if ("cost".equals(property)) {
-			avgValue = (Double) this.getProperty(RainbowModel.EXP_AVG_KEY + "ServerT." + property);
-		}
-		if (avgValue != null) {
-			log(Level.DEBUG, "Adding point to graphic for " + property + ": " + avgValue);
-			GraphicGenerator.getInstance().addPoint(property, avgValue);
-		}
 		log(Level.INFO, "Updated property because of stimulus: " + stimulus == null ? "NO STIMULUS!" : stimulus);
 		this.isPropertyUpdateAllowed = false;
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()

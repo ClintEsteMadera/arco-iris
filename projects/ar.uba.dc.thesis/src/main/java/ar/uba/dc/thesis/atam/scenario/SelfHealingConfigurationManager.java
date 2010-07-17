@@ -13,11 +13,8 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
-import ar.uba.dc.thesis.rainbow.constraint.Constraint;
-import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
-import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
 
 public class SelfHealingConfigurationManager {
 
@@ -50,7 +47,6 @@ public class SelfHealingConfigurationManager {
 		super();
 		this.selfHealingConfigurationRepository = selfHealingConfigurationRepository;
 		this.loadScenarios();
-		this.initializeGraphicsThresholds();
 	}
 
 	public List<String> getStimulus(String qualifiedPropertyNAme) {
@@ -154,17 +150,4 @@ public class SelfHealingConfigurationManager {
 		stimulusPerScenarioList.add(stimulus);
 	}
 
-	public void initializeGraphicsThresholds() {
-		for (SelfHealingScenario scenario : getEnabledScenarios()) {
-			Constraint constraint = scenario.getResponseMeasure().getConstraint();
-			if (constraint instanceof NumericBinaryRelationalConstraint) {
-				NumericBinaryRelationalConstraint numericConstraint = ((NumericBinaryRelationalConstraint) constraint);
-				Number constantToCompareThePropertyWith = numericConstraint.getConstantToCompareThePropertyWith();
-				GraphicGenerator.getInstance().setThreshold(numericConstraint.getProperty(),
-						constantToCompareThePropertyWith);
-			}
-
-		}
-
-	}
 }

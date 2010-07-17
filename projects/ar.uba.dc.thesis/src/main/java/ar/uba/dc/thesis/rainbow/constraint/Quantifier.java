@@ -8,9 +8,6 @@ import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.rainbow.constraint.numerical.BaseSinglePropertyInvolvedConstraint;
-import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
-
 public enum Quantifier {
 
 	FOR_ALL {
@@ -34,10 +31,6 @@ public enum Quantifier {
 			}
 			Number average = values.isEmpty() ? sum : sum / values.size();
 			boolean holds = constraint.holds(average);
-			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
-				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
-				GraphicGenerator.getInstance().addPoint(property, average);
-			}
 			log(Level.INFO, "Holds for average " + average + " of " + constraint.getFullyQualifiedPropertyName() + "? "
 					+ holds + "!!!!");
 			return holds;
@@ -51,10 +44,6 @@ public enum Quantifier {
 				sum += number.doubleValue();
 			}
 			boolean holds = constraint.holds(sum);
-			if (constraint instanceof BaseSinglePropertyInvolvedConstraint) {
-				String property = ((BaseSinglePropertyInvolvedConstraint) constraint).getProperty();
-				GraphicGenerator.getInstance().addPoint(property, sum);
-			}
 			log(Level.INFO, "Holds for sum " + sum + " of " + constraint.getFullyQualifiedPropertyName() + "? " + holds
 					+ "!!!!");
 			return holds;
