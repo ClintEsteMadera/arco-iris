@@ -6,12 +6,34 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
  * Abstract behavior for all POJOs (Plain old Java objects) used in this project.
  */
 public abstract class ThesisPojo implements Validatable, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@XStreamAsAttribute
+	private Long id;
+
+	public ThesisPojo() {
+		super();
+	}
+
+	public ThesisPojo(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -39,4 +61,15 @@ public abstract class ThesisPojo implements Validatable, Serializable {
 	protected String[] getEqualsAndHashCodeExcludedFields() {
 		return null;
 	}
+
+	/**
+	 * By default, the only validation performed on a ThesisPojo is just asserting the non-nullity of the unique
+	 * identifier (id)
+	 */
+	public void validate() {
+		if (this.id == null) {
+			throw new RuntimeException("Object's unique identifier (id) cannot be null");
+		}
+	}
+
 }

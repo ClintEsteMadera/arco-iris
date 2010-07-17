@@ -54,7 +54,7 @@ public class TestEnvironmentDao {
 		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.333D);
 		normalConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.333D);
 		normalConcernMultiplierMap.put(Concern.SERVER_COST, 0.333D);
-		Environment normalEnv = new Environment("NORMAL", NORMAL_RESPONSE_TIME_CONDITIONS_LIST,
+		Environment normalEnv = new Environment(0L, "NORMAL", NORMAL_RESPONSE_TIME_CONDITIONS_LIST,
 				normalConcernMultiplierMap);
 		return normalEnv;
 	}
@@ -65,7 +65,7 @@ public class TestEnvironmentDao {
 		highLoadConcernMultiplierMap.put(Concern.SERVER_COST, 0.2D);
 		highLoadConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.1D); // this one SHOULD exist in the map
 
-		Environment highLoadEnv = new Environment("HIGH LOAD", HIGH_RESPONSE_TIME_CONDITIONS_LIST,
+		Environment highLoadEnv = new Environment(1L, "HIGH LOAD", HIGH_RESPONSE_TIME_CONDITIONS_LIST,
 				highLoadConcernMultiplierMap);
 		return highLoadEnv;
 	}

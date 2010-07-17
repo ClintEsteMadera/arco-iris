@@ -74,7 +74,7 @@ public class TestSelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(2L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
+		return new SelfHealingScenario(0L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 
@@ -92,7 +92,7 @@ public class TestSelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 2;
 
-		return new SelfHealingScenario(2L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
+		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
 				artifact, response, responseMeasure, archDecisions, enabled, priority);
 	}
 }

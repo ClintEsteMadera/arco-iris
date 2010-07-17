@@ -46,24 +46,40 @@ public class Environment extends ThesisPojo {
 	 * This constructor has the same effect than invoking {@link #Environment(String, List, Map, Integer, Heuristic)}
 	 * with the latest two parameters in <code>null</code>
 	 * 
+	 * @param id
+	 *            environment's id
 	 * @param name
-	 *            the environment's name
+	 *            environment's name
 	 * @param conditions
 	 *            the conditions that need to hold in order to consider this Environment applicable
 	 * @param weights
 	 *            how Concerns are weightened in this particular Environment <b>NOTE: ALL concerns must be present,
 	 *            otherwise, an exception will be thrown</b>
 	 */
-	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Double> weights) {
-		this(name, conditions, weights, null, null);
+	public Environment(Long id, String name, List<? extends Constraint> conditions, Map<Concern, Double> weights) {
+		this(id, name, conditions, weights, null, null);
+		this.validateId();
+	}
+
+	/**
+	 * This method should ensure that the DefaultEnvironment's id is not being used for an object not instance of that
+	 * class. It should be overriden accordingly on all of the subclasses.
+	 */
+	protected void validateId() {
+		if (this.getId().equals(DefaultEnvironment.ID)) {
+			throw new RuntimeException("The identifier " + DefaultEnvironment.ID
+					+ " cannot be used for other Environment than the default one");
+		}
 	}
 
 	/**
 	 * /** This constructor has the same effect than invoking
 	 * {@link #Environment(String, List, Map, Integer, Heuristic)} with the latest two parameters in <code>null</code>
 	 * 
+	 * @param id
+	 *            environment's id
 	 * @param name
-	 *            the environment's name
+	 *            environment's name
 	 * @param conditions
 	 *            the conditions that need to hold in order to consider this Environment applicable
 	 * @param weights
@@ -74,9 +90,9 @@ public class Environment extends ThesisPojo {
 	 * @param heuristic
 	 *            the Heuristic that needs to be used when weightening past evaluations of environment's constraints.
 	 */
-	public Environment(String name, List<? extends Constraint> conditions, Map<Concern, Double> weights,
+	public Environment(Long id, String name, List<? extends Constraint> conditions, Map<Concern, Double> weights,
 			Integer historySize, Heuristic heuristic) {
-		super();
+		super(id);
 		this.name = name;
 		this.conditions = conditions;
 		this.weights = weights;
@@ -122,6 +138,7 @@ public class Environment extends ThesisPojo {
 		return holds;
 	}
 
+	@Override
 	public void validate() {
 		if (StringUtils.isBlank(this.getName())) {
 			throw new IllegalArgumentException("Environment's name cannot be empty");

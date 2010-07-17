@@ -13,9 +13,9 @@ public final class TestArtifactDao {
 
 	private static final String SYSTEM_NAME = "ZNewsSys";
 
-	public static final Artifact CLIENT = new Artifact(SYSTEM_NAME, CLIENT_TYPE_NAME);
+	public static final Artifact CLIENT = new Artifact(0L, SYSTEM_NAME, CLIENT_TYPE_NAME);
 
-	public static final Artifact SERVER = new Artifact(SYSTEM_NAME, SERVER_TYPE_NAME);
+	public static final Artifact SERVER = new Artifact(1L, SYSTEM_NAME, SERVER_TYPE_NAME);
 
 	private List<Artifact> allArtifacts;
 

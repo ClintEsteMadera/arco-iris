@@ -33,14 +33,10 @@ public abstract class AtamScenario extends ThesisPojo {
 	@XStreamImplicit
 	private Set<ArchitecturalDecision> architecturalDecisions;
 
-	@XStreamAsAttribute
-	private Long id;
-
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
 			Set<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions) {
-		super();
-		this.id = id;
+		super(id);
 		this.name = name;
 		this.concern = concern;
 		this.stimulusSource = stimulusSource;
@@ -92,10 +88,6 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.environments;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -132,18 +124,8 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.architecturalDecisions = architecturalDecisions;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	@Override
 	public String toString() {
 		return "\"" + this.getName() + "\" " + super.toString();
-	}
-
-	public void validate() {
-		if (this.id == null) {
-			throw new RuntimeException("Self Healing Scenario's id cannot be null");
-		}
 	}
 }
