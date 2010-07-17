@@ -116,6 +116,7 @@ public abstract class MainWindow extends ApplicationWindow {
 			for (CTabItem item : mainTabFolder.getItems()) {
 				if (item.getText().equals(tabItemText.toString())) {
 					tabItem = item;
+					break;
 				}
 			}
 		}

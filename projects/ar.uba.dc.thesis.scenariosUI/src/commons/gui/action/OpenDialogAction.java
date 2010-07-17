@@ -2,20 +2,11 @@ package commons.gui.action;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
-import org.springframework.util.Assert;
 
-public abstract class OpenDialogAction<T> implements GuiAction<T> {
-
-	private final String shortcut;
-
-	private String uniqueId;
+public abstract class OpenDialogAction<T> extends BaseGuiAction<T> {
 
 	protected OpenDialogAction(String uniqueId, String shortcut) {
-		super();
-		Assert.notNull(uniqueId, "The unique id cannot be null");
-
-		this.uniqueId = uniqueId;
-		this.shortcut = shortcut == null ? "" : shortcut;
+		super(uniqueId, shortcut);
 	}
 
 	public Action getActionFor(final T model) {
@@ -25,14 +16,6 @@ public abstract class OpenDialogAction<T> implements GuiAction<T> {
 				getDialogFor(model).open();
 			}
 		};
-	}
-
-	public String getUniqueId() {
-		return this.uniqueId;
-	}
-
-	public String getShortcut() {
-		return this.shortcut;
 	}
 
 	protected abstract Dialog getDialogFor(T model);

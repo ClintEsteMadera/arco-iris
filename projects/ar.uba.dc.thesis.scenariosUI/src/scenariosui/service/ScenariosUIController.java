@@ -2,6 +2,7 @@ package scenariosui.service;
 
 import java.util.List;
 
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingScenarioPersister;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -64,6 +65,15 @@ public final class ScenariosUIController {
 			}
 		}
 		throw new RuntimeException("Unable to find scenario with id " + id);
+	}
+
+	public Environment findEnvironment(Long id) {
+		for (Environment environment : this.getCurrentSelfHealingConfiguration().getEnvironments()) {
+			if (environment.getId().equals(id)) {
+				return environment;
+			}
+		}
+		throw new RuntimeException("Unable to find environment with id " + id);
 	}
 
 	public synchronized SelfHealingConfiguration getCurrentSelfHealingConfiguration() {

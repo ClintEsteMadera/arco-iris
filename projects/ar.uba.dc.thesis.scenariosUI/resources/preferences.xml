@@ -7,5 +7,9 @@
 			<column label="PRIORITY" name="priority" alignment="CENTER" width="55" />
 			<column label="ENABLED" name="enabled" alignment="CENTER" width="61" />
 		</table>
+		<table name="ENVIRONMENTS" order="id">
+			<column label="ID" name="id" alignment="CENTER" width="25" />
+			<column label="NAME" name="name" alignment="LEFT" width="276" />
+		</table>
 	</tables>
 </preferences>

@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.auth.AuthorizationHelper;
 import commons.gui.GuiStyle;
 import commons.gui.action.OpenDialogWithPurposeAction;
@@ -58,7 +57,7 @@ import commons.gui.widget.group.query.FilterButtonsGroup;
 import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
 import commons.properties.EnumProperty;
-import commons.query.BaseCriterio;
+import commons.query.BaseCriteria;
 import commons.utils.ClassUtils;
 import commons.utils.DateUtils;
 
@@ -73,11 +72,11 @@ import commons.utils.DateUtils;
  */
 public abstract class QueryComposite<T> extends Composite {
 
-	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> aClass, BaseCriterio criterioBusqueda) {
+	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> aClass, BaseCriteria criterioBusqueda) {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
 		this.tableContentClass = aClass;
-		this.criterioWrapped = new BeanModel<BaseCriterio>(criterioBusqueda);
+		this.criterioWrapped = new BeanModel<BaseCriteria>(criterioBusqueda);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
 	}
@@ -117,11 +116,11 @@ public abstract class QueryComposite<T> extends Composite {
 		}
 	}
 
-	public BaseCriterio getCriterio() {
+	public BaseCriteria getCriterio() {
 		return this.getCriterioWrapped().getValue();
 	}
 
-	public BeanModel<BaseCriterio> getCriterioWrapped() {
+	public BeanModel<BaseCriteria> getCriterioWrapped() {
 		return criterioWrapped;
 	}
 
@@ -634,7 +633,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private Button botonCerrar;
 
-	private BeanModel<BaseCriterio> criterioWrapped;
+	private BeanModel<BaseCriteria> criterioWrapped;
 
 	private Class<T> tableContentClass;
 
