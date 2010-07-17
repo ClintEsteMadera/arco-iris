@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 	<script language="javascript" type="text/javascript" src="flot/jquery.min.js"></script>
 	<script language="javascript" type="text/javascript" src="flot/jquery.flot.min.js"></script>
-	<script language="javascript" type="text/javascript" src="flot/jquery.flot.threshold.min.js"></script> 
+	<script language="javascript" type="text/javascript" src="flot/jquery.flot.threshold.min.js"></script>
 </head>
 <body class="datos_sistema" leftmargin="0" topmargin="0" marginheight="0" marginwidth="10">
 
@@ -34,11 +34,11 @@ $(function () {
     $plot($("#experRespTimeDiv"), [
         {
             data: experRespTimePoints,
-            color: "rgb(30, 180, 20)",
+            color: "rgb(200, 20, 30)",
             #if ($experRespTimeThreshold)
-	            threshold: { below: $experRespTimeThreshold, color: "rgb(200, 20, 30)" },
+	            threshold: { below: $experRespTimeThreshold, color: "rgb(30, 180, 20)" },
 	        #end
-            points: { show: false },
+			points: { show: false },
             lines: { show: true }
         }
     ]);
@@ -46,9 +46,9 @@ $(function () {
     $plot($("#costDiv"), [
         {
             data: costPoints,
-            color: "rgb(30, 180, 20)",
+            color: "rgb(200, 20, 30)",
             #if ($costThreshold)
-	            threshold: { below: $costThreshold, color: "rgb(200, 20, 30)" },
+	            threshold: { below: $costThreshold, color: "rgb(30, 180, 20)" },
 	        #end
             points: { show: false },
             lines: { show: true }
