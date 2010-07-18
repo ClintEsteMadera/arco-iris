@@ -37,9 +37,11 @@ $(function () {
             color: "rgb(200, 20, 30)",
             #if ($experRespTimeThreshold)
 	            threshold: { below: $experRespTimeThreshold, color: "rgb(30, 180, 20)" },
+			#else
+            	color: "rgb(30, 180, 20)",
 	        #end
 			points: { show: false },
-            lines: { show: true }
+			lines: { show: true }
         }
     ]);
 
@@ -49,9 +51,11 @@ $(function () {
             color: "rgb(200, 20, 30)",
             #if ($costThreshold)
 	            threshold: { below: $costThreshold, color: "rgb(30, 180, 20)" },
+			#else
+            	color: "rgb(30, 180, 20)",
 	        #end
-            points: { show: false },
-            lines: { show: true }
+			points: { show: false },
+			lines: { show: true }
         }
     ]);
 

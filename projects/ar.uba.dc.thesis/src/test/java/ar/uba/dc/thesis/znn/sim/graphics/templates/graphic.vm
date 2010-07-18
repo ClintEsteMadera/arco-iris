@@ -37,12 +37,14 @@ $(function () {
     $plot($("#experRespTimeDiv"), [
         {
             data: experRespTimePoints,
-            color: "rgb(200, 20, 30)",
             #if ($experRespTimeThreshold)
+            	color: "rgb(200, 20, 30)",
 	            threshold: { below: $experRespTimeThreshold, color: "rgb(30, 180, 20)" },
-	        #end
-            points: { show: false },
-            lines: { show: true }
+			#else
+            	color: "rgb(30, 180, 20)",
+			#end
+			points: { show: false },
+			lines: { show: true }
         }
     ]);
 
@@ -52,6 +54,8 @@ $(function () {
             color: "rgb(200, 20, 30)",
             #if ($costThreshold)
 	            threshold: { below: $costThreshold, color: "rgb(30, 180, 20)" },
+			#else
+            	color: "rgb(30, 180, 20)",
 	        #end
             points: { show: false },
             lines: { show: true }
