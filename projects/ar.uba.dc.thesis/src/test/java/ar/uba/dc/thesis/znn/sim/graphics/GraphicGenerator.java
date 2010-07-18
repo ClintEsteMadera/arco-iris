@@ -3,6 +3,7 @@ package ar.uba.dc.thesis.znn.sim.graphics;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -26,31 +26,21 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 
 	private RainbowModelWithScenarios rainbowModelWithScenarios;
 
-	@Override
-	protected void runAction() {
-		this.addPoints(getCostPoint(), getRespTimePoint());
-	}
+	private SimGraphicConfiguration simGraphicConfiguration;
 
-	private GraphicPoint getCostPoint() {
-		List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues("ZNewsSys", "ServerT", "cost");
-		double sum = NumberUtils.DOUBLE_ZERO;
-		for (Number number : values) {
-			sum += number.doubleValue();
+	public GraphicGenerator(RainbowModelWithScenarios rainbowModel) {
+		super("Simulation Graphic Generator");
+		setSleepTime(500/* ms */);
+		this.rainbowModelWithScenarios = rainbowModel;
+		initializeGraphicConfiguration();
+		initializeThresholds();
+		try {
+			Velocity.init();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		GraphicPoint costPoint = new GraphicPoint("cost", sum);
-		return costPoint;
-	}
-
-	private GraphicPoint getRespTimePoint() {
-		List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues("ZNewsSys", "ClientT",
-				"experRespTime");
-		double sum = NumberUtils.DOUBLE_ZERO;
-		for (Number number : values) {
-			sum += number.doubleValue();
-		}
-		Number average = values.isEmpty() ? sum : sum / values.size();
-		GraphicPoint costPoint = new GraphicPoint("experRespTime", average);
-		return costPoint;
+		context = new VelocityContext();
+		context.put("plot", "$.plot");
 	}
 
 	public void dispose() {
@@ -62,36 +52,49 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		// nothing to do
 	}
 
-	private void addPoints(GraphicPoint... points) {
+	@Override
+	protected void runAction() {
+		graphicPoints(computePoints());
+	}
+
+	private List<GraphicPoint> computePoints() {
+		List<GraphicPoint> points = new ArrayList<GraphicPoint>();
+		for (SimPropertyGraphicConfiguration propGraphicConf : this.simGraphicConfiguration
+				.getPropertyGraphicConfiguration()) {
+			List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues(propGraphicConf
+					.getSystemName(), propGraphicConf.getArtifact(), propGraphicConf.getProperty());
+			points
+					.add(new GraphicPoint(propGraphicConf.getProperty(), propGraphicConf.getQuantifier().getValue(
+							values)));
+		}
+		return points;
+	}
+
+	private void graphicPoints(List<GraphicPoint> points) {
 		for (GraphicPoint point : points) {
 			StringBuffer propertyPoints = getPointsFor(point.getProperty());
-			addCurrentPointIntoArray(point.getProperty(), point.getAvgValue(), propertyPoints);
+			addPointIntoArray(point.getProperty(), point.getAvgValue(), propertyPoints);
 		}
 		try {
 			putPointsWithinContext();
 			putThresholdsWithinContext();
-			write();
+			writeToFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setThreshold(String property, Number constant) {
-		this.thresholdPerProperty.put(property + "Threshold", constant);
-	}
-
-	public GraphicGenerator(RainbowModelWithScenarios rainbowModel) {
-		super("Simulation Graphic Generator");
-		setSleepTime(500/* ms */);
-		this.rainbowModelWithScenarios = rainbowModel;
-		initializeThresholds();
-		try {
-			Velocity.init();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		context = new VelocityContext();
-		context.put("plot", "$.plot");
+	/**
+	 * TODO externalize this configuration into SelfHealingConfiguration or in a another xml.
+	 */
+	private void initializeGraphicConfiguration() {
+		this.simGraphicConfiguration = new SimGraphicConfiguration();
+		SimPropertyGraphicConfiguration respTimeGraphicConfig = new SimPropertyGraphicConfiguration("ZNewsSys",
+				"ClientT", "experRespTime", GraphicQuantifier.AVERAGE);
+		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ZNewsSys", "ServerT",
+				"cost", GraphicQuantifier.SUM);
+		simGraphicConfiguration.add(respTimeGraphicConfig);
+		simGraphicConfiguration.getPropertyGraphicConfiguration().add(costGraphicConfig);
 	}
 
 	private void initializeThresholds() {
@@ -101,8 +104,8 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 			Constraint constraint = scenario.getResponseMeasure().getConstraint();
 			if (constraint instanceof NumericBinaryRelationalConstraint) {
 				NumericBinaryRelationalConstraint numericConstraint = ((NumericBinaryRelationalConstraint) constraint);
-				Number constantToCompareThePropertyWith = numericConstraint.getConstantToCompareThePropertyWith();
-				this.setThreshold(numericConstraint.getProperty(), constantToCompareThePropertyWith);
+				Number constantToCompare = numericConstraint.getConstantToCompareThePropertyWith();
+				this.thresholdPerProperty.put(numericConstraint.getProperty() + "Threshold", constantToCompare);
 			}
 		}
 	}
@@ -136,7 +139,7 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		return points;
 	}
 
-	private void write() throws IOException, Exception {
+	private void writeToFile() throws IOException, Exception {
 		Writer writer = new FileWriter(OUTPUT);
 		getVelocityEngine().mergeTemplate("graphic.vm", "UTF-8", context, writer);
 		writer.close();
@@ -145,7 +148,7 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		writer.close();
 	}
 
-	private void addCurrentPointIntoArray(String property, Number avgValue, StringBuffer points) {
+	private void addPointIntoArray(String property, Number avgValue, StringBuffer points) {
 		points.append(property + "Points[");
 		points.append(countPerProperty.get(property));
 		countPerProperty.put(property, countPerProperty.get(property) + 1);
