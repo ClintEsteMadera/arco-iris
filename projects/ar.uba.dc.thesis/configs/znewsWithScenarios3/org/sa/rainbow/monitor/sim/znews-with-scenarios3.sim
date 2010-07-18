@@ -5,11 +5,11 @@ sim.class = org.sa.rainbow.monitor.sim.znews.ZNewsSim
 
 sim.0 =
 #- start with high server load
-sim.1 = 10000:ZNewsSys.c0.perf.service.time:50,20000:ZNewsSys.c1.perf.service.time:50,20000:ZNewsSys.c2.perf.service.time:50
-sim.2 = 10001:ZNewsSys.c0.perf.arrival.rate:3,20001:ZNewsSys.c1.perf.arrival.rate:3,20001:ZNewsSys.c2.perf.arrival.rate:3
-sim.3 = 15001:ZNewsSys.s0.perf.response.time:5,25001:ZNewsSys.s1.perf.response.time:5,25001:ZNewsSys.s2.perf.response.time:5
-sim.4 = 20001:ZNewsSys.conn1.bandwidth.up:512,20001:ZNewsSys.conn1.bandwidth.down:512
-sim.5 = 25001:ZNewsSys.conn0.bandwidth.up:512,25001:ZNewsSys.conn0.bandwidth.down:512
+sim.1 = 10001:ZNewsSys.c0.perf.service.time:50,10001:ZNewsSys.c1.perf.service.time:50,10001:ZNewsSys.c2.perf.service.time:50
+sim.2 = 20001:ZNewsSys.c0.perf.arrival.rate:3,20001:ZNewsSys.c1.perf.arrival.rate:3,20001:ZNewsSys.c2.perf.arrival.rate:3
+sim.3 = 30001:ZNewsSys.s0.perf.response.time:5,30001:ZNewsSys.s1.perf.response.time:5,30001:ZNewsSys.s2.perf.response.time:5
+sim.4 = 30001:ZNewsSys.conn1.bandwidth.up:512,30001:ZNewsSys.conn1.bandwidth.down:512
+sim.5 = 30001:ZNewsSys.conn0.bandwidth.up:512,30001:ZNewsSys.conn0.bandwidth.down:512
 # terminate system at 50 seconds
 sim.6 = 60000:sim:terminate
 
@@ -90,7 +90,7 @@ ZNewsSys.s2.perf.service.time = 15
 ZNewsSys.s3.isArchEnabled = false
 ZNewsSys.s3.type = ZNewsFam.ServerT
 ZNewsSys.s3.load = 0.02
-ZNewsSys.s3.cost = 2.0
+ZNewsSys.s3.cost = 1.0
 ZNewsSys.s3.fidelity = 5
 ZNewsSys.s3.replication = 1
 ZNewsSys.s3.perf.service.time = 14
