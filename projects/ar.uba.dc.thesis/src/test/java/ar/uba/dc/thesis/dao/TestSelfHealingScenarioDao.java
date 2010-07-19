@@ -65,7 +65,7 @@ public class TestSelfHealingScenarioDao {
 		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
 		Artifact artifact = TestArtifactDao.CLIENT;
 		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
-		Set<? extends Environment> environments = Collections.createSet(DefaultEnvironment.getInstance());
+		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "experRespTime",
@@ -83,7 +83,7 @@ public class TestSelfHealingScenarioDao {
 		String stimulusSource = "Anyone";
 		Artifact artifact = TestArtifactDao.SERVER;
 		String stimulus = "ANY";
-		Set<? extends Environment> environments = Collections.createSet(DefaultEnvironment.getInstance());
+		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.IN_SUM, artifact, "cost",
