@@ -24,23 +24,30 @@ public class Environment extends ThesisPojo {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
+
+	private static final int DEFAULT_HISTORY_SIZE = 10;
+
 	@XStreamAsAttribute
-	private final String name;
+	private String name;
 
-	private final List<? extends Constraint> conditions;
+	private List<? extends Constraint> conditions;
 
-	private final Map<Concern, Double> weights;
+	private Map<Concern, Double> weights;
 
 	@XStreamOmitField
 	private HashMap<String, Double> weightsForRainbow;
 
-	private final Heuristic heuristic;
+	private Heuristic heuristic;
 
-	private final List<Boolean> history;
+	private List<Boolean> history;
 
-	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
-
-	private static final int DEFAULT_HISTORY_SIZE = 10;
+	/**
+	 * Constructor
+	 */
+	public Environment() {
+		super();
+	}
 
 	/**
 	 * This constructor has the same effect than invoking {@link #Environment(String, List, Map, Integer, Heuristic)}
@@ -186,5 +193,10 @@ public class Environment extends ThesisPojo {
 		} else {
 			this.history.add(holds);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 }

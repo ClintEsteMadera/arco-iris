@@ -62,7 +62,7 @@ public class SelfHealingScenarioPersister {
 
 	/**
 	 * In the event the scenarios, the environments or the artifacts are null, this method initializes them with an
-	 * empty list in order to preserver the invariant of never having a null list of scenarios or environments.
+	 * empty list in order to preserve the invariant of never having a null list of those properties.
 	 * 
 	 * @param configLoadedFromXML
 	 *            a selfHealingConfiguration loaded from XML

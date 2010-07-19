@@ -46,7 +46,7 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			Set<? extends Environment> environments, Artifact artifact, String response,
+			List<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions, boolean enabled,
 			int priority) {
 		super(id, name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,

@@ -1,5 +1,6 @@
 package ar.uba.dc.thesis.atam.scenario.model;
 
+import java.util.List;
 import java.util.Set;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
@@ -22,7 +23,7 @@ public abstract class AtamScenario extends ThesisPojo {
 	private String stimulus;
 
 	@XStreamImplicit
-	private Set<? extends Environment> environments;
+	private List<? extends Environment> environments;
 
 	private Artifact artifact;
 
@@ -34,7 +35,7 @@ public abstract class AtamScenario extends ThesisPojo {
 	private Set<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
-			Set<? extends Environment> environments, Artifact artifact, String response,
+			List<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions) {
 		super(id);
 		this.name = name;
@@ -84,7 +85,7 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.architecturalDecisions;
 	}
 
-	public Set<? extends Environment> getEnvironments() {
+	public List<? extends Environment> getEnvironments() {
 		return this.environments;
 	}
 
@@ -104,7 +105,7 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.stimulus = stimulus;
 	}
 
-	public void setEnvironments(Set<Environment> environments) {
+	public void setEnvironments(List<Environment> environments) {
 		this.environments = environments;
 	}
 
