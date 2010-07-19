@@ -23,7 +23,8 @@ public enum ScenariosUILabels implements EnumProperty {
 	RESPONSE,
 	ENABLED,
 	PRIORITY,
-	FILE_DIALOG_MESSAGE;
+	FILE_DIALOG_MESSAGE,
+	SELECT_ENVIRONMENTS;
 
 	@Override
 	public String toString() {

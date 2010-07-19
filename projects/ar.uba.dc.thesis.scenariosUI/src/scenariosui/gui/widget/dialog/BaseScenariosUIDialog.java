@@ -13,7 +13,7 @@
 /*
  * $Id: BaseEmesDialog.java,v 1.15 2008/05/16 20:37:42 cvschioc Exp $
  */
-package commons.gui.widget.dialog;
+package scenariosui.gui.widget.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 

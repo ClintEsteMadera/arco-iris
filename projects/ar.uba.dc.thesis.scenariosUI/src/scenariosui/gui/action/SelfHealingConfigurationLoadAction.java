@@ -5,9 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import scenariosui.gui.widget.ScenariosUIWindow;
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 
@@ -63,13 +61,13 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 		private void displayScenariosList() {
 			ScenariosUIActions.SCENARIOS_QUERY.getActionFor(scenariosUIController.getCurrentSelfHealingConfiguration())
 					.run();
-			ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS);
+			// ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS);
 		}
 
 		private void displayEnvironmentList() {
 			ScenariosUIActions.ENVIRONMENT_QUERY.getActionFor(
 					scenariosUIController.getCurrentSelfHealingConfiguration()).run();
-			ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS);
+			// ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS);
 		}
 
 		private FileDialog createFileDialog(String... replacements) {

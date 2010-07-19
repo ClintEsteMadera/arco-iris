@@ -11,7 +11,7 @@ import commons.properties.EnumProperty;
 
 public enum TableConstants implements EnumProperty {
 
-	SCENARIOS, ENVIRONMENTS;
+	SCENARIOS, ENVIRONMENTS, ENVIRONMENT_SELECTION;
 
 	@Override
 	public String toString() {

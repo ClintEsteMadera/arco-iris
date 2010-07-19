@@ -11,5 +11,9 @@
 			<column label="ID" name="id" alignment="CENTER" width="25" />
 			<column label="NAME" name="name" alignment="LEFT" width="276" />
 		</table>
+		<table name="ENVIRONMENT_SELECTION" order="id">
+			<column label="ID" name="id" alignment="CENTER" width="25" />
+			<column label="NAME" name="name" alignment="LEFT" width="276" />
+		</table>
 	</tables>
 </preferences>
