@@ -4,11 +4,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
+import scenariosui.gui.widget.composite.EnvironmentsSelectionComposite;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.model.CompositeModel;
+import commons.gui.widget.composite.ObjectSelectionMetainfo;
 import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 import commons.gui.widget.creation.metainfo.ComboMetainfo;
@@ -59,7 +61,11 @@ public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScen
 				underlyingScenario, "stimulus"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		// TODO: Environments
+		ObjectSelectionMetainfo objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup,
+				ScenariosUILabels.ENVIRONMENTS, new BindingInfo(underlyingScenario, "environments"), this.readOnly);
+		objectSelectionMetainfo.nullable = true; // to be used for the "Default" environment
+
+		new EnvironmentsSelectionComposite(objectSelectionMetainfo);
 
 		// TODO: Artifact
 

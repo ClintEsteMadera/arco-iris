@@ -16,9 +16,13 @@
 
 package scenariosui.gui.widget.dialog;
 
-import scenariosui.gui.util.purpose.ScenariosUIPurpose;
+import org.eclipse.jface.dialogs.MessageDialog;
 
-import commons.gui.widget.dialog.BaseScenariosUIDialog;
+import scenariosui.gui.util.purpose.ScenariosUIPurpose;
+import scenariosui.service.ScenariosUIController;
+
+import commons.gui.model.ComplexValueChangeEvent;
+import commons.gui.model.ComplexValueChangeListener;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 import commons.properties.FakeEnumProperty;
@@ -33,11 +37,34 @@ import commons.properties.FakeEnumProperty;
 
 public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenariosUIDialog<T> {
 
+	private boolean modelDirty;
+
+	protected ScenariosUIPurpose purpose;
+
 	public BaseScenariosUIMultiPurposeDialog(T model, EnumProperty title, ScenariosUIPurpose purpose) {
 		super(model, new FakeEnumProperty(title.toString() + " - " + purpose.toString()), purpose.isReadOnly());
 		super.readOnly = this.isReadOnly(super.getModel(), purpose);
 		this.purpose = purpose;
 	}
+
+	@Override
+	protected final void createNodes() {
+		doCreateNodes();
+
+		// chequeo de modificacion sobre el modelo
+		this.getCompositeModel().addComplexValueChangeListener(new ComplexValueChangeListener() {
+
+			@SuppressWarnings("unchecked")
+			public void complexValueChange(ComplexValueChangeEvent ev) {
+				modelDirty = true;
+			}
+		});
+	}
+
+	/**
+	 * This method is intended to be implemented by subclasses, adding their specific nodes
+	 */
+	protected abstract void doCreateNodes();
 
 	/**
 	 * Indica el estado de readOnly. Por defecto, el mismo está dado por el propósito, aunque dicho comportamiento puede
@@ -50,6 +77,22 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenarios
 	 */
 	protected boolean isReadOnly(T model, ScenariosUIPurpose scenariosUIPurpose) {
 		return scenariosUIPurpose.isReadOnly();
+	}
+
+	@Override
+	protected void cancelPressed() {
+		boolean abandonChanges = true;
+
+		if (this.modelDirty) {
+			abandonChanges = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENTION.toString(),
+					"Do you wish to abandon the changes made to the scenario ?");
+		}
+		if (abandonChanges) {
+			if (this.purpose.isCreation()) {
+				ScenariosUIController.getInstance().returnRecentlyRequestedId(); // since we won't use it
+			}
+			super.cancelPressed();
+		}
 	}
 
 	@Override
@@ -90,6 +133,4 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenarios
 		}
 		return result;
 	}
-
-	protected ScenariosUIPurpose purpose;
 }

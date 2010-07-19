@@ -8,25 +8,27 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
+import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.EnvironmentSearchCriteria;
-import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
+import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.composite.QueryComposite;
+import commons.properties.EnumProperty;
 import commons.query.BaseCriteria;
 
 public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 
 	public EnvironmentQueryComposite() {
-		this(PageHelper.getMainWindow().mainTabFolder, new EnvironmentSearchCriteria());
+		this(PageHelper.getMainWindow().mainTabFolder, TableConstants.ENVIRONMENTS, new EnvironmentSearchCriteria());
 	}
 
-	public EnvironmentQueryComposite(Composite parent, BaseCriteria searchCriteria) {
-		super(parent, TableConstants.ENVIRONMENTS, Environment.class, searchCriteria);
+	public EnvironmentQueryComposite(Composite parent, EnumProperty tableName, BaseCriteria searchCriteria) {
+		super(parent, tableName, Environment.class, searchCriteria);
 	}
 
 	@Override
@@ -49,12 +51,12 @@ public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForEdit() {
+	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForEdit() {
 		throw new RuntimeException("Functionality not implemented yet");
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForView() {
+	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForView() {
 		throw new RuntimeException("Functionality not implemented yet");
 	}
 
@@ -87,6 +89,6 @@ public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 	@Override
 	protected void addButtons() {
 		super.addButtons();
-		// TODO super.addButton(ScenariosUIActions.NEW_ENVIRONMENT.getAction());
+		super.addButton(ScenariosUIActions.NEW_ENVIRONMENT);
 	}
 }

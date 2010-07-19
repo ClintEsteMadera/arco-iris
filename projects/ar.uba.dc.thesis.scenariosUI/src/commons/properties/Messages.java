@@ -22,14 +22,13 @@ import java.util.ResourceBundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 /**
  * @author Jonathan Chiocchio
  * @version $Revision: 1.20 $ $Date: 2008/04/09 21:06:43 $
  */
 public enum Messages implements EnumProperty {
 
-	SUCCESSFUL_SCENARIO;
+	SUCCESSFUL_SCENARIO, SUCCESSFUL_ENVIRONMENT;
 
 	@Override
 	public String toString() {

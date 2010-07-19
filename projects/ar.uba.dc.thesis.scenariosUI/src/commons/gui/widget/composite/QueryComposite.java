@@ -79,6 +79,7 @@ public abstract class QueryComposite<T> extends Composite {
 		this.criterioWrapped = new BeanModel<BaseCriteria>(criterioBusqueda);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
+		this.reset();
 	}
 
 	public GenericTable getTable() {
@@ -127,6 +128,11 @@ public abstract class QueryComposite<T> extends Composite {
 	@SuppressWarnings("unchecked")
 	public T getModel() {
 		return (T) getTable().getSelectedElement();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<T> getSelectedElements() {
+		return getTable().getSelectedElements();
 	}
 
 	/**

@@ -48,6 +48,9 @@ public final class ScenariosUIActions {
 			"scenarioUI.environment.query", NO_SHORTCUT, ScenariosUILabels.ENVIRONMENTS, TableConstants.ENVIRONMENTS,
 			EnvironmentQueryComposite.class);
 
+	public static final EnvironmentOpenDialogWithPurposeAction NEW_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
+			"scenarioUI.environment.new", NO_SHORTCUT, ScenariosUIPurpose.CREATION);
+
 	/**
 	 * Configures the permissions for executing the actions contained in this class
 	 * 

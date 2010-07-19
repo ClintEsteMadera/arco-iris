@@ -18,11 +18,11 @@ package scenariosui.gui.widget.dialog;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.gui.widget.ScenariosUIWindow;
-import scenariosui.gui.widget.page.SelfHealingScenarioPage;
+import scenariosui.gui.widget.page.EnvironmentPage;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
-import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.exception.ApplicationException;
 import commons.exception.ServiceException;
@@ -30,26 +30,25 @@ import commons.gui.background.BackgroundInvocationException;
 import commons.properties.EnumProperty;
 import commons.properties.Messages;
 
-public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealingScenario> {
+public class EnvironmentDialog extends BaseScenariosUIMultiPurposeDialog<Environment> {
 
-	public SelfHealingScenarioDialog(SelfHealingScenario model, EnumProperty title, ScenariosUIPurpose purpose) {
+	public EnvironmentDialog(Environment model, EnumProperty title, ScenariosUIPurpose purpose) {
 		super(model, title, purpose);
 	}
 
 	@Override
-	protected SelfHealingScenario newModel() {
-		return new SelfHealingScenario();
+	protected Environment newModel() {
+		return new Environment();
 	}
 
 	@Override
 	protected void doCreateNodes() {
-		addNode(null, "selfHealingScenarioPage", new SelfHealingScenarioPage(super.getCompositeModel(),
-				ScenariosUILabels.SCENARIO, super.readOnly, super.purpose));
+		addNode(null, "environmentPage", new EnvironmentPage(super.getCompositeModel(), ScenariosUILabels.ENVIRONMENT,
+				super.readOnly, super.purpose));
 	}
 
 	@Override
 	protected boolean performOK() {
-		// TODO Ver de poner este metodo en la superclase ya que casi todos son iguales...
 		boolean okStatus = false;
 		String operacion = null;
 		try {
@@ -57,7 +56,7 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 			switch (super.purpose) {
 			case CREATION:
 				operacion = "created";
-				scenariosUIController.getCurrentSelfHealingConfiguration().addScenario(this.getModel());
+				scenariosUIController.getCurrentSelfHealingConfiguration().addEnvironment(this.getModel());
 				scenariosUIController.saveSelfHealingConfiguration();
 				break;
 			case EDIT:
@@ -75,13 +74,13 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 			// mostradas
 			throw ex;
 		} catch (Exception ex) {
-			throw new ApplicationException("Error al acceder al servicio de Escenarios", ex);
+			throw new ApplicationException("Error al acceder al servicio de Environments", ex);
 		}
 		okStatus = true;
 		String denominacion = super.getModel().getName() != null ? super.getModel().getName() : "";
-		String mensaje = Messages.SUCCESSFUL_SCENARIO.toString(denominacion, operacion);
+		String mensaje = Messages.SUCCESSFUL_ENVIRONMENT.toString(denominacion, operacion);
 		mostrarDialogoOperacionExitosa(mensaje);
-		ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS, super.getModel().getId());
+		ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS, super.getModel().getId());
 
 		return okStatus;
 	}
