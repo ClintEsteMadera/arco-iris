@@ -5,8 +5,10 @@ import scenariosui.gui.widget.composite.EnvironmentQueryComposite;
 import scenariosui.gui.widget.composite.SelfHealingScenarioQueryComposite;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.TableConstants;
+import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.auth.AuthorizationHelper;
+import commons.gui.action.OpenDialogWithPurposeAction;
 
 /**
  * Holds the GUI actions related to "Scenarios UI" and specifies the required grants to execute those actions.
@@ -23,13 +25,13 @@ public final class ScenariosUIActions {
 	private static final String NO_SHORTCUT = "";
 
 	public static SelfHealingConfigurationLoadAction NEW_SELF_HEALING_CONFIG = new SelfHealingConfigurationLoadAction(
-			"scenarioUI.scenario.config.new", NO_SHORTCUT, true);
+			"scenarioUI.scenario.config.new", "CTRL+N", true);
 
 	public static final SelfHealingConfigurationLoadAction OPEN_SELF_HEALING_CONFIG = new SelfHealingConfigurationLoadAction(
-			"scenarioUI.scenario.config.open", NO_SHORTCUT, false);
+			"scenarioUI.scenario.config.open", "CTRL+O", false);
 
 	public static final SelfHealingConfigurationCloseAction CLOSE_SELF_HEALING_CONFIG = new SelfHealingConfigurationCloseAction(
-			"scenarioUI.scenario.config.close", NO_SHORTCUT);
+			"scenarioUI.scenario.config.close", "CTRL+W");
 
 	public static final SelfHealingScenarioOpenDialogWithPurposeAction NEW_SELF_HEALING_SCENARIO = new SelfHealingScenarioOpenDialogWithPurposeAction(
 			"scenarioUI.scenario.new", NO_SHORTCUT, ScenariosUIPurpose.CREATION);
@@ -50,6 +52,9 @@ public final class ScenariosUIActions {
 
 	public static final EnvironmentOpenDialogWithPurposeAction NEW_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
 			"scenarioUI.environment.new", NO_SHORTCUT, ScenariosUIPurpose.CREATION);
+
+	public static final OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> EDIT_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
+			"scenarioUI.environment.edit", NO_SHORTCUT, ScenariosUIPurpose.EDIT);
 
 	/**
 	 * Configures the permissions for executing the actions contained in this class

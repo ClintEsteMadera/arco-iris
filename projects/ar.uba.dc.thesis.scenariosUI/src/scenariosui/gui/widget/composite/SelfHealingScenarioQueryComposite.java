@@ -44,7 +44,6 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 			return scenariosUIController.getCurrentSelfHealingConfiguration().getScenarios();
 		} else {
 			SelfHealingScenario scenario = scenariosUIController.findSelfHealingScenario(this.getCriterio().getId());
-			this.getCriterio().setId(null);
 			return Collections.singletonList(scenario);
 		}
 	}

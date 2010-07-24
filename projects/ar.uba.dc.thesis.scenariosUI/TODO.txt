@@ -1,1 +1,7 @@
+- ver de refactorizar para que los dialogos no sean treepreference sino openableTrayDialog
+asi los podemos reutilizar en mas lados y ademas no tiene sentido el preferencetree aca.
+- Ver que cuando hacemos "add" environment se pide un ID pero el mismo no se devuelve si no se usa
+(ver tmb de mejorar este mecanismo manual de pedido y devolucion de ids)
+- Ver que cuando elimino un elemento, el EnvironmentSelectionComposite se entere y refresque de acuerdo
+a lo que quedó en la lista (si es vacía debe poner el DEFAULT)
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.

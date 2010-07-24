@@ -17,18 +17,17 @@ package scenariosui.gui.widget.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
-
 import commons.gui.model.CompositeModel;
 import commons.gui.model.bean.BeanModel;
 import commons.gui.widget.dialog.BasePreferenceDialog;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 
-/**
- * @author Jonathan Chiocchio
- * @version $Revision: 1.15 $ $Date: 2008/05/16 20:37:42 $
- */
 public abstract class BaseScenariosUIDialog<T> extends BasePreferenceDialog {
+
+	protected boolean readOnly;
+
+	private CompositeModel<T> compositeModel;
 
 	public BaseScenariosUIDialog(T model, EnumProperty title, boolean readOnly) {
 		super(null, title);
@@ -42,18 +41,14 @@ public abstract class BaseScenariosUIDialog<T> extends BasePreferenceDialog {
 	public CompositeModel<T> getCompositeModel() {
 		return this.compositeModel;
 	}
-	
+
 	public T getModel() {
 		return this.compositeModel.getValue();
 	}
-	
-	protected void mostrarDialogoOperacionExitosa(String mensaje) {
-		MessageDialog.openInformation(null, CommonLabels.SUCCESSFUL_OPERATION.toString(), mensaje);
+
+	protected void showSuccessfulOperationDialog(String msg) {
+		MessageDialog.openInformation(null, CommonLabels.SUCCESSFUL_OPERATION.toString(), msg);
 	}
 
 	protected abstract T newModel();
-
-	protected boolean readOnly;
-
-	private CompositeModel<T> compositeModel;
 }

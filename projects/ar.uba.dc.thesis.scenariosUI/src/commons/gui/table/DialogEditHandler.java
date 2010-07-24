@@ -10,7 +10,9 @@ import commons.gui.widget.dialog.OpenableTrayDialog;
 import commons.utils.ClassUtils;
 
 /**
- * Handler generico que crea un dialogo por reflection cada vez que se invoca.
+ * Handler generico que crea un dialogo por reflection cada vez que se invoca.<br>
+ * NOTA: Modificado para aceptar un purpose como parametro. Esto hace que este objeto no sea más common sino que está
+ * atado a la aplicación "ScenariosUI"
  */
 public abstract class DialogEditHandler<T> implements EditHandler<T> {
 

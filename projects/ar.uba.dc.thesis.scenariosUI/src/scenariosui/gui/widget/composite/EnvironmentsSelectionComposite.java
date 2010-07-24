@@ -4,6 +4,7 @@ import java.util.List;
 
 import scenariosui.gui.query.EnvironmentSearchCriteria;
 import scenariosui.gui.widget.dialog.EnvironmentsSelectionDialog;
+import scenariosui.gui.widget.dialog.MultipleEnvironmentsDialog;
 import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.util.Collections;
@@ -42,6 +43,6 @@ public class EnvironmentsSelectionComposite extends SimpleObjectSelectionComposi
 
 	@Override
 	protected void viewObject(List<Environment> environments) {
-		// TODO getDialogFor(environments).open();
+		new MultipleEnvironmentsDialog(environments).open();
 	}
 }

@@ -38,14 +38,14 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 		@SuppressWarnings("unchecked")
 		public void run() {
 			if (createNewConfig) {
-				FileDialog dialog = this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase(), "from");
+				FileDialog dialog = this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase(), "to");
 				String xmlFilePath = dialog.open();
 				if (xmlFilePath == null) {
 					return;
 				}
 				scenariosUIController.newSelfHealingConfiguration(xmlFilePath);
 			} else {
-				FileDialog dialog = this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase(), "to");
+				FileDialog dialog = this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase(), "from");
 				String xmlFilePath = dialog.open();
 				if (xmlFilePath == null) {
 					return;
@@ -55,19 +55,17 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 			this.displayEnvironmentList();
 			this.displayScenariosList();
 
-			// setCloseActionEnabled(true);
+			setCloseActionEnabled(true);
 		}
 
 		private void displayScenariosList() {
 			ScenariosUIActions.SCENARIOS_QUERY.getActionFor(scenariosUIController.getCurrentSelfHealingConfiguration())
 					.run();
-			// ScenariosUIWindow.getInstance().resetQuery(TableConstants.SCENARIOS);
 		}
 
 		private void displayEnvironmentList() {
 			ScenariosUIActions.ENVIRONMENT_QUERY.getActionFor(
 					scenariosUIController.getCurrentSelfHealingConfiguration()).run();
-			// ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS);
 		}
 
 		private FileDialog createFileDialog(String... replacements) {
