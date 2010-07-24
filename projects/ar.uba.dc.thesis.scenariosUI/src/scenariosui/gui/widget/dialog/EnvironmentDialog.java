@@ -79,7 +79,7 @@ public class EnvironmentDialog extends BaseScenariosUIMultiPurposeDialog<Environ
 		okStatus = true;
 		String denominacion = super.getModel().getName() != null ? super.getModel().getName() : "";
 		String mensaje = Messages.SUCCESSFUL_ENVIRONMENT.toString(denominacion, operacion);
-		mostrarDialogoOperacionExitosa(mensaje);
+		showSuccessfulOperationDialog(mensaje);
 		ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS, super.getModel().getId());
 
 		return okStatus;

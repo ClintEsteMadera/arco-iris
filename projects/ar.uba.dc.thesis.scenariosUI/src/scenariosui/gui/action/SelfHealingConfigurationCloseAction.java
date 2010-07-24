@@ -33,17 +33,18 @@ public class SelfHealingConfigurationCloseAction extends SelfHealingScenarioBase
 
 			scenariosUIController.closeSelfHealingConfiguration();
 
-			this.closeScenariosList();
+			closeQueryComposite(TableConstants.SCENARIOS);
+			closeQueryComposite(TableConstants.ENVIRONMENTS);
 
 			setCloseActionEnabled(false);
 		}
+	}
 
-		private void closeScenariosList() {
-			CTabFolder mainTabFolder = PageHelper.getMainWindow().mainTabFolder;
-			if (mainTabFolder.getItemCount() == 1) {
-				mainTabFolder.setVisible(false);
-			}
-			PageHelper.getMainWindow().getTabItem(TableConstants.SCENARIOS).dispose();
+	private void closeQueryComposite(TableConstants queryName) {
+		CTabFolder mainTabFolder = PageHelper.getMainWindow().mainTabFolder;
+		if (mainTabFolder.getItemCount() == 1) {
+			mainTabFolder.setVisible(false);
 		}
+		PageHelper.getMainWindow().getTabItem(queryName).dispose();
 	}
 }

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Group;
 
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.EnvironmentSearchCriteria;
+import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.TableConstants;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
@@ -45,14 +46,13 @@ public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 			return scenariosUIController.getCurrentSelfHealingConfiguration().getEnvironments();
 		} else {
 			Environment environment = scenariosUIController.findEnvironment(this.getCriterio().getId());
-			this.getCriterio().setId(null);
 			return Collections.singletonList(environment);
 		}
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForEdit() {
-		throw new RuntimeException("Functionality not implemented yet");
+	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForEdit() {
+		return ScenariosUIActions.EDIT_ENVIRONMENT;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 
 	@Override
 	protected boolean editionAllowed() {
-		return false;
+		return true;
 	}
 
 	@Override

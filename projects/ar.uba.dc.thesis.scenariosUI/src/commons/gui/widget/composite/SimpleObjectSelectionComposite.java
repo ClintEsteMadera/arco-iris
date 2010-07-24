@@ -7,7 +7,6 @@ package commons.gui.widget.composite;
  */
 public abstract class SimpleObjectSelectionComposite<T> extends ObjectSelectionComposite<T> {
 
-	@SuppressWarnings("unchecked")
 	public SimpleObjectSelectionComposite(ObjectSelectionMetainfo info) {
 		super(info);
 	}
@@ -15,7 +14,6 @@ public abstract class SimpleObjectSelectionComposite<T> extends ObjectSelectionC
 	protected abstract T selectObject();
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void launchSelection() {
 		final T value = selectObject();
 
