@@ -69,17 +69,6 @@ public class Environment extends ThesisPojo {
 	}
 
 	/**
-	 * This method should ensure that the DefaultEnvironment's id is not being used for an object not instance of that
-	 * class. It should be overriden accordingly on all of the subclasses.
-	 */
-	protected void validateId() {
-		if (this.getId().equals(DefaultEnvironment.ID)) {
-			throw new RuntimeException("The identifier " + DefaultEnvironment.ID
-					+ " cannot be used for other Environment than the default one");
-		}
-	}
-
-	/**
 	 * /** This constructor has the same effect than invoking
 	 * {@link #Environment(String, List, Map, Integer, Heuristic)} with the latest two parameters in <code>null</code>
 	 * 
@@ -114,12 +103,40 @@ public class Environment extends ThesisPojo {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public List<? extends Constraint> getConditions() {
 		return conditions;
 	}
 
+	public void setConditions(List<? extends Constraint> conditions) {
+		this.conditions = conditions;
+	}
+
 	public Map<Concern, Double> getWeights() {
 		return weights;
+	}
+
+	public void setWeights(Map<Concern, Double> weights) {
+		this.weights = weights;
+	}
+
+	public Heuristic getHeuristic() {
+		return heuristic;
+	}
+
+	public void setHeuristic(Heuristic heuristic) {
+		this.heuristic = heuristic;
+	}
+
+	public List<Boolean> getHistory() {
+		return history;
+	}
+
+	public void setHistory(List<Boolean> history) {
+		this.history = history;
 	}
 
 	public Map<String, Double> getWeightsForRainbow() {
@@ -165,6 +182,17 @@ public class Environment extends ThesisPojo {
 	@Override
 	protected String[] getEqualsAndHashCodeExcludedFields() {
 		return new String[] { "history" };
+	}
+
+	/**
+	 * This method should ensure that the DefaultEnvironment's id is not being used for an object not instance of that
+	 * class. It should be overriden accordingly on all of the subclasses.
+	 */
+	protected void validateId() {
+		if (this.getId().equals(DefaultEnvironment.ID)) {
+			throw new RuntimeException("The identifier " + DefaultEnvironment.ID
+					+ " cannot be used for other Environment than the default one");
+		}
 	}
 
 	/**
