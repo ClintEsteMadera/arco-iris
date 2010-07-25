@@ -3,7 +3,7 @@ package scenariosui.gui.action;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.custom.CTabFolder;
 
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 
@@ -33,14 +33,14 @@ public class SelfHealingConfigurationCloseAction extends SelfHealingScenarioBase
 
 			scenariosUIController.closeSelfHealingConfiguration();
 
-			closeQueryComposite(TableConstants.SCENARIOS);
-			closeQueryComposite(TableConstants.ENVIRONMENTS);
+			closeQueryComposite(UniqueTableIdentifier.SCENARIOS);
+			closeQueryComposite(UniqueTableIdentifier.ENVIRONMENTS);
 
 			setCloseActionEnabled(false);
 		}
 	}
 
-	private void closeQueryComposite(TableConstants queryName) {
+	private void closeQueryComposite(UniqueTableIdentifier queryName) {
 		CTabFolder mainTabFolder = PageHelper.getMainWindow().mainTabFolder;
 		if (mainTabFolder.getItemCount() == 1) {
 			mainTabFolder.setVisible(false);

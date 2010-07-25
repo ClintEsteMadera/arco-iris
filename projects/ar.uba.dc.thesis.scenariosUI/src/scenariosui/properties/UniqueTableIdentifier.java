@@ -9,7 +9,7 @@ import commons.properties.EnumProperty;
  * These names will be used in the preferences xml file.
  */
 
-public enum TableConstants implements EnumProperty {
+public enum UniqueTableIdentifier implements EnumProperty {
 
 	SCENARIOS, ENVIRONMENTS, ENVIRONMENT_SELECTION;
 
@@ -22,5 +22,5 @@ public enum TableConstants implements EnumProperty {
 		return EnumPropertiesHelper.getString(props, this.name(), reemplazos);
 	}
 
-	private static Properties props = EnumPropertiesHelper.load("/tableconstants.properties");
+	private static Properties props = EnumPropertiesHelper.load("/uniquetableidentifier.properties");
 }

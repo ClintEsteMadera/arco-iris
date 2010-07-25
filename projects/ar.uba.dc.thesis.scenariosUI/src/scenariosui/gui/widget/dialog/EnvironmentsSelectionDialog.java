@@ -54,6 +54,7 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		environmentsSelectionQuerycomposite = new EnvironmentsSelectionQueryComposite(this, parent, this.criteria) {
+			// TODO ver si se puede evitar esta clase anónima
 			@Override
 			protected ISelectionChangedListener getTableSelectionChangedListener() {
 				ISelectionChangedListener listener = new ISelectionChangedListener() {

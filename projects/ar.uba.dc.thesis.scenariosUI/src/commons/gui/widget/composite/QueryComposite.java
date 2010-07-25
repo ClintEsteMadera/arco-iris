@@ -72,11 +72,40 @@ import commons.utils.DateUtils;
  */
 public abstract class QueryComposite<T> extends Composite {
 
-	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> aClass, BaseCriteria criterioBusqueda) {
+	private EnumProperty tableName;
+
+	private FilterButtonsGroup filterButtonsGroup;
+
+	private Menu menuContextual;
+
+	private SimpleComposite leftButtonBarComposite;
+
+	private SimpleComposite rightButtonBarComposite;
+
+	private Button botonEdicion;
+
+	private Button botonVer;
+
+	private Button botonCerrar;
+
+	private BeanModel<BaseCriteria<T>> criterioWrapped;
+
+	private Class<T> tableContentClass;
+
+	private GenericTable table;
+
+	private ValueModel<String> informationText;
+
+	private static AuthorizationHelper authHelper = PageHelper.getMainWindow().getAuthorizationHelper();
+
+	private static final Log log = LogFactory.getLog(QueryComposite.class);
+
+	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> tableElementsClassName,
+			BaseCriteria<T> searchCriteria) {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
-		this.tableContentClass = aClass;
-		this.criterioWrapped = new BeanModel<BaseCriteria>(criterioBusqueda);
+		this.tableContentClass = tableElementsClassName;
+		this.criterioWrapped = new BeanModel<BaseCriteria<T>>(searchCriteria);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
 		this.reset();
@@ -93,7 +122,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 *            el identificador del ítem que hay que refrescar.
 	 */
 	public void reset(Long id) {
-		this.getCriterio().setId(id);
+		this.getCriteria().setId(id);
 		// Simulo el "Buscar"
 		SelectionListener filterListener = this.getFilterListener();
 		if (filterListener != null) {
@@ -110,18 +139,18 @@ public abstract class QueryComposite<T> extends Composite {
 		if (cleanUpListener != null) {
 			cleanUpListener.widgetSelected(null);
 		}
-		// Simulo el "Buscar"
+		// we simulate the "search" functionality
 		SelectionListener filterListener = this.getFilterListener();
 		if (filterListener != null) {
 			filterListener.widgetSelected(null);
 		}
 	}
 
-	public BaseCriteria getCriterio() {
+	public BaseCriteria<T> getCriteria() {
 		return this.getCriterioWrapped().getValue();
 	}
 
-	public BeanModel<BaseCriteria> getCriterioWrapped() {
+	public BeanModel<BaseCriteria<T>> getCriterioWrapped() {
 		return criterioWrapped;
 	}
 
@@ -192,31 +221,42 @@ public abstract class QueryComposite<T> extends Composite {
 	 * Realiza la consulta definida en <code>getBackgroundThread</code> y actualiza la tabla.
 	 */
 	protected final void doQuery() {
-		boolean hayQueRefrescarSoloUnItem = this.getCriterio().getId() != null;
+		boolean hayQueRefrescarSoloUnItem = this.getCriteria().getId() != null;
 
 		if (hayQueRefrescarSoloUnItem) {
 			List<T> refreshList = this.executeQuery(); // pide a la persistencia el objeto que cambió
 			this.refreshItemsAccordingTo(refreshList);
-			this.getCriterio().setId(null);
+			this.getCriteria().setId(null);
 		} else {
 			// se refresca toda la tabla
 			List<T> queryResult = this.executeQuery();
 			getTable().setInput(queryResult);
 
-			String message;
-			switch (queryResult.size()) {
-			case 0:
-				message = CommonMessages.QUERY_NO_RESULTS.toString();
-				break;
-			case 1:
-				message = CommonMessages.QUERY_ONLY_ONE_RESULT.toString(queryResult.size());
-				break;
-			default:
-				message = CommonMessages.QUERY_MORE_THAN_ONE_RESULT.toString(queryResult.size());
-				break;
+			if (showMessageAfterQuery()) {
+				String message;
+				switch (queryResult.size()) {
+				case 0:
+					message = CommonMessages.QUERY_NO_RESULTS.toString();
+					break;
+				case 1:
+					message = CommonMessages.QUERY_ONLY_ONE_RESULT.toString(queryResult.size());
+					break;
+				default:
+					message = CommonMessages.QUERY_MORE_THAN_ONE_RESULT.toString(queryResult.size());
+					break;
+				}
+				this.informationText.setValue("[" + DateUtils.getCurrentTimeAsString() + "] " + message);
 			}
-			this.informationText.setValue("[" + DateUtils.getCurrentTimeAsString() + "] " + message);
 		}
+	}
+
+	/**
+	 * This method can be overriden in order to disable the message shown after the query is completed
+	 * 
+	 * @return
+	 */
+	protected boolean showMessageAfterQuery() {
+		return true;
 	}
 
 	/**
@@ -578,7 +618,7 @@ public abstract class QueryComposite<T> extends Composite {
 		List<T> tableInput = (List<T>) getTable().getInput();
 
 		if (tableInput != null) {
-			Long idItemARefrescar = this.getCriterio().getId();
+			Long idItemARefrescar = this.getCriteria().getId();
 			if (refreshList.isEmpty()) {
 				// delete tableItem with id equals to "idItemARefrescar"
 				for (T item : tableInput) {
@@ -622,32 +662,4 @@ public abstract class QueryComposite<T> extends Composite {
 			}
 		});
 	}
-
-	private EnumProperty tableName;
-
-	private FilterButtonsGroup filterButtonsGroup;
-
-	private Menu menuContextual;
-
-	private SimpleComposite leftButtonBarComposite;
-
-	private SimpleComposite rightButtonBarComposite;
-
-	private Button botonEdicion;
-
-	private Button botonVer;
-
-	private Button botonCerrar;
-
-	private BeanModel<BaseCriteria> criterioWrapped;
-
-	private Class<T> tableContentClass;
-
-	private GenericTable table;
-
-	private ValueModel<String> informationText;
-
-	private static AuthorizationHelper authHelper = PageHelper.getMainWindow().getAuthorizationHelper();
-
-	private static final Log log = LogFactory.getLog(QueryComposite.class);
 }

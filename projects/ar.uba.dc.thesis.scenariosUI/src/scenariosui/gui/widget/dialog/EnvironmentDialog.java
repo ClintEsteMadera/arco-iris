@@ -16,21 +16,23 @@
 
 package scenariosui.gui.widget.dialog;
 
+import org.eclipse.swt.widgets.Composite;
+
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.gui.widget.ScenariosUIWindow;
-import scenariosui.gui.widget.page.EnvironmentPage;
-import scenariosui.properties.ScenariosUILabels;
-import scenariosui.properties.TableConstants;
+import scenariosui.gui.widget.composite.EnvironmentComposite;
+import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
-import commons.exception.ApplicationException;
-import commons.exception.ServiceException;
-import commons.gui.background.BackgroundInvocationException;
 import commons.properties.EnumProperty;
+import commons.properties.FakeEnumProperty;
 import commons.properties.Messages;
 
 public class EnvironmentDialog extends BaseScenariosUIMultiPurposeDialog<Environment> {
+
+	public EnvironmentDialog(ScenariosUIPurpose purpose) {
+		super(null, new FakeEnumProperty(""), purpose);
+	}
 
 	public EnvironmentDialog(Environment model, EnumProperty title, ScenariosUIPurpose purpose) {
 		super(model, title, purpose);
@@ -42,46 +44,24 @@ public class EnvironmentDialog extends BaseScenariosUIMultiPurposeDialog<Environ
 	}
 
 	@Override
-	protected void doCreateNodes() {
-		addNode(null, "environmentPage", new EnvironmentPage(super.getCompositeModel(), ScenariosUILabels.ENVIRONMENT,
-				super.readOnly, super.purpose));
+	protected void addWidgetsToDialogArea(Composite parent) {
+		new EnvironmentComposite(parent, this.purpose, this.getCompositeModel());
 	}
 
 	@Override
-	protected boolean performOK() {
-		boolean okStatus = false;
-		String operacion = null;
-		try {
-			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
-			switch (super.purpose) {
-			case CREATION:
-				operacion = "created";
-				scenariosUIController.getCurrentSelfHealingConfiguration().addEnvironment(this.getModel());
-				scenariosUIController.saveSelfHealingConfiguration();
-				break;
-			case EDIT:
-				operacion = "updated";
-				scenariosUIController.saveSelfHealingConfiguration();
-				break;
-			default:
-				throw new RuntimeException("Se utilizó un Propósito no contemplado!!");
-			}
-		} catch (BackgroundInvocationException ex) {
-			// Se supone que se atrapa más arriba esta excepción...
-			throw ex;
-		} catch (ServiceException ex) {
-			// Esta jerarquía de excepciones ya viene preparada para ser
-			// mostradas
-			throw ex;
-		} catch (Exception ex) {
-			throw new ApplicationException("Error al acceder al servicio de Environments", ex);
-		}
-		okStatus = true;
-		String denominacion = super.getModel().getName() != null ? super.getModel().getName() : "";
-		String mensaje = Messages.SUCCESSFUL_ENVIRONMENT.toString(denominacion, operacion);
-		showSuccessfulOperationDialog(mensaje);
-		ScenariosUIWindow.getInstance().resetQuery(TableConstants.ENVIRONMENTS, super.getModel().getId());
+	public void addModelToCurrentSHConfiguration() {
+		ScenariosUIController.getInstance().getCurrentSelfHealingConfiguration().addEnvironment(this.getModel());
 
-		return okStatus;
+	}
+
+	@Override
+	public String getSuccessfulOperationMessage(String operation) {
+		String environmentName = super.getModel().getName() != null ? super.getModel().getName() : "";
+		return Messages.SUCCESSFUL_ENVIRONMENT.toString(environmentName, operation);
+	}
+
+	@Override
+	public UniqueTableIdentifier getUniqueTableIdentifier() {
+		return UniqueTableIdentifier.ENVIRONMENTS;
 	}
 }
