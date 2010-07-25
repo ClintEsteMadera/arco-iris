@@ -19,7 +19,7 @@ package scenariosui.test;
 import java.util.ResourceBundle;
 
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 
 import commons.properties.Messages;
 import commons.test.PropertiesVerifier;
@@ -39,7 +39,7 @@ public class ScenariosUIPropertiesVerifier extends PropertiesVerifier {
 	public static void main(String[] args) throws Exception {
 		boolean allPropsAreInPropertiesFiles = testAllPropertiesAreDefined();
 		boolean allDefinedPropsAreInEnums = testAllDefinedPropsAreInEnums();
-		boolean thereAreNoRepetitions = testThereAreNoRepetitions(TableConstants.class);
+		boolean thereAreNoRepetitions = testThereAreNoRepetitions(UniqueTableIdentifier.class);
 
 		if (allPropsAreInPropertiesFiles && allDefinedPropsAreInEnums) {
 			System.out.println("* Todos los EnumProperties registrados en este test"
@@ -53,6 +53,6 @@ public class ScenariosUIPropertiesVerifier extends PropertiesVerifier {
 	static {
 		bundleMap.put(ResourceBundle.getBundle("scenariosUI_labels"), ScenariosUILabels.class);
 		bundleMap.put(ResourceBundle.getBundle("messages"), Messages.class);
-		bundleMap.put(ResourceBundle.getBundle("tableconstants"), TableConstants.class);
+		bundleMap.put(ResourceBundle.getBundle("tableconstants"), UniqueTableIdentifier.class);
 	}
 }

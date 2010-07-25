@@ -27,7 +27,7 @@ public class RowSelectionHandler<T extends Object, COMMAND extends RowSelectionH
 		try {
 			element = ClassUtils.newInstance(clazz);
 			if (dialog.open(element)) {
-				element= dialog.getElement();
+				element= dialog.getModel();
 				command.store(element);
 				handleCreate = true;
 			}
@@ -41,7 +41,7 @@ public class RowSelectionHandler<T extends Object, COMMAND extends RowSelectionH
 		boolean handleUpdate = false;
 		element = command.cloneElement(element);
 		if (dialog.open(element)) {
-			element= dialog.getElement();
+			element= dialog.getModel();
 			command.update(rowIndex, element);
 			handleUpdate = true;
 		}

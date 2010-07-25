@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 
 import org.eclipse.swt.widgets.Shell;
 
+import scenariosui.gui.util.purpose.ScenariosUIPurpose;
+
 import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.dialog.OpenableTrayDialog;
 
@@ -58,7 +60,8 @@ public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> e
 
 		if (this.dialogContructor == null) {
 			try {
-				this.dialogContructor = dialogClass.getConstructor(Purpose.class);
+				// FIXME This is a hack which breaks the generality of this handler
+				this.dialogContructor = dialogClass.getConstructor(ScenariosUIPurpose.class);
 				this.dialogSupportsPurposeParam = true;
 			} catch (Exception e1) {
 				try {

@@ -1,16 +1,17 @@
 package scenariosui.gui.widget.dialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
+import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.model.bean.BeanModel;
@@ -20,27 +21,24 @@ import commons.gui.table.GenericEditHandler;
 import commons.gui.table.TableMetainfo;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.BindingInfo;
-import commons.gui.widget.dialog.OpenableTrayDialog;
+import commons.gui.widget.dialog.BaseCompositeModelBoundedDialog;
 import commons.gui.widget.group.SimpleGroup;
 import commons.properties.CommonLabels;
 
-public class MultipleEnvironmentsDialog extends OpenableTrayDialog<List<Environment>> {
+/**
+ * A Dialog providing CRUD functionality for multiple environments.<br>
+ * For now, this class is due to be deleted since it is not being used.
+ * 
+ * @deprecated
+ */
+@Deprecated
+public class MultipleEnvironmentsDialog extends BaseCompositeModelBoundedDialog<List<Environment>> {
 
 	private DefaultListValueModel<Environment> compositeModel;
 
 	public MultipleEnvironmentsDialog(List<Environment> environments) {
-		super(PageHelper.getMainWindow().getShell());
+		super(environments, ScenariosUILabels.ENVIRONMENTS, false);
 		this.compositeModel = new DefaultListValueModel<Environment>(new BeanModel<List<Environment>>(environments));
-	}
-
-	@Override
-	protected void createBeanModel(List<Environment> environments) {
-		// do nothing?
-	}
-
-	@Override
-	public List<Environment> getElement() {
-		return this.compositeModel.getValue();
 	}
 
 	@Override
@@ -64,14 +62,14 @@ public class MultipleEnvironmentsDialog extends OpenableTrayDialog<List<Environm
 	}
 
 	@Override
-	protected Control createDialogArea(Composite parent) {
+	protected void addWidgetsToDialogArea(Composite parent) {
 		final Group group = (new SimpleGroup(parent, CommonLabels.NO_LABEL, false, 1)).getSwtGroup();
 		group.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		TableMetainfo<Environment> tableMetaInfo = new TableMetainfo<Environment>(group, TableConstants.ENVIRONMENTS,
-				Environment.class, new BindingInfo(compositeModel), super.readOnly);
-		new CrudTableComposite(tableMetaInfo, new GenericEditHandler<Environment, EnvironmentOpenableTrayDialog>(group
-				.getShell(), EnvironmentOpenableTrayDialog.class, Environment.class));
+		TableMetainfo<Environment> tableMetaInfo = new TableMetainfo<Environment>(group,
+				UniqueTableIdentifier.ENVIRONMENTS, Environment.class, new BindingInfo(compositeModel), super.readOnly);
+		new CrudTableComposite(tableMetaInfo, new GenericEditHandler<Environment, EnvironmentDialog>(group.getShell(),
+				EnvironmentDialog.class, Environment.class));
 
 		// SimpleComposite c = new SimpleComposite(group, false, 2, 1);
 		// Binding binding = new BindingInfo(environmentsCompositeModel, "nroConvocatoria");
@@ -88,7 +86,17 @@ public class MultipleEnvironmentsDialog extends OpenableTrayDialog<List<Environm
 		//
 		// new TipoAsambleaGroup(composite, environmentsCompositeModel.getValue().getTiposAsamblea(),
 		// LabelsConvocatoria.TIPO_ASAMBLEA, false);
+	}
 
-		return group;
+	@Override
+	protected List<Environment> newModel() {
+		return new ArrayList<Environment>();
+	}
+
+	@Override
+	protected boolean performOK() {
+		// FIXME ver bien que hacer aca
+		ScenariosUIController.getInstance().saveSelfHealingConfiguration();
+		return true;
 	}
 }

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Basic Criteria where all search criteria must inherit from.
  */
 
-public abstract class BaseCriteria implements Serializable {
+public abstract class BaseCriteria<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

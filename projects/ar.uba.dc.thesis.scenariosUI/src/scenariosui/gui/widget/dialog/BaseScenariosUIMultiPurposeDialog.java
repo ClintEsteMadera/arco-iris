@@ -16,13 +16,16 @@
 
 package scenariosui.gui.widget.dialog;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
+import scenariosui.gui.widget.ScenariosUIWindow;
+import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIController;
+import ar.uba.dc.thesis.common.ThesisPojo;
 
-import commons.gui.model.ComplexValueChangeEvent;
-import commons.gui.model.ComplexValueChangeListener;
+import commons.exception.ApplicationException;
+import commons.exception.ServiceException;
+import commons.gui.background.BackgroundInvocationException;
+import commons.gui.widget.dialog.BaseCompositeModelBoundedDialog;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 import commons.properties.FakeEnumProperty;
@@ -35,9 +38,7 @@ import commons.properties.FakeEnumProperty;
  * @version $Revision: 1.8 $ $Date: 2008/02/26 14:45:34 $
  */
 
-public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenariosUIDialog<T> {
-
-	private boolean modelDirty;
+public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> extends BaseCompositeModelBoundedDialog<T> {
 
 	protected ScenariosUIPurpose purpose;
 
@@ -47,31 +48,33 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenarios
 		this.purpose = purpose;
 	}
 
-	@Override
-	protected final void createNodes() {
-		doCreateNodes();
-
-		// chequeo de modificacion sobre el modelo
-		this.getCompositeModel().addComplexValueChangeListener(new ComplexValueChangeListener() {
-
-			@SuppressWarnings("unchecked")
-			public void complexValueChange(ComplexValueChangeEvent ev) {
-				modelDirty = true;
-			}
-		});
-	}
+	/**
+	 * Adds the current model of this dialog to the current self healing configuration
+	 */
+	public abstract void addModelToCurrentSHConfiguration();
 
 	/**
-	 * This method is intended to be implemented by subclasses, adding their specific nodes
+	 * Obtains the message to be used for displaying the "successful operation message" to the user
+	 * 
+	 * @param operation
+	 *            the operation that is taking place
+	 * @return the message to be used for displaying the "successful operation message" to the user
 	 */
-	protected abstract void doCreateNodes();
+	public abstract String getSuccessfulOperationMessage(String operation);
+
+	/**
+	 * Provides the unique identifier of the table that contains the type of elements modified on this dialog
+	 * 
+	 * @return the unique identifier of the table that contains the type of elements modified on this dialog
+	 */
+	public abstract UniqueTableIdentifier getUniqueTableIdentifier();
 
 	/**
 	 * Indica el estado de readOnly. Por defecto, el mismo está dado por el propósito, aunque dicho comportamiento puede
 	 * ser sobreescrito ante la necesidad de evaluar más condiciones dependientes del modelo.
 	 * 
 	 * @param model
-	 *            el modelo involucrado en la apeertura del diálogo.
+	 *            el modelo involucrado en la apertura del diálogo.
 	 * @param scenariosUIPurpose
 	 *            el proósito con el que se abre el diálogo.
 	 */
@@ -80,14 +83,42 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenarios
 	}
 
 	@Override
-	protected void cancelPressed() {
-		boolean abandonChanges = true;
-
-		if (this.modelDirty) {
-			abandonChanges = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENTION.toString(),
-					"Do you wish to abandon the changes made to the scenario ?");
+	protected boolean performOK() {
+		String operation = null;
+		try {
+			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
+			switch (this.purpose) {
+			case CREATION:
+				operation = "created";
+				this.addModelToCurrentSHConfiguration();
+				scenariosUIController.saveSelfHealingConfiguration();
+				break;
+			case EDIT:
+				operation = "updated";
+				scenariosUIController.saveSelfHealingConfiguration();
+				break;
+			default:
+				throw new RuntimeException("The code does not contemplate the purpose " + this.purpose + "yet");
+			}
+		} catch (BackgroundInvocationException ex) {
+			// Se supone que se atrapa más arriba esta excepción...
+			throw ex;
+		} catch (ServiceException ex) {
+			// Esta jerarquía de excepciones ya viene preparada para ser
+			// mostradas
+			throw ex;
+		} catch (Exception ex) {
+			throw new ApplicationException("Error when accesing the service", ex);
 		}
-		if (abandonChanges) {
+		showSuccessfulOperationDialog(this.getSuccessfulOperationMessage(operation));
+		ScenariosUIWindow.getInstance().resetQuery(getUniqueTableIdentifier(), super.getModel().getId());
+
+		return true;
+	}
+
+	@Override
+	protected void cancelPressed() {
+		if (doIHaveToAbandonChanges()) {
 			if (this.purpose.isCreation()) {
 				ScenariosUIController.getInstance().returnRecentlyRequestedId(); // since we won't use it
 			}
@@ -97,10 +128,10 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseScenarios
 
 	@Override
 	protected boolean isOkButtonAllowed() {
-		boolean sinBotonAceptar = (this.isReadOnly(super.getModel(), this.purpose) && this.purpose
+		boolean noAcceptButton = (this.isReadOnly(super.getModel(), this.purpose) && this.purpose
 				.equals(ScenariosUIPurpose.EDIT))
 				|| this.purpose.equals(ScenariosUIPurpose.VIEW);
-		return !sinBotonAceptar;
+		return !noAcceptButton;
 	}
 
 	@Override

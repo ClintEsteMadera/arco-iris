@@ -7,7 +7,7 @@ import scenariosui.context.ScenariosUIApplicationContext;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.menu.SelfHealingConfigurationMenuCreator;
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 
 import commons.auth.AuthorizationHelper;
 import commons.context.BaseApplicationContext;
@@ -53,7 +53,7 @@ public class ScenariosUIWindow extends MainWindow {
 
 	@SuppressWarnings("unchecked")
 	private void registerScenariosUIEnumProperties() {
-		super.enumPropertyDirectory.register(TableConstants.class, ScenariosUILabels.class);
+		super.enumPropertyDirectory.register(UniqueTableIdentifier.class, ScenariosUILabels.class);
 	}
 
 	private void registerScenariosUIGuiActions() {
@@ -73,7 +73,7 @@ public class ScenariosUIWindow extends MainWindow {
 	 *            el identificador único del objeto que se intenta refrescar. (si el parámetro es nulo, la consulta se
 	 *            actualizará completa.
 	 */
-	public void resetQuery(TableConstants nombreConsulta, Long id) {
+	public void resetQuery(UniqueTableIdentifier nombreConsulta, Long id) {
 		CTabItem tabItem = super.getTabItem(nombreConsulta);
 		if (tabItem != null) {
 			QueryComposite queryComposite = (QueryComposite) tabItem.getControl();
@@ -87,12 +87,12 @@ public class ScenariosUIWindow extends MainWindow {
 
 	/**
 	 * Método de conveniencia para realizar invocaciones más limpias (desde la perspectiva del usuario). Es equivalente
-	 * a invocar al método resetConsulta(TableConstants, Long) con el segundo parámetro en <code>null</code>.
+	 * a invocar al método resetConsulta(UniqueTableIdentifier, Long) con el segundo parámetro en <code>null</code>.
 	 * 
 	 * @param queryName
 	 *            el nombre de la consulta. NO puede ser nulo.
 	 */
-	public void resetQuery(TableConstants queryName) {
+	public void resetQuery(UniqueTableIdentifier queryName) {
 		this.resetQuery(queryName, null);
 	}
 }

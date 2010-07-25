@@ -11,24 +11,23 @@ import org.eclipse.swt.widgets.Group;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.EnvironmentSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
-import commons.gui.util.purpose.Purpose;
-import commons.gui.widget.composite.QueryComposite;
 import commons.properties.EnumProperty;
 import commons.query.BaseCriteria;
 
-public class EnvironmentQueryComposite extends QueryComposite<Environment> {
+public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environment> {
 
 	public EnvironmentQueryComposite() {
-		this(PageHelper.getMainWindow().mainTabFolder, TableConstants.ENVIRONMENTS, new EnvironmentSearchCriteria());
+		this(PageHelper.getMainWindow().mainTabFolder, UniqueTableIdentifier.ENVIRONMENTS,
+				new EnvironmentSearchCriteria());
 	}
 
-	public EnvironmentQueryComposite(Composite parent, EnumProperty tableName, BaseCriteria searchCriteria) {
+	public EnvironmentQueryComposite(Composite parent, EnumProperty tableName, BaseCriteria<Environment> searchCriteria) {
 		super(parent, tableName, Environment.class, searchCriteria);
 	}
 
@@ -38,26 +37,14 @@ public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 	}
 
 	@Override
-	// FIXME workaround para que el update de environments se refleje correctamente en la tabla
 	protected List<Environment> executeQuery() {
-		ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
-
-		if (this.getCriterio().getId() == null) {
-			return scenariosUIController.getCurrentSelfHealingConfiguration().getEnvironments();
-		} else {
-			Environment environment = scenariosUIController.findEnvironment(this.getCriterio().getId());
-			return Collections.singletonList(environment);
-		}
+		return ScenariosUIController.getInstance().getEnvironments(this.getCriteria());
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_ENVIRONMENT;
-	}
-
-	@Override
-	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForView() {
-		throw new RuntimeException("Functionality not implemented yet");
 	}
 
 	@Override
@@ -69,21 +56,6 @@ public class EnvironmentQueryComposite extends QueryComposite<Environment> {
 	@Override
 	protected ISelectionChangedListener getTableSelectionChangedListener() {
 		return null;
-	}
-
-	@Override
-	protected boolean closeButtonAllowed() {
-		return false;
-	}
-
-	@Override
-	protected boolean editionAllowed() {
-		return true;
-	}
-
-	@Override
-	protected boolean viewButtonAllowed() {
-		return false;
 	}
 
 	@Override

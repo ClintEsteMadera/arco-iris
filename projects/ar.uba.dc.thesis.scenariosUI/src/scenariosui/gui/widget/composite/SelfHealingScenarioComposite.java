@@ -1,16 +1,16 @@
-package scenariosui.gui.widget.page;
+package scenariosui.gui.widget.composite;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.gui.widget.composite.EnvironmentsSelectionComposite;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.model.CompositeModel;
+import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.composite.ObjectSelectionMetainfo;
+import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 import commons.gui.widget.creation.metainfo.ComboMetainfo;
@@ -19,26 +19,16 @@ import commons.gui.widget.factory.BooleanFactory;
 import commons.gui.widget.factory.ComboFactory;
 import commons.gui.widget.factory.TextFactory;
 import commons.gui.widget.group.SimpleGroup;
-import commons.gui.widget.page.BasePreferencesPage;
-import commons.properties.EnumProperty;
 
-public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScenario> {
+public class SelfHealingScenarioComposite extends SimpleComposite {
 
-	public SelfHealingScenarioPage(CompositeModel<SelfHealingScenario> model, EnumProperty title, boolean readOnly,
-			ScenariosUIPurpose proposito) {
-		super(model, title, readOnly);
-		this.purpose = proposito;
-	}
+	public SelfHealingScenarioComposite(Composite parent, Purpose purpose,
+			CompositeModel<SelfHealingScenario> underlyingScenario) {
+		super(parent, purpose.isReadOnly());
+		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly).getSwtGroup();
 
-	@Override
-	protected void addFields(Composite parent) {
-		datosBasicosGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly);
-		Group swtGroup = datosBasicosGroup.getSwtGroup();
-
-		CompositeModel<SelfHealingScenario> underlyingScenario = super.getCompositeModel();
-
-		if (this.purpose.isCreation()) {
-			super.getModel().setId(ScenariosUIController.getInstance().getNextId());
+		if (purpose.isCreation()) {
+			underlyingScenario.getValue().setId(ScenariosUIController.getInstance().getNextId());
 		}
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
@@ -64,6 +54,7 @@ public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScen
 		ObjectSelectionMetainfo objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup,
 				ScenariosUILabels.ENVIRONMENTS, new BindingInfo(underlyingScenario, "environments"), this.readOnly);
 		objectSelectionMetainfo.nullable = true; // to be used for the "Default" environment
+		objectSelectionMetainfo.canView = false;
 
 		new EnvironmentsSelectionComposite(objectSelectionMetainfo);
 
@@ -88,7 +79,4 @@ public class SelfHealingScenarioPage extends BasePreferencesPage<SelfHealingScen
 		// TODO: Repair Strategies
 	}
 
-	private final ScenariosUIPurpose purpose;
-
-	protected SimpleGroup datosBasicosGroup;
 }

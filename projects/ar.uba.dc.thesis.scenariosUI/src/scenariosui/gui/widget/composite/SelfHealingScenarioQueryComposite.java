@@ -11,23 +11,22 @@ import org.eclipse.swt.widgets.Group;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.SelfHealingScenarioSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIController;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
-import commons.gui.widget.composite.QueryComposite;
 import commons.query.BaseCriteria;
 
-public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealingScenario> {
+public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite<SelfHealingScenario> {
 
 	public SelfHealingScenarioQueryComposite() {
 		this(PageHelper.getMainWindow().mainTabFolder, new SelfHealingScenarioSearchCriteria());
 	}
 
-	public SelfHealingScenarioQueryComposite(Composite parent, BaseCriteria criterioBusqueda) {
-		super(parent, TableConstants.SCENARIOS, SelfHealingScenario.class, criterioBusqueda);
+	public SelfHealingScenarioQueryComposite(Composite parent, BaseCriteria<SelfHealingScenario> criterioBusqueda) {
+		super(parent, UniqueTableIdentifier.SCENARIOS, SelfHealingScenario.class, criterioBusqueda);
 	}
 
 	@Override
@@ -36,26 +35,14 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 	}
 
 	@Override
-	// FIXME workaround para que el update de scenarios se refleje correctamente en la tabla
 	protected List<SelfHealingScenario> executeQuery() {
-		ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
-
-		if (this.getCriterio().getId() == null) {
-			return scenariosUIController.getCurrentSelfHealingConfiguration().getScenarios();
-		} else {
-			SelfHealingScenario scenario = scenariosUIController.findSelfHealingScenario(this.getCriterio().getId());
-			return Collections.singletonList(scenario);
-		}
+		return ScenariosUIController.getInstance().getScenarios(this.getCriteria());
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_SELF_HEALING_SCENARIO;
-	}
-
-	@Override
-	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForView() {
-		return ScenariosUIActions.VIEW_SELF_HEALING_SCENARIO;
 	}
 
 	@Override
@@ -67,21 +54,6 @@ public class SelfHealingScenarioQueryComposite extends QueryComposite<SelfHealin
 	@Override
 	protected ISelectionChangedListener getTableSelectionChangedListener() {
 		return null;
-	}
-
-	@Override
-	protected boolean closeButtonAllowed() {
-		return false;
-	}
-
-	@Override
-	protected boolean editionAllowed() {
-		return true;
-	}
-
-	@Override
-	protected boolean viewButtonAllowed() {
-		return true;
 	}
 
 	@Override

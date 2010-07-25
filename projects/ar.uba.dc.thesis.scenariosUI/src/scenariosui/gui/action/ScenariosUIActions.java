@@ -4,7 +4,7 @@ import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.gui.widget.composite.EnvironmentQueryComposite;
 import scenariosui.gui.widget.composite.SelfHealingScenarioQueryComposite;
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.auth.AuthorizationHelper;
@@ -43,11 +43,11 @@ public final class ScenariosUIActions {
 			"scenarioUI.scenario.view", NO_SHORTCUT, ScenariosUIPurpose.VIEW);
 
 	public static final ScenariosUIQueryAction SCENARIOS_QUERY = new ScenariosUIQueryAction(
-			"scenarioUI.scenario.query", NO_SHORTCUT, ScenariosUILabels.SCENARIOS, TableConstants.SCENARIOS,
+			"scenarioUI.scenario.query", NO_SHORTCUT, ScenariosUILabels.SCENARIOS, UniqueTableIdentifier.SCENARIOS,
 			SelfHealingScenarioQueryComposite.class);
 
 	public static final ScenariosUIQueryAction ENVIRONMENT_QUERY = new ScenariosUIQueryAction(
-			"scenarioUI.environment.query", NO_SHORTCUT, ScenariosUILabels.ENVIRONMENTS, TableConstants.ENVIRONMENTS,
+			"scenarioUI.environment.query", NO_SHORTCUT, ScenariosUILabels.ENVIRONMENTS, UniqueTableIdentifier.ENVIRONMENTS,
 			EnvironmentQueryComposite.class);
 
 	public static final EnvironmentOpenDialogWithPurposeAction NEW_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(

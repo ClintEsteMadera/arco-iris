@@ -1,6 +1,7 @@
 package scenariosui.gui.widget.composite;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.service.ScenariosUIController;
@@ -12,6 +13,7 @@ import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
 import commons.gui.widget.factory.TextFactory;
+import commons.gui.widget.group.SimpleGroup;
 
 public class EnvironmentComposite extends SimpleComposite {
 
@@ -22,12 +24,14 @@ public class EnvironmentComposite extends SimpleComposite {
 			underlyingEnvironment.getValue().setId(ScenariosUIController.getInstance().getNextId());
 		}
 
-		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(parent, ScenariosUILabels.ID, new BindingInfo(
+		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly).getSwtGroup();
+
+		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
 				underlyingEnvironment, "id"), true);
 		TextFactory.createText(textMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(parent, ScenariosUILabels.NAME, new BindingInfo(underlyingEnvironment,
-				"name"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.NAME, new BindingInfo(
+				underlyingEnvironment, "name"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
 		/*

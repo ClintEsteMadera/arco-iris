@@ -8,7 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import scenariosui.gui.query.EnvironmentSearchCriteria;
-import scenariosui.properties.TableConstants;
+import scenariosui.properties.UniqueTableIdentifier;
 
 import commons.gui.Advised;
 import commons.gui.table.GenericTable;
@@ -23,7 +23,7 @@ public class EnvironmentsSelectionQueryComposite extends EnvironmentQueryComposi
 
 	public EnvironmentsSelectionQueryComposite(Advised<EnvironmentsSelectionQueryComposite> advised, Composite parent,
 			EnvironmentSearchCriteria criteria) {
-		super(parent, TableConstants.ENVIRONMENT_SELECTION, criteria);
+		super(parent, UniqueTableIdentifier.ENVIRONMENT_SELECTION, criteria);
 		this.advised = advised;
 	}
 

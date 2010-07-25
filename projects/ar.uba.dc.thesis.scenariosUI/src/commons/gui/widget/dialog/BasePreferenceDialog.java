@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-
 import commons.gui.model.validation.ValidationChangedListener;
 import commons.gui.model.validation.ValidationSource;
 import commons.gui.thread.GUIUncaughtExceptionHandler;
@@ -28,6 +27,14 @@ import commons.validation.ValidationError;
 
 public abstract class BasePreferenceDialog extends PreferenceDialog implements ValidationSource {
 
+	private final EnumProperty title;
+
+	private Button okButton;
+
+	private ArrayList<ValidationChangedListener> validationListeners;
+
+	private ValidationError[] validationErrors;
+
 	public BasePreferenceDialog(Shell parentShell, EnumProperty title) {
 		super(parentShell, new PreferenceManager());
 		super.setSelectedNode(null);
@@ -36,20 +43,19 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 	}
 
 	/**
-	 * Sobreescribe el comportamiento de la superclase, permitiendo no crear el botón de "Aceptar" o
-	 * "Cancelar" y permitiendo setear el texto personalizado de los botones.
+	 * Sobreescribe el comportamiento de la superclase, permitiendo no crear el botón de "Aceptar" o "Cancelar" y
+	 * permitiendo setear el texto personalizado de los botones.
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		Button defaultButton = null;
 		if (isOkButtonAllowed()) {
-			this.okButton = createButton(parent, IDialogConstants.OK_ID, this.getAcceptButtonText()
-					.toString(), true);
+			this.okButton = createButton(parent, IDialogConstants.OK_ID, this.getAcceptButtonText().toString(), true);
 			defaultButton = this.okButton;
 		}
 		if (isCancelButtonAllowed()) {
-			Button cancelButton = createButton(parent, IDialogConstants.CANCEL_ID, this
-					.getCancelButtonText().toString(), false);
+			Button cancelButton = createButton(parent, IDialogConstants.CANCEL_ID, this.getCancelButtonText()
+					.toString(), false);
 			if (!isOkButtonAllowed()) {
 				defaultButton = cancelButton;
 			}
@@ -60,16 +66,14 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 	}
 
 	/**
-	 * Permite especificar si se desea crear el botón "Aceptar". Por defecto, retorna
-	 * <code>true</code>
+	 * Permite especificar si se desea crear el botón "Aceptar". Por defecto, retorna <code>true</code>
 	 */
 	protected boolean isOkButtonAllowed() {
 		return true;
 	}
 
 	/**
-	 * Permite especificar si se desea crear el botón "Cancelar". Por defecto, retorna
-	 * <code>true</code>
+	 * Permite especificar si se desea crear el botón "Cancelar". Por defecto, retorna <code>true</code>
 	 */
 	protected boolean isCancelButtonAllowed() {
 		return true;
@@ -99,7 +103,7 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 
 	@Override
 	protected void okPressed() {
-		ValidationSource prev=GUIUncaughtExceptionHandler.getInstance().getValidationSource();
+		ValidationSource prev = GUIUncaughtExceptionHandler.getInstance().getValidationSource();
 		GUIUncaughtExceptionHandler.getInstance().setValidationSource(this);
 		try {
 			if (performOK()) {
@@ -117,8 +121,8 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 	}
 
 	/**
-	 * Los diálogos que requieran cambiar el nombre por defecto del botón "Aceptar" deberán
-	 * sobreescribir este método.
+	 * Los diálogos que requieran cambiar el nombre por defecto del botón "Aceptar" deberán sobreescribir este método.
+	 * 
 	 * @return el nombre del botón "Aceptar" para el diálogo en particular
 	 */
 	protected EnumProperty getAcceptButtonText() {
@@ -126,8 +130,8 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 	}
 
 	/**
-	 * Los diálogos que requieran cambiar el nombre por defecto del botón "Cancelar" deberán
-	 * sobreescribir este método.
+	 * Los diálogos que requieran cambiar el nombre por defecto del botón "Cancelar" deberán sobreescribir este método.
+	 * 
 	 * @return el nombre del botón "Cancelar" para el diálogo en particular
 	 */
 	protected EnumProperty getCancelButtonText() {
@@ -135,8 +139,8 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 	}
 
 	/**
-	 * Crea Nodos asociados al dialogo (los mostrados a la izquierda de la página) y a cada uno le
-	 * asocia la {@link BasePreferencesPage} correspondiente
+	 * Crea Nodos asociados al dialogo (los mostrados a la izquierda de la página) y a cada uno le asocia la
+	 * {@link BasePreferencesPage} correspondiente
 	 */
 	protected abstract void createNodes();
 
@@ -174,12 +178,4 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 			l.validationChanged(this);
 		}
 	}
-
-	private final EnumProperty title;
-
-	private Button okButton;
-
-	private ArrayList<ValidationChangedListener> validationListeners;
-
-	private ValidationError[] validationErrors;
 }

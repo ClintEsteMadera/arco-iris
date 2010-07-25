@@ -1,11 +1,15 @@
 package scenariosui.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingScenarioPersister;
+import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+
+import commons.query.BaseCriteria;
 
 /**
  * This class is responsible for controlling the creation, update and opening of a Self Healing Configuration.
@@ -58,26 +62,16 @@ public final class ScenariosUIController {
 		this.id = 0L;
 	}
 
-	public SelfHealingScenario findSelfHealingScenario(Long id) {
-		for (SelfHealingScenario selfHealingScenario : this.getCurrentSelfHealingConfiguration().getScenarios()) {
-			if (selfHealingScenario.getId().equals(id)) {
-				return selfHealingScenario;
-			}
-		}
-		throw new RuntimeException("Unable to find scenario with id " + id);
-	}
-
-	public Environment findEnvironment(Long id) {
-		for (Environment environment : this.getCurrentSelfHealingConfiguration().getEnvironments()) {
-			if (environment.getId().equals(id)) {
-				return environment;
-			}
-		}
-		throw new RuntimeException("Unable to find environment with id " + id);
-	}
-
 	public synchronized SelfHealingConfiguration getCurrentSelfHealingConfiguration() {
 		return this.selfHealingConfiguration;
+	}
+
+	public List<SelfHealingScenario> getScenarios(BaseCriteria<SelfHealingScenario> criteria) {
+		return this.getElement(this.getCurrentSelfHealingConfiguration().getScenarios(), criteria);
+	}
+
+	public List<Environment> getEnvironments(BaseCriteria<Environment> criteria) {
+		return this.getElement(this.getCurrentSelfHealingConfiguration().getEnvironments(), criteria);
 	}
 
 	/**
@@ -104,5 +98,23 @@ public final class ScenariosUIController {
 			}
 		}
 		return initialValue == 0 ? initialValue : initialValue + 1;
+	}
+
+	private <T extends ThesisPojo> List<T> getElement(List<T> elements, BaseCriteria<T> criteria) {
+		if (criteria.getId() == null) {
+			return elements;
+		} else {
+			T environment = this.findElement(elements, criteria.getId());
+			return Collections.singletonList(environment);
+		}
+	}
+
+	private <T extends ThesisPojo> T findElement(List<T> elements, Long id) {
+		for (T element : elements) {
+			if (element.getId().equals(id)) {
+				return element;
+			}
+		}
+		throw new RuntimeException("Unable to find element with id " + id);
 	}
 }
