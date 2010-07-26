@@ -1,4 +1,4 @@
-package scenariosui.gui.widget.composite;
+package scenariosui.gui.widget.composite.query;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -9,27 +9,37 @@ import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.composite.QueryComposite;
 import commons.properties.EnumProperty;
-import commons.query.BaseCriteria;
+import commons.query.BaseSearchCriteria;
 
 public abstract class ScenariosUIQueryComposite<T extends ThesisPojo> extends QueryComposite<T> {
 
 	public ScenariosUIQueryComposite(Composite parent, EnumProperty tableName, Class<T> tableElementsClassName,
-			BaseCriteria<T> searchCriteria) {
+			BaseSearchCriteria<T> searchCriteria) {
 		super(parent, tableName, tableElementsClassName, searchCriteria);
 	}
 
 	@Override
-	protected boolean closeButtonAllowed() {
-		return false;
+	protected boolean newButtonAllowed() {
+		return true;
 	}
 
 	@Override
-	protected boolean editionAllowed() {
+	protected boolean editButtonAllowed() {
 		return true;
 	}
 
 	@Override
 	protected boolean viewButtonAllowed() {
+		return false;
+	}
+
+	@Override
+	protected boolean deleteButtonAllowed() {
+		return true;
+	}
+
+	@Override
+	protected boolean closeButtonAllowed() {
 		return false;
 	}
 
@@ -40,8 +50,16 @@ public abstract class ScenariosUIQueryComposite<T extends ThesisPojo> extends Qu
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForView() {
+	protected final OpenDialogWithPurposeAction<Environment, Purpose> getActionForView() {
 		throw new RuntimeException(
 				"This method should not be called since Scenarios UI does not allow viewing in its QueryComposites");
+	}
+
+	/**
+	 * For every Query Composite of this application we want them to show the up-to-date information on the tables.
+	 */
+	@Override
+	protected boolean resetAfterAnyActionFinishedExecution() {
+		return true;
 	}
 }

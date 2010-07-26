@@ -17,9 +17,7 @@
 package scenariosui.gui.widget.dialog;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.gui.widget.ScenariosUIWindow;
-import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.ScenariosUIController;
+import scenariosui.service.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.common.ThesisPojo;
 
 import commons.exception.ApplicationException;
@@ -38,7 +36,8 @@ import commons.properties.FakeEnumProperty;
  * @version $Revision: 1.8 $ $Date: 2008/02/26 14:45:34 $
  */
 
-public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> extends BaseCompositeModelBoundedDialog<T> {
+public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> extends
+		BaseCompositeModelBoundedDialog<T> {
 
 	protected ScenariosUIPurpose purpose;
 
@@ -54,6 +53,11 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 	public abstract void addModelToCurrentSHConfiguration();
 
 	/**
+	 * Removes the current model from the underlying self healing configuration
+	 */
+	public abstract void removeModelFromCurrentSHConfiguration();
+
+	/**
 	 * Obtains the message to be used for displaying the "successful operation message" to the user
 	 * 
 	 * @param operation
@@ -61,13 +65,6 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 	 * @return the message to be used for displaying the "successful operation message" to the user
 	 */
 	public abstract String getSuccessfulOperationMessage(String operation);
-
-	/**
-	 * Provides the unique identifier of the table that contains the type of elements modified on this dialog
-	 * 
-	 * @return the unique identifier of the table that contains the type of elements modified on this dialog
-	 */
-	public abstract UniqueTableIdentifier getUniqueTableIdentifier();
 
 	/**
 	 * Indica el estado de readOnly. Por defecto, el mismo está dado por el propósito, aunque dicho comportamiento puede
@@ -86,20 +83,25 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 	protected boolean performOK() {
 		String operation = null;
 		try {
-			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
+			SelfHealingConfigurationManager selfHealingConfigurationManager = SelfHealingConfigurationManager
+					.getInstance();
 			switch (this.purpose) {
 			case CREATION:
 				operation = "created";
 				this.addModelToCurrentSHConfiguration();
-				scenariosUIController.saveSelfHealingConfiguration();
 				break;
 			case EDIT:
 				operation = "updated";
-				scenariosUIController.saveSelfHealingConfiguration();
+				break;
+			case DELETE:
+				operation = "deleted";
+				this.removeModelFromCurrentSHConfiguration();
 				break;
 			default:
 				throw new RuntimeException("The code does not contemplate the purpose " + this.purpose + "yet");
 			}
+			selfHealingConfigurationManager.saveSelfHealingConfiguration();
+
 		} catch (BackgroundInvocationException ex) {
 			// Se supone que se atrapa más arriba esta excepción...
 			throw ex;
@@ -111,7 +113,6 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 			throw new ApplicationException("Error when accesing the service", ex);
 		}
 		showSuccessfulOperationDialog(this.getSuccessfulOperationMessage(operation));
-		ScenariosUIWindow.getInstance().resetQuery(getUniqueTableIdentifier(), super.getModel().getId());
 
 		return true;
 	}
@@ -120,7 +121,8 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 	protected void cancelPressed() {
 		if (doIHaveToAbandonChanges()) {
 			if (this.purpose.isCreation()) {
-				ScenariosUIController.getInstance().returnRecentlyRequestedId(); // since we won't use it
+				// since we won't use it
+				SelfHealingConfigurationManager.getInstance().returnRecentlyRequestedId(this.getModel().getClass());
 			}
 			super.cancelPressed();
 		}

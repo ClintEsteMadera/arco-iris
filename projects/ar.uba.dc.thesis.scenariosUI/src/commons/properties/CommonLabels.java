@@ -35,7 +35,7 @@ public enum CommonLabels implements EnumProperty {
 	VIEW,
 	ACTIVAR,
 	ANULAR,
-	ELIMINAR,
+	DELETE,
 	CREATION,
 	BUSCAR,
 	SELECCIONAR,
@@ -63,7 +63,9 @@ public enum CommonLabels implements EnumProperty {
 
 	PORCENTAJE_SIMBOLO,
 
-	ATENTION;
+	ATENTION,
+	YES,
+	NO;
 
 	@Override
 	public String toString() {

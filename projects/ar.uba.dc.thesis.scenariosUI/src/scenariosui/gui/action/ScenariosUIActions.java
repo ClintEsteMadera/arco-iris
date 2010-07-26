@@ -1,11 +1,14 @@
 package scenariosui.gui.action;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.gui.widget.composite.EnvironmentQueryComposite;
-import scenariosui.gui.widget.composite.SelfHealingScenarioQueryComposite;
+import scenariosui.gui.widget.composite.query.ArtifactQueryComposite;
+import scenariosui.gui.widget.composite.query.EnvironmentQueryComposite;
+import scenariosui.gui.widget.composite.query.SelfHealingScenarioQueryComposite;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.auth.AuthorizationHelper;
 import commons.gui.action.OpenDialogWithPurposeAction;
@@ -24,14 +27,18 @@ public final class ScenariosUIActions {
 
 	private static final String NO_SHORTCUT = "";
 
-	public static SelfHealingConfigurationLoadAction NEW_SELF_HEALING_CONFIG = new SelfHealingConfigurationLoadAction(
-			"scenarioUI.scenario.config.new", "CTRL+N", true);
+	// Self Healing Configuration
+
+	public static SelfHealingConfigurationCreateAction NEW_SELF_HEALING_CONFIG = new SelfHealingConfigurationCreateAction(
+			"scenarioUI.scenario.config.new", "CTRL+N");
 
 	public static final SelfHealingConfigurationLoadAction OPEN_SELF_HEALING_CONFIG = new SelfHealingConfigurationLoadAction(
-			"scenarioUI.scenario.config.open", "CTRL+O", false);
+			"scenarioUI.scenario.config.open", "CTRL+O");
 
 	public static final SelfHealingConfigurationCloseAction CLOSE_SELF_HEALING_CONFIG = new SelfHealingConfigurationCloseAction(
 			"scenarioUI.scenario.config.close", "CTRL+W");
+
+	// Self Healing Scenario
 
 	public static final SelfHealingScenarioOpenDialogWithPurposeAction NEW_SELF_HEALING_SCENARIO = new SelfHealingScenarioOpenDialogWithPurposeAction(
 			"scenarioUI.scenario.new", NO_SHORTCUT, ScenariosUIPurpose.CREATION);
@@ -39,22 +46,42 @@ public final class ScenariosUIActions {
 	public static final SelfHealingScenarioOpenDialogWithPurposeAction EDIT_SELF_HEALING_SCENARIO = new SelfHealingScenarioOpenDialogWithPurposeAction(
 			"scenarioUI.scenario.edit", NO_SHORTCUT, ScenariosUIPurpose.EDIT);
 
-	public static final SelfHealingScenarioOpenDialogWithPurposeAction VIEW_SELF_HEALING_SCENARIO = new SelfHealingScenarioOpenDialogWithPurposeAction(
-			"scenarioUI.scenario.view", NO_SHORTCUT, ScenariosUIPurpose.VIEW);
+	public static final SelfHealingScenarioOpenDialogWithPurposeAction DELETE_SELF_HEALING_SCENARIO = new SelfHealingScenarioOpenDialogWithPurposeAction(
+			"scenarioUI.scenario.delete", NO_SHORTCUT, ScenariosUIPurpose.DELETE);
 
-	public static final ScenariosUIQueryAction SCENARIOS_QUERY = new ScenariosUIQueryAction(
+	public static final ScenariosUIQueryAction<SelfHealingScenario> QUERY_SELF_HEALING_SCENARIO = new ScenariosUIQueryAction<SelfHealingScenario>(
 			"scenarioUI.scenario.query", NO_SHORTCUT, ScenariosUILabels.SCENARIOS, UniqueTableIdentifier.SCENARIOS,
 			SelfHealingScenarioQueryComposite.class);
 
-	public static final ScenariosUIQueryAction ENVIRONMENT_QUERY = new ScenariosUIQueryAction(
-			"scenarioUI.environment.query", NO_SHORTCUT, ScenariosUILabels.ENVIRONMENTS, UniqueTableIdentifier.ENVIRONMENTS,
-			EnvironmentQueryComposite.class);
+	// Environment
 
 	public static final EnvironmentOpenDialogWithPurposeAction NEW_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
 			"scenarioUI.environment.new", NO_SHORTCUT, ScenariosUIPurpose.CREATION);
 
 	public static final OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> EDIT_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
 			"scenarioUI.environment.edit", NO_SHORTCUT, ScenariosUIPurpose.EDIT);
+
+	public static final OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> DELETE_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
+			"scenarioUI.environment.delete", NO_SHORTCUT, ScenariosUIPurpose.DELETE);
+
+	public static final ScenariosUIQueryAction<Environment> QUERY_ENVIRONMENT = new ScenariosUIQueryAction<Environment>(
+			"scenarioUI.environment.query", NO_SHORTCUT, ScenariosUILabels.ENVIRONMENTS,
+			UniqueTableIdentifier.ENVIRONMENTS, EnvironmentQueryComposite.class);
+
+	// Artifact
+
+	public static final OpenDialogWithPurposeAction<Artifact, ScenariosUIPurpose> NEW_ARTIFACT = new ArtifactOpenDialogWithPurposeAction(
+			"scenarioUI.artifact.new", NO_SHORTCUT, ScenariosUIPurpose.CREATION);
+
+	public static final OpenDialogWithPurposeAction<Artifact, ScenariosUIPurpose> EDIT_ARTIFACT = new ArtifactOpenDialogWithPurposeAction(
+			"scenarioUI.artifact.edit", NO_SHORTCUT, ScenariosUIPurpose.EDIT);
+
+	public static final OpenDialogWithPurposeAction<Artifact, ScenariosUIPurpose> DELETE_ARTIFACT = new ArtifactOpenDialogWithPurposeAction(
+			"scenarioUI.artifact.delete", NO_SHORTCUT, ScenariosUIPurpose.DELETE);
+
+	public static final ScenariosUIQueryAction<Artifact> QUERY_ARTIFACT = new ScenariosUIQueryAction<Artifact>(
+			"scenarioUI.artifact.query", NO_SHORTCUT, ScenariosUILabels.ARTIFACTS, UniqueTableIdentifier.ARTIFACTS,
+			ArtifactQueryComposite.class);
 
 	/**
 	 * Configures the permissions for executing the actions contained in this class
@@ -66,10 +93,17 @@ public final class ScenariosUIActions {
 		authHelper.addGrantedPermissions(NEW_SELF_HEALING_CONFIG.getUniqueId(), "EVERYONE");
 		authHelper.addGrantedPermissions(OPEN_SELF_HEALING_CONFIG.getUniqueId(), "EVERYONE");
 		authHelper.addGrantedPermissions(CLOSE_SELF_HEALING_CONFIG.getUniqueId(), "EVERYONE");
+
 		authHelper.addGrantedPermissions(NEW_SELF_HEALING_SCENARIO.getUniqueId(), "EVERYONE");
 		authHelper.addGrantedPermissions(EDIT_SELF_HEALING_SCENARIO.getUniqueId(), "EVERYONE");
-		authHelper.addGrantedPermissions(VIEW_SELF_HEALING_SCENARIO.getUniqueId(), "EVERYONE");
-		authHelper.addGrantedPermissions(SCENARIOS_QUERY.getUniqueId(), "EVERYONE");
-		authHelper.addGrantedPermissions(ENVIRONMENT_QUERY.getUniqueId(), "EVERYONE");
+		authHelper.addGrantedPermissions(QUERY_SELF_HEALING_SCENARIO.getUniqueId(), "EVERYONE");
+
+		authHelper.addGrantedPermissions(NEW_ENVIRONMENT.getUniqueId(), "EVERYONE");
+		authHelper.addGrantedPermissions(EDIT_ENVIRONMENT.getUniqueId(), "EVERYONE");
+		authHelper.addGrantedPermissions(QUERY_ENVIRONMENT.getUniqueId(), "EVERYONE");
+
+		authHelper.addGrantedPermissions(NEW_ARTIFACT.getUniqueId(), "EVERYONE");
+		authHelper.addGrantedPermissions(EDIT_ARTIFACT.getUniqueId(), "EVERYONE");
+		authHelper.addGrantedPermissions(QUERY_ARTIFACT.getUniqueId(), "EVERYONE");
 	}
 }

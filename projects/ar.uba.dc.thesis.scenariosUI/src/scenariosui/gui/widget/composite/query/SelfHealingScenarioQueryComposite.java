@@ -1,4 +1,4 @@
-package scenariosui.gui.widget.composite;
+package scenariosui.gui.widget.composite.query;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,12 +12,12 @@ import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.SelfHealingScenarioSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.ScenariosUIController;
+import scenariosui.service.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
-import commons.query.BaseCriteria;
+import commons.query.BaseSearchCriteria;
 
 public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite<SelfHealingScenario> {
 
@@ -25,7 +25,7 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 		this(PageHelper.getMainWindow().mainTabFolder, new SelfHealingScenarioSearchCriteria());
 	}
 
-	public SelfHealingScenarioQueryComposite(Composite parent, BaseCriteria<SelfHealingScenario> criterioBusqueda) {
+	public SelfHealingScenarioQueryComposite(Composite parent, BaseSearchCriteria<SelfHealingScenario> criterioBusqueda) {
 		super(parent, UniqueTableIdentifier.SCENARIOS, SelfHealingScenario.class, criterioBusqueda);
 	}
 
@@ -36,13 +36,25 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 
 	@Override
 	protected List<SelfHealingScenario> executeQuery() {
-		return ScenariosUIController.getInstance().getScenarios(this.getCriteria());
+		return SelfHealingConfigurationManager.getInstance().getScenarios(this.getCriteria());
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForNew() {
+		return ScenariosUIActions.NEW_SELF_HEALING_SCENARIO;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_SELF_HEALING_SCENARIO;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForDelete() {
+		return ScenariosUIActions.DELETE_SELF_HEALING_SCENARIO;
 	}
 
 	@Override
@@ -54,11 +66,5 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 	@Override
 	protected ISelectionChangedListener getTableSelectionChangedListener() {
 		return null;
-	}
-
-	@Override
-	protected void addButtons() {
-		super.addButtons();
-		super.addButton(ScenariosUIActions.NEW_SELF_HEALING_SCENARIO);
 	}
 }

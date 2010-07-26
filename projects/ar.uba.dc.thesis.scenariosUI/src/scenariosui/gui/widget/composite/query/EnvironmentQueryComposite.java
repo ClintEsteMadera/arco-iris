@@ -1,4 +1,4 @@
-package scenariosui.gui.widget.composite;
+package scenariosui.gui.widget.composite.query;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,13 +12,13 @@ import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.EnvironmentSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.ScenariosUIController;
+import scenariosui.service.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.PageHelper;
 import commons.properties.EnumProperty;
-import commons.query.BaseCriteria;
+import commons.query.BaseSearchCriteria;
 
 public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environment> {
 
@@ -27,7 +27,8 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 				new EnvironmentSearchCriteria());
 	}
 
-	public EnvironmentQueryComposite(Composite parent, EnumProperty tableName, BaseCriteria<Environment> searchCriteria) {
+	public EnvironmentQueryComposite(Composite parent, EnumProperty tableName,
+			BaseSearchCriteria<Environment> searchCriteria) {
 		super(parent, tableName, Environment.class, searchCriteria);
 	}
 
@@ -38,13 +39,25 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 
 	@Override
 	protected List<Environment> executeQuery() {
-		return ScenariosUIController.getInstance().getEnvironments(this.getCriteria());
+		return SelfHealingConfigurationManager.getInstance().getEnvironments(this.getCriteria());
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForNew() {
+		return ScenariosUIActions.NEW_ENVIRONMENT;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_ENVIRONMENT;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForDelete() {
+		return ScenariosUIActions.DELETE_ENVIRONMENT;
 	}
 
 	@Override
@@ -56,11 +69,5 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 	@Override
 	protected ISelectionChangedListener getTableSelectionChangedListener() {
 		return null;
-	}
-
-	@Override
-	protected void addButtons() {
-		super.addButtons();
-		super.addButton(ScenariosUIActions.NEW_ENVIRONMENT);
 	}
 }

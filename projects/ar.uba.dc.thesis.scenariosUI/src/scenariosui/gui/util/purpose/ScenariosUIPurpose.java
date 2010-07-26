@@ -1,6 +1,5 @@
 package scenariosui.gui.util.purpose;
 
-
 import commons.gui.util.purpose.Purpose;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
@@ -56,10 +55,10 @@ public enum ScenariosUIPurpose implements Purpose {
 		}
 	},
 
-	ELIMINACION("Eliminación", true, CommonLabels.ELIMINAR) {
+	DELETE("Delete", true, CommonLabels.DELETE) {
 		@Override
 		public EnumProperty getAcceptButtonText() {
-			return CommonLabels.ELIMINAR;
+			return CommonLabels.DELETE;
 		}
 	};
 

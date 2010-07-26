@@ -10,31 +10,32 @@ import org.eclipse.swt.custom.CTabItem;
 import commons.gui.widget.composite.QueryComposite;
 import commons.properties.EnumProperty;
 
-public abstract class QueryAction extends BaseGuiAction {
+public abstract class QueryAction<T> extends BaseGuiAction<T> {
 
 	private EnumProperty menuText;
 
 	private EnumProperty tabItemText;
 
-	private Class<? extends QueryComposite> queryCompositeClass;
+	private Class<? extends QueryComposite<T>> queryCompositeClass;
 
 	private static final Log log = LogFactory.getLog(QueryAction.class);
 
 	protected QueryAction(String uniqueId, String shortcut, EnumProperty menuText, EnumProperty tabItemText,
-			Class<? extends QueryComposite> queryCompositeClass) {
+			Class<? extends QueryComposite<T>> queryCompositeClass) {
 		super(uniqueId, shortcut);
 		this.menuText = menuText;
 		this.tabItemText = tabItemText;
 		this.queryCompositeClass = queryCompositeClass;
 	}
 
-	public Action getActionFor(Object model) {
+	public Action getActionFor(T model) {
 		return new Action(this.getMenuText().toString()) {
 			@Override
+			@SuppressWarnings("unchecked")
 			public void run() {
 				CTabFolder mainTabFolder = getMainTabFolder();
 				CTabItem tabItem = getTabItem(getTabItemText());
-				QueryComposite queryComposite;
+				QueryComposite<T> queryComposite;
 				if (tabItem == null) {
 					tabItem = new CTabItem(mainTabFolder, tabsAreCloseable() ? SWT.CLOSE : SWT.NONE);
 					queryComposite = getQueryCompositeInstance();
@@ -42,19 +43,19 @@ public abstract class QueryAction extends BaseGuiAction {
 					tabItem.setText(getTabItemText().toString());
 				} else {
 					// Limpío los filtros que ya tuviera
-					queryComposite = (QueryComposite) tabItem.getControl();
+					queryComposite = (QueryComposite<T>) tabItem.getControl();
 					queryComposite.reset();
 				}
 				mainTabFolder.setSelection(tabItem);
 				mainTabFolder.setVisible(true);
 			}
 
-			private QueryComposite getQueryCompositeInstance() {
-				QueryComposite queryComposite = null;
+			private QueryComposite<T> getQueryCompositeInstance() {
+				QueryComposite<T> queryComposite = null;
 				try {
 					queryComposite = getQueryCompositeClass().newInstance();
 				} catch (Exception ex) {
-					log.fatal("No se ha podido instanciar la  clase " + getQueryCompositeClass().getSimpleName(), ex);
+					log.fatal("No se ha podido instanciar la clase " + getQueryCompositeClass().getSimpleName(), ex);
 				}
 				return queryComposite;
 			}
@@ -69,7 +70,7 @@ public abstract class QueryAction extends BaseGuiAction {
 		return this.tabItemText;
 	}
 
-	public Class<? extends QueryComposite> getQueryCompositeClass() {
+	public Class<? extends QueryComposite<T>> getQueryCompositeClass() {
 		return this.queryCompositeClass;
 	}
 

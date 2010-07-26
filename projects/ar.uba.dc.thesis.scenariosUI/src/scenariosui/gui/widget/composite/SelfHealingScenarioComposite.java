@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.service.ScenariosUIController;
+import scenariosui.service.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.model.CompositeModel;
@@ -28,7 +28,8 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly).getSwtGroup();
 
 		if (purpose.isCreation()) {
-			underlyingScenario.getValue().setId(ScenariosUIController.getInstance().getNextId());
+			underlyingScenario.getValue().setId(
+					SelfHealingConfigurationManager.getInstance().getNextId(SelfHealingScenario.class));
 		}
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
@@ -58,7 +59,11 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 
 		new EnvironmentsSelectionComposite(objectSelectionMetainfo);
 
-		// TODO: Artifact
+		objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup, ScenariosUILabels.ARTIFACT, new BindingInfo(
+				underlyingScenario, "artifact"), this.readOnly);
+		objectSelectionMetainfo.canView = false;
+
+		new ArtifactSelectionComposite(objectSelectionMetainfo);
 
 		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.RESPONSE, new BindingInfo(
 				underlyingScenario, "response"), this.readOnly);

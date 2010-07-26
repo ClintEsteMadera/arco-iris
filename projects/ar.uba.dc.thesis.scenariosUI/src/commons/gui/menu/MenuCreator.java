@@ -19,7 +19,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 
-
 import commons.gui.action.GuiAction;
 import commons.gui.util.PageHelper;
 import commons.properties.EnumProperty;

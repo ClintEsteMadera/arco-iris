@@ -2,7 +2,6 @@ package commons.gui.model.table;
 
 import java.util.Arrays;
 
-
 import commons.gui.model.types.EditConfigurationManager;
 import commons.pref.PreferencesManager;
 import commons.pref.domain.ColumnInfo;
@@ -11,9 +10,16 @@ import commons.properties.EnumProperty;
 
 /**
  * Clase base para la implementación de {@link sba.ui.model.table.TableRowAdapter}
- * @author P.Pastorino
  */
 public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
+
+	private TableInfo tableInfo;
+
+	private Object[] m_prototypes;
+
+	private boolean[] m_formatted;
+
+	private EnumProperty tableName;
 
 	public AbstractRowAdapter(EnumProperty tableName) {
 		this.tableName = tableName;
@@ -21,24 +27,20 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 	}
 
 	public int getColumnCount() {
-		final ColumnInfo[] columnInfo = this.tableInfo != null
-				? this.tableInfo.getColumnInfos()
-				: null;
+		final ColumnInfo[] columnInfo = this.tableInfo != null ? this.tableInfo.getColumnInfos() : null;
 		return columnInfo != null ? columnInfo.length : 0;
 	}
 
 	/**
 	 * Obtiene el índice asociado a una clave.
+	 * 
 	 * @param key
 	 * @return
 	 */
 	public Object getColumnKey(int column) {
-		final ColumnInfo[] columnInfo = this.tableInfo != null
-				? this.tableInfo.getColumnInfos()
-				: null;
+		final ColumnInfo[] columnInfo = this.tableInfo != null ? this.tableInfo.getColumnInfos() : null;
 
-		if (columnInfo != null && columnInfo[column] != null
-				&& columnInfo[column].getFieldName() != null) {
+		if (columnInfo != null && columnInfo[column] != null && columnInfo[column].getFieldName() != null) {
 			return columnInfo[column].getFieldName();
 		}
 		throw new IllegalArgumentException("No se definio el id para la columna " + column);
@@ -46,6 +48,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Obtiene el índice asociado a una clave.
+	 * 
 	 * @param key
 	 * @return
 	 */
@@ -64,16 +67,14 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Obtiene el nombre de la columna.
+	 * 
 	 * @param column
 	 *            índice d ela columna
 	 */
 	public String getColumnTitle(int column) {
-		final ColumnInfo[] columnInfo = this.tableInfo != null
-				? this.tableInfo.getColumnInfos()
-				: null;
+		final ColumnInfo[] columnInfo = this.tableInfo != null ? this.tableInfo.getColumnInfos() : null;
 
-		if (columnInfo != null && columnInfo[column] != null
-				&& columnInfo[column].getLabel() != null) {
+		if (columnInfo != null && columnInfo[column] != null && columnInfo[column].getLabel() != null) {
 			return columnInfo[column].getLabel().toString();
 		}
 		return "Col " + column;
@@ -81,6 +82,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Obtiene el nombre de la columna.
+	 * 
 	 * @param columnKey
 	 *            identificador de la columna
 	 * @return
@@ -111,6 +113,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Asigna un prototipo a la columna.
+	 * 
 	 * @param key
 	 *            Identificador de la columna
 	 * @param prototype
@@ -125,6 +128,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Asigna un prototipo a la columna.
+	 * 
 	 * @param col
 	 *            Indice de la columna
 	 * @param prototype
@@ -142,6 +146,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Asigna el flag de "formateo" a una columna
+	 * 
 	 * @param key
 	 * @param b
 	 */
@@ -154,6 +159,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Asigna el flag de "formateo" a la columna.
+	 * 
 	 * @param col
 	 * @param b
 	 */
@@ -179,9 +185,7 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 	}
 
 	public int getColumnWidth(int index) {
-		final ColumnInfo[] columnInfo = this.tableInfo != null
-				? this.tableInfo.getColumnInfos()
-				: null;
+		final ColumnInfo[] columnInfo = this.tableInfo != null ? this.tableInfo.getColumnInfos() : null;
 
 		if (columnInfo != null && columnInfo[index] != null && columnInfo[index].getWidth() != null) {
 			return columnInfo[index].getWidth().intValue();
@@ -199,17 +203,10 @@ public abstract class AbstractRowAdapter implements FormattedTableRowAdapter {
 
 	/**
 	 * Configura el adapter a partir de preferences.xml
+	 * 
 	 * @param config
 	 */
 	protected void configure(EnumProperty aTableName) {
 		this.tableInfo = PreferencesManager.getInstance().getTableInfo(aTableName);
 	}
-
-	private TableInfo tableInfo;
-
-	private Object[] m_prototypes;
-
-	private boolean[] m_formatted;
-
-	private EnumProperty tableName;
 }

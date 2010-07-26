@@ -4,8 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.gui.widget.composite.SelfHealingScenarioComposite;
-import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.ScenariosUIController;
+import scenariosui.service.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.properties.EnumProperty;
@@ -29,17 +28,18 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 
 	@Override
 	public void addModelToCurrentSHConfiguration() {
-		ScenariosUIController.getInstance().getCurrentSelfHealingConfiguration().addScenario(this.getModel());
+		SelfHealingConfigurationManager.getInstance().getCurrentSelfHealingConfiguration().addScenario(this.getModel());
+	}
+
+	@Override
+	public void removeModelFromCurrentSHConfiguration() {
+		SelfHealingConfigurationManager.getInstance().getCurrentSelfHealingConfiguration().removeScenario(
+				this.getModel());
 	}
 
 	@Override
 	public String getSuccessfulOperationMessage(String operation) {
 		String scenarioName = super.getModel().getName() != null ? super.getModel().getName() : "";
 		return Messages.SUCCESSFUL_SCENARIO.toString(scenarioName, operation);
-	}
-
-	@Override
-	public UniqueTableIdentifier getUniqueTableIdentifier() {
-		return UniqueTableIdentifier.SCENARIOS;
 	}
 }

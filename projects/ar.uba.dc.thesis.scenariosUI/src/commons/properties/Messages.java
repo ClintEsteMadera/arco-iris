@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public enum Messages implements EnumProperty {
 
-	SUCCESSFUL_SCENARIO, SUCCESSFUL_ENVIRONMENT;
+	SUCCESSFUL_SCENARIO, SUCCESSFUL_ENVIRONMENT, SUCCESSFUL_ARTIFACT;
 
 	@Override
 	public String toString() {
