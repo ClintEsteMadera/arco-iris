@@ -60,6 +60,10 @@ public class SelfHealingConfiguration extends ThesisPojo {
 		this.artifacts.add(artifact);
 	}
 
+	public void removeArtifact(Artifact artifact) {
+		this.artifacts.remove(artifact);
+	}
+
 	public List<Environment> getEnvironments() {
 		return environments;
 	}
@@ -72,6 +76,10 @@ public class SelfHealingConfiguration extends ThesisPojo {
 		this.environments.add(environment);
 	}
 
+	public void removeEnvironment(Environment environment) {
+		this.environments.remove(environment);
+	}
+
 	public List<SelfHealingScenario> getScenarios() {
 		return scenarios;
 	}
@@ -80,10 +88,15 @@ public class SelfHealingConfiguration extends ThesisPojo {
 		this.scenarios = scenarios;
 	}
 
-	public void addScenario(SelfHealingScenario model) {
-		this.scenarios.add(model);
+	public void addScenario(SelfHealingScenario scenario) {
+		this.scenarios.add(scenario);
 	}
 
+	public void removeScenario(SelfHealingScenario scenario) {
+		this.scenarios.remove(scenario);
+	}
+
+	@Override
 	public void validate() {
 		if (this.description == null) {
 			throw new IllegalStateException("The description cannot be null");

@@ -11,7 +11,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 /**
  * Abstract behavior for all POJOs (Plain old Java objects) used in this project.
  */
-public abstract class ThesisPojo implements Validatable, Serializable {
+public abstract class ThesisPojo implements Identifiable, Validatable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
