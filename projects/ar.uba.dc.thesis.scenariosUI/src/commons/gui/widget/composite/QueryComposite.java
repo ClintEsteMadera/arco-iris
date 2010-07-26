@@ -57,18 +57,13 @@ import commons.gui.widget.group.query.FilterButtonsGroup;
 import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
 import commons.properties.EnumProperty;
-import commons.query.BaseCriteria;
+import commons.query.BaseSearchCriteria;
 import commons.utils.ClassUtils;
 import commons.utils.DateUtils;
 
 /**
  * Composite base para todas las consultas que tengan un filtro sobre lo consultado y acciones a realizar sobre los
  * items seleccionados.
- * 
- * @author Gabriel Tursi
- * @author Jonathan Chiocchio
- * @author Pablo Pastorino
- * @version $Revision: 1.51 $ $Date: 2008/05/12 19:19:42 $
  */
 public abstract class QueryComposite<T> extends Composite {
 
@@ -82,13 +77,15 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private SimpleComposite rightButtonBarComposite;
 
-	private Button botonEdicion;
+	private Button editButton;
 
-	private Button botonVer;
+	private Button viewButton;
 
-	private Button botonCerrar;
+	private Button deleteButton;
 
-	private BeanModel<BaseCriteria<T>> criterioWrapped;
+	private Button closeButton;
+
+	private BeanModel<BaseSearchCriteria<T>> criterioWrapped;
 
 	private Class<T> tableContentClass;
 
@@ -101,11 +98,11 @@ public abstract class QueryComposite<T> extends Composite {
 	private static final Log log = LogFactory.getLog(QueryComposite.class);
 
 	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> tableElementsClassName,
-			BaseCriteria<T> searchCriteria) {
+			BaseSearchCriteria<T> searchCriteria) {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
 		this.tableContentClass = tableElementsClassName;
-		this.criterioWrapped = new BeanModel<BaseCriteria<T>>(searchCriteria);
+		this.criterioWrapped = new BeanModel<BaseSearchCriteria<T>>(searchCriteria);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
 		this.reset();
@@ -146,11 +143,11 @@ public abstract class QueryComposite<T> extends Composite {
 		}
 	}
 
-	public BaseCriteria<T> getCriteria() {
+	public BaseSearchCriteria<T> getCriteria() {
 		return this.getCriterioWrapped().getValue();
 	}
 
-	public BeanModel<BaseCriteria<T>> getCriterioWrapped() {
+	public BeanModel<BaseSearchCriteria<T>> getCriterioWrapped() {
 		return criterioWrapped;
 	}
 
@@ -260,17 +257,23 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Por defecto, se agregan los botones de "Edición" y "Cerrar", si es que están soportados por el QueryComposite
-	 * concreto.
+	 * Por defecto, se agregan los botones de "Nuevo", "Edición" y "Cerrar", si es que están soportados por el
+	 * QueryComposite concreto.
 	 */
 	protected void addButtons() {
-		if (editionAllowed()) {
-			this.botonEdicion = addButton(getActionForEdit());
+		if (newButtonAllowed()) {
+			this.editButton = addButton(getActionForNew());
+		}
+		if (editButtonAllowed()) {
+			this.editButton = addButton(getActionForEdit());
 		} else if (viewButtonAllowed()) {
-			this.botonVer = addButton(getActionForView());
+			this.viewButton = addButton(getActionForView());
+		}
+		if (deleteButtonAllowed()) {
+			this.deleteButton = addButton(getActionForDelete());
 		}
 		if (closeButtonAllowed()) {
-			this.agregarBotonCerrar();
+			this.addCloseButton();
 		}
 	}
 
@@ -287,11 +290,11 @@ public abstract class QueryComposite<T> extends Composite {
 		Button button = null;
 		if (getAuthorizationHelper().isUserAuthorized(action)) {
 			button = new Button(this.leftButtonBarComposite, SWT.PUSH | SWT.CENTER);
-			Purpose proposito = action.getPurpose();
+			Purpose purpose = action.getPurpose();
 
-			button.setText(proposito.getTextForLauncherButton().toString());
+			button.setText(purpose.getTextForLauncherButton().toString());
 			button.setFont(JFaceResources.getDialogFont());
-			button.setEnabled(proposito.getLauncherButtonInitialEnabledState());
+			button.setEnabled(purpose.getLauncherButtonInitialEnabledState());
 			button.addSelectionListener(getButtonSelectionListenerFor(action));
 
 			this.addMenuItem2MenuContextual(button);
@@ -394,21 +397,25 @@ public abstract class QueryComposite<T> extends Composite {
 	protected <P extends Purpose> SelectionListener getButtonSelectionListenerFor(
 			final OpenDialogWithPurposeAction<T, P> action) {
 		return new SelectionAdapter() {
-			@SuppressWarnings("unchecked")
 			@Override
+			@SuppressWarnings("unchecked")
 			public void widgetSelected(SelectionEvent event) {
 				action.getActionFor(getModel()).run();
+				if (resetAfterAnyActionFinishedExecution()) {
+					QueryComposite.this.reset();
+				}
 			}
 		};
 	}
 
-	protected ISelectionChangedListener getEditButtonSelectionChangedListener() {
+	protected ISelectionChangedListener getEnableButtonsSelectionChangedListener() {
 		return new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				boolean thereIsSomethingSelected = !getTable().getSelectedElements().isEmpty();
 
-				setEnabledState(botonVer, thereIsSomethingSelected);
-				setEnabledState(botonEdicion, thereIsSomethingSelected);
+				setEnabledState(viewButton, thereIsSomethingSelected);
+				setEnabledState(editButton, thereIsSomethingSelected);
+				setEnabledState(deleteButton, thereIsSomethingSelected);
 			}
 		};
 	}
@@ -422,10 +429,10 @@ public abstract class QueryComposite<T> extends Composite {
 	protected IDoubleClickListener getTableDoubleClickListener() {
 		return new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				if (editionAllowed()) {
-					botonEdicion.notifyListeners(SWT.Selection, null);
+				if (editButtonAllowed()) {
+					editButton.notifyListeners(SWT.Selection, null);
 				} else if (viewButtonAllowed()) {
-					botonVer.notifyListeners(SWT.Selection, null);
+					viewButton.notifyListeners(SWT.Selection, null);
 				}
 			}
 		};
@@ -437,10 +444,16 @@ public abstract class QueryComposite<T> extends Composite {
 	protected abstract ISelectionChangedListener getTableSelectionChangedListener();
 
 	/**
+	 * Con este método se indica si se permite el botón "Nuevo". Esto deberá decidirlo cada una de las subclases
+	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
+	 */
+	protected abstract boolean newButtonAllowed();
+
+	/**
 	 * Con este método se indica si se permite el botón "Editar". Esto deberá decidirlo cada una de las subclases
 	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
-	protected abstract boolean editionAllowed();
+	protected abstract boolean editButtonAllowed();
 
 	/**
 	 * Con este método se indica si se permite el botón "Ver". Esto deberá decidirlo cada una de las subclases
@@ -449,10 +462,21 @@ public abstract class QueryComposite<T> extends Composite {
 	protected abstract boolean viewButtonAllowed();
 
 	/**
+	 * Con este método se indica si se permite el botón "Eliminar". Esto deberá decidirlo cada una de las subclases
+	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
+	 */
+	protected abstract boolean deleteButtonAllowed();
+
+	/**
 	 * Con este método se indica si se permite el botón "Cerrar". Esto deberá decidirlo cada una de las subclases
 	 * considerando requerimientos funcionales y permisos del usuario para efectuar dicha operación.
 	 */
 	protected abstract boolean closeButtonAllowed();
+
+	/**
+	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Nuevo"
+	 */
+	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForNew();
 
 	/**
 	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Editar"
@@ -463,6 +487,11 @@ public abstract class QueryComposite<T> extends Composite {
 	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Ver"
 	 */
 	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForView();
+
+	/**
+	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Eliminar"
+	 */
+	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForDelete();
 
 	/**
 	 * Agrega los filtros específicos.
@@ -476,6 +505,16 @@ public abstract class QueryComposite<T> extends Composite {
 	 * @return todos los controles de filtro (Texts, combos, etc)
 	 */
 	protected abstract List<Control> getFilterControls();
+
+	/**
+	 * Permite especificar si se desea que se resetee la consulta después de que cualquier acción iniciada por algunos
+	 * de los botones asociados a esta consulta han terminado su trabajo (e.g. después de una edición o creacion de un
+	 * objeto)
+	 * 
+	 * @return <code>true</code> si se desea que se resetee la consulta en tal caso, <code>false</code> en caso
+	 *         contrario.
+	 */
+	protected abstract boolean resetAfterAnyActionFinishedExecution();
 
 	/**
 	 * Ejecuta la consulta asociada a este QueryComposite.
@@ -519,7 +558,7 @@ public abstract class QueryComposite<T> extends Composite {
 		this.createMenuContextual(parent);
 		newTable.getTable().setMenu(this.menuContextual);
 
-		ISelectionChangedListener[] listeners = { this.getEditButtonSelectionChangedListener(),
+		ISelectionChangedListener[] listeners = { this.getEnableButtonsSelectionChangedListener(),
 				this.getTableSelectionChangedListener() };
 
 		for (ISelectionChangedListener listener : listeners) {
@@ -645,11 +684,11 @@ public abstract class QueryComposite<T> extends Composite {
 		}
 	}
 
-	private void agregarBotonCerrar() {
-		this.botonCerrar = new Button(this.rightButtonBarComposite, SWT.CENTER);
-		DefaultLayoutFactory.setButtonGridLayoutData(this.botonCerrar);
-		this.botonCerrar.setText(CommonLabels.CLOSE.toString());
-		this.botonCerrar.addSelectionListener(new SelectionAdapter() {
+	private void addCloseButton() {
+		this.closeButton = new Button(this.rightButtonBarComposite, SWT.CENTER);
+		DefaultLayoutFactory.setButtonGridLayoutData(this.closeButton);
+		this.closeButton.setText(CommonLabels.CLOSE.toString());
+		this.closeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				CTabFolder mainTabFolder = PageHelper.getMainWindow().mainTabFolder;

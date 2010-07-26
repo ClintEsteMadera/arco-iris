@@ -1,7 +1,19 @@
+MUST HAVES:
+
+
+
+NICE TO HAVES:
+
+- Arreglar el layout en gral de los diálogos
+
+- El layout de los selection composite incordian con el resto. Ver de arreglarlo.
+
+- poner como descripción del SelfHealingConfiguration lo que el usuario pone como nombre de archivo?
+
+- ver el tema validaciones de objetos en gral?
+
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.
 
-- Agregar la posibilidad de BORRAR elementos en los query composite
-
--NICE TO HAVE: cuando uno decide abandonar los cambios hechos en un dialogo, los cambios quedan pegados
+- cuando uno decide abandonar los cambios hechos en un dialogo, los cambios quedan pegados
 en el modelo ya que (a diferencia de caja) nosotros en la GUI tocamos los objetos posta
 y no una versión "traida del servidor"

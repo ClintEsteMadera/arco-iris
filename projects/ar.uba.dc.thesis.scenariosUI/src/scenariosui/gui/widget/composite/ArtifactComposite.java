@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Group;
 
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.service.SelfHealingConfigurationManager;
-import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 
 import commons.gui.model.CompositeModel;
 import commons.gui.util.purpose.Purpose;
@@ -15,33 +15,28 @@ import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
 import commons.gui.widget.factory.TextFactory;
 import commons.gui.widget.group.SimpleGroup;
 
-public class EnvironmentComposite extends SimpleComposite {
+public class ArtifactComposite extends SimpleComposite {
 
-	public EnvironmentComposite(Composite parent, Purpose purpose, CompositeModel<Environment> underlyingEnvironment) {
+	public ArtifactComposite(Composite parent, Purpose purpose, CompositeModel<Artifact> underlyingArtifact) {
 		super(parent, purpose.isReadOnly());
 
 		if (purpose.isCreation()) {
-			underlyingEnvironment.getValue().setId(SelfHealingConfigurationManager.getInstance().getNextId(Environment.class));
+			underlyingArtifact.getValue().setId(SelfHealingConfigurationManager.getInstance().getNextId(Artifact.class));
 		}
 
 		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly).getSwtGroup();
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
-				underlyingEnvironment, "id"), true);
+				underlyingArtifact, "id"), true);
 		TextFactory.createText(textMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.NAME, new BindingInfo(
-				underlyingEnvironment, "name"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.NAME, new BindingInfo(underlyingArtifact,
+				"name"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		/*
-		 * TODO private List<? extends Constraint> conditions;
-		 * 
-		 * private Map<Concern, Double> weights;
-		 * 
-		 * private Heuristic heuristic;
-		 * 
-		 */
+		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.SYSTEM_NAME, new BindingInfo(
+				underlyingArtifact, "systemName"), this.readOnly);
+		TextFactory.createText(textMetainfo);
 	}
 
 }

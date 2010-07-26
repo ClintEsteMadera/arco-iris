@@ -1,4 +1,4 @@
-package scenariosui.gui.widget.composite;
+package scenariosui.gui.widget.composite.query;
 
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;

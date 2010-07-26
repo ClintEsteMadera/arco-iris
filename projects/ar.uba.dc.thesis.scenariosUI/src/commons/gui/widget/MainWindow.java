@@ -1,6 +1,8 @@
 package commons.gui.widget;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.logging.Log;
@@ -109,6 +111,21 @@ public abstract class MainWindow extends ApplicationWindow {
 	 *            the menu where to add action(s)
 	 */
 	protected abstract void addSpecificItemsToFileMenu(MenuManager fileMenu);
+
+	public List<CTabItem> getTabItems(EnumProperty... tabItemTexts) {
+		List<CTabItem> tabItems = new ArrayList<CTabItem>();
+		if (mainTabFolder.getItems() != null) {
+			for (CTabItem item : mainTabFolder.getItems()) {
+				for (EnumProperty tabItemText : tabItemTexts) {
+					if (tabItemText.toString().equals(item.getText())) {
+						tabItems.add(item);
+						break;
+					}
+				}
+			}
+		}
+		return tabItems;
+	}
 
 	public CTabItem getTabItem(EnumProperty tabItemText) {
 		CTabItem tabItem = null;

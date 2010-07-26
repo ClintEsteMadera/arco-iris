@@ -1,7 +1,5 @@
 package scenariosui.gui.widget.dialog;
 
-import java.util.List;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -12,27 +10,27 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import scenariosui.gui.query.EnvironmentSearchCriteria;
-import scenariosui.gui.widget.composite.query.EnvironmentsSelectionQueryComposite;
+import scenariosui.gui.query.ArtifactSearchCriteria;
+import scenariosui.gui.widget.composite.query.ArtifactSelectionQueryComposite;
 import scenariosui.properties.ScenariosUILabels;
-import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 
 import commons.gui.Advised;
 import commons.gui.util.PageHelper;
 
-public class EnvironmentsSelectionDialog extends Dialog implements Advised<EnvironmentsSelectionQueryComposite> {
+public class ArtifactSelectionDialog extends Dialog implements Advised<ArtifactSelectionQueryComposite> {
 
-	private List<Environment> selectedEnvironments;
+	private Artifact artifact;
 
-	private EnvironmentsSelectionQueryComposite environmentsSelectionQuerycomposite;
+	private ArtifactSelectionQueryComposite artifactSelectionQueryComposite;
 
-	private EnvironmentSearchCriteria criteria;
+	private ArtifactSearchCriteria criteria;
 
-	public EnvironmentsSelectionDialog() {
-		this(new EnvironmentSearchCriteria());
+	public ArtifactSelectionDialog() {
+		this(new ArtifactSearchCriteria());
 	}
 
-	public EnvironmentsSelectionDialog(EnvironmentSearchCriteria criteria) {
+	public ArtifactSelectionDialog(ArtifactSearchCriteria criteria) {
 		super(PageHelper.getMainShell());
 		this.criteria = criteria;
 	}
@@ -40,7 +38,7 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(ScenariosUILabels.SELECT_ENVIRONMENTS.toString());
+		shell.setText(ScenariosUILabels.SELECT_ARTIFACT.toString());
 		Rectangle centerLocation = PageHelper.getCenterLocation(800, 500);
 		shell.setBounds(centerLocation);
 	}
@@ -53,7 +51,7 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		environmentsSelectionQuerycomposite = new EnvironmentsSelectionQueryComposite(this, parent, this.criteria) {
+		artifactSelectionQueryComposite = new ArtifactSelectionQueryComposite(this, parent, this.criteria) {
 			@Override
 			protected ISelectionChangedListener getTableSelectionChangedListener() {
 				ISelectionChangedListener listener = new ISelectionChangedListener() {
@@ -72,7 +70,7 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 
 	@Override
 	protected void okPressed() {
-		rowDoubleClicked(environmentsSelectionQuerycomposite);
+		rowDoubleClicked(artifactSelectionQueryComposite);
 	}
 
 	@Override
@@ -80,25 +78,25 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 		this.close();
 	}
 
-	public List<Environment> getSelectedEnvironments() {
-		return selectedEnvironments;
+	public Artifact getSelectedArtifact() {
+		return artifact;
 
 	}
 
-	public void setSelectedEnvironments(List<Environment> selectedEnvironments) {
-		this.selectedEnvironments = selectedEnvironments;
+	public void setSelectedArtifact(Artifact artifact) {
+		this.artifact = artifact;
 	}
 
 	/**
 	 * @see commons.gui.Advised#rowSelected(commons.gui.widget.composite.QueryComposite))
 	 */
-	public void rowSelected(EnvironmentsSelectionQueryComposite queryComposite) {
-		this.setSelectedEnvironments(queryComposite.getSelectedElements());
+	public void rowSelected(ArtifactSelectionQueryComposite queryComposite) {
+		this.setSelectedArtifact(queryComposite.getModel());
 		this.close();
 	}
 
-	public void rowDoubleClicked(EnvironmentsSelectionQueryComposite queryComposite) {
-		this.setSelectedEnvironments(queryComposite.getSelectedElements());
+	public void rowDoubleClicked(ArtifactSelectionQueryComposite queryComposite) {
+		this.setSelectedArtifact(queryComposite.getModel());
 		this.close();
 	}
 }

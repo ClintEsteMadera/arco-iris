@@ -31,11 +31,24 @@ import commons.gui.model.table.TableRowAdapter;
 import commons.gui.model.types.EditConfiguration;
 import commons.gui.model.types.EditConfigurationManager;
 import commons.gui.model.types.EditType;
+import commons.pref.PreferencesManager;
+import commons.pref.domain.ColumnInfo;
+import commons.pref.domain.TableInfo;
 import commons.properties.EnumProperty;
 
 public class GenericTable extends TableViewer {
 
 	public static final int DEFAULT_TABLE_STYLE = SWT.FULL_SELECTION | SWT.BORDER;
+
+	private HashMap<Button, List<Predicate>> buttonPredicates = new HashMap<Button, List<Predicate>>();
+
+	private static int COLUMN_MARGINS = 20;
+
+	private GenericTableViewerSorter sorter;
+
+	private TableRowAdapter rowAdapter;
+
+	private boolean smartAlignmentDeduction = false;
 
 	public GenericTable(final Composite parent, final Class clazz, EnumProperty tableName, Object elements,
 			boolean sorteable, int style) {
@@ -207,6 +220,14 @@ public class GenericTable extends TableViewer {
 		this.getTable().setLayoutData(gridData);
 	}
 
+	public boolean isSmartAlignmentDeduction() {
+		return smartAlignmentDeduction;
+	}
+
+	public void setSmartAlignmentDeduction(boolean smartAlignmentDeduction) {
+		this.smartAlignmentDeduction = smartAlignmentDeduction;
+	}
+
 	@SuppressWarnings("unchecked")
 	protected void enableButtons(Object element) {
 		for (Entry<Button, List<Predicate>> e : this.buttonPredicates.entrySet()) {
@@ -263,16 +284,23 @@ public class GenericTable extends TableViewer {
 			}
 		}
 
+		TableInfo tableInfo = PreferencesManager.getInstance().getTableInfo(tableName);
+		ColumnInfo[] columnInfos = tableInfo.getColumnInfos();
+
 		// agrego las columnas
 		for (int i = 0; i < aRowAdapter.getColumnCount(); i++) {
 
 			int alignementStyle = SWT.LEFT;
+			if (isSmartAlignmentDeduction()) {
+				final EditConfiguration eC = EditConfigurationManager.getInstance().getConfiguration(
+						new EditType(aRowAdapter.getColumnClass(i), aRowAdapter.getColumnEditConfiguration(i)));
 
-			final EditConfiguration eC = EditConfigurationManager.getInstance().getConfiguration(
-					new EditType(aRowAdapter.getColumnClass(i), aRowAdapter.getColumnEditConfiguration(i)));
-
-			if (eC != null && eC.isRightAligned()) {
-				alignementStyle = SWT.RIGHT;
+				if (eC != null && eC.isRightAligned()) {
+					alignementStyle = SWT.RIGHT;
+				}
+			} else {
+				// This approach sticks to what is configured in the preferences.xml file
+				alignementStyle = columnInfos[i].getAlignment().getSWTAlignmentStyle();
 			}
 
 			// TODO: en swt la primera columna es siempre "left aligned" en este
@@ -364,12 +392,4 @@ public class GenericTable extends TableViewer {
 		}
 		return sorter;
 	}
-
-	private HashMap<Button, List<Predicate>> buttonPredicates = new HashMap<Button, List<Predicate>>();
-
-	private static int COLUMN_MARGINS = 20;
-
-	private GenericTableViewerSorter sorter;
-
-	private TableRowAdapter rowAdapter;
 }

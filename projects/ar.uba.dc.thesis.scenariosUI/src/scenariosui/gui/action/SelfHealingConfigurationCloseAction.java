@@ -1,10 +1,9 @@
 package scenariosui.gui.action;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 
-import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.ScenariosUIController;
+import scenariosui.service.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 
 import commons.gui.util.PageHelper;
@@ -15,7 +14,7 @@ public class SelfHealingConfigurationCloseAction extends SelfHealingScenarioBase
 		super(uniqueId, shortcut);
 	}
 
-	public Action getActionFor(final SelfHealingConfiguration model) {
+	public Action getActionFor(SelfHealingConfiguration model) {
 		return new CloseAction(this.getUniqueId());
 	}
 
@@ -29,22 +28,17 @@ public class SelfHealingConfigurationCloseAction extends SelfHealingScenarioBase
 		@Override
 		@SuppressWarnings("unchecked")
 		public void run() {
-			ScenariosUIController scenariosUIController = ScenariosUIController.getInstance();
-
-			scenariosUIController.closeSelfHealingConfiguration();
-
-			closeQueryComposite(UniqueTableIdentifier.SCENARIOS);
-			closeQueryComposite(UniqueTableIdentifier.ENVIRONMENTS);
-
+			SelfHealingConfigurationManager.getInstance().close();
+			closeQueryComposites();
 			setCloseActionEnabled(false);
 		}
 	}
 
-	private void closeQueryComposite(UniqueTableIdentifier queryName) {
-		CTabFolder mainTabFolder = PageHelper.getMainWindow().mainTabFolder;
-		if (mainTabFolder.getItemCount() == 1) {
-			mainTabFolder.setVisible(false);
+	private void closeQueryComposites() {
+		CTabItem[] items = PageHelper.getMainWindow().mainTabFolder.getItems();
+		for (CTabItem tabItem : items) {
+			tabItem.dispose();
 		}
-		PageHelper.getMainWindow().getTabItem(queryName).dispose();
+		PageHelper.getMainWindow().mainTabFolder.setVisible(false);
 	}
 }
