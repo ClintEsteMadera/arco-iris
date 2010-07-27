@@ -10,7 +10,6 @@ import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.menu.SelfHealingConfigurationMenuCreator;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.SelfHealingConfigurationManager;
 
 import commons.auth.AuthorizationHelper;
 import commons.context.BaseApplicationContext;
@@ -22,8 +21,6 @@ import commons.gui.widget.composite.QueryComposite;
  * 
  */
 public class ScenariosUIWindow extends MainWindow {
-
-	private SelfHealingConfigurationManager selfHealingConfigurationManager;
 
 	private static ScenariosUIWindow instance = new ScenariosUIWindow();
 
