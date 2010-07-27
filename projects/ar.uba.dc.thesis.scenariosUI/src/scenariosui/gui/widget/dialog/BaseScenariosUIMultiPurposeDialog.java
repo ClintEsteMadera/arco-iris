@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: BaseEmesMultiPurposeDialog.java,v 1.8 2008/02/26 14:45:34 cvspasto Exp $
- */
-
 package scenariosui.gui.widget.dialog;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
@@ -31,11 +15,7 @@ import commons.properties.FakeEnumProperty;
 /**
  * Modela un diálogo básico dónde se puede saber si el mismo corresponde a un diálogo de Alta, Edición u otro tipo ,
  * determinado por un tipo enumerado adecuado para tal fin.
- * 
- * @author Jonathan Chiocchio
- * @version $Revision: 1.8 $ $Date: 2008/02/26 14:45:34 $
  */
-
 public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> extends
 		BaseCompositeModelBoundedDialog<T> {
 
