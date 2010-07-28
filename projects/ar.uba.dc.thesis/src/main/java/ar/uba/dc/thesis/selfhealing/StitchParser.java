@@ -124,7 +124,7 @@ public class StitchParser implements Serializable {
 
 	private void log(Level level, String txt, Throwable... t) {
 		if (this.shouldLog) {
-			Oracle.instance().writeEnginePanel(logger, txt);
+			Oracle.instance().writeEnginePanel(logger, level, txt, t);
 		}
 	}
 }

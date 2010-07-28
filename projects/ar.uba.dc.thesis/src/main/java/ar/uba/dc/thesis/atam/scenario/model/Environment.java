@@ -8,12 +8,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.common.Heuristic;
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -153,7 +155,14 @@ public class Environment extends ThesisPojo {
 		boolean holds = true;
 
 		for (Constraint constraint : this.getConditions()) {
-			holds = holds && constraint.holds4Scoring(rainbowModelWithScenarios);
+			if (constraint instanceof NumericBinaryRelationalConstraint) {
+				NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
+				Number eavg = (Number) rainbowModelWithScenarios.getProperty(RainbowModel.EXP_AVG_KEY
+						+ numericConstraint.getArtifact().getName() + "." + numericConstraint.getProperty());
+				holds = holds && eavg != null && numericConstraint.holds(eavg);
+			} else {
+				holds = false;
+			}
 		}
 		holds = this.weightCurrentEvaluationUsingHistory(holds);
 

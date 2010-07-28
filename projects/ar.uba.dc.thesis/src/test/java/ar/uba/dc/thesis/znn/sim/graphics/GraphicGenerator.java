@@ -61,11 +61,8 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		List<GraphicPoint> points = new ArrayList<GraphicPoint>();
 		for (SimPropertyGraphicConfiguration propGraphicConf : this.simGraphicConfiguration
 				.getPropertyGraphicConfiguration()) {
-			List<Number> values = rainbowModelWithScenarios.getAllInstancesPropertyValues(propGraphicConf
-					.getSystemName(), propGraphicConf.getArtifact(), propGraphicConf.getProperty());
-			points
-					.add(new GraphicPoint(propGraphicConf.getProperty(), propGraphicConf.getQuantifier().getValue(
-							values)));
+			Number value = (Number) rainbowModelWithScenarios.getProperty(propGraphicConf.getEavgPropertyName());
+			points.add(new GraphicPoint(propGraphicConf.getProperty(), value));
 		}
 		return points;
 	}
@@ -89,10 +86,9 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 	 */
 	private void initializeGraphicConfiguration() {
 		this.simGraphicConfiguration = new SimGraphicConfiguration();
-		SimPropertyGraphicConfiguration respTimeGraphicConfig = new SimPropertyGraphicConfiguration("ZNewsSys",
-				"ClientT", "experRespTime", GraphicQuantifier.AVERAGE);
-		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ZNewsSys", "ServerT",
-				"cost", GraphicQuantifier.SUM);
+		SimPropertyGraphicConfiguration respTimeGraphicConfig = new SimPropertyGraphicConfiguration("ClientT",
+				"experRespTime");
+		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ServerT", "cost");
 		simGraphicConfiguration.add(respTimeGraphicConfig);
 		simGraphicConfiguration.getPropertyGraphicConfiguration().add(costGraphicConfig);
 	}

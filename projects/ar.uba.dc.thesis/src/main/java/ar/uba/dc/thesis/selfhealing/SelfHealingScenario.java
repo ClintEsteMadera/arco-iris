@@ -8,6 +8,7 @@ import java.util.SortedMap;
 
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
+import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -19,6 +20,8 @@ import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -97,29 +100,47 @@ public class SelfHealingScenario extends AtamScenario {
 		 * It is not necessary to check the environment at this point because this scenario was already selected for
 		 * being repaired
 		 */
-		boolean isBroken = !getResponseMeasure().getConstraint()
-				.holdsConsideringAllInstances(rainbowModelWithScenarios);
-		log(Level.DEBUG, "Scenario " + this.getName() + " broken "
-				+ getResponseMeasure().getConstraint().getQuantifier() + "? " + isBroken);
+
+		Constraint constraint = getResponseMeasure().getConstraint();
+		boolean isBroken = false;
+		String eavgString = "(NO DATA)";
+		if (constraint instanceof NumericBinaryRelationalConstraint) {
+			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
+			String eavgProperty = RainbowModel.EXP_AVG_KEY + getArtifact().getName() + "."
+					+ numericConstraint.getProperty();
+			Number eavg = (Number) rainbowModelWithScenarios.getProperty(eavgProperty);
+			if (eavg != null) {
+				eavgString = eavg.toString();
+				isBroken = !numericConstraint.holds(eavg);
+			}
+		}
+		log(Level.INFO, "Scenario " + this.getName() + " broken for eavg " + eavgString + "? " + isBroken);
 		return isBroken;
 	}
 
-	/**
-	 * Tiene en cuenta la aplicacion de la estrategia sobre las properties involucradas.
-	 * <p>
-	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
-	 * es protected.
-	 */
-	protected boolean isEAvgBroken(RainbowModelWithScenarios rainbowModelWithScenarios,
+	protected boolean isBrokenAfterStrategy(final RainbowModelWithScenarios rainbowModelWithScenarios,
 			SortedMap<String, Double> strategyAggregateAttributes) {
+		/*
+		 * It is not necessary to check the environment at this point because this scenario was already selected for
+		 * being repaired
+		 */
+		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
-		if (isThereAnyEnvironmentApplicable(rainbowModelWithScenarios)) {
+		String eavgAfterStrategyString = "(NO DATA)";
+		if (constraint instanceof NumericBinaryRelationalConstraint) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
-			concernDiffAfterStrategy = (concernDiffAfterStrategy == null) ? 0 : concernDiffAfterStrategy;
+			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
+			Double eavg = (Double) rainbowModelWithScenarios.getProperty(RainbowModel.EXP_AVG_KEY
+					+ getArtifact().getName() + "." + numericConstraint.getProperty());
 
-			isBroken = !getResponseMeasure().holds4Scoring(rainbowModelWithScenarios, concernDiffAfterStrategy);
+			if (eavg != null) {
+				Double eavgAfterStrategy = eavg + concernDiffAfterStrategy;
+				eavgAfterStrategyString = eavgAfterStrategy.toString();
+				isBroken = !numericConstraint.holds(eavgAfterStrategy);
+			}
 		}
-		log(Level.INFO, "Scenario " + this.getName() + " broken IN SIMULATION? " + isBroken);
+		log(Level.INFO, "Scenario " + this.getName() + " broken after strategy for simulated eavg "
+				+ eavgAfterStrategyString + "? " + isBroken);
 		return isBroken;
 	}
 
@@ -127,6 +148,7 @@ public class SelfHealingScenario extends AtamScenario {
 		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
 	}
 
+	// FIXME no deberia usarse???
 	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean thereIsAnEnvironmentApplicable = false;
 

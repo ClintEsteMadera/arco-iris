@@ -2,9 +2,7 @@ package org.sa.rainbow.scenario.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import org.acmestudio.acme.core.type.IAcmeBooleanValue;
@@ -21,7 +19,6 @@ import org.sa.rainbow.adaptation.AdaptationManagerWithScenarios;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.model.RainbowModel;
-import org.sa.rainbow.util.Pair;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
@@ -34,15 +31,9 @@ public class RainbowModelWithScenarios extends RainbowModel {
 
 	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
 
-	private boolean isPropertyUpdateAllowed;
-
-	private final Queue<Pair<String, Object>> propertiesToUpdateQueue;
-
 	public RainbowModelWithScenarios(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
-		this.isPropertyUpdateAllowed = true;
-		this.propertiesToUpdateQueue = new LinkedList<Pair<String, Object>>();
 		log(Level.INFO, "Rainbow Model With Scenarios started");
 	}
 
@@ -58,22 +49,16 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	 */
 	public void updateProperty(String type, Object value, String stimulus) {
 		this.updateProperty(type, value);
-		log(Level.INFO, "Updated property because of stimulus: " + stimulus == null ? "NO STIMULUS!" : stimulus);
-		this.isPropertyUpdateAllowed = false;
+		StringBuffer msg = new StringBuffer("Updated property because of stimulus: ");
+		msg.append(stimulus == null ? "NO STIMULUS!" : stimulus);
+		log(Level.INFO, msg.toString());
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
 				.adaptationManager();
 		List<SelfHealingScenario> brokenScenarios;
 		// done this way in order to avoid the same else block twice
 		if (!adaptationManager.adaptationInProgress() && stimulus != null
 				&& !(brokenScenarios = this.selfHealingConfigurationManager.findBrokenScenarios(stimulus)).isEmpty()) {
-			/*
-			 * pass control to adaptation manager, who will be responsible for turning the flag
-			 * (isPropertyUpdateAllowed) on again...
-			 */
 			adaptationManager.triggerAdaptation(brokenScenarios);
-		} else {
-			// Let everyone update properties since we are not doing anything now...
-			this.isPropertyUpdateAllowed = true;
 		}
 	}
 
@@ -82,44 +67,32 @@ public class RainbowModelWithScenarios extends RainbowModel {
 	 */
 	@Override
 	public synchronized void updateProperty(String property, Object value) {
-		if (this.isPropertyUpdateAllowed) {
-			if (m_acme == null)
-				return;
-			Object obj = m_acme.findNamedObject(m_acme, property);
-			if (obj instanceof IAcmeProperty) {
-				IAcmeProperty prop = (IAcmeProperty) obj;
-				log(Level.DEBUG, "Upd prop: " + prop.getQualifiedName() + " = " + value.toString());
-				try {
-					IAcmePropertyValue pVal = StandaloneLanguagePackHelper.defaultLanguageHelper()
-							.propertyValueFromString(value.toString(), null);
-					IAcmeCommand<?> cmd = m_acmeSys.getCommandFactory().propertyValueSetCommand(prop, pVal);
-					cmd.execute();
+		if (m_acme == null)
+			return;
+		Object obj = m_acme.findNamedObject(m_acme, property);
+		if (obj instanceof IAcmeProperty) {
+			IAcmeProperty prop = (IAcmeProperty) obj;
+			log(Level.DEBUG, "Upd prop: " + prop.getQualifiedName() + " = " + value.toString());
+			try {
+				IAcmePropertyValue pVal = StandaloneLanguagePackHelper.defaultLanguageHelper().propertyValueFromString(
+						value.toString(), null);
+				IAcmeCommand<?> cmd = m_acmeSys.getCommandFactory().propertyValueSetCommand(prop, pVal);
+				cmd.execute();
 
-					// We specifically do not want to turn this flag on, since we do not want Rainbow's usual behavior
-					// to interfere with our way of doing things.
-					// m_propChanged = true;
+				// We specifically do not want to turn this flag on, since we do not want Rainbow's usual behavior
+				// to interfere with our way of doing things.
+				// m_propChanged = true;
 
-					if (pVal.getType() != null) {
-						if (pVal.getType().getName().equals("float") || pVal.getType().getName().equals("int")) {
-							// update exponential average
-							updateExponentialAverage(property, Double.parseDouble(value.toString()));
-						}
+				if (pVal.getType() != null) {
+					if (pVal.getType().getName().equals("float") || pVal.getType().getName().equals("int")) {
+						// update exponential average
+						updateExponentialAverage(property, Double.parseDouble(value.toString()));
 					}
-				} catch (Exception e) {
-					log(Level.ERROR, "Acme Command execution failed!", e);
 				}
+			} catch (Exception e) {
+				log(Level.ERROR, "Acme Command execution failed!", e);
 			}
-		} else {
-			this.propertiesToUpdateQueue.add(new Pair<String, Object>(property, value));
 		}
-	}
-
-	public boolean isPropertyUpdateAllowed() {
-		return isPropertyUpdateAllowed;
-	}
-
-	public void setPropertyUpdateAllowed(boolean isPropertyUpdateAllowed) {
-		this.isPropertyUpdateAllowed = isPropertyUpdateAllowed;
 	}
 
 	public List<String> getStimulus(String property) {
