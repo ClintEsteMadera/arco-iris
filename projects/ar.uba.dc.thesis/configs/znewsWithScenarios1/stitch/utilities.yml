@@ -81,12 +81,12 @@ vectors:
 # Utility: [v] R; [^] C; [<>] F
 # assume each server will drop response time by 1000 ms and increase cost by 1 unit
   enlistServers:
-    uR: -1000
+    uR: -144
     uF: 0
     uC: +1.00
 # Utility: [^] R; [v] C; [<>] F
   dischargeServers:
-    uR: +1000
+    uR: +144
     uF: 0
     uC: -1.00
 

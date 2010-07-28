@@ -50,6 +50,7 @@ public class ArchitecturalDecision extends ThesisPojo {
 		return this.nonRisks;
 	}
 
+	@Override
 	public void validate() {
 		// Do nothing
 	}

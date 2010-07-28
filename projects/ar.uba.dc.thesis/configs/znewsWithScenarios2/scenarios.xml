@@ -78,13 +78,12 @@
           <property>experRespTime</property>
           <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
+          <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
           <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategy>VariedReduceResponseTime</repairStrategy>
-      <repairStrategy>BruteReduceResponseTime</repairStrategy>
+      <repairStrategy>EnlistServersResponseTime</repairStrategy>
     </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>

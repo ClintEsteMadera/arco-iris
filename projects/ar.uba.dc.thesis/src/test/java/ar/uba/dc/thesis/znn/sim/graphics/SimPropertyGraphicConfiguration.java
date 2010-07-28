@@ -1,38 +1,25 @@
 package ar.uba.dc.thesis.znn.sim.graphics;
 
+import org.sa.rainbow.model.RainbowModel;
+
 public class SimPropertyGraphicConfiguration {
-
-	private String systemName;
-
-	private String artifact;
 
 	private String property;
 
-	private GraphicQuantifier quantifier;
+	private String eavgPropertyName;
 
-	public SimPropertyGraphicConfiguration(String systemName, String artifact, String property,
-			GraphicQuantifier quantifier) {
+	public SimPropertyGraphicConfiguration(String artifact, String property) {
 		super();
-		this.systemName = systemName;
-		this.artifact = artifact;
 		this.property = property;
-		this.quantifier = quantifier;
-	}
-
-	public String getSystemName() {
-		return systemName;
-	}
-
-	public String getArtifact() {
-		return artifact;
+		this.eavgPropertyName = RainbowModel.EXP_AVG_KEY + artifact + "." + property;
 	}
 
 	public String getProperty() {
 		return property;
 	}
 
-	public GraphicQuantifier getQuantifier() {
-		return quantifier;
+	public String getEavgPropertyName() {
+		return eavgPropertyName;
 	}
 
 }

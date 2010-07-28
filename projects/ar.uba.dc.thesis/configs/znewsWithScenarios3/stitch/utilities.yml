@@ -93,11 +93,11 @@ vectors:
 # Utility: [v] R; [v] C; [v] F
 # assume each level of fidelity reduces response time by 500 ms, and reduce cost by 10% of unit
   lowerFidelity:
-    uR: -500
+    uR: -80
     uF: -2
     uC: -0.10
 # Utility: [^] R; [^] C; [^] F
   raiseFidelity:
-    uR: +500
+    uR: +80
     uF: +2
     uC: +0.10

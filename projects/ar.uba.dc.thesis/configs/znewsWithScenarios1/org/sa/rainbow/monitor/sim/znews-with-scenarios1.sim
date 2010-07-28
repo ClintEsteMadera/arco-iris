@@ -5,12 +5,14 @@ sim.class = org.sa.rainbow.monitor.sim.znews.ZNewsSim
 
 sim.0 =
 #- start with high server load
-#sim.1 = 1000:c0.connection.bandwidth:50
+sim.1 = 30001:ZNewsSys.c1.perf.service.time:100,30001:ZNewsSys.c2.perf.service.time:100
+sim.2 = 30001:ZNewsSys.c1.perf.arrival.rate:4
+sim.3 = 30001:ZNewsSys.conn1.bandwidth.up:512,30001:ZNewsSys.conn1.bandwidth.down:512
+sim.4 = 30001:ZNewsSys.conn0.bandwidth.up:512,30001:ZNewsSys.conn0.bandwidth.down:512
+# terminate system at 50 seconds
+sim.5 = 60000:sim:terminate
 
-# terminate system at 5 seconds
-sim.1 = 20000:sim:terminate
-
-sim.size = 2
+sim.size = 6
 
 # list the elements on which to explicitly check rules
 elements = ZNewsSys.lbproxy, ZNewsSys.s0, ZNewsSys.s1, ZNewsSys.s2, ZNewsSys.s3, ZNewSys.c0, ZNewSys.c1, ZNewSys.c2, ZNewsSys.conn0, ZNewsSys.conn1, ZNewsSys.conn2, ZNewsSys.proxyconn0, ZNewsSys.proxyconn1
@@ -87,7 +89,7 @@ ZNewsSys.s2.perf.service.time = 15
 ZNewsSys.s3.isArchEnabled = false
 ZNewsSys.s3.type = ZNewsFam.ServerT
 ZNewsSys.s3.load = 0.02
-ZNewsSys.s3.cost = 2.0
+ZNewsSys.s3.cost = 1.0
 ZNewsSys.s3.fidelity = 5
 ZNewsSys.s3.replication = 1
 ZNewsSys.s3.perf.service.time = 14

@@ -137,6 +137,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static boolean isConcernStillBroken(String concernString) {
 		try {
 			Concern concern = Concern.valueOf(concernString);
+			doLog(Level.INFO, "Is Concern " + concern + " Still Broken?");
 
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
@@ -144,7 +145,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					result = true;
 				}
 			}
-			doLog(Level.DEBUG, "isConcernStillBroken? " + result + " !!!!");
+			doLog(Level.INFO, "Concern " + concern + (result == true ? " Still Broken!" : " Not Broken Anymore!!!"));
 			return result;
 		} catch (NullPointerException e) {
 			doLog(Level.ERROR, "Concern not specified");
@@ -193,7 +194,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	protected static void doLog(Level level, String txt, Throwable... t) {
-		Oracle.instance().writeEnginePanel(m_logger, txt);
+		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
 	}
 
 	public boolean adaptationEnabled() {
@@ -337,10 +338,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
 
 		// We don't want the "simulated" system utility to be less than the current real one.
-		doLog(Level.TRACE, "Computing Current System Utility...");
+		doLog(Level.INFO, "Computing Current System Utility...");
 		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, defaultScenarioBrokenDetector);
 
-		doLog(Level.TRACE, "Current System Utility: " + maxScore4Strategy);
+		doLog(Level.INFO, "Current System Utility: " + maxScore4Strategy);
 
 		Strategy selectedStrategy = null;
 
@@ -364,24 +365,24 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "not selected in broken scenarios"
 							: "failure rate threshold reached";
-					doLog(Level.DEBUG, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
+					doLog(Level.INFO, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
 					continue; // don't consider this Strategy
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
 
 				double strategyScore4Scenarios = 0;
 				if (scenariosSolutionWeight > 0) {
-					doLog(Level.TRACE, "Scoring " + currentStrategy.getName() + " with scenarios approach...");
+					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " with scenarios approach...");
 
 					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
 							new ScoringScenarioBrokenDetector(m_model, currentStrategy));
-					doLog(Level.TRACE, "Scenarios approach score for strategy " + currentStrategy.getName() + ": "
+					doLog(Level.INFO, "Scenarios approach score for strategy " + currentStrategy.getName() + ": "
 							+ strategyScore4Scenarios);
 				}
 
 				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
-					doLog(Level.TRACE, "Scoring " + currentStrategy.getName() + " with Rainbow approach...");
+					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " with Rainbow approach...");
 					strategyScore4Rainbow = scoreStrategyByRainbow(currentStrategy, weights4Rainbow);
 				}
 
@@ -462,6 +463,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						concernWeight4CurrentEnvironment = new Double(0);
 					}
 					score = score + scenarioWeight(scenario.getPriority(), concernWeight4CurrentEnvironment);
+					// FIXME TRATAR DE EVITAR INSTANCEOF!
+					if (scenarioBrokenDetector instanceof ScoringScenarioBrokenDetector) {
+						SortedMap<String, Double> aggAtts = ((ScoringScenarioBrokenDetector) scenarioBrokenDetector)
+								.getComputeAggregateAttributes();
+						score = weightWithConcernUtilityFunction(score, scenario, aggAtts);
+					}
 				} else {
 					doLog(Level.DEBUG, "Scenario " + scenario.getName() + " NOT satisfied");
 				}
@@ -470,6 +477,23 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						+ currentSystemEnvironment.getName() + ")");
 			}
 		}
+		return score;
+	}
+
+	private double weightWithConcernUtilityFunction(double score, SelfHealingScenario scenario,
+			Map<String, Double> aggAtts) {
+		UtilityFunction u = m_utils.get(scenario.getConcern().getRainbowName());
+		Object condVal = m_model.getProperty(u.mapping());
+		Double concernValue = aggAtts.get(u.id());
+		if (condVal != null && condVal instanceof Double) {
+			if (m_logger.isTraceEnabled())
+				doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + condVal);
+			concernValue += ((Double) condVal).doubleValue();
+		}
+		// FIXME TERMINAR DE AGREGAR LA TABLITA!!!!!!!!!!
+		int value = 0;
+		double concernUtilityValue = m_utils.get(scenario.getConcern().getRainbowName()).f(value);
+		score = score * concernUtilityValue;
 		return score;
 	}
 
