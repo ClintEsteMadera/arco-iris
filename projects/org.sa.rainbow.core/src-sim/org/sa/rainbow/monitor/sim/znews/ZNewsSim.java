@@ -110,10 +110,6 @@ public class ZNewsSim extends AbstractSim {
 			globalAvgERT += avgERT;
 			m_runner.changeProperty(elemName + ".experRespTime", String.valueOf(avgERT));
 		}
-		// FIXME eliminar si no se usa
-		// tomo el promedio pq sino el grafico es ininteligible
-		// GraphicGenerator.getInstance().addPoint(m_runner.elapsedTime(), "experRespTime",
-		// String.valueOf(globalAvgERT / m_clientCnt));
 	}
 
 	private int computeArrivalRate(String srv, String prop, int serverCount) {
