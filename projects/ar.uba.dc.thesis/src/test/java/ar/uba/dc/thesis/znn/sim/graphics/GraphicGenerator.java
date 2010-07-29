@@ -88,9 +88,9 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		this.simGraphicConfiguration = new SimGraphicConfiguration();
 		SimPropertyGraphicConfiguration respTimeGraphicConfig = new SimPropertyGraphicConfiguration("ClientT",
 				"experRespTime");
-		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ServerT", "cost");
+		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ServerT", "cost", true);
 		simGraphicConfiguration.add(respTimeGraphicConfig);
-		simGraphicConfiguration.getPropertyGraphicConfiguration().add(costGraphicConfig);
+		simGraphicConfiguration.add(costGraphicConfig);
 	}
 
 	private void initializeThresholds() {

@@ -25,7 +25,7 @@ utilities:
       5: 1.00
   uC:
     label: Average Server Cost
-    mapping: "[EAvg]ServerT.cost"
+    mapping: "[ESum]ServerT.cost"
     description: "Server cost in unit/hr, C, averaged from a float property 'ServerT.cost' in the architecture, and captures average cost across all servers"
     utility:
       0: 1.00

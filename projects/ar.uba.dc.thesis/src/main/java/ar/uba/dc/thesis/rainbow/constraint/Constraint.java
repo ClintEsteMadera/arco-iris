@@ -8,6 +8,4 @@ public interface Constraint extends Validatable {
 
 	String getFullyQualifiedPropertyName();
 
-	Quantifier getQuantifier();
-
 }

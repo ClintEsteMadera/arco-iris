@@ -11,7 +11,6 @@ import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -68,8 +67,8 @@ public class TestSelfHealingScenarioDao {
 		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
-				new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE, artifact, "experRespTime",
-						NumericBinaryOperator.LESS_THAN, THRESHOLD_RESPONSE_TIME));
+				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN,
+						THRESHOLD_RESPONSE_TIME));
 		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = true;
 		int priority = 1;
@@ -86,8 +85,8 @@ public class TestSelfHealingScenarioDao {
 		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new NumericBinaryRelationalConstraint(Quantifier.IN_SUM, artifact, "cost",
-						NumericBinaryOperator.LESS_THAN, THRESHOLD_SERVER_COST));
+				new NumericBinaryRelationalConstraint(artifact, "cost", NumericBinaryOperator.LESS_THAN,
+						THRESHOLD_SERVER_COST, true));
 		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = true;
 		int priority = 2;

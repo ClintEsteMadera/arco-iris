@@ -3,14 +3,16 @@ package ar.uba.dc.thesis.rainbow.constraint.numerical;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
+import org.sa.rainbow.model.RainbowModel;
+import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
-import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
@@ -25,12 +27,31 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	private final Number constantToCompareThePropertyWith;
 
-	public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, String property,
-			NumericBinaryOperator binaryOperator, Number constantToCompareThePropertyWith) {
-		super(quantifier, artifact, property);
+	private String eAvgPropertyName;
+
+	@XStreamAsAttribute
+	private boolean sum;
+
+	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
+			Number constantToCompareThePropertyWith) {
+		this(artifact, property, binaryOperator, constantToCompareThePropertyWith, false);
+	}
+
+	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
+			Number constantToCompareThePropertyWith, boolean sum) {
+		super(artifact, property);
 		this.binaryOperator = binaryOperator;
 		this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
+		this.sum = sum;
 		this.validate();
+	}
+
+	public boolean isSum() {
+		return sum;
+	}
+
+	public void setSum(boolean sum) {
+		this.sum = sum;
 	}
 
 	public Number getConstantToCompareThePropertyWith() {
@@ -41,6 +62,14 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		boolean holds = this.binaryOperator.performOperation(eavg, this.constantToCompareThePropertyWith);
 		log(Level.DEBUG, "Holds " + getFullyQualifiedPropertyName() + " for EAvg " + eavg + "? " + holds + "!!!!");
 		return holds;
+	}
+
+	public String getEAvgPropertyName() {
+		if (this.eAvgPropertyName == null) {
+			String expPropPrefix = sum ? RainbowModelWithScenarios.EXP_SUM_KEY : RainbowModel.EXP_AVG_KEY;
+			this.eAvgPropertyName = expPropPrefix + getArtifact().getName() + "." + getProperty();
+		}
+		return eAvgPropertyName;
 	}
 
 	@Override
