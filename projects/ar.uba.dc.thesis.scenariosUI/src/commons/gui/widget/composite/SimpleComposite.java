@@ -6,19 +6,25 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.factory.LabelFactory;
 import commons.properties.FakeEnumProperty;
 
 /**
  * Modela un composite básico.
- * 
- * @author Jonathan Chiocchio
- * @version $Revision: 1.9 $ $Date: 2007/12/05 19:22:27 $
  */
 
 public class SimpleComposite extends Composite {
+
+	private static final int DEFAULT_COLUMN_NUMBER = 2;
+
+	private static final int DEFAULT_COLUMN_SPAN = 1;
+
+	protected boolean readOnly;
+
+	private final int numColumns;
+
+	private final int columnsToSpan;
 
 	public SimpleComposite(Composite parent, boolean readOnly) {
 		this(parent, readOnly, DEFAULT_COLUMN_NUMBER, DEFAULT_COLUMN_SPAN);
@@ -37,7 +43,7 @@ public class SimpleComposite extends Composite {
 	}
 
 	/**
-	 * Habilita todos los controles que tienen como padre a éste Composite.
+	 * Habilita o inhabilita todos los controles que tienen como padre a éste Composite.
 	 */
 	@Override
 	public void setEnabled(boolean enabled) {
@@ -71,14 +77,4 @@ public class SimpleComposite extends Composite {
 	protected void createSeparatorLabel() {
 		LabelFactory.createLabel(this, new FakeEnumProperty(""), false, false);
 	}
-
-	private static final int DEFAULT_COLUMN_NUMBER = 2;
-
-	private static final int DEFAULT_COLUMN_SPAN = 1;
-
-	protected boolean readOnly;
-
-	private final int numColumns;
-
-	private final int columnsToSpan;
 }
