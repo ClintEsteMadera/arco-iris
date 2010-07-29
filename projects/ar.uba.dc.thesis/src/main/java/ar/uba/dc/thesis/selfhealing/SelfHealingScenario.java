@@ -8,7 +8,6 @@ import java.util.SortedMap;
 
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
-import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
@@ -104,15 +103,10 @@ public class SelfHealingScenario extends AtamScenario {
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
 		String eavgString = "(NO DATA)";
-		if (constraint instanceof NumericBinaryRelationalConstraint) {
-			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
-			String eavgProperty = RainbowModel.EXP_AVG_KEY + getArtifact().getName() + "."
-					+ numericConstraint.getProperty();
-			Number eavg = (Number) rainbowModelWithScenarios.getProperty(eavgProperty);
-			if (eavg != null) {
-				eavgString = eavg.toString();
-				isBroken = !numericConstraint.holds(eavg);
-			}
+		Double eavg = getEavgForConstraint(constraint, rainbowModelWithScenarios);
+		if (eavg != null) {
+			eavgString = eavg.toString();
+			isBroken = !constraint.holds(eavg);
 		}
 		log(Level.INFO, "Scenario " + this.getName() + " broken for eavg " + eavgString + "? " + isBroken);
 		return isBroken;
@@ -124,24 +118,30 @@ public class SelfHealingScenario extends AtamScenario {
 		 * It is not necessary to check the environment at this point because this scenario was already selected for
 		 * being repaired
 		 */
+
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
 		String eavgAfterStrategyString = "(NO DATA)";
-		if (constraint instanceof NumericBinaryRelationalConstraint) {
+		Double eavg = getEavgForConstraint(constraint, rainbowModelWithScenarios);
+		if (eavg != null) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
-			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
-			Double eavg = (Double) rainbowModelWithScenarios.getProperty(RainbowModel.EXP_AVG_KEY
-					+ getArtifact().getName() + "." + numericConstraint.getProperty());
-
-			if (eavg != null) {
-				Double eavgAfterStrategy = eavg + concernDiffAfterStrategy;
-				eavgAfterStrategyString = eavgAfterStrategy.toString();
-				isBroken = !numericConstraint.holds(eavgAfterStrategy);
-			}
+			Double eavgAfterStrategy = eavg + concernDiffAfterStrategy;
+			eavgAfterStrategyString = eavgAfterStrategy.toString();
+			isBroken = !constraint.holds(eavgAfterStrategy);
 		}
+
 		log(Level.INFO, "Scenario " + this.getName() + " broken after strategy for simulated eavg "
 				+ eavgAfterStrategyString + "? " + isBroken);
 		return isBroken;
+	}
+
+	private Double getEavgForConstraint(Constraint constraint, RainbowModelWithScenarios rainbowModelWithScenarios) {
+		Double result = null;
+		if (constraint instanceof NumericBinaryRelationalConstraint) {
+			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
+			result = (Double) rainbowModelWithScenarios.getProperty(numericConstraint.getEAvgPropertyName());
+		}
+		return result;
 	}
 
 	protected void log(Level level, String txt, Throwable... t) {

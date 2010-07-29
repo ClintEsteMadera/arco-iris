@@ -5,7 +5,6 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
-import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 
 public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo implements Constraint {
 
@@ -15,11 +14,8 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 
 	private final String property;
 
-	private final Quantifier quantifier;
-
-	public BaseSinglePropertyInvolvedConstraint(Quantifier quantifier, Artifact artifact, String property) {
+	public BaseSinglePropertyInvolvedConstraint(Artifact artifact, String property) {
 		super();
-		this.quantifier = quantifier;
 		this.artifact = artifact;
 		this.property = property;
 	}
@@ -30,10 +26,6 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 
 	public String getProperty() {
 		return property;
-	}
-
-	public Quantifier getQuantifier() {
-		return quantifier;
 	}
 
 	/**

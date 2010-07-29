@@ -9,10 +9,8 @@
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
@@ -37,10 +35,8 @@
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>GREATER_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
@@ -76,10 +72,8 @@
         <constraint class="numericBinaryRelationalConstraint">
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>

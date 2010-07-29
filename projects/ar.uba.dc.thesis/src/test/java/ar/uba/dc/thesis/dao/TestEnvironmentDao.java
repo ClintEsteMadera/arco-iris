@@ -8,7 +8,6 @@ import java.util.Map;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
-import ar.uba.dc.thesis.rainbow.constraint.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
@@ -25,13 +24,11 @@ public class TestEnvironmentDao {
 	public TestEnvironmentDao() {
 		this.environments.add(createNormalEnvironment());
 		this.environments.add(createHighLoadEnvironment());
-		Constraint highResponseTimeCondition = new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE,
-				TestArtifactDao.CLIENT, "experRespTime", NumericBinaryOperator.GREATER_THAN,
-				HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
+		Constraint highResponseTimeCondition = new NumericBinaryRelationalConstraint(TestArtifactDao.CLIENT,
+				"experRespTime", NumericBinaryOperator.GREATER_THAN, HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
 		HIGH_RESPONSE_TIME_CONDITIONS_LIST.add(highResponseTimeCondition);
-		Constraint normalResponseTimeCondition = new NumericBinaryRelationalConstraint(Quantifier.IN_AVERAGE,
-				TestArtifactDao.CLIENT, "experRespTime", NumericBinaryOperator.LESS_THAN,
-				HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
+		Constraint normalResponseTimeCondition = new NumericBinaryRelationalConstraint(TestArtifactDao.CLIENT,
+				"experRespTime", NumericBinaryOperator.LESS_THAN, HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
 		NORMAL_RESPONSE_TIME_CONDITIONS_LIST.add(normalResponseTimeCondition);
 	}
 

@@ -463,7 +463,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						concernWeight4CurrentEnvironment = new Double(0);
 					}
 					score = score + scenarioWeight(scenario.getPriority(), concernWeight4CurrentEnvironment);
-					// FIXME TRATAR DE EVITAR INSTANCEOF!
+					// TODO TRATAR DE EVITAR INSTANCEOF!
 					if (scenarioBrokenDetector instanceof ScoringScenarioBrokenDetector) {
 						SortedMap<String, Double> aggAtts = ((ScoringScenarioBrokenDetector) scenarioBrokenDetector)
 								.getComputeAggregateAttributes();
@@ -483,17 +483,16 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	private double weightWithConcernUtilityFunction(double score, SelfHealingScenario scenario,
 			Map<String, Double> aggAtts) {
 		UtilityFunction u = m_utils.get(scenario.getConcern().getRainbowName());
-		Object condVal = m_model.getProperty(u.mapping());
-		Double concernValue = aggAtts.get(u.id());
-		if (condVal != null && condVal instanceof Double) {
-			if (m_logger.isTraceEnabled())
-				doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + condVal);
-			concernValue += ((Double) condVal).doubleValue();
+		Object eavgPropValue = m_model.getProperty(u.mapping());
+		if (eavgPropValue != null && eavgPropValue instanceof Double) {
+			if (m_logger.isTraceEnabled()) {
+				doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + eavgPropValue);
+			}
+			Double concernDiffAfterStrategy = aggAtts.get(u.id());
+			double concernValueAfterStrategy = concernDiffAfterStrategy + ((Double) eavgPropValue).doubleValue();
+			double concernUtilityValue = u.f(concernValueAfterStrategy);
+			score = score * concernUtilityValue;
 		}
-		// FIXME TERMINAR DE AGREGAR LA TABLITA!!!!!!!!!!
-		int value = 0;
-		double concernUtilityValue = m_utils.get(scenario.getConcern().getRainbowName()).f(value);
-		score = score * concernUtilityValue;
 		return score;
 	}
 
