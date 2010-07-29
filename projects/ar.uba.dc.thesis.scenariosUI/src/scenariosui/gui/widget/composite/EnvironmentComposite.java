@@ -24,7 +24,7 @@ public class EnvironmentComposite extends SimpleComposite {
 			underlyingEnvironment.getValue().setId(SelfHealingConfigurationManager.getInstance().getNextId(Environment.class));
 		}
 
-		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly).getSwtGroup();
+		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.ATAM_SCENARIO_INFO, this.readOnly).getSwtGroup();
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
 				underlyingEnvironment, "id"), true);

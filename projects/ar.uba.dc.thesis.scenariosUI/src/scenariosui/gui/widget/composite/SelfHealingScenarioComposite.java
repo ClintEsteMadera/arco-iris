@@ -14,74 +14,91 @@ import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 import commons.gui.widget.creation.metainfo.ComboMetainfo;
+import commons.gui.widget.creation.metainfo.ControlMetainfo;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
 import commons.gui.widget.factory.BooleanFactory;
 import commons.gui.widget.factory.ComboFactory;
 import commons.gui.widget.factory.TextFactory;
 import commons.gui.widget.group.SimpleGroup;
+import commons.properties.CommonLabels;
+import commons.properties.FakeEnumProperty;
 
 public class SelfHealingScenarioComposite extends SimpleComposite {
 
 	public SelfHealingScenarioComposite(Composite parent, Purpose purpose,
 			CompositeModel<SelfHealingScenario> underlyingScenario) {
 		super(parent, purpose.isReadOnly());
-		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.BASIC_DATA, this.readOnly).getSwtGroup();
+
+		BooleanFieldMetainfo metainfo = BooleanFieldMetainfo.create(parent, ScenariosUILabels.ENABLED, new BindingInfo(
+				underlyingScenario, "enabled"), readOnly);
+		BooleanFactory.createBoolean(metainfo);
+
+		Group atamScenarioGroup = new SimpleGroup(parent, new FakeEnumProperty("Basic Information"), this.readOnly)
+				.getSwtGroup();
 
 		if (purpose.isCreation()) {
 			underlyingScenario.getValue().setId(
 					SelfHealingConfigurationManager.getInstance().getNextId(SelfHealingScenario.class));
 		}
 
-		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
-				underlyingScenario, "id"), true);
+		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(atamScenarioGroup, ScenariosUILabels.ID,
+				new BindingInfo(underlyingScenario, "id"), true);
 		TextFactory.createText(textMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.NAME, new BindingInfo(underlyingScenario,
-				"name"), this.readOnly);
+		textMetainfo = TextFieldMetainfo.create(atamScenarioGroup, ScenariosUILabels.NAME, new BindingInfo(
+				underlyingScenario, "name"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		ComboMetainfo comboMetainfo = ComboMetainfo.create(swtGroup, ScenariosUILabels.CONCERN, new BindingInfo(
-				underlyingScenario, "concern"), this.readOnly);
+		ComboMetainfo comboMetainfo = ComboMetainfo.create(atamScenarioGroup, ScenariosUILabels.CONCERN,
+				new BindingInfo(underlyingScenario, "concern"), this.readOnly);
 		ComboFactory.createCombo(comboMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.STIMULUS_SOURCE, new BindingInfo(
+		textMetainfo = TextFieldMetainfo.create(atamScenarioGroup, ScenariosUILabels.PRIORITY, new BindingInfo(
+				underlyingScenario, "priority"), this.readOnly);
+		TextFactory.createText(textMetainfo);
+
+		Group stimulusGroup = new SimpleGroup(parent, new FakeEnumProperty("Stimulus Information"), this.readOnly)
+				.getSwtGroup();
+
+		textMetainfo = TextFieldMetainfo.create(stimulusGroup, ScenariosUILabels.STIMULUS_SOURCE, new BindingInfo(
 				underlyingScenario, "stimulusSource"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.STIMULUS, new BindingInfo(
+		textMetainfo = TextFieldMetainfo.create(stimulusGroup, ScenariosUILabels.STIMULUS, new BindingInfo(
 				underlyingScenario, "stimulus"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		ObjectSelectionMetainfo objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup,
+		Group selectionGroup = new SimpleGroup(parent, CommonLabels.NO_LABEL, this.readOnly).getSwtGroup();
+
+		ObjectSelectionMetainfo objectSelectionMetainfo = new ObjectSelectionMetainfo(selectionGroup,
 				ScenariosUILabels.ENVIRONMENTS, new BindingInfo(underlyingScenario, "environments"), this.readOnly);
 		objectSelectionMetainfo.nullable = true; // to be used for the "Default" environment
 		objectSelectionMetainfo.canView = false;
 
 		new EnvironmentsSelectionComposite(objectSelectionMetainfo);
 
-		objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup, ScenariosUILabels.ARTIFACT, new BindingInfo(
-				underlyingScenario, "artifact"), this.readOnly);
+		objectSelectionMetainfo = new ObjectSelectionMetainfo(selectionGroup, ScenariosUILabels.ARTIFACT,
+				new BindingInfo(underlyingScenario, "artifact"), this.readOnly);
 		objectSelectionMetainfo.canView = false;
 
 		new ArtifactSelectionComposite(objectSelectionMetainfo);
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.RESPONSE, new BindingInfo(
+		Group responseGroup = new SimpleGroup(parent, new FakeEnumProperty("Response Information"), this.readOnly)
+				.getSwtGroup();
+
+		textMetainfo = TextFieldMetainfo.create(responseGroup, ScenariosUILabels.RESPONSE, new BindingInfo(
 				underlyingScenario, "response"), this.readOnly);
 		TextFactory.createText(textMetainfo);
 
-		// TODO: Response Measure
+		ControlMetainfo controlMetainfo = new ControlMetainfo(responseGroup, ScenariosUILabels.RESPONSE_MEASURE,
+				new BindingInfo(underlyingScenario, "responseMeasure"), this.readOnly);
+		new ResponseMeasureComposite(controlMetainfo);
 
-		// TODO: Architectural Decisions
+		// Group selfHealingScenarioGroup = new SimpleGroup(parent, ScenariosUILabels.SELF_HEALING_SPECIFIC_INFO,
+		// this.readOnly).getSwtGroup();
 
-		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.PRIORITY, new BindingInfo(
-				underlyingScenario, "priority"), this.readOnly);
-		TextFactory.createText(textMetainfo);
+		// TODO Architectural Decisions
 
-		BooleanFieldMetainfo metainfo = BooleanFieldMetainfo.create(swtGroup, ScenariosUILabels.ENABLED,
-				new BindingInfo(underlyingScenario, "enabled"), readOnly);
-		BooleanFactory.createBoolean(metainfo);
-
-		// TODO: Repair Strategies
+		// TODO List<String> repairStrategies;
 	}
-
 }

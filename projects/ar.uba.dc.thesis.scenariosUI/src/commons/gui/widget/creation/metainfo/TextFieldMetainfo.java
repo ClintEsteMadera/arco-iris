@@ -6,7 +6,6 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.TextFieldListenerType;
 import commons.gui.widget.creation.binding.Binding;
@@ -16,10 +15,53 @@ import commons.properties.EnumProperty;
  * Modela la meta-información necesaria para crear un Campo de Texto.<br>
  * Nota: gracias al uso del objeto "FakeBinding", notar que es posible crear un Text field sin necesidad de atarlo a
  * ningún modelo.
- * 
- * @author Gabriel Tursi
  */
 public class TextFieldMetainfo extends ControlMetainfo {
+
+	private static TextFieldMetainfo instance = new TextFieldMetainfo();
+
+	/**
+	 * Cantidad máxima de carácteres que permite este campo.
+	 * 
+	 * @see Text#setTextLimit(int)
+	 */
+	public Integer maxLength;
+
+	/**
+	 * Ancho del campo de texto en cantidad de letras.
+	 * 
+	 * @see PageHelper#getCantidadDePixels(int)
+	 */
+	public Integer visibleSize;
+
+	public boolean multiline;
+
+	public int readOnlyStyle;
+
+	/**
+	 * Especifica la cantidad de líneas que debe abarcar un campo multilínea.
+	 */
+	public int multiline_lines;
+
+	// Se usa un conjunto para evitar que se apliquen listeners repetidos
+	public Set<TextFieldListenerType> listeners;
+
+	public boolean password;
+
+	/**
+	 * Permite agregar un Label como sufijo
+	 */
+	public EnumProperty suffix;
+
+	public static final Integer DEFAULT_VISIBLE_SIZE = 60;
+
+	public static final int READONLY_STYLE_EDITABLE = 0;
+
+	public static final int READONLY_STYLE_LABEL = 2;
+
+	public static final int READONLY_STYLE_TEXT = 3;
+
+	public static final int READONLY_STYLE_DISABLED_TEXT = 4;
 
 	public static TextFieldMetainfo create(Composite composite, EnumProperty label, Binding binding, boolean readOnly) {
 		instance.applyDefaults();
@@ -70,50 +112,4 @@ public class TextFieldMetainfo extends ControlMetainfo {
 		super();
 		this.applyDefaults();
 	}
-
-	private static TextFieldMetainfo instance = new TextFieldMetainfo();
-
-	/**
-	 * Cantidad máxima de carácteres que permite este campo.
-	 * 
-	 * @see Text#setTextLimit(int)
-	 */
-	public Integer maxLength;
-
-	/**
-	 * Ancho del campo de texto en cantidad de letras.
-	 * 
-	 * @see PageHelper#getCantidadDePixels(int)
-	 */
-	public Integer visibleSize;
-
-	public boolean multiline;
-
-	public int readOnlyStyle;
-
-	/**
-	 * Especifica la cantidad de líneas que debe abarcar un campo multilínea.
-	 */
-	public int multiline_lines;
-
-	// Se usa un conjunto para evitar que se apliquen listeners repetidos
-	public Set<TextFieldListenerType> listeners;
-
-	public boolean password;
-
-	/**
-	 * Permite agregar un Label como sufijo
-	 */
-	public EnumProperty suffix;
-
-	public static final Integer DEFAULT_VISIBLE_SIZE = 60;
-
-	public static final int READONLY_STYLE_EDITABLE = 0;
-
-	public static final int READONLY_STYLE_LABEL = 2;
-
-	public static final int READONLY_STYLE_TEXT = 3;
-
-	public static final int READONLY_STYLE_DISABLED_TEXT = 4;
-
 }
