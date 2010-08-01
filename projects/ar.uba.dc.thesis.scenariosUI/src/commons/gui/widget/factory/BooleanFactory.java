@@ -12,8 +12,8 @@ import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 public abstract class BooleanFactory {
 
 	public static Control createBoolean(BooleanFieldMetainfo metainfo) {
-		Composite booleanFieldComposite = new SimpleComposite(metainfo.composite,
-				metainfo.readOnly, 2);
+		Composite booleanFieldComposite = new SimpleComposite(metainfo.composite, metainfo.readOnly,
+				metainfo.alignment, 2, 1);
 		final Button button = new Button(booleanFieldComposite, SWT.CHECK);
 		LabelFactory.createLabel(booleanFieldComposite, metainfo.label, false, false);
 
@@ -21,11 +21,12 @@ public abstract class BooleanFactory {
 		button.setSelection(value);
 		button.setEnabled(!metainfo.readOnly);
 		metainfo.binding.bind(button);
-		
-		if(metainfo.horizontalSpan > 0){
+
+		if (metainfo.horizontalSpan > 0) {
 			DefaultLayoutFactory.setGridHSpan(booleanFieldComposite, metainfo.horizontalSpan);
 		}
-		
+		DefaultLayoutFactory.setGridVerticalIndent(booleanFieldComposite, 10);
+
 		return button;
 	}
 

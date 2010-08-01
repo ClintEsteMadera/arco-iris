@@ -33,6 +33,6 @@ public class ScenariosUIPropertiesVerifier extends PropertiesVerifier {
 	static {
 		bundleMap.put(ResourceBundle.getBundle("scenariosUI_labels"), ScenariosUILabels.class);
 		bundleMap.put(ResourceBundle.getBundle("messages"), Messages.class);
-		bundleMap.put(ResourceBundle.getBundle("tableconstants"), UniqueTableIdentifier.class);
+		bundleMap.put(ResourceBundle.getBundle("uniqueTableIdentifier"), UniqueTableIdentifier.class);
 	}
 }

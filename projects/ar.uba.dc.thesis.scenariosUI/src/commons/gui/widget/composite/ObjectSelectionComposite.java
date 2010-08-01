@@ -113,10 +113,12 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 	}
 
 	private void addFields(final ObjectSelectionMetainfo info) {
-		if (info.canView) {
-			this.createLink(info);
-		} else {
-			this.createLabel(info);
+		if (!CommonLabels.NO_LABEL.equals(info.label)) {
+			if (info.canView) {
+				this.createLink(info);
+			} else {
+				this.createLabel(info);
+			}
 		}
 		GridData gridData = DefaultLayoutFactory.getGridData(1);
 		gridData.verticalAlignment = SWT.CENTER;

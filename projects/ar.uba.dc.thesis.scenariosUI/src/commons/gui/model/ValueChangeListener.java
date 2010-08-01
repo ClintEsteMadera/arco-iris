@@ -3,6 +3,7 @@ package commons.gui.model;
 /**
  * Listener para ValueModel
  */
-public interface ValueChangeListener {
-	public void valueChange(ValueChangeEvent ev);
+public interface ValueChangeListener<T> {
+
+	public void valueChange(ValueChangeEvent<T> ev);
 }

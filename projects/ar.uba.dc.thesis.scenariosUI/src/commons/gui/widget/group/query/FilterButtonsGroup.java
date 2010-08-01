@@ -41,13 +41,13 @@ public class FilterButtonsGroup extends SimpleGroup {
 		super.getSwtGroup().setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		this.filterButton = new Button(super.getSwtGroup(), SWT.CENTER);
-		this.filterButton.setText(CommonLabels.BUSCAR.toString());
+		this.filterButton.setText(CommonLabels.SEARCH.toString());
 		this.filterButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
 				| GridData.GRAB_VERTICAL));
 		this.filterButton.addSelectionListener(filterListener);
 
 		this.cleanUpButton = new Button(super.getSwtGroup(), SWT.CENTER);
-		this.cleanUpButton.setText(CommonLabels.LIMPIAR_FILTROS.toString());
+		this.cleanUpButton.setText(CommonLabels.CLEAN_FILTERS.toString());
 		this.cleanUpButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
 				| GridData.GRAB_VERTICAL));
 		this.cleanUpButton.addSelectionListener(cleanUpListener);

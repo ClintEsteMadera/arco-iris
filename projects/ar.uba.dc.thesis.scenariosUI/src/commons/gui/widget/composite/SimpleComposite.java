@@ -6,6 +6,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import commons.gui.widget.Alignment;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.factory.LabelFactory;
 import commons.properties.FakeEnumProperty;
@@ -20,25 +21,34 @@ public class SimpleComposite extends Composite {
 
 	private static final int DEFAULT_COLUMN_SPAN = 1;
 
+	private static final Alignment DEFAULT_ALIGNMENT = Alignment.LEFT;
+
 	protected boolean readOnly;
 
 	private final int numColumns;
 
 	private final int columnsToSpan;
 
+	private int alignment;
+
 	public SimpleComposite(Composite parent, boolean readOnly) {
-		this(parent, readOnly, DEFAULT_COLUMN_NUMBER, DEFAULT_COLUMN_SPAN);
+		this(parent, readOnly, DEFAULT_ALIGNMENT, DEFAULT_COLUMN_NUMBER, DEFAULT_COLUMN_SPAN);
 	}
 
 	public SimpleComposite(Composite parent, boolean readOnly, int numColumns) {
-		this(parent, readOnly, numColumns, DEFAULT_COLUMN_SPAN);
+		this(parent, readOnly, DEFAULT_ALIGNMENT, numColumns, DEFAULT_COLUMN_SPAN);
 	}
 
 	public SimpleComposite(Composite parent, boolean readOnly, int numColumns, int columnsToSpan) {
+		this(parent, readOnly, DEFAULT_ALIGNMENT, numColumns, columnsToSpan);
+	}
+
+	public SimpleComposite(Composite parent, boolean readOnly, Alignment alignment, int numColumns, int columnsToSpan) {
 		super(parent, SWT.NONE);
 		this.readOnly = readOnly;
 		this.numColumns = numColumns;
 		this.columnsToSpan = columnsToSpan;
+		this.alignment = alignment.getSWTAlignmentStyle();
 		this.applyLayout();
 	}
 
@@ -61,6 +71,7 @@ public class SimpleComposite extends Composite {
 		DefaultLayoutFactory.setDefaultGridLayout(this, getNumColumns());
 		GridData gridData = (GridData) this.getLayoutData();
 		gridData.horizontalSpan = columnsToSpan;
+		gridData.horizontalAlignment = alignment;
 		GridLayout layout = (GridLayout) this.getLayout();
 		layout.marginLeft = 0;
 		layout.marginWidth = 0;

@@ -21,15 +21,24 @@ public class SimpleGroup {
 
 	private int numColumns;
 
+	private int columnsToSpan;
+
 	private static final int DEFAULT_NUM_COLUMNS = 2;
 
+	private static final int DEFAULT_COLUMN_SPAN = 1;
+
 	public SimpleGroup(Composite composite, EnumProperty title, boolean readOnly) {
-		this(composite, title, readOnly, DEFAULT_NUM_COLUMNS);
+		this(composite, title, readOnly, DEFAULT_NUM_COLUMNS, DEFAULT_COLUMN_SPAN);
 	}
 
 	public SimpleGroup(Composite composite, EnumProperty title, boolean readOnly, int numColumns) {
+		this(composite, title, readOnly, numColumns, DEFAULT_COLUMN_SPAN);
+	}
+
+	public SimpleGroup(Composite composite, EnumProperty title, boolean readOnly, int numColumns, int columnsToSpan) {
 		this.swtGroup = new Group(composite, SWT.NONE);
 		this.numColumns = numColumns;
+		this.columnsToSpan = columnsToSpan;
 		String groupTitle = title.toString();
 		if (StringUtils.isNotBlank(groupTitle)) {
 			this.swtGroup.setText(groupTitle);
@@ -53,6 +62,9 @@ public class SimpleGroup {
 		}
 		layout.marginHeight = 5;
 		layout.marginWidth = 10;
+
+		GridData gridData = (GridData) this.getSwtGroup().getLayoutData();
+		gridData.horizontalSpan = columnsToSpan;
 	}
 
 	public Group getSwtGroup() {
