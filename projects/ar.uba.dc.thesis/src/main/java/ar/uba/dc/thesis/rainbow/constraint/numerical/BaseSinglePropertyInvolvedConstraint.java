@@ -10,9 +10,18 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 
 	private static final long serialVersionUID = 1L;
 
-	private final Artifact artifact;
+	private Artifact artifact;
 
-	private final String property;
+	private String property;
+
+	public BaseSinglePropertyInvolvedConstraint() {
+		super();
+		this.restoreToDefaultValues();
+	}
+
+	public void restoreToDefaultValues() {
+		this.artifact = new Artifact();
+	}
 
 	public BaseSinglePropertyInvolvedConstraint(Artifact artifact, String property) {
 		super();
@@ -24,8 +33,16 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 		return artifact;
 	}
 
+	public void setArtifact(Artifact artifact) {
+		this.artifact = artifact;
+	}
+
 	public String getProperty() {
 		return property;
+	}
+
+	public void setProperty(String property) {
+		this.property = property;
 	}
 
 	/**
@@ -41,5 +58,4 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 			throw new RuntimeException("The artifact involved in this constraint cannot be null");
 		}
 	}
-
 }

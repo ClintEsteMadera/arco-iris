@@ -18,16 +18,16 @@ public class Artifact extends ThesisPojo {
 	@XStreamAsAttribute
 	private String systemName;
 
+	public Artifact() {
+		super();
+	}
+
 	public Artifact(Long id, String systemName, String name) {
 		super(id);
 		this.systemName = systemName;
 		this.name = name;
 
 		this.validate();
-	}
-
-	public Artifact() {
-		super();
 	}
 
 	public String getName() {

@@ -8,4 +8,10 @@ public interface Constraint extends Validatable {
 
 	String getFullyQualifiedPropertyName();
 
+	/**
+	 * Restores all the properties of the receiver to its default values
+     * FIXME we shouldn't need this
+	 */
+	void restoreToDefaultValues();
+
 }
