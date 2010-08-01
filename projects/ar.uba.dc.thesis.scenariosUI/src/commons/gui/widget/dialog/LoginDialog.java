@@ -86,11 +86,11 @@ public class LoginDialog extends Dialog {
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (IDialogConstants.OK_ID == buttonId) {
-			// botón ACEPTAR
+			// botón ACCEPT
 			this.validateInput();
 			this.userAuthenticated = this.authenticate();
 		} else {
-			// botón CANCELAR
+			// botón CANCEL
 			passwordText.setText("");
 		}
 		super.buttonPressed(buttonId);

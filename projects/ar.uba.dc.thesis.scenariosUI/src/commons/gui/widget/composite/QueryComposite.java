@@ -541,7 +541,7 @@ public abstract class QueryComposite<T> extends Composite {
 	private void agregarFiltro(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		addSpecificFilters((new SimpleGroup(composite, CommonLabels.FILTROS, false)).getSwtGroup());
+		addSpecificFilters((new SimpleGroup(composite, CommonLabels.FILTERS, false)).getSwtGroup());
 		filterButtonsGroup = new FilterButtonsGroup(composite, getFilterListener(), getCleanUpListener());
 		agregarSelectionListener(getFilterControls());
 	}

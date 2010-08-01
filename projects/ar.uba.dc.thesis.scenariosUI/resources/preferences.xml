@@ -17,13 +17,13 @@
     </table>
     <table name="ARTIFACTS" order="name">
       <column label="ID" name="id" alignment="CENTER" width="25"/>
-      <column label="NAME" name="name" alignment="LEFT" width="98"/>
       <column label="SYSTEM_NAME" name="systemName" alignment="LEFT" width="151"/>
+      <column label="NAME" name="name" alignment="LEFT" width="98"/>
     </table>
     <table name="ARTIFACT_SELECTION" order="name">
       <column label="ID" name="id" alignment="CENTER" width="25"/>
-      <column label="NAME" name="name" alignment="LEFT" width="98"/>
       <column label="SYSTEM_NAME" name="systemName" alignment="LEFT" width="141"/>
+      <column label="NAME" name="name" alignment="LEFT" width="98"/>
     </table>
   </tables>
 </preferences>

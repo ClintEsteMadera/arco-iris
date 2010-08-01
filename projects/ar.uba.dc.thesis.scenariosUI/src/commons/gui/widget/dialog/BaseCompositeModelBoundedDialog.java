@@ -46,7 +46,7 @@ public abstract class BaseCompositeModelBoundedDialog<T> extends OpenableTrayDia
 		boolean abandonChanges = true;
 
 		if (this.modelDirty) {
-			abandonChanges = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATENTION.toString(),
+			abandonChanges = MessageDialog.openQuestion(this.getShell(), CommonLabels.ATTENTION.toString(),
 					"Do you wish to abandon the changes made to the scenario ?");
 		}
 		return abandonChanges;

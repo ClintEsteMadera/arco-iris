@@ -24,14 +24,19 @@ public enum ScenariosUILabels implements EnumProperty {
 	ARTIFACT,
 	ARTIFACTS,
 	SELECT_ARTIFACT,
+	PROPERTY,
+	OPERATOR,
 	RESPONSE,
 	RESPONSE_MEASURE,
+	CONSTRAINT,
+	CONSTRAINT_TYPE,
 	ENABLED,
 	PRIORITY,
 	FILE_DIALOG_MESSAGE,
 	SYSTEM_NAME,
 	FROM,
-	TO;
+	TO,
+	SUM;
 
 	@Override
 	public String toString() {

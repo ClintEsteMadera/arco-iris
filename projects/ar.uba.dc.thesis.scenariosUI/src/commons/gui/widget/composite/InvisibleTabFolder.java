@@ -15,16 +15,24 @@ public class InvisibleTabFolder extends Composite {
 	}
 
 	@Override
-	public void setLayout(Layout layout) {
-		// no se puede establecer un nuevo Layout
+	public final void setLayout(Layout layout) {
+		// this operation is not intended to be overwritten
+	}
+
+	public Control getTab(int index) {
+		Control[] children = this.getChildren();
+		Control tab = null;
+		if (index >= 0 && index < children.length) {
+			tab = children[index];
+		}
+		return tab;
 	}
 
 	public void setSelection(int index) {
-		Control[] children = getChildren();
-		if (index >= 0 && index < children.length) {
-			((StackLayout) getLayout()).topControl = children[index];
+		Control tab = this.getTab(index);
+		if (tab != null) {
+			((StackLayout) getLayout()).topControl = tab;
 			layout();
 		}
 	}
-
 }
