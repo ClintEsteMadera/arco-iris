@@ -13,6 +13,7 @@ import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
@@ -23,14 +24,20 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	private static final RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
 
-	private final NumericBinaryOperator binaryOperator;
+	private NumericBinaryOperator binaryOperator;
 
-	private final Number constantToCompareThePropertyWith;
+	private Number constantToCompareThePropertyWith;
 
+	@XStreamOmitField
 	private String eAvgPropertyName;
 
 	@XStreamAsAttribute
 	private boolean sum;
+
+	public NumericBinaryRelationalConstraint() {
+		super();
+		this.restoreToDefaultValues();
+	}
 
 	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
 			Number constantToCompareThePropertyWith) {
@@ -46,6 +53,11 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		this.validate();
 	}
 
+	@Override
+	public void restoreToDefaultValues() {
+		this.constantToCompareThePropertyWith = Double.valueOf(0.0);
+	}
+
 	public boolean isSum() {
 		return sum;
 	}
@@ -56,6 +68,18 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	public Number getConstantToCompareThePropertyWith() {
 		return constantToCompareThePropertyWith;
+	}
+
+	public void setConstantToCompareThePropertyWith(Number constantToCompareThePropertyWith) {
+		this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
+	}
+
+	public NumericBinaryOperator getBinaryOperator() {
+		return binaryOperator;
+	}
+
+	public void setBinaryOperator(NumericBinaryOperator binaryOperator) {
+		this.binaryOperator = binaryOperator;
 	}
 
 	public boolean holds(Number eavg) {

@@ -45,6 +45,7 @@ public class SelfHealingScenario extends AtamScenario {
 	public SelfHealingScenario() {
 		super();
 		this.repairStrategies = new ArrayList<String>();
+		this.enabled = true;
 	}
 
 	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
