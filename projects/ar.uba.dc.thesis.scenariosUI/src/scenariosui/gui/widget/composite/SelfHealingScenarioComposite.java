@@ -28,6 +28,8 @@ import commons.properties.CommonLabels;
 
 public class SelfHealingScenarioComposite extends SimpleComposite {
 
+	private ResponseMeasureGroup responseMeasureGroup;
+
 	public SelfHealingScenarioComposite(Composite parent, Purpose purpose,
 			CompositeModel<SelfHealingScenario> underlyingScenario) {
 		super(parent, purpose.isReadOnly());
@@ -102,10 +104,14 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 		ControlMetainfo controlMetainfo = new ControlMetainfo(swtGroup, ScenariosUILabels.RESPONSE_MEASURE,
 				new BindingInfo(underlyingScenario.getNestedModel("responseMeasure", ResponseMeasure.class)),
 				this.readOnly);
-		new ResponseMeasureGroup(controlMetainfo);
+		this.responseMeasureGroup = new ResponseMeasureGroup(controlMetainfo);
 
 		// TODO Architectural Decisions
 
 		// TODO List<String> repairStrategies;
+	}
+
+	public void okPressed() {
+		this.responseMeasureGroup.okPressed();
 	}
 }

@@ -14,6 +14,8 @@ import commons.properties.CommonLabels;
 
 public class ResponseMeasureGroup extends SimpleGroup {
 
+	private ConstraintComposite constraintComposite;
+
 	@SuppressWarnings("unchecked")
 	public ResponseMeasureGroup(ControlMetainfo ctrlMetainfo) {
 		super(ctrlMetainfo.composite, ScenariosUILabels.RESPONSE_MEASURE, ctrlMetainfo.readOnly, 1, 2);
@@ -21,11 +23,15 @@ public class ResponseMeasureGroup extends SimpleGroup {
 		CompositeModel<Constraint> compositeModel = ctrlMetainfo.binding.getCompositeModel().getNestedModel(
 				"constraint", Constraint.class);
 
-		ConstraintComposite constraintComposite = new ConstraintComposite(this.getSwtGroup(), compositeModel, ctrlMetainfo.readOnly);
+		this.constraintComposite = new ConstraintComposite(this.getSwtGroup(), compositeModel, ctrlMetainfo.readOnly);
 
-		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(constraintComposite, CommonLabels.DESCRIPTION,
+		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(this.constraintComposite, CommonLabels.DESCRIPTION,
 				new BindingInfo(ctrlMetainfo.binding.getCompositeModel(), "description"), ctrlMetainfo.readOnly);
 		TextFactory.createText(textMetainfo);
 
+	}
+
+	public void okPressed() {
+		this.constraintComposite.okPressed();
 	}
 }

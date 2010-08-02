@@ -12,6 +12,8 @@ import commons.properties.Messages;
 
 public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog<SelfHealingScenario> {
 
+	private SelfHealingScenarioComposite selfHealingScenarioComposite;
+
 	public SelfHealingScenarioDialog(SelfHealingScenario model, EnumProperty title, ScenariosUIPurpose purpose) {
 		super(model, title, purpose);
 	}
@@ -23,7 +25,8 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 
 	@Override
 	protected void addWidgetsToDialogArea(Composite parent) {
-		new SelfHealingScenarioComposite(parent, this.purpose, this.getCompositeModel());
+		this.selfHealingScenarioComposite = new SelfHealingScenarioComposite(parent, this.purpose, this
+				.getCompositeModel());
 	}
 
 	@Override
@@ -41,5 +44,11 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 	public String getSuccessfulOperationMessage(String operation) {
 		String scenarioName = super.getModel().getName() != null ? super.getModel().getName() : "";
 		return Messages.SUCCESSFUL_SCENARIO.toString(scenarioName, operation);
+	}
+
+	@Override
+	protected boolean performOK() {
+		this.selfHealingScenarioComposite.okPressed();
+		return super.performOK();
 	}
 }
