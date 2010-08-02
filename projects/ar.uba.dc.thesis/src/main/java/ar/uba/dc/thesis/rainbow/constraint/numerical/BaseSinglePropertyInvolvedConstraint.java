@@ -16,10 +16,6 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 
 	public BaseSinglePropertyInvolvedConstraint() {
 		super();
-		this.restoreToDefaultValues();
-	}
-
-	public void restoreToDefaultValues() {
 		this.artifact = new Artifact();
 	}
 
