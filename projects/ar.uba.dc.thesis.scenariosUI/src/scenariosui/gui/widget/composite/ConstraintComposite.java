@@ -2,7 +2,6 @@ package scenariosui.gui.widget.composite;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import scenariosui.gui.util.ConstraintType;
@@ -16,6 +15,7 @@ import commons.gui.model.bean.BeanModel;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.composite.InvisibleTabFolder;
 import commons.gui.widget.composite.SimpleComposite;
+import commons.gui.widget.composite.Tab;
 import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 import commons.gui.widget.creation.metainfo.ComboMetainfo;
@@ -28,18 +28,20 @@ import commons.properties.CommonLabels;
 
 public class ConstraintComposite extends SimpleComposite {
 
-	private static final int VERTICAL_SPACING = 10;
-
 	private InvisibleTabFolder tabFolder;
 
-	private final CompositeModel<Constraint> model;
+	private CompositeModel<Constraint> activeModel;
+
+	private CompositeModel<Constraint> numericBinaryRelationalModel;
 
 	private CompositeModel<ConstraintType> constraintType;
 
+	private final CompositeModel<Constraint> initialModel;
+
 	public ConstraintComposite(Composite composite, CompositeModel<Constraint> model, boolean readOnly) {
 		super(composite, readOnly, 1);
-		this.model = model;
-		this.initConstraintType();
+		this.initialModel = model;
+		this.initTabModels(model);
 
 		this.createConstraintTypeSelection(this);
 
@@ -52,13 +54,26 @@ public class ConstraintComposite extends SimpleComposite {
 		this.setCurrentActiveTab();
 	}
 
-	private void initConstraintType() {
-		Constraint underlyingConstraint = this.model.getValue();
+	private void initTabModels(CompositeModel<Constraint> model) {
+		Constraint underlyingConstraint = model.getValue();
 		if (underlyingConstraint == null) {
 			this.constraintType = new BeanModel<ConstraintType>(ConstraintType.class);
+			this.activeModel = new BeanModel<Constraint>(Constraint.class);
+			this.numericBinaryRelationalModel = new BeanModel<Constraint>(
+					ConstraintType.NUMERIC_BINARY_RELATIONAL_CONSTRAINT.getNewConstraintInstance());
 		} else {
-			ConstraintType constraintType = ConstraintType.getConstraintType(underlyingConstraint.getClass());
-			this.constraintType = new BeanModel<ConstraintType>(constraintType);
+			ConstraintType currentConstraintType = ConstraintType.getConstraintType(underlyingConstraint.getClass());
+
+			switch (currentConstraintType) {
+			case NUMERIC_BINARY_RELATIONAL_CONSTRAINT:
+				this.numericBinaryRelationalModel = model;
+				this.activeModel = this.numericBinaryRelationalModel;
+				break;
+			default:
+				throw new RuntimeException("Cannot initialize the contraint "
+						+ underlyingConstraint.getClass().getName());
+			}
+			this.constraintType = new BeanModel<ConstraintType>(currentConstraintType);
 		}
 	}
 
@@ -74,16 +89,19 @@ public class ConstraintComposite extends SimpleComposite {
 			// TODO No setear este valor ahora sino guardarlo y ofrecerlo con un getter al que pueda controlar el
 			// okPressed del usuario (para no pegar un valor en el modelo si el usuario cancela)
 			@Override
+			@SuppressWarnings("unchecked")
 			public void valueChange(ValueChangeEvent<ConstraintType> ev) {
 				ConstraintType newValue = ev.getNewValue();
 				if (newValue == null) {
-					model.getValue().restoreToDefaultValues();
+					activeModel = new BeanModel<Constraint>(Constraint.class);
 				} else {
-					Constraint currentModel = model.getValue();
+					Constraint currentModel = activeModel.getValue();
 					Class<? extends Constraint> selectedConstraintClass = newValue.getMappedClass();
 
 					if (currentModel == null || !selectedConstraintClass.equals(currentModel.getClass())) {
-						model.setValue(newValue.getNewConstraintInstance());
+						if (ConstraintType.NUMERIC_BINARY_RELATIONAL_CONSTRAINT.equals(newValue)) {
+							activeModel = numericBinaryRelationalModel;
+						}
 					}
 				}
 				setCurrentActiveTab();
@@ -95,61 +113,61 @@ public class ConstraintComposite extends SimpleComposite {
 	 * Just creates an empty tab composite to display when there is no selection
 	 */
 	private void createEmptyTab() {
-		this.createTabComposite();
+		new Tab(this.tabFolder, super.readOnly);
 	}
 
 	private void createTabForNumericBinaryRelationalConstraint() {
-		Composite parent = this.createTabComposite();
+		Tab tab = new Tab(this.tabFolder, super.readOnly);
 
-		DefaultLayoutFactory.setDefaultGridLayout(parent, 9);
+		DefaultLayoutFactory.setDefaultGridLayout(tab, 9);
 
-		LabelFactory.createLabel(parent, ScenariosUILabels.SYSTEM_NAME, false, false);
+		LabelFactory.createLabel(tab, ScenariosUILabels.SYSTEM_NAME, false, false);
 
-		LabelFactory.createLabel(parent);
+		LabelFactory.createLabel(tab);
 
-		LabelFactory.createLabel(parent, ScenariosUILabels.ARTIFACT, false, false);
+		LabelFactory.createLabel(tab, ScenariosUILabels.ARTIFACT, false, false);
 
-		LabelFactory.createLabel(parent);
+		LabelFactory.createLabel(tab);
 
-		LabelFactory.createLabel(parent, ScenariosUILabels.PROPERTY, false, false);
+		LabelFactory.createLabel(tab, ScenariosUILabels.PROPERTY, false, false);
 
-		LabelFactory.createLabel(parent);
+		LabelFactory.createLabel(tab);
 
-		LabelFactory.createLabel(parent);
+		LabelFactory.createLabel(tab);
 
-		LabelFactory.createLabel(parent);
+		LabelFactory.createLabel(tab);
 
-		LabelFactory.createLabel(parent);
+		LabelFactory.createLabel(tab);
 
-		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(parent, CommonLabels.NO_LABEL, new BindingInfo(
-				this.model, "artifact.systemName"), super.readOnly);
+		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+				this.numericBinaryRelationalModel, "artifact.systemName"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
 
-		LabelFactory.createLabel(parent, CommonLabels.DOT, true, false);
+		LabelFactory.createLabel(tab, CommonLabels.DOT, true, false);
 
-		textMetainfo = TextFieldMetainfo.create(parent, CommonLabels.NO_LABEL, new BindingInfo(this.model,
-				"artifact.name"), super.readOnly);
+		textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+				this.numericBinaryRelationalModel, "artifact.name"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
 
-		LabelFactory.createLabel(parent, CommonLabels.DOT, true, false);
+		LabelFactory.createLabel(tab, CommonLabels.DOT, true, false);
 
-		textMetainfo = TextFieldMetainfo.create(parent, CommonLabels.NO_LABEL, new BindingInfo(this.model, "property"),
-				super.readOnly);
+		textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+				this.numericBinaryRelationalModel, "property"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
 
-		ComboMetainfo comboMetainfo = ComboMetainfo.create(parent, CommonLabels.NO_LABEL, new BindingInfo(this.model,
-				"binaryOperator"), super.readOnly);
+		ComboMetainfo comboMetainfo = ComboMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+				this.numericBinaryRelationalModel, "binaryOperator"), super.readOnly);
 		ComboFactory.createCombo(comboMetainfo);
-		textMetainfo = TextFieldMetainfo.create(parent, CommonLabels.NO_LABEL, new BindingInfo(this.model,
-				"constantToCompareThePropertyWith"), super.readOnly);
+		textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+				this.numericBinaryRelationalModel, "constantToCompareThePropertyWith"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
 
-		BooleanFieldMetainfo booleanMetainfo = BooleanFieldMetainfo.create(parent, ScenariosUILabels.SUM,
-				new BindingInfo(this.model, "sum"), super.readOnly);
+		BooleanFieldMetainfo booleanMetainfo = BooleanFieldMetainfo.create(tab, ScenariosUILabels.SUM, new BindingInfo(
+				this.numericBinaryRelationalModel, "sum"), super.readOnly);
 		BooleanFactory.createBoolean(booleanMetainfo);
 	}
 
@@ -167,12 +185,7 @@ public class ConstraintComposite extends SimpleComposite {
 		return result;
 	}
 
-	private Composite createTabComposite() {
-		Composite tabComposite = new SimpleComposite(this.tabFolder, this.readOnly, 1);
-		GridLayout gridLayout = new GridLayout(2, false);
-		gridLayout.verticalSpacing = VERTICAL_SPACING;
-		gridLayout.marginWidth = 15;
-		tabComposite.setLayout(gridLayout);
-		return tabComposite;
+	public void okPressed() {
+		this.initialModel.setValue(this.activeModel.getValue());
 	}
 }

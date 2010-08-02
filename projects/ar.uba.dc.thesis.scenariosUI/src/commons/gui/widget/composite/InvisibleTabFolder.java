@@ -19,9 +19,16 @@ public class InvisibleTabFolder extends Composite {
 		// this operation is not intended to be overwritten
 	}
 
-	public Control getTab(int index) {
-		Control[] children = this.getChildren();
-		Control tab = null;
+	public Tab[] getTabs() {
+		Control[] children = super.getChildren();
+		Tab[] tabs = new Tab[children.length];
+		System.arraycopy(children, 0, tabs, 0, children.length);
+		return tabs;
+	}
+
+	public Tab getTab(int index) {
+		Tab[] children = this.getTabs();
+		Tab tab = null;
 		if (index >= 0 && index < children.length) {
 			tab = children[index];
 		}
@@ -29,7 +36,7 @@ public class InvisibleTabFolder extends Composite {
 	}
 
 	public void setSelection(int index) {
-		Control tab = this.getTab(index);
+		Tab tab = this.getTab(index);
 		if (tab != null) {
 			((StackLayout) getLayout()).topControl = tab;
 			layout();
