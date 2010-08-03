@@ -18,15 +18,43 @@
 	
 	Acme es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon University, más precisamente por el proyecto  \href{http://www.cs.cmu.edu/~able/}{Architecture Based Languages and Environments (Able)}, liderado por el Dr. David Garlan.\
 	
-	Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de software de los sistemas, y es Acme quien permite describir dichas arquitecturas, por lo tanto todos los restantes subproyectos dentro de Able utilizan Acme en menor o en mayor medida.
+	Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los restantes subproyectos dentro de Able utilizan Acme en menor o en mayor medida.
 		 
-	\subsection{Rainbow}
+	Además de los benecifios de todo ADL, el lenguaje Acme y su kit de herramientas proveen las siguientes capacidades fundamentales:
 	
+\begin{itemize}
+	\item Intercambio Arquitectural: al proveer un formato de intercambio genérico para diseñar arquitecturas de software, Acme permite a los desarrolladores de herramientas de Arquitectura de Software integrar fácilmente con otras herramientas complementarias basadas también en Acme. De esta manera, los arquitectos que usan herramientas basadas en Acme tiene un espectro más amplio de herramientas de análisis y diseño que quienes diseñan sus herramientas usando otros ADLs.
+	\item Extensibilidad: Acme provee una base sólida y extensible y una infraestructura que evita que los desarrolladores de herramientas deban modificar la infraestructura sobre la cual trabajan.
+\end{itemize}
+
+	\subsection{Rainbow}
+
 	\subsubsection{Introducción a Rainbow}
 	
+	La herramienta Rainbow, desarrollada también dentro del marco del proyecto Able, tiene como finalidad permitir reducir el costo e incrementar la confiabilidad al realizar cambios en sistemas complejos, para esto Rainbow automatiza la adaptación de sistemas dinámicos via el modelo de la arquitectura del sistema, representaciones explícitas de las tareas del usuario, y estimaciones orientadas a la performance en tiempo de ejecución.\
+	
+	La tecnología en la cual se apoya Rainbow esta basada en innovaciones en tres áreas críticas:
+	
+\begin{itemize}
+	\item Detección: la habilidad de determinar dinámicamente, o sea en run-time, propiedades de sistemas complejos y distribuidos.
+	\item Resolution: la habilidad de determinar cuándo las propiedades observadas del sistema violen los supuestos críticos del diseño del sistema.
+	\item Adaptación: la habilidad de automatizar la adaptación del sistema en respuesta a las violaciones de los supuestos del diseño del sistema.
+\end{itemize}
+
+Éstas habilidades proveerán:
+
+\begin{itemize}
+	\item La posibilidad de manipular los cambios en el sistema con respecto a estimaciones soportadas por Rainbow.
+	\item Un framework extensible para manipular estimaciones y estrategias de adaptación creadas por terceros.
+\end{itemize}
+
+Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente la necesidad de intervención humana en la adaptación de los sistemas ante cambios en el ambiente para alcanzar los objetivos de calidad requeridos, aumentando así la confianza en los cambios al proveer sistemas autoreparables.
+
 	\subsubsection{Tácticas y Estrategias}
 
 	\subsubsection{ZNN: Testeando Rainbow}
+	
+	Dentro del proyecto Rainbow se ha desarrollado un caso de estudio para validar el enfoque propuesto, dicho proyecto ha recibido el nombre de ZNN, que cumple la función de simular un sitio web de noticias.
 	
 	\subsection{Escenarios de Atributos de Calidad y QAW}
 	
