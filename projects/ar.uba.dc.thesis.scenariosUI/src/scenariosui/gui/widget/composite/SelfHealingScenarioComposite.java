@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Group;
 
 import scenariosui.gui.widget.group.ResponseMeasureGroup;
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
@@ -34,7 +34,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 			CompositeModel<SelfHealingScenario> underlyingScenario) {
 		super(parent, purpose.isReadOnly());
 
-		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.SCENARIO, this.readOnly).getSwtGroup();
+		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.SELF_HEALING_SCENARIO, this.readOnly).getSwtGroup();
 
 		BooleanFieldMetainfo metainfo = BooleanFieldMetainfo.create(swtGroup, ScenariosUILabels.ENABLED,
 				new BindingInfo(underlyingScenario, "enabled"), readOnly);
@@ -44,7 +44,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 
 		if (purpose.isCreation()) {
 			underlyingScenario.getValue().setId(
-					SelfHealingConfigurationManager.getInstance().getNextId(SelfHealingScenario.class));
+					ScenariosUIManager.getInstance().getNextId(SelfHealingScenario.class));
 		}
 
 		SimpleComposite fourColumnsComposite = new SimpleComposite(swtGroup, super.readOnly, 4, 2);
@@ -106,9 +106,12 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 				this.readOnly);
 		this.responseMeasureGroup = new ResponseMeasureGroup(controlMetainfo);
 
-		// TODO Architectural Decisions
+		objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup, ScenariosUILabels.REPAIR_STRATEGIES,
+				new BindingInfo(underlyingScenario, "repairStrategies"), super.readOnly);
+		objectSelectionMetainfo.canView = false;
+		new RepairStrategiesSelectionComposite(objectSelectionMetainfo);
 
-		// TODO List<String> repairStrategies;
+		// TODO Architectural Decisions
 	}
 
 	public void okPressed() {

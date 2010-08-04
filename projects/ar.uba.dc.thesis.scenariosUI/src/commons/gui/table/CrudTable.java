@@ -1,6 +1,3 @@
-/*
- * $Id: CrudTable.java,v 1.8 2008/03/26 15:57:28 cvsmarco Exp $
- */
 package commons.gui.table;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -15,27 +12,34 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
-
 import commons.gui.table.handler.RowSelectionHandler;
 import commons.properties.EnumProperty;
 
 /**
  * Modela una tabla con botones para un CRUD (Create Read Update Delete).
- * @author Gabriel Tursi
  */
-public class CrudTable extends GenericTable {
+public class CrudTable<T> extends GenericTable<T> {
 
-	public CrudTable(final Composite parent, final Class clazz, EnumProperty tableName,
+	private Button addButton;
+
+	protected Button editButton;
+
+	protected Button deleteButton;
+
+	protected Button viewButton;
+
+	protected boolean readOnly;
+
+	private final Composite buttonsComposite;
+
+	public CrudTable(final Composite parent, final Class<T> clazz, EnumProperty tableName,
 			final RowSelectionHandler rowSelectionHandler, boolean sorteable, boolean readOnly) {
-		this(parent, clazz, tableName, rowSelectionHandler, sorteable, readOnly,
-				DEFAULT_TABLE_STYLE);
+		this(parent, clazz, tableName, rowSelectionHandler, sorteable, readOnly, DEFAULT_TABLE_STYLE);
 	}
 
-	public CrudTable(final Composite parent, final Class clazz, EnumProperty tableName,
-			final RowSelectionHandler rowSelectionHandler, boolean sorteable, boolean readOnly,
-			int style) {
-		super(parent, clazz, tableName, rowSelectionHandler.command.findAll(), sorteable,
-				style);
+	public CrudTable(final Composite parent, final Class<T> clazz, EnumProperty tableName,
+			final RowSelectionHandler rowSelectionHandler, boolean sorteable, boolean readOnly, int style) {
+		super(parent, clazz, tableName, rowSelectionHandler.command.findAll(), sorteable, style);
 		this.readOnly = readOnly;
 		buttonsComposite = new Composite(parent, SWT.NONE);
 		GridData gridData = new GridData();
@@ -71,8 +75,7 @@ public class CrudTable extends GenericTable {
 		return deleteButton;
 	}
 
-	protected SelectionAdapter getViewSelectionAdapter(
-			final RowSelectionHandler rowSelectionHandler, final Button view) {
+	protected SelectionAdapter getViewSelectionAdapter(final RowSelectionHandler rowSelectionHandler, final Button view) {
 		return new SelectionAdapter() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -96,9 +99,8 @@ public class CrudTable extends GenericTable {
 			}
 		};
 	}
-	
-	protected void createButtonBarAndListeners(Composite parent,
-			RowSelectionHandler rowSelectionHandler) {
+
+	protected void createButtonBarAndListeners(Composite parent, RowSelectionHandler rowSelectionHandler) {
 		addButton = createButton("Agregar", "Agregar nuevo");
 		editButton = createButton("Editar", "Editar item seleccionado");
 		deleteButton = createButton("Eliminar", "Eliminar item seleccionado");
@@ -113,8 +115,7 @@ public class CrudTable extends GenericTable {
 		addDoubleClickListener(getDoubleClickListener(rowSelectionHandler));
 	}
 
-	protected IDoubleClickListener getDoubleClickListener(
-			final RowSelectionHandler rowSelectionHandler) {
+	protected IDoubleClickListener getDoubleClickListener(final RowSelectionHandler rowSelectionHandler) {
 		return new IDoubleClickListener() {
 			@SuppressWarnings("unchecked")
 			public void doubleClick(DoubleClickEvent event) {
@@ -154,8 +155,7 @@ public class CrudTable extends GenericTable {
 		return buttonsComposite;
 	}
 
-	protected IDoubleClickListener getReadOnlyDoubleClickListener(
-			final RowSelectionHandler rowSelectionHandler) {
+	protected IDoubleClickListener getReadOnlyDoubleClickListener(final RowSelectionHandler rowSelectionHandler) {
 		return new IDoubleClickListener() {
 			@SuppressWarnings("unchecked")
 			public void doubleClick(DoubleClickEvent event) {
@@ -213,8 +213,7 @@ public class CrudTable extends GenericTable {
 					rowSelectionHandler.command.delete(getElementAt(index));
 					setInput(rowSelectionHandler.command.findAll());
 					refresh();
-					index = (index < getTable().getItemCount()) ? index
-							: getTable().getItemCount() - 1;
+					index = (index < getTable().getItemCount()) ? index : getTable().getItemCount() - 1;
 					if (index != -1) {
 						getTable().select(index);
 					}
@@ -236,9 +235,9 @@ public class CrudTable extends GenericTable {
 	public void removeDeleteButton() {
 		removeButton(deleteButton);
 	}
-	
+
 	private void removeButton(Button button) {
-		if(!this.readOnly) {
+		if (!this.readOnly) {
 			removeAdditionalButton(button);
 			button.dispose();
 		}
@@ -255,16 +254,4 @@ public class CrudTable extends GenericTable {
 	protected int getButtonBarCount() {
 		return 3;
 	}
-
-	private Button addButton;
-
-	protected Button editButton;
-
-	protected Button deleteButton;
-
-	protected Button viewButton;
-
-	protected boolean readOnly;
-
-	private final Composite buttonsComposite;
 }

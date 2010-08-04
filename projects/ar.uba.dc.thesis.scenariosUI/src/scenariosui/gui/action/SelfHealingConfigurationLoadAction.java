@@ -3,10 +3,10 @@ package scenariosui.gui.action;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.FileDialog;
 
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 
-public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseFileAction {
+public class SelfHealingConfigurationLoadAction extends SelfHealingConfigurationBaseFileAction {
 
 	protected SelfHealingConfigurationLoadAction(String uniqueId, String shortcut) {
 		super(uniqueId, shortcut);
@@ -30,7 +30,7 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingScenarioBaseF
 			if (filePathToTheXML == null) {
 				return;
 			}
-			SelfHealingConfigurationManager.getInstance().openExistingSelfHealingConfiguration(filePathToTheXML);
+			ScenariosUIManager.getInstance().openExistingSelfHealingConfiguration(filePathToTheXML);
 
 			showAllQueries();
 			setCloseActionEnabled(true);

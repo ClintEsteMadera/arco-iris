@@ -1,12 +1,9 @@
 MUST HAVES:
-
-
+- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
 
 NICE TO HAVES:
 
 - Arreglar el layout en gral de los diálogos
-
-- El layout de los selection composite incordian con el resto. Ver de arreglarlo.
 
 - poner como descripción del SelfHealingConfiguration lo que el usuario pone como nombre de archivo?
 

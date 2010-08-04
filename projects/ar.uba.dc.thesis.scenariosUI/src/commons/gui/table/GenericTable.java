@@ -1,7 +1,7 @@
 package commons.gui.table;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -36,10 +36,11 @@ import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.TableInfo;
 import commons.properties.EnumProperty;
 
-public class GenericTable extends TableViewer {
+public class GenericTable<T> extends TableViewer {
 
 	public static final int DEFAULT_TABLE_STYLE = SWT.FULL_SELECTION | SWT.BORDER;
 
+	@SuppressWarnings("unchecked")
 	private HashMap<Button, List<Predicate>> buttonPredicates = new HashMap<Button, List<Predicate>>();
 
 	private static int COLUMN_MARGINS = 20;
@@ -50,7 +51,7 @@ public class GenericTable extends TableViewer {
 
 	private boolean smartAlignmentDeduction = false;
 
-	public GenericTable(final Composite parent, final Class clazz, EnumProperty tableName, Object elements,
+	public GenericTable(final Composite parent, final Class<T> clazz, EnumProperty tableName, Object elements,
 			boolean sorteable, int style) {
 		this(parent, style, clazz, tableName, sorteable);
 		super.setInput(elements);
@@ -62,7 +63,7 @@ public class GenericTable extends TableViewer {
 		refresh();
 	}
 
-	public GenericTable(TableMetainfo info) {
+	public GenericTable(TableMetainfo<T> info) {
 		this(info.parent, info.tableStyle, info.itemClass, info.tableName, info.sorteable);
 
 		info.bindingInfo.bind(this);
@@ -74,11 +75,11 @@ public class GenericTable extends TableViewer {
 		refresh();
 	}
 
-	public GenericTable(Composite parent, Class clazz, EnumProperty tableName, Object elements, boolean sorteable) {
+	public GenericTable(Composite parent, Class<T> clazz, EnumProperty tableName, Object elements, boolean sorteable) {
 		this(parent, clazz, tableName, elements, sorteable, DEFAULT_TABLE_STYLE);
 	}
 
-	public GenericTable(Composite composite, int style, Class itemClass, EnumProperty tableName, boolean sorteable) {
+	public GenericTable(Composite composite, int style, Class<T> itemClass, EnumProperty tableName, boolean sorteable) {
 		super(composite, style);
 		init(new AttributesRowAdapter(itemClass, tableName), sorteable, tableName);
 	}
@@ -105,11 +106,25 @@ public class GenericTable extends TableViewer {
 	/**
 	 * Devuelve el primer elemento seleccionado o null si no hay ningún elemento seleccionado
 	 */
-	public Object getSelectedElement() {
-		Object result = null;
-		List selectionFromWidget = this.getSelectionFromWidget();
+
+	public T getSelectedElement() {
+		T result = null;
+		List<T> selectionFromWidget = this.getSelectionFromWidget();
 		if (!selectionFromWidget.isEmpty()) {
 			result = selectionFromWidget.get(0);
+		}
+		return result;
+	}
+
+	/**
+	 * Devuelve el ultimo elemento seleccionado o null si no hay ningún elemento seleccionado
+	 */
+
+	public T getLastSelectedElement() {
+		T result = null;
+		List<T> selectionFromWidget = this.getSelectionFromWidget();
+		if (!selectionFromWidget.isEmpty()) {
+			result = selectionFromWidget.get(selectionFromWidget.size() - 1);
 		}
 		return result;
 	}
@@ -119,7 +134,8 @@ public class GenericTable extends TableViewer {
 	 * 
 	 * @return
 	 */
-	public List getSelectedElements() {
+
+	public List<T> getSelectedElements() {
 		return this.getSelectionFromWidget();
 	}
 
@@ -128,7 +144,7 @@ public class GenericTable extends TableViewer {
 	 * 
 	 * @param list
 	 */
-	public void setSelectedElements(List list) {
+	public void setSelectedElements(List<T> list) {
 		this.setSelectionToWidget(list, true);
 	}
 
@@ -141,16 +157,17 @@ public class GenericTable extends TableViewer {
 	 * 
 	 * @return
 	 */
-	public List getCheckedItems() {
+	public List<T> getCheckedItems() {
 		TableItem[] items = this.getTable().getItems();
 
-		ArrayList<Object> list = new ArrayList<Object>();
+		List<T> list = new ArrayList<T>();
 
 		for (int i = 0; i < items.length; i++) {
 			TableItem item = items[i];
 
 			if (item.getChecked()) {
-				final Object e = item.getData();
+				@SuppressWarnings("unchecked")
+				final T e = (T) item.getData();
 				if (e != null) {
 					list.add(e);
 				}
@@ -159,10 +176,10 @@ public class GenericTable extends TableViewer {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setFilterPredicate(final Predicate predicate) {
 		final ViewerFilter filter = new ViewerFilter() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				return predicate.evaluate(element);
@@ -177,7 +194,7 @@ public class GenericTable extends TableViewer {
 	 * 
 	 * @param checkedList
 	 */
-	public void setCheckedItems(List checkedList) {
+	public void setCheckedItems(List<T> checkedList) {
 		TableItem[] items = this.getTable().getItems();
 
 		for (int i = 0; i < items.length; i++) {
@@ -195,6 +212,7 @@ public class GenericTable extends TableViewer {
 		addAdditionalButton(button, Predicate.NOT_NULL);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addAdditionalButton(Button button, Predicate predicate) {
 		List<Predicate> predicates = this.buttonPredicates.get(button);
 		if (predicates == null) {
@@ -242,16 +260,16 @@ public class GenericTable extends TableViewer {
 	}
 
 	protected void applyEnabledState(Button button) {
-		this.applyEnabledState(button, Arrays.asList(new Predicate[] { Predicate.TRUE }));
+		this.applyEnabledState(button, Collections.singletonList(Predicate.TRUE));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void applyEnabledState(Button button, List<Predicate> predicates) {
-		Object o = this.getSelectedElement();
+		T selectedElement = this.getSelectedElement();
 
 		boolean enabled = true;
-		for (Predicate p : predicates) {
-			if (!p.evaluate(o)) {
+		for (Predicate<T> p : predicates) {
+			if (!p.evaluate(selectedElement)) {
 				enabled = false;
 				break;
 			}
@@ -259,7 +277,6 @@ public class GenericTable extends TableViewer {
 		button.setEnabled(enabled);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void init(TableRowAdapter aRowAdapter, boolean sorteable, EnumProperty tableName) {
 		GC gc = new GC(Display.getCurrent());
 		gc.setFont(this.getTable().getFont());
@@ -384,6 +401,12 @@ public class GenericTable extends TableViewer {
 
 	protected void removeAdditionalButton(Button button) {
 		buttonPredicates.remove(button);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected List<T> getSelectionFromWidget() {
+		return super.getSelectionFromWidget();
 	}
 
 	private GenericTableViewerSorter getSorterImpl() {

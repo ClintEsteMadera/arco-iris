@@ -25,5 +25,8 @@
       <column label="SYSTEM_NAME" name="systemName" alignment="LEFT" width="141"/>
       <column label="NAME" name="name" alignment="LEFT" width="98"/>
     </table>
+    <table name="REPAIR_STRATEGY_SELECTION" order="name">
+      <column label="NAME" name="name" alignment="LEFT" width="130"/>
+    </table>
   </tables>
 </preferences>

@@ -3,12 +3,12 @@ package scenariosui.gui.action;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.custom.CTabItem;
 
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 
 import commons.gui.util.PageHelper;
 
-public class SelfHealingConfigurationCloseAction extends SelfHealingScenarioBaseFileAction {
+public class SelfHealingConfigurationCloseAction extends SelfHealingConfigurationBaseFileAction {
 
 	protected SelfHealingConfigurationCloseAction(String uniqueId, String shortcut) {
 		super(uniqueId, shortcut);
@@ -28,7 +28,7 @@ public class SelfHealingConfigurationCloseAction extends SelfHealingScenarioBase
 		@Override
 		@SuppressWarnings("unchecked")
 		public void run() {
-			SelfHealingConfigurationManager.getInstance().close();
+			ScenariosUIManager.getInstance().close();
 			closeQueryComposites();
 			setCloseActionEnabled(false);
 		}

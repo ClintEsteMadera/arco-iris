@@ -1,9 +1,13 @@
 package scenariosui.gui.widget.composite.query;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
-import ar.uba.dc.thesis.common.ThesisPojo;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.purpose.Purpose;
@@ -11,7 +15,13 @@ import commons.gui.widget.composite.QueryComposite;
 import commons.properties.EnumProperty;
 import commons.query.BaseSearchCriteria;
 
-public abstract class ScenariosUIQueryComposite<T extends ThesisPojo> extends QueryComposite<T> {
+/**
+ * This class provides the default guidelines for any Query Composite within the application "Scenarios UI".
+ * 
+ * @param <T>
+ *            the type of the items contained in the table within this Query Composite.
+ */
+public abstract class ScenariosUIQueryComposite<T> extends QueryComposite<T> {
 
 	public ScenariosUIQueryComposite(Composite parent, EnumProperty tableName, Class<T> tableElementsClassName,
 			BaseSearchCriteria<T> searchCriteria) {
@@ -49,10 +59,37 @@ public abstract class ScenariosUIQueryComposite<T extends ThesisPojo> extends Qu
 	}
 
 	@Override
+	protected boolean showFilters() {
+		return false;
+	}
+
+	/**
+	 * We specifically make this method final so that subclasses don't have to overwrite it (since it is not used at all
+	 * because this application doesn't support search filters)
+	 */
+	@Override
+	protected final void addSpecificFilters(Group grupoFiltros) {
+		// do nothing
+	}
+
+	/**
+	 * We specifically make this method final so that subclasses don't have to overwrite it (since it is not used at all
+	 * because this application doesn't support search filters)
+	 */
+	@Override
+	protected final List<Control> getFilterControls() {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * We specifically make this method final so that subclasses don't have to overwrite it (since it is not used at all
+	 * because this application doesn't support viewing the elements within Query Composites.)
+	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	protected final OpenDialogWithPurposeAction<Environment, Purpose> getActionForView() {
 		throw new RuntimeException(
-				"This method should not be called since Scenarios UI does not allow viewing in its QueryComposites");
+				"This method should not be called since Scenarios UI does not allow viewing on its QueryComposites");
 	}
 
 	/**

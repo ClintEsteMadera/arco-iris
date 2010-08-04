@@ -69,9 +69,11 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private EnumProperty tableName;
 
+	private Class<T> tableContentClass;
+
 	private FilterButtonsGroup filterButtonsGroup;
 
-	private Menu menuContextual;
+	private Menu contextMenu;
 
 	private SimpleComposite leftButtonBarComposite;
 
@@ -85,11 +87,9 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private Button closeButton;
 
-	private BeanModel<BaseSearchCriteria<T>> criterioWrapped;
+	private BeanModel<BaseSearchCriteria<T>> wrappedCriteria;
 
-	private Class<T> tableContentClass;
-
-	private GenericTable table;
+	private GenericTable<T> table;
 
 	private ValueModel<String> informationText;
 
@@ -102,13 +102,13 @@ public abstract class QueryComposite<T> extends Composite {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
 		this.tableContentClass = tableElementsClassName;
-		this.criterioWrapped = new BeanModel<BaseSearchCriteria<T>>(searchCriteria);
+		this.wrappedCriteria = new BeanModel<BaseSearchCriteria<T>>(searchCriteria);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
 		this.reset();
 	}
 
-	public GenericTable getTable() {
+	public GenericTable<T> getTable() {
 		return this.table;
 	}
 
@@ -120,7 +120,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 */
 	public void reset(Long id) {
 		this.getCriteria().setId(id);
-		// Simulo el "Buscar"
+		// "Search" simulation
 		SelectionListener filterListener = this.getFilterListener();
 		if (filterListener != null) {
 			filterListener.widgetSelected(null);
@@ -131,12 +131,12 @@ public abstract class QueryComposite<T> extends Composite {
 	 * Su utilidad es limpiar los filtros y actualizar la consulta del QueryComposite.
 	 */
 	public void reset() {
-		// Simulo el "Limpiar Filtros"
+		// "Clean filters" simulated
 		SelectionListener cleanUpListener = this.getCleanUpListener();
 		if (cleanUpListener != null) {
 			cleanUpListener.widgetSelected(null);
 		}
-		// we simulate the "search" functionality
+		// "Search" simulation
 		SelectionListener filterListener = this.getFilterListener();
 		if (filterListener != null) {
 			filterListener.widgetSelected(null);
@@ -148,15 +148,13 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	public BeanModel<BaseSearchCriteria<T>> getCriterioWrapped() {
-		return criterioWrapped;
+		return wrappedCriteria;
 	}
 
-	@SuppressWarnings("unchecked")
 	public T getModel() {
-		return (T) getTable().getSelectedElement();
+		return getTable().getSelectedElement();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<T> getSelectedElements() {
 		return getTable().getSelectedElements();
 	}
@@ -177,7 +175,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 *            menú contextual.
 	 */
 	protected void addMenuItem2MenuContextual(final Button button) {
-		MenuItem item = new MenuItem(menuContextual, SWT.PUSH);
+		MenuItem item = new MenuItem(contextMenu, SWT.PUSH);
 		item.setText(button.getText());
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -218,14 +216,14 @@ public abstract class QueryComposite<T> extends Composite {
 	 * Realiza la consulta definida en <code>getBackgroundThread</code> y actualiza la tabla.
 	 */
 	protected final void doQuery() {
-		boolean hayQueRefrescarSoloUnItem = this.getCriteria().getId() != null;
+		boolean justRefreshOneSingleItem = this.getCriteria().getId() != null;
 
-		if (hayQueRefrescarSoloUnItem) {
-			List<T> refreshList = this.executeQuery(); // pide a la persistencia el objeto que cambió
+		if (justRefreshOneSingleItem) {
+			List<T> refreshList = this.executeQuery(); // ask the persistence layer just for the element that changed
 			this.refreshItemsAccordingTo(refreshList);
 			this.getCriteria().setId(null);
 		} else {
-			// se refresca toda la tabla
+			// refresh the entire table
 			List<T> queryResult = this.executeQuery();
 			getTable().setInput(queryResult);
 
@@ -257,7 +255,7 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Por defecto, se agregan los botones de "Nuevo", "Edición" y "Cerrar", si es que están soportados por el
+	 * Por defecto, se agregan los botones de "Nuevo", "Edición", "Borrar" y "Cerrar", si es que están soportados por el
 	 * QueryComposite concreto.
 	 */
 	protected void addButtons() {
@@ -494,6 +492,13 @@ public abstract class QueryComposite<T> extends Composite {
 	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForDelete();
 
 	/**
+	 * This method specified whether a composite for search filters should be drawn.
+	 * 
+	 * @return <code>true</code>, if the filter composite should be created. <code>false</code> otherwise.
+	 */
+	protected abstract boolean showFilters();
+
+	/**
 	 * Agrega los filtros específicos.
 	 * 
 	 * @param grupoFiltros
@@ -526,9 +531,13 @@ public abstract class QueryComposite<T> extends Composite {
 	private QueryComposite<T> init() {
 		this.setLayout(new GridLayout());
 		this.setLayoutData(new GridData(GridData.FILL_BOTH));
-		this.agregarFiltro(this);
-		this.agregarTabla(this);
-		this.configureButtonBar();
+		if (this.showFilters()) {
+			this.addFiltersComposite(this);
+		}
+		this.addTable(this);
+		if (this.anyButtonAllowed()) {
+			this.configureButtonBar();
+		}
 		this.pack();
 		return this;
 	}
@@ -538,12 +547,12 @@ public abstract class QueryComposite<T> extends Composite {
 	 * 
 	 * @param parent
 	 */
-	private void agregarFiltro(Composite parent) {
+	private void addFiltersComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		addSpecificFilters((new SimpleGroup(composite, CommonLabels.FILTERS, false)).getSwtGroup());
 		filterButtonsGroup = new FilterButtonsGroup(composite, getFilterListener(), getCleanUpListener());
-		agregarSelectionListener(getFilterControls());
+		addEnterKeySelectionListener(getFilterControls());
 	}
 
 	/**
@@ -552,11 +561,12 @@ public abstract class QueryComposite<T> extends Composite {
 	 * @param parent
 	 *            composite sobre el cuál se creará la tabla.
 	 */
-	private void agregarTabla(Composite parent) {
-		GenericTable newTable = new GenericTable(parent, tableContentClass, tableName, null, true, this.getTableStyle());
+	private void addTable(Composite parent) {
+		GenericTable<T> newTable = new GenericTable<T>(parent, tableContentClass, tableName, null, true, this
+				.getTableStyle());
 
 		this.createMenuContextual(parent);
-		newTable.getTable().setMenu(this.menuContextual);
+		newTable.getTable().setMenu(this.contextMenu);
 
 		ISelectionChangedListener[] listeners = { this.getEnableButtonsSelectionChangedListener(),
 				this.getTableSelectionChangedListener() };
@@ -581,7 +591,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 * @param controls
 	 *            Controles a los que se le agregará el listener.
 	 */
-	private void agregarSelectionListener(List<Control> controls) {
+	private void addEnterKeySelectionListener(List<Control> controls) {
 		for (Control control : controls) {
 			if (control != null) {
 				KeyListener filterButtonListener = new KeyAdapter() {
@@ -603,13 +613,13 @@ public abstract class QueryComposite<T> extends Composite {
 	 * @param parent
 	 */
 	private void createMenuContextual(Composite parent) {
-		this.menuContextual = new Menu(parent);
-		this.menuContextual.addMenuListener(new MenuAdapter() {
+		this.contextMenu = new Menu(parent);
+		this.contextMenu.addMenuListener(new MenuAdapter() {
 			@Override
 			public void menuShown(MenuEvent e) {
 				// Si no se seleccionó nada, todos los items se deshabilitan
 				if (getTable().getSelectedElements().isEmpty()) {
-					for (MenuItem menuItem : menuContextual.getItems()) {
+					for (MenuItem menuItem : contextMenu.getItems()) {
 						menuItem.setEnabled(false);
 					}
 				}
@@ -627,7 +637,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 */
 	private MenuItem getMenuContextualItem(String text) {
 		MenuItem result = null;
-		for (MenuItem menuItem : this.menuContextual.getItems()) {
+		for (MenuItem menuItem : this.contextMenu.getItems()) {
 			if (menuItem.getText().equals(text)) {
 				result = menuItem;
 				break;
@@ -700,5 +710,10 @@ public abstract class QueryComposite<T> extends Composite {
 				}
 			}
 		});
+	}
+
+	private boolean anyButtonAllowed() {
+		return newButtonAllowed() || editButtonAllowed() || viewButtonAllowed() || deleteButtonAllowed()
+				|| closeButtonAllowed();
 	}
 }

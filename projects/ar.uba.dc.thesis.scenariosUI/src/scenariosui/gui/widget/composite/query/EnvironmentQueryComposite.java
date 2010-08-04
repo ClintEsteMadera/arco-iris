@@ -1,18 +1,15 @@
 package scenariosui.gui.widget.composite.query;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.EnvironmentSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
@@ -33,13 +30,8 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 	}
 
 	@Override
-	protected void addSpecificFilters(Group groupOfFilters) {
-		// TODO Implement me!
-	}
-
-	@Override
 	protected List<Environment> executeQuery() {
-		return SelfHealingConfigurationManager.getInstance().getEnvironments(this.getCriteria());
+		return ScenariosUIManager.getInstance().getEnvironments(this.getCriteria());
 	}
 
 	@Override
@@ -58,12 +50,6 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Environment, ScenariosUIPurpose> getActionForDelete() {
 		return ScenariosUIActions.DELETE_ENVIRONMENT;
-	}
-
-	@Override
-	protected List<Control> getFilterControls() {
-		// TODO Implement me!
-		return Collections.emptyList();
 	}
 
 	@Override

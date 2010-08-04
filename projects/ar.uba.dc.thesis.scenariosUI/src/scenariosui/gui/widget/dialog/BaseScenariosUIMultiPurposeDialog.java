@@ -1,8 +1,8 @@
 package scenariosui.gui.widget.dialog;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
-import scenariosui.service.SelfHealingConfigurationManager;
-import ar.uba.dc.thesis.common.ThesisPojo;
+import scenariosui.service.ScenariosUIManager;
+import ar.uba.dc.thesis.common.Identifiable;
 
 import commons.exception.ApplicationException;
 import commons.exception.ServiceException;
@@ -16,8 +16,7 @@ import commons.properties.FakeEnumProperty;
  * Modela un diálogo básico dónde se puede saber si el mismo corresponde a un diálogo de Alta, Edición u otro tipo ,
  * determinado por un tipo enumerado adecuado para tal fin.
  */
-public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> extends
-		BaseCompositeModelBoundedDialog<T> {
+public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseCompositeModelBoundedDialog<T> {
 
 	protected ScenariosUIPurpose purpose;
 
@@ -63,7 +62,7 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 	protected boolean performOK() {
 		String operation = null;
 		try {
-			SelfHealingConfigurationManager selfHealingConfigurationManager = SelfHealingConfigurationManager
+			ScenariosUIManager scenariosUIManager = ScenariosUIManager
 					.getInstance();
 			switch (this.purpose) {
 			case CREATION:
@@ -80,7 +79,7 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 			default:
 				throw new RuntimeException("The code does not contemplate the purpose " + this.purpose + "yet");
 			}
-			selfHealingConfigurationManager.saveSelfHealingConfiguration();
+			scenariosUIManager.saveSelfHealingConfiguration();
 
 		} catch (BackgroundInvocationException ex) {
 			// Se supone que se atrapa más arriba esta excepción...
@@ -98,11 +97,13 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T extends ThesisPojo> ex
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void cancelPressed() {
 		if (doIHaveToAbandonChanges()) {
-			if (this.purpose.isCreation()) {
-				// since we won't use it
-				SelfHealingConfigurationManager.getInstance().returnRecentlyRequestedId(this.getModel().getClass());
+			Class<?> modelClass = this.getModel().getClass();
+			if (Identifiable.class.isInstance(modelClass) && this.purpose.isCreation()) {
+				ScenariosUIManager.getInstance().returnRecentlyRequestedId(
+						(Class<Identifiable>) modelClass); // since we won't use it
 			}
 			super.cancelPressed();
 		}

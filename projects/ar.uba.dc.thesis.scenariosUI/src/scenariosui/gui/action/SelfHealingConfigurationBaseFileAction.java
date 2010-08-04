@@ -2,7 +2,6 @@ package scenariosui.gui.action;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 
 import scenariosui.properties.ScenariosUILabels;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
@@ -12,9 +11,9 @@ import commons.gui.action.BaseGuiAction;
 import commons.gui.util.PageHelper;
 import commons.properties.CommonLabels;
 
-public abstract class SelfHealingScenarioBaseFileAction extends BaseGuiAction<SelfHealingConfiguration> {
+public abstract class SelfHealingConfigurationBaseFileAction extends BaseGuiAction<SelfHealingConfiguration> {
 
-	protected SelfHealingScenarioBaseFileAction(String uniqueId, String shortcut) {
+	protected SelfHealingConfigurationBaseFileAction(String uniqueId, String shortcut) {
 		super(uniqueId, shortcut);
 	}
 
@@ -30,16 +29,14 @@ public abstract class SelfHealingScenarioBaseFileAction extends BaseGuiAction<Se
 	}
 
 	protected FileDialog createNewFileDialog() {
-		return this.createFileDialog(CommonLabels.SAVE.toString().toLowerCase(), ScenariosUILabels.TO.toString());
+		return this.createFileDialog(FileDialogPurpose.SAVE);
 	}
 
 	protected FileDialog createFileOpenDialog() {
-		return this.createFileDialog(CommonLabels.LOAD.toString().toLowerCase(), ScenariosUILabels.FROM.toString());
+		return this.createFileDialog(FileDialogPurpose.OPEN);
 	}
 
-	private FileDialog createFileDialog(String... replacements) {
-		Shell shell = PageHelper.getMainShell();
-
+	private FileDialog createFileDialog(FileDialogPurpose fileDialogPurpose) {
 		String[] filterNames = new String[] { "XML Files" };
 		String[] filterExtensions = new String[] { "*.xml" };
 		String filterPath = "/";
@@ -48,8 +45,8 @@ public abstract class SelfHealingScenarioBaseFileAction extends BaseGuiAction<Se
 			filterPath = System.getProperty("env.CSIDL_DESKTOP");
 		}
 
-		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-		dialog.setText(ScenariosUILabels.FILE_DIALOG_MESSAGE.toString(replacements));
+		FileDialog dialog = new FileDialog(PageHelper.getMainShell(), fileDialogPurpose.getSWTStyle());
+		dialog.setText(ScenariosUILabels.FILE_DIALOG_MESSAGE.toString(fileDialogPurpose.getReplacements()));
 		dialog.setFileName(ScenariosUILabels.SELF_HEALING_CONFIG.toString() + ".xml");
 		dialog.setFilterNames(filterNames);
 		dialog.setFilterExtensions(filterExtensions);
@@ -60,5 +57,27 @@ public abstract class SelfHealingScenarioBaseFileAction extends BaseGuiAction<Se
 
 	private <T extends ThesisPojo> void showQuery(ScenariosUIQueryAction<T> queryActionToBeTriggered) {
 		queryActionToBeTriggered.getActionFor(null).run();
+	}
+
+	enum FileDialogPurpose {
+		OPEN(SWT.OPEN, CommonLabels.LOAD.toString().toLowerCase(), ScenariosUILabels.FROM.toString()), SAVE(SWT.SAVE,
+				CommonLabels.SAVE.toString().toLowerCase(), ScenariosUILabels.TO.toString());
+
+		public int getSWTStyle() {
+			return this.style;
+		}
+
+		public String[] getReplacements() {
+			return this.replacements;
+		}
+
+		private int style;
+
+		private String[] replacements;
+
+		FileDialogPurpose(int style, String... replacements) {
+			this.style = style;
+			this.replacements = replacements;
+		}
 	}
 }

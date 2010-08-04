@@ -27,6 +27,7 @@ public class ResponseMeasureGroup extends SimpleGroup {
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(this.constraintComposite, CommonLabels.DESCRIPTION,
 				new BindingInfo(ctrlMetainfo.binding.getCompositeModel(), "description"), ctrlMetainfo.readOnly);
+		textMetainfo.visibleSize = 35;
 		TextFactory.createText(textMetainfo);
 
 	}
