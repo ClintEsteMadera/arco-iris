@@ -1,6 +1,10 @@
 MUST HAVES:
 - arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
 
+- ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
+
+- Eliminar referencias a Caja de Valores, nombres de autores de clases y fechas. Traducir todo codigo al inglés.
+
 NICE TO HAVES:
 
 - Arreglar el layout en gral de los diálogos
