@@ -68,35 +68,41 @@ public abstract class DefaultLayoutFactory {
 
 	public static Control addHorizontalSeparator(Composite parent) {
 		GridLayout layout = ((GridLayout) parent.getLayout());
-		int n=layout != null ? layout.numColumns : 1;
-		
-		Label separator=new Label(parent,SWT.SEPARATOR | SWT.HORIZONTAL);
-		
-		GridData gridSeparator = getGridData(separator); 
+		int n = layout != null ? layout.numColumns : 1;
+
+		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+
+		GridData gridSeparator = getGridData(separator);
 		gridSeparator.horizontalSpan = n;
 		gridSeparator.horizontalAlignment = SWT.FILL;
 		separator.setLayoutData(gridSeparator);
-		
+
 		return separator;
 	}
-	
+
 	public static GridData getGridData(Control control) {
 		GridData grid = ((GridData) control.getLayoutData());
-		if(grid == null){
-			grid=getDefaultGridData();
+		if (grid == null) {
+			grid = getDefaultGridData();
 			control.setLayoutData(grid);
 		}
 		return grid;
 	}
 
 	public static GridData getGridData(int hSpan) {
-		GridData data=new GridData(DEFAULT_GRID_DATA_STYLE);
-		data.horizontalSpan=hSpan;
+		GridData data = new GridData(DEFAULT_GRID_DATA_STYLE);
+		data.horizontalSpan = hSpan;
 		return data;
 	}
 
-	private static GridData getDefaultGridData() {
-		return new GridData(DEFAULT_GRID_DATA_STYLE);
+	public static void setGrabAllExcessesAndFillBothGridData(Composite composite, boolean cascadeToChildren) {
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		composite.setLayoutData(gridData);
+		if (cascadeToChildren) {
+			for (Control child : composite.getChildren()) {
+				child.setLayoutData(gridData);
+			}
+		}
 	}
 
 	public static void setDefaultRowLayout(Composite composite) {
@@ -104,7 +110,7 @@ public abstract class DefaultLayoutFactory {
 		layout.marginWidth = 5;
 		layout.marginHeight = 10;
 		composite.setLayout(layout);
-		//throw new RuntimeException("Metodo no implementado");
+		// throw new RuntimeException("Metodo no implementado");
 	}
 
 	public static void setButtonRowLayoutData(Button button) {
@@ -122,31 +128,34 @@ public abstract class DefaultLayoutFactory {
 		data.widthHint = Math.max(widthHint, minSize.x);
 		button.setLayoutData(data);
 	}
-	
-	public static void makeEqualsHeight(Control[] controls){
-		int maxH=0;
-		
-		for(Control b:controls){
-			if(b != null){
-				Point p=b.computeSize(SWT.DEFAULT,SWT.DEFAULT, true);
-				if(p.y > maxH){
-					maxH=p.y;
+
+	public static void makeEqualsHeight(Control[] controls) {
+		int maxH = 0;
+
+		for (Control b : controls) {
+			if (b != null) {
+				Point p = b.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+				if (p.y > maxH) {
+					maxH = p.y;
 				}
 			}
 		}
-		
-		for(Control b:controls){
-			if(b != null){
-				GridData gd=DefaultLayoutFactory.getGridData(b);
-				gd.heightHint=maxH;
-				gd.horizontalAlignment=GridData.HORIZONTAL_ALIGN_BEGINNING;
-				gd.grabExcessHorizontalSpace=false;
+
+		for (Control b : controls) {
+			if (b != null) {
+				GridData gd = DefaultLayoutFactory.getGridData(b);
+				gd.heightHint = maxH;
+				gd.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
+				gd.grabExcessHorizontalSpace = false;
 			}
 		}
 	}
 
-	
-	public static final int DEFAULT_GRID_DATA_STYLE = GridData.GRAB_HORIZONTAL
-			| GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING;
+	private static GridData getDefaultGridData() {
+		return new GridData(DEFAULT_GRID_DATA_STYLE);
+	}
+
+	public static final int DEFAULT_GRID_DATA_STYLE = GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL
+			| GridData.VERTICAL_ALIGN_BEGINNING;
 
 }

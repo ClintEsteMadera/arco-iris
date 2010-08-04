@@ -1,27 +1,32 @@
 package scenariosui.service;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
+import scenariosui.gui.query.RepairStrategySearchCriteria;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
-import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingScenarioPersister;
+import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfigurationPersister;
 import ar.uba.dc.thesis.common.Identifiable;
 import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.selfhealing.StitchLoader;
+import ar.uba.dc.thesis.selfhealing.StrategyTO;
 
 import commons.query.BaseSearchCriteria;
 import commons.utils.IdGenerator;
 
 /**
- * This class is responsible for controlling the persistence of a {@link Self Healing Configuration}.
+ * This class is responsible for controlling the persistence of all the concepts involved in this application,
+ * especially, instances of {@link Self Healing Configuration}.
  */
-public final class SelfHealingConfigurationManager {
+public final class ScenariosUIManager {
 
-	private static final SelfHealingConfigurationManager INSTANCE = new SelfHealingConfigurationManager();
+	private static final ScenariosUIManager INSTANCE = new ScenariosUIManager();
 
-	private final SelfHealingScenarioPersister persister = new SelfHealingScenarioPersister();
+	private final SelfHealingConfigurationPersister persister = new SelfHealingConfigurationPersister();
 
 	private String xmlFilePath;
 
@@ -32,11 +37,11 @@ public final class SelfHealingConfigurationManager {
 	/**
 	 * This class is not meant to be instantiated from the outside
 	 */
-	private SelfHealingConfigurationManager() {
+	private ScenariosUIManager() {
 		super();
 	}
 
-	public static SelfHealingConfigurationManager getInstance() {
+	public static ScenariosUIManager getInstance() {
 		return INSTANCE;
 	}
 
@@ -115,6 +120,11 @@ public final class SelfHealingConfigurationManager {
 
 	public List<Artifact> getArtifacts(BaseSearchCriteria<Artifact> criteria) {
 		return this.getElement(this.getCurrentSelfHealingConfiguration().getArtifacts(), criteria);
+	}
+
+	public List<StrategyTO> getAllStrategies(RepairStrategySearchCriteria criteria) {
+		StitchLoader stitchLoader = new StitchLoader(new File(criteria.getStitchDirectory()), false);
+		return stitchLoader.getAllStrategiesTO();
 	}
 
 	private <T extends ThesisPojo> List<T> getElement(List<T> elements, BaseSearchCriteria<T> criteria) {

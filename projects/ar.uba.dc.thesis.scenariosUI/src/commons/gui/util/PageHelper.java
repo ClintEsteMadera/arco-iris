@@ -41,28 +41,35 @@ public abstract class PageHelper {
 
 	/**
 	 * Retorna la posición considerando el ancho y largo relativo al tamaño de la pantalla
+	 * 
 	 * @param widthProp
 	 * @param heightProp
 	 * @return
 	 */
 	public static Rectangle getRelativeCenterLocation(double widthProp, double heightProp) {
 		Rectangle screenSize = Display.getDefault().getBounds();
-		int width=(int)(screenSize.width * widthProp);
-		int height=(int)(screenSize.height * heightProp);
-		return getCenterLocation(width,height);
+		int width = (int) (screenSize.width * widthProp);
+		int height = (int) (screenSize.height * heightProp);
+		return getCenterLocation(width, height);
+	}
+
+	public static void setRelativeCenterLocation(Shell shell) {
+		Point size = shell.getSize();
+		Rectangle centerLocation = PageHelper.getRelativeCenterLocation(size.y, size.x);
+		shell.setBounds(centerLocation);
 	}
 
 	public static void setCenterLocation(Shell shell) {
-		Point size=shell.getSize();
-		PageHelper.setCenterLocation(shell,size.y, size.x);
+		Point size = shell.getSize();
+		PageHelper.setCenterLocation(shell, size.y, size.x);
 	}
 
-	public static void setCenterLocation(Shell shell,int width) {
-		Point size=shell.getSize();
-		PageHelper.setCenterLocation(shell,width, size.x);
+	public static void setCenterLocation(Shell shell, int width) {
+		Point size = shell.getSize();
+		PageHelper.setCenterLocation(shell, width, size.x);
 	}
 
-	public static void setCenterLocation(Shell shell,int width, int heigth) {
+	public static void setCenterLocation(Shell shell, int width, int heigth) {
 		Rectangle centerLocation = PageHelper.getCenterLocation(width, heigth);
 		shell.setBounds(centerLocation);
 	}
@@ -80,8 +87,8 @@ public abstract class PageHelper {
 	}
 
 	/**
-	 * Returns the number of pixels corresponding to the given number of
-	 * horizontal dialog units.
+	 * Returns the number of pixels corresponding to the given number of horizontal dialog units.
+	 * 
 	 * @param dialogUnits
 	 *            the number of horizontal dialog units
 	 * @return the number of pixels
@@ -92,19 +99,20 @@ public abstract class PageHelper {
 		}
 		return Dialog.convertHorizontalDLUsToPixels(fontMetrics, dialogUnits);
 	}
-	
+
 	/**
 	 * Guarda la referencia a la ventana principal para que otros objetos puedan enviarle mensajes.
+	 * 
 	 * @param mainWindow
 	 *            la instancia concreta de MainWindow.
 	 */
 	public static void setMainWindow(MainWindow mainWindow) {
 		mainWindowInstance = mainWindow;
 	}
-	
+
 	/**
-	 * Obtiene la ventana principal de la aplicación, sií la misma se encuentra seteada, caso
-	 * contrario arroja una RuntimeException.
+	 * Obtiene la ventana principal de la aplicación, sií la misma se encuentra seteada, caso contrario arroja una
+	 * RuntimeException.
 	 */
 	public static MainWindow getMainWindow() {
 		if (mainWindowInstance == null) {
@@ -112,9 +120,10 @@ public abstract class PageHelper {
 		}
 		return mainWindowInstance;
 	}
-	
+
 	/**
 	 * Recibe el shell de la ventana Principal y cachea el display
+	 * 
 	 * @see MainWindow
 	 * @param mainShell
 	 *            shell de la ventana Principal
@@ -133,7 +142,7 @@ public abstract class PageHelper {
 	public static Shell getMainShell() {
 		return shell;
 	}
-	
+
 	public static Display getDisplay() {
 		return Display.getDefault();
 	}
@@ -157,12 +166,12 @@ public abstract class PageHelper {
 		}
 		return valueLabelsFont;
 	}
-	
+
 	private static MainWindow mainWindowInstance;
-	
+
 	private static Shell shell;
-	
+
 	private static FontMetrics fontMetrics;
-	
+
 	private static Font valueLabelsFont;
 }

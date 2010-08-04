@@ -11,7 +11,7 @@ import commons.properties.EnumProperty;
 
 public enum UniqueTableIdentifier implements EnumProperty {
 
-	SCENARIOS, ENVIRONMENTS, ENVIRONMENT_SELECTION, ARTIFACTS, ARTIFACT_SELECTION;
+	SCENARIOS, ENVIRONMENTS, ENVIRONMENT_SELECTION, ARTIFACTS, ARTIFACT_SELECTION, REPAIR_STRATEGY_SELECTION;
 
 	@Override
 	public String toString() {

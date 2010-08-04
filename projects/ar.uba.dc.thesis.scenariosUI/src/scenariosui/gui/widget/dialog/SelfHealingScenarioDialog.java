@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.gui.widget.composite.SelfHealingScenarioComposite;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.properties.EnumProperty;
@@ -31,12 +31,12 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 
 	@Override
 	public void addModelToCurrentSHConfiguration() {
-		SelfHealingConfigurationManager.getInstance().getCurrentSelfHealingConfiguration().addScenario(this.getModel());
+		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().addScenario(this.getModel());
 	}
 
 	@Override
 	public void removeModelFromCurrentSHConfiguration() {
-		SelfHealingConfigurationManager.getInstance().getCurrentSelfHealingConfiguration().removeScenario(
+		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeScenario(
 				this.getModel());
 	}
 

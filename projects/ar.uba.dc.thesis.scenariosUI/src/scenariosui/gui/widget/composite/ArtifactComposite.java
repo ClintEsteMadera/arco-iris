@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import scenariosui.properties.ScenariosUILabels;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 
 import commons.gui.model.CompositeModel;
@@ -21,7 +21,7 @@ public class ArtifactComposite extends SimpleComposite {
 		super(parent, purpose.isReadOnly());
 
 		if (purpose.isCreation()) {
-			underlyingArtifact.getValue().setId(SelfHealingConfigurationManager.getInstance().getNextId(Artifact.class));
+			underlyingArtifact.getValue().setId(ScenariosUIManager.getInstance().getNextId(Artifact.class));
 		}
 
 		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.ATAM_SCENARIO_INFO, this.readOnly).getSwtGroup();

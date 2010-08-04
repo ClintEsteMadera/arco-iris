@@ -1,18 +1,15 @@
 package scenariosui.gui.widget.composite.query;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.SelfHealingScenarioSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
@@ -30,13 +27,8 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 	}
 
 	@Override
-	protected void addSpecificFilters(Group groupOfFilters) {
-		// TODO Implement me!
-	}
-
-	@Override
 	protected List<SelfHealingScenario> executeQuery() {
-		return SelfHealingConfigurationManager.getInstance().getScenarios(this.getCriteria());
+		return ScenariosUIManager.getInstance().getScenarios(this.getCriteria());
 	}
 
 	@Override
@@ -55,12 +47,6 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<SelfHealingScenario, ScenariosUIPurpose> getActionForDelete() {
 		return ScenariosUIActions.DELETE_SELF_HEALING_SCENARIO;
-	}
-
-	@Override
-	protected List<Control> getFilterControls() {
-		// TODO Implement me!
-		return Collections.emptyList();
 	}
 
 	@Override

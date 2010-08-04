@@ -1,18 +1,15 @@
 package scenariosui.gui.widget.composite.query;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.ArtifactSearchCriteria;
 import scenariosui.gui.util.purpose.ScenariosUIPurpose;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
@@ -31,13 +28,8 @@ public class ArtifactQueryComposite extends ScenariosUIQueryComposite<Artifact> 
 	}
 
 	@Override
-	protected void addSpecificFilters(Group groupOfFilters) {
-		// TODO Implement me!
-	}
-
-	@Override
 	protected List<Artifact> executeQuery() {
-		return SelfHealingConfigurationManager.getInstance().getArtifacts(this.getCriteria());
+		return ScenariosUIManager.getInstance().getArtifacts(this.getCriteria());
 	}
 
 	@Override
@@ -56,12 +48,6 @@ public class ArtifactQueryComposite extends ScenariosUIQueryComposite<Artifact> 
 	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Artifact, ScenariosUIPurpose> getActionForDelete() {
 		return ScenariosUIActions.DELETE_ARTIFACT;
-	}
-
-	@Override
-	protected List<Control> getFilterControls() {
-		// TODO Implement me!
-		return Collections.emptyList();
 	}
 
 	@Override

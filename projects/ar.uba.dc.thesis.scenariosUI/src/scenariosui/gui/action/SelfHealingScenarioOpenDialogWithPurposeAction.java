@@ -22,7 +22,7 @@ public class SelfHealingScenarioOpenDialogWithPurposeAction extends
 		if (this.getPurpose().isCreation()) {
 			model = null;
 		}
-		return new SelfHealingScenarioDialog(model, ScenariosUILabels.SCENARIO, this.getPurpose());
+		return new SelfHealingScenarioDialog(model, ScenariosUILabels.SELF_HEALING_SCENARIO, this.getPurpose());
 	}
 
 }

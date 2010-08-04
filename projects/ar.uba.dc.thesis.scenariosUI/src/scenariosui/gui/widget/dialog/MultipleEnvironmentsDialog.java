@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
-import scenariosui.service.SelfHealingConfigurationManager;
+import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 
 import commons.gui.model.bean.BeanModel;
@@ -96,7 +96,7 @@ public class MultipleEnvironmentsDialog extends BaseCompositeModelBoundedDialog<
 	@Override
 	protected boolean performOK() {
 		// FIXME ver bien que hacer aca
-		SelfHealingConfigurationManager.getInstance().saveSelfHealingConfiguration();
+		ScenariosUIManager.getInstance().saveSelfHealingConfiguration();
 		return true;
 	}
 }
