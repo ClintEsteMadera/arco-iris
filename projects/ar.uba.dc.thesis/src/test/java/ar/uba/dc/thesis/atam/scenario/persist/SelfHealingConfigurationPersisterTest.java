@@ -4,13 +4,13 @@ import junit.framework.TestCase;
 import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.dao.TestSelfHealingConfigurationDao;
 
-public class SelfHealingScenarioPersisterTest extends TestCase {
+public class SelfHealingConfigurationPersisterTest extends TestCase {
 
-	private static final String SCENARIOS_IN_XML_FULL_PATH = "src/test/resources/testScenarios.xml";
+	private static final String SH_CONFIG_IN_XML_FULL_PATH = "src/test/resources/testSelfHealingConfig.xml";
 
 	private SelfHealingConfiguration testSHConfiguration;
 
-	public SelfHealingScenarioPersisterTest() {
+	public SelfHealingConfigurationPersisterTest() {
 		super();
 		this.testSHConfiguration = this.loadTestConfiguration();
 	}
@@ -21,7 +21,7 @@ public class SelfHealingScenarioPersisterTest extends TestCase {
 	 */
 	public void testMarshal() {
 		try {
-			new SelfHealingScenarioPersister().saveToFile(this.testSHConfiguration, SCENARIOS_IN_XML_FULL_PATH);
+			new SelfHealingConfigurationPersister().saveToFile(this.testSHConfiguration, SH_CONFIG_IN_XML_FULL_PATH);
 		} catch (Exception e) {
 			fail("Unexpected Exception: " + e.getMessage());
 		}
@@ -38,8 +38,8 @@ public class SelfHealingScenarioPersisterTest extends TestCase {
 	 */
 	public void testUnmarshal() {
 		try {
-			SelfHealingConfiguration unmarshaledConfig = new SelfHealingScenarioPersister()
-					.readFromFile(SCENARIOS_IN_XML_FULL_PATH);
+			SelfHealingConfiguration unmarshaledConfig = new SelfHealingConfigurationPersister()
+					.readFromFile(SH_CONFIG_IN_XML_FULL_PATH);
 			assertEquals(this.testSHConfiguration, unmarshaledConfig);
 		} catch (Exception e) {
 			fail("Unexpected Exception: " + e.getMessage());

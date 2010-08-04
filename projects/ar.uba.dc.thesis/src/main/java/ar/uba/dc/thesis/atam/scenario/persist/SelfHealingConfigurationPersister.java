@@ -17,32 +17,32 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 
-public class SelfHealingScenarioPersister {
+public class SelfHealingConfigurationPersister {
 
 	private static final String CHARSET = "UTF-8";
 
-	private static final Log logger = LogFactory.getLog(SelfHealingScenarioPersister.class);
+	private static final Log logger = LogFactory.getLog(SelfHealingConfigurationPersister.class);
 
 	private XStream xstream;
 
-	public SelfHealingScenarioPersister() {
+	public SelfHealingConfigurationPersister() {
 		super();
 		this.initXStream();
 	}
 
-	public SelfHealingConfiguration readFromFile(String scenariosInXmlFullPath) {
+	public SelfHealingConfiguration readFromFile(String selfHealingConfigXmlFullPath) {
 		try {
-			logger.info("Loading Scenarios from " + scenariosInXmlFullPath + "...");
-			String scenariosInXml = FileUtils.readFileToString(new File(scenariosInXmlFullPath), CHARSET);
+			logger.info("Loading Self Healing Configuration from " + selfHealingConfigXmlFullPath + "...");
+			String scenariosInXml = FileUtils.readFileToString(new File(selfHealingConfigXmlFullPath), CHARSET);
 			SelfHealingConfiguration configLoadedFromXML = (SelfHealingConfiguration) this.xstream
 					.fromXML(scenariosInXml);
-			logger.info("Scenarios successfully loaded from " + scenariosInXmlFullPath);
+			logger.info("Self Healing Configuration successfully loaded from " + selfHealingConfigXmlFullPath);
 
 			this.preventNullLists(configLoadedFromXML);
 
 			return configLoadedFromXML;
 		} catch (IOException e) {
-			throw new RuntimeException("Cannot load Scenarios from " + scenariosInXmlFullPath, e);
+			throw new RuntimeException("Cannot load Self Healing Configuration from " + selfHealingConfigXmlFullPath, e);
 		} catch (XStreamException xstreamException) {
 			logger.error("Error while unmarshaling scenarios", xstreamException);
 			throw xstreamException;
@@ -54,7 +54,7 @@ public class SelfHealingScenarioPersister {
 		String xml = this.xstream.toXML(selfHealingConfig);
 		try {
 			FileUtils.writeStringToFile(new File(fileFullPath), xml, CHARSET);
-			logger.info("Scenarios successfully saved to " + fileFullPath);
+			logger.info("Self Healing Configuration successfully saved to " + fileFullPath);
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot save the Scenario in " + fileFullPath);
 		}

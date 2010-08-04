@@ -44,19 +44,13 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
  */
 public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
-	private static final int RAINBOW_SOLUTION_WEIGHT = NumberUtils.INTEGER_ZERO;
-
-	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
-
 	public enum Mode {
 		SERIAL, MULTI_PRONE
 	};
 
-	protected static RainbowLogger m_logger = null;
+	private static final int RAINBOW_SOLUTION_WEIGHT = NumberUtils.INTEGER_ZERO;
 
-	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
-
-	private static List<SelfHealingScenario> currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
+	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 
@@ -69,6 +63,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public static final long FAILURE_EFFECTIVE_WINDOW = 2000 /* ms */;
 
 	public static final long FAILURE_WINDOW_CHUNK = 1000 /* ms */;
+
 	/**
 	 * The prefix to be used by the strategy which takes a "leap" by achieving a similar adaptation that would have
 	 * taken multiple increments of the non-leap version, but at a potential "cost" in non-dire scenarios.
@@ -79,29 +74,34 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 */
 	public static final String MULTI_STRATEGY_PREFIX = "Multi-";
 
+	protected static RainbowLogger m_logger = null;
+
+	private static List<SelfHealingScenario> currentBrokenScenarios;
+
+	private static DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
+
+	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
+
 	private final Mode m_mode = Mode.SERIAL;
 
-	private RainbowModelWithScenarios m_model = null;
+	private RainbowModelWithScenarios m_model;
 
 	private boolean m_adaptNeeded = false; // treat as synonymous with constraint being violated
 
 	private boolean m_adaptEnabled = true; // by default, we adapt
 
-	private List<Stitch> m_repertoire = null;
+	private List<Stitch> m_repertoire;
 
-	private SortedMap<String, UtilityFunction> m_utils = null;
+	private SortedMap<String, UtilityFunction> m_utils;
 
-	private List<Strategy> m_pendingStrategies = null;
+	private List<Strategy> m_pendingStrategies;
 
 	// track history
-	private String m_historyTrackUtilName = null;
+	private String m_historyTrackUtilName;
 
-	private Map<String, int[]> m_historyCnt = null;
+	private Map<String, int[]> m_historyCnt;
 
-	private Map<String, Beacon> m_failTimer = null;
-
-	private static DefaultScenarioBrokenDetector defaultScenarioBrokenDetector = Oracle.instance()
-			.defaultScenarioBrokenDetector();
+	private Map<String, Beacon> m_failTimer;
 
 	/**
 	 * Default constructor.
@@ -109,14 +109,16 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public AdaptationManagerWithScenarios(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super(NAME);
 		m_logger = RainbowLoggerFactory.logger(getClass());
+		defaultScenarioBrokenDetector = Oracle.instance().defaultScenarioBrokenDetector();
+		currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
-		m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
-		m_utils = new TreeMap<String, UtilityFunction>();
-		m_pendingStrategies = new ArrayList<Strategy>();
-		m_historyTrackUtilName = Rainbow.property(Rainbow.PROPKEY_TRACK_STRATEGY);
-		if (m_historyTrackUtilName != null) {
-			m_historyCnt = new HashMap<String, int[]>();
-			m_failTimer = new HashMap<String, Beacon>();
+		this.m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
+		this.m_utils = new TreeMap<String, UtilityFunction>();
+		this.m_pendingStrategies = new ArrayList<Strategy>();
+		this.m_historyTrackUtilName = Rainbow.property(Rainbow.PROPKEY_TRACK_STRATEGY);
+		if (this.m_historyTrackUtilName != null) {
+			this.m_historyCnt = new HashMap<String, int[]>();
+			this.m_failTimer = new HashMap<String, Beacon>();
 		}
 		String thresholdStr = Rainbow.property(Rainbow.PROPKEY_UTILITY_MINSCORE_THRESHOLD);
 		if (thresholdStr == null) {
@@ -131,7 +133,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			m_utils.put(k, uf);
 		}
 
-		this.m_repertoire = Oracle.instance().stitchParser().getParsedStitches();
+		this.m_repertoire = Oracle.instance().stitchLoader().getParsedStitches();
 	}
 
 	public static boolean isConcernStillBroken(String concernString) {
