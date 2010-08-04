@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 
+//TODO Decidir si tiene sentido incluír esto o no
 public class ArchitecturalDecision extends ThesisPojo {
 
 	private static final long serialVersionUID = 1L;

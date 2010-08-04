@@ -9,7 +9,7 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
-import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingScenarioPersister;
+import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfigurationPersister;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class FileSelfHealingConfigurationDao implements SelfHealingConfigurationDao {
@@ -22,7 +22,7 @@ public class FileSelfHealingConfigurationDao implements SelfHealingConfiguration
 		super();
 		File scenarioSpec = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
 				.property(SCENARIO_SPEC_PATH));
-		SelfHealingScenarioPersister persister = new SelfHealingScenarioPersister();
+		SelfHealingConfigurationPersister persister = new SelfHealingConfigurationPersister();
 		this.scenariosConfig = persister.readFromFile(scenarioSpec.getAbsolutePath());
 	}
 

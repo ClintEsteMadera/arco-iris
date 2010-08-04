@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,37 +20,27 @@ import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-public class StitchParser implements Serializable {
+public class StitchLoader implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static RainbowLogger logger = RainbowLoggerFactory.logger(StitchParser.class);
+	private static RainbowLogger rainbowLogger = RainbowLoggerFactory.logger(StitchLoader.class);
 
 	private List<Stitch> repertoire = new ArrayList<Stitch>();
 
-	private boolean shouldLog;
-
-	/**
-	 * When created using this constructor, there is no logging available.
-	 * 
-	 * @param stitchDirectory
-	 *            the full path to the directory where the .s files are located.
-	 */
-	public StitchParser(File stitchDirectory) {
-		this(stitchDirectory, false);
-	}
+	private boolean rainbowClient;
 
 	/**
 	 * 
 	 * @param stitchDirectory
 	 *            the full path to the directory where the .s files are located.
-	 * @param shouldLog
-	 *            whether this parser should log its actions using Rainbow's standard way of logging (this includes
-	 *            using probably Rainbow's GUI)
+	 * @param rainbowClient
+	 *            this flag specifies that the client of this loader is Rainbow. This will affect some functionalities
+	 *            within the loader as, for example, the event logging.
 	 */
-	public StitchParser(File stitchDirectory, boolean shouldLog) {
+	public StitchLoader(File stitchDirectory, boolean rainbowClient) {
 		super();
-		this.shouldLog = shouldLog;
+		this.rainbowClient = rainbowClient;
 		this.initAdaptationRepertoire(stitchDirectory);
 	}
 
@@ -63,14 +54,36 @@ public class StitchParser implements Serializable {
 	/**
 	 * @return a list with the names of all the parsed strategies
 	 */
-	public String[] getAllStrategyNames() {
+	public List<String> getAllStrategyNames() {
 		List<String> strategyNames = new ArrayList<String>();
+		for (Strategy strategy : this.getAllStrategies()) {
+			strategyNames.add(strategy.getName());
+		}
+		return strategyNames;
+	}
+
+	/**
+	 * @return a list with all the parsed strategies (using a transfer object with a subset of fields)
+	 */
+	public List<StrategyTO> getAllStrategiesTO() {
+		List<StrategyTO> strategiesTO = new ArrayList<StrategyTO>();
 		for (Stitch stitch : this.repertoire) {
 			for (Strategy strategy : stitch.script.strategies) {
-				strategyNames.add(strategy.getName());
+				strategiesTO.add(new StrategyTO(strategy.getName(), strategy.nodes.values(), strategy.vars().values()));
 			}
 		}
-		return strategyNames.toArray(new String[] {});
+		return strategiesTO;
+	}
+
+	/**
+	 * @return a list with all the parsed strategies
+	 */
+	private List<Strategy> getAllStrategies() {
+		List<Strategy> strategies = new ArrayList<Strategy>();
+		for (Stitch stitch : this.repertoire) {
+			strategies.addAll(stitch.script.strategies);
+		}
+		return strategies;
 	}
 
 	/**
@@ -92,13 +105,17 @@ public class StitchParser implements Serializable {
 					if (stitch == null) {
 						stitch = Stitch.newInstance(file.getCanonicalPath(), new DummyStitchProblemHandler());
 						Ohana.instance().parseFile(stitch);
+						Map<String, Map<String, Object>> attributeVectorMap = Collections.emptyMap();
+						if (this.rainbowClient) {
+							attributeVectorMap = Rainbow.instance().preferenceDesc().attributeVectors;
+						}
 						// apply attribute vectors to tactics, if available
-						defineAttributes(stitch, Rainbow.instance().preferenceDesc().attributeVectors);
-						this.repertoire.add(stitch);
+						defineAttributes(stitch, attributeVectorMap);
 						log(Level.DEBUG, "Parsed script " + stitch.path);
 					} else {
 						log(Level.DEBUG, "Previously known script " + stitch.path);
 					}
+					this.repertoire.add(stitch);
 				} catch (IOException e) {
 					log(Level.ERROR, "Obtaining file canonical path failed! " + file.getName(), e);
 				}
@@ -111,11 +128,11 @@ public class StitchParser implements Serializable {
 			Map<String, Object> attributes = attrVectorMap.get(t.getName());
 			if (attributes != null) {
 				// found attribute def for tactic, save all key-value pairs
-				if (logger.isTraceEnabled())
+				if (rainbowLogger.isTraceEnabled())
 					log(Level.TRACE, "Found attributes for tactic " + t.getName() + ", saving pairs...");
 				for (Map.Entry<String, Object> e : attributes.entrySet()) {
 					t.putAttribute(e.getKey(), e.getValue());
-					if (logger.isTraceEnabled())
+					if (rainbowLogger.isTraceEnabled())
 						log(Level.TRACE, " - (" + e.getKey() + ", " + e.getValue() + ")");
 				}
 			}
@@ -123,8 +140,14 @@ public class StitchParser implements Serializable {
 	}
 
 	private void log(Level level, String txt, Throwable... t) {
-		if (this.shouldLog) {
-			Oracle.instance().writeEnginePanel(logger, level, txt, t);
+		if (this.rainbowClient) {
+			Oracle.instance().writeEnginePanel(rainbowLogger, level, txt, t);
+		} else {
+			if (t.length > 0) {
+				rainbowLogger.log(level, txt, t[0]);
+			} else {
+				rainbowLogger.log(level, txt);
+			}
 		}
 	}
 }

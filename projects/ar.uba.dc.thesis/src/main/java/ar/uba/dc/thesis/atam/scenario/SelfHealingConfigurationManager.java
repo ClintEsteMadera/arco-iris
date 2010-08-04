@@ -129,7 +129,9 @@ public class SelfHealingConfigurationManager {
 
 			// if the user does not specify any repair strategy, we consider all available ones
 			if (CollectionUtils.isEmpty(currentScenario.getRepairStrategies())) {
-				currentScenario.addRepairStrategy(Oracle.instance().stitchParser().getAllStrategyNames());
+				String[] allRepairStrategies = Oracle.instance().stitchLoader().getAllStrategyNames().toArray(
+						new String[] {});
+				currentScenario.addRepairStrategy(allRepairStrategies);
 			}
 		}
 

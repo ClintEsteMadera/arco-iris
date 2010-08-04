@@ -37,7 +37,7 @@ import ar.uba.dc.thesis.dao.FileSelfHealingConfigurationDao;
 import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
-import ar.uba.dc.thesis.selfhealing.StitchParser;
+import ar.uba.dc.thesis.selfhealing.StitchLoader;
 import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
 
 /**
@@ -78,7 +78,7 @@ public class Oracle implements IDisposable {
 
 	private DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
 
-	private StitchParser stitchParser;
+	private StitchLoader stitchLoader;
 
 	// private ILearner m_learner = null;
 
@@ -282,14 +282,14 @@ public class Oracle implements IDisposable {
 		return this.defaultScenarioBrokenDetector;
 	}
 
-	public StitchParser stitchParser() {
-		if (this.stitchParser == null) {
+	public StitchLoader stitchLoader() {
+		if (this.stitchLoader == null) {
 			File stitchPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
 					.property(Rainbow.PROPKEY_SCRIPT_PATH));
 
-			this.stitchParser = new StitchParser(stitchPath, true);
+			this.stitchLoader = new StitchLoader(stitchPath, true);
 		}
-		return this.stitchParser;
+		return this.stitchLoader;
 	}
 
 	/**
