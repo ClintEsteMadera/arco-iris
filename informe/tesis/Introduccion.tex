@@ -51,12 +51,39 @@
 Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente la necesidad de intervención humana en la adaptación de los sistemas ante cambios en el ambiente para alcanzar los objetivos de calidad requeridos, aumentando así la confianza en los cambios al proveer sistemas autoreparables.
 
 	\subsubsection{Tácticas y Estrategias}
+	
+	La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al verse la performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a un nivel adecuado.
+	
+	Las estrategias son desarrolladas para un \textit{concern} específico. Un \textit{concern} de un sistema abarca un subconjunto de propiedades del sistema, como por 
+ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor, el \textit{concern} performance abarcaría las propiedades ancho de banda y carga del sistema, mientras que el \textit{concern} costo se encargaría del costo de los servidores. 
 
+	Las estrategias se componen de tácticas, las cuales realizan la modificación en el sistema. Por ejemplo, una estrategia podría ser: agregar servidores mientras haya disponible, o hasta que el tiempo de respuesta haya alcanzado un determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica levantar-servidor la responsable de ejecutar la acción propiamente dicha.
+	
 	\subsubsection{ZNN: Testeando Rainbow}
 	
 	Dentro del proyecto Rainbow se ha desarrollado un caso de estudio para validar el enfoque propuesto, dicho proyecto ha recibido el nombre de ZNN, que cumple la función de simular un sitio web de noticias.
 	
+	ZNN provee un entorno de simulación de una arquitectura cliente servidor ampliamente configurable que permite representar situaciones y controlar las variables de simulación permitiendo modificarlas en cualquier punto de la simulación. Por ejemplo, el sistema que se está simulando podría comenzar con solamente 2 clientes, mostrando allí una performance aceptable, pero a partir de un momento dado, se agregan 10 clientes comprometiendo así la performance del mismo. De esta manera permite simular como responderían las estrategias implementadas ante dicha situación.
+	
+	En el presente trabajo se utlizará el modo simulación para realizar los casos de prueba, tomando las estrategias y tácticas de ZNN. Éstas debieron ser adaptadas para que puedan continuar funcionando con los cambios propuestos en la tesis.
+	 
+
 	\subsection{Escenarios de Atributos de Calidad y QAW}
+	
+	Los escenarios nos permiten describir atributos de calidad del sistema. Los escenarios están compuestos por:
+	
+\begin{itemize}
+\item \textbf{Fuente del estímulo}: Interna o externa
+\item \textbf{Estímulo}: condición que debe ser tenida en cuenta al llegar al sistema
+\item \textbf{Entorno}: condiciones en las cuales ocurre el estímulo
+\item \textbf{Artifact}: el sistema o partes de él afectadas por el estímulo
+\item \textbf{Response}: qué hace el sistema ante la llegada del estímulo
+\item \textbf{Resonse measure}: cuantificación de un atributo de la respuesta
+\end{itemize}
+	
+	\todo{agregar imagen /images/scenario.jpg}
+	
+	\todo{seguir tomando de /doc/teoricas Ing II/8-TacticasArquitecturas.pdf}
 	
 	\subsection{ATAM}
 	
