@@ -3,13 +3,13 @@ MUST HAVES:
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
 
-- Eliminar referencias a Caja de Valores, nombres de autores de clases y fechas. Traducir todo codigo al inglés.
+- Eliminar referencias a Caja de Valores, nombres de autores de clases y fechas. Traducir todo codigo al inglï¿½s.
 
 NICE TO HAVES:
 
-- Arreglar el layout en gral de los diálogos
+- Arreglar el layout en gral de los dialogos
 
-- poner como descripción del SelfHealingConfiguration lo que el usuario pone como nombre de archivo?
+- poner como descripcion del SelfHealingConfiguration lo que el usuario pone como nombre de archivo?
 
 - ver el tema validaciones de objetos en gral?
 
@@ -17,4 +17,4 @@ NICE TO HAVES:
 
 - cuando uno decide abandonar los cambios hechos en un dialogo, los cambios quedan pegados
 en el modelo ya que (a diferencia de caja) nosotros en la GUI tocamos los objetos posta
-y no una versión "traida del servidor"
+y no una version "traida del servidor"

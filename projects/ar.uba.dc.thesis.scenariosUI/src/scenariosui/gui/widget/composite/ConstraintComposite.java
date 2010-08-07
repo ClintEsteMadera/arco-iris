@@ -25,6 +25,7 @@ import commons.gui.widget.factory.ComboFactory;
 import commons.gui.widget.factory.LabelFactory;
 import commons.gui.widget.factory.TextFactory;
 import commons.properties.CommonLabels;
+import commons.properties.FakeEnumProperty;
 
 public class ConstraintComposite extends SimpleComposite {
 
@@ -166,8 +167,8 @@ public class ConstraintComposite extends SimpleComposite {
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
 
-		BooleanFieldMetainfo booleanMetainfo = BooleanFieldMetainfo.create(tab, ScenariosUILabels.SUM, new BindingInfo(
-				this.numericBinaryRelationalModel, "sum"), super.readOnly);
+		BooleanFieldMetainfo booleanMetainfo = BooleanFieldMetainfo.create(tab, new FakeEnumProperty("Σ"),
+				new BindingInfo(this.numericBinaryRelationalModel, "sum"), super.readOnly);
 		BooleanFactory.createBoolean(booleanMetainfo);
 	}
 

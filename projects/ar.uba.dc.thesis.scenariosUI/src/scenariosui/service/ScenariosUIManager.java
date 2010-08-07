@@ -46,7 +46,10 @@ public final class ScenariosUIManager {
 	}
 
 	public void createNewSelfHealingConfiguration(String filePathWhereToWriteTheXMLTo) {
-		this.selfHealingConfiguration = new SelfHealingConfiguration();
+		String fileName = new File(filePathWhereToWriteTheXMLTo).getName();
+		String selfHealingConfigDescription = fileName.substring(0, fileName.length() - 4);
+
+		this.selfHealingConfiguration = new SelfHealingConfiguration(selfHealingConfigDescription);
 		this.xmlFilePath = filePathWhereToWriteTheXMLTo;
 		this.saveSelfHealingConfiguration();
 		this.idGenerator = new IdGenerator();
