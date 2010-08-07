@@ -76,15 +76,32 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 \item \textbf{Fuente del estímulo}: Interna o externa
 \item \textbf{Estímulo}: condición que debe ser tenida en cuenta al llegar al sistema
 \item \textbf{Entorno}: condiciones en las cuales ocurre el estímulo
-\item \textbf{Artifact}: el sistema o partes de él afectadas por el estímulo
-\item \textbf{Response}: qué hace el sistema ante la llegada del estímulo
-\item \textbf{Resonse measure}: cuantificación de un atributo de la respuesta
+\item \textbf{Artefacto}: el sistema o partes de él afectadas por el estímulo
+\item \textbf{Respuesta}: qué hace el sistema ante la llegada del estímulo
+\item \textbf{Medición de la respuesta}: cuantificación de un atributo de la respuesta
 \end{itemize}
-	
+
 	\todo{agregar imagen /images/scenario.jpg}
-	
-	\todo{seguir tomando de /doc/teoricas Ing II/8-TacticasArquitecturas.pdf}
-	
+
+	Los eScenarios son pequeñas historias que describen una interacción con el sistema, que impacta sobre un atributo de calidad en particular. Por ejemplo, un escenario sobre disponibilidad podría ser:
+
+\begin{quote}
+''Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El proceso informa al operador y continúa su operación sin caídas.´´
+\end{quote}
+
+Este escenario se descompone de la siguiente manera:
+\begin{itemize}
+\item \textbf{Fuente del estímulo}: Sistema externo
+\item \textbf{Estímulo}: Mensaje no anticipado
+\item \textbf{Entorno}: Operación normal
+\item \textbf{Artefacto}: Proceso interno
+\item \textbf{Respuesta}: Informar al operador y seguir operando
+\item \textbf{Medición de la respuesta}: sin caídas (downtime)
+\end{itemize}
+
+	Los escenarios permiten obtener el punto de vista de un grupo diverso de stakeholders (arquitectos, desarrolladores, usuarios, sponsors, etc). Estos escenarios pueden luego ser utilizados para analizar la arquitectura del sistema e identificar concerns y posibles estrategias para atacar problemas.
+
+
 	\subsection{ATAM}
 	
 		
