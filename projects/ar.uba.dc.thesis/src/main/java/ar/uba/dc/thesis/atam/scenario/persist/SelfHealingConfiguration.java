@@ -25,8 +25,8 @@ public class SelfHealingConfiguration extends ThesisPojo {
 
 	private List<SelfHealingScenario> scenarios;
 
-	public SelfHealingConfiguration() {
-		this("", null, null, null);
+	public SelfHealingConfiguration(String description) {
+		this(description, null, null, null);
 	}
 
 	public SelfHealingConfiguration(String description, List<Artifact> artifacts, List<Environment> environments,
