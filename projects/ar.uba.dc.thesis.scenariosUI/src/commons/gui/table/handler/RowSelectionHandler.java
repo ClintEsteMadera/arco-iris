@@ -3,7 +3,6 @@ package commons.gui.table.handler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import commons.gui.Openable;
 import commons.gui.command.RowSelectionHandlerCommand;
 import commons.utils.ClassUtils;
@@ -27,7 +26,7 @@ public class RowSelectionHandler<T extends Object, COMMAND extends RowSelectionH
 		try {
 			element = ClassUtils.newInstance(clazz);
 			if (dialog.open(element)) {
-				element= dialog.getModel();
+				element = dialog.getModel();
 				command.store(element);
 				handleCreate = true;
 			}
@@ -41,7 +40,7 @@ public class RowSelectionHandler<T extends Object, COMMAND extends RowSelectionH
 		boolean handleUpdate = false;
 		element = command.cloneElement(element);
 		if (dialog.open(element)) {
-			element= dialog.getModel();
+			element = dialog.getModel();
 			command.update(rowIndex, element);
 			handleUpdate = true;
 		}
@@ -53,6 +52,6 @@ public class RowSelectionHandler<T extends Object, COMMAND extends RowSelectionH
 	private final Class<T> clazz;
 
 	public Openable<T> dialog;
-	
+
 	private static final Log log = LogFactory.getLog(RowSelectionHandler.class);
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Clase base para diccionarios indexados por "tipos de dato".
+ * 
  * @author P.Pastorino
  */
 public class TypeDictionary {
@@ -14,10 +15,9 @@ public class TypeDictionary {
 	}
 
 	/**
-	 * Obtiene la entrada asociada a un tipo. El procedimiento de búsqueda es recursivo, de forma
-	 * tal que si no encuentra una entrada para el tipo especificado, busca en en los tipos
-	 * asociados a la super clase del tipo original (por ejemplo, si no se encuentra un tipo de
-	 * clase <code>Integer<code>,
+	 * Obtiene la entrada asociada a un tipo. El procedimiento de búsqueda es recursivo, de forma tal que si no
+	 * encuentra una entrada para el tipo especificado, busca en en los tipos asociados a la super clase del tipo
+	 * original (por ejemplo, si no se encuentra un tipo de clase <code>Integer<code>,
 	 * se buscarán los tipos de clase <code>Number</code>).
 	 * <br>
 	 * En caso de no encontrarse el tipo de esta forma, se buscará 
@@ -62,7 +62,7 @@ public class TypeDictionary {
 		do {
 			value = m_map.get(new EditType<T>(clazz, type.getClassConfiguration()));
 
-			//FIXME: No se chequea si la variable "clazz" es nula o no (probable NPE)
+			// FIXME: No se chequea si la variable "clazz" es nula o no (probable NPE)
 			final Class<? super T> superClass = clazz.getSuperclass();
 			if (superClass != null && (clazz.equals(Object.class) || superClass.equals(clazz))) {
 				clazz = null;
@@ -79,6 +79,7 @@ public class TypeDictionary {
 
 	/**
 	 * Registra un tipo.
+	 * 
 	 * @param type
 	 * @param value
 	 */

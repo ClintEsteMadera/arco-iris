@@ -1,19 +1,3 @@
-/*
-
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: RadioButtonGroup.java,v 1.12 2008/04/18 20:55:06 cvschioc Exp $
- */
 package commons.gui.widget;
 
 import org.eclipse.core.runtime.Assert;
@@ -32,8 +16,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
 /**
- * @author Gabriel Tursi
- * @version $Revision: 1.12 $ $Date: 2008/04/18 20:55:06 $
+ * 
  */
 public class RadioButtonGroup extends FieldEditor {
 
@@ -58,8 +41,7 @@ public class RadioButtonGroup extends FieldEditor {
 	private Object value;
 
 	/**
-	 * The box of radio buttons, or <code>null</code> if none (before creation and after
-	 * disposal).
+	 * The box of radio buttons, or <code>null</code> if none (before creation and after disposal).
 	 */
 	private Composite radioBox;
 
@@ -74,15 +56,15 @@ public class RadioButtonGroup extends FieldEditor {
 	private boolean useGroup;
 
 	/**
-	 * Creates a radio group field editor. This constructor does not use a <code>Group</code> to
-	 * contain the radio buttons. It is equivalent to using the following constructor with
-	 * <code>false</code> for the <code>useGroup</code> argument.
+	 * Creates a radio group field editor. This constructor does not use a <code>Group</code> to contain the radio
+	 * buttons. It is equivalent to using the following constructor with <code>false</code> for the
+	 * <code>useGroup</code> argument.
 	 * <p>
 	 * Example usage:
 	 * 
 	 * <pre>
-	 * RadioGroupFieldEditor editor = new RadioGroupFieldEditor(&quot;GeneralPage.DoubleClick&quot;, resName, 1,
-	 * 		new String[][] { { &quot;Open Browser&quot;, &quot;open&quot; }, { &quot;Expand Tree&quot;, &quot;expand&quot; } }, parent);
+	 * RadioGroupFieldEditor editor = new RadioGroupFieldEditor(&quot;GeneralPage.DoubleClick&quot;, resName, 1, new String[][] {
+	 * 		{ &quot;Open Browser&quot;, &quot;open&quot; }, { &quot;Expand Tree&quot;, &quot;expand&quot; } }, parent);
 	 * </pre>
 	 * 
 	 * </p>
@@ -94,13 +76,12 @@ public class RadioButtonGroup extends FieldEditor {
 	 * @param numColumns
 	 *            the number of columns for the radio button presentation
 	 * @param labelAndValues
-	 *            list of radio button [label, value] entries; the value is returned when the radio
-	 *            button is selected
+	 *            list of radio button [label, value] entries; the value is returned when the radio button is selected
 	 * @param parent
 	 *            the parent of the field editor's control
 	 */
-	public RadioButtonGroup(String name, String labelText, int numColumns,
-			Object[][] labelAndValues, Composite parent, int selectedIndex) {
+	public RadioButtonGroup(String name, String labelText, int numColumns, Object[][] labelAndValues, Composite parent,
+			int selectedIndex) {
 		this(name, labelText, numColumns, labelAndValues, parent, false, selectedIndex);
 	}
 
@@ -110,8 +91,8 @@ public class RadioButtonGroup extends FieldEditor {
 	 * Example usage:
 	 * 
 	 * <pre>
-	 * RadioGroupFieldEditor editor = new RadioGroupFieldEditor(&quot;GeneralPage.DoubleClick&quot;, resName, 1,
-	 * 		new String[][] { { &quot;Open Browser&quot;, &quot;open&quot; }, { &quot;Expand Tree&quot;, &quot;expand&quot; } }, parent, true);
+	 * RadioGroupFieldEditor editor = new RadioGroupFieldEditor(&quot;GeneralPage.DoubleClick&quot;, resName, 1, new String[][] {
+	 * 		{ &quot;Open Browser&quot;, &quot;open&quot; }, { &quot;Expand Tree&quot;, &quot;expand&quot; } }, parent, true);
 	 * </pre>
 	 * 
 	 * </p>
@@ -123,15 +104,14 @@ public class RadioButtonGroup extends FieldEditor {
 	 * @param numColumns
 	 *            the number of columns for the radio button presentation
 	 * @param labelsAndValues
-	 *            list of radio button [label, value] entries; the value is returned when the radio
-	 *            button is selected
+	 *            list of radio button [label, value] entries; the value is returned when the radio button is selected
 	 * @param parent
 	 *            the parent of the field editor's control
 	 * @param useGroup
 	 *            whether to use a Group control to contain the radio buttons
 	 */
-	public RadioButtonGroup(String name, String labelText, int numColumns,
-			Object[][] labelsAndValues, Composite parent, boolean useGroup, int selectedIndex) {
+	public RadioButtonGroup(String name, String labelText, int numColumns, Object[][] labelsAndValues,
+			Composite parent, boolean useGroup, int selectedIndex) {
 		super();
 		init(name, labelText);
 		Assert.isTrue(checkArray(labelsAndValues));

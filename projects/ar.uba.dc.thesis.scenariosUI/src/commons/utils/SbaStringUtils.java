@@ -10,14 +10,16 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Utilidades para la manipulación de Strings en forma eficiente, y operaciones que complementan el
- * API de la clase {@link String}.
+ * Utilidades para la manipulación de Strings en forma eficiente, y operaciones que complementan el API de la clase
+ * {@link String}.
+ * 
  * @author H. Adrián Uribe
  */
 public abstract class SbaStringUtils {
 
 	/**
 	 * Concatena varios Strings de la forma más eficiente posible.
+	 * 
 	 * @param strings
 	 *            Strings a concatenar.
 	 * @return String concatenado.
@@ -39,28 +41,28 @@ public abstract class SbaStringUtils {
 
 	public static String getCharSeparetedRow(Character separator, String... strings) {
 		int len = 0;
-		if(strings != null && strings.length > 0) {
+		if (strings != null && strings.length > 0) {
 			len = strings.length - 1;
-			
+
 			for (String str : strings) {
 				len += (str == null) ? NULL_LENGTH : str.length();
 			}
 		}
 
 		StringBuffer stringBuffer = new StringBuffer(len);
-		if(strings != null) {
+		if (strings != null) {
 			for (String str : strings) {
 				stringBuffer.append(str);
 				stringBuffer.append(separator);
 			}
 		}
-		stringBuffer.deleteCharAt(stringBuffer.length()-1);
+		stringBuffer.deleteCharAt(stringBuffer.length() - 1);
 		return stringBuffer.toString();
 	}
 
 	/**
-	 * Crea un mensaje a partir de los mensajes recibidos, para poder ser mostrado en un diálogo
-	 * como un único String
+	 * Crea un mensaje a partir de los mensajes recibidos, para poder ser mostrado en un diálogo como un único String
+	 * 
 	 * @param errorMessages
 	 *            Mensajes a mostrar en un diálogo
 	 * @return String único a listo para ser mostrado en un diálogo
@@ -87,7 +89,7 @@ public abstract class SbaStringUtils {
 		}
 		return result;
 	}
-	
+
 	public static String formatCuitValue(String cuitValue) {
 		StringBuilder sBuilder = new StringBuilder(13); // 11 caracteres + 2 guiones
 		for (int i = 0; i < cuitValue.length(); i++) {
@@ -98,7 +100,7 @@ public abstract class SbaStringUtils {
 		}
 		return sBuilder.toString();
 	}
-	
+
 	public static String trim(String str) {
 		String result = null;
 		if (str != null) {
@@ -128,6 +130,7 @@ public abstract class SbaStringUtils {
 
 	/**
 	 * Comprime secuencias de 1 ó más de caracteres de espaciado en un carácter de espacio.
+	 * 
 	 * @param str
 	 *            Valor a compactar.
 	 * @return Valor compactado.
@@ -142,8 +145,9 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * Comprime secuencias de 1 ó más de caracteres de espaciado en un carácter de espacio, o las
-	 * suprime en caso de encontrarse entre 2 caracteres que no sean ambos alfanuméricos.
+	 * Comprime secuencias de 1 ó más de caracteres de espaciado en un carácter de espacio, o las suprime en caso de
+	 * encontrarse entre 2 caracteres que no sean ambos alfanuméricos.
+	 * 
 	 * @param str
 	 *            Valor a compactar.
 	 * @return Valor compactado.
@@ -219,8 +223,7 @@ public abstract class SbaStringUtils {
 			if (array.length == 0) {
 				result = ARR_EMPTY;
 			} else {
-				int len = ARR_BEGIN.length() + ARR_END.length() + (array.length - 1)
-						* ARR_SEPARATOR.length();
+				int len = ARR_BEGIN.length() + ARR_END.length() + (array.length - 1) * ARR_SEPARATOR.length();
 
 				Object val;
 				Object[] strArray = new String[array.length];
@@ -266,8 +269,7 @@ public abstract class SbaStringUtils {
 			if (collection.isEmpty()) {
 				result = ARR_EMPTY;
 			} else {
-				int len = ARR_BEGIN.length() + ARR_END.length() + (collection.size() - 1)
-						* ARR_SEPARATOR.length();
+				int len = ARR_BEGIN.length() + ARR_END.length() + (collection.size() - 1) * ARR_SEPARATOR.length();
 
 				Object val;
 				Object[] strArray = new String[collection.size()];
@@ -309,10 +311,9 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * @return <code>true</code> si y solo si todos los caracteres del String son imprimibles,
-	 *         esto es, no son caracteres de control. Técnicamente, verifica que todos los
-	 *         caracteres estén en el rango [32-175] de código ASCII. Algunos ejemplos de invocación
-	 *         del método:
+	 * @return <code>true</code> si y solo si todos los caracteres del String son imprimibles, esto es, no son
+	 *         caracteres de control. Técnicamente, verifica que todos los caracteres estén en el rango [32-175] de
+	 *         código ASCII. Algunos ejemplos de invocación del método:
 	 *         <ul>
 	 *         <li> isPrintable("@?$lajk#") = <code>true</code>
 	 *         <li> isPrintable("_¡+}´") = <code>true</code>
@@ -337,7 +338,7 @@ public abstract class SbaStringUtils {
 
 	public static boolean containsSpecialCharacter(String str) {
 		boolean contains = false;
-		if(str != null) {
+		if (str != null) {
 			for (int i = 0; !contains && i < str.length(); i++) {
 				contains = contains || isSpecialCharacter(str.charAt(i));
 			}
@@ -346,8 +347,7 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * @return Devuelve verdadero si y solo si el char dado corresponde con alguna de las siguientes
-	 *         teclas:
+	 * @return Devuelve verdadero si y solo si el char dado corresponde con alguna de las siguientes teclas:
 	 *         <ul>
 	 *         <li><code>BACKSPACE</code></li>
 	 *         <li><code>DELETE</code></li>
@@ -358,13 +358,13 @@ public abstract class SbaStringUtils {
 	 *         </ul>
 	 */
 	public static boolean isSpecialCharacter(char character) {
-		return character == BS || character == DEL || character == ALT || character == CTRL
-				|| character == CR || character == KEYPAD_CR;
+		return character == BS || character == DEL || character == ALT || character == CTRL || character == CR
+				|| character == KEYPAD_CR;
 	}
 
 	public static boolean containsSpecialKey(String str) {
 		boolean contains = false;
-		if(str != null) {
+		if (str != null) {
 			for (int i = 0; !contains && i < str.length(); i++) {
 				contains = contains || isSpecialKey(str.charAt(i));
 			}
@@ -373,9 +373,8 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * @return Devuelve verdadero si y solo si el <b>keyCode</b> dado corresponde a una
-	 *         <code>flecha a izquierda</code>, a una <code>flecha a derecha</code>, a la
-	 *         tecla <code>inicio</code> o a la tecla <code>fin</code>
+	 * @return Devuelve verdadero si y solo si el <b>keyCode</b> dado corresponde a una <code>flecha a izquierda</code>,
+	 *         a una <code>flecha a derecha</code>, a la tecla <code>inicio</code> o a la tecla <code>fin</code>
 	 */
 	public static boolean isSpecialKey(int keyCode) {
 		return keyCode == ARROW_LEFT || keyCode == ARROW_RIGHT || keyCode == HOME || keyCode == END;
@@ -384,7 +383,7 @@ public abstract class SbaStringUtils {
 	public static String toString(Object obj) {
 		return String.valueOf(obj);
 	}
-	
+
 	private static final String CUIT_SEPARATOR = "-";
 
 	private static final String ATTR_BEGIN = ":{";
@@ -404,7 +403,7 @@ public abstract class SbaStringUtils {
 	private static final String ARR_EMPTY = "[]";
 
 	public static final int KEYCODE_BIT = (1 << 24);
-	
+
 	private static final int KEYPAD_CR = KEYCODE_BIT + 80;
 
 	private static final int ARROW_LEFT = KEYCODE_BIT + 3;
@@ -420,17 +419,16 @@ public abstract class SbaStringUtils {
 	private static final char DEL = 0x7F;
 
 	private static final char CR = '\r';
-	
+
 	private static final int ALT = 1 << 16;
 
 	private static final int CTRL = 1 << 18;
-	
-	
+
 	// Determines the amount of space used by StringBuffer.append(null);
 	private static final int NULL_LENGTH = new StringBuffer("").append((String) null).length();
 
 	private static final Pattern SQUEEZE_PATTERN = Pattern.compile("\\s+", Pattern.DOTALL);
 
-	private static final Pattern[] SQUEEZE_FULLY_PATTERNS = {
-			Pattern.compile("(\\W) ", Pattern.DOTALL), Pattern.compile(" (\\W)", Pattern.DOTALL), };
+	private static final Pattern[] SQUEEZE_FULLY_PATTERNS = { Pattern.compile("(\\W) ", Pattern.DOTALL),
+			Pattern.compile(" (\\W)", Pattern.DOTALL), };
 }

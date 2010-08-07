@@ -67,8 +67,7 @@ public class RepairStrategiesSelectionQueryComposite extends ScenariosUIQueryCom
 
 	@Override
 	protected List<StrategyTO> executeQuery() {
-		List<StrategyTO> allStrategies = ScenariosUIManager.getInstance().getAllStrategies(
-				this.getCriteria());
+		List<StrategyTO> allStrategies = ScenariosUIManager.getInstance().getAllStrategies(this.getCriteria());
 
 		if (allStrategies.isEmpty()) {
 			throw new ValidationException(new ValidationError(ScenariosUILabels.NO_REPAIR_STRATEGIES_FOUND, this

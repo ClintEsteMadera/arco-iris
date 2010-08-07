@@ -27,7 +27,7 @@ import commons.gui.swt.text.TextFormatterFactoryManager;
 /**
  * Clase utilizada internamnete para el binding de Text y Label
  * 
- * @author ppastorino
+ * 
  */
 public class TextValueModel implements ValueModel, WidgetContainer {
 

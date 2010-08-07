@@ -12,7 +12,7 @@ import commons.gui.table.GenericTable;
 /**
  * Clase utilizada internamente para el binding de tablas.
  * 
- * @author ppastorino
+ * 
  */
 class TableValueModel implements ValueModel, WidgetContainer {
 
@@ -42,7 +42,7 @@ class TableValueModel implements ValueModel, WidgetContainer {
 			viewer.getGenericContentProvider().removeValueChangeListener(listener);
 		}
 	}
-	
+
 	public void notifyChange() {
 		if (viewer.getGenericContentProvider() != null) {
 			viewer.getGenericContentProvider().notifyChange();

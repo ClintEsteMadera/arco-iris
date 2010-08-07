@@ -14,9 +14,9 @@ class TypeConversionInfo {
 	ValueConversor m_conversor;
 
 	boolean m_isPrimitive;
-	
-	//clase a la que se debe convertir siempre el valor
-	//(por ejemplo si siempre se quiere ver Calendar como Date)
+
+	// clase a la que se debe convertir siempre el valor
+	// (por ejemplo si siempre se quiere ver Calendar como Date)
 	Class m_targetClass;
 
 	public Class getWrapperClass() {

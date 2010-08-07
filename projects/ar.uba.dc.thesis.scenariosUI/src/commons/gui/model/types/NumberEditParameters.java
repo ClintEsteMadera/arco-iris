@@ -7,9 +7,9 @@ import java.text.DecimalFormatSymbols;
 
 import commons.validation.NumericConstraints;
 
-
 /**
  * Parametros para la edicion de numeros.
+ * 
  * @author P.Pastorino
  */
 public class NumberEditParameters implements Cloneable {
@@ -27,24 +27,23 @@ public class NumberEditParameters implements Cloneable {
 	public Number prototype;
 
 	public Number columnPrototype;
-	
+
 	@Override
 	public String toString() {
-		return new StringBuffer(getClass().getName()).append(" [grouping=").append(grouping)
-				.append(" maxIntDigits=").append(maxIntDigits).append(" maxFractionDigits=")
-				.append(maxFractionDigits).append(" minFractionDigits=").append(minFractionDigits)
-				.append(" allowsNegative=").append(allowsNegative).append(" prototype=").append(
-						prototype).append("]").toString();
+		return new StringBuffer(getClass().getName()).append(" [grouping=").append(grouping).append(" maxIntDigits=")
+				.append(maxIntDigits).append(" maxFractionDigits=").append(maxFractionDigits).append(
+						" minFractionDigits=").append(minFractionDigits).append(" allowsNegative=").append(
+						allowsNegative).append(" prototype=").append(prototype).append("]").toString();
 	}
 
-	
 	public NumberEditParameters(NumericConstraints c) {
 		this.maxIntDigits = c.getIntDigits();
 		this.allowsNegative = c.getMin() == null || c.getMin().doubleValue() < 0;
 		this.maxFractionDigits = c.getPrecision();
 	}
-	
-	public NumberEditParameters() {}
+
+	public NumberEditParameters() {
+	}
 
 	public NumberEditParameters(int maxIntDigits) {
 		this.maxIntDigits = maxIntDigits;
@@ -85,8 +84,8 @@ public class NumberEditParameters implements Cloneable {
 			return prototype;
 		}
 
-		final String fraction = maxFractionDigits == 0 ? "" : maxFractionDigits < 0 ? FRACTION
-				: FRACTION.substring(0, maxFractionDigits + 1);
+		final String fraction = maxFractionDigits == 0 ? "" : maxFractionDigits < 0 ? FRACTION : FRACTION.substring(0,
+				maxFractionDigits + 1);
 
 		String integer;
 		if (allowsNegative) {
@@ -128,11 +127,10 @@ public class NumberEditParameters implements Cloneable {
 		format.setGroupingUsed(grouping);
 		format.setMinimumIntegerDigits(1);
 
-		if(numberClass.equals(BigDecimal.class))
-		{
+		if (numberClass.equals(BigDecimal.class)) {
 			format.setParseBigDecimal(true);
 		}
-		
+
 		return format;
 	}
 
@@ -164,10 +162,8 @@ public class NumberEditParameters implements Cloneable {
 	}
 
 	private static boolean isInteger(Class valueClass) {
-		return Integer.class.isAssignableFrom(valueClass)
-				|| Long.class.isAssignableFrom(valueClass)
-				|| Short.class.isAssignableFrom(valueClass)
-				|| BigInteger.class.isAssignableFrom(valueClass);
+		return Integer.class.isAssignableFrom(valueClass) || Long.class.isAssignableFrom(valueClass)
+				|| Short.class.isAssignableFrom(valueClass) || BigInteger.class.isAssignableFrom(valueClass);
 	}
 
 	/**

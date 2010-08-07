@@ -1,18 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: ValidationMessageDialog.java,v 1.8 2008/05/09 12:35:22 cvscalab Exp $
- */
 package commons.gui.widget.dialog;
 
 import java.util.List;
@@ -34,14 +19,12 @@ import commons.gui.util.PageHelper;
 import commons.gui.util.TextJfaceUtils;
 
 /**
- * @author Gabriel Tursi
- * @version $Revision: 1.8 $ $Date: 2008/05/09 12:35:22 $
+ * 
  */
 public class ValidationMessageDialog extends MessageDialog {
 
 	protected ValidationMessageDialog(String dialogTitle, String dialogMessage, String... messages) {
-		super(null, dialogTitle, null, dialogMessage, WARNING,
-				new String[] { IDialogConstants.OK_LABEL }, 0);
+		super(null, dialogTitle, null, dialogMessage, WARNING, new String[] { IDialogConstants.OK_LABEL }, 0);
 		validationMessages = messages;
 	}
 
@@ -73,8 +56,7 @@ public class ValidationMessageDialog extends MessageDialog {
 			textbox.setBackground(parent.getShell().getBackground());
 			textbox.setEditable(false);
 			for (String msg : validationMessages) {
-				textbox.setText(textbox.getText() + "\t\t- " + msg
-						+ System.getProperty("line.separator"));
+				textbox.setText(textbox.getText() + "\t\t- " + msg + System.getProperty("line.separator"));
 			}
 			text = textbox.getText();
 		}

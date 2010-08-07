@@ -11,12 +11,11 @@ public class TableBindingFactory extends ValueModelAdapterBindingFactory {
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
 		final GenericTable viewer = (GenericTable) component;
-		
-		if((viewer.getTable().getStyle() & SWT.CHECK) != 0)
-		{
+
+		if ((viewer.getTable().getStyle() & SWT.CHECK) != 0) {
 			return new CheckedTableValueModel(viewer, model.getValueType());
 		}
-		
+
 		return new TableValueModel(viewer, model.getValueType());
 	}
 

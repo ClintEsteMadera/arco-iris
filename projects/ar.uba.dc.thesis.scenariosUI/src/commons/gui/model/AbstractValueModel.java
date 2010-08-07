@@ -8,7 +8,7 @@ import commons.gui.model.types.EditType;
  * Implementacion basica de ValueModel.
  */
 public abstract class AbstractValueModel<T> implements ValueModel<T> {
-	
+
 	public AbstractValueModel() {
 		m_valueChangeSupport = new ValueChangeSupport<T>(this);
 	}
@@ -26,10 +26,10 @@ public abstract class AbstractValueModel<T> implements ValueModel<T> {
 		return DEFAULT_TYPE;
 	}
 
-	public void notifyChange(){
+	public void notifyChange() {
 		m_valueChangeSupport.fireValueChange();
 	}
-	
+
 	protected void fireValueChange(T oldValue, T newValue) {
 		m_valueChangeSupport.fireValueChange(oldValue, newValue);
 	}

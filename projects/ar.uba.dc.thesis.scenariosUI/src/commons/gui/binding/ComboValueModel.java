@@ -16,8 +16,8 @@ import commons.gui.widget.ComboEditor;
 
 /**
  * Clase utilizada internamente para el binding de Combos.
- *  
- * @author ppastorino
+ * 
+ * 
  */
 class ComboValueModel implements ValueModel, WidgetContainer {
 
@@ -69,8 +69,7 @@ class ComboValueModel implements ValueModel, WidgetContainer {
 	}
 
 	public void notifyChange() {
-		final ValueChangeEvent<String> changeEvent = new ValueChangeEvent<String>(this, null,
-				this.combo.getText());
+		final ValueChangeEvent<String> changeEvent = new ValueChangeEvent<String>(this, null, this.combo.getText());
 
 		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(changeEvent);
@@ -89,7 +88,6 @@ class ComboValueModel implements ValueModel, WidgetContainer {
 		}
 	}
 
-	
 	public Widget getWidget() {
 		return this.combo;
 	}

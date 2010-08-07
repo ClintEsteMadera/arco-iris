@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: Clonator.java,v 1.1 2008/02/22 12:24:52 cvschioc Exp $
- */
-
 package commons.utils;
 
 import java.io.ByteArrayInputStream;
@@ -36,11 +20,12 @@ public class Clonator {
 
 	/**
 	 * Clona un objeto de acuerdo a los siguientes pasos:
-	 * <li>Si implementa {@link java.lang.Cloneable Cloneable}, invoca el método
-	 * <code>clone()</code> utilizando reflection.</li>
+	 * <li>Si implementa {@link java.lang.Cloneable Cloneable}, invoca el método <code>clone()</code> utilizando
+	 * reflection.</li>
 	 * <li>Si implementa {@link java.io.Serializable Serializable}, invoca el método
 	 * {@link sbaui.util.SerializableClonator#clone(Object) SerializableClonator.clone(Object}
 	 * <li>.
+	 * 
 	 * @throws CloneNotSupportedException
 	 *             si no se pudo realizar ninguno de los pasos anteriores.
 	 */
@@ -60,8 +45,7 @@ public class Clonator {
 			if (Serializable.class.isAssignableFrom(o.getClass())) {
 				return tryCloneSerializable(o);
 			}
-			throw new IllegalArgumentException(
-					"Error clonando el objeto: el objeto no es serializable");
+			throw new IllegalArgumentException("Error clonando el objeto: el objeto no es serializable");
 		} catch (CloneNotSupportedException e) {
 			throw new IllegalArgumentException("Error clonando el objeto: " + e.getMessage(), e);
 		}
@@ -80,8 +64,7 @@ public class Clonator {
 	@SuppressWarnings("unchecked")
 	private static <T> T tryCloneable(T o) throws CloneNotSupportedException {
 		try {
-			return (T) o.getClass().getMethod(CLONE_METHOD_NAME, (Class[]) null).invoke(o,
-					(T[]) null);
+			return (T) o.getClass().getMethod(CLONE_METHOD_NAME, (Class[]) null).invoke(o, (T[]) null);
 		} catch (Exception e) {
 			throw new CloneNotSupportedException();
 		}

@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: RPCComposite.java,v 1.15 2008/04/22 19:54:54 cvschioc Exp $
- */
-
 package commons.gui.widget.composite;
 
 import java.util.ArrayList;
@@ -28,7 +12,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.gui.GuiStyle;
 import commons.gui.model.CompositeModel;
 import commons.gui.model.ValueChangeEvent;
@@ -40,16 +23,13 @@ import commons.gui.widget.creation.binding.BindingInfo;
 import commons.utils.SbaStringUtils;
 
 /**
- * Modela los campos de RPC con las restricciones numéricas necesarias y el layout usual para este
- * tipo de campos.
+ * Modela los campos de RPC con las restricciones numéricas necesarias y el layout usual para este tipo de campos.
  * 
- * @author Jonathan Chiocchio
- * @version $Revision: 1.15 $ $Date: 2008/04/22 19:54:54 $
+ * 
  */
 public class RPCComposite extends SimpleComposite implements ValueModel<String> {
 
-	public RPCComposite(Composite parent, CompositeModel model, String propertyName,
-			boolean readOnly) {
+	public RPCComposite(Composite parent, CompositeModel model, String propertyName, boolean readOnly) {
 		super(parent, readOnly, 1);
 
 		this.valueListeners = new ArrayList<ValueChangeListener>();
@@ -68,8 +48,7 @@ public class RPCComposite extends SimpleComposite implements ValueModel<String> 
 	}
 
 	public String getValue() {
-		return SbaStringUtils.concat(nro.getText(), folio.getText(), libro.getText(), tomo
-				.getText());
+		return SbaStringUtils.concat(nro.getText(), folio.getText(), libro.getText(), tomo.getText());
 	}
 
 	public void setValue(String value) {
@@ -132,19 +111,18 @@ public class RPCComposite extends SimpleComposite implements ValueModel<String> 
 
 	private Text createTextBox(int maxLength) {
 		// dynamic calculus of textbox size
-		final int cantPixels = PageHelper.getCantidadDePixels(Math.max(2 * maxLength - 1,
-				maxLength + 1));
+		final int cantPixels = PageHelper.getCantidadDePixels(Math.max(2 * maxLength - 1, maxLength + 1));
 		final int style = readOnly ? SWT.READ_ONLY : GuiStyle.DEFAULT_TEXTBOX_STYLE;
 
 		Text textBox = new Text(this, style);
 		textBox.setLayoutData(new RowData(cantPixels, SWT.DEFAULT));
 		textBox.setTextLimit(maxLength);
 
-		if(this.readOnly) {
+		if (this.readOnly) {
 			textBox.setFont(PageHelper.getValueLabelsFont());
 		} else {
 			this.addModifyListener(textBox);
-			this.addFocusListener(textBox);	
+			this.addFocusListener(textBox);
 		}
 		return textBox;
 	}

@@ -3,7 +3,7 @@ MUST HAVES:
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
 
-- Eliminar referencias a Caja de Valores, nombres de autores de clases y fechas. Traducir todo codigo al inglï¿½s.
+- Traducir todo codigo al inglés.
 
 NICE TO HAVES:
 

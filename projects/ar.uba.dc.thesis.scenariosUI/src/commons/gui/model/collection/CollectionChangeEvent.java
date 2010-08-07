@@ -2,12 +2,12 @@ package commons.gui.model.collection;
 
 /**
  * Evento asociado a la modificacion de una coleccion.
+ * 
  * @author P.Pastorino
  */
 public class CollectionChangeEvent {
 
-	protected CollectionChangeEvent(CollectionModel model, int type, Object oldValue,
-			Object newValue) {
+	protected CollectionChangeEvent(CollectionModel model, int type, Object oldValue, Object newValue) {
 		m_source = model;
 		m_eventType = type;
 		m_oldValue = oldValue;
@@ -18,18 +18,16 @@ public class CollectionChangeEvent {
 		return new CollectionChangeEvent(model, ADD, null, value);
 	}
 
-	public static CollectionChangeEvent createCollectionRemoveEvent(CollectionModel model,
-			Object value) {
+	public static CollectionChangeEvent createCollectionRemoveEvent(CollectionModel model, Object value) {
 		return new CollectionChangeEvent(model, REMOVE, value, null);
 	}
 
-	public static CollectionChangeEvent createCollectionUpdateEvent(CollectionModel model,
-			Object value) {
+	public static CollectionChangeEvent createCollectionUpdateEvent(CollectionModel model, Object value) {
 		return new CollectionChangeEvent(model, UPDATE, value, value);
 	}
 
-	public static CollectionChangeEvent createCollectionUpdateEvent(CollectionModel model,
-			Object oldValue, Object newValue) {
+	public static CollectionChangeEvent createCollectionUpdateEvent(CollectionModel model, Object oldValue,
+			Object newValue) {
 		return new CollectionChangeEvent(model, UPDATE, oldValue, newValue);
 	}
 
@@ -69,7 +67,7 @@ public class CollectionChangeEvent {
 	private Object m_oldValue;
 
 	private Object m_newValue;
-	
+
 	public static final int ADD = 0;
 
 	public static final int REMOVE = 1;

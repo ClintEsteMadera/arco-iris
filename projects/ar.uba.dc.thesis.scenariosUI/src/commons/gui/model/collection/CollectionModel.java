@@ -7,7 +7,7 @@ import java.util.Iterator;
  * Interface base para distintos tipos de colecciones.
  */
 public interface CollectionModel<T> {
-	
+
 	public boolean contains(T elem);
 
 	public boolean contains(T elem, Comparator<T> comparator);

@@ -11,8 +11,8 @@ import commons.properties.CommonLabels;
 public class ChangePwdAction extends Action {
 
 	public ChangePwdAction(AuthenticationHelper authHelper) {
-		super(CommonLabels.MENU_FILE_PASSWORD_CHANGE.toString(), ImageDescriptor.createFromFile(
-				ChangePwdAction.class, "/images/chpwd.gif"));
+		super(CommonLabels.MENU_FILE_PASSWORD_CHANGE.toString(), ImageDescriptor.createFromFile(ChangePwdAction.class,
+				"/images/chpwd.gif"));
 		this.authHelper = authHelper;
 	}
 

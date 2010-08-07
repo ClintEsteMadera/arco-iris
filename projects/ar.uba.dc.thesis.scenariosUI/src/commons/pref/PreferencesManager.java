@@ -4,11 +4,9 @@ import commons.pref.domain.Preferences;
 import commons.pref.domain.TableInfo;
 import commons.properties.EnumProperty;
 
-
 /**
  * Clase que Maneja el almacenamiento y carga de las preferencias visuales del Sistema.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.6 $ $Date: 2008/02/05 16:05:16 $
+ * 
  */
 public class PreferencesManager {
 
@@ -28,8 +26,8 @@ public class PreferencesManager {
 	}
 
 	/**
-	 * Crea un manejador de preferencias, mergeando la información del archivo de preferencias del
-	 * usuario con el default, en caso que el mismo exista.
+	 * Crea un manejador de preferencias, mergeando la información del archivo de preferencias del usuario con el
+	 * default, en caso que el mismo exista.
 	 */
 	private PreferencesManager() {
 		Preferences defaultPrefs = PreferencesHelper.getDefaultUserPreferences();

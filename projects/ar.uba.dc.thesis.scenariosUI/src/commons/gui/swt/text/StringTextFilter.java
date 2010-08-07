@@ -79,8 +79,7 @@ public class StringTextFilter extends DefaultTextFilter {
 				c = Character.toUpperCase(c);
 			}
 
-			if (config.getParameters().validCharacters != null
-					&& !config.getParameters().validCharacters.isMember(c)) {
+			if (config.getParameters().validCharacters != null && !config.getParameters().validCharacters.isMember(c)) {
 				valid = false;
 			}
 
@@ -89,14 +88,14 @@ public class StringTextFilter extends DefaultTextFilter {
 				valid = false;
 			}
 
-			if(!valid && config.getParameters().validCharacters != null){
-				final Character r=config.getParameters().validCharacters.getReplaceForInvalidCharacter(c);
-				if(r != null){
-					c=r.charValue();
+			if (!valid && config.getParameters().validCharacters != null) {
+				final Character r = config.getParameters().validCharacters.getReplaceForInvalidCharacter(c);
+				if (r != null) {
+					c = r.charValue();
 				}
-				valid=true;
+				valid = true;
 			}
-			
+
 			if (valid) {
 				super.insert(context, pos, new String(new char[] { c }));
 				count++;

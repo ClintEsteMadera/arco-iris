@@ -7,23 +7,21 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 
-
 import commons.annotations.DataTypeAnnotation;
 import commons.gui.model.AbstractAttribute;
 
 /**
  * Atributo que toma los valores de una propiedad de un bean. <br>
  * <br>
- * Mediante reflection, esta clase invoca los getter y el setter de una
- * propiedad para extraer valores de un objeto. Además soporta: <br>
+ * Mediante reflection, esta clase invoca los getter y el setter de una propiedad para extraer valores de un objeto.
+ * Además soporta: <br>
  * <ul>
  * <li> Propiedades anidadas: <br>
- * Es posible expresar una propiedad "anidada" (por ejemplo: la propiedad
- * "calle.numero" utilizará los métodos <code>getCalle().getNumero()</code> y
- * <code>getCalle().setNumero()</code> </li>
+ * Es posible expresar una propiedad "anidada" (por ejemplo: la propiedad "calle.numero" utilizará los métodos
+ * <code>getCalle().getNumero()</code> y <code>getCalle().setNumero()</code> </li>
  * <li> Conversiones de tipos: <br>
- * Para tener una mayor flexibilidad, se utilizan las conversiones de tipos
- * definidas en {@link commons.gui.model.bean.TypeConversionManager} </li>
+ * Para tener una mayor flexibilidad, se utilizan las conversiones de tipos definidas en
+ * {@link commons.gui.model.bean.TypeConversionManager} </li>
  * </ul>
  * 
  * @author P.Pastorino
@@ -34,8 +32,7 @@ public class BeanAttribute extends AbstractAttribute {
 	 * Construye el atributo.
 	 * 
 	 * @param clazz
-	 *            Clase de los objetos sobre los cuales se va a aplicar el
-	 *            atributo.
+	 *            Clase de los objetos sobre los cuales se va a aplicar el atributo.
 	 * @param propertyName
 	 *            Nombre de la propiedad asociada.
 	 */
@@ -55,8 +52,7 @@ public class BeanAttribute extends AbstractAttribute {
 			m_propertyPath[i] = name;
 
 			if (clazz != null) {
-				propertyDesc = target != null ? getTargetProperty(target, name) : getProperty(
-						clazz, name);
+				propertyDesc = target != null ? getTargetProperty(target, name) : getProperty(clazz, name);
 			}
 
 			if (propertyDesc == null) {
@@ -70,8 +66,7 @@ public class BeanAttribute extends AbstractAttribute {
 						target = m_readMethods[i].invoke(target, new Object[] {});
 					} catch (Exception unused) {
 						target = null;
-						System.err.println("Error obteniendo prototipo para propiedad "
-								+ propertyName);
+						System.err.println("Error obteniendo prototipo para propiedad " + propertyName);
 					}
 				}
 			}
@@ -80,8 +75,7 @@ public class BeanAttribute extends AbstractAttribute {
 		if (propertyDesc != null) {
 			m_writeMethod = propertyDesc.getWriteMethod();
 			m_conversion = TypeConversionManager.getConversionInfo(propertyDesc.getPropertyType());
-			m_attributeClass = m_conversion != null ? m_conversion.getWrapperClass() : propertyDesc
-					.getPropertyType();
+			m_attributeClass = m_conversion != null ? m_conversion.getWrapperClass() : propertyDesc.getPropertyType();
 		}
 
 		m_propertyName = propertyName;
@@ -99,39 +93,33 @@ public class BeanAttribute extends AbstractAttribute {
 		}
 	}
 
-	
-//	private Object getSetterParameter(Object target, Object value){
-//		if (m_conversion != null) {
-//			if (value == null) {
-//				return m_conversion.getNullValue();
-//			}
-//			// revert
-//			if (m_conversion.getConversor() != null) {
-//				return m_conversion.getConversor().convertFrom(value);
-//			}
-//		}
-//		return value;
-//	}
-	
+	// private Object getSetterParameter(Object target, Object value){
+	// if (m_conversion != null) {
+	// if (value == null) {
+	// return m_conversion.getNullValue();
+	// }
+	// // revert
+	// if (m_conversion.getConversor() != null) {
+	// return m_conversion.getConversor().convertFrom(value);
+	// }
+	// }
+	// return value;
+	// }
+
 	/**
 	 * Setea el valor de la propiedad en el objeto.
 	 * 
 	 * @param target
 	 *            Objeto cuya propiedad se quiere modificar.
 	 * @param value
-	 *            Valor que se quiere asignar. Si el tipo de dato de la
-	 *            propiedad tiene un conversor asociado a través de
-	 *            {@link commons.gui.model.bean.TypeConversionManager}, se
-	 *            invoca
-	 *            {@link sba.ui.util.ValueConversor#convertFrom(java.lang.Object)}
-	 *            con el parámetro <code>value</code> y se asigna el valor
-	 *            retornado a la propiedad del bean. <br>
+	 *            Valor que se quiere asignar. Si el tipo de dato de la propiedad tiene un conversor asociado a través
+	 *            de {@link commons.gui.model.bean.TypeConversionManager}, se invoca
+	 *            {@link sba.ui.util.ValueConversor#convertFrom(java.lang.Object)} con el parámetro <code>value</code>
+	 *            y se asigna el valor retornado a la propiedad del bean. <br>
 	 *            <br>
-	 *            En caso de tartarse de una propiedad de tipo primitivo, se
-	 *            hace un tratamiento especial del <code>null</code>
-	 *            convirtiendolo al valor por default según el tipo (<ode>0</code>
-	 *            para <code>int</code>,<code>false</false> para
-	 *            <code>boolean</code>, etc)
+	 *            En caso de tartarse de una propiedad de tipo primitivo, se hace un tratamiento especial del
+	 *            <code>null</code> convirtiendolo al valor por default según el tipo (<ode>0</code> para <code>int</code>,<code>false</false>
+	 *            para <code>boolean</code>, etc)
 	 * @see commons.gui.model.Attribute#setValue(Object, Object)
 	 */
 	public void setValue(Object target, Object value) {
@@ -143,9 +131,8 @@ public class BeanAttribute extends AbstractAttribute {
 		}
 
 		if (m_writeMethod == null) {
-			throw new IllegalArgumentException("Clase " + m_beanClass.getName() + ": "
-					+ "La propiedad " + m_propertyName
-					+ " no tiene un setter definido para la clase " + getAttributeClass().getName());
+			throw new IllegalArgumentException("Clase " + m_beanClass.getName() + ": " + "La propiedad "
+					+ m_propertyName + " no tiene un setter definido para la clase " + getAttributeClass().getName());
 		}
 
 		if (m_conversion != null) {
@@ -167,11 +154,10 @@ public class BeanAttribute extends AbstractAttribute {
 	}
 
 	/**
-	 * Obtiene el valor de la propiedad para el objeto. Si el tipo de dato de la
-	 * propiedad tiene un conversor asociado a través de
-	 * {@link commons.gui.model.bean.TypeConversionManager}, se invoca
-	 * {@link sba.ui.util.ValueConversor#convertTo(java.lang.Object)} con el valor
-	 * de la propiedad y se retorna el valor obtenido.
+	 * Obtiene el valor de la propiedad para el objeto. Si el tipo de dato de la propiedad tiene un conversor asociado a
+	 * través de {@link commons.gui.model.bean.TypeConversionManager}, se invoca
+	 * {@link sba.ui.util.ValueConversor#convertTo(java.lang.Object)} con el valor de la propiedad y se retorna el valor
+	 * obtenido.
 	 * 
 	 * @param target
 	 *            Objeto cuya propiedad se quiere obtener.
@@ -198,8 +184,7 @@ public class BeanAttribute extends AbstractAttribute {
 	}
 
 	/**
-	 * Informa si se trata de una propiedad de tipo primitivo
-	 * (int,long,double,float,bool)
+	 * Informa si se trata de una propiedad de tipo primitivo (int,long,double,float,bool)
 	 * 
 	 * @return
 	 */
@@ -221,8 +206,7 @@ public class BeanAttribute extends AbstractAttribute {
 		try {
 			info = Introspector.getBeanInfo(clazz);
 		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("No se pudo obtener informacion para la clase "
-					+ clazz.getName());
+			throw new IllegalArgumentException("No se pudo obtener informacion para la clase " + clazz.getName());
 		}
 
 		PropertyDescriptor[] props = info.getPropertyDescriptors();
@@ -242,8 +226,7 @@ public class BeanAttribute extends AbstractAttribute {
 			for (int i = 0; ret != null && i < pathLen; i++) {
 
 				/*
-				 * me fijo si puedo obtener el getter (en caso de que sea un
-				 * metodo definido en una subclase)
+				 * me fijo si puedo obtener el getter (en caso de que sea un metodo definido en una subclase)
 				 */
 				if (m_readMethods[i] == null) {
 					m_readMethods[i] = getReadMethod(ret, m_propertyPath[i]);
@@ -251,25 +234,21 @@ public class BeanAttribute extends AbstractAttribute {
 
 				if (m_readMethods[i] == null) {
 					String errorMsg = "Clase " + m_beanClass.getName() + ": " + m_propertyName
-							+ " no tiene getter definido para la clase "
-							+ m_attributeClass.getName();
+							+ " no tiene getter definido para la clase " + m_attributeClass.getName();
 					throw new IllegalArgumentException(errorMsg);
 				}
 				try {
 					ret = m_readMethods[i].invoke(ret, new Object[] {});
 				} catch (Exception e) {
 					// puede pasar que el método esté desactualizado, lo refresco...
-					m_readMethods[i] = ret.getClass().getMethod(m_readMethods[i].getName(),
-							new Class[] {});
+					m_readMethods[i] = ret.getClass().getMethod(m_readMethods[i].getName(), new Class[] {});
 					ret = m_readMethods[i].invoke(ret, new Object[] {});
 				}
 			}
 		} catch (Throwable t) {
-			IllegalArgumentException e = new IllegalArgumentException("Clase "
-					+ m_beanClass.getName() + ": " + "Error al obtener la propiedad "
-					+ m_propertyName + " para el objeto "
-					+ (target == null ? "null" : target.getClass().getName()) + ": "
-					+ t.getMessage());
+			IllegalArgumentException e = new IllegalArgumentException("Clase " + m_beanClass.getName() + ": "
+					+ "Error al obtener la propiedad " + m_propertyName + " para el objeto "
+					+ (target == null ? "null" : target.getClass().getName()) + ": " + t.getMessage());
 			e.initCause(t);
 			throw e;
 		}
@@ -284,8 +263,8 @@ public class BeanAttribute extends AbstractAttribute {
 		PropertyDescriptor pDesc = getTargetProperty(target, property);
 
 		if (pDesc == null) {
-			throw new IllegalArgumentException("La propiedad '" + property
-					+ "' no esta definida para la clase " + target.getClass().getName());
+			throw new IllegalArgumentException("La propiedad '" + property + "' no esta definida para la clase "
+					+ target.getClass().getName());
 		}
 
 		return pDesc.getReadMethod();
@@ -295,8 +274,8 @@ public class BeanAttribute extends AbstractAttribute {
 		PropertyDescriptor pDesc = getTargetProperty(target, property);
 
 		if (pDesc == null) {
-			throw new IllegalArgumentException("La propiedad '" + property
-					+ "' no esta definida para la clase " + target.getClass().getName());
+			throw new IllegalArgumentException("La propiedad '" + property + "' no esta definida para la clase "
+					+ target.getClass().getName());
 		}
 
 		return pDesc.getWriteMethod();
@@ -316,7 +295,7 @@ public class BeanAttribute extends AbstractAttribute {
 		// busco el metodo en las interfaces
 		for (Class interf : m.getDeclaringClass().getInterfaces()) {
 			try {
-				m = interf.getMethod(m.getName(),m.getParameterTypes());
+				m = interf.getMethod(m.getName(), m.getParameterTypes());
 				return getDataTypeAnnotation(m);
 			} catch (Exception ignored) {
 			}

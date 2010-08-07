@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 /**
  * Anotacion de tipo de evento
- * 
- * @author lmarconi
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD })

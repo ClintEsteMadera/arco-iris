@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: StringConstraints.java,v 1.7 2008/04/21 18:53:30 cvschioc Exp $
- */
-
 package commons.validation;
 
 import commons.validation.string.CharacterSet;
@@ -21,14 +5,12 @@ import commons.validation.string.CharacterSet;
 /**
  * Restricciones para tipo String
  * 
- * @author Pablo Pastorino
- * @version $Revision: 1.7 $ $Date: 2008/04/21 18:53:30 $
+ * 
  */
 
 public class StringConstraints implements Validator<String> {
 
-	public StringConstraints(int maxLength, CharacterSet validChars, CharacterSet invalidChars,
-			boolean alwaysUppercase) {
+	public StringConstraints(int maxLength, CharacterSet validChars, CharacterSet invalidChars, boolean alwaysUppercase) {
 		super();
 		this.maxLength = maxLength;
 		this.validChars = validChars;
@@ -62,35 +44,35 @@ public class StringConstraints implements Validator<String> {
 		boolean valid = true;
 
 		if (!thereAreValidChars(s)) {
-			result.addError(CommonValidationMessages.VALID_CHAR_CONSTRAINT, result
-					.getValueDescription(), validChars.getName());
+			result.addError(CommonValidationMessages.VALID_CHAR_CONSTRAINT, result.getValueDescription(), validChars
+					.getName());
 			valid = false;
 		} else if (thereAreInvalidChars(s)) {
-			result.addError(CommonValidationMessages.INVALID_CHAR_CONSTRAINT, result
-					.getValueDescription(), invalidChars.getName());
+			result.addError(CommonValidationMessages.INVALID_CHAR_CONSTRAINT, result.getValueDescription(),
+					invalidChars.getName());
 			valid = false;
 		} else {
 			// Si están ambos límites definidos
 			if (estaDefinidoTamanioMinimo() && estaDefinidoTamanioMaximo()
 					&& (s.length() < this.minLength || s.length() > this.maxLength)) {
 				if (this.minLength == this.maxLength) {
-					result.addError(CommonValidationMessages.STRING_SIZE_EXACTLY, result
-							.getValueDescription(), this.minLength);
+					result.addError(CommonValidationMessages.STRING_SIZE_EXACTLY, result.getValueDescription(),
+							this.minLength);
 					valid = false;
 				} else {
-					result.addError(CommonValidationMessages.STRING_RANGE_SIZE_CONSTRAINT, result
-							.getValueDescription(), this.minLength, this.maxLength);
+					result.addError(CommonValidationMessages.STRING_RANGE_SIZE_CONSTRAINT,
+							result.getValueDescription(), this.minLength, this.maxLength);
 					valid = false;
 				}
 			} else {
 				if (estaDefinidoTamanioMinimo() && s.length() < this.minLength) {
-					result.addError(CommonValidationMessages.STRING_MIN_SIZE_CONSTRAINT, result
-							.getValueDescription(), this.minLength);
+					result.addError(CommonValidationMessages.STRING_MIN_SIZE_CONSTRAINT, result.getValueDescription(),
+							this.minLength);
 					valid = false;
 				}
 				if (estaDefinidoTamanioMaximo() && s.length() > this.maxLength) {
-					result.addError(CommonValidationMessages.STRING_MAX_SIZE_CONSTRAINT, result
-							.getValueDescription(), this.maxLength);
+					result.addError(CommonValidationMessages.STRING_MAX_SIZE_CONSTRAINT, result.getValueDescription(),
+							this.maxLength);
 					valid = false;
 				}
 			}

@@ -1,18 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: LabelFactory.java,v 1.11 2008/04/22 19:54:54 cvschioc Exp $
- */
 package commons.gui.widget.factory;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,7 +6,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.Binding;
 import commons.properties.CommonLabels;
@@ -29,26 +13,24 @@ import commons.properties.EnumProperty;
 
 /**
  * @author Gabriel Tursi
- * @author Jonathan Chiocchio
- * @version $Revision: 1.11 $ $Date: 2008/04/22 19:54:54 $
+ * 
  */
 public abstract class LabelFactory {
 
 	/**
-	 * Crea un campo read-only que consta de un Label y un <i>value</i> de sólo lectura. El binding
-	 * se utiliza para que dicho valor cambie de acuerdo al cambio del modelo.
+	 * Crea un campo read-only que consta de un Label y un <i>value</i> de sólo lectura. El binding se utiliza para que
+	 * dicho valor cambie de acuerdo al cambio del modelo.
 	 * 
 	 * @param composite
 	 *            el composite donde se inserta el campo.
 	 * @param binding
-	 *            el objeto que contiene el valor que tendrá el campo <i>value</i> y la información
-	 *            de binding para dicho campo.
+	 *            el objeto que contiene el valor que tendrá el campo <i>value</i> y la información de binding para
+	 *            dicho campo.
 	 * @param enumProp
 	 *            la key property para reemplazar en la creación del campo <i>label</i>.
 	 * @return un campo read-only.
 	 */
-	public static Label createReadOnlyField(Composite composite, Binding binding,
-			EnumProperty enumProp) {
+	public static Label createReadOnlyField(Composite composite, Binding binding, EnumProperty enumProp) {
 		if (!enumProp.equals(CommonLabels.NO_LABEL)) {
 			createLabel(composite, enumProp, false, true);
 		}
@@ -61,16 +43,15 @@ public abstract class LabelFactory {
 	 * @param composite
 	 *            el composite donde se inserta el Label.
 	 * @param enumProp
-	 *            el property enumerado, cuyo <code>toString()</code> provee el String del Label.
-	 *            El mismo <b>NO PUEDE SER NULO</b>.
+	 *            el property enumerado, cuyo <code>toString()</code> provee el String del Label. El mismo <b>NO PUEDE
+	 *            SER NULO</b>.
 	 * @param bold
 	 *            especifica si se desea que el Label tenga formato en negrita.
 	 * @param colonSuffix
 	 *            especifica si se desea que se agregue como sufijo el caracter ":" (dos puntos).
 	 * @return un Label.
 	 */
-	public static Label createLabel(Composite composite, EnumProperty enumProp, boolean bold,
-			boolean colonSuffix) {
+	public static Label createLabel(Composite composite, EnumProperty enumProp, boolean bold, boolean colonSuffix) {
 		Label label = new Label(composite, SWT.LEFT);
 		if (bold) {
 			label.setFont(PageHelper.getValueLabelsFont());
@@ -106,15 +87,14 @@ public abstract class LabelFactory {
 	 * @param composite
 	 *            el composite donde se inserta el campo.
 	 * @param binding
-	 *            el objeto que contiene el valor que tendrá el campo <i>value</i> y la información
-	 *            de binding para dicho campo.
+	 *            el objeto que contiene el valor que tendrá el campo <i>value</i> y la información de binding para
+	 *            dicho campo.
 	 * @param dashIfBlank
-	 *            especifica si el <i>value</i> debe crearse con un guión ("-") en el caso de ser
-	 *            blanco el texto especificado en el parametro <code>value</code>.
-	 * @return un campo de texto de sólo lectura con el valor especificado por parámetro. Si el
-	 *         mismo fuera <code>null</code> o de longitud cero, dicho valor se fija en el
-	 *         caracter guión ("-") <i>siempre y cuando se haya especificado en <code>true</code>
-	 *         el parámetro <code>dashIfBlank</code></i>
+	 *            especifica si el <i>value</i> debe crearse con un guión ("-") en el caso de ser blanco el texto
+	 *            especificado en el parametro <code>value</code>.
+	 * @return un campo de texto de sólo lectura con el valor especificado por parámetro. Si el mismo fuera
+	 *         <code>null</code> o de longitud cero, dicho valor se fija en el caracter guión ("-") <i>siempre y
+	 *         cuando se haya especificado en <code>true</code> el parámetro <code>dashIfBlank</code></i>
 	 */
 	public static Label createValue(Composite composite, Binding binding, boolean dashIfBlank) {
 		final Label label = createLabel(composite);

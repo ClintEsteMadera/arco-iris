@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Map que se carga en modalidad "lazy". Cuando no encuentra una clave, crea el elemento asociado
- * (es util para construir caches.)
+ * Map que se carga en modalidad "lazy". Cuando no encuentra una clave, crea el elemento asociado (es util para
+ * construir caches.)
  */
 public abstract class LazyMap<K, V> {
 

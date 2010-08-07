@@ -6,8 +6,9 @@ package commons.gui.util;
  * @author P.Pastorino
  */
 public interface ValueConversor {
-	
+
 	public Object convertTo(Object value);
+
 	public Object convertFrom(Object value);
-	
+
 }

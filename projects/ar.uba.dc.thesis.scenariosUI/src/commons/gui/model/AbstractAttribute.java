@@ -4,6 +4,7 @@ import commons.gui.model.types.EditType;
 
 /**
  * Clase base para los atributos.
+ * 
  * @author P.Pastorino
  */
 public abstract class AbstractAttribute implements Attribute {

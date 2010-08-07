@@ -5,6 +5,7 @@ import java.util.Properties;
 
 /**
  * Configuracion para edicion y rendering de enums.
+ * 
  * @author P.Pastorino
  */
 public class EnumConfiguration implements EditConfiguration {
@@ -15,8 +16,7 @@ public class EnumConfiguration implements EditConfiguration {
 		this.instances = this.enumClass.getEnumConstants();
 
 		if (this.instances == null) {
-			throw new IllegalArgumentException("La clase '" + enumClass.getName()
-					+ "' no es de tipo enum");
+			throw new IllegalArgumentException("La clase '" + enumClass.getName() + "' no es de tipo enum");
 		}
 		this.texts = new String[this.instances.length];
 
@@ -24,8 +24,7 @@ public class EnumConfiguration implements EditConfiguration {
 			final String key = this.instances[i].toString();
 			this.texts[i] = map.getProperty(key, key);
 
-			if (this.prototypeIndex < 0
-					|| this.texts[i].length() > this.texts[this.prototypeIndex].length()) {
+			if (this.prototypeIndex < 0 || this.texts[i].length() > this.texts[this.prototypeIndex].length()) {
 				this.prototypeIndex = i;
 			}
 		}
@@ -95,7 +94,7 @@ public class EnumConfiguration implements EditConfiguration {
 			}
 			return null;
 		}
-		
+
 		private static final long serialVersionUID = 1L;
 	};
 }

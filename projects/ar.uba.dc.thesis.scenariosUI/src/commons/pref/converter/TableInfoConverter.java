@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: TableInfoConverter.java,v 1.3 2008/02/13 18:43:39 cvschioc Exp $
- */
-
 package commons.pref.converter;
 
 import com.thoughtworks.xstream.converters.Converter;
@@ -25,10 +9,9 @@ import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.TableInfo;
 
 /**
- * Converter para el objeto TableInfo. Su responsabilidad doble: dada una representación XML del
- * objeto, crear una instancia de TableInfo y viceversa.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.3 $ $Date: 2008/02/13 18:43:39 $
+ * Converter para el objeto TableInfo. Su responsabilidad doble: dada una representación XML del objeto, crear una
+ * instancia de TableInfo y viceversa.
+ * 
  */
 
 public class TableInfoConverter extends BaseConverter implements Converter {
@@ -54,8 +37,7 @@ public class TableInfoConverter extends BaseConverter implements Converter {
 		TableInfo tableInfo = new TableInfo();
 		tableInfo.setName(this.getEnumPropertyAttribute(reader, NAME));
 		tableInfo.setOrder(reader.getAttribute(ORDER));
-		ColumnInfo[] columnInfos = (ColumnInfo[]) context.convertAnother(tableInfo,
-				ColumnInfo[].class);
+		ColumnInfo[] columnInfos = (ColumnInfo[]) context.convertAnother(tableInfo, ColumnInfo[].class);
 		tableInfo.setColumnInfos(columnInfos);
 
 		return tableInfo;

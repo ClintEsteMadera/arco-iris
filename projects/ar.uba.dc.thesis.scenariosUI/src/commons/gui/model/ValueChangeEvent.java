@@ -11,11 +11,11 @@ public class ValueChangeEvent<T> extends EventObject {
 		super(source);
 		m_oldValue = oldValue;
 		m_newValue = newValue;
-		m_canceling=canceling;
+		m_canceling = canceling;
 	}
 
 	public ValueChangeEvent(Object source, T oldValue, T newValue) {
-		this(source,oldValue,newValue,false);
+		this(source, oldValue, newValue, false);
 	}
 
 	public T getNewValue() {
@@ -25,7 +25,7 @@ public class ValueChangeEvent<T> extends EventObject {
 	public T getOldValue() {
 		return m_oldValue;
 	}
-	
+
 	public boolean isCanceling() {
 		return m_canceling;
 	}
@@ -33,8 +33,8 @@ public class ValueChangeEvent<T> extends EventObject {
 	private final T m_oldValue;
 
 	private final T m_newValue;
-	
+
 	private boolean m_canceling;
-	
+
 	private static final long serialVersionUID = 1L;
 };

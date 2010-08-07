@@ -38,8 +38,7 @@ public class ArtifactDialog extends BaseScenariosUIMultiPurposeDialog<Artifact> 
 
 	@Override
 	public void removeModelFromCurrentSHConfiguration() {
-		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeArtifact(
-				this.getModel());
+		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeArtifact(this.getModel());
 	}
 
 	@Override

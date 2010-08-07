@@ -7,7 +7,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-
 import commons.gui.model.CompositeModel;
 import commons.gui.model.validation.ValidableComposite;
 import commons.gui.model.validation.ValidationChangedListener;
@@ -17,8 +16,7 @@ import commons.gui.widget.DefaultLayoutFactory;
 import commons.properties.EnumProperty;
 
 /**
- * @author Gabriel Tursi
- * @version $Revision: 1.10 $ $Date: 2008/05/15 20:53:30 $
+ * 
  */
 
 public abstract class BasePreferencesPage<T> extends PreferencePage {
@@ -31,8 +29,8 @@ public abstract class BasePreferencesPage<T> extends PreferencePage {
 		noDefaultAndApplyButton();
 		this.compositeModel = compositeModel;
 		this.readOnly = readOnly;
-		
-		this.validationListener=new ValidationChangedListener(){
+
+		this.validationListener = new ValidationChangedListener() {
 			public void validationChanged(ValidationSource source) {
 				updateValidationErrors();
 			}
@@ -50,10 +48,10 @@ public abstract class BasePreferencesPage<T> extends PreferencePage {
 	public T getModel() {
 		return this.compositeModel.getValue();
 	}
-	
+
 	public void setValidationSource(ValidationSource validationSource) {
 		this.validationSource = validationSource;
-		if(this.validationSource != null){
+		if (this.validationSource != null) {
 			this.validationSource.addValidationChangedListener(this.validationListener);
 		}
 	}
@@ -71,9 +69,9 @@ public abstract class BasePreferencesPage<T> extends PreferencePage {
 		composite.setLayoutData(gridData);
 
 		basicAddFields(composite);
-		
-		if(this.validationSource != null){
-			this.validableComposite=new ValidableComposite(parent);
+
+		if (this.validationSource != null) {
+			this.validableComposite = new ValidableComposite(parent);
 			updateValidationErrors();
 		}
 
@@ -90,21 +88,19 @@ public abstract class BasePreferencesPage<T> extends PreferencePage {
 		return 2;
 	}
 
-	
 	protected abstract void addFields(Composite parent);
 
 	protected boolean readOnly = false;
 
-	private void updateValidationErrors(){
-		if(this.validationSource.getValidationErrors() != null && 
-				this.validableComposite != null){
+	private void updateValidationErrors() {
+		if (this.validationSource.getValidationErrors() != null && this.validableComposite != null) {
 			this.validableComposite.validate(this.validationSource.getValidationErrors());
 		}
 	}
-	
+
 	private CompositeModel<T> compositeModel;
-	
-	//validacion
+
+	// validacion
 	private ValidationSource validationSource;
 	private ValidableComposite validableComposite;
 	private ValidationChangedListener validationListener;

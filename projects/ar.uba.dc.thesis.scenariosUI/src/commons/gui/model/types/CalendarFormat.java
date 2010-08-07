@@ -6,6 +6,7 @@ import java.util.Date;
 
 /**
  * Extension de SimpleDateFormat para soportar "fecha base"
+ * 
  * @author P.Pastorino
  */
 class CalendarFormat extends AbstractFormat {
@@ -16,27 +17,26 @@ class CalendarFormat extends AbstractFormat {
 
 	@Override
 	public Object stringToValue(String str) {
-		Date d=null;
-		
+		Date d = null;
+
 		try {
 			d = this.dateFormat.parse(str);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("Error parseando la fecha '" + 
-					str + "': " + e.getMessage(), e);
+			throw new IllegalArgumentException("Error parseando la fecha '" + str + "': " + e.getMessage(), e);
 		}
-		
-		if(d == null){
+
+		if (d == null) {
 			return null;
 		}
-		final Calendar cal=Calendar.getInstance();
+		final Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
 		return cal;
 	}
 
 	@Override
 	public String valueToString(Object obj) {
-		Calendar cal=(Calendar)obj;
-		if(cal == null){
+		Calendar cal = (Calendar) obj;
+		if (cal == null) {
 			return null;
 		}
 		return dateFormat.format(cal.getTime());

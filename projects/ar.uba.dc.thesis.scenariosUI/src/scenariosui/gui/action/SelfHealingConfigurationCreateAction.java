@@ -29,8 +29,7 @@ public class SelfHealingConfigurationCreateAction extends SelfHealingConfigurati
 			if (filePathWhereToWriteTheXMLTo == null) {
 				return;
 			}
-			ScenariosUIManager.getInstance().createNewSelfHealingConfiguration(
-					filePathWhereToWriteTheXMLTo);
+			ScenariosUIManager.getInstance().createNewSelfHealingConfiguration(filePathWhereToWriteTheXMLTo);
 
 			showAllQueries();
 			setCloseActionEnabled(true);

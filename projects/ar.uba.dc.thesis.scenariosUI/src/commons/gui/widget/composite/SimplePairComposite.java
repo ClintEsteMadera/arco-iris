@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: SimplePairComposite.java,v 1.3 2008/05/05 16:18:04 cvschioc Exp $
- */
-
 package commons.gui.widget.composite;
 
 import org.eclipse.swt.SWT;
@@ -24,10 +8,8 @@ import org.eclipse.swt.widgets.Group;
 
 import commons.properties.EnumProperty;
 
-
 /**
- * Crea un composite en un area de texto, defeiniendo el titulo del grupo y las columnas que
- * componen el layout
+ * Crea un composite en un area de texto, defeiniendo el titulo del grupo y las columnas que componen el layout
  * 
  * @author mvera
  */

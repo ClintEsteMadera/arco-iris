@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: EnumPropertiesHelper.java,v 1.4 2008/02/04 14:52:52 cvschioc Exp $
- */
-
 package commons.properties;
 
 import java.text.MessageFormat;
@@ -26,8 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Helper que utilizan los enum properties para no repetir código.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.4 $ $Date: 2008/02/04 14:52:52 $
+ * 
  */
 
 public abstract class EnumPropertiesHelper {
@@ -85,8 +68,8 @@ public abstract class EnumPropertiesHelper {
 		try {
 			props.load(clazz.getResourceAsStream(clazz.getSimpleName() + ".properties"));
 		} catch (Exception e) {
-			throw new MissingResourceException("No se pudo leer el archivo "
-					+ clazz.getSimpleName(), clazz.getSimpleName(), "");
+			throw new MissingResourceException("No se pudo leer el archivo " + clazz.getSimpleName(), clazz
+					.getSimpleName(), "");
 		}
 		return props;
 	}

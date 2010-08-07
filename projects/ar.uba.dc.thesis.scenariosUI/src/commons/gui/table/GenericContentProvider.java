@@ -11,27 +11,22 @@ import commons.gui.model.ValueChangeEvent;
 import commons.gui.model.ValueChangeListener;
 import commons.gui.model.ValueChangeNotifier;
 
-public class GenericContentProvider 
-implements IStructuredContentProvider, ValueChangeNotifier
-{
-	public GenericContentProvider(){
-		listeners=new ArrayList<ValueChangeListener>();
+public class GenericContentProvider implements IStructuredContentProvider, ValueChangeNotifier {
+	public GenericContentProvider() {
+		listeners = new ArrayList<ValueChangeListener>();
 	}
-	
+
 	public Object[] getElements(Object o) {
-		if(o instanceof Object[])
-		{
-			return (Object[])o;
+		if (o instanceof Object[]) {
+			return (Object[]) o;
 		}
-		if(o instanceof List)
-		{
-			return ((List)o).toArray();
+		if (o instanceof List) {
+			return ((List) o).toArray();
 		}
-		if(o instanceof Set){
+		if (o instanceof Set) {
 			return ((Set) o).toArray();
 		}
-		throw new IllegalArgumentException("Tipo de dato no soportado por GenericTable: "
-					+ o.getClass().getName());
+		throw new IllegalArgumentException("Tipo de dato no soportado por GenericTable: " + o.getClass().getName());
 	}
 
 	public void dispose() {
@@ -39,17 +34,15 @@ implements IStructuredContentProvider, ValueChangeNotifier
 
 	@SuppressWarnings("unchecked")
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		
-		//al hacer dispose de la tabla se genera este evento: lo ignoro
-		if(newInput == null)
-		{
+
+		// al hacer dispose de la tabla se genera este evento: lo ignoro
+		if (newInput == null) {
 			return;
 		}
-		
-		ValueChangeEvent ev=new ValueChangeEvent(this,oldInput,newInput);
-		
-		for(ValueChangeListener listener: listeners)
-		{
+
+		ValueChangeEvent ev = new ValueChangeEvent(this, oldInput, newInput);
+
+		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(ev);
 		}
 	}
@@ -63,21 +56,18 @@ implements IStructuredContentProvider, ValueChangeNotifier
 	}
 
 	/**
-	 * Notifica a los ValueChangeListener listeners cuando hay un cambio en 
-	 * el modelo subyacente.
+	 * Notifica a los ValueChangeListener listeners cuando hay un cambio en el modelo subyacente.
 	 * 
-	 * NOTA: Este método no debería ser invocado explicitamente 
-	 * (es para uso interno del framework)
+	 * NOTA: Este método no debería ser invocado explicitamente (es para uso interno del framework)
 	 */
 	@SuppressWarnings("unchecked")
-	public void notifyChange(){
-		ValueChangeEvent ev=new ValueChangeEvent(this,null,null);
-		
-		for(ValueChangeListener listener: listeners)
-		{
+	public void notifyChange() {
+		ValueChangeEvent ev = new ValueChangeEvent(this, null, null);
+
+		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(ev);
 		}
 	}
-	
+
 	private ArrayList<ValueChangeListener> listeners;
 }

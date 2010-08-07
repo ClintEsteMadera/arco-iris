@@ -2,6 +2,7 @@ package commons.utils;
 
 /**
  * Clase de utileria para conversiones de tipos.
+ * 
  * @author P.Pastorino
  */
 public class ConversionUtilities {

@@ -6,9 +6,9 @@ import java.util.Date;
 
 import commons.utils.DateUtils;
 
-
 /**
  * Parametros de configuracion de un valor de tipo Fecha.
+ * 
  * @author P.Pastorino
  */
 public class DateEditParameters implements Cloneable {
@@ -86,12 +86,12 @@ public class DateEditParameters implements Cloneable {
 		} else if (mode == MODE_HOUR) {
 			return showSeconds ? new SimpleDateFormat("hh:mm:ss") : new SimpleDateFormat("hh:mm");
 		}
-		return showSeconds ? new SimpleDateFormat("yyyy-MM-dd hh:mm:ss") : new SimpleDateFormat(
-				"yyyy-MM-dd hh:mm");
+		return showSeconds ? new SimpleDateFormat("yyyy-MM-dd hh:mm:ss") : new SimpleDateFormat("yyyy-MM-dd hh:mm");
 	}
 
 	/**
 	 * Returns the baseTime.
+	 * 
 	 * @return Calendar
 	 */
 	public Calendar getBaseTime() {
@@ -112,6 +112,7 @@ public class DateEditParameters implements Cloneable {
 
 	/**
 	 * Returns the defaultDate.
+	 * 
 	 * @return Calendar
 	 */
 	public Calendar getDefaultDate() {
@@ -120,6 +121,7 @@ public class DateEditParameters implements Cloneable {
 
 	/**
 	 * Sets the defaultDate.
+	 * 
 	 * @param defaultDate
 	 *            The defaultDate to set
 	 */
@@ -161,12 +163,12 @@ public class DateEditParameters implements Cloneable {
 	public boolean shortYear = DEFAULT_SHORT_YEAR;
 
 	public boolean showSeconds = DEFAULT_SHOW_SECONDS;
-	
+
 	static {
 		MODE_DATE = 0; // default
 		MODE_DATE_HOUR = 1;
 		MODE_HOUR = 2;
-		
+
 		DEFAULT_MODE = MODE_DATE;
 		DEFAULT_SHORT_YEAR = false;
 		DEFAULT_SHOW_SECONDS = true;

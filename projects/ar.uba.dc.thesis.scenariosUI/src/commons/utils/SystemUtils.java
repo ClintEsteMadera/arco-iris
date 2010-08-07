@@ -14,8 +14,7 @@ public abstract class SystemUtils {
 	 * TODO: Por ahora solo sirve para Windows.
 	 */
 
-	public static void exec(String command, final String... args)
-			throws IOException, InterruptedException {
+	public static void exec(String command, final String... args) throws IOException, InterruptedException {
 		String[] cmdArgs = new String[5 + args.length];
 		int cmdArgIndex = 0;
 		// cmd.exe => Inicia una nueva instancia del intérprete de comandos de Windows.
@@ -49,10 +48,8 @@ public abstract class SystemUtils {
 	}
 
 	/**
-	 * En Windows 95/98 el intérprete de comandos es "COMMAND.COM".
-	 * En los Windows posteriores es "cmd.exe"
+	 * En Windows 95/98 el intérprete de comandos es "COMMAND.COM". En los Windows posteriores es "cmd.exe"
 	 */
-	private static final String WIN_CMD =
-		System.getProperty("os.name").toUpperCase().startsWith("WINDOWS 9")
-		? "COMMAND.COM" : "cmd.exe";
+	private static final String WIN_CMD = System.getProperty("os.name").toUpperCase().startsWith("WINDOWS 9") ? "COMMAND.COM"
+			: "cmd.exe";
 }

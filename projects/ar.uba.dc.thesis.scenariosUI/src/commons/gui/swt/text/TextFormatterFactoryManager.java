@@ -25,7 +25,7 @@ public class TextFormatterFactoryManager {
 
 	private TextFormatterFactoryManager() {
 		factories = new ArrayList<TextFormatterFactory>();
-		
+
 		addFactory(new NumberFormatterFactory());
 		addFactory(new StringFormatterFactory());
 	}

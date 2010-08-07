@@ -70,13 +70,13 @@ public abstract class ClassUtils {
 
 	/**
 	 * Retorna el método indicado por los parámetros.
+	 * 
 	 * @param clazz
 	 *            la clase a la cual pedirle el método.
 	 * @param methodName
 	 *            el nombre del método a obtener.
-	 * @return una instancia de la clase <code>Method</code> que representa al método que se
-	 *         quiere obtener, ó <code>null</code> en caso que el método no exista o no pueda ser
-	 *         accedido.
+	 * @return una instancia de la clase <code>Method</code> que representa al método que se quiere obtener, ó
+	 *         <code>null</code> en caso que el método no exista o no pueda ser accedido.
 	 */
 	public static Method getMethod(Class clazz, String methodName) {
 		Method result = null;
@@ -128,8 +128,8 @@ public abstract class ClassUtils {
 		return clazz.getTypeParameters()[index].getClass();
 	}
 
-	public static Object newTypeParameterInstance(Field field) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
+	public static Object newTypeParameterInstance(Field field) throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException {
 		String className = field.getGenericType().toString();
 		int index1 = className.indexOf('<');
 		int index2 = className.indexOf('>');
@@ -147,8 +147,7 @@ public abstract class ClassUtils {
 			for (int i = 0; i < declaredFields.length; i++) {
 				declaredField = declaredFields[i];
 				mods = declaredField.getModifiers();
-				if ((mods & Modifier.STATIC) == 0 && (mods & Modifier.TRANSIENT) == 0
-						&& !declaredField.isSynthetic()
+				if ((mods & Modifier.STATIC) == 0 && (mods & Modifier.TRANSIENT) == 0 && !declaredField.isSynthetic()
 						&& !declaredField.getType().getSimpleName().equals("PK")) {
 					fields.add(declaredField);
 					declaredField.setAccessible(true);
@@ -173,14 +172,13 @@ public abstract class ClassUtils {
 	}
 
 	/**
-	 * Provee el objecto producto de haber navegado por la cadena de propiedades especificada por
-	 * parámetro.
+	 * Provee el objecto producto de haber navegado por la cadena de propiedades especificada por parámetro.
+	 * 
 	 * @param model
 	 *            objeto a partir del cual comenzar la navegación de propiedades.
 	 * @param chainOfProperties
 	 *            string con las propiedades separadas por puntos.
-	 * @return el valor producto de haber navegado por la cadena de propiedades especificada por
-	 *         parámetro.
+	 * @return el valor producto de haber navegado por la cadena de propiedades especificada por parámetro.
 	 */
 	public static Object getObject(Object model, String chainOfProperties) {
 		if (model == null || chainOfProperties == null) {
@@ -208,8 +206,7 @@ public abstract class ClassUtils {
 					}
 				}
 			} catch (Exception e) {
-				log.error("Error al recuperar " + chainOfProperties + " de la clase "
-						+ model.getClass().getName());
+				log.error("Error al recuperar " + chainOfProperties + " de la clase " + model.getClass().getName());
 			}
 		}
 		return currentObject;
@@ -219,8 +216,8 @@ public abstract class ClassUtils {
 		PropertyDescriptor pDesc = getPropertyDescriptor(target.getClass(), property);
 
 		if (pDesc == null) {
-			throw new IllegalArgumentException("La propiedad '" + property
-					+ "' no esta definida para la clase " + target.getClass().getName());
+			throw new IllegalArgumentException("La propiedad '" + property + "' no esta definida para la clase "
+					+ target.getClass().getName());
 		}
 
 		return pDesc.getReadMethod();
@@ -232,8 +229,7 @@ public abstract class ClassUtils {
 		try {
 			info = Introspector.getBeanInfo(clazz);
 		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("No se pudo obtener informacion para la clase "
-					+ clazz.getName());
+			throw new IllegalArgumentException("No se pudo obtener informacion para la clase " + clazz.getName());
 		}
 
 		PropertyDescriptor[] props = info.getPropertyDescriptors();
@@ -248,6 +244,7 @@ public abstract class ClassUtils {
 
 	/**
 	 * Setea un valor dado en un atributo de una instancia
+	 * 
 	 * @param model
 	 *            Instancia a la cual se le seteará el valor
 	 * @param chainOfProps
@@ -322,8 +319,7 @@ public abstract class ClassUtils {
 			} catch (NumberFormatException numFormatExcept) {
 				result = false;
 				String string = value != null && value.toString() != null ? value.toString() : "";
-				log.error("No se pudo formatear a numero el siguiente String: " + string,
-						numFormatExcept);
+				log.error("No se pudo formatear a numero el siguiente String: " + string, numFormatExcept);
 			} catch (Exception exc) {
 				result = false;
 				log.error(instance.getClass().getName() + "." + chainOfProps, exc);
@@ -333,12 +329,12 @@ public abstract class ClassUtils {
 	}
 
 	/**
-	 * Retorna el valor establecido en el atributo denotado por <code>propertyName</code> en el
-	 * objeto receptor denotado por <code>model</code>.
+	 * Retorna el valor establecido en el atributo denotado por <code>propertyName</code> en el objeto receptor
+	 * denotado por <code>model</code>.
+	 * 
 	 * @param model
-	 *            el objeto que contiene la propertyName (o aquél a partir del cuál debe comenzar la
-	 *            búsqueda de campos, en el caso que <code>propertyName</code> sea una cadena de
-	 *            propiedades)
+	 *            el objeto que contiene la propertyName (o aquél a partir del cuál debe comenzar la búsqueda de campos,
+	 *            en el caso que <code>propertyName</code> sea una cadena de propiedades)
 	 * @param propertyName
 	 *            puede ser una cadena de propiedades separada por puntos.
 	 */
@@ -400,6 +396,6 @@ public abstract class ClassUtils {
 	private static final Map<Class, Field[]> fieldsCache = new HashMap<Class, Field[]>();
 
 	private static final Log log = LogFactory.getLog(ClassUtils.class);
-	
+
 	public static final String EMPTY_STRING = "";
 }

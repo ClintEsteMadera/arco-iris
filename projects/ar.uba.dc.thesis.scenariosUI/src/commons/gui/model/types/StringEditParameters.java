@@ -6,6 +6,7 @@ import commons.validation.string.LiteralCharacterSet;
 
 /**
  * Parametros par la edicion de Strings.
+ * 
  * @author P.Pastorino
  */
 public class StringEditParameters implements Cloneable {
@@ -46,8 +47,8 @@ public class StringEditParameters implements Cloneable {
 	public int columnPrototypeLength = -1;
 
 	/**
-	 * Flag para indicar que el usuario no puede ingresar un string vacio (si ingresa un string
-	 * vacio el valor se transorma en <code>null</code>)
+	 * Flag para indicar que el usuario no puede ingresar un string vacio (si ingresa un string vacio el valor se
+	 * transorma en <code>null</code>)
 	 */
 	public boolean allowEmpty = false;
 
@@ -56,7 +57,8 @@ public class StringEditParameters implements Cloneable {
 	 */
 	public boolean trim = true;
 
-	public StringEditParameters() {}
+	public StringEditParameters() {
+	}
 
 	public StringEditParameters(StringConstraints constraints) {
 		this.maxLength = constraints.getMaxLength();
@@ -64,9 +66,8 @@ public class StringEditParameters implements Cloneable {
 		this.invalidCharacters = constraints.getInvalidChars();
 		this.alwaysUpperCase = constraints.isAlwaysUppercase();
 	}
-	
-	public StringEditParameters(int maxLength, String validCharacters, String invalidCharacters,
-			boolean alwaysUpperCase) {
+
+	public StringEditParameters(int maxLength, String validCharacters, String invalidCharacters, boolean alwaysUpperCase) {
 		if (validCharacters != null) {
 			this.validCharacters = new LiteralCharacterSet(validCharacters);
 		}
@@ -105,14 +106,12 @@ public class StringEditParameters implements Cloneable {
 	}
 
 	public String getColumnPrototype() {
-		return getPrototype(this.columnPrototypeLength > 0
-				? this.columnPrototypeLength
-				: this.prototypeLength);
+		return getPrototype(this.columnPrototypeLength > 0 ? this.columnPrototypeLength : this.prototypeLength);
 	}
 
 	@Override
 	public String toString() {
-		return new StringBuffer(getClass().getName()).append(" [").append("maxLength=").append(
-				maxLength).append("]").toString();
+		return new StringBuffer(getClass().getName()).append(" [").append("maxLength=").append(maxLength).append("]")
+				.toString();
 	}
 }

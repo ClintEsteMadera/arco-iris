@@ -3,8 +3,7 @@ package commons.gui.model;
 import commons.gui.model.types.EditType;
 
 /**
- * Adaptador de un modelo simple a uno complejo. Solo acepta la propiedad vacía
- * ("")
+ * Adaptador de un modelo simple a uno complejo. Solo acepta la propiedad vacía ("")
  */
 public class CompositeModelAdapter<T> implements CompositeModel<T> {
 
@@ -31,8 +30,8 @@ public class CompositeModelAdapter<T> implements CompositeModel<T> {
 		if (this.m_valueChangeListener == null) {
 			this.m_valueChangeListener = new ValueChangeListener() {
 				public void valueChange(ValueChangeEvent ev) {
-					CompositeModelAdapter.this.complexListeners.fireChange("", ev.getOldValue(), ev
-							.getNewValue(), ev.isCanceling());
+					CompositeModelAdapter.this.complexListeners.fireChange("", ev.getOldValue(), ev.getNewValue(), ev
+							.isCanceling());
 				}
 			};
 			this.addValueChangeListener(this.m_valueChangeListener);
@@ -64,8 +63,7 @@ public class CompositeModelAdapter<T> implements CompositeModel<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setValue(Object key, Object value) throws IllegalStateException,
-			IllegalArgumentException {
+	public void setValue(Object key, Object value) throws IllegalStateException, IllegalArgumentException {
 		checkKey(key);
 		this.setValue((T) value);
 	}
@@ -84,8 +82,7 @@ public class CompositeModelAdapter<T> implements CompositeModel<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key,
-			Class<NESTED_TYPE> clazz) {
+	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key, Class<NESTED_TYPE> clazz) {
 		checkKey(key);
 		return (CompositeModel<NESTED_TYPE>) this;
 	}

@@ -3,18 +3,20 @@ package commons.gui.model.types;
 /**
  * Identificador de un tipo de dato. <br>
  * <br>
- * Un tipo de dato se identifica mediante una clase y un identificador. Por ejemplo para los tipos
- * de la clase <code>BigDecimal</code> que representen "montos" se puede construir el
- * identificador <code>new EditType(BigDecimal.class,"monto")</code> <br>
- * El identificador <code>null</code> se utiliza para la configuración por default de la clase. Es
- * decir que el identificador <code>new EditType(Date.class,null)</code> será utilizado para todos
- * los valores de tipo fecha que no tengan asociado un identificador.
+ * Un tipo de dato se identifica mediante una clase y un identificador. Por ejemplo para los tipos de la clase
+ * <code>BigDecimal</code> que representen "montos" se puede construir el identificador
+ * <code>new EditType(BigDecimal.class,"monto")</code> <br>
+ * El identificador <code>null</code> se utiliza para la configuración por default de la clase. Es decir que el
+ * identificador <code>new EditType(Date.class,null)</code> será utilizado para todos los valores de tipo fecha que no
+ * tengan asociado un identificador.
+ * 
  * @author P.Pastorino
  */
 public class EditType<T> {
 
 	/**
 	 * Construye un identificador.
+	 * 
 	 * @param valueClass
 	 *            Clase asociada al tipo
 	 * @param configuration
@@ -37,6 +39,7 @@ public class EditType<T> {
 
 	/**
 	 * Obtiene el identificador de la configuración.
+	 * 
 	 * @return String
 	 */
 	public String getClassConfiguration() {
@@ -45,6 +48,7 @@ public class EditType<T> {
 
 	/**
 	 * Obtiene la clase asociada al tipo.
+	 * 
 	 * @return Class
 	 */
 	public Class<T> getValueClass() {

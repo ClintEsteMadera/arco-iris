@@ -105,8 +105,7 @@ public class NumericTextFilter extends DefaultTextFilter {
 			} else {
 				String sep = this.separator;
 
-				if (text.length() - i >= sep.length()
-						&& text.substring(i, i + sep.length()).equals(sep)) {
+				if (text.length() - i >= sep.length() && text.substring(i, i + sep.length()).equals(sep)) {
 					if (context.getText().indexOf(sep) < 0) {
 						super.insert(context, pos, sep);
 						count += sep.length();
@@ -143,10 +142,10 @@ public class NumericTextFilter extends DefaultTextFilter {
 				return l > 0 ? text.substring(0, l) : "";
 			}
 		}
-		
+
 		return text;
 	}
-	
+
 	// / <summary>
 	// / Inserta el separador decimal.
 	// / Si ya se habia ingresado, mueve la seleccion a la posicion del separador

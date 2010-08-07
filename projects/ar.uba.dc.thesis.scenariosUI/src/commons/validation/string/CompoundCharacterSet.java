@@ -5,11 +5,13 @@ import java.util.List;
 
 /**
  * Set de caracteres compuesto por otros sets de caracteres.
+ * 
  * @author P.Pastorino
  */
 public class CompoundCharacterSet implements CharacterSet, Cloneable {
 
-	public CompoundCharacterSet() {}
+	public CompoundCharacterSet() {
+	}
 
 	public CompoundCharacterSet(CharacterSet set) {
 		add(set);
@@ -19,21 +21,20 @@ public class CompoundCharacterSet implements CharacterSet, Cloneable {
 		m_list.add(first);
 		m_list.add(second);
 	}
-	
+
 	public Character getReplaceForInvalidCharacter(char c) {
-		for(CharacterSet cs : this.m_list){
-			Character r=cs.getReplaceForInvalidCharacter(c);
-			if(r != null){
+		for (CharacterSet cs : this.m_list) {
+			Character r = cs.getReplaceForInvalidCharacter(c);
+			if (r != null) {
 				return r;
 			}
 		}
 		return null;
 	}
 
-	public CompoundCharacterSet(CharacterSet ... sets) {
-		
-		for(CharacterSet s:sets)
-		{
+	public CompoundCharacterSet(CharacterSet... sets) {
+
+		for (CharacterSet s : sets) {
 			m_list.add(s);
 		}
 	}
@@ -56,21 +57,21 @@ public class CompoundCharacterSet implements CharacterSet, Cloneable {
 	}
 
 	public String getName() {
-		final StringBuilder str=new StringBuilder();
-		
-		final int n=m_list.size();
-		
-		for(int i=0;i<n;i++){
-			if(i != 0){
-				if(i == n - 1){
+		final StringBuilder str = new StringBuilder();
+
+		final int n = m_list.size();
+
+		for (int i = 0; i < n; i++) {
+			if (i != 0) {
+				if (i == n - 1) {
 					str.append(" o ");
-				}else {
+				} else {
 					str.append(", ");
 				}
 			}
 			str.append(m_list.get(i).getName());
 		}
-		
+
 		return str.toString();
 	}
 
