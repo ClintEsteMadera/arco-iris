@@ -33,14 +33,12 @@ public class EnvironmentDialog extends BaseScenariosUIMultiPurposeDialog<Environ
 
 	@Override
 	public void addModelToCurrentSHConfiguration() {
-		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().addEnvironment(
-				this.getModel());
+		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().addEnvironment(this.getModel());
 	}
 
 	@Override
 	public void removeModelFromCurrentSHConfiguration() {
-		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeEnvironment(
-				this.getModel());
+		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeEnvironment(this.getModel());
 	}
 
 	@Override

@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: BackgroundTask.java,v 1.7 2008/02/06 12:50:45 cvspasto Exp $
- */
-
 package commons.gui.background;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,8 +10,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 /**
  * Tarea que se ejecuta en background
  * 
- * @author Pablo Pastorino
- * @version $Revision: 1.7 $ $Date: 2008/02/06 12:50:45 $
+ * 
  */
 public class BackgroundTask {
 
@@ -45,7 +28,7 @@ public class BackgroundTask {
 	public Object execute(Object[] arguments) {
 		try {
 			window.run(true, false, getBackgroundRunnable(arguments));
-			
+
 			if (this.getLastResult().getError() != null) {
 				throw new BackgroundInvocationException(this.getLastResult().getError());
 			}
@@ -101,7 +84,7 @@ public class BackgroundTask {
 	public void removeFinishedListener(BackgroundFinishedListener listener) {
 		this.finishedListeners.remove(listener);
 	}
-	
+
 	public InvocationResult getLastResult() {
 		return lastResult;
 	}
@@ -111,22 +94,21 @@ public class BackgroundTask {
 
 		monitor.beginTask("Invocando el servicio...", IProgressMonitor.UNKNOWN);
 
-		Throwable error=null;
-		
+		Throwable error = null;
+
 		for (BackgroundRunningListener listener : this.runningListeners) {
 			try {
 				listener.backgroundRunning(ev);
-			}catch (Throwable e){
-				error=e;
+			} catch (Throwable e) {
+				error = e;
 			}
 		}
 
 		monitor.done();
 
 		this.lastResult = new InvocationResult(ev.getResult(), error);
-		
-		window.getShell().getDisplay().asyncExec(
-				getUpdateGUIRunnable(this.lastResult));
+
+		window.getShell().getDisplay().asyncExec(getUpdateGUIRunnable(this.lastResult));
 	}
 
 	private void performUpdateGUI(final InvocationResult result) {
@@ -162,6 +144,6 @@ public class BackgroundTask {
 	private CopyOnWriteArrayList<BackgroundRunningListener> runningListeners;
 
 	private CopyOnWriteArrayList<BackgroundFinishedListener> finishedListeners;
-	
+
 	private InvocationResult lastResult;
 }

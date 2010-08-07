@@ -32,8 +32,7 @@ import commons.validation.ValidationError;
 
 public class ChangePwdDialog extends Dialog {
 
-	public ChangePwdDialog(Shell parentShell, String username, boolean forceChange,
-			AuthenticationHelper authHelper) {
+	public ChangePwdDialog(Shell parentShell, String username, boolean forceChange, AuthenticationHelper authHelper) {
 		super(parentShell);
 		super.setShellStyle(SWT.TITLE);
 		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
@@ -42,8 +41,7 @@ public class ChangePwdDialog extends Dialog {
 		this.authHelper = authHelper;
 	}
 
-	public static void openWithUserLoggedIn(Shell parentShell, boolean forceChange,
-			AuthenticationHelper authHelper) {
+	public static void openWithUserLoggedIn(Shell parentShell, boolean forceChange, AuthenticationHelper authHelper) {
 		String usrName = SessionHelper.nombreDeUsuarioConectado();
 		new ChangePwdDialog(parentShell, usrName, forceChange, authHelper).open();
 	}
@@ -117,8 +115,7 @@ public class ChangePwdDialog extends Dialog {
 	private void validateInput() {
 		Assert.notNull(this.oldPwdText.getText(), "La contraseña actual no puede ser nula");
 		Assert.notNull(this.newPwdText.getText(), "La nueva contraseña no puede ser nula");
-		Assert.notNull(this.newPwdConfirmText.getText(),
-				"La confirmación de la nueva contraseña no puede ser nula");
+		Assert.notNull(this.newPwdConfirmText.getText(), "La confirmación de la nueva contraseña no puede ser nula");
 
 		if (!this.oldPwdText.getText().equals(SessionHelper.passwordDeUsuarioConectado())) {
 			EnumProperty msg = new FakeEnumProperty("La contraseña actual ingresada es inválida");
@@ -126,8 +123,7 @@ public class ChangePwdDialog extends Dialog {
 		}
 
 		if (!this.newPwdText.getText().equals(this.newPwdConfirmText.getText())) {
-			EnumProperty msg = new FakeEnumProperty(
-					"La nueva contraseña y su confirmación no coinciden");
+			EnumProperty msg = new FakeEnumProperty("La nueva contraseña y su confirmación no coinciden");
 			throw new ValidationException(new ValidationError(msg));
 		}
 	}
@@ -141,10 +137,10 @@ public class ChangePwdDialog extends Dialog {
 			MessageDialog.openInformation(super.getShell(), "Cambio de contraseña",
 					"Se ha cambiado la contraseña exitosamente.");
 		} catch (Exception ex) {
-			log.error("Error en cambio de password del usuario " + this.username + ": "
-					+ ex.getMessage(), ex.getCause());
-			final Status status = new Status(IStatus.ERROR, "dummy plugin", IStatus.ERROR, ex
-					.getLocalizedMessage(), ex.getCause());
+			log.error("Error en cambio de password del usuario " + this.username + ": " + ex.getMessage(), ex
+					.getCause());
+			final Status status = new Status(IStatus.ERROR, "dummy plugin", IStatus.ERROR, ex.getLocalizedMessage(), ex
+					.getCause());
 			ErrorDialog.openError(super.getShell(), "Error", null, status);
 		}
 		return operationSuccessful;
@@ -165,6 +161,6 @@ public class ChangePwdDialog extends Dialog {
 	private boolean changeForced;
 
 	private AuthenticationHelper authHelper;
-	
+
 	private static final Log log = LogFactory.getLog(ChangePwdDialog.class);
 }

@@ -16,7 +16,7 @@ import commons.gui.model.types.EditType;
 /**
  * Clase utilziada internamente para el binding de botones.
  * 
- * @author ppastorino
+ * 
  */
 class ButtonValueModel implements ValueModel, WidgetContainer {
 
@@ -66,9 +66,9 @@ class ButtonValueModel implements ValueModel, WidgetContainer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public final void notifyChange(){
-		final ValueChangeEvent changeEvent = new ValueChangeEvent(this, null, Boolean
-				.valueOf(this.button.getSelection()));
+	public final void notifyChange() {
+		final ValueChangeEvent changeEvent = new ValueChangeEvent(this, null, Boolean.valueOf(this.button
+				.getSelection()));
 
 		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(changeEvent);

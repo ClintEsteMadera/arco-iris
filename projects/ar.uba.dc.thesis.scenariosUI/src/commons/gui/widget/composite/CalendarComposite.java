@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: CalendarComposite.java,v 1.20 2008/03/18 17:43:31 cvspasto Exp $
- */
-
 package commons.gui.widget.composite;
 
 import java.text.DateFormat;
@@ -33,7 +17,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.gui.GuiStyle;
 import commons.gui.model.types.StringConfiguration;
 import commons.gui.model.types.StringEditParameters;
@@ -49,8 +32,7 @@ import commons.validation.string.LiteralCharacterSet;
 
 /**
  * Modela un calendario.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.20 $ $Date: 2008/03/18 17:43:31 $
+ * 
  */
 
 public class CalendarComposite extends SimpleComposite {
@@ -99,6 +81,7 @@ public class CalendarComposite extends SimpleComposite {
 
 	/**
 	 * Obtiene el formato de fecha
+	 * 
 	 * @return
 	 */
 	public DateFormat getDateFormat() {
@@ -107,13 +90,14 @@ public class CalendarComposite extends SimpleComposite {
 
 	/**
 	 * Setea el formato de fecha
+	 * 
 	 * @param dateFormat
 	 */
 	public void setDateFormat(DateFormat dateFormat) {
-		if(dateFormat == this.dateFormat){
+		if (dateFormat == this.dateFormat) {
 			return;
 		}
-		
+
 		this.dateFormat = dateFormat;
 
 		if (this.formatter != null) {
@@ -124,23 +108,22 @@ public class CalendarComposite extends SimpleComposite {
 		}
 
 		if (dateFormat instanceof SimpleDateFormat) {
-			this.formatter = createFormatter((SimpleDateFormat)dateFormat);
+			this.formatter = createFormatter((SimpleDateFormat) dateFormat);
 
 			if (this.calendarControl instanceof Text) {
 				this.formatter.install((Text) this.calendarControl);
-				((Text) this.calendarControl).setToolTipText(((SimpleDateFormat)dateFormat).toPattern());
+				((Text) this.calendarControl).setToolTipText(((SimpleDateFormat) dateFormat).toPattern());
 			}
 		}
 	}
-	
-	private FilteredTextFormatter createFormatter(SimpleDateFormat sdf){
-		final String pattern=sdf.toPattern();
-		
+
+	private FilteredTextFormatter createFormatter(SimpleDateFormat sdf) {
+		final String pattern = sdf.toPattern();
+
 		final StringEditParameters p = new StringEditParameters();
-		p.validCharacters = new CompoundCharacterSet(CharacterSet.DIGIT,
-				new LiteralCharacterSet(pattern));
+		p.validCharacters = new CompoundCharacterSet(CharacterSet.DIGIT, new LiteralCharacterSet(pattern));
 		p.invalidCharacters = CharacterSet.LETTER;
-		
+
 		final StringTextFilter filter = new StringTextFilter(new StringConfiguration(p));
 
 		return new FilteredTextFormatter(filter);
@@ -165,8 +148,7 @@ public class CalendarComposite extends SimpleComposite {
 				Point dialogLocation = PageHelper.getDisplay().map(changeDateButton, null, 0, 0);
 				Calendar today = DateUtils.getCurrentDatetimeAsCalendar();
 				Calendar selectionAsCalendar = getSelectionAsCalendar();
-				calendarDialog = new SWTCalendarDialog(getShell(), dialogLocation,
-						selectionAsCalendar, today);
+				calendarDialog = new SWTCalendarDialog(getShell(), dialogLocation, selectionAsCalendar, today);
 
 				if (calendarDialog.open() == Window.OK) {
 					final Calendar calendar = calendarDialog.getSelectedCalendar();

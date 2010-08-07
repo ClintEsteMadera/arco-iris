@@ -43,8 +43,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 		BooleanFactory.createBoolean(metainfo);
 
 		if (purpose.isCreation()) {
-			underlyingScenario.getValue().setId(
-					ScenariosUIManager.getInstance().getNextId(SelfHealingScenario.class));
+			underlyingScenario.getValue().setId(ScenariosUIManager.getInstance().getNextId(SelfHealingScenario.class));
 		}
 
 		SimpleComposite fourColumnsComposite = new SimpleComposite(swtGroup, super.readOnly, 4, 2);

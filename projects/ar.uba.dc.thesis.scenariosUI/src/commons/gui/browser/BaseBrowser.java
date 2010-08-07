@@ -24,15 +24,13 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 
-
 import commons.gui.util.PageHelper;
 import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 
 /**
  * Base Browser
- * @author Gabriel Tursi
- * @version $Revision: 1.5 $ $Date: 2007/11/30 20:31:06 $
+ * 
  */
 public class BaseBrowser {
 
@@ -63,8 +61,8 @@ public class BaseBrowser {
 		final ProgressBar progressBar = new ProgressBar(compositeStatus, SWT.SMOOTH);
 
 		// Adds tool bar items using actions.
-		final Action actionBackward = new Action("&Backward", ImageDescriptor.createFromFile(
-				BaseBrowser.class, "/images/browser/back.gif")) {
+		final Action actionBackward = new Action("&Backward", ImageDescriptor.createFromFile(BaseBrowser.class,
+				"/images/browser/back.gif")) {
 			@Override
 			public void run() {
 				browser.back();
@@ -72,8 +70,8 @@ public class BaseBrowser {
 		};
 		actionBackward.setEnabled(false); // action is disabled at start up.
 
-		final Action actionForward = new Action("&Forward", ImageDescriptor.createFromFile(
-				BaseBrowser.class, "/images/browser/forward.gif")) {
+		final Action actionForward = new Action("&Forward", ImageDescriptor.createFromFile(BaseBrowser.class,
+				"/images/browser/forward.gif")) {
 			@Override
 			public void run() {
 				browser.forward();
@@ -89,8 +87,8 @@ public class BaseBrowser {
 			}
 		};
 
-		Action actionRefresh = new Action("&Refresh", ImageDescriptor.createFromFile(
-				BaseBrowser.class, "/images/browser/refresh.gif")) {
+		Action actionRefresh = new Action("&Refresh", ImageDescriptor.createFromFile(BaseBrowser.class,
+				"/images/browser/refresh.gif")) {
 			@Override
 			public void run() {
 				browser.refresh();

@@ -15,7 +15,7 @@ public class TextBindingFactory extends ValueModelAdapterBindingFactory {
 
 	@Override
 	public boolean supports(Object component) {
-		return component instanceof Control && TextValueModel.supportsControl((Control)component);
+		return component instanceof Control && TextValueModel.supportsControl((Control) component);
 	}
 
 }

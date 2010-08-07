@@ -18,5 +18,5 @@ public @interface AttributeMetadata {
 	int length() default 255;
 
 	boolean nullable();
-	
+
 }

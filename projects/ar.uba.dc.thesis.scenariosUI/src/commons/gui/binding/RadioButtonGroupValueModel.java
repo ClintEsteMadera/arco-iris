@@ -19,7 +19,7 @@ import commons.gui.widget.RadioButtonGroup;
 /**
  * Clase utilziada internamente para el binding de RadioButtonGroup
  * 
- * @author ppastorino
+ * 
  */
 class RadioButtonGroupValueModel implements ValueModel, WidgetContainer {
 
@@ -78,8 +78,7 @@ class RadioButtonGroupValueModel implements ValueModel, WidgetContainer {
 
 	@SuppressWarnings("unchecked")
 	private void onPropertyChange(PropertyChangeEvent ev) {
-		final ValueChangeEvent changeEvent = new ValueChangeEvent(this, ev.getOldValue(), ev
-				.getNewValue());
+		final ValueChangeEvent changeEvent = new ValueChangeEvent(this, ev.getOldValue(), ev.getNewValue());
 
 		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(changeEvent);

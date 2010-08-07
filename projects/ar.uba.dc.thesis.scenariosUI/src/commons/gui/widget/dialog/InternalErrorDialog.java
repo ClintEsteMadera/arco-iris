@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Text;
 
 import commons.utils.DateUtils;
 
-
 /**
  * Added a Details button to the MessageDialog to show the exception stack trace.
  */
@@ -40,6 +39,7 @@ public class InternalErrorDialog extends MessageDialog {
 
 	/**
 	 * Create a new dialog.
+	 * 
 	 * @param parentShell
 	 *            the parent shell
 	 * @param dialogTitle
@@ -57,11 +57,10 @@ public class InternalErrorDialog extends MessageDialog {
 	 * @param defaultIndex
 	 *            the default selected button index
 	 */
-	private InternalErrorDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage,
-			String dialogMessage, Throwable detail, int dialogImageType,
-			String[] dialogButtonLabels, int defaultIndex) {
-		super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType,
-				dialogButtonLabels, defaultIndex);
+	private InternalErrorDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage, String dialogMessage,
+			Throwable detail, int dialogImageType, String[] dialogButtonLabels, int defaultIndex) {
+		super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, dialogButtonLabels,
+				defaultIndex);
 		defaultButtonIndex = defaultIndex;
 		this.detail = detail;
 		setShellStyle(getShellStyle() | SWT.APPLICATION_MODAL | SWT.RESIZE);
@@ -80,6 +79,7 @@ public class InternalErrorDialog extends MessageDialog {
 
 	/**
 	 * 085: * Set the detail button; 086: *
+	 * 
 	 * @param index
 	 *            the detail button index 087:
 	 */
@@ -100,8 +100,8 @@ public class InternalErrorDialog extends MessageDialog {
 	}
 
 	/**
-	 * 104: * Toggles the unfolding of the details area. This is triggered by 105: * the user
-	 * pressing the details button. 106:
+	 * 104: * Toggles the unfolding of the details area. This is triggered by 105: * the user pressing the details
+	 * button. 106:
 	 */
 	private void toggleDetailsArea() {
 		Point windowSize = getShell().getSize();
@@ -120,6 +120,7 @@ public class InternalErrorDialog extends MessageDialog {
 
 	/**
 	 * 131: * Create this dialog's drop-down list component. 132: * 133: *
+	 * 
 	 * @param parent
 	 *            the parent composite 134:
 	 */
@@ -148,6 +149,7 @@ public class InternalErrorDialog extends MessageDialog {
 
 	/**
 	 * 161: * Convenience method to open a simple Yes/No question dialog. 162: * 163: *
+	 * 
 	 * @param parent
 	 *            the parent shell of the dialog, or <code>null</code> if none 164: *
 	 * @param title
@@ -158,11 +160,9 @@ public class InternalErrorDialog extends MessageDialog {
 	 *            the error 167: *
 	 * @param defaultIndex
 	 *            the default index of the button to select 168: *
-	 * @return <code>true</code> if the user presses the OK button, 169: * <code>false</code>
-	 *         otherwise 170:
+	 * @return <code>true</code> if the user presses the OK button, 169: * <code>false</code> otherwise 170:
 	 */
-	public static boolean openQuestion(Shell parent, String title, String message,
-			Throwable detail, int defaultIndex) {
+	public static boolean openQuestion(Shell parent, String title, String message, Throwable detail, int defaultIndex) {
 		String[] labels;
 		if (detail == null) {
 			labels = new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL };
@@ -172,21 +172,19 @@ public class InternalErrorDialog extends MessageDialog {
 		}
 
 		// accept the default window icon
-		InternalErrorDialog dialog = new InternalErrorDialog(parent, title, null, message, detail,
-				QUESTION, labels, defaultIndex);
+		InternalErrorDialog dialog = new InternalErrorDialog(parent, title, null, message, detail, QUESTION, labels,
+				defaultIndex);
 		if (detail != null) {
 			dialog.setDetailButton(2);
 		}
 		return dialog.open() == 0;
 	}
 
-	public static int openError(Shell parentShell, String dialogTitle, String dialogMessage,
-			Throwable detail) {
-		String[] labels = new String[] { IDialogConstants.OK_LABEL,
-				IDialogConstants.SHOW_DETAILS_LABEL };
+	public static int openError(Shell parentShell, String dialogTitle, String dialogMessage, Throwable detail) {
+		String[] labels = new String[] { IDialogConstants.OK_LABEL, IDialogConstants.SHOW_DETAILS_LABEL };
 
-		InternalErrorDialog dialog = new InternalErrorDialog(parentShell, dialogTitle, null,
-				dialogMessage, detail, ERROR, labels, IDialogConstants.OK_ID);
+		InternalErrorDialog dialog = new InternalErrorDialog(parentShell, dialogTitle, null, dialogMessage, detail,
+				ERROR, labels, IDialogConstants.OK_ID);
 
 		if (detail != null) {
 			dialog.setDetailButton(1);

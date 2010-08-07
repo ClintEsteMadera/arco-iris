@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: PreferencesHelper.java,v 1.6 2008/02/22 14:00:15 cvschioc Exp $
- */
-
 package commons.pref;
 
 import java.io.FileInputStream;
@@ -24,7 +8,6 @@ import java.io.InputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 
 import com.thoughtworks.xstream.XStream;
 import commons.gui.widget.Alignment;
@@ -38,8 +21,7 @@ import commons.utils.FileHelper;
 
 /**
  * Helper que facilita la lecto-escritura de las preferencias del usuario en archivos XML.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.6 $ $Date: 2008/02/22 14:00:15 $
+ * 
  */
 
 public abstract class PreferencesHelper {
@@ -48,15 +30,13 @@ public abstract class PreferencesHelper {
 	 * Obtiene las preferencias por defecto del usuario.
 	 */
 	static Preferences getDefaultUserPreferences() {
-		log.trace("Cargando preferencias del usuario por defecto desde el archivo "
-				+ DEFAULT_PREF_FILE_NAME);
+		log.trace("Cargando preferencias del usuario por defecto desde el archivo " + DEFAULT_PREF_FILE_NAME);
 
-		InputStream inputStream = Thread.currentThread().getContextClassLoader()
-				.getResourceAsStream(DEFAULT_PREF_FILE_NAME);
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(
+				DEFAULT_PREF_FILE_NAME);
 
 		if (inputStream == null) {
-			String msg = "No encontró archivo de preferencias del usuario en : "
-					+ DEFAULT_PREF_FILE_NAME;
+			String msg = "No encontró archivo de preferencias del usuario en : " + DEFAULT_PREF_FILE_NAME;
 			log.fatal(msg);
 			throw new RuntimeException(msg);
 		}
@@ -67,8 +47,7 @@ public abstract class PreferencesHelper {
 	 * Obtiene las preferencias personalizadas del usuario.
 	 */
 	static Preferences getCustomizedUserPreferences() {
-		log.trace("Cargando preferencias personalizadas del usuario desde el archivo "
-				+ USER_PREF_FILE_NAME);
+		log.trace("Cargando preferencias personalizadas del usuario desde el archivo " + USER_PREF_FILE_NAME);
 		Preferences result = null;
 		try {
 			InputStream inputStream = new FileInputStream(USER_PREF_FILE_NAME);
@@ -83,11 +62,9 @@ public abstract class PreferencesHelper {
 	static void persistPreferences(Preferences preferences) {
 		try {
 			xstream.toXML(preferences, new FileOutputStream(USER_PREF_FILE_NAME));
-			log.info("Se salvaron las preferencias del usuario en el archivo: "
-					+ USER_PREF_FILE_NAME);
+			log.info("Se salvaron las preferencias del usuario en el archivo: " + USER_PREF_FILE_NAME);
 		} catch (FileNotFoundException ex) {
-			String msg = "No se pudieron guardar las preferencias del usuario en el archivo: "
-					+ USER_PREF_FILE_NAME;
+			String msg = "No se pudieron guardar las preferencias del usuario en el archivo: " + USER_PREF_FILE_NAME;
 			log.warn(msg, ex);
 		}
 	}
@@ -107,16 +84,14 @@ public abstract class PreferencesHelper {
 		if (!StringUtils.isEmpty(order)) {
 			defaultTableInfo.setOrder(order);
 		}
-		ColumnInfo[] columnInfos = merge(userTableInfo.getColumnInfos(), defaultTableInfo
-				.getColumnInfos());
+		ColumnInfo[] columnInfos = merge(userTableInfo.getColumnInfos(), defaultTableInfo.getColumnInfos());
 		defaultTableInfo.setColumnInfos(columnInfos);
 		return defaultTableInfo;
 	}
 
 	private static ColumnInfo[] merge(ColumnInfo[] userColumnInfos, ColumnInfo[] defaultColumnInfos) {
 		for (ColumnInfo defaultColumnInfo : defaultColumnInfos) {
-			ColumnInfo userColumnInfo = getColumnInfo(defaultColumnInfo.getFieldName(),
-					userColumnInfos);
+			ColumnInfo userColumnInfo = getColumnInfo(defaultColumnInfo.getFieldName(), userColumnInfos);
 			defaultColumnInfo = merge(userColumnInfo, defaultColumnInfo);
 		}
 		return defaultColumnInfos;
@@ -157,13 +132,12 @@ public abstract class PreferencesHelper {
 		return xstream;
 	}
 
-	private static final String USER_PREF_FILE_NAME = FileHelper.OUTPUT_DIR
-			+ FileHelper.getFileSeparator() + CommonConstants.PREFERENCES_FILE.toString();
+	private static final String USER_PREF_FILE_NAME = FileHelper.OUTPUT_DIR + FileHelper.getFileSeparator()
+			+ CommonConstants.PREFERENCES_FILE.toString();
 
-	private static final String DEFAULT_PREF_FILE_NAME = CommonConstants.PREFERENCES_FILE
-			.toString();
+	private static final String DEFAULT_PREF_FILE_NAME = CommonConstants.PREFERENCES_FILE.toString();
 
 	private static XStream xstream = configureXStream();
-	
+
 	private static final Log log = LogFactory.getLog(PreferencesHelper.class);
 }

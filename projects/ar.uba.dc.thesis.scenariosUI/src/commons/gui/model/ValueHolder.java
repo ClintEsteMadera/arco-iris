@@ -13,8 +13,8 @@ public class ValueHolder<T> extends AbstractValueModel<T> {
 
 	@SuppressWarnings("unchecked")
 	public ValueHolder(T value) {
-		this((Class<T>)value.getClass());
-		m_value=value;
+		this((Class<T>) value.getClass());
+		m_value = value;
 	}
 
 	public ValueHolder(Class<T> clazz) {

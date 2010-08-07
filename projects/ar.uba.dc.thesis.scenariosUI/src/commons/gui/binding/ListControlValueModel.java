@@ -16,11 +16,10 @@ import commons.gui.model.types.EditConfigurationManager;
 import commons.gui.model.types.EditType;
 
 /**
- * Clase utilizada internamente para el binding de controles de tipo 'List'.
- * NOTA: por el momento este control no se consideran los cambios en el control
- * para actualziar el modelo.
+ * Clase utilizada internamente para el binding de controles de tipo 'List'. NOTA: por el momento este control no se
+ * consideran los cambios en el control para actualziar el modelo.
  * 
- * @author ppastorino
+ * 
  */
 class ListControlValueModel implements ValueModel, WidgetContainer {
 
@@ -71,8 +70,7 @@ class ListControlValueModel implements ValueModel, WidgetContainer {
 
 			if (o != null) {
 				if (format == null) {
-					format = EditConfigurationManager.getInstance().getFormat(
-							new EditType(o.getClass()));
+					format = EditConfigurationManager.getInstance().getFormat(new EditType(o.getClass()));
 					if (format == null) {
 						format = DefaultFormat.getInstance();
 					}

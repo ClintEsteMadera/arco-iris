@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: BaseSelectionGroup.java,v 1.2 2007/11/30 20:31:08 cvsmarco Exp $
- */
-
 package commons.gui.widget.group;
 
 import static commons.properties.CommonMessages.NO_SELECTED_ELEMENT;
@@ -29,7 +13,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-
 import commons.gui.model.CompositeModel;
 import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.factory.LabelFactory;
@@ -38,16 +21,12 @@ import commons.properties.EnumProperty;
 /**
  * Modela una página genérica de selección de un Objeto de un Query Composite.
  * 
- * @author Jonathan Chiocchio
- * @version $Revision: 1.2 $ $Date: 2007/11/30 20:31:08 $
+ * 
  */
 
 public abstract class BaseSelectionGroup<T> extends SimpleGroup {
 
-	
-
-	public BaseSelectionGroup(Composite parent,CompositeModel<T> compositeModel, 
-			EnumProperty title, boolean readOnly) {
+	public BaseSelectionGroup(Composite parent, CompositeModel<T> compositeModel, EnumProperty title, boolean readOnly) {
 		super(parent, title, readOnly, 3);
 		this.compositeModel = compositeModel;
 		addFields(this.getSwtGroup());
@@ -56,7 +35,7 @@ public abstract class BaseSelectionGroup<T> extends SimpleGroup {
 	public T getSelectedObject() {
 		return compositeModel.getValue();
 	}
-	
+
 	public CompositeModel<T> getCompositeModel() {
 		return compositeModel;
 	}
@@ -87,8 +66,7 @@ public abstract class BaseSelectionGroup<T> extends SimpleGroup {
 		Composite messageComposite = new SimpleComposite(parent, super.readOnly, 1);
 		((GridLayout) messageComposite.getLayout()).marginTop = 10;
 		messageComposite.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
-		this.messageLabel = LabelFactory.createLabel(messageComposite, NO_SELECTED_ELEMENT, true,
-				false);
+		this.messageLabel = LabelFactory.createLabel(messageComposite, NO_SELECTED_ELEMENT, true, false);
 	}
 
 	private void updateSelection(T selection) {
@@ -134,9 +112,8 @@ public abstract class BaseSelectionGroup<T> extends SimpleGroup {
 	protected abstract String getSelectObjectMessage();
 
 	/**
-	 * @return el compositeModel con el objeto seleccionado por el usuario. Normalmente involucra la
-	 *         apertura de un diálogo adecuado para tal fin, aunque la implementación no se
-	 *         restringe.
+	 * @return el compositeModel con el objeto seleccionado por el usuario. Normalmente involucra la apertura de un
+	 *         diálogo adecuado para tal fin, aunque la implementación no se restringe.
 	 */
 	protected abstract T obtainSelectedObject();
 

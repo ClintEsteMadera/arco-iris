@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: ListenerHelper.java,v 1.7 2008/02/22 14:00:19 cvschioc Exp $
- */
-
 package commons.gui.util;
 
 import java.math.BigDecimal;
@@ -34,15 +18,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.gui.GuiStyle;
 import commons.gui.validators.Validations;
 import commons.utils.ClassUtils;
 import commons.utils.SbaStringUtils;
 
 /**
- * @author Jonathan Chiocchio
- * @version $Revision: 1.7 $ $Date: 2008/02/22 14:00:19 $
+ * 
  */
 
 public abstract class ListenerHelper {
@@ -60,8 +42,7 @@ public abstract class ListenerHelper {
 		textBox.addFocusListener(listener);
 	}
 
-	public static <T> void addNumberFieldFocusListener(Text textBox, final T instance,
-			final String labelKey) {
+	public static <T> void addNumberFieldFocusListener(Text textBox, final T instance, final String labelKey) {
 		FocusListener focusListener = new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent event) {
@@ -149,12 +130,11 @@ public abstract class ListenerHelper {
 		textBox.addFocusListener(focusListener);
 	}
 
-	public static void addIntegerRangeValidationListener(final Text textBox, final int infimo,
-			final int supremo, final PreferencePage page) {
+	public static void addIntegerRangeValidationListener(final Text textBox, final int infimo, final int supremo,
+			final PreferencePage page) {
 		textBox.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent event) {
-				final List<String> mensajesDeValidacion = Validations.rango(textBox.getText(),
-						infimo, supremo);
+				final List<String> mensajesDeValidacion = Validations.rango(textBox.getText(), infimo, supremo);
 				boolean vacio = StringUtils.isBlank(textBox.getText());
 				boolean fueraDeRango = !mensajesDeValidacion.isEmpty();
 				if (!vacio && fueraDeRango) {
@@ -172,8 +152,7 @@ public abstract class ListenerHelper {
 		textBox.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent event) {
 				boolean vacio = StringUtils.isBlank(textBox.getText());
-				final List<String> mensajesDeValidacion = Validations.rango(textBox.getText(),
-						infimo, supremo);
+				final List<String> mensajesDeValidacion = Validations.rango(textBox.getText(), infimo, supremo);
 				boolean fueraDeRango = !mensajesDeValidacion.isEmpty();
 				if (!vacio && fueraDeRango) {
 					textBox.setToolTipText(mensajesDeValidacion.get(0));

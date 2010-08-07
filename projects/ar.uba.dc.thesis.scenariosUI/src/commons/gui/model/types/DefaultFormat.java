@@ -11,7 +11,8 @@ public class DefaultFormat extends AbstractFormat {
 		return s_instance;
 	}
 
-	protected DefaultFormat() {}
+	protected DefaultFormat() {
+	}
 
 	@Override
 	public String valueToString(Object obj) {
@@ -22,10 +23,10 @@ public class DefaultFormat extends AbstractFormat {
 	public Object stringToValue(String str) {
 		return str;
 	}
-	
+
 	@Override
-	public Object parseObject(String source, ParsePosition pos){
-		pos.setIndex(source.length()+1);
+	public Object parseObject(String source, ParsePosition pos) {
+		pos.setIndex(source.length() + 1);
 		return stringToValue(source);
 	}
 

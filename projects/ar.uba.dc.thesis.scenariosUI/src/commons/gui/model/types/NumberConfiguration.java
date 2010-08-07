@@ -8,6 +8,7 @@ import java.text.ParsePosition;
 
 /**
  * Configuracion de edicion y rendering para tipos numericos.
+ * 
  * @author P.Pastorino
  */
 public class NumberConfiguration implements EditConfiguration {
@@ -39,8 +40,8 @@ public class NumberConfiguration implements EditConfiguration {
 	public Object getColumnPrototype() {
 		if (m_columnPrototype == null) {
 			m_columnPrototype = m_parameters.columnPrototype;
-			if(m_columnPrototype == null){
-				m_columnPrototype=this.getPrototype();
+			if (m_columnPrototype == null) {
+				m_columnPrototype = this.getPrototype();
 			}
 		}
 		return m_columnPrototype;
@@ -79,15 +80,14 @@ public class NumberConfiguration implements EditConfiguration {
 
 	@Override
 	public String toString() {
-		return new StringBuffer(getClass().getName()).append(" [valueClass=").append(
-				m_valueClass.getName()).append(" prototype=").append(m_prototype).append(
-				" parameters={").append(m_parameters).append("}]").toString();
+		return new StringBuffer(getClass().getName()).append(" [valueClass=").append(m_valueClass.getName()).append(
+				" prototype=").append(m_prototype).append(" parameters={").append(m_parameters).append("}]").toString();
 	}
 
 	private class FormatImpl extends Format {
-		
+
 		private static final long serialVersionUID = 1L;
-		
+
 		@Override
 		public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
 			return m_parameters.getDecimalFormat(m_valueClass).format(obj, toAppendTo, pos);
@@ -136,7 +136,7 @@ public class NumberConfiguration implements EditConfiguration {
 	private static int MAX_FLOAT_DIGITS = Double.toString(Math.floor(Float.MAX_VALUE)).length();
 
 	private Object m_prototype;
-	
+
 	private Object m_columnPrototype;
 
 	private Class m_valueClass;

@@ -1,6 +1,5 @@
 package commons.gui.model.table;
 
-
 import commons.gui.model.AbstractAttribute;
 import commons.gui.model.Attribute;
 import commons.gui.model.Attributes;

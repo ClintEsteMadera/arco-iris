@@ -4,7 +4,7 @@ import java.util.EventObject;
 
 /**
  * Información del evento de actualización (lectura o escritura) de un binding.
- * @author ppastorino
+ * 
  */
 public class ValueBindingUpdateEvent extends EventObject {
 	public ValueBindingUpdateEvent(ValueBinding source, Object newValue, boolean manualUpdate) {
@@ -15,6 +15,7 @@ public class ValueBindingUpdateEvent extends EventObject {
 
 	/**
 	 * Obtiene el binding que generó el evento.
+	 * 
 	 * @return
 	 */
 	public ValueBinding getBinding() {
@@ -23,6 +24,7 @@ public class ValueBindingUpdateEvent extends EventObject {
 
 	/**
 	 * Obtiene el valor que va a ser asignado.
+	 * 
 	 * @return
 	 */
 	public Object getNewValue() {
@@ -31,6 +33,7 @@ public class ValueBindingUpdateEvent extends EventObject {
 
 	/**
 	 * Setea el valor que va a ser asignado.
+	 * 
 	 * @param newValue
 	 */
 	public void setNewValue(Object newValue) {
@@ -39,6 +42,7 @@ public class ValueBindingUpdateEvent extends EventObject {
 
 	/**
 	 * Informa si el evento fue generado por una actualización "manual".
+	 * 
 	 * @return
 	 */
 	public boolean isManualUpdate() {

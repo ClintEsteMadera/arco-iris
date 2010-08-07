@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: ValidableComposite.java,v 1.6 2008/05/16 12:58:01 cvspasto Exp $
- */
-
 package commons.gui.model.validation;
 
 import java.util.ArrayList;
@@ -25,13 +9,11 @@ import org.eclipse.swt.widgets.Control;
 
 import commons.validation.ValidationError;
 
-
 /**
  * Wrapper para mostrar los errores de validación en un control visual
  * 
  * 
- * @author Pablo Pastorino
- * @version $Revision: 1.6 $ $Date: 2008/05/16 12:58:01 $
+ * 
  */
 public class ValidableComposite {
 

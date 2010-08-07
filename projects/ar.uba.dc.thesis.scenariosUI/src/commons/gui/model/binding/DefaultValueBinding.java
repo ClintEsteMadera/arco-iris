@@ -54,8 +54,7 @@ public class DefaultValueBinding implements ValueBinding {
 	}
 
 	public void write() {
-		ValueBindingUpdateEvent e = new ValueBindingUpdateEvent(this, this.getValueModel()
-				.getValue(), true);
+		ValueBindingUpdateEvent e = new ValueBindingUpdateEvent(this, this.getValueModel().getValue(), true);
 
 		for (ValueBindingUpdateListener l : this.writeListeners) {
 			l.updatingValueBinding(e);
@@ -92,7 +91,7 @@ public class DefaultValueBinding implements ValueBinding {
 		}
 		write();
 	}
-	
+
 	private ValueModel valueModel;
 
 	private Object component;

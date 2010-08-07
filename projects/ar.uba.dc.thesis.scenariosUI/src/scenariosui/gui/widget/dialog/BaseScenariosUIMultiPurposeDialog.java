@@ -62,8 +62,7 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 	protected boolean performOK() {
 		String operation = null;
 		try {
-			ScenariosUIManager scenariosUIManager = ScenariosUIManager
-					.getInstance();
+			ScenariosUIManager scenariosUIManager = ScenariosUIManager.getInstance();
 			switch (this.purpose) {
 			case CREATION:
 				operation = "created";
@@ -102,8 +101,11 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 		if (doIHaveToAbandonChanges()) {
 			Class<?> modelClass = this.getModel().getClass();
 			if (Identifiable.class.isInstance(modelClass) && this.purpose.isCreation()) {
-				ScenariosUIManager.getInstance().returnRecentlyRequestedId(
-						(Class<Identifiable>) modelClass); // since we won't use it
+				ScenariosUIManager.getInstance().returnRecentlyRequestedId((Class<Identifiable>) modelClass); // since
+				// we
+				// won't
+				// use
+				// it
 			}
 			super.cancelPressed();
 		}

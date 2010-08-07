@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: BackgroundHelper.java,v 1.6 2008/01/29 19:41:29 cvspasto Exp $
- */
-
 package commons.gui.background;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,8 +10,7 @@ import commons.gui.util.PageHelper;
 /**
  * Helper para la creacion de tareas background
  * 
- * @author Pablo Pastorino
- * @version $Revision: 1.6 $ $Date: 2008/01/29 19:41:29 $
+ * 
  */
 
 public class BackgroundHelper {
@@ -72,8 +55,8 @@ public class BackgroundHelper {
 		}
 
 		if (targetMethod == null) {
-			throw new IllegalArgumentException("No está definido el método '" + methodName
-					+ "' para la clase " + target.getClass().getName());
+			throw new IllegalArgumentException("No está definido el método '" + methodName + "' para la clase "
+					+ target.getClass().getName());
 		}
 
 		task.addRunningListener(new GenericListenerAdapter(target, targetMethod));

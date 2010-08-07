@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 
-
 import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 import commons.properties.CommonTooltips;
@@ -22,7 +21,8 @@ public class AboutAction extends Action {
 		MessageDialog.openInformation(null, ABOUT_TITLE, ABOUT_TEXT);
 	}
 
-	private static final String ABOUT_TITLE = CommonLabels.COPYRIGHT_TITLE.toString(CommonConstants.APP_NAME.toString());
+	private static final String ABOUT_TITLE = CommonLabels.COPYRIGHT_TITLE
+			.toString(CommonConstants.APP_NAME.toString());
 
 	private static final String ABOUT_TEXT;
 	static {

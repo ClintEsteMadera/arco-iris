@@ -1,14 +1,12 @@
 package commons.gui.model.bean;
 
-
 import commons.dataestructures.LazyMap;
 import commons.gui.model.AbstractAttribute;
 import commons.gui.model.Attribute;
 import commons.gui.model.Attributes;
 
 /**
- * Conjunto de atributos asociados a un bean. Utiliza reflection para acceder a
- * las propiedades de una clase.
+ * Conjunto de atributos asociados a un bean. Utiliza reflection para acceder a las propiedades de una clase.
  */
 public class BeanAttributes implements Attributes<String> {
 
@@ -16,8 +14,7 @@ public class BeanAttributes implements Attributes<String> {
 	 * Construye los atributos asociados a la clase.
 	 * 
 	 * @param clazz
-	 *            Clase de los objetos a los cuales se van a aplicar los
-	 *            atributos.
+	 *            Clase de los objetos a los cuales se van a aplicar los atributos.
 	 */
 	public BeanAttributes(Class clazz) {
 		m_beanClass = clazz;
@@ -28,9 +25,8 @@ public class BeanAttributes implements Attributes<String> {
 	}
 
 	/**
-	 * Configura el "tipo de dato" asociada a una propiedad. A través del tipo
-	 * de dato se puede acceder a la meta-información asociada mediante
-	 * {@link sba.ui.model.types.EditConfigurationManager}
+	 * Configura el "tipo de dato" asociada a una propiedad. A través del tipo de dato se puede acceder a la
+	 * meta-información asociada mediante {@link sba.ui.model.types.EditConfigurationManager}
 	 * 
 	 * @param key
 	 *            Identificador de la propiedad
@@ -45,9 +41,8 @@ public class BeanAttributes implements Attributes<String> {
 	}
 
 	/**
-	 * Agrega un atributo adicional. Mediante este mecanismo es posible agregar
-	 * nuevos atributos a una clase (por ejemplo: un valor "calculado") o
-	 * redefinir el comportamiento de un atributo.
+	 * Agrega un atributo adicional. Mediante este mecanismo es posible agregar nuevos atributos a una clase (por
+	 * ejemplo: un valor "calculado") o redefinir el comportamiento de un atributo.
 	 * 
 	 * @param id
 	 *            Identificador del nuevo atributo
@@ -67,7 +62,7 @@ public class BeanAttributes implements Attributes<String> {
 	}
 
 	private Attribute createAttribute(String key) {
-		//con el prefijo "/" se indica la clase de un atributo "artificial"
+		// con el prefijo "/" se indica la clase de un atributo "artificial"
 		if (key.startsWith("/")) {
 			final String className = key.substring(1);
 			try {
@@ -77,18 +72,17 @@ public class BeanAttributes implements Attributes<String> {
 				try {
 					o = attributeClass.newInstance();
 				} catch (Exception e) {
-					throw new IllegalArgumentException("Error instanciando la clase '" + className
-							+ "' :" + e.getMessage(), e);
+					throw new IllegalArgumentException("Error instanciando la clase '" + className + "' :"
+							+ e.getMessage(), e);
 				}
 
 				if (!(o instanceof Attribute)) {
-					throw new IllegalArgumentException("La clase '" + className
-							+ "' no implementa " + Attribute.class.getName());
+					throw new IllegalArgumentException("La clase '" + className + "' no implementa "
+							+ Attribute.class.getName());
 				}
 				return (Attribute) o;
 			} catch (ClassNotFoundException e) {
-				throw new IllegalArgumentException("No se pudo la clase de atributo '" + className
-						+ "'");
+				throw new IllegalArgumentException("No se pudo la clase de atributo '" + className + "'");
 			}
 
 		} else {

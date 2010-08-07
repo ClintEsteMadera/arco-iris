@@ -9,8 +9,7 @@ import commons.exception.ValidationException;
 /**
  * Validador para textos que representan direcciones de e-mail.
  * 
- * @author Jonathan Chiocchio
- * @version $Revision: 1.4 $ - $Date: 2008/03/17 14:51:52 $
+ * 
  */
 public abstract class EMailValidator implements Serializable {
 

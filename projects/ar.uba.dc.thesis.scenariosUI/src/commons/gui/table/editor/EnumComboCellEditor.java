@@ -1,18 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: EnumComboCellEditor.java,v 1.5 2008/01/29 12:58:59 cvschioc Exp $
- */
 package commons.gui.table.editor;
 
 import java.text.MessageFormat;
@@ -37,14 +22,13 @@ import org.eclipse.swt.widgets.Control;
 import commons.gui.widget.factory.ComboFactory;
 
 /**
- * @author Gabriel Tursi
- * @version $Revision: 1.5 $ $Date: 2008/01/29 12:58:59 $
+ * 
  */
 public class EnumComboCellEditor extends CellEditor {
 
 	/**
-	 * Creates a new cell editor with no control and no st of choices. Initially, the cell editor
-	 * has no cell validator.
+	 * Creates a new cell editor with no control and no st of choices. Initially, the cell editor has no cell validator.
+	 * 
 	 * @since 2.1
 	 * @see CellEditor#setStyle
 	 * @see CellEditor#create
@@ -57,23 +41,24 @@ public class EnumComboCellEditor extends CellEditor {
 	}
 
 	/**
-	 * Creates a new cell editor with a combo containing the given list of choices and parented
-	 * under the given control. The cell editor value is the zero-based index of the selected item.
-	 * Initially, the cell editor has no cell validator and the first item in the list is selected.
+	 * Creates a new cell editor with a combo containing the given list of choices and parented under the given control.
+	 * The cell editor value is the zero-based index of the selected item. Initially, the cell editor has no cell
+	 * validator and the first item in the list is selected.
+	 * 
 	 * @param parent
 	 *            the parent control
 	 * @param items
 	 *            the list of strings for the combo box
 	 */
-	public EnumComboCellEditor(Composite parent, Class<? extends Enum> enumeracion,
-			boolean emptyOptionEnabled) {
+	public EnumComboCellEditor(Composite parent, Class<? extends Enum> enumeracion, boolean emptyOptionEnabled) {
 		this(parent, enumeracion, DEFAULT_STYLE, emptyOptionEnabled);
 	}
 
 	/**
-	 * Creates a new cell editor with a combo containing the given list of choices and parented
-	 * under the given control. The cell editor value is the zero-based index of the selected item.
-	 * Initially, the cell editor has no cell validator and the first item in the list is selected.
+	 * Creates a new cell editor with a combo containing the given list of choices and parented under the given control.
+	 * The cell editor value is the zero-based index of the selected item. Initially, the cell editor has no cell
+	 * validator and the first item in the list is selected.
+	 * 
 	 * @param parent
 	 *            the parent control
 	 * @param items
@@ -99,6 +84,7 @@ public class EnumComboCellEditor extends CellEditor {
 
 	/**
 	 * Returns the list of choices for the combo box
+	 * 
 	 * @return the list of choices for the combo box
 	 */
 	public Enum[] getItems() {
@@ -107,6 +93,7 @@ public class EnumComboCellEditor extends CellEditor {
 
 	/**
 	 * Sets the list of choices for the combo box
+	 * 
 	 * @param enums
 	 *            the list of choices for the combo box
 	 */
@@ -117,11 +104,10 @@ public class EnumComboCellEditor extends CellEditor {
 	}
 
 	/**
-	 * The <code>ComboBoxCellEditor</code> implementation of this <code>CellEditor</code>
-	 * framework method sets the minimum width of the cell. The minimum width is 10 characters if
-	 * <code>comboBox</code> is not <code>null</code> or <code>disposed</code> eles it is 60
-	 * pixels to make sure the arrow button and some text is visible. The list of CCombo will be
-	 * wide enough to show its longest item.
+	 * The <code>ComboBoxCellEditor</code> implementation of this <code>CellEditor</code> framework method sets the
+	 * minimum width of the cell. The minimum width is 10 characters if <code>comboBox</code> is not <code>null</code>
+	 * or <code>disposed</code> eles it is 60 pixels to make sure the arrow button and some text is visible. The list
+	 * of CCombo will be wide enough to show its longest item.
 	 */
 	@Override
 	public LayoutData getLayoutData() {
@@ -181,8 +167,9 @@ public class EnumComboCellEditor extends CellEditor {
 	}
 
 	/**
-	 * The <code>ComboBoxCellEditor</code> implementation of this <code>CellEditor</code>
-	 * framework method returns the zero-based index of the current selection.
+	 * The <code>ComboBoxCellEditor</code> implementation of this <code>CellEditor</code> framework method returns
+	 * the zero-based index of the current selection.
+	 * 
 	 * @return the zero-based index of the current selection wrapped as an <code>Integer</code>
 	 */
 	@Override
@@ -196,8 +183,9 @@ public class EnumComboCellEditor extends CellEditor {
 	}
 
 	/**
-	 * The <code>ComboBoxCellEditor</code> implementation of this <code>CellEditor</code>
-	 * framework method accepts a zero-based index of a selection.
+	 * The <code>ComboBoxCellEditor</code> implementation of this <code>CellEditor</code> framework method accepts a
+	 * zero-based index of a selection.
+	 * 
 	 * @param value
 	 *            the zero-based index of the selection wrapped as an <code>Integer</code>
 	 */
@@ -256,13 +244,11 @@ public class EnumComboCellEditor extends CellEditor {
 			// Only format if the 'index' is valid
 			if (enums.length > 0 && selection >= 0 && selection < enums.length) {
 				// try to insert the current value into the error message.
-				setErrorMessage(MessageFormat.format(getErrorMessage(),
-						new Object[] { enums[selection] }));
+				setErrorMessage(MessageFormat.format(getErrorMessage(), new Object[] { enums[selection] }));
 			} else {
 				// Since we don't have a valid index, assume we're using an 'edit'
 				// combo so format using its text value
-				setErrorMessage(MessageFormat.format(getErrorMessage(), new Object[] { comboBox
-						.getText() }));
+				setErrorMessage(MessageFormat.format(getErrorMessage(), new Object[] { comboBox.getText() }));
 			}
 		}
 

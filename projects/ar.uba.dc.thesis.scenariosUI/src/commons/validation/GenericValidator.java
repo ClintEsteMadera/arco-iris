@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: GenericValidator.java,v 1.5 2008/05/14 17:55:03 cvspasto Exp $
- */
-
 package commons.validation;
 
 import java.beans.BeanInfo;
@@ -32,8 +16,7 @@ import commons.dataestructures.Pair;
 
 /**
  * 
- * @author Pablo Pastorino
- * @version $Revision: 1.5 $ $Date: 2008/05/14 17:55:03 $
+ * 
  */
 public class GenericValidator implements Validator {
 

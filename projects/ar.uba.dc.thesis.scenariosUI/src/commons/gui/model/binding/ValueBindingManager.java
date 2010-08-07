@@ -57,13 +57,11 @@ public class ValueBindingManager {
 			throw new IllegalArgumentException("El parámetro 'component' no puede ser nulo");
 		}
 
-		ValueBindingFactory factory = ValueBindingManager.getInstance()
-				.getBindingFactory(component);
+		ValueBindingFactory factory = ValueBindingManager.getInstance().getBindingFactory(component);
 
 		if (factory == null) {
-			throw new IllegalArgumentException("No existe un "
-					+ ValueBindingFactory.class.getName() + " para el objeto de tipo "
-					+ component.getClass().getName());
+			throw new IllegalArgumentException("No existe un " + ValueBindingFactory.class.getName()
+					+ " para el objeto de tipo " + component.getClass().getName());
 		}
 
 		return factory.createBinding(model, component);

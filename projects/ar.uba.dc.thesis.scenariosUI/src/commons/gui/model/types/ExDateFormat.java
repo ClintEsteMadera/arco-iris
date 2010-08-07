@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * Extension de SimpleDateFormat para soporat "fecha base"
+ * 
  * @author P.Pastorino
  */
 class ExDateFormat extends SimpleDateFormat {
@@ -64,6 +65,7 @@ class ExDateFormat extends SimpleDateFormat {
 
 	/**
 	 * Sets the baseTime.
+	 * 
 	 * @param baseTime
 	 *            The baseTime to set
 	 */
@@ -73,8 +75,7 @@ class ExDateFormat extends SimpleDateFormat {
 
 	private void parseCheck(String str) throws ParseException {
 		if (str.length() > 0
-				&& (str.length() < toPattern().length() || !Character.isDigit(str.charAt(str
-						.length() - 1)))) {
+				&& (str.length() < toPattern().length() || !Character.isDigit(str.charAt(str.length() - 1)))) {
 			throw new ParseException("Fecha incompleta", 0);
 		}
 	}

@@ -9,8 +9,9 @@ import commons.gui.model.types.EditType;
 /**
  * Modelo complejo basado en un <code>Map</code> de <code>ValueModel</code>. <br>
  * <br>
- * Este tipo de modelo puede ser útil para construir dinámicamente un modelo a partir de objetos
- * "sueltos" (no contenidos en un mismo objeto "raíz")
+ * Este tipo de modelo puede ser útil para construir dinámicamente un modelo a partir de objetos "sueltos" (no
+ * contenidos en un mismo objeto "raíz")
+ * 
  * @author P.Pastorino
  */
 public class MapValueModel extends ValueHolder implements CompositeModel {
@@ -19,7 +20,7 @@ public class MapValueModel extends ValueHolder implements CompositeModel {
 		// TODO MapValueModel::getNestedModel() IMPLEMENTAR!
 		throw new RuntimeException("Este método no se encuentra implementado!");
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public MapValueModel() {
 		super(Map.class);
@@ -48,6 +49,7 @@ public class MapValueModel extends ValueHolder implements CompositeModel {
 
 	/**
 	 * Agrega un {@link ValueModel} al modelo
+	 * 
 	 * @param key
 	 *            Identificador del modelo
 	 * @param value
@@ -59,6 +61,7 @@ public class MapValueModel extends ValueHolder implements CompositeModel {
 
 	/**
 	 * No implementado.
+	 * 
 	 * @see commons.gui.model.ComplexModel#addPropertyChangeListener(PropertyChangeListener)
 	 */
 	public void addComplexValueChangeListener(ComplexValueChangeListener listener) {
@@ -67,6 +70,7 @@ public class MapValueModel extends ValueHolder implements CompositeModel {
 
 	/**
 	 * No implementado.
+	 * 
 	 * @see commons.gui.model.ComplexModel#removePropertyChangeListener(PropertyChangeListener)
 	 */
 	public void removeComplexValueChangeListener(ComplexValueChangeListener listener) {

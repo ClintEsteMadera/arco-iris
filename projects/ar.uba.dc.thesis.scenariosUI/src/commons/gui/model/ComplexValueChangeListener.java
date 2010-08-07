@@ -1,10 +1,9 @@
 package commons.gui.model;
 
 /**
-* Listener para {@link sba.ui.modek.ComplexValueChangeEvent}
-*/
-public interface ComplexValueChangeListener
-{
+ * Listener para {@link sba.ui.modek.ComplexValueChangeEvent}
+ */
+public interface ComplexValueChangeListener {
 	/**
 	 * Se invoca depués de la modificación del modelo.
 	 * 

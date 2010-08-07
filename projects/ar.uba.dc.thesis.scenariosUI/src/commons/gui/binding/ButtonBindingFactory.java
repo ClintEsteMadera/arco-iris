@@ -1,6 +1,5 @@
 package commons.gui.binding;
 
-
 import org.eclipse.swt.widgets.Button;
 
 import commons.gui.model.ValueModel;
@@ -11,7 +10,7 @@ public class ButtonBindingFactory extends ValueModelAdapterBindingFactory {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
-		return new ButtonValueModel((Button)component);
+		return new ButtonValueModel((Button) component);
 	}
 
 	@Override

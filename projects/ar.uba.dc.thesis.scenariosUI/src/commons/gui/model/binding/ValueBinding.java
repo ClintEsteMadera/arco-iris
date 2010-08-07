@@ -4,67 +4,67 @@ import commons.gui.model.ValueModel;
 
 public interface ValueBinding {
 
-		/**
-		 * Agrega un listener para el evento de lectura (componente --> modelo)
-		 * 
-		 * @param listener
-		 */
-        void addReadingListener(ValueBindingUpdateListener listener);
-        
-        /**
-         * Elimina un listener para el evento de lectura.
-         * 
-         * @param listener
-         */
-        void removeReadingListener(ValueBindingUpdateListener listener);
+	/**
+	 * Agrega un listener para el evento de lectura (componente --> modelo)
+	 * 
+	 * @param listener
+	 */
+	void addReadingListener(ValueBindingUpdateListener listener);
 
-        /**
-         * Agrega un listener para el evento de escritura (modelo --> componente)
-         * 
-         * @param listener
-         */
-        void addWritingListener(ValueBindingUpdateListener listener);
-        
-        /**
-         * Elimina un listener para el evento de escritura.
-         * 
-         * @param listener
-         */
-        void removeWritingListener(ValueBindingUpdateListener listener);
+	/**
+	 * Elimina un listener para el evento de lectura.
+	 * 
+	 * @param listener
+	 */
+	void removeReadingListener(ValueBindingUpdateListener listener);
 
-        /**
-         * Obtiene el ValueModel.
-         * 
-         * @return
-         */
-        ValueModel getValueModel();
-        
-        /**
-         * Obtiene el componetne.
-         * 
-         * @return
-         */
-        Object getComponent();
+	/**
+	 * Agrega un listener para el evento de escritura (modelo --> componente)
+	 * 
+	 * @param listener
+	 */
+	void addWritingListener(ValueBindingUpdateListener listener);
 
-        /**
-         * Desactiva el binding.
-         *
-         */
-        void unbind();
+	/**
+	 * Elimina un listener para el evento de escritura.
+	 * 
+	 * @param listener
+	 */
+	void removeWritingListener(ValueBindingUpdateListener listener);
 
-        /**
-         * Activa el binding.
-         *
-         */
-        void bind();
+	/**
+	 * Obtiene el ValueModel.
+	 * 
+	 * @return
+	 */
+	ValueModel getValueModel();
 
-        /**
-         * Actualiza explícitamente el ValueModel con el valor del componente.
-         */
-        void read();
+	/**
+	 * Obtiene el componetne.
+	 * 
+	 * @return
+	 */
+	Object getComponent();
 
-        /**
-         * Actualiza explicitamente el componente con el valor del ValueModel
-         */
-        void write();
+	/**
+	 * Desactiva el binding.
+	 * 
+	 */
+	void unbind();
+
+	/**
+	 * Activa el binding.
+	 * 
+	 */
+	void bind();
+
+	/**
+	 * Actualiza explícitamente el ValueModel con el valor del componente.
+	 */
+	void read();
+
+	/**
+	 * Actualiza explicitamente el componente con el valor del ValueModel
+	 */
+	void write();
 }

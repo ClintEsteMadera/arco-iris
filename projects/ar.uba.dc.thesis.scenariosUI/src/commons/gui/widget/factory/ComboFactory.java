@@ -78,8 +78,7 @@ public abstract class ComboFactory {
 
 			// si no hay formato especificado lo deduzco del tipo bindeado binding
 			if (valueType != null && comboMetainfo.itemFormat == null) {
-				final EditConfiguration config = EditConfigurationManager.getInstance()
-						.getConfiguration(valueType);
+				final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(valueType);
 
 				if (config != null && config.getFormat() != null) {
 					editor.setItemFormat(config.getFormat());
@@ -96,16 +95,15 @@ public abstract class ComboFactory {
 
 	/**
 	 * Crea el control Combo sin ítems.
+	 * 
 	 * @param comboInfo
 	 *            la metainformación necesaria para poder crear el control.
-	 * @return un Label en caso de que <code>comboInfo.readOnly</code> sea verdadero, un Combo en
-	 *         otro caso.
+	 * @return un Label en caso de que <code>comboInfo.readOnly</code> sea verdadero, un Combo en otro caso.
 	 */
 	private static Control createControl(ComboMetainfo comboInfo) {
 		final Control combo;
 		if (comboInfo.readOnly) {
-			combo = LabelFactory.createReadOnlyField(comboInfo.composite, comboInfo.binding,
-					comboInfo.label);
+			combo = LabelFactory.createReadOnlyField(comboInfo.composite, comboInfo.binding, comboInfo.label);
 		} else {
 			if (!comboInfo.label.equals(CommonLabels.NO_LABEL)) {
 				LabelFactory.createLabel(comboInfo.composite, comboInfo.label, false, true);
@@ -118,23 +116,23 @@ public abstract class ComboFactory {
 	}
 
 	private static Combo createComboControl(ComboMetainfo metainfo) {
-		
-		if(!metainfo.validate){
+
+		if (!metainfo.validate) {
 			return _createComboControl(metainfo);
 		}
 
-		final Composite parent=metainfo.composite;
-		final Composite composite=new Composite(parent,SWT.NONE);
-		
+		final Composite parent = metainfo.composite;
+		final Composite composite = new Composite(parent, SWT.NONE);
+
 		DefaultLayoutFactory.setDefaultGridLayout(composite, 2);
 		composite.setLayoutData(null);
-		metainfo.composite=composite;
-		
-		final Combo combo =_createComboControl(metainfo);
-		
-		metainfo.composite=parent;
-		
-		LabelStatusAware status=new LabelStatusAware(composite);
+		metainfo.composite = composite;
+
+		final Combo combo = _createComboControl(metainfo);
+
+		metainfo.composite = parent;
+
+		LabelStatusAware status = new LabelStatusAware(composite);
 		ValidationManager.setValidationProperty(combo, metainfo.binding);
 		ValidationManager.setValidationStatus(combo, status);
 
@@ -144,6 +142,6 @@ public abstract class ComboFactory {
 	private static Combo _createComboControl(ComboMetainfo comboInfo) {
 		return new Combo(comboInfo.composite, SWT.READ_ONLY);
 	}
-	
+
 	public static final String EMPTY_ITEM = "";
 }

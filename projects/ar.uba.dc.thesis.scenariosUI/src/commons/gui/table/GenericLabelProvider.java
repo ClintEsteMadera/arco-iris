@@ -13,7 +13,7 @@ import commons.gui.model.types.EditType;
 
 /**
  * Provider basado en reflection. TODO: cachear los valores.
- * @author ppastorino
+ * 
  */
 public class GenericLabelProvider implements ITableLabelProvider {
 
@@ -38,8 +38,7 @@ public class GenericLabelProvider implements ITableLabelProvider {
 		final EditType eType = new EditType(rowAdapter.getColumnClass(index), rowAdapter
 				.getColumnEditConfiguration(index));
 
-		final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(
-				eType);
+		final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(eType);
 
 		Format format = null;
 
@@ -49,20 +48,22 @@ public class GenericLabelProvider implements ITableLabelProvider {
 
 		final Object value = rowAdapter.getValueAt(o, index);
 
-		final String s = value == null ? "" : format != null ? format.format(value) : value
-				.toString();
+		final String s = value == null ? "" : format != null ? format.format(value) : value.toString();
 		return s;
 	}
 
-	public void addListener(ILabelProviderListener listener) {}
+	public void addListener(ILabelProviderListener listener) {
+	}
 
-	public void dispose() {}
+	public void dispose() {
+	}
 
 	public boolean isLabelProperty(Object o, String property) {
 		return false;
 	}
 
-	public void removeListener(ILabelProviderListener arg0) {}
+	public void removeListener(ILabelProviderListener arg0) {
+	}
 
 	private TableRowAdapter rowAdapter;
 }

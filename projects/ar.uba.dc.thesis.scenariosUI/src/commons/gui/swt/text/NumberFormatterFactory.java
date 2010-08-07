@@ -6,7 +6,7 @@ import commons.gui.model.types.EditType;
 import commons.gui.model.types.NumberConfiguration;
 
 public class NumberFormatterFactory implements TextFormatterFactory {
-	
+
 	@SuppressWarnings("unchecked")
 	public TextFormatter createFormatter(EditType type) {
 		EditConfiguration cfg = EditConfigurationManager.getInstance().getConfiguration(type);
@@ -14,8 +14,8 @@ public class NumberFormatterFactory implements TextFormatterFactory {
 			NumberConfiguration nCfg = (NumberConfiguration) cfg;
 			return new FilteredTextFormatter(new NumericTextFilter(nCfg));
 		}
-		throw new IllegalArgumentException("La clase '" + type.getValueClass().getName()
-				+ "' no extiende " + Number.class.getName());
+		throw new IllegalArgumentException("La clase '" + type.getValueClass().getName() + "' no extiende "
+				+ Number.class.getName());
 	}
 
 	public boolean supports(EditType type) {

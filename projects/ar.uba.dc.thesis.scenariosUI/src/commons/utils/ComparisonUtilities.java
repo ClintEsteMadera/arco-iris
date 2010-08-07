@@ -9,6 +9,7 @@ public class ComparisonUtilities {
 
 	/**
 	 * Verifica la igualdad de ods objetos.
+	 * 
 	 * @param o1
 	 * @param o2
 	 * @return <code>(o1 == o2) || (o1 != null && o1.equals(o2))</code>
@@ -19,6 +20,7 @@ public class ComparisonUtilities {
 
 	/**
 	 * Verifica la igualdad de ods objetos.
+	 * 
 	 * @param o1
 	 * @param o2
 	 * @return <code>o2 == null || equals(o1,o2)</code>
@@ -28,14 +30,13 @@ public class ComparisonUtilities {
 	}
 
 	/**
-	 * Verifica la pertenencia a un rango. Retorna <code>true</code> si
-	 * <code>value &gt= from && value &lt=
+	 * Verifica la pertenencia a un rango. Retorna <code>true</code> si <code>value &gt= from && value &lt=
 	 * to</code><br>
-	 * En caso de que <code>from</code> o <code>to</code> sean nulos la comparacion por &gt= o
-	 * &lt= es siempre verdadera (es decir que se asumen los valores "- infinto" y "+infinito"
-	 * respectivamente).<br>
-	 * En caso de que <code>value</code> sea nulo retirna <code>true</code> solo si
-	 * <code>from</code> y <code>to</code> son nulos.
+	 * En caso de que <code>from</code> o <code>to</code> sean nulos la comparacion por &gt= o &lt= es siempre
+	 * verdadera (es decir que se asumen los valores "- infinto" y "+infinito" respectivamente).<br>
+	 * En caso de que <code>value</code> sea nulo retirna <code>true</code> solo si <code>from</code> y
+	 * <code>to</code> son nulos.
+	 * 
 	 * @param comp
 	 * @param value
 	 * @param from
@@ -46,16 +47,14 @@ public class ComparisonUtilities {
 		if (value == null) {
 			return from == null && to == null;
 		}
-		return (from == null || comp.compare(value, from) >= 0)
-				&& (to == null || comp.compare(value, to) <= 0);
+		return (from == null || comp.compare(value, from) >= 0) && (to == null || comp.compare(value, to) <= 0);
 	}
 
 	public static <T> boolean inRange(Comparable<T> value, T from, T to) {
 		if (value == null) {
 			return from == null && to == null;
 		}
-		return (from == null || value.compareTo(from) >= 0)
-				&& (to == null || value.compareTo(to) <= 0);
+		return (from == null || value.compareTo(from) >= 0) && (to == null || value.compareTo(to) <= 0);
 	}
 
 	public static boolean inArray(Object value, Object[] array) {

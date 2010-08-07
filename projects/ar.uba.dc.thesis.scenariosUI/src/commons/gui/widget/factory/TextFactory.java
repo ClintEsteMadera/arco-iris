@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.gui.GuiStyle;
 import commons.gui.model.ComplexModel;
 import commons.gui.model.types.DefaultFormat;
@@ -39,16 +38,14 @@ public abstract class TextFactory {
 		return text;
 	}
 
-	public static <T> Control createNumeroDocumentoField(Composite composite,
-			EnumProperty enumProperty, Binding binding, boolean readOnly) {
+	public static <T> Control createNumeroDocumentoField(Composite composite, EnumProperty enumProperty,
+			Binding binding, boolean readOnly) {
 		Control result;
 		if (readOnly) {
 			String value = SbaStringUtils.formatDniValue(binding.getValue());
-			result = LabelFactory.createReadOnlyField(composite, new FakeBinding(value),
-					enumProperty);
+			result = LabelFactory.createReadOnlyField(composite, new FakeBinding(value), enumProperty);
 		} else {
-			TextFieldMetainfo metainfo = TextFieldMetainfo.create(composite, enumProperty, binding,
-					readOnly);
+			TextFieldMetainfo metainfo = TextFieldMetainfo.create(composite, enumProperty, binding, readOnly);
 			metainfo.maxLength = 8;
 			result = TextFactory.createTextField(metainfo);
 		}
@@ -57,22 +54,21 @@ public abstract class TextFactory {
 
 	/**
 	 * Crea un campo de texto a partir de la meta informción brindada.
+	 * 
 	 * @param metainfo:
 	 *            meta información de un campo de texto
-	 * @return el campo de texto creado, puede ser un <code>Label</code> si es de solo lectura o
-	 *         un <code>Text</code> si es de lectura escritura.
+	 * @return el campo de texto creado, puede ser un <code>Label</code> si es de solo lectura o un <code>Text</code>
+	 *         si es de lectura escritura.
 	 */
 	private static <T> Control createTextField(final TextFieldMetainfo metainfo) {
 		Control result = null;
 		if (metainfo.readOnly && metainfo.readOnlyStyle == TextFieldMetainfo.READONLY_STYLE_LABEL) {
 			if (metainfo.suffix != null) {
-				SimpleComposite comp = new SimpleComposite(metainfo.composite, metainfo.readOnly,
-						3, 2);
+				SimpleComposite comp = new SimpleComposite(metainfo.composite, metainfo.readOnly, 3, 2);
 				result = LabelFactory.createReadOnlyField(comp, metainfo.binding, metainfo.label);
 				LabelFactory.createLabel(comp, metainfo.suffix, false, false); // suffix
 			} else {
-				result = LabelFactory.createReadOnlyField(metainfo.composite, metainfo.binding,
-						metainfo.label);
+				result = LabelFactory.createReadOnlyField(metainfo.composite, metainfo.binding, metainfo.label);
 			}
 		} else {
 			Text textBox;
@@ -83,8 +79,7 @@ public abstract class TextFactory {
 				if (metainfo.suffix != null) {
 					Composite originalComposite = metainfo.composite;
 
-					metainfo.composite = new SimpleComposite(metainfo.composite, metainfo.readOnly,
-							2);
+					metainfo.composite = new SimpleComposite(metainfo.composite, metainfo.readOnly, 2);
 
 					textBox = createTextBox(metainfo);
 
@@ -159,8 +154,7 @@ public abstract class TextFactory {
 			final Object propertyName = metainfo.binding.getPropertyName();
 			final EditType editType = model.getValueType(propertyName);
 
-			EditConfiguration cfg = EditConfigurationManager.getInstance().getConfiguration(
-					editType);
+			EditConfiguration cfg = EditConfigurationManager.getInstance().getConfiguration(editType);
 
 			if (cfg != null && cfg.isRightAligned()) {
 				return SWT.RIGHT;
@@ -232,8 +226,7 @@ public abstract class TextFactory {
 
 		final Text textBox = new Text(metainfo.composite, style);
 
-		if (metainfo.readOnly
-				&& metainfo.readOnlyStyle == TextFieldMetainfo.READONLY_STYLE_DISABLED_TEXT) {
+		if (metainfo.readOnly && metainfo.readOnlyStyle == TextFieldMetainfo.READONLY_STYLE_DISABLED_TEXT) {
 			textBox.setEnabled(false);
 		}
 
@@ -250,8 +243,7 @@ public abstract class TextFactory {
 					grabExcessHorizontalSpace = false;
 				} else {
 					horizontalAlignment = SWT.FILL;
-					widthHint = PageHelper
-							.getCantidadDePixels(TextFieldMetainfo.DEFAULT_VISIBLE_SIZE);
+					widthHint = PageHelper.getCantidadDePixels(TextFieldMetainfo.DEFAULT_VISIBLE_SIZE);
 				}
 			}
 		} else {
@@ -261,20 +253,18 @@ public abstract class TextFactory {
 						TextFieldMetainfo.DEFAULT_VISIBLE_SIZE));
 			} else {
 				// se acota el ancho para que no supere a MAX_FIXED_LENGTH
-				widthHint = PageHelper.getCantidadDePixels(Math.min(metainfo.maxLength,
-						MAX_FIXED_LENGTH));
+				widthHint = PageHelper.getCantidadDePixels(Math.min(metainfo.maxLength, MAX_FIXED_LENGTH));
 			}
 		}
 
 		// NOTA: incremento la cantidad de pixeles porque la cantidad original es un "promedio"
 		if (widthHint != SWT.DEFAULT) {
-			widthHint = Math.max((int) (widthHint * 1.1), widthHint
-					+ PageHelper.getCantidadDePixels(3));
+			widthHint = Math.max((int) (widthHint * 1.1), widthHint + PageHelper.getCantidadDePixels(3));
 		}
 
 		if (metainfo.composite.getLayout() instanceof GridLayout) {
-			GridData gridData = new GridData(horizontalAlignment, verticalAlignment,
-					grabExcessHorizontalSpace, grabExcessVerticalSpace);
+			GridData gridData = new GridData(horizontalAlignment, verticalAlignment, grabExcessHorizontalSpace,
+					grabExcessVerticalSpace);
 			gridData.widthHint = widthHint;
 			gridData.heightHint = heightHint;
 			gridData.minimumHeight = PageHelper.getMinimunCharHeight();

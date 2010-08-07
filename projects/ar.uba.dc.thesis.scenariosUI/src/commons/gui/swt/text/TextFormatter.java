@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Text;
 
 public interface TextFormatter {
 
-    void install(Text textBox);
+	void install(Text textBox);
 
-    void unInstall(Text textBox);
+	void unInstall(Text textBox);
 }

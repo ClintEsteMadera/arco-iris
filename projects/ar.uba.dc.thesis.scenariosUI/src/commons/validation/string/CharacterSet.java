@@ -106,10 +106,9 @@ public interface CharacterSet {
 			return new Character(' ');
 		}
 
-		private final char[][] replace_table = new char[][] { new char[] { 'á', 'a' },
-				new char[] { 'é', 'e' }, new char[] { 'í', 'i' }, new char[] { 'ó', 'o' },
-				new char[] { 'ú', 'u' }, new char[] { 'Á', 'A' }, new char[] { 'É', 'E' },
-				new char[] { 'Í', 'I' }, new char[] { 'Ó', 'O' }, new char[] { 'Ú', 'U' }, 
+		private final char[][] replace_table = new char[][] { new char[] { 'á', 'a' }, new char[] { 'é', 'e' },
+				new char[] { 'í', 'i' }, new char[] { 'ó', 'o' }, new char[] { 'ú', 'u' }, new char[] { 'Á', 'A' },
+				new char[] { 'É', 'E' }, new char[] { 'Í', 'I' }, new char[] { 'Ó', 'O' }, new char[] { 'Ú', 'U' },
 				new char[] { 'ñ', 'n' }, new char[] { 'Ñ', 'N' }, };
 
 	};

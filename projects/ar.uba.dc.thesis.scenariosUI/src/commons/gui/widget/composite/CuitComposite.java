@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: CuitComposite.java,v 1.14 2008/05/16 20:18:25 cvschioc Exp $
- */
-
 package commons.gui.widget.composite;
 
 import java.util.ArrayList;
@@ -29,7 +13,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.gui.GuiStyle;
 import commons.gui.model.ValueChangeEvent;
 import commons.gui.model.ValueChangeListener;
@@ -41,10 +24,8 @@ import commons.gui.widget.creation.binding.Binding;
 import commons.utils.SbaStringUtils;
 
 /**
- * Modela un campo de CUIT / CUIL con las restricciones numéricas necesarias y el layout usual para
- * este tipo de campos.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.14 $ $Date: 2008/05/16 20:18:25 $
+ * Modela un campo de CUIT / CUIL con las restricciones numéricas necesarias y el layout usual para este tipo de campos.
+ * 
  */
 public class CuitComposite extends SimpleComposite implements ValueModel {
 
@@ -63,8 +44,7 @@ public class CuitComposite extends SimpleComposite implements ValueModel {
 	}
 
 	public Object getValue() {
-		final String s = SbaStringUtils.concat(prefixTextBox.getText(), dniTextBox.getText(),
-				digitTextBox.getText());
+		final String s = SbaStringUtils.concat(prefixTextBox.getText(), dniTextBox.getText(), digitTextBox.getText());
 		return StringUtils.isEmpty(s) ? null : Long.parseLong(s);
 	}
 
@@ -90,7 +70,7 @@ public class CuitComposite extends SimpleComposite implements ValueModel {
 	public EditType getValueType() {
 		return editType;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void notifyChange() {
 		ValueChangeEvent ev = new ValueChangeEvent(this, null, null);
@@ -117,7 +97,7 @@ public class CuitComposite extends SimpleComposite implements ValueModel {
 		layout.marginLeft = 0;
 		this.setLayout(layout);
 	}
-	
+
 	private void clear() {
 		this.prefixTextBox.setText(NULL_STRING);
 		this.dniTextBox.setText(NULL_STRING);
@@ -132,14 +112,14 @@ public class CuitComposite extends SimpleComposite implements ValueModel {
 		Text textBox = new Text(this, style);
 		textBox.setLayoutData(new RowData(cantPixels, SWT.DEFAULT));
 		textBox.setTextLimit(maxLength);
-		
-		if(this.readOnly) {
+
+		if (this.readOnly) {
 			textBox.setFont(PageHelper.getValueLabelsFont());
 		} else {
 			ListenerHelper.addIntegerFieldKeyListener(textBox);
 			ListenerHelper.addIntegerFieldModifyListener(textBox);
 			this.addModifyListener(textBox);
-			this.addFocusListener(textBox);			
+			this.addFocusListener(textBox);
 		}
 		return textBox;
 	}
@@ -184,6 +164,6 @@ public class CuitComposite extends SimpleComposite implements ValueModel {
 	private ArrayList<ValueChangeListener> valueListeners;
 
 	private static final EditType editType = new EditType<Long>(Long.class);
-	
+
 	private static final String NULL_STRING = "";
 }

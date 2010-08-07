@@ -3,7 +3,7 @@ package commons.gui.widget.composite;
 /**
  * Composite para seleccion de un objeto
  * 
- * @author ppastorino
+ * 
  */
 public abstract class SimpleObjectSelectionComposite<T> extends ObjectSelectionComposite<T> {
 

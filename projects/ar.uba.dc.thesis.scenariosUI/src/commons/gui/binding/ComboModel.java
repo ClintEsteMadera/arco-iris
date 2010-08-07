@@ -1,7 +1,7 @@
 package commons.gui.binding;
 
 public interface ComboModel {
-	
+
 	int getItemCount();
 
 	Object getItem(int index);

@@ -25,6 +25,7 @@ import commons.gui.model.types.EnumConfiguration;
 /**
  * Wrapper de Combo<br>
  * TODO: OPTIMIZACIONES - Cachear los textos, Agregar métodos para setear un valor, obtener el valor seleccionado, etc.
+ * 
  * @author Pablo Pastorino
  */
 public class ComboEditor {
@@ -61,6 +62,7 @@ public class ComboEditor {
 
 	/**
 	 * Obtiene el ValueModel que contiene la lista de items.
+	 * 
 	 * @return
 	 */
 	public ValueModel getItemListModel() {
@@ -69,6 +71,7 @@ public class ComboEditor {
 
 	/**
 	 * Asigna la lista de items
+	 * 
 	 * @param items
 	 */
 	@SuppressWarnings("unchecked")
@@ -82,6 +85,7 @@ public class ComboEditor {
 
 	/**
 	 * Asigna la lista de items
+	 * 
 	 * @param array
 	 */
 	public void setItemList(Object[] array) {
@@ -90,13 +94,13 @@ public class ComboEditor {
 
 	/**
 	 * Setea la lista de items tomandolo de la meta información.
+	 * 
 	 * @param eType
 	 */
 	@SuppressWarnings("unchecked")
 	public void setItemsFromMetadata(EditType eType) {
 
-		final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(
-				eType);
+		final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(eType);
 
 		EnumConfiguration eConfig = null;
 
@@ -111,8 +115,8 @@ public class ComboEditor {
 	}
 
 	/**
-	 * Asigna el ValueModel que contiene la lista de items. Este ValueModel debe contener objetos de
-	 * tipo List o Array.
+	 * Asigna el ValueModel que contiene la lista de items. Este ValueModel debe contener objetos de tipo List o Array.
+	 * 
 	 * @param listModel
 	 */
 	public void setItemListModel(ValueModel listModel) {
@@ -133,6 +137,7 @@ public class ComboEditor {
 
 	/**
 	 * Obtiene la lista de items
+	 * 
 	 * @return
 	 */
 	public List getItemList() {
@@ -160,6 +165,7 @@ public class ComboEditor {
 
 	/**
 	 * Obtiene el modelo utilizado por el framework de binding.
+	 * 
 	 * @return
 	 */
 	public ComboModelImpl getComboModel() {
@@ -185,8 +191,7 @@ public class ComboEditor {
 	}
 
 	private String formatValue(Object o) {
-		return this.itemFormat != null ? this.itemFormat.format(o) : DefaultFormat.getInstance()
-				.format(o);
+		return this.itemFormat != null ? this.itemFormat.format(o) : DefaultFormat.getInstance().format(o);
 	}
 
 	private void init() {
@@ -203,7 +208,7 @@ public class ComboEditor {
 
 	/**
 	 * Implementación de ComboModel para binding
-	 * @author ppastorino
+	 * 
 	 */
 	private class ComboModelImpl implements ComboModel {
 		public Object getItem(int index) {
@@ -242,13 +247,11 @@ public class ComboEditor {
 				return null;
 			}
 
-			return getPropertyAttribute(item.getClass(), ComboEditor.this.valueProperty).getValue(
-					item);
+			return getPropertyAttribute(item.getClass(), ComboEditor.this.valueProperty).getValue(item);
 		}
 
 		private Attribute getPropertyAttribute(Class itemClass, String valueProp) {
-			if (this.valueAttribute == null
-					|| !this.valueAttribute.getAttributeClass().equals(itemClass)
+			if (this.valueAttribute == null || !this.valueAttribute.getAttributeClass().equals(itemClass)
 					|| !this.valueAttribute.getPropertyName().equals(valueProp)) {
 				this.valueAttribute = new BeanAttribute(itemClass, valueProp, null);
 			}

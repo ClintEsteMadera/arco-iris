@@ -5,10 +5,9 @@ import commons.gui.model.types.EditType;
 /**
  * Modelo para valores simples. <br>
  * <br>
- * Esta interfaz especifica una forma uniforme para manipular valores y recibir eventos de
- * notificación de cambios. Cada <code>ValueModel</code> contiene un valor de tipo
- * <code>Object</code> y puede estar contenido en un modelo más complejo (ver
- * {@link sba.ui.model.ComplexValueModel}) o contener valores con características específicas (por
+ * Esta interfaz especifica una forma uniforme para manipular valores y recibir eventos de notificación de cambios. Cada
+ * <code>ValueModel</code> contiene un valor de tipo <code>Object</code> y puede estar contenido en un modelo más
+ * complejo (ver {@link sba.ui.model.ComplexValueModel}) o contener valores con características específicas (por
  * ejemplo: {@link sba.ui.model.collection.ListValueModel}) <br>
  * <br>
  * Provee métodos para: <br>
@@ -22,6 +21,7 @@ import commons.gui.model.types.EditType;
 public interface ValueModel<T> extends ValueChangeNotifier {
 	/**
 	 * Asigna un valor al modelo
+	 * 
 	 * @param value
 	 *            Nuevo valor del modelo.
 	 */
@@ -36,14 +36,13 @@ public interface ValueModel<T> extends ValueChangeNotifier {
 	 * Obtiene el descriptor para las propiedades de los valores que puede contener el modelo.
 	 */
 	public EditType<T> getValueType();
-	
+
 	/**
 	 * Notifica a los listeners que cambio el valor.
 	 * 
-	 * Este metodo debe ser usado solo en aquellos en los casos en que el modelo se modifique en forma "externa"
-	 * (es decir cuando no se utiliza {@link #setValue(T)}
-	 * Si se utliza {@link #setValue(T)} la notificación es automática.
-	 *
+	 * Este metodo debe ser usado solo en aquellos en los casos en que el modelo se modifique en forma "externa" (es
+	 * decir cuando no se utiliza {@link #setValue(T)} Si se utliza {@link #setValue(T)} la notificación es automática.
+	 * 
 	 */
 	public void notifyChange();
 };

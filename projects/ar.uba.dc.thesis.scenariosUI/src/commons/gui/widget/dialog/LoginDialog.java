@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-
 import commons.auth.AuthenticationHelper;
 import commons.exception.ValidationException;
 import commons.gui.GuiStyle;
@@ -112,8 +111,7 @@ public class LoginDialog extends Dialog {
 		String username = this.usernameText.getText();
 		String password = this.passwordText.getText();
 		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-			EnumProperty msg = new FakeEnumProperty(
-					"El usuario y la contraseña no pueden estar vacías");
+			EnumProperty msg = new FakeEnumProperty("El usuario y la contraseña no pueden estar vacías");
 			throw new ValidationException(new ValidationError(msg));
 		}
 	}

@@ -71,8 +71,7 @@ class TextFilterContextImpl implements TextFilterContext {
 		if (!newText.equals(textBox.getText())) {
 			textBox.setText(newText);
 		}
-		textBox.setSelection(new Point(this.selectionStart,
-				(this.selectionStart + this.selectionLength) - 1));
+		textBox.setSelection(new Point(this.selectionStart, (this.selectionStart + this.selectionLength) - 1));
 	}
 
 }

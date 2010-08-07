@@ -9,7 +9,7 @@ public class RadioButtonGroupBindingFactory extends ValueModelAdapterBindingFact
 	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
-		return new RadioButtonGroupValueModel((RadioButtonGroup)component);
+		return new RadioButtonGroupValueModel((RadioButtonGroup) component);
 	}
 
 	@Override

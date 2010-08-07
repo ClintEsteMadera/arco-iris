@@ -15,6 +15,7 @@ import commons.gui.model.types.EditType;
 
 /**
  * Clase base para los modelos que contienen una lista.
+ * 
  * @author P.Pastorino
  */
 public class DefaultListValueModel<T> implements ListValueModel<T> {
@@ -174,6 +175,7 @@ public class DefaultListValueModel<T> implements ListValueModel<T> {
 
 	/**
 	 * Notifica la modificacion de un elemento de la lista.
+	 * 
 	 * @param index
 	 */
 	public void notifyUpdate(int index) {
@@ -216,12 +218,13 @@ public class DefaultListValueModel<T> implements ListValueModel<T> {
 	}
 
 	/**
-	 * Metodo para redefinir en las clases derivadas (transformando ListChangeEvent en el tipo de
-	 * evento requerido). *
+	 * Metodo para redefinir en las clases derivadas (transformando ListChangeEvent en el tipo de evento requerido). *
+	 * 
 	 * @param ev
 	 *            Evento.
 	 */
-	protected void onListChange(ListChangeEvent ev) {}
+	protected void onListChange(ListChangeEvent ev) {
+	}
 
 	@SuppressWarnings("unchecked")
 	protected final void notifyListChange(ListChangeEvent ev) {

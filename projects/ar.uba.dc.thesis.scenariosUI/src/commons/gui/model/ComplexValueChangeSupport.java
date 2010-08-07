@@ -4,10 +4,9 @@ import java.util.Iterator;
 
 import commons.dataestructures.LazyList;
 
-
-
 /**
  * Soporte para manejar ComplexValueChangeListener
+ * 
  * @author P.Pastorino
  */
 class ComplexValueChangeSupport {
@@ -20,21 +19,20 @@ class ComplexValueChangeSupport {
 		if (oldValue == newValue || (oldValue != null && oldValue.equals(newValue)))
 			return false;
 
-		final ComplexValueChangeEvent ev = new ComplexValueChangeEvent<T>(m_source, key, oldValue,
-				newValue,canceling);
+		final ComplexValueChangeEvent ev = new ComplexValueChangeEvent<T>(m_source, key, oldValue, newValue, canceling);
 
 		fireChange(ev);
-		
+
 		return ev.getCancel();
 	}
 
 	public <T> void fireChange(Object key) {
-		final ComplexValueChangeEvent ev = new ComplexValueChangeEvent<T>(m_source, key, null, null,false);
+		final ComplexValueChangeEvent ev = new ComplexValueChangeEvent<T>(m_source, key, null, null, false);
 		fireChange(ev);
 	}
 
 	public <T> void fireChange() {
-		final ComplexValueChangeEvent ev = new ComplexValueChangeEvent<T>(m_source, null, null, null,false);
+		final ComplexValueChangeEvent ev = new ComplexValueChangeEvent<T>(m_source, null, null, null, false);
 		fireChange(ev);
 	}
 

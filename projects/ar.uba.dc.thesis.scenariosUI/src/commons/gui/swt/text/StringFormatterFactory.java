@@ -6,20 +6,18 @@ import commons.gui.model.types.EditType;
 import commons.gui.model.types.StringConfiguration;
 
 public class StringFormatterFactory implements TextFormatterFactory {
-	
+
 	@SuppressWarnings("unchecked")
 	public TextFormatter createFormatter(EditType type) {
 		final EditConfiguration cfg = EditConfigurationManager.getInstance().getConfiguration(type);
-		
-		TextFilter filter=null;
-		
+
+		TextFilter filter = null;
+
 		if (cfg != null && cfg instanceof StringConfiguration) {
 			StringConfiguration sCfg = (StringConfiguration) cfg;
-			filter=new StringTextFilter(sCfg);
-		}
-		else
-		{
-			filter=new DefaultTextFilter();
+			filter = new StringTextFilter(sCfg);
+		} else {
+			filter = new DefaultTextFilter();
 		}
 		return new FilteredTextFormatter(filter);
 	}

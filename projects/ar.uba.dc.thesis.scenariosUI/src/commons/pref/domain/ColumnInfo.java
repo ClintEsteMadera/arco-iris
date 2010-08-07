@@ -1,6 +1,5 @@
 package commons.pref.domain;
 
-
 import commons.gui.widget.Alignment;
 import commons.properties.EnumProperty;
 

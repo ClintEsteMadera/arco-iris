@@ -6,6 +6,7 @@ import commons.gui.model.ValueChangeEvent;
 
 /**
  * ValueModel basado en la propiedad de un bean.
+ * 
  * @author P.Pastorino
  */
 class BeanAttributeValueModel extends AttributeValueModel {
@@ -24,6 +25,7 @@ class BeanAttributeValueModel extends AttributeValueModel {
 
 	/**
 	 * Redefinicion para tratamiento de nulos.
+	 * 
 	 * @see commons.gui.model.AttributeValueModel#onParentValueChange(ValueChangeEvent)
 	 */
 	@Override
@@ -34,6 +36,7 @@ class BeanAttributeValueModel extends AttributeValueModel {
 
 	/**
 	 * Redefinicion para tratamiento de nulos.
+	 * 
 	 * @see commons.gui.model.ValueModel#getValue()
 	 */
 	@Override

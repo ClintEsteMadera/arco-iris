@@ -22,7 +22,7 @@ import commons.utils.Clonator;
  * Composite que contiene una tabla y los controles para editarla.
  * 
  * 
- * @author ppastorino
+ * 
  * 
  */
 public class CrudTableComposite extends SimpleComposite {

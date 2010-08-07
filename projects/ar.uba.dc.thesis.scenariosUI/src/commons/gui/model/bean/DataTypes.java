@@ -30,8 +30,7 @@ class DataTypes {
 	static Hashtable<String, PrimitiveTypeInfo> s_table;
 	static {
 		s_table = new Hashtable<String, PrimitiveTypeInfo>();
-		s_table.put(Integer.TYPE.getName(),
-				new PrimitiveTypeInfo(Integer.class, Integer.valueOf(0)));
+		s_table.put(Integer.TYPE.getName(), new PrimitiveTypeInfo(Integer.class, Integer.valueOf(0)));
 		s_table.put(Boolean.TYPE.getName(), new PrimitiveTypeInfo(Boolean.class, Boolean.FALSE));
 		s_table.put(Character.TYPE.getName(), new PrimitiveTypeInfo(Character.class, Character.MIN_VALUE));
 		s_table.put(Byte.TYPE.getName(), new PrimitiveTypeInfo(Byte.class, Byte.valueOf((byte) 0)));

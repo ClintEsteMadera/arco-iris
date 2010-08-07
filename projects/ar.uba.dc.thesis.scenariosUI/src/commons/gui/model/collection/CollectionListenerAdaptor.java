@@ -23,7 +23,8 @@ class CollectionListenerAdaptor implements ListChangeListener {
 
 	@Override
 	public boolean equals(Object o) {
-		return o == this || o instanceof CollectionListenerAdaptor ? m_listener == ((CollectionListenerAdaptor) o).m_listener : false;
+		return o == this || o instanceof CollectionListenerAdaptor ? m_listener == ((CollectionListenerAdaptor) o).m_listener
+				: false;
 	}
 
 	private CollectionChangeListener m_listener;

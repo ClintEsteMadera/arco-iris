@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: PropertiesVerifier.java,v 1.8 2008/02/29 20:36:21 cvschioc Exp $
- */
-
 package commons.test;
 
 import java.util.Arrays;
@@ -27,17 +11,15 @@ import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 
-
 import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
 import commons.properties.CommonTooltips;
 
 /**
- * Verifica que los enumerados que representan properties keys, estén definidos en el archivo
- * <code>.properties</code> correspondiente.
- * @author Jonathan Chiocchio
- * @version $Revision: 1.8 $ $Date: 2008/02/29 20:36:21 $
+ * Verifica que los enumerados que representan properties keys, estén definidos en el archivo <code>.properties</code>
+ * correspondiente.
+ * 
  */
 
 public abstract class PropertiesVerifier {
@@ -48,8 +30,8 @@ public abstract class PropertiesVerifier {
 				try {
 					enumerado.toString();
 				} catch (MissingResourceException e) {
-					System.err.println("El enum " + enumerado.getClass().getName() + "."
-							+ enumerado.name() + " no está definido en el archivo properties");
+					System.err.println("El enum " + enumerado.getClass().getName() + "." + enumerado.name()
+							+ " no está definido en el archivo properties");
 					okStatus = false;
 				}
 			}
@@ -88,10 +70,10 @@ public abstract class PropertiesVerifier {
 		Class<? extends Enum>[] enumProperties = manualCast(array);
 		for (int i = 0; i < enumProperties.length; i++) {
 			Class<? extends Enum> enumProp1 = enumProperties[i];
-			if(!ArrayUtils.contains(clasesExcluidas, enumProp1)) {
+			if (!ArrayUtils.contains(clasesExcluidas, enumProp1)) {
 				for (int j = i + 1; j < enumProperties.length; j++) {
 					Class<? extends Enum> enumProp2 = enumProperties[j];
-					if(!ArrayUtils.contains(clasesExcluidas, enumProp2)) {
+					if (!ArrayUtils.contains(clasesExcluidas, enumProp2)) {
 						okStatus = isThereACollision(enumProp1, enumProp2) && okStatus;
 					}
 				}
@@ -101,8 +83,7 @@ public abstract class PropertiesVerifier {
 		return okStatus;
 	}
 
-	private static boolean isThereACollision(Class<? extends Enum> enumPropClass,
-			Class<? extends Enum> enumPropClass2) {
+	private static boolean isThereACollision(Class<? extends Enum> enumPropClass, Class<? extends Enum> enumPropClass2) {
 		boolean okStatus = true;
 		List<? extends Enum> enumConstants = Arrays.asList(enumPropClass.getEnumConstants());
 		List<? extends Enum> enumConstants2 = Arrays.asList(enumPropClass2.getEnumConstants());
@@ -123,6 +104,7 @@ public abstract class PropertiesVerifier {
 
 	/**
 	 * FIXME: Justo cuando creía saber de Java, llegaron las partes "sombrías" de generics...
+	 * 
 	 * @param objectArray
 	 *            el array de objetos a ser casteado.
 	 * @return un array de Clases que extienden de Enum.
@@ -135,7 +117,7 @@ public abstract class PropertiesVerifier {
 		}
 		return result;
 	}
-	
+
 	protected static Map<ResourceBundle, Class<? extends Enum>> bundleMap;
 
 	static {

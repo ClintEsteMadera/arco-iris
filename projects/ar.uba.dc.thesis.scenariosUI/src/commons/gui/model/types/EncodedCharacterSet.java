@@ -1,19 +1,3 @@
-/*
- * Licencia de Caja de Valores S.A., Versión 1.0
- *
- * Copyright (c) 2006 Caja de Valores S.A.
- * 25 de Mayo 362, Ciudad Autónoma de Buenos Aires, República Argentina
- * Todos los derechos reservados.
- *
- * Este software es información confidencial y propietaria de Caja de Valores S.A. ("Información
- * Confidencial"). Usted no divulgará tal Información Confidencial y la usará solamente de acuerdo a
- * los términos del acuerdo de licencia que posee con Caja de Valores S.A.
- */
-
-/*
- * $Id: EncodedCharacterSet.java,v 1.3 2008/05/14 17:35:37 cvspasto Exp $
- */
-
 package commons.gui.model.types;
 
 import java.nio.ByteBuffer;
@@ -25,11 +9,9 @@ import java.nio.charset.CodingErrorAction;
 
 import commons.validation.string.CharacterSet;
 
-
 /**
  * 
- * @author Pablo Pastorino
- * @version $Revision: 1.3 $ $Date: 2008/05/14 17:35:37 $
+ * 
  */
 
 class EncodedCharacterSet implements CharacterSet {
@@ -60,8 +42,8 @@ class EncodedCharacterSet implements CharacterSet {
 			throw new IllegalArgumentException("No se indicaron los posibles nombres del charset");
 		}
 
-		decoder = charset.newDecoder().onUnmappableCharacter(CodingErrorAction.REPORT)
-				.onMalformedInput(CodingErrorAction.REPORT);
+		decoder = charset.newDecoder().onUnmappableCharacter(CodingErrorAction.REPORT).onMalformedInput(
+				CodingErrorAction.REPORT);
 	}
 
 	public boolean isMember(char c) {
@@ -79,12 +61,11 @@ class EncodedCharacterSet implements CharacterSet {
 	public String getName() {
 		return this.name;
 	}
-	
 
 	public Character getReplaceForInvalidCharacter(char c) {
 		return null;
 	}
 
-	private String name="";
-	
+	private String name = "";
+
 }

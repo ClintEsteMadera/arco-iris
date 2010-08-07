@@ -12,7 +12,6 @@ import java.util.Date;
 import commons.datetime.Fecha;
 import commons.datetime.FechaHora;
 
-
 public abstract class DateUtils {
 
 	public static String formatCalendarAsDateTime(Calendar cal) {
@@ -96,8 +95,7 @@ public abstract class DateUtils {
 	}
 
 	/**
-	 * @return un Calendar con fecha del 1 de Enero de 1970 y hora 00:00:00.000 GMT (Calendario
-	 *         Gregoriano).
+	 * @return un Calendar con fecha del 1 de Enero de 1970 y hora 00:00:00.000 GMT (Calendario Gregoriano).
 	 */
 	public static Calendar getEpochTime() {
 		Calendar epoch = Calendar.getInstance();
@@ -114,13 +112,12 @@ public abstract class DateUtils {
 	 * Si el objeto es un Date, crea un Calendar y setea dicho Date.
 	 * <ul>
 	 * Si el objeto es un String, intenta parsearlo a Calendar utilizando los métodos
-	 * {@link #parseStringDateAsCalendar(String)} y {@link #parseDMY(String)} de esta clase, en ese
-	 * orden. </li>
+	 * {@link #parseStringDateAsCalendar(String)} y {@link #parseDMY(String)} de esta clase, en ese orden. </li>
 	 * 
 	 * @param object
 	 *            objeto a convertir en un Calendar
-	 * @return Calendar un Calendar creado a partir del parámetro NO NULO <code>object</code>, o
-	 *         <code>null</code> si dicho paramétro fuera nulo.
+	 * @return Calendar un Calendar creado a partir del parámetro NO NULO <code>object</code>, o <code>null</code>
+	 *         si dicho paramétro fuera nulo.
 	 */
 	public static Calendar try2GetObjectAsCalendar(Object object) {
 		Calendar calendar = null;
@@ -136,8 +133,8 @@ public abstract class DateUtils {
 				calendar = parseDMY((String) object);
 			}
 		} else if (object != null) {
-			throw new IllegalArgumentException("el objeto " + object + " de tipo "
-					+ object.getClass().getName() + " no es convertible a Calendar:");
+			throw new IllegalArgumentException("el objeto " + object + " de tipo " + object.getClass().getName()
+					+ " no es convertible a Calendar:");
 		}
 		return calendar;
 	}
@@ -173,30 +170,30 @@ public abstract class DateUtils {
 	}
 
 	/**
-	 * Compara el <i>orden</i> de dos objetos {@link Calendar}, utilizando sólo los campos que
-	 * representan la fecha: día, mes, y año.
+	 * Compara el <i>orden</i> de dos objetos {@link Calendar}, utilizando sólo los campos que representan la fecha:
+	 * día, mes, y año.
 	 * 
 	 * @param date1
 	 *            Primer objeto {@link Calendar}.
 	 * @param date2
 	 *            Segundo objeto {@link Calendar}.
-	 * @return Un número entero negativo, cero, o un número entero positivo de acuerdo a si el
-	 *         primer argumento es menor, igual, o mayor que el segundo.
+	 * @return Un número entero negativo, cero, o un número entero positivo de acuerdo a si el primer argumento es
+	 *         menor, igual, o mayor que el segundo.
 	 */
 	public static int compareDateOnly(Calendar date1, Calendar date2) {
 		return compare(date1, date2, DATE_FIELDS);
 	}
 
 	/**
-	 * Compara el <i>orden</i> de dos objetos {@link Calendar}, utilizando sólo los campos que
-	 * representan la hora: hora, minutos, segundos y milisegundos.
+	 * Compara el <i>orden</i> de dos objetos {@link Calendar}, utilizando sólo los campos que representan la hora:
+	 * hora, minutos, segundos y milisegundos.
 	 * 
 	 * @param time1
 	 *            Primer objeto {@link Calendar}.
 	 * @param time2
 	 *            Segundo objeto {@link Calendar}.
-	 * @return Un número entero negativo, cero, o un número entero positivo de acuerdo a si el
-	 *         primer argumento es menor, igual, o mayor que el segundo.
+	 * @return Un número entero negativo, cero, o un número entero positivo de acuerdo a si el primer argumento es
+	 *         menor, igual, o mayor que el segundo.
 	 */
 	public static int compareTimeOnly(Calendar time1, Calendar time2) {
 		return compare(time1, time2, TIME_FIELDS);
@@ -280,8 +277,7 @@ public abstract class DateUtils {
 
 	public static boolean isSameDay(Calendar c1, Calendar c2) {
 		return c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)
-				&& c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
-				&& c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR);
+				&& c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH) && c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR);
 	}
 
 	// TODO Hacer configurables el formato de la fecha usando un preferences
@@ -295,10 +291,9 @@ public abstract class DateUtils {
 
 	private static DateFormat fechaDateFormat = new SimpleDateFormat("yyyyMMdd");
 
-	private static final int[] DATE_FIELDS = { Calendar.YEAR, Calendar.MONTH,
-			Calendar.DAY_OF_MONTH, };
+	private static final int[] DATE_FIELDS = { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, };
 
-	private static final int[] TIME_FIELDS = { Calendar.HOUR_OF_DAY, Calendar.MINUTE,
-			Calendar.SECOND, Calendar.MILLISECOND, };
+	private static final int[] TIME_FIELDS = { Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND,
+			Calendar.MILLISECOND, };
 
 }

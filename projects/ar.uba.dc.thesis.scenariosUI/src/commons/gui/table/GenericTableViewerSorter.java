@@ -28,8 +28,8 @@ class GenericTableViewerSorter extends ViewerSorter {
 	}
 
 	/**
-	 * Compara dos objetos, bajo ciertas circunstancias, delega la comparación de String en
-	 * RuleBasedCollator.
+	 * Compara dos objetos, bajo ciertas circunstancias, delega la comparación de String en RuleBasedCollator.
+	 * 
 	 * @see RuleBasedCollator
 	 */
 	@Override
@@ -66,8 +66,7 @@ class GenericTableViewerSorter extends ViewerSorter {
 				result = ((Comparable) value1).compareTo(value2);
 			}
 		} catch (Exception e) {
-			log.fatal("Error al comparar 2 campos para ordenar: " + row.getColumnKey(columnIndex),
-					e);
+			log.fatal("Error al comparar 2 campos para ordenar: " + row.getColumnKey(columnIndex), e);
 		}
 
 		// If descending order, flip the direction
@@ -79,7 +78,7 @@ class GenericTableViewerSorter extends ViewerSorter {
 	}
 
 	private TableRowAdapter row;
-	
+
 	private Integer columnIndex;
 
 	private int direction;

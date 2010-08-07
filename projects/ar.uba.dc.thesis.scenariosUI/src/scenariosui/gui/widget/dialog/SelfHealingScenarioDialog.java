@@ -36,8 +36,7 @@ public class SelfHealingScenarioDialog extends BaseScenariosUIMultiPurposeDialog
 
 	@Override
 	public void removeModelFromCurrentSHConfiguration() {
-		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeScenario(
-				this.getModel());
+		ScenariosUIManager.getInstance().getCurrentSelfHealingConfiguration().removeScenario(this.getModel());
 	}
 
 	@Override

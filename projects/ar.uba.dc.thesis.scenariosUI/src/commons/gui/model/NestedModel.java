@@ -4,10 +4,10 @@ import commons.gui.model.types.EditType;
 
 /**
  * Modelo anidado.
- * @author ppastorino
+ * 
  */
 public class NestedModel<T> implements CompositeModel<T> {
-	
+
 	public NestedModel(CompositeModel parent, String nestedProperty) {
 		this.parentModel = parent;
 		this.propertyName = new PropertyName(nestedProperty);
@@ -70,38 +70,36 @@ public class NestedModel<T> implements CompositeModel<T> {
 		this.propertyChange.removeListener(listener);
 	}
 
-	public void setValue(Object key, Object value) throws IllegalStateException,
-			IllegalArgumentException {
+	public void setValue(Object key, Object value) throws IllegalStateException, IllegalArgumentException {
 		this.parentModel.setValue(getParentProperty(key), value);
 	}
 
-	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key,
-			Class<NESTED_TYPE> clazz) {
-		return new NestedModel<NESTED_TYPE>(this,key);
+	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key, Class<NESTED_TYPE> clazz) {
+		return new NestedModel<NESTED_TYPE>(this, key);
 	}
 
-	public String getRootProperty(){
+	public String getRootProperty() {
 		return this.propertyName.getPropertyName().toString();
 	}
-	
+
 	private void onParentChange(ComplexValueChangeEvent ev) {
-		
+
 		final String child = propertyName.convertToChildProperty(ev.getKey());
 
-		if(child == null)
-		{
+		if (child == null) {
 			return;
 		}
-		
+
 		if (child.length() == 0) {
 			this.valueChange.fireValueChange();
 		} else {
-			this.propertyChange.fireChange(child, ev.getOldValue(), ev.getNewValue(),ev.isCanceling());
+			this.propertyChange.fireChange(child, ev.getOldValue(), ev.getNewValue(), ev.isCanceling());
 		}
 	}
 
 	/**
 	 * Mapea una propiedad "anidada" a una propiedad del padre
+	 * 
 	 * @param key
 	 * @return
 	 */

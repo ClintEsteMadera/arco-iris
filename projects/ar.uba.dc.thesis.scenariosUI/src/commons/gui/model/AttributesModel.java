@@ -6,8 +6,9 @@ import commons.gui.model.types.EditType;
 /**
  * Modelo complejo basado en atributos. <br>
  * <br>
- * Este modelo contiene un valor "raíz" y valores "hijos" correspondientes a los atributos o
- * propiedades del elemento "raíz".
+ * Este modelo contiene un valor "raíz" y valores "hijos" correspondientes a los atributos o propiedades del elemento
+ * "raíz".
+ * 
  * @author P.Pastorino
  */
 @SuppressWarnings("unchecked")
@@ -15,6 +16,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Construye el modelo
+	 * 
 	 * @param valueClass
 	 *            Clase del valor "raíz"
 	 * @param attributes
@@ -26,6 +28,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Construye el modelo
+	 * 
 	 * @param editType
 	 *            Tipo del valor "raíz"
 	 * @param attributes
@@ -38,6 +41,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Agrega un atributo Permite extender el modelo agregando nuevos atributos.
+	 * 
 	 * @param id
 	 *            Identificador del atributo
 	 * @param attribute
@@ -49,6 +53,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Agrega un valor. Permite extender el modelo por composición agregando un nuevo valor.
+	 * 
 	 * @param id
 	 * @param valueModel
 	 */
@@ -75,7 +80,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 	 * @see commons.gui.model.ComplexModel#getValueModel(Object)
 	 */
 	public ValueModel getValueModel(Object key) {
-		if(key == null || key.equals("")){
+		if (key == null || key.equals("")) {
 			return this;
 		}
 		final ValueModel model = m_valueModels.get(key);
@@ -106,6 +111,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Configura el tipo de dato de un atributo.
+	 * 
 	 * @param id
 	 *            Identificador del atributo
 	 * @param cfg
@@ -133,23 +139,23 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 	}
 
 	/**
-	 * Retorna un modelo "anidado" asociado a este modelo.
-	 * Se puede utilizar cuando se desea extraer el modelo asociado a un
-	 * objeto complejo incluido en este modelo (por ejemplo: el modelo asociado
-	 * al 'Domicilio' contenido en el objeto 'Persona')
+	 * Retorna un modelo "anidado" asociado a este modelo. Se puede utilizar cuando se desea extraer el modelo asociado
+	 * a un objeto complejo incluido en este modelo (por ejemplo: el modelo asociado al 'Domicilio' contenido en el
+	 * objeto 'Persona')
 	 * 
-	 * @param key Clave que identifica la propiedad del modelo.
+	 * @param key
+	 *            Clave que identifica la propiedad del modelo.
 	 * @return
 	 */
-	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key,
-			Class<NESTED_TYPE> clazz) {
+	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key, Class<NESTED_TYPE> clazz) {
 		// TODO: Otra posibilidad sería inferir este tipo por reflection para no obligar a pasarlo
 		// desde afuera programáticamente...
 		return new NestedModel<NESTED_TYPE>(this, key);
 	}
-	
+
 	/**
 	 * Copia los valores de un objeto.
+	 * 
 	 * @param source
 	 *            Objeto del cual se toman los atributos.
 	 * @param attributes
@@ -162,9 +168,8 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 	}
 
 	/**
-	 * Crea el {@link commons.gui.model.ValueModel} asociado al atributo. Este factory method se
-	 * encarga de crear los modelos "hijos" retornando
-	 * <code>new AttributeValueModel(getAttribute(id), this, id);</new>.
+	 * Crea el {@link commons.gui.model.ValueModel} asociado al atributo. Este factory method se encarga de crear los
+	 * modelos "hijos" retornando <code>new AttributeValueModel(getAttribute(id), this, id);</new>.
 	 * <br>
 	 * Puede ser redefinido por una subclase.
 	 * 	
@@ -181,6 +186,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Chequea que el modelo tenga un valor <code>!= null</code>
+	 * 
 	 * @throws IllegalStateException
 	 */
 	protected void checkValid() throws IllegalStateException {
@@ -191,6 +197,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Informa si el modelo tiene un valor <code>!= null</code>
+	 * 
 	 * @return
 	 */
 	protected boolean isValid() {
@@ -199,6 +206,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 
 	/**
 	 * Notifica un cambio en el modelo.
+	 * 
 	 * @param key
 	 *            Identificador del atributo
 	 * @param prevValue
@@ -207,7 +215,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 	 *            Nuevo valor
 	 */
 	protected boolean firePropertyChange(Object key, Object prevValue, Object newValue, boolean canceling) {
-		return m_propertyChange.fireChange(key, prevValue, newValue,canceling);
+		return m_propertyChange.fireChange(key, prevValue, newValue, canceling);
 	}
 
 	protected void firePropertyChange(Object key) {
