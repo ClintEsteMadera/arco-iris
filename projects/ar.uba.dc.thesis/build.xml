@@ -1,0 +1,62 @@
+<project name="ar.uba.dc.thesis" default="dist-api" basedir=".">
+	<description>Ant build.xml file to build the self healing extension for Rainbow.</description>
+
+	<property name="src.dir" location="src/main/java" />
+	<property name="resources.dir" location="src/main/resources" />
+	<property name="build.dir" location="target" />
+	<property name="dist.dir" location="dist" />
+	<property name="lib.dir" location="lib" />
+
+	<target name="clean" description="Cleaning up of some directories used during the build">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="init" description="Initializes some directories to be used during the build" >
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile-api" depends="init" description="compiles only the necessary files to be used by external clients">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6" includes="ar/uba/dc/thesis/model/**" >
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist-api" depends="compile-api" description="generates the JAR file to distribute the API">
+		<mkdir dir="${dist.dir}" />
+
+		<jar jarfile="${dist.dir}/ar.uba.dc.thesis-api.jar" basedir="${build.dir}">
+			<fileset dir="${src.dir}" />
+		</jar>
+
+		<ant target="clean"/>
+	</target>
+
+	<target name="compile" depends="init" description="compiles the source files">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="generates the JAR file to distribute the application">
+		<mkdir dir="${dist.dir}" />
+
+		<jar jarfile="${dist.dir}/ar.uba.dc.thesis.jar" basedir="${build.dir}">
+			<fileset dir="${src.dir}" />
+			<fileset dir="${resources.dir}" excludes="log4j.xml" />
+
+			<manifest>
+		        <attribute name="Main-Class" value="org.sa.rainbow.core.Oracle"/>
+    		</manifest>
+		</jar>
+
+		<ant target="clean"/>
+	</target>
+</project>
