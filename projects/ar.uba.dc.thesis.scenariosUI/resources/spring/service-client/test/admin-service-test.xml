@@ -1,7 +1,0 @@
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
-	<bean id="emesAdminService"
-		class="sba.cajval.emes.admin.service.EmesAdminServiceImpl">
-		<constructor-arg ref="emesAdminManager" />
-	</bean>
-</beans>
