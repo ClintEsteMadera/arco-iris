@@ -70,7 +70,9 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 
 	\subsection{Escenarios de Atributos de Calidad y QAW}
 	
-	Los escenarios nos permiten describir atributos de calidad del sistema. Los escenarios están compuestos por:
+	Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable''). 
+
+	Los atributos de calidad pueden ser representados mediante escenarios. Los escenarios están compuestos por:
 	
 \begin{itemize}
 \item \textbf{Fuente del estímulo}: Interna o externa
@@ -83,10 +85,10 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 
 	\todo{agregar imagen /images/scenario.jpg}
 
-	Los eScenarios son pequeñas historias que describen una interacción con el sistema, que impacta sobre un atributo de calidad en particular. Por ejemplo, un escenario sobre disponibilidad podría ser:
+	Los escenarios son pequeñas historias que describen una interacción con el sistema, que impacta sobre un atributo de calidad en particular. Por ejemplo, un escenario sobre disponibilidad podría ser:
 
 \begin{quote}
-''Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El proceso informa al operador y continúa su operación sin caídas.´´
+``Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El proceso informa al operador y continúa su operación sin caídas.''
 \end{quote}
 
 Este escenario se descompone de la siguiente manera:
@@ -99,14 +101,30 @@ Este escenario se descompone de la siguiente manera:
 \item \textbf{Medición de la respuesta}: sin caídas (downtime)
 \end{itemize}
 
-
-\todo{lo que sigue pertenece a QAW mas que a escenarios}
 	Los escenarios permiten obtener el punto de vista de un grupo diverso de stakeholders (arquitectos, desarrolladores, usuarios, sponsors, etc). Estos escenarios pueden luego ser utilizados para analizar la arquitectura del sistema e identificar concerns y posibles estrategias para atacar problemas.
+
+\todo{fuente de lo que sigue: http://www.sei.cmu.edu/architecture/tools/qaw/index.cfm}
+
+	Existe una metodología definida por el Software Engineering Institute (SEI) conocida como Quality Attribute Workshop (QAW), cuya principal herramienta son los escenarios. Esta metodología provee un método para identificar los atributos de calidad críticos de la arquitectura de un sistema, tales como disponibilidad, performance, seguridad, etc, que son derivados de objetivos del negocio del sistema. QAW no asume la existencia de una arquitectura del software, sino que fue desarrollado en base a reclamos de los clientes que necesitaban un método para identifar los atributos de calidad importantes, y aclarar requerimientos del sistema antes de que exista la arquitectura del mismo.
+	
+	En los QAW se organizan reuniones con todos los stakeholders del sistema, en las que se definen los escenarios que en definitiva representarán los requerimientos de atributos de calidad que el sistema idealmente deberá satisfacer. Un vez definidos todos los escenarios, el siguiente paso del QAW consiste en priorizar y refinar los 
+escenarios, por ejemplo agregando detalles adicionales tales como los participantes involucrados, la secuencia de actividades, y preguntas sobre el requerimiento que representa cada escenario. El proceso de refinar los escenarios permite a los stakeholders comunicarse entre ellos, exponiendo supuestos que pueden no ser tan claros para el resto del grupo. Dicho refinamiento también proporciona una visión de cómo interactúan los atributos de calidad entre sí, sirviendo de base para definir tradeoffs entre estos atributos.
+
+	El proceso QAW termina con la lista de escenarios refinados y priorizados. Los mismos pueden servir para definir casos de pruebas, o como semillas para el proceso ATAM.
+	
 
 
 	\subsection{ATAM}
 	
-		
+	\todo{fuente: svn/doc/atam/ATAM Method for Architecture Evaluation.pdf}
+	
+	ATAM (Architecture Tradeoff Analysis Method) es una técnica que permite analizar arquitecturas de software. Las arquitecturas son complejas, e involucran muchos tradeoffs de diseño. Sin un proceso de análisis formal, no se puede estar seguro que las decisiones de arquitectura tomadas - en particular aquellas que afectan el cumplimiento de requerimientos de calidad como performance, disponibilidad, seguridad y modificabilidad - son adecuadas para mitigar los riesgos.
+
+
+\todo{los QAW nacieron como complemento de ATAM!}	
+
+		The QAW does not assume the existence of a software architecture. It was developed to complement the SEI Architecture Tradeoff Analysis Method (ATAM) in response to customer requests for a method to identify important quality attributes and clarify system requirements before there is a software architecture to which the ATAM could be applied.
+	
 	
 	
 	
