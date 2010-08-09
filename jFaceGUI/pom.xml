@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jFaceGUI</groupId>
+	<artifactId>jFaceGUI</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>JFace GUI</name>
+	<description>Base Library for building GUI applications based on JFace SWT with many components already done.
+	</description>
+
+	<dependencies>
+		<!-- BEGIN manually added dependencies -->
+
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>swt</artifactId>
+			<version>6.6.6</version>
+			<!--version>3.3.0-v3346</version-->
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>jface</artifactId>
+			<version>6.6.6</version>
+			<!--version>3.2.1-M20060908-1000</version-->
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>core_commands</artifactId>
+			<version>6.6.6</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>equinox_common</artifactId>
+			<version>6.6.6</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.swt.win32.win32</groupId>
+			<artifactId>x86</artifactId>
+			<!--version>3.2.1-v3235</version-->
+			<version>6.6.6</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
+			<version>6.6.6</version>
+			<!--version>3.2.1-R32x_v20060919</version-->
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>forms</artifactId>
+			<version>3.2.0.v20060602</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>sba.cajval</groupId>
+			<artifactId>framework_app</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>sba.cajval</groupId>
+			<artifactId>sba-security</artifactId>
+			<version>0.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>sba.cajval</groupId>
+			<artifactId>sba-session</artifactId>
+			<version>1.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vafada</groupId>
+			<artifactId>swtcalendar</artifactId>
+			<version>0.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>sba.cajval</groupId>
+			<artifactId>usuarios-stubs</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- END manually added dependencies -->
+
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+			<version>1.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security-tiger</artifactId>
+			<version>1.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>1.2.7</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+			<version>1.1.4c</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
