@@ -1,40 +1,55 @@
-<project name="Gui_SWT" default="generar-jar" basedir=".">
-	<description>
-			Build file para generar el jar de la librería "Gui_SWT".
-	    </description>
+<project name="scenariosUI" default="dist" basedir=".">
+	<description>Ant build.xml file to build "Scenarios UI" application.</description>
 
-	<property name="src" location="src" />
-	<property name="resources" location="resources" />
-	<property name="build" location="build" />
-	<property name="dist" location="dist" />
-	<property name="lib" location="lib" />
+	<property name="src.dir" location="src/main/java" />
+	<property name="resources.dir" location="src/main/resources" />
+	<property name="build.dir" location="target" />
+	<property name="dist.dir" location="dist" />
+	<property name="lib.dir" location="lib" />
+	<property name="jar.file" value="scenariosUI.jar" />
 
-	<target name="init">
-		<mkdir dir="${build}" />
+	<path id="build.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean" description="Cleaning up of some directories used during the build">
+		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="compile" depends="init" description="compila los fuentes">
-		<javac srcdir="${src}" destdir="${build}" target="1.5">
+	<target name="init" description="Initializes some directories to be used during the build">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="init" description="compiles the source files">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6">
 			<classpath>
-				<fileset dir="${lib}">
+				<fileset dir="${lib.dir}">
 					<include name="**/*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
 	</target>
 
-	<target name="dist" depends="compile" description="genera la distribución">
-		<mkdir dir="${dist}" />
+	<target name="dist" depends="compile" description="generates the JAR file to distribute the application">
+		<mkdir dir="${dist.dir}" />
 
-		<jar jarfile="${dist}/Gui_SWT.jar" basedir="${build}">
-			<fileset dir="${src}" excludes="**/*.java" />
-			<fileset dir="${resources}" excludes="log4j.xml" />
+		<manifestclasspath property="lib.list" jarfile="${dist.dir}/${jar.file}">
+			<classpath refid="build.classpath" />
+		</manifestclasspath>
+
+		<jar jarfile="${dist.dir}/${jar.file}" basedir="${build.dir}">
+			<fileset dir="${src.dir}" />
+			<fileset dir="${resources.dir}" excludes="log4j.xml" />
+			<fileset dir="${lib.dir}" />
+
+			<manifest>
+				<attribute name="Main-Class" value="scenariosui.gui.widget.ScenariosUIWindow" />
+				<attribute name="Class-Path" value=". ${lib.list}" />
+			</manifest>
 		</jar>
-	</target>
 
-	<target name="clean" description="Limpia el directorio de build">
-		<delete dir="${build}" />
+		<ant target="clean" />
 	</target>
-
-	<target name="generar-jar" depends="dist,clean" description="Genera el jar de Gui_SWT" />
 </project>
