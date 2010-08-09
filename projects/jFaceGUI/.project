@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>jFaceGUI</name>
+  <comment>Base Library for building GUI applications based on JFace SWT with many components already done.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

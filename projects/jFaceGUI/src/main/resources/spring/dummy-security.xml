@@ -1,0 +1,29 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="authorizationHelper"
+		class="commons.auth.RoleBasedAuthorizationHelper" singleton="true" />
+
+	<bean id="authenticationHelper"
+		class="commons.auth.UsuariosServiceHelper" singleton="true">
+		<constructor-arg ref="usuariosServiceJndiTemplate" />
+	</bean>
+
+	<bean id="usuariosServiceJndiTemplate"
+		class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">
+					oracle.j2ee.rmi.RMIInitialContextFactory
+				</prop>
+				<prop key="java.naming.provider.url">
+					${service.usuarios.url}
+				</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="authenticationSimpleHttpInvokerRequestExecutor"
+		class="org.acegisecurity.context.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor">
+	</bean>
+
+</beans>
