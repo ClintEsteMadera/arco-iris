@@ -1,0 +1,38 @@
+<project name="jFaceGUI" default="dist" basedir=".">
+	<description>Ant build.xml file to build library.</description>
+
+	<property name="src.dir" location="src/main/java" />
+	<property name="resources.dir" location="src/main/resources" />
+	<property name="build.dir" location="target" />
+	<property name="dist.dir" location="dist" />
+	<property name="lib.dir" location="lib" />
+
+	<target name="clean" description="Cleaning up of some directories used during the build">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="init" description="Initializes some directories to be used during the build" >
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="init" description="compiles the source files">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="generates the JAR file to distribute this library">
+		<mkdir dir="${dist.dir}" />
+
+		<jar jarfile="${dist.dir}/jFaceGUI.jar" basedir="${build.dir}">
+			<fileset dir="${src.dir}" />
+			<fileset dir="${resources.dir}" excludes="log4j.xml" />
+		</jar>
+
+		<ant target="clean"/>
+	</target>
+</project>
