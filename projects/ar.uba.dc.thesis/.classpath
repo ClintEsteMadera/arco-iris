@@ -8,7 +8,6 @@
 	<classpathentry kind="src" path="configs/znewsWithScenarios2"/>
 	<classpathentry kind="src" path="configs/znewsWithScenarios3"/>
 	<classpathentry kind="src" path="configs/znewsWithScenarios4"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar" sourcepath="lib/commons-lang-2.4-sources.jar"/>
@@ -19,5 +18,9 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar" sourcepath="lib/commons-logging-1.1.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar" sourcepath="lib/log4j-src.zip"/>
 	<classpathentry kind="lib" path="lib/velocity-1.6.4-dep.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.deploy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.lang"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
