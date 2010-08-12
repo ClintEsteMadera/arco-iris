@@ -9,7 +9,7 @@ import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
-import commons.auth.AuthorizationHelper;
+import commons.auth.AuthorizationManager;
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.purpose.BasePurpose;
 import commons.gui.util.purpose.Purpose;
@@ -90,7 +90,7 @@ public final class ScenariosUIActions {
 	 * @param authHelper
 	 *            the authorization helper to use
 	 */
-	public static void initialize(AuthorizationHelper authHelper) {
+	public static void initialize(AuthorizationManager authHelper) {
 		authHelper.addGrantedPermissions(NEW_SELF_HEALING_CONFIG.getUniqueId(), "EVERYONE");
 		authHelper.addGrantedPermissions(OPEN_SELF_HEALING_CONFIG.getUniqueId(), "EVERYONE");
 		authHelper.addGrantedPermissions(CLOSE_SELF_HEALING_CONFIG.getUniqueId(), "EVERYONE");

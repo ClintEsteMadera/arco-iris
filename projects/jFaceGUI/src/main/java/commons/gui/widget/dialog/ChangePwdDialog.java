@@ -21,7 +21,7 @@ import org.springframework.util.Assert;
 
 import sba.common.session.SessionHelper;
 
-import commons.auth.AuthenticationHelper;
+import commons.auth.AuthenticationManager;
 import commons.exception.ValidationException;
 import commons.gui.GuiStyle;
 import commons.gui.widget.factory.LabelFactory;
@@ -32,18 +32,36 @@ import commons.validation.ValidationError;
 
 public class ChangePwdDialog extends Dialog {
 
-	public ChangePwdDialog(Shell parentShell, String username, boolean forceChange, AuthenticationHelper authHelper) {
+	private String username;
+
+	private Button okButton;
+
+	private Text oldPwdText;
+
+	private Text newPwdText;
+
+	private Text newPwdConfirmText;
+
+	private Label errorMessageLabel;
+
+	private boolean changeForced;
+
+	private AuthenticationManager authManager;
+
+	private static final Log log = LogFactory.getLog(ChangePwdDialog.class);
+	
+	public ChangePwdDialog(Shell parentShell, String username, boolean forceChange, AuthenticationManager authManager) {
 		super(parentShell);
 		super.setShellStyle(SWT.TITLE);
 		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 		this.username = username;
 		this.changeForced = forceChange;
-		this.authHelper = authHelper;
+		this.authManager = authManager;
 	}
 
-	public static void openWithUserLoggedIn(Shell parentShell, boolean forceChange, AuthenticationHelper authHelper) {
+	public static void openWithUserLoggedIn(Shell parentShell, boolean forceChange, AuthenticationManager authManager) {
 		String usrName = SessionHelper.nombreDeUsuarioConectado();
-		new ChangePwdDialog(parentShell, usrName, forceChange, authHelper).open();
+		new ChangePwdDialog(parentShell, usrName, forceChange, authManager).open();
 	}
 
 	@Override
@@ -132,7 +150,7 @@ public class ChangePwdDialog extends Dialog {
 		boolean operationSuccessful = false;
 		try {
 			validateInput();
-			authHelper.cambiarPassword(this.oldPwdText.getText(), this.newPwdText.getText());
+			authManager.changePassword(this.oldPwdText.getText(), this.newPwdText.getText());
 			operationSuccessful = true;
 			MessageDialog.openInformation(super.getShell(), "Cambio de contraseña",
 					"Se ha cambiado la contraseña exitosamente.");
@@ -145,22 +163,4 @@ public class ChangePwdDialog extends Dialog {
 		}
 		return operationSuccessful;
 	}
-
-	private String username;
-
-	private Button okButton;
-
-	private Text oldPwdText;
-
-	private Text newPwdText;
-
-	private Text newPwdConfirmText;
-
-	private Label errorMessageLabel;
-
-	private boolean changeForced;
-
-	private AuthenticationHelper authHelper;
-
-	private static final Log log = LogFactory.getLog(ChangePwdDialog.class);
 }

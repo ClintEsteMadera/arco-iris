@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
-import commons.auth.AuthorizationHelper;
+import commons.auth.AuthorizationManager;
 import commons.gui.GuiStyle;
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.model.ValueHolder;
@@ -93,7 +93,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private ValueModel<String> informationText;
 
-	private static AuthorizationHelper authHelper = PageHelper.getMainWindow().getAuthorizationHelper();
+	private static AuthorizationManager authHelper = PageHelper.getMainWindow().getAuthorizationManager();
 
 	private static final Log log = LogFactory.getLog(QueryComposite.class);
 
@@ -160,9 +160,9 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Método de conveniencia. Provee acceso a la única instancia de AuthorizationHelper.
+	 * Método de conveniencia. Provee acceso a la única instancia de AuthorizationManager.
 	 */
-	protected AuthorizationHelper getAuthorizationHelper() {
+	protected AuthorizationManager getAuthorizationHelper() {
 		return authHelper;
 	}
 

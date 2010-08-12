@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import commons.auth.AuthenticationHelper;
+import commons.auth.AuthenticationManager;
 import commons.exception.ValidationException;
 import commons.gui.GuiStyle;
 import commons.gui.widget.factory.LabelFactory;
@@ -25,10 +25,10 @@ import commons.validation.ValidationError;
 
 public class LoginDialog extends Dialog {
 
-	public LoginDialog(Shell parentShell, AuthenticationHelper authHelper) {
+	public LoginDialog(Shell parentShell, AuthenticationManager authManager) {
 		super(parentShell);
 		super.setShellStyle(SWT.TITLE);
-		this.authHelper = authHelper;
+		this.authManager = authManager;
 		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
@@ -117,7 +117,7 @@ public class LoginDialog extends Dialog {
 	}
 
 	private boolean authenticate() {
-		return authHelper.authenticate(this.usernameText.getText(), this.passwordText.getText());
+		return authManager.authenticate(this.usernameText.getText(), this.passwordText.getText());
 	}
 
 	private Button okButton;
@@ -128,5 +128,5 @@ public class LoginDialog extends Dialog {
 
 	private boolean userAuthenticated;
 
-	private AuthenticationHelper authHelper;
+	private AuthenticationManager authManager;
 }

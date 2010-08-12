@@ -26,7 +26,7 @@ public class ExitAction extends Action {
 
 	public static boolean confirmExit() {
 		boolean confirm = true;
-		if (!PageHelper.getMainWindow().getSystemConfiguration().ambienteDesarrollo()) {
+		if (!PageHelper.getMainWindow().getSystemConfiguration().developmentEnvironment()) {
 			Shell shell = PageHelper.getMainShell();
 			confirm = MessageDialog.openConfirm(shell, CommonLabels.EXIT_DIALOG_TITLE.toString(),
 					CommonMessages.EXIT_DIALOG_MESSAGE.toString(CommonConstants.APP_NAME));

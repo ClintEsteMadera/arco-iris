@@ -26,7 +26,7 @@ public abstract class MenuCreator {
 
 	@SuppressWarnings("unchecked")
 	protected void addMenuItem(MenuManager menu, Object menutext, GuiAction guiAction, boolean enabled) {
-		if (PageHelper.getMainWindow().getAuthorizationHelper().isUserAuthorized(guiAction)) {
+		if (PageHelper.getMainWindow().getAuthorizationManager().isUserAuthorized(guiAction)) {
 			Action action = guiAction.getActionFor(null); // no se dispone del modelo todavía
 			action.setEnabled(enabled);
 			action.setText(menutext.toString() + "@" + guiAction.getShortcut());
