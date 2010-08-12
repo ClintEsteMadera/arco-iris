@@ -11,7 +11,7 @@ import scenariosui.gui.menu.SelfHealingConfigurationMenuCreator;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
 
-import commons.auth.AuthorizationHelper;
+import commons.auth.AuthorizationManager;
 import commons.context.BaseApplicationContext;
 import commons.gui.widget.MainWindow;
 import commons.gui.widget.composite.QueryComposite;
@@ -63,7 +63,7 @@ public class ScenariosUIWindow extends MainWindow {
 	}
 
 	private void registerScenariosUIGuiActions() {
-		final AuthorizationHelper authHelper = this.getAuthorizationHelper();
+		final AuthorizationManager authHelper = this.getAuthorizationManager();
 
 		ScenariosUIActions.initialize(authHelper);
 	}

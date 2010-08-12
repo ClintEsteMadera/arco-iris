@@ -63,7 +63,7 @@ public class GUIUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
 				Runnable runnable = new Runnable() {
 					public void run() {
-						if (PageHelper.getMainWindow().getSystemConfiguration().stackTraceEnErrores()) {
+						if (PageHelper.getMainWindow().getSystemConfiguration().showStackTraceForErrors()) {
 							InternalErrorDialog.openError(null, "Error", localizedMessage, dialogException);
 						} else {
 							MessageDialog.openError(null, "Error", localizedMessage);

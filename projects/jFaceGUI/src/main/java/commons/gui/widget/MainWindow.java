@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Shell;
 
 import sba.common.session.SessionHelper;
 
-import commons.auth.AuthenticationHelper;
-import commons.auth.AuthorizationHelper;
-import commons.auth.DummyAuthenticationHelper;
-import commons.auth.DummyAuthorizationHelper;
+import commons.auth.AuthenticationManager;
+import commons.auth.AuthorizationManager;
+import commons.auth.DummyAuthenticationManager;
+import commons.auth.DummyAuthorizationManager;
 import commons.context.BaseApplicationContext;
 import commons.core.BaseSystemConfiguration;
 import commons.gui.action.AboutAction;
@@ -83,7 +83,7 @@ public abstract class MainWindow extends ApplicationWindow {
 		MenuManager fileMenu = new MenuManager(menuId, menuId);
 		menuManager.add(fileMenu);
 		addSpecificItemsToFileMenu(fileMenu);
-		fileMenu.add(new ChangePwdAction(getAuthenticationHelper()));
+		fileMenu.add(new ChangePwdAction(getAuthenticationManager()));
 		fileMenu.add(new ExitAction());
 	}
 
@@ -175,11 +175,11 @@ public abstract class MainWindow extends ApplicationWindow {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setMaximized(true);
-		String usuarioConectado = SessionHelper.nombreDeUsuarioConectado();
-		if (usuarioConectado == null) {
-			usuarioConectado = "Unknown User";
+		String userLoggedIn = SessionHelper.nombreDeUsuarioConectado();
+		if (userLoggedIn == null) {
+			userLoggedIn = "Unknown User";
 		}
-		shell.setText(getDefaultStatusMessage() + " [" + usuarioConectado + "]");
+		shell.setText(getDefaultStatusMessage() + " [" + userLoggedIn + "]");
 		shell.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_GRAY));
 		PageHelper.setMainShell(shell);
 	}
@@ -237,12 +237,12 @@ public abstract class MainWindow extends ApplicationWindow {
 
 	private void doLogin() {
 		BaseSystemConfiguration config = this.getSystemConfiguration();
-		AuthenticationHelper authHelper = this.getAuthenticationHelper();
-		if (config.ambienteDesarrollo()) {
+		AuthenticationManager authManager = this.getAuthenticationManager();
+		if (config.developmentEnvironment()) {
 			SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-			authHelper.authenticate(config.usuarioDesarrollo(), config.passwordDesarrollo());
+			authManager.authenticate(config.developmentUser(), config.developmentPassword());
 		} else {
-			LoginDialog loginDialog = new LoginDialog(getShell(), authHelper);
+			LoginDialog loginDialog = new LoginDialog(getShell(), authManager);
 			if (loginDialog.open() == Window.CANCEL) {
 				System.exit(0);
 			}
@@ -255,11 +255,11 @@ public abstract class MainWindow extends ApplicationWindow {
 				ImageDescriptor.createFromFile(MainWindow.class, "/images/48x48.png").createImage() };
 	}
 
-	private AuthenticationHelper getAuthenticationHelper() {
-		return AUTHENTICATION_HELPER;
+	private AuthenticationManager getAuthenticationManager() {
+		return AUTHENTICATION_MANAGER;
 	}
 
-	public AuthorizationHelper getAuthorizationHelper() {
+	public AuthorizationManager getAuthorizationManager() {
 		return AUTHORIZATION_HELPER;
 	}
 
@@ -289,9 +289,9 @@ public abstract class MainWindow extends ApplicationWindow {
 
 	protected static final Separator SEPARATOR = new Separator();
 
-	private static final AuthenticationHelper AUTHENTICATION_HELPER = new DummyAuthenticationHelper();
+	private static final AuthenticationManager AUTHENTICATION_MANAGER = new DummyAuthenticationManager();
 
-	private static final AuthorizationHelper AUTHORIZATION_HELPER = new DummyAuthorizationHelper();
+	private static final AuthorizationManager AUTHORIZATION_HELPER = new DummyAuthorizationManager();
 
 	private static final Log log = LogFactory.getLog(MainWindow.class);
 }

@@ -26,9 +26,12 @@ import commons.gui.widget.dialog.InternalErrorDialog;
 /**
  * Helper que abstrae los accesos al sistema de Usuarios.
  */
+public class UsuariosServiceHelper implements AuthenticationManager {
 
-public class UsuariosServiceHelper implements AuthenticationHelper {
+	private SimpleRemoteStatelessSessionProxyFactoryBean factory;
 
+	private static final Log log = LogFactory.getLog(UsuariosServiceHelper.class);
+	
 	public UsuariosServiceHelper(JndiTemplate jndiTemplate) {
 		super();
 		this.factory = new SimpleRemoteStatelessSessionProxyFactoryBean();
@@ -45,7 +48,7 @@ public class UsuariosServiceHelper implements AuthenticationHelper {
 
 			log.info("Usuario " + username + " autenticado exitosamente. Consultando tiempo remanente...");
 
-			if (this.tiempoRemanenteExpirado()) {
+			if (this.remainingTimeExpired()) {
 				log.warn("El tiempo remanente del usuario " + username + " expiró. Debe cambiar su password.");
 				MessageDialog.openWarning(null, "Contraseña Expirada",
 						"Su contraseña ha expirado. Debe cambiar su contraseña ahora.");
@@ -68,7 +71,7 @@ public class UsuariosServiceHelper implements AuthenticationHelper {
 		return authenticated;
 	}
 
-	public boolean tiempoRemanenteExpirado() {
+	public boolean remainingTimeExpired() {
 		String usuario = SessionHelper.nombreDeUsuarioConectado();
 		try {
 			Long tiempoRemanente = (Long) getUsuariosService().tiempoRemanente();
@@ -83,7 +86,7 @@ public class UsuariosServiceHelper implements AuthenticationHelper {
 		}
 	}
 
-	public void cambiarPassword(String oldPassword, String newPassword) {
+	public void changePassword(String oldPassword, String newPassword) {
 		try {
 			getUsuariosService().cambiarPassword(oldPassword, newPassword);
 			this.setCredentials(SessionHelper.nombreDeUsuarioConectado(), newPassword, SessionHelper
@@ -125,8 +128,4 @@ public class UsuariosServiceHelper implements AuthenticationHelper {
 	public ServiciosUsuariosRemote getUsuariosService() {
 		return (ServiciosUsuariosRemote) factory.getObject();
 	}
-
-	private SimpleRemoteStatelessSessionProxyFactoryBean factory;
-
-	private static final Log log = LogFactory.getLog(UsuariosServiceHelper.class);
 }

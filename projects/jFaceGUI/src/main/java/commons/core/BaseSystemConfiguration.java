@@ -29,19 +29,19 @@ public abstract class BaseSystemConfiguration extends Properties {
 		}
 	}
 
-	public boolean ambienteDesarrollo() {
+	public boolean developmentEnvironment() {
 		return getBoolean(DEV_ENVIRONMENT);
 	}
 
-	public String usuarioDesarrollo() {
+	public String developmentUser() {
 		return getProperty(DEV_USER);
 	}
 
-	public String passwordDesarrollo() {
+	public String developmentPassword() {
 		return getProperty(DEV_PASSWORD);
 	}
 
-	public boolean stackTraceEnErrores() {
+	public boolean showStackTraceForErrors() {
 		return getBoolean(SHOW_STACK_TRACES_FOR_ERRORS);
 	}
 
