@@ -4,7 +4,13 @@
 	\subsection{Self Healing}
 
  \todo{Self Healing, incluyendo una descripción previa sobre la complejidad creciente de los sistemas y su necesidad de non-stop que justifica este enfoque. Reusar parte de la tesina de Casuscelli de la UCA que está bastante bien escrita (y no vale la pena gastar más tiempo en esto).}
- 
+
+	A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en cuanto a disponibilidad se trata. Hoy en día ya operan en ambientes muy dinámicos, con requerimientos que el usuario va cambiando rápidamente, y con la necesidad de seguir operando prácticamente sin interrupción, resultando esto en un mayor crecimiento en la administración operativa del software, lo cual representa un costo importante para que el sistema pueda funcionar. Para reducir este costo, se espera que los sistemas se adapten de manera dinámica para poder utilizar los recursos existentes, para poder atender los cambiantes requerimientos del usuario y los errores en el sistema. Esto es lo que se conoce como \textbf{self healing} (auto reparación).
+	
+	Si bien ya existen mecanismos para mitigar dichos problemas, los mismos son parte del lenguaje de programación utilizados, tales como tratamiento de excepciones, protocolos de tolerancia a fallos, etc. Pero estos mecanismos son comúnmente dependientes de cada aplicación y generalmente muy atados al código. Así, la adaptación del sistema hoy en día es costosa de construir, dificil de modificar, y generalmente solo provee soluciones a fallos de manera puntual.
+
+	Uno de los primeros investigadores en acuñar el término Self Healing fue el Dr. David Garlan, de la Carnegie Mellon University, quien formó un grupo de investigación que dedicó años a estudiar el tema dentro del marco del proyecto Able. El presente trabajo utilizará como base gran parte del trabajo generado por dicho proyecto, los cuales se describirán en detalle más adelante.
+	
 	\subsection{Descripción de Sistemas basados en Componentes}	
 		
 		Un problema fundamental de las arquitecturas de los sistemas basados en componentes ha sido encontrar la notación apropiada para definir dichos sistemas.\ 
@@ -15,6 +21,16 @@
 		
 		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de que ya permiten definir una base formal para la descripción y el análisis de los mismos.\
 					 
+	\subsection{Auto reparación de sistemas basándose en modelos de arquitectura}
+	
+	Este enfoque ha sido propuesto por el Dr. Garlan, el cual intenta basar la auto reparación en el modelo de la arquitectura del sistema, en lugar de los mecanismos tradicionales para detección y recuperación de errores que se implementan a nivel de código.
+	
+	La idea propuesta consiste básicamente consiste un \textit{closed-loop} (bucle cerrado), donde existe una capa que actúa como mecanismo de control y otra encargada de monitorear el sistema (ver figura), separada del sistema que está siendo ejecutado, lo cual provee una solución mas efectiva que cualquier mecanismo interno porque agrupan lo concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados, extendidos y reutilizados a través de distintos sistemas.
+
+		\todo{agregar /images/selfhealing-closed-loop.png}
+	
+	El proyecto Rainbow, también del proyecto Able, utiliza esta técnica de \textit{closed-loop} para monitorear y reparar sistemas, más adelante profundizaremos sobre Rainbow.
+		
 		
 	\subsection{Acme}
 	
@@ -53,6 +69,8 @@
 \end{itemize}
 
 Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente la necesidad de intervención humana en la adaptación de los sistemas ante cambios en el ambiente para alcanzar los objetivos de calidad requeridos, aumentando así la confianza en los cambios al proveer sistemas autoreparables.
+
+\todo{hablar sobre closed-loop: In contrast to these internal mechanisms, recent work uses external models and mechanisms in a closed-loop control fashion to achieve various goals by monitoring and adapting system behavior at runtime}
 
 	\subsubsection{Tácticas y Estrategias}
 	
