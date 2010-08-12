@@ -5,6 +5,7 @@ import scenariosui.properties.ScenariosUILabels;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
 import commons.gui.model.CompositeModel;
+import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.ControlMetainfo;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
@@ -25,9 +26,9 @@ public class ResponseMeasureGroup extends SimpleGroup {
 
 		this.constraintComposite = new ConstraintComposite(this.getSwtGroup(), compositeModel, ctrlMetainfo.readOnly);
 
-		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(this.constraintComposite, CommonLabels.DESCRIPTION,
-				new BindingInfo(ctrlMetainfo.binding.getCompositeModel(), "description"), ctrlMetainfo.readOnly);
-		textMetainfo.visibleSize = 35;
+		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(new SimpleComposite(this.constraintComposite,
+				super.readOnly, 2), CommonLabels.DESCRIPTION, new BindingInfo(ctrlMetainfo.binding.getCompositeModel(),
+				"description"), ctrlMetainfo.readOnly);
 		TextFactory.createText(textMetainfo);
 
 	}
