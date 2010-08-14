@@ -11,31 +11,31 @@
 
 	Uno de los primeros investigadores en acuñar el término Self Healing fue el Dr. David Garlan, de la Carnegie Mellon University, quien formó un grupo de investigación que dedicó años a estudiar el tema dentro del marco del proyecto Able. El presente trabajo utilizará como base gran parte del trabajo generado por dicho proyecto, los cuales se describirán en detalle más adelante.
 	
-	\subsection{Descripción de Sistemas basados en Componentes}	
+	\subsection{Descripción de Arquitecturas de Sistemas basadas en Componentes}	
 		
-		Un problema fundamental de las arquitecturas de los sistemas basados en componentes ha sido encontrar la notación apropiada para definir dichos sistemas.\ 
+		Un problema fundamental de las arquitecturas de los sistemas basados en componentes ha sido encontrar la notación apropiada para definir dichos sistemas.
 		
-		Un buen lenguaje para la descripción de arquitecturas permite generar una documentación clara sobre los componentes del sistema, que luego sirvirá como base a los desarrolladores, permitiendo a su vez razonar sobre las propiedades del sistema y automatizar su análisis y hasta puede llegar a utilizarse para la generación automática del sistema.\
+		Un buen lenguaje para la descripción de arquitecturas permite generar una documentación clara sobre los componentes del sistema, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las propiedades del sistema y automatizar su análisis y hasta puede llegar a utilizarse para la generación automática del sistema.
 		
-		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre propiedades críticas del sistema, como son la performance y confiabilidad. Ésta es la razón principal que ha motivado el avance de los ADLs (Architecture Description Language).\cite{GMW99}\
+		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre propiedades críticas del sistema, como son la performance y la confiabilidad. Ésta es la razón principal que ha motivado el avance de los ADLs (Architecture Description Language).\cite{GMW99}
 		
-		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de que ya permiten definir una base formal para la descripción y el análisis de los mismos.\
+		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de que ya permiten definir una base formal para la descripción y el análisis de los mismos.
 					 
 	\subsection{Auto reparación de sistemas basándose en modelos de arquitectura}
 	
 	Este enfoque ha sido propuesto por el Dr. Garlan, el cual intenta basar la auto reparación en el modelo de la arquitectura del sistema, en lugar de los mecanismos tradicionales para detección y recuperación de errores que se implementan a nivel de código.
 	
-	La idea propuesta consiste básicamente consiste un \textit{closed-loop} (bucle cerrado), donde existe una capa que actúa como mecanismo de control y otra encargada de monitorear el sistema (ver figura), separada del sistema que está siendo ejecutado, lo cual provee una solución mas efectiva que cualquier mecanismo interno porque agrupan lo concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados, extendidos y reutilizados a través de distintos sistemas.
+	La idea propuesta consiste básicamente en un \textit{closed-loop} (bucle cerrado), donde existe una capa que actúa como mecanismo de control y otra encargada de monitorear el sistema (ver figura), separada del sistema que está siendo ejecutado, lo cual provee una solución mas efectiva que cualquier mecanismo interno porque permite agrupar todo lo concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados, extendidos y reutilizados a través de distintos sistemas.
 	
 	\begin{center}
 		\includegraphics{images/selfhealing-closed-loop.png}
 	\end{center}
 
-	El proyecto Rainbow, también del proyecto Able, utiliza esta técnica de \textit{closed-loop} para monitorear y reparar sistemas, más adelante profundizaremos sobre Rainbow.
+	El 	proyecto Rainbow, también del proyecto Able, utiliza esta técnica de \textit{closed-loop} para monitorear y reparar sistemas, más adelante profundizaremos sobre Rainbow.
 		
 	\subsection{Acme}
 	
-	Acme es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon University, más precisamente por el proyecto  \href{http://www.cs.cmu.edu/~able/}{Architecture Based Languages and Environments (Able)}, liderado por el Dr. David Garlan.\
+	Acme es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon University, más precisamente por el proyecto  \href{http://www.cs.cmu.edu/~able/}{Architecture Based Languages and Environments (Able)}, liderado por el Dr. David Garlan.
 	
 	Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los restantes subproyectos dentro de Able utilizan Acme en menor o en mayor medida.
 		 
@@ -52,7 +52,7 @@
 
 	\subsubsection{Introducción a Rainbow}
 	
-	La herramienta Rainbow, desarrollada también dentro del marco del proyecto Able, tiene como finalidad permitir reducir el costo e incrementar la confiabilidad al realizar cambios en sistemas complejos, para esto Rainbow automatiza la adaptación de sistemas dinámicos via el modelo de la arquitectura del sistema, representaciones explícitas de las tareas del usuario, y estimaciones orientadas a la performance en tiempo de ejecución.\
+	La herramienta Rainbow, desarrollada también dentro del marco del proyecto Able, tiene como finalidad permitir reducir el costo e incrementar la confiabilidad al realizar cambios en sistemas complejos, para esto Rainbow automatiza la adaptación de sistemas dinámicos via el modelo de la arquitectura del sistema, representaciones explícitas de las tareas del usuario, y estimaciones orientadas a la performance en tiempo de ejecución.
 	
 	La tecnología en la cual se apoya Rainbow esta basada en innovaciones en tres áreas críticas:
 	
