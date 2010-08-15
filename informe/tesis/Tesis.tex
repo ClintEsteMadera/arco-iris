@@ -6,7 +6,12 @@
 \author{Jonathan Chiocchio, Gabriel Tursi}
 \title{Tesis de Licenciatura Chiocchio - Tursi}
 
-%\usepackage{infostyle}                                                  % provee un look & feel similar a un documento Word
+\usepackage{tabularx}                                                    % permite usar tablas mas inteligentes que con ``tabular''
+\usepackage{lscape}
+\usepackage{slashbox}
+\usepackage{rotating}
+%\usepackage{multirow}
+%\usepackage{ltxtable}
 \usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}  % márgenes
 \usepackage[ansinew]{inputenc}                                           % permite que los acentos del estilo áéíóú salgan joya
 \usepackage[spanish, activeacute]{babel}                                 % idioma español, acentos fáciles y deletreo de palabras
@@ -14,6 +19,7 @@
 \usepackage{caratula}                                                    % incluye caratula estándar
 \usepackage{graphicx}                                                    % permite insertar gráficos
 \usepackage{color}                                                       % permite el uso de colores en el documento
+\usepackage[dvipsnames,table,svgnames]{xcolor}
 \usepackage{url}                                                         % permite el uso de urls
 \usepackage[pdfcreator={LaTeX2e},
 			pdfauthor={Jonathan Chiocchio, Gabriel Tursi},
@@ -48,6 +54,9 @@
 \newenvironment{borde}[1]
 {\begin{lrbox}{\fmbox}\begin{minipage}{#1}}
 {\end{minipage}\end{lrbox}\fbox{\usebox{\fmbox}}\\[10pt]}
+
+%-----Macro para los espacios verticales de las tablas----
+\newcommand{\ESPACIOV}{\rule{0in}{0,45cm}}
 
 %%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%
 
