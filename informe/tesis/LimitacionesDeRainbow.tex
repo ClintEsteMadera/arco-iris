@@ -1,3 +1,14 @@
 \section{Limitaciones de Rainbow}
-	\todo{Tabla del Google Doc expandida}
-	
+
+	\begin{sidewaystable}
+		\begin{center}
+				\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+				\begin{tabularx}{\textwidth}{|p{2cm}|X|X|X|}
+					\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en Thesis} & \textbf{Ventajas}\\
+					\ESPACIOV Información sobre restricciones & Las restricciones son guardadas en el modelo de la arquitectura (expresado en \mbox{ACME}) & Los \emph{stakeholders} usan una interfaz visual para expresar restricciones del sistema en formato de escenarios de QAW. Esa información es guardada en un archivo XML y luego tomada por Rainbow para tomar decisiones sobre las auto-reparaciones a realizar. & Nuevas restricciones pueden ser agregadas dinámicamente y de una manera simplificada para los \emph{stakeholders}.\\
+					\ESPACIOV Relación entre \emph{concerns} arquitecturales(e.g. tiempo de respuesta) & El concepto de atributo de calidad no tiene un modelado específico en Rainbow. Sí está presente en ZNN, y son llamados llamados ``Quality Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los atributos suman 1) & Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de ATAM. Un escenario puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que nuestra extensión a Rainbow deberá hacer al momento de escoger una estrategia de reparación & Los \emph{stakeholders} tienen la posibilidad de cambiar esta información dinámicamente y consecuentemente, afectar la manera en que el framework opera.\\
+					\ESPACIOV Decisiones sobre que reparaciones realizar & Las reparaciones a realizar también se encuentran en archivos de configuración & El sistema evalúa los escenarios cargados y como se afectan entre ellos. Luego invoca a un módulo que decide qué reparaciones pueden llevarse a cabo de acuerdo a las restricciones & Dicho módulo puede ser extendido para incluír complejas heurísticas que aprendan de los efectos de reparaciones pasadas y puedan así mejorar los resultados.\\
+					\ESPACIOV Entorno de ejecución (e.g. Alta Carga)& El entorno de ejecución es estáticamente configurado en un archivo de configuración y no se modifica de acuerdo al estado dinámico del sistema que se intenta reparar. Para modificar tal estático y limitado valor, es necesario el reinicio de Rainbow. & El modelo de nuestra extensión a Rainbow permite al usuario especificar distintos entornos de ejecución, los cuales tienen restricciones asociadas que se chequean continuamente y que, de cumplirse, hacen que el sistema automáticamente se considere que está en otro entorno de ejecución, afectando al algoritmo de decisión de estrategias de reparación. & Lo antedicho, agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación del sistema en \emph{runtime}.
+				\end{tabularx}
+		\end{center}
+	\end{sidewaystable}
