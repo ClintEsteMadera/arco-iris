@@ -1,0 +1,23 @@
+\section{Caso Práctico}
+
+	En este capítulo se presenta un ejemplo concreto de la propuesta, para lo cual se reutilizará la simulación que forma parte del proyecto ZNN.
+	El sistema consiste en sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de servidores, la fidelidad de la información que se provee, o sea, permite eliminar determinado tipo de contenido (e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio.
+	
+	Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá evaluar la variación de comportamiento al ir agregando escenarios.
+	Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario y el costo de servidores del sistema, que para simplificar reflejará simplemente la cantidad de servidores levantados con que cuenta el sistema en cada momento.
+	
+	Entonces, el comportamiento del sistema sin escenarios, o sea, sin autoreparación será el siguiente:
+
+	\begin{center}
+		\includegraphics{images/testcase1_1_expRespTime.png}
+	\end{center}
+
+	\begin{center}
+		\includegraphics{images/testcase1_1_cost.png}
+	\end{center}
+
+	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, manteniéndose así por unos 10 segundos, luego el mismo va bajando escalonadamente hasta estacionarse en 360ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, o sea que el sistema trabajó siempre con un único servidor.
+	
+	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un límite (\emph{threshold} para el tiempo de respuesta. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no está cumpliendo pero se encontrará ninguna estrategia que lo pueda reparar:
+	
+	\todo{agregar grafico de expRespTime sin estrategia pero con escenarios (i.e: igual al grafico anterior pero marcando el threshold). Mostrar log para mostrar que no encuentra estrategias???}
