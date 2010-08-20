@@ -18,6 +18,48 @@
 
 	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, manteniéndose así por unos 10 segundos, luego el mismo va bajando escalonadamente hasta estacionarse en 360ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, o sea que el sistema trabajó siempre con un único servidor.
 	
-	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un límite (\emph{threshold} para el tiempo de respuesta. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no está cumpliendo pero se encontrará ninguna estrategia que lo pueda reparar:
+	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un límite (\emph{threshold} de 600ms para el tiempo de respuesta que experimenta el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar:
+	
+	\todo{JONY: agregar graficos de la GUI paso por paso para definir el escenario???}
 	
 	\todo{agregar grafico de expRespTime sin estrategia pero con escenarios (i.e: igual al grafico anterior pero marcando el threshold). Mostrar log para mostrar que no encuentra estrategias???}
+	
+	Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico será el mismo que el del caso anterior.
+	
+	El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles por supuesto. La estrategia, definida en Stitch, será la siguiente:
+	
+	\todo{mencionar stitch cuando en la seccion Estrategias de la intro}
+
+\begin{verbatim}	
+strategy EnlistServersResponseTime
+[ styleApplies ] {
+  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+    t2: (default) -> TNULL;
+  }
+}
+\end{verbatim}	
+
+	Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi instantaneamente, como podemos ver en el siguiente gráfico:
+	
+	\begin{center}
+		\includegraphics{images/testcase1_2_expRespTime.png}
+	\end{center}
+
+	Desde ya que este comportamiento se debe a la aplicación de la estrategia, el siguiente gráfico nos muestra cómo varía el costo de servidores al aplicarse la estrategia, simultaneamente con la mejora del tiempo de respuesta:
+	
+	\begin{center}
+		\includegraphics{images/testcase1_2_cost.png}
+	\end{center}
+
+	En resumen, lo que hemos visto hasta aquí consiste en:
+	\begin{enumerate}
+		\item Comportamiento del sistema sin ninguna información de auto-reparación.
+		\item Comportamiento del sistema con un escenario definido pero sin estrategias que lo puedan reparar.
+		\item Comportamiento del sistema con un escenario definido y con una estrategia que lo repara.
+	\end{enumerate}
+
+	Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento las condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto-reparación. Esto hace que el escenario de tiempo de respuesta se siga cumpliendo, pero observemos que el sistema sigue funcionando con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya restricción consistirá en que no exista más de un servidor levantado.
+
+	Antes que nada, recordemos que el escenario de tiempo de respuesta es el primero en romperse, y que para ser corregido debe levantarse un servidor pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería ocurrir. ¿Cómo reparemos el tiempo de respuesta entonces? Aquí es donde entra en juego las prioridades de los escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en detrimento del escenario del costo de servidores.
+	Una vez reparado el tiempo de respuesta el escenario del costo quedará roto, pero la auto-reparación no intentará repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de reparar el escenario de costo. Esto hará que recién se repare dicho escenario cuando esta reparación no rompa el escenario de tiempo de respuesta.
