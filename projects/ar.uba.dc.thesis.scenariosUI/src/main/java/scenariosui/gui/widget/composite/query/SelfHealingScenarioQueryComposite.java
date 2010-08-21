@@ -32,19 +32,16 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<SelfHealingScenario, Purpose> getActionForNew() {
 		return ScenariosUIActions.NEW_SELF_HEALING_SCENARIO;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<SelfHealingScenario, Purpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_SELF_HEALING_SCENARIO;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<SelfHealingScenario, Purpose> getActionForDelete() {
 		return ScenariosUIActions.DELETE_SELF_HEALING_SCENARIO;
 	}

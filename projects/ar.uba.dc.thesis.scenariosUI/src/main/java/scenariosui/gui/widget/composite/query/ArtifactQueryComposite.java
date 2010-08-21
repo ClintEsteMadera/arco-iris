@@ -33,19 +33,16 @@ public class ArtifactQueryComposite extends ScenariosUIQueryComposite<Artifact> 
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Artifact, Purpose> getActionForNew() {
 		return ScenariosUIActions.NEW_ARTIFACT;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Artifact, Purpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_ARTIFACT;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Artifact, Purpose> getActionForDelete() {
 		return ScenariosUIActions.DELETE_ARTIFACT;
 	}

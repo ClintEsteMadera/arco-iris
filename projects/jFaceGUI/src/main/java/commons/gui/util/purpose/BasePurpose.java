@@ -1,6 +1,5 @@
 package commons.gui.util.purpose;
 
-import commons.gui.util.purpose.Purpose;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 
@@ -56,6 +55,11 @@ public enum BasePurpose implements Purpose {
 	},
 
 	DELETE("Delete", true, CommonLabels.DELETE) {
+		@Override
+		public boolean isDeletion() {
+			return true;
+		}
+
 		@Override
 		public EnumProperty getAcceptButtonText() {
 			return CommonLabels.DELETE;
