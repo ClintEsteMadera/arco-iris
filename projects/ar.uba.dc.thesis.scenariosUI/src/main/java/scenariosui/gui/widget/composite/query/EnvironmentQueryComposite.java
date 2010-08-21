@@ -35,19 +35,16 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForNew() {
 		return ScenariosUIActions.NEW_ENVIRONMENT;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForEdit() {
 		return ScenariosUIActions.EDIT_ENVIRONMENT;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForDelete() {
 		return ScenariosUIActions.DELETE_ENVIRONMENT;
 	}
