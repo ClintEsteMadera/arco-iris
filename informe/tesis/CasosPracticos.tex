@@ -1,55 +1,54 @@
-\section{Caso Práctico}
+\section{Casos Prácticos}
+	\todo{TURCO: Seccionar por pasos}
 
-	En este capítulo se presenta un ejemplo concreto de la propuesta, para lo cual se reutilizará la simulación que forma parte del proyecto ZNN.
+	En este capítulo se presenta un ejemplo concreto de la propuesta, para lo cual se reutilizará la simulación que forma parte del proyecto Znn.
 	El sistema consiste en sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de servidores, la fidelidad de la información que se provee, o sea, permite eliminar determinado tipo de contenido (e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio.
 	
 	Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá evaluar la variación de comportamiento al ir agregando escenarios.
 	Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario y el costo de servidores del sistema, que para simplificar reflejará simplemente la cantidad de servidores levantados con que cuenta el sistema en cada momento.
 	
 	Entonces, el comportamiento del sistema sin escenarios, o sea, sin autoreparación será el siguiente:
-
 	\begin{center}
-		\includegraphics{images/testcase1_1_expRespTime.png}
+		\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime.png}
+		\footnotesize{ALGO}
 	\end{center}
-
+	
 	\begin{center}
-		\includegraphics{images/testcase1_1_cost.png}
+		\includegraphics[width=1.00\textwidth]{images/testcase1_1_cost.png}
 	\end{center}
 
 	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, manteniéndose así por unos 10 segundos, luego el mismo va bajando escalonadamente hasta estacionarse en 360ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, o sea que el sistema trabajó siempre con un único servidor.
 	
 	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un límite (\emph{threshold} de 600ms para el tiempo de respuesta que experimenta el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar:
 	
-	\todo{JONY: agregar graficos de la GUI paso por paso para definir el escenario???}
+	\todo{TURCO: agregar grafico de la GUI de escenarios}
 	
-	\todo{agregar grafico de expRespTime sin estrategia pero con escenarios (i.e: igual al grafico anterior pero marcando el threshold). Mostrar log para mostrar que no encuentra estrategias???}
+	\todo{TURCO: agregar grafico de expRespTime sin estrategia pero con escenarios (i.e: igual al grafico anterior pero marcando el threshold). Mostrar log para mostrar que no encuentra estrategias???}
 	
 	Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico será el mismo que el del caso anterior.
 	
 	El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles por supuesto. La estrategia, definida en Stitch, será la siguiente:
 	
-	\todo{mencionar stitch cuando en la seccion Estrategias de la intro}
-
-\begin{verbatim}	
-strategy EnlistServersResponseTime
-[ styleApplies ] {
-  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
-    t1: (!RESP_TIME_STILL_BROKEN) -> done;
-    t2: (default) -> TNULL;
-  }
-}
-\end{verbatim}	
+	\begin{verbatim}	
+		strategy EnlistServersResponseTime
+		[ styleApplies ] {
+		  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+		    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+		    t2: (default) -> TNULL;
+		  }
+		}
+	\end{verbatim}
 
 	Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi instantaneamente, como podemos ver en el siguiente gráfico:
 	
 	\begin{center}
-		\includegraphics{images/testcase1_2_expRespTime.png}
+		\includegraphics[width=1.00\textwidth]{images/testcase1_2_expRespTime.png}
 	\end{center}
 
 	Desde ya que este comportamiento se debe a la aplicación de la estrategia, el siguiente gráfico nos muestra cómo varía el costo de servidores al aplicarse la estrategia, simultaneamente con la mejora del tiempo de respuesta:
 	
 	\begin{center}
-		\includegraphics{images/testcase1_2_cost.png}
+		\includegraphics[width=1.00\textwidth]{images/testcase1_2_cost.png}
 	\end{center}
 
 	En resumen, lo que hemos visto hasta aquí consiste en:

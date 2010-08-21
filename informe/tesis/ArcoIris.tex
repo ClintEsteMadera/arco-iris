@@ -1,15 +1,15 @@
-\section{Propuesta}
+\section{Extensión a Rainbow: Arco Iris}
 
-\todo{Copy paste del Capítulo 3 de la propuesta. REVISARLO!!}
-\todo{Explicacion de lo que hicimos con mas detalle (funcional).}
-\todo{Explicar concepto de Utility Function.}
+\todo{JONY: Copy paste del Capítulo 3 de la propuesta. REVISARLO!!}
+\todo{JONY: Explicacion de lo que hicimos con mas detalle (funcional).}
+\todo{JONY: Explicar concepto de Utility Function.}
 
 	\subsection{Idea Básica}
 		La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto-reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo; y en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto-reparación del sistema cuando uno de los escenarios no se cumple.
 		
 		Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en Rainbow trabaja hoy en día. A continuación se detallan los cambios propuestos.
 
-	\subsection{Introducción de ATAM para flexibilizar la auto-reparación}
+	\subsection{ATAM para Flexibilizar la Auto Reparación}
 		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de arquitectura expresado en \textbf{Acme}. Uno de los objetivos de este trabajo es extender el conocimiento que el framework de reparación tiene sobre el sistema en general. Para ello se implementarán las siguientes mejoras:
 
 			\begin{enumerate}
@@ -57,9 +57,20 @@
 		\end{itemize}
 		El objetivo final es, además de reparar el inconveniente hallado, evitar perjudicar algún otro escenario de mayor prioridad y mediante el uso de heurísticas, poder aproximar la mejor estrategia de reparación a llevar a cabo de modo que la \emph{utilidad del sistema} se maximize.
 
-	\subsection{Desarrollo de una Interfaz gráfica}
-		Se propone el desarrollo de una interfaz de usuario gráfica (GUI, de sus siglas en inglés: Graphical User Interface) para que los distintos \emph{stakeholders}, incluyendo usuarios y arquitectos, puedan colaborar creando y editando escenarios que luego serán importados y utilizados por Rainbow.
-
-
 	\subsection{Eliminación de limitaciones}
 		En la implementación actual de Rainbow, la cantidad de restricciones evaluada es fija. En nuestra versión, los stakeholders podrán cargar una cantidad ilimitada de escenarios y cambiar prioridades relativas y posibles estrategias de reparación. Esto hará que sólo el sistema pueda evaluar correctamente todos los factores a tener en cuenta al momento de aplicar la auto-reparación.
+		
+		\begin{sidewaystable}
+		\begin{center}
+				\footnotesize{
+				\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+				\begin{tabularx}{\textwidth}{|X|X|X|X|}
+					\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en Arco Iris} & \textbf{Ventajas}\\
+					Información sobre restricciones & Las restricciones son guardadas en el modelo de la arquitectura (expresado en \mbox{ACME}) & Los \mbox{\emph{stakeholders}} usan una interfaz visual para expresar restricciones del sistema en formato de escenarios de QAW. Esa información es analizada por Rainbow para tomar decisiones sobre las auto-reparaciones a realizar. & Las res\-tri\-ccio\-nes pue\-den ser a\-gre\-ga\-das y/o editadas dinámicamente y de una manera simplificada para los \emph{stakeholders}.\\
+					Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de calidad no tiene un modelado específico en Rainbow. Sí está presente en Znn, y son llamados llamados ``Quality Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los atributos suman 1) & Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de ATAM. Un escenario puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que nuestra extensión a Rainbow deberá hacer al momento de escoger una estrategia de reparación. & Los \emph{stakeholders} tienen la posibilidad de cambiar esta información dinámicamente y consecuentemente, afectar la manera en que el \emph{framework} opera.\\
+					Decisiones sobre que reparaciones realizar & Las reparaciones a realizar también se encuentran en archivos de configuración & El sistema evalúa los escenarios cargados y como se afectan entre ellos. Luego invoca a un módulo que decide qué reparaciones pueden llevarse a cabo de acuerdo a las restricciones. & Dicho módulo puede ser extendido para incluír complejas heurísticas que aprendan de los efectos de reparaciones pasadas y puedan así mejorar los resultados.\\
+					Entorno de ejecución (e.g. Alta Carga)& El entorno de ejecución es estáticamente configurado en un archivo de configuración y no se modifica de acuerdo al estado dinámico del sistema que se intenta reparar. Para modificar tal estático y limitado valor, es necesario el reinicio de Rainbow. & El modelo de nuestra extensión a Rainbow permite al usuario especificar distintos entornos de ejecución, los cuales tienen restricciones asociadas que se chequean continuamente y que, de cumplirse, hacen que el sistema automáticamente se considere que está en otro entorno de ejecución, afectando al algoritmo de decisión de estrategias de reparación. & Lo antedicho, agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación del sistema en \emph{runtime}.
+				\end{tabularx}
+				}
+		\end{center}
+	\end{sidewaystable}
