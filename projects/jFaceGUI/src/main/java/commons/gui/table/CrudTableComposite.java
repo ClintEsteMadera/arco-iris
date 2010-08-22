@@ -16,14 +16,12 @@ import org.eclipse.swt.widgets.Composite;
 import commons.core.Predicate;
 import commons.gui.model.collection.ListValueModel;
 import commons.gui.widget.composite.SimpleComposite;
+import commons.properties.CommonLabels;
+import commons.properties.EnumProperty;
 import commons.utils.Clonator;
 
 /**
- * Composite que contiene una tabla y los controles para editarla.
- * 
- * 
- * 
- * 
+ * This composite provides CRUD functionality
  */
 public class CrudTableComposite extends SimpleComposite {
 
@@ -61,13 +59,12 @@ public class CrudTableComposite extends SimpleComposite {
 
 		this.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		// creo la tabla con este composite como parent
-		Composite parent = metainfo.parent;
+		Composite parent = metainfo.parent; // save this parent since we will use "this" as the table's parent
 		metainfo.parent = this;
 
 		this.table = new GenericTable(metainfo);
 
-		metainfo.parent = parent;
+		metainfo.parent = parent; // restore the original parent within the metainfo
 
 		this.model = (ListValueModel) metainfo.bindingInfo.getCompositeModel().getValueModel(
 				metainfo.bindingInfo.getPropertyName());
@@ -83,7 +80,7 @@ public class CrudTableComposite extends SimpleComposite {
 			buttonsComposite.setLayout(new GridLayout(getButtonBarCount(), false));
 
 			if ((buttonFlags & EDIT_BUTTON) != 0) {
-				viewButton = createButton("Ver", "Ver", Predicate.NOT_NULL);
+				viewButton = createButton(CommonLabels.VIEW, CommonLabels.VIEW, Predicate.NOT_NULL);
 				viewButton.addSelectionListener(getViewSelectionAdapter(handler, viewButton));
 				this.table.addDoubleClickListener(getReadOnlyDoubleClickListener(handler));
 			}
@@ -132,19 +129,19 @@ public class CrudTableComposite extends SimpleComposite {
 	protected void createButtonBarAndListeners(Composite parent, EditHandler rowSelectionHandler, int buttonFlags) {
 
 		if ((buttonFlags & ADD_BUTTON) != 0) {
-			addButton = createButton("Agregar", "Agregar nuevo", Predicate.TRUE);
+			addButton = createButton(CommonLabels.ADD, CommonLabels.ADD_NEW, Predicate.TRUE);
 			addButton.addSelectionListener(getAddButtonListener(rowSelectionHandler, true));
 		}
 		if ((buttonFlags & INSERT_BUTTON) != 0) {
-			addButton = createButton("Insertar", "Insertar nuevo", Predicate.NOT_NULL);
+			addButton = createButton(CommonLabels.INSERT, CommonLabels.INSERT_NEW, Predicate.NOT_NULL);
 			addButton.addSelectionListener(getAddButtonListener(rowSelectionHandler, false));
 		}
 		if ((buttonFlags & EDIT_BUTTON) != 0) {
-			editButton = createButton("Editar", "Editar item seleccionado", Predicate.NOT_NULL);
+			editButton = createButton(CommonLabels.EDIT, CommonLabels.EDIT_SELECTED_ITEM, Predicate.NOT_NULL);
 			editButton.addSelectionListener(getEditButtonListener(rowSelectionHandler));
 		}
 		if ((buttonFlags & REMOVE_BUTTON) != 0) {
-			deleteButton = createButton("Eliminar", "Eliminar item seleccionado", Predicate.NOT_NULL);
+			deleteButton = createButton(CommonLabels.DELETE, CommonLabels.DELETE_SELECTED_ITEM, Predicate.NOT_NULL);
 			deleteButton.addSelectionListener(getDeleteButtonListener(parent, rowSelectionHandler));
 		}
 
@@ -194,18 +191,18 @@ public class CrudTableComposite extends SimpleComposite {
 		};
 	}
 
-	public Button createButton(String text, String toolTipText, Predicate predicate) {
+	public Button createButton(EnumProperty text, EnumProperty toolTipText, Predicate predicate) {
 		Button button = addButton(text, toolTipText);
 		table.addAdditionalButton(button, predicate);
 		return button;
 	}
 
-	public final Button addButton(String text, String toolTipText) {
+	public final Button addButton(EnumProperty text, EnumProperty toolTipText) {
 		GridData gridData = new GridData();
 		gridData.widthHint = 100;
 		Button button = new Button(buttonsComposite, SWT.PUSH | SWT.CENTER);
-		button.setText(text);
-		button.setToolTipText(toolTipText);
+		button.setText(text.toString());
+		button.setToolTipText(toolTipText.toString());
 		button.setLayoutData(gridData);
 		return button;
 	}
