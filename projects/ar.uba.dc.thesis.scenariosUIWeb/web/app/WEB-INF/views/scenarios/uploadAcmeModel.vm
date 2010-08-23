@@ -1,8 +1,0 @@
-<html>
-	<head>
-		#parse("common_header.vm")
-	</head>
-	<body>
-	<h3 class="error" align="center">TO-DO: upload acme model</h3>
-</body>
-</html>
