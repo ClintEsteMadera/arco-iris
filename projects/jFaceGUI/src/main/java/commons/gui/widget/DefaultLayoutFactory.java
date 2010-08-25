@@ -94,7 +94,6 @@ public abstract class DefaultLayoutFactory {
 		layout.marginWidth = 5;
 		layout.marginHeight = 10;
 		composite.setLayout(layout);
-		// throw new RuntimeException("Metodo no implementado");
 	}
 
 	public static void setButtonRowLayoutData(Button button) {
