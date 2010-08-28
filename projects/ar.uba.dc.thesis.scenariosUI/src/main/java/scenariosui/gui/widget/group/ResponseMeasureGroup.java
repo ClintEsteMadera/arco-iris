@@ -24,7 +24,8 @@ public class ResponseMeasureGroup extends SimpleGroup {
 		CompositeModel<Constraint> compositeModel = ctrlMetainfo.binding.getCompositeModel().getNestedModel(
 				"constraint", Constraint.class);
 
-		this.constraintComposite = new ConstraintComposite(this.getSwtGroup(), compositeModel, ctrlMetainfo.readOnly);
+		this.constraintComposite = new ConstraintComposite(this.getSwtGroup(), compositeModel, true,
+				ctrlMetainfo.readOnly);
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(new SimpleComposite(this.constraintComposite,
 				super.readOnly, 2), CommonLabels.DESCRIPTION, new BindingInfo(ctrlMetainfo.binding.getCompositeModel(),

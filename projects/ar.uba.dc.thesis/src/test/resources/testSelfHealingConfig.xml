@@ -12,24 +12,18 @@
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
-        <numericBinaryRelationalConstraint sum="false">
-          <artifact reference="../../../../../artifacts/artifact"/>
-          <property>experRespTime</property>
-          <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-        </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
+        <entry>
+          <concern>SERVER_COST</concern>
+          <double>0.333</double>
+        </entry>
         <entry>
           <concern>CONTENT_FIDELITY</concern>
           <double>0.333</double>
         </entry>
         <entry>
           <concern>RESPONSE_TIME</concern>
-          <double>0.333</double>
-        </entry>
-        <entry>
-          <concern>SERVER_COST</concern>
           <double>0.333</double>
         </entry>
       </weights>
@@ -44,14 +38,12 @@
           <binaryOperator>GREATER_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
-        <numericBinaryRelationalConstraint sum="false">
-          <artifact reference="../../../../../artifacts/artifact"/>
-          <property>experRespTime</property>
-          <binaryOperator>GREATER_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-        </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
+        <entry>
+          <concern>SERVER_COST</concern>
+          <double>0.2</double>
+        </entry>
         <entry>
           <concern>CONTENT_FIDELITY</concern>
           <double>0.1</double>
@@ -59,10 +51,6 @@
         <entry>
           <concern>RESPONSE_TIME</concern>
           <double>0.7</double>
-        </entry>
-        <entry>
-          <concern>SERVER_COST</concern>
-          <double>0.2</double>
         </entry>
       </weights>
       <heuristic>MOST</heuristic>

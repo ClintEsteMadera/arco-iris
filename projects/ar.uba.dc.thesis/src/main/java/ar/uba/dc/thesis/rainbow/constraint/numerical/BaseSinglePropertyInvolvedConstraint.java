@@ -49,6 +49,11 @@ public abstract class BaseSinglePropertyInvolvedConstraint extends ThesisPojo im
 	}
 
 	@Override
+	public String getToString() {
+		return this.toString();
+	}
+
+	@Override
 	public void validate() {
 		if (this.artifact == null) {
 			throw new RuntimeException("The artifact involved in this constraint cannot be null");

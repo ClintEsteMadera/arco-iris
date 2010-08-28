@@ -39,12 +39,13 @@ public class ConstraintComposite extends SimpleComposite {
 
 	private final CompositeModel<Constraint> initialModel;
 
-	public ConstraintComposite(Composite composite, CompositeModel<Constraint> model, boolean readOnly) {
+	public ConstraintComposite(Composite composite, CompositeModel<Constraint> model, boolean addEmptyOption,
+			boolean readOnly) {
 		super(composite, readOnly, 1);
 		this.initialModel = model;
 		this.initTabModels(model);
 
-		this.createConstraintTypeSelection(this);
+		this.createConstraintTypeSelection(this, addEmptyOption);
 
 		tabFolder = new InvisibleTabFolder(this, SWT.NONE);
 		tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -78,19 +79,17 @@ public class ConstraintComposite extends SimpleComposite {
 		}
 	}
 
-	private void createConstraintTypeSelection(Composite parent) {
+	private void createConstraintTypeSelection(Composite parent, boolean addEmptyOption) {
 		SimpleComposite composite = new SimpleComposite(parent, super.readOnly, 2, 1);
 
 		ComboMetainfo comboMetainfo = ComboMetainfo.create(composite, ScenariosUILabels.CONSTRAINT_TYPE,
 				new BindingInfo(this.constraintType), readOnly);
 		comboMetainfo.items = ConstraintType.values();
+		comboMetainfo.addEmptyOption = addEmptyOption;
 		ComboFactory.createCombo(comboMetainfo);
 
 		this.constraintType.addValueChangeListener(new ValueChangeListener<ConstraintType>() {
-			// TODO No setear este valor ahora sino guardarlo y ofrecerlo con un getter al que pueda controlar el
-			// okPressed del usuario (para no pegar un valor en el modelo si el usuario cancela)
 			@Override
-			@SuppressWarnings("unchecked")
 			public void valueChange(ValueChangeEvent<ConstraintType> ev) {
 				ConstraintType newValue = ev.getNewValue();
 				if (newValue == null) {

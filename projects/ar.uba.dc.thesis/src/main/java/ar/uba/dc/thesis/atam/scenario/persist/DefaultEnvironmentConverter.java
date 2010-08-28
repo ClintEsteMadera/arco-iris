@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.converters.SingleValueConverter;
  */
 public class DefaultEnvironmentConverter implements SingleValueConverter {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public boolean canConvert(Class type) {
 		return type.equals(DefaultEnvironment.class);
 	}

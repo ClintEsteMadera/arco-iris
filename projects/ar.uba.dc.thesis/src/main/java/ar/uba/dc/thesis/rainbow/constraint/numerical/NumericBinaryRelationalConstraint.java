@@ -108,8 +108,8 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	@Override
 	public String toString() {
-		return new StringBuffer().append("(").append(this.getFullyQualifiedPropertyName()).append(SPACE).append(
-				this.binaryOperator).append(SPACE).append(this.constantToCompareThePropertyWith).append(")").toString();
+		return new StringBuffer().append(this.getFullyQualifiedPropertyName()).append(SPACE)
+				.append(this.binaryOperator).append(SPACE).append(this.constantToCompareThePropertyWith).toString();
 	}
 
 	protected void log(Level level, String txt, Throwable... t) {
