@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import scenariosui.gui.query.RepairStrategySearchCriteria;
 import scenariosui.gui.widget.composite.query.RepairStrategiesSelectionQueryComposite;
-import scenariosui.properties.ScenariosUILabels;
+import scenariosui.properties.ScenariosUIMessages;
 import ar.uba.dc.thesis.selfhealing.StrategyTO;
 
 import commons.gui.Advised;
@@ -51,7 +51,7 @@ public class RepairStrategiesSelectionDialog extends Dialog implements Advised<R
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(ScenariosUILabels.SELECT_REPAIR_STRATEGIES.toString());
+		shell.setText(ScenariosUIMessages.SELECT_REPAIR_STRATEGIES.toString());
 		Rectangle centerLocation = PageHelper.getCenterLocation(800, 500);
 		shell.setBounds(centerLocation);
 	}

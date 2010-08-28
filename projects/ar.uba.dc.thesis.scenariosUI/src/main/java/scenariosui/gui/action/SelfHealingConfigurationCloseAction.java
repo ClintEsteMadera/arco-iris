@@ -26,7 +26,6 @@ public class SelfHealingConfigurationCloseAction extends SelfHealingConfiguratio
 		}
 
 		@Override
-		@SuppressWarnings("unchecked")
 		public void run() {
 			ScenariosUIManager.getInstance().close();
 			closeQueryComposites();

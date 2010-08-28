@@ -10,19 +10,27 @@ import commons.properties.EnumProperty;
 
 public enum ScenariosUIMessages implements EnumProperty {
 
-	SUCCESSFUL_SCENARIO, SUCCESSFUL_ENVIRONMENT, SUCCESSFUL_ARTIFACT;
+	SUCCESSFUL_SCENARIO,
+	SUCCESSFUL_ENVIRONMENT,
+	SUCCESSFUL_ARTIFACT,
+	SUCCESSFUL_CONSTRAINT,
+	SELECT_STITCH_DIRECTORY,
+	SELECT_REPAIR_STRATEGIES,
+	NO_REPAIR_STRATEGIES_FOUND,
+	NO_REPAIR_STRATEGIES_SELECTED,
+	FILE_DIALOG_MESSAGE;
 
 	@Override
 	public String toString() {
 		return messages.getString(this.name());
 	}
 
-	public String toString(Object... reemplazos) {
+	public <T> String toString(T... replacements) {
 		String result = "";
 		try {
-			result = MessageFormat.format(this.toString(), reemplazos);
+			result = MessageFormat.format(this.toString(), replacements);
 		} catch (IllegalArgumentException ex) {
-			log.error("No se pudo formatear el mensaje: " + this.name());
+			log.error("Cannot format the message: " + this.name());
 		}
 		return result;
 	}

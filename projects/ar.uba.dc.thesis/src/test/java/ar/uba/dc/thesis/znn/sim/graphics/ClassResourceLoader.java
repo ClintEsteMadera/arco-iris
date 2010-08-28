@@ -7,11 +7,14 @@ import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
 /**
- * Carga templates en forma relativa a esta clase.
- * 
- * @author H. Adrián Uribe
+ * Load templates relatively to this class.
  */
 public class ClassResourceLoader extends ResourceLoader {
+
+	@SuppressWarnings("rawtypes")
+	private static final Class CLASS = ClassResourceLoader.class;
+
+	private static final String DIR = "templates/";
 
 	@Override
 	public long getLastModified(Resource resource) {
@@ -25,15 +28,11 @@ public class ClassResourceLoader extends ResourceLoader {
 
 	@Override
 	public void init(ExtendedProperties extendedproperties) {
-		// NOTA: Vacío
+		// do nothing
 	}
 
 	@Override
 	public boolean isSourceModified(Resource resource) {
 		return false;
 	}
-
-	private static final Class CLASS = ClassResourceLoader.class;
-
-	private static final String DIR = "templates/";
 }

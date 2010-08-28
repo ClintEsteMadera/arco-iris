@@ -28,5 +28,8 @@
     <table name="REPAIR_STRATEGY_SELECTION" order="name">
       <column label="NAME" name="name" alignment="LEFT" width="130"/>
     </table>
+    <table name="ENVIRONMENT_CONSTRAINTS" order="fullyQualifiedPropertyName">
+      <column label="NAME" name="toString" alignment="CENTER" width="368"/>
+    </table>
   </tables>
 </preferences>

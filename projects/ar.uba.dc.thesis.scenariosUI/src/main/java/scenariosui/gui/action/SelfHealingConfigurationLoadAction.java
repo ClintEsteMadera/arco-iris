@@ -23,7 +23,6 @@ public class SelfHealingConfigurationLoadAction extends SelfHealingConfiguration
 		}
 
 		@Override
-		@SuppressWarnings("unchecked")
 		public void run() {
 			FileDialog dialog = createFileOpenDialog();
 			String filePathToTheXML = dialog.open();

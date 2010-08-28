@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 
 import scenariosui.gui.query.RepairStrategySearchCriteria;
 import scenariosui.gui.widget.dialog.RepairStrategiesSelectionDialog;
-import scenariosui.properties.ScenariosUILabels;
+import scenariosui.properties.ScenariosUIMessages;
 
 import commons.exception.ValidationException;
 import commons.gui.widget.composite.ObjectSelectionMetainfo;
@@ -31,13 +31,13 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 	@Override
 	protected List<String> selectObject() {
 		DirectoryDialog dirDialog = new DirectoryDialog(this.getShell(), SWT.OPEN);
-		dirDialog.setText(ScenariosUILabels.SELECT_STITCH_DIRECTORY.toString());
+		dirDialog.setText(ScenariosUIMessages.SELECT_STITCH_DIRECTORY.toString());
 		dirDialog.setFilterPath(this.stitchDir);
 
 		this.stitchDir = dirDialog.open();
 
 		if (StringUtils.isBlank(this.stitchDir)) {
-			throw new ValidationException(new ValidationError(ScenariosUILabels.NO_REPAIR_STRATEGIES_SELECTED));
+			throw new ValidationException(new ValidationError(ScenariosUIMessages.NO_REPAIR_STRATEGIES_SELECTED));
 		}
 
 		this.criteria.setStitchDirectory(stitchDir);

@@ -9,9 +9,8 @@ import scenariosui.properties.UniqueTableIdentifier;
 import commons.test.PropertiesVerifier;
 
 /**
- * Verifica que todas las propiedades (incluyendo las jface.gui, definidas en la librería) existan en ambos sentidos; esto
- * es, que todos los labels en los archivos properties estén definidos en las respectivas clases Enumeradas y que las
- * constantes definidas en estas últimas, estén definidas en los properties.
+ * Verifies that all the properties exist in both ways. This is, all the labels defined in the properties files are
+ * defined in their corresponding Enum classes and the constants on the latter, are defined in the properties files.
  */
 public class ScenariosUIPropertiesVerifier extends PropertiesVerifier {
 
@@ -22,17 +21,17 @@ public class ScenariosUIPropertiesVerifier extends PropertiesVerifier {
 		boolean thereAreNoRepetitions = testThereAreNoRepetitions(UniqueTableIdentifier.class);
 
 		if (allPropsAreInPropertiesFiles && allDefinedPropsAreInEnums) {
-			System.out.println("* Todos los EnumProperties registrados en este test"
-					+ " están sincronizados con sus respectivos archivos '.properties'");
+			System.out.println("* All EnumProperties registered in this test"
+					+ " are synchronized with their corresponding '.properties' file");
 		}
 		if (thereAreNoRepetitions) {
-			System.out.println("* No hay repeticiones entre constantes de distintos EnumProperties");
+			System.out.println("* There are no repetitions between the constants of different EnumProperties");
 		}
 	}
 
 	static {
 		bundleMap.put(ResourceBundle.getBundle("scenariosUI_labels"), ScenariosUILabels.class);
-		bundleMap.put(ResourceBundle.getBundle("messages"), ScenariosUIMessages.class);
+		bundleMap.put(ResourceBundle.getBundle("scenariosUImessages"), ScenariosUIMessages.class);
 		bundleMap.put(ResourceBundle.getBundle("uniqueTableIdentifier"), UniqueTableIdentifier.class);
 	}
 }

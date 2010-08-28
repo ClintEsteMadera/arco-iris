@@ -79,11 +79,11 @@ public class ScenariosUIWindow extends MainWindow {
 	 * @param queryNames
 	 *            el nombre de la consulta. NO puede ser nulo.
 	 */
-	@SuppressWarnings("unchecked")
 	public void resetQuery(Long id, UniqueTableIdentifier... queryNames) {
 		List<CTabItem> tabItems = super.getTabItems(queryNames);
 		for (CTabItem tabItem : tabItems) {
 			if (tabItem != null) {
+				@SuppressWarnings("rawtypes")
 				QueryComposite queryComposite = (QueryComposite) tabItem.getControl();
 				if (id == null) {
 					queryComposite.reset();

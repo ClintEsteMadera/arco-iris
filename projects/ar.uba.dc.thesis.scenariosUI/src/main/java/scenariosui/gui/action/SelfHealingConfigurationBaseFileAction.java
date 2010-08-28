@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 
 import scenariosui.properties.ScenariosUILabels;
+import scenariosui.properties.ScenariosUIMessages;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 import ar.uba.dc.thesis.common.ThesisPojo;
 
@@ -24,8 +25,9 @@ public abstract class SelfHealingConfigurationBaseFileAction extends BaseGuiActi
 	}
 
 	protected void setCloseActionEnabled(boolean enabled) {
-		PageHelper.getMainWindow().getMenuItem(ScenariosUIActions.CLOSE_SELF_HEALING_CONFIG.getUniqueId(),
-				CommonLabels.MENU_FILE).setEnabled(enabled);
+		PageHelper.getMainWindow()
+				.getMenuItem(ScenariosUIActions.CLOSE_SELF_HEALING_CONFIG.getUniqueId(), CommonLabels.MENU_FILE)
+				.setEnabled(enabled);
 	}
 
 	protected FileDialog createNewFileDialog() {
@@ -46,7 +48,7 @@ public abstract class SelfHealingConfigurationBaseFileAction extends BaseGuiActi
 		}
 
 		FileDialog dialog = new FileDialog(PageHelper.getMainShell(), fileDialogPurpose.getSWTStyle());
-		dialog.setText(ScenariosUILabels.FILE_DIALOG_MESSAGE.toString(fileDialogPurpose.getReplacements()));
+		dialog.setText(ScenariosUIMessages.FILE_DIALOG_MESSAGE.toString(fileDialogPurpose.getReplacements()));
 		dialog.setFileName(ScenariosUILabels.SELF_HEALING_CONFIG.toString() + ".xml");
 		dialog.setFilterNames(filterNames);
 		dialog.setFilterExtensions(filterExtensions);

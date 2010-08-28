@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import scenariosui.gui.query.RepairStrategySearchCriteria;
-import scenariosui.properties.ScenariosUILabels;
+import scenariosui.properties.ScenariosUIMessages;
 import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.selfhealing.StrategyTO;
@@ -70,7 +70,7 @@ public class RepairStrategiesSelectionQueryComposite extends ScenariosUIQueryCom
 		List<StrategyTO> allStrategies = ScenariosUIManager.getInstance().getAllStrategies(this.getCriteria());
 
 		if (allStrategies.isEmpty()) {
-			throw new ValidationException(new ValidationError(ScenariosUILabels.NO_REPAIR_STRATEGIES_FOUND, this
+			throw new ValidationException(new ValidationError(ScenariosUIMessages.NO_REPAIR_STRATEGIES_FOUND, this
 					.getCriteria().getStitchDirectory()));
 		}
 		return allStrategies;

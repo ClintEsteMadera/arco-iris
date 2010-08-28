@@ -10,26 +10,18 @@ import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
+import ar.uba.dc.thesis.util.Collections;
 
 public class TestEnvironmentDao {
-
-	private final List<Environment> environments = new ArrayList<Environment>();
-
-	private static final List<Constraint> HIGH_RESPONSE_TIME_CONDITIONS_LIST = new ArrayList<Constraint>(0);
-
-	private static final List<Constraint> NORMAL_RESPONSE_TIME_CONDITIONS_LIST = new ArrayList<Constraint>(0);
-
 	private static final int HIGH_LOAD_RESPONSE_TIME_THRESHOLD = 800; /* ms. */
 
+	private final List<Environment> environments;
+
 	public TestEnvironmentDao() {
+		super();
+		this.environments = new ArrayList<Environment>();
 		this.environments.add(createNormalEnvironment());
 		this.environments.add(createHighLoadEnvironment());
-		Constraint highResponseTimeCondition = new NumericBinaryRelationalConstraint(TestArtifactDao.CLIENT,
-				"experRespTime", NumericBinaryOperator.GREATER_THAN, HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
-		HIGH_RESPONSE_TIME_CONDITIONS_LIST.add(highResponseTimeCondition);
-		Constraint normalResponseTimeCondition = new NumericBinaryRelationalConstraint(TestArtifactDao.CLIENT,
-				"experRespTime", NumericBinaryOperator.LESS_THAN, HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
-		NORMAL_RESPONSE_TIME_CONDITIONS_LIST.add(normalResponseTimeCondition);
 	}
 
 	public List<Environment> getAllNonDefaultEnvironments() {
@@ -51,9 +43,13 @@ public class TestEnvironmentDao {
 		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.333D);
 		normalConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.333D);
 		normalConcernMultiplierMap.put(Concern.SERVER_COST, 0.333D);
-		Environment normalEnv = new Environment(0L, "NORMAL", NORMAL_RESPONSE_TIME_CONDITIONS_LIST,
-				normalConcernMultiplierMap);
-		return normalEnv;
+
+		Constraint normalResponseTimeCondition = new NumericBinaryRelationalConstraint(TestArtifactDao.CLIENT,
+				"experRespTime", NumericBinaryOperator.LESS_THAN, HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
+
+		List<Constraint> normalResponseTimeConditions = Collections.createList(normalResponseTimeCondition);
+
+		return new Environment(0L, "NORMAL", normalResponseTimeConditions, normalConcernMultiplierMap);
 	}
 
 	private Environment createHighLoadEnvironment() {
@@ -62,8 +58,11 @@ public class TestEnvironmentDao {
 		highLoadConcernMultiplierMap.put(Concern.SERVER_COST, 0.2D);
 		highLoadConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.1D); // this one SHOULD exist in the map
 
-		Environment highLoadEnv = new Environment(1L, "HIGH LOAD", HIGH_RESPONSE_TIME_CONDITIONS_LIST,
-				highLoadConcernMultiplierMap);
-		return highLoadEnv;
+		Constraint highResponseTimeCondition = new NumericBinaryRelationalConstraint(TestArtifactDao.CLIENT,
+				"experRespTime", NumericBinaryOperator.GREATER_THAN, HIGH_LOAD_RESPONSE_TIME_THRESHOLD);
+
+		List<Constraint> highResponseTimeConditions = Collections.createList(highResponseTimeCondition);
+
+		return new Environment(1L, "HIGH LOAD", highResponseTimeConditions, highLoadConcernMultiplierMap);
 	}
 }
