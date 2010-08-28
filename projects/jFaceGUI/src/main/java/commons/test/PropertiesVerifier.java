@@ -17,11 +17,10 @@ import commons.properties.CommonMessages;
 import commons.properties.CommonTooltips;
 
 /**
- * Verifica que los enumerados que representan properties keys, estén definidos en el archivo <code>.properties</code>
- * correspondiente.
- * 
+ * Verifies that the enum classes that represent keys of properties are defined in their corresponding
+ * <code>.properties</code> file.
  */
-
+@SuppressWarnings("rawtypes")
 public abstract class PropertiesVerifier {
 	public static boolean testAllPropertiesAreDefined() throws Exception {
 		boolean okStatus = true;
@@ -30,8 +29,8 @@ public abstract class PropertiesVerifier {
 				try {
 					enumerado.toString();
 				} catch (MissingResourceException e) {
-					System.err.println("El enum " + enumerado.getClass().getName() + "." + enumerado.name()
-							+ " no está definido en el archivo properties");
+					System.err.println("The enum " + enumerado.getClass().getName() + "." + enumerado.name()
+							+ " is not defined in the properties file");
 					okStatus = false;
 				}
 			}
@@ -53,8 +52,7 @@ public abstract class PropertiesVerifier {
 				try {
 					Enum.valueOf(enumClass, prop);
 				} catch (Exception e) {
-					msg = "La property " + prop + " no está definida en la clase Enumerada "
-							+ enumClass.getSimpleName();
+					msg = "The property " + prop + " is not defined in the enum Class " + enumClass.getSimpleName();
 					System.err.println(msg);
 					okStatus = false;
 				}
@@ -63,17 +61,16 @@ public abstract class PropertiesVerifier {
 		return okStatus;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static boolean testThereAreNoRepetitions(Class<? extends Enum>... clasesExcluidas) {
+	public static boolean testThereAreNoRepetitions(Class<? extends Enum>... excludedClasses) {
 		boolean okStatus = true;
 		Object[] array = bundleMap.values().toArray();
 		Class<? extends Enum>[] enumProperties = manualCast(array);
 		for (int i = 0; i < enumProperties.length; i++) {
 			Class<? extends Enum> enumProp1 = enumProperties[i];
-			if (!ArrayUtils.contains(clasesExcluidas, enumProp1)) {
+			if (!ArrayUtils.contains(excludedClasses, enumProp1)) {
 				for (int j = i + 1; j < enumProperties.length; j++) {
 					Class<? extends Enum> enumProp2 = enumProperties[j];
-					if (!ArrayUtils.contains(clasesExcluidas, enumProp2)) {
+					if (!ArrayUtils.contains(excludedClasses, enumProp2)) {
 						okStatus = isThereACollision(enumProp1, enumProp2) && okStatus;
 					}
 				}
@@ -91,8 +88,8 @@ public abstract class PropertiesVerifier {
 		for (int i = 0; i < enumConstants.size(); i++) {
 			for (int j = i + 1; j < enumConstants2.size(); j++) {
 				if (enumConstants.get(i).name().equals(enumConstants2.get(j).name())) {
-					System.err.println("La constante " + enumPropClass.getSimpleName() + "."
-							+ enumConstants.get(i).name() + " es igual a la constante "
+					System.err.println("The constant " + enumPropClass.getSimpleName() + "."
+							+ enumConstants.get(i).name() + " is equals to the constant "
 							+ enumPropClass2.getSimpleName() + "." + enumConstants2.get(j).name());
 					okStatus = false;
 				}
@@ -103,11 +100,11 @@ public abstract class PropertiesVerifier {
 	}
 
 	/**
-	 * FIXME: Justo cuando creía saber de Java, llegaron las partes "sombrías" de generics...
+	 * FIXME: Just when I thought I knew everything about Java, I've came across Generics...
 	 * 
 	 * @param objectArray
-	 *            el array de objetos a ser casteado.
-	 * @return un array de Clases que extienden de Enum.
+	 *            the object array to be casted.
+	 * @return an array of Classes extending Enum.
 	 */
 	@SuppressWarnings("unchecked")
 	private static Class<Enum>[] manualCast(Object[] objectArray) {

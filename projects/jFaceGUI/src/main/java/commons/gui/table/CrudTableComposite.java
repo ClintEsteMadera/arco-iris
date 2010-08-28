@@ -37,6 +37,22 @@ public class CrudTableComposite extends SimpleComposite {
 
 	public static final int ALL_BUTTONS = ADD_BUTTON | INSERT_BUTTON | REMOVE_BUTTON | EDIT_BUTTON;
 
+	private Button addButton;
+
+	protected Button editButton;
+
+	protected Button deleteButton;
+
+	protected Button viewButton;
+
+	protected boolean readOnly;
+
+	private final Composite buttonsComposite;
+
+	private ListValueModel model;
+
+	private GenericTable table;
+
 	public CrudTableComposite(TableMetainfo metainfo, EditHandler handler) {
 		this(metainfo, handler, DEFAULT_BUTTONS);
 	}
@@ -213,7 +229,6 @@ public class CrudTableComposite extends SimpleComposite {
 
 	protected IDoubleClickListener getReadOnlyDoubleClickListener(final EditHandler rowSelectionHandler) {
 		return new IDoubleClickListener() {
-			@SuppressWarnings("unchecked")
 			public void doubleClick(DoubleClickEvent event) {
 				viewButton.notifyListeners(SWT.Selection, null);
 			}
@@ -222,7 +237,6 @@ public class CrudTableComposite extends SimpleComposite {
 
 	protected SelectionAdapter getAddButtonListener(final EditHandler handler, final boolean addAtEnd) {
 		return new SelectionAdapter() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
@@ -249,7 +263,6 @@ public class CrudTableComposite extends SimpleComposite {
 	protected SelectionAdapter getEditButtonListener(final EditHandler handler) {
 		return new SelectionAdapter() {
 			@Override
-			@SuppressWarnings("unchecked")
 			public void widgetSelected(SelectionEvent event) {
 
 				if (handleEdit(handler)) {
@@ -262,7 +275,6 @@ public class CrudTableComposite extends SimpleComposite {
 
 	protected SelectionAdapter getDeleteButtonListener(final Composite parent, final EditHandler handler) {
 		return new SelectionAdapter() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				handleDelete(handler);
@@ -344,7 +356,6 @@ public class CrudTableComposite extends SimpleComposite {
 	 * @param index
 	 * @param item
 	 */
-	@SuppressWarnings("unchecked")
 	protected void removeItem(ListValueModel listValueModel, int index, Object item) {
 		listValueModel.remove(index);
 	}
@@ -363,21 +374,4 @@ public class CrudTableComposite extends SimpleComposite {
 		model.set(modelIndex, updatedItem);
 		return selectedIndex;
 	}
-
-	private Button addButton;
-
-	protected Button editButton;
-
-	protected Button deleteButton;
-
-	protected Button viewButton;
-
-	protected boolean readOnly;
-
-	private final Composite buttonsComposite;
-
-	private ListValueModel model;
-
-	private GenericTable table;
-
 }

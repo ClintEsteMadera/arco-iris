@@ -8,7 +8,7 @@ import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.dialog.OpenableTrayDialog;
 
 /**
- * Handler generico que crea un dialogo por reflection cada vez que se invoca.
+ * Generic Handler that creates a dialog (using reflection) every time it is invoked
  */
 public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> extends DialogEditHandler<ITEM> {
 
@@ -23,7 +23,8 @@ public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> e
 	public GenericEditHandler(Shell shell, Class<DIALOG> dialogClass, Class<ITEM> itemClass) {
 		super(shell);
 		if (!OpenableTrayDialog.class.isAssignableFrom(dialogClass)) {
-			throw new IllegalArgumentException("La clase de dialogo no extiende  " + OpenableTrayDialog.class.getName());
+			throw new IllegalArgumentException("The dialog class does not inherit from "
+					+ OpenableTrayDialog.class.getName());
 		}
 		this.dialogClass = dialogClass;
 		this.itemClass = itemClass;
@@ -48,12 +49,11 @@ public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> e
 				dialog = c.newInstance();
 			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException("No se pudo crear el dialogo: " + e.getMessage(), e);
+			throw new IllegalArgumentException("Could not create dialog: " + e.getMessage(), e);
 		}
 		return dialog;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Constructor<DIALOG> getDialogConstructor() {
 
 		if (this.dialogContructor == null) {
@@ -62,10 +62,10 @@ public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> e
 				this.dialogSupportsPurposeParam = true;
 			} catch (Exception e1) {
 				try {
-					this.dialogContructor = dialogClass.getConstructor();
+					this.dialogContructor = dialogClass.getConstructor(this.itemClass);
 					this.dialogSupportsPurposeParam = false;
 				} catch (Exception e2) {
-					throw new IllegalArgumentException("No se pudo crear el dialogo: " + e2.getMessage(), e2);
+					throw new IllegalArgumentException("Could not create dialog: " + e2.getMessage(), e2);
 				}
 			}
 		}
