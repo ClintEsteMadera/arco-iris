@@ -1,4 +1,12 @@
 MUST HAVES:
+- agregar el resto de los conceptos
+
+- Repair Strategies: poder elegir TODAS (null?)
+
+- Ver DefaultEnvironment (cambiar pesos por default??)
+
+- cambiar la sumatoria por sumatoria o promedio
+
 - arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
