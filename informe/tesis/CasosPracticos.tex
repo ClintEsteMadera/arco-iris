@@ -75,7 +75,7 @@
 
 	Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento las condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto reparación. Esto hace que el escenario de tiempo de respuesta se siga cumpliendo, pero observemos que el sistema sigue funcionando con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya restricción consistirá en que no exista más de un servidor levantado. El escenario que crearemos será el siguiente:
 	
-	\todo{agregar imagen de ScenarioUI del escenario de server cost}
+	\todo{TURCO: agregar imagen de ScenarioUI del escenario de server cost}
 
 	Antes que nada, recordemos que el escenario de tiempo de respuesta es el primero en romperse, y que para ser corregido debe levantarse un servidor pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería ocurrir. ¿Cómo reparemos el tiempo de respuesta entonces? Aquí es donde entra en juego las prioridades de los escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en detrimento del escenario del costo de servidores.
 	
