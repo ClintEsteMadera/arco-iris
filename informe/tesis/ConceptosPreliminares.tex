@@ -23,12 +23,12 @@
 
 	
 	\subsection{Lenguajes de Descripción de Arquitecturas}
-		\todo{TURCO: objetivo de esta seccion: explicar ADL - revisar? aumentar?}
+		
 		Un problema fundamental de las arquitecturas de los sistemas basados en componentes ha sido encontrar la notación apropiada para definir dichos sistemas.
 		
-		Un buen lenguaje para la descripción de arquitecturas permite generar una documentación clara sobre los componentes del sistema, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las propiedades del sistema y automatizar su análisis y hasta puede llegar a utilizarse para la generación automática del sistema.
+		Un buen lenguaje para la descripción de arquitecturas permite generar una documentación clara sobre los componentes del sistema, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las propiedades del sistema y automatizar su análisis y hasta puede llegar a utilizarse para la generación automática del sistema. También puede utilizarse para validar de manera temprana decisiones de arquitecturas, reduciendo así el tiempo de implementación y evitando malgastar recursos en el desarrollo de un sistema.
 		
-		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre propiedades críticas del sistema, como son la performance y la confiabilidad. Ésta es la razón principal que ha motivado el avance de los ADLs (Architecture Description Language).\cite{GMW99}
+		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre propiedades críticas del sistema, como por ejemplo la performance o la confiabilidad. Ésta es la razón principal que ha motivado el avance de los ADLs (Architecture Description Language).\cite{GMW99}
 		
 		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de que ya permiten definir una base formal para la descripción y el análisis de los mismos.
 		
@@ -38,14 +38,16 @@
 	
 	Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los restantes subproyectos dentro de Able utilizan Acme en menor o en mayor medida.
 		 
-	Además de los benecifios de todo ADL, el lenguaje Acme y su kit de herramientas proveen las siguientes capacidades fundamentales:
+	Además de los benecifios de todo ADL, el lenguaje Acme y su kit de herramientas \emph{AcmeLib (Acme Tool Developer's Library)} proveen las siguientes capacidades fundamentales:
 	
 \begin{itemize}
-	\item Intercambio Arquitectural: al proveer un formato de intercambio genérico para diseñar arquitecturas de software, Acme permite a los desarrolladores de herramientas de Arquitectura de Software integrar fácilmente con otras herramientas complementarias basadas también en Acme. De esta manera, los arquitectos que usan herramientas basadas en Acme tiene un espectro más amplio de herramientas de análisis y diseño que quienes diseñan sus herramientas usando otros ADLs.
-	\item Extensibilidad: Acme provee una base sólida y extensible y una infraestructura que evita que los desarrolladores de herramientas deban modificar la infraestructura sobre la cual trabajan.
+	\item Intercambio Arquitectural: al proveer un formato de intercambio genérico para diseñar arquitecturas de software, Acme permite a los desarrolladores de herramientas integrar fácilmente con otras herramientas complementarias. De esta manera, los arquitectos que usan herramientas basadas en Acme tienen un espectro más amplio de herramientas de análisis y diseño que quienes diseñan sus arquitecturas usando otros ADLs.
+	\item Extensibilidad: Acme provee una base sólida, genérica y extensible, y una infraestructura que evita que los desarrolladores vuelvan a construir herramientas de base. Más aún, debido a su idea originaria de lenguaje de intercambio genérico, Acme permite que las herramientas que se han desarrollado utilizándolo sean compatibles con una gran variedad ADLs existentes y con herramientas con un mínimo esfuerzo, y hasta en algunos casos sin esfuerzo alguno.
 \end{itemize}
 
-	\todo{agregar ejemplo de ACME?}
+	Actualmente, el lenguaje Acme y \emph{Acme Tool Developer's Library (AcmeLib)}, proveen una infraestructura genérica y extensible para describir, representar, analizar y generar descripciones de arquitecturas de software.
+	
+	Más adelante, en la sección \ref{CasoPracticoSection}, veremos un ejemplo del lenguaje al mostrar la descripción completa en Acme de la arquitectura del sistema que utilizaremos para mostrar los resultados de la extensión implementada en el presente trabajo.
 
 	\subsection{Rainbow}
 
