@@ -17,6 +17,7 @@ import org.sa.rainbow.util.TypeNamePair;
 import org.sa.rainbow.util.Util;
 import org.sa.rainbow.util.ValuePropertyMappingPair;
 
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
 
 /**
@@ -94,12 +95,13 @@ public class End2EndRespTimeGaugeWithStimulus extends RegularPatternGauge {
 				// massage value name for mapping purposes
 				valueName = valueName.replace("*", host);
 				if (m_mappings.containsKey(valueName)) {
-					// ZNewsSys.c0.experRespTime
+					// e.g. ZNewsSys.c0.experRespTime
 					String pExperRespTime = m_modelDesc.name() + Util.DOT + m_mappings.get(valueName);
 					if (m_logger.isTraceEnabled())
 						log(Level.TRACE, "Updating " + pExperRespTime + " using " + valueName + " = " + dur);
 					eventHandler().reportValue(
-							new AttributeValueTripleWithStimulus(pExperRespTime, valueName, dur, stimulusName));
+							new AttributeValueTripleWithStimulus(pExperRespTime, valueName, dur, new Stimulus(
+									stimulusName)));
 				}
 			}
 		}

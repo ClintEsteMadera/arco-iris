@@ -13,29 +13,25 @@ import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class SelfHealingConfigurationManager {
 
 	/** Holds a list of Scenarios keyed by their corresponding stimulus name */
-	private Map<String, List<SelfHealingScenario>> scenariosMap;
+	private Map<Stimulus, List<SelfHealingScenario>> scenariosMap;
 
 	/**
 	 * Holds a list of Stimulus keyed by the property involved in the Response Measure Used for simulation only
 	 */
-	private Map<String, List<String>> stimulusByPropertyMap;
+	private Map<String, List<Stimulus>> stimulusByPropertyMap;
 
 	private final SelfHealingConfigurationRepository selfHealingConfigurationRepository;
 
 	private int maxPriority;
 
 	private static RainbowLogger logger = RainbowLoggerFactory.logger(SelfHealingConfigurationManager.class);
-
-	/**
-	 * Reserved keyword for scenario's stimulus.
-	 */
-	private static final String ANY_STIMULUS_KEYWORD = "ANY";
 
 	/**
 	 * Constructor
@@ -49,20 +45,21 @@ public class SelfHealingConfigurationManager {
 		this.loadScenarios();
 	}
 
-	public List<String> getStimulus(String qualifiedPropertyNAme) {
-		List<String> stimulusPerProperty = this.stimulusByPropertyMap.get(qualifiedPropertyNAme);
-		return stimulusPerProperty == null ? new ArrayList<String>(0) : stimulusPerProperty;
+	public List<Stimulus> getStimuli(String qualifiedPropertyName) {
+		List<Stimulus> stimulusPerProperty = this.stimulusByPropertyMap.get(qualifiedPropertyName);
+		return stimulusPerProperty == null ? new ArrayList<Stimulus>(0) : stimulusPerProperty;
 	}
 
-	public List<SelfHealingScenario> getScenarios(String stimulus) {
+	public List<SelfHealingScenario> getScenarios(Stimulus stimulus) {
 		List<SelfHealingScenario> result = new ArrayList<SelfHealingScenario>(this.scenariosMap.get(stimulus));
-		if (!ANY_STIMULUS_KEYWORD.equals(stimulus) && this.scenariosMap.get(ANY_STIMULUS_KEYWORD) != null) {
-			result.addAll(this.scenariosMap.get(ANY_STIMULUS_KEYWORD));
+		List<SelfHealingScenario> scenariosValidForAnyStimulus = this.scenariosMap.get(Stimulus.ANY);
+		if (scenariosValidForAnyStimulus != null) {
+			result.addAll(scenariosValidForAnyStimulus);
 		}
 		return result;
 	}
 
-	public List<SelfHealingScenario> findBrokenScenarios(String stimulus) {
+	public List<SelfHealingScenario> findBrokenScenarios(Stimulus stimulus) {
 		log(Level.INFO, "Finding broken scenarios...");
 
 		List<SelfHealingScenario> brokenScenarios = new ArrayList<SelfHealingScenario>();
@@ -108,15 +105,15 @@ public class SelfHealingConfigurationManager {
 	private Collection<SelfHealingScenario> loadScenarios() {
 		Collection<SelfHealingScenario> scenarios = this.selfHealingConfigurationRepository.getEnabledScenarios();
 
-		this.scenariosMap = new HashMap<String, List<SelfHealingScenario>>();
-		this.stimulusByPropertyMap = new HashMap<String, List<String>>();
+		this.scenariosMap = new HashMap<Stimulus, List<SelfHealingScenario>>();
+		this.stimulusByPropertyMap = new HashMap<String, List<Stimulus>>();
 
 		for (SelfHealingScenario currentScenario : scenarios) {
-			String stimulus = currentScenario.getStimulus();
+			Stimulus stimulus = currentScenario.getStimulus();
+
+			loadStimulusByProperty(currentScenario, stimulus);
+
 			List<SelfHealingScenario> scenarioList;
-
-			loadStimulusPerProperty(currentScenario, stimulus);
-
 			if (this.scenariosMap.containsKey(stimulus)) {
 				scenarioList = this.scenariosMap.get(stimulus);
 			} else {
@@ -129,8 +126,8 @@ public class SelfHealingConfigurationManager {
 
 			// if the user does not specify any repair strategy, we consider all available ones
 			if (CollectionUtils.isEmpty(currentScenario.getRepairStrategies())) {
-				String[] allRepairStrategies = Oracle.instance().stitchLoader().getAllStrategyNames().toArray(
-						new String[] {});
+				String[] allRepairStrategies = Oracle.instance().stitchLoader().getAllStrategyNames()
+						.toArray(new String[] {});
 				currentScenario.addRepairStrategy(allRepairStrategies);
 			}
 		}
@@ -138,15 +135,15 @@ public class SelfHealingConfigurationManager {
 		return scenarios;
 	}
 
-	private void loadStimulusPerProperty(SelfHealingScenario currentScenario, String stimulus) {
-		List<String> stimulusPerScenarioList;
+	private void loadStimulusByProperty(SelfHealingScenario currentScenario, Stimulus stimulus) {
+		List<Stimulus> stimulusPerScenarioList;
 		String responseMeasureProperty = currentScenario.getResponseMeasure().getConstraint()
 				.getFullyQualifiedPropertyName();
 
 		if (this.stimulusByPropertyMap.containsKey(responseMeasureProperty)) {
 			stimulusPerScenarioList = this.stimulusByPropertyMap.get(responseMeasureProperty);
 		} else {
-			stimulusPerScenarioList = new ArrayList<String>();
+			stimulusPerScenarioList = new ArrayList<Stimulus>();
 			stimulusByPropertyMap.put(responseMeasureProperty, stimulusPerScenarioList);
 		}
 		stimulusPerScenarioList.add(stimulus);

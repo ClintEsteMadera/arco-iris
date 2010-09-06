@@ -31,6 +31,7 @@ import org.sa.rainbow.util.TypeNamePair;
 import org.sa.rainbow.util.Util;
 import org.sa.rainbow.util.ValuePropertyMappingPair;
 
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
 
 /**
@@ -45,14 +46,14 @@ import ar.uba.dc.thesis.selfhealing.AttributeValueTripleWithStimulus;
  * <p>
  * Algorithm:
  * <ol>
- * <li> Read gauge specs (done in {@link org.sa.rainbow.core.Rainbow <code>Rainbow</code>})
- * <li> Obtain set of gauge types, and issue event to connect to those
- * <li> Create all gauge instances ({@link org.sa.rainbow.model.manager.ModelManager <code>ModelManager</code>} takes
+ * <li>Read gauge specs (done in {@link org.sa.rainbow.core.Rainbow <code>Rainbow</code>})
+ * <li>Obtain set of gauge types, and issue event to connect to those
+ * <li>Create all gauge instances ({@link org.sa.rainbow.model.manager.ModelManager <code>ModelManager</code>} takes
  * care of this by invoking initGauges())
- * <li> Start handling gauge reports of values
- * <li> Monitor beacons...
- * <li> Clean-up: delete gauges (actually, would already be done by the
- * {@link org.sa.rainbow.translator.RainbowDelegate <code>RainbowDelegate</code>}!)
+ * <li>Start handling gauge reports of values
+ * <li>Monitor beacons...
+ * <li>Clean-up: delete gauges (actually, would already be done by the {@link org.sa.rainbow.translator.RainbowDelegate
+ * <code>RainbowDelegate</code>}!)
  * </ol>
  */
 public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsumer {
@@ -152,7 +153,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 	 * (non-Javadoc)
 	 * 
 	 * @see org.sa.rainbow.translator.gauges.IGaugeConsumer#onReportCreated(java.lang.String,
-	 *      org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair)
+	 * org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair)
 	 */
 	public void onReportCreated(String id, TypeNamePair gaugeDesc, TypeNamePair modelDesc) {
 		// mark gauge created, meaning ready for configure
@@ -181,7 +182,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 	 * (non-Javadoc)
 	 * 
 	 * @see org.sa.rainbow.translator.gauges.IGaugeConsumer#onReportConfigured(java.lang.String,
-	 *      org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair, java.util.List)
+	 * org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair, java.util.List)
 	 */
 	public void onReportConfigured(String id, TypeNamePair gaugeDesc, TypeNamePair modelDesc,
 			List<AttributeValueTriple> configParams) {
@@ -203,7 +204,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 	 * (non-Javadoc)
 	 * 
 	 * @see org.sa.rainbow.translator.gauges.IGaugeConsumer#onReportDeleted(java.lang.String,
-	 *      org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair)
+	 * org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair)
 	 */
 	public void onReportDeleted(String id, TypeNamePair gaugeDesc, TypeNamePair modelDesc) {
 		GaugeInstanceDescription instSpec = m_id2Inst.get(id);
@@ -235,8 +236,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 	 * (non-Javadoc)
 	 * 
 	 * @see org.sa.rainbow.translator.gauges.IGaugeConsumer#onReportValue(java.lang.String,
-	 *      org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair,
-	 *      org.sa.rainbow.util.AttributeValueTriple)
+	 * org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.AttributeValueTriple)
 	 */
 	public void onReportValue(String id, TypeNamePair gaugeDesc, TypeNamePair modelDesc, AttributeValueTriple value) {
 		GaugeInstanceDescription instSpec = m_id2Inst.get(id);
@@ -255,7 +255,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 	 * (non-Javadoc)
 	 * 
 	 * @see org.sa.rainbow.translator.gauges.IGaugeConsumer#onReportMultipleValues(java.lang.String,
-	 *      org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair, java.util.List)
+	 * org.sa.rainbow.util.TypeNamePair, org.sa.rainbow.util.TypeNamePair, java.util.List)
 	 */
 	public void onReportMultipleValues(String id, TypeNamePair gaugeDesc, TypeNamePair modelDesc,
 			List<AttributeValueTriple> values) {
@@ -312,8 +312,9 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 						instSpec.setState(GaugeInstanceDescription.State.CREATING);
 						if (m_logger.isTraceEnabled())
 							log(Level.TRACE, "GC: creating gauge '" + instSpec.gaugeName() + "'");
-						m_eventHandler.createGauge(location, new TypeNamePair(instSpec.gaugeType(), instSpec
-								.gaugeName()), instSpec.modelDesc(), instSpec.setupParams(), instSpec.mappings());
+						m_eventHandler.createGauge(location,
+								new TypeNamePair(instSpec.gaugeType(), instSpec.gaugeName()), instSpec.modelDesc(),
+								instSpec.setupParams(), instSpec.mappings());
 					}
 				} else if (instSpec.notYetConfigured()) {
 					allCreated = false;
@@ -371,8 +372,9 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 								}
 							}
 						}
-						m_eventHandler.configureGauge(instSpec.id(), new TypeNamePair(instSpec.gaugeType(), instSpec
-								.gaugeName()), instSpec.modelDesc(), instSpec.configParams());
+						m_eventHandler.configureGauge(instSpec.id(),
+								new TypeNamePair(instSpec.gaugeType(), instSpec.gaugeName()), instSpec.modelDesc(),
+								instSpec.configParams());
 					}
 				} else if (!instSpec.isAlive()) {
 					allConfigured = false;
@@ -393,7 +395,7 @@ public class GaugeCoordinatorWithScenarios implements IDisposable, IGaugeConsume
 		Model rainbowModel = Oracle.instance().rainbowModel();
 
 		if (value instanceof AttributeValueTripleWithStimulus) {
-			String stimulus = ((AttributeValueTripleWithStimulus) value).getStimulus();
+			Stimulus stimulus = ((AttributeValueTripleWithStimulus) value).getStimulus();
 			((RainbowModelWithScenarios) rainbowModel).updateProperty(value.type(), value.value(), stimulus);
 			updMsg += " / stimulus: " + stimulus;
 		} else {

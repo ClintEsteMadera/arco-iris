@@ -7,25 +7,27 @@ import org.sa.rainbow.util.AttributeValueTriple;
 import org.sa.rainbow.util.TypeNamePair;
 import org.sa.rainbow.util.Util;
 
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
+
 public class AttributeValueTripleWithStimulus extends AttributeValueTriple {
 
 	private static final long serialVersionUID = 1L;
 
 	private static Pattern m_valueTriplePattern;
 
-	private final String stimulus;
+	private final Stimulus stimulus;
 
-	public AttributeValueTripleWithStimulus(String type, String name, Object value, String stimulus) {
+	public AttributeValueTripleWithStimulus(String type, String name, Object value, Stimulus stimulus) {
 		super(type, name, value);
 		this.stimulus = stimulus;
 	}
 
-	public AttributeValueTripleWithStimulus(TypeNamePair attr, Object value, String stimulus) {
+	public AttributeValueTripleWithStimulus(TypeNamePair attr, Object value, Stimulus stimulus) {
 		super(attr, value);
 		this.stimulus = stimulus;
 	}
 
-	public String getStimulus() {
+	public Stimulus getStimulus() {
 		return stimulus;
 	}
 
@@ -77,7 +79,7 @@ public class AttributeValueTripleWithStimulus extends AttributeValueTriple {
 				value = Util.parseObject(valStr, type);
 			}
 		}
-		return new AttributeValueTripleWithStimulus(type, name, value, stimulusName);
+		return new AttributeValueTripleWithStimulus(type, name, value, new Stimulus(stimulusName));
 	}
 
 }

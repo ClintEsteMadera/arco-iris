@@ -18,9 +18,7 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private Concern concern;
 
-	private String stimulusSource;
-
-	private String stimulus;
+	private Stimulus stimulus;
 
 	@XStreamImplicit
 	private List<? extends Environment> environments;
@@ -39,13 +37,12 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.responseMeasure = new ResponseMeasure();
 	}
 
-	public AtamScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
+	public AtamScenario(Long id, String name, Concern concern, Stimulus stimulus,
 			List<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions) {
 		super(id);
 		this.name = name;
 		this.concern = concern;
-		this.stimulusSource = stimulusSource;
 		this.stimulus = stimulus;
 		this.environments = environments;
 		this.artifact = artifact;
@@ -62,11 +59,7 @@ public abstract class AtamScenario extends ThesisPojo {
 		return this.concern;
 	}
 
-	public String getStimulusSource() {
-		return this.stimulusSource;
-	}
-
-	public String getStimulus() {
+	public Stimulus getStimulus() {
 		return this.stimulus;
 	}
 
@@ -98,11 +91,7 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.concern = concern;
 	}
 
-	public void setStimulusSource(String stimulusSource) {
-		this.stimulusSource = stimulusSource;
-	}
-
-	public void setStimulus(String stimulus) {
+	public void setStimulus(Stimulus stimulus) {
 		this.stimulus = stimulus;
 	}
 

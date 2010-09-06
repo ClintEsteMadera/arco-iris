@@ -60,8 +60,7 @@
   <scenarios>
     <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
-      <stimulusSource>Any Client requesting news content</stimulusSource>
-      <stimulus>GetNewsContentClientStimulus</stimulus>
+      <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
       <environments>
         <defaultEnvironment></defaultEnvironment>
       </environments>

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.acmestudio.acme.ModelHelper;
 import org.acmestudio.acme.core.IAcmeObject;
@@ -41,6 +41,8 @@ import org.sa.rainbow.monitor.sim.SimulationRunner;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.stitch.util.Tool;
 import org.sa.rainbow.util.Util;
+
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 
 /**
  * See {@link: ArchEvaluatorWithScenarios} javadoc
@@ -86,7 +88,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.sa.rainbow.core.IDisposable#dispose()
 	 */
 	public void dispose() {
@@ -110,7 +112,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#doTerminate()
 	 */
 	@Override
@@ -128,7 +130,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	/**
 	 * This method logs in the Manager Panel with DEBUG level. For a more flexible log method, please see
 	 * {@link #log(Level, String)}
-	 *
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#log(java.lang.String)
 	 */
 	@Override
@@ -142,7 +144,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.sa.rainbow.core.AbstractRainbowRunnable#runAction()
 	 */
 	@Override
@@ -164,12 +166,12 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 					String key = e.getKey();
 					String qualifiedPropertyName = getQualifiedPropertyName(key);
 					if (qualifiedPropertyName != null) {
-						List<String> stimulusForProperty = m_model.getStimulus(qualifiedPropertyName);
+						List<Stimulus> stimulusForProperty = m_model.getStimuli(qualifiedPropertyName);
 						if (!stimulusForProperty.isEmpty()) {
-							for (String stimulus : stimulusForProperty) {
+							for (Stimulus stimulus : stimulusForProperty) {
 								m_model.updateProperty(key, e.getValue(), stimulus);
 							}
-						}else{
+						} else {
 							m_model.updateProperty(key, e.getValue(), null);
 						}
 					} else {
@@ -192,7 +194,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 	/**
 	 * Returns the full path of the property with the component type instead of the instance of the component. Example:
 	 * for ZNewSys.c0.experRespTime returns ZNewSys.ClientT.experRespTime
-	 *
+	 * 
 	 * @param qualifiedPropertyInstance
 	 *            e.g: ZNewsSys.ClientT.experRespTime
 	 * @return
@@ -213,8 +215,8 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 						.getDeclaredTypes();
 				for (IAcmeElementTypeRef<IAcmeComponentType> acmeComponentTypeRef : declaredTypesRefs) {
 					if (acmeComponentTypeRef.getTarget() instanceof AcmeComponentType) {
-						result = qualifiedPropertyInstance.replace(split[1], ((AcmeComponentType) acmeComponentTypeRef
-								.getTarget()).getName());
+						result = qualifiedPropertyInstance.replace(split[1],
+								((AcmeComponentType) acmeComponentTypeRef.getTarget()).getName());
 					}
 				}
 
@@ -225,9 +227,9 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.sa.rainbow.model.manager.IModelManager#queryElementProperty(java.lang.String,
-	 *      org.acmestudio.acme.element.IAcmeElementInstance)
+	 * org.acmestudio.acme.element.IAcmeElementInstance)
 	 */
 	public Object queryElementProperty(String propName, IAcmeElementInstance<?, ?> element) {
 		String sysId = element.getQualifiedName() + "." + propName;
@@ -238,7 +240,7 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.sa.rainbow.model.manager.IModelManager#availableServices(org.acmestudio.acme.element.IAcmeElementType)
 	 */
 	public int availableServices(IAcmeElementType<?, ?> type) {
@@ -252,9 +254,9 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.sa.rainbow.model.manager.IModelManager#findServices(org.acmestudio.acme.element.IAcmeElementType,
-	 *      java.util.Map)
+	 * java.util.Map)
 	 */
 	public Set<IAcmeElementInstance<?, ?>> findServices(IAcmeElementType<?, ?> type, Map<String, String> filters) {
 		Set<IAcmeElementInstance<?, ?>> services = new HashSet<IAcmeElementInstance<?, ?>>();
@@ -294,8 +296,8 @@ public class ModelManagerWithScenarios extends AbstractRainbowRunnable implement
 			TargetSystem sys = Oracle.instance().targetSystem();
 			Set<?> sysServices = sys.findServices(type.getQualifiedName(), filters);
 			for (Object o : sysServices) {
-				IAcmeElementInstance<?, ?> inst = (IAcmeElementInstance<?, ?>) acmeModel.findNamedObject(acmeModel, o
-						.toString());
+				IAcmeElementInstance<?, ?> inst = (IAcmeElementInstance<?, ?>) acmeModel.findNamedObject(acmeModel,
+						o.toString());
 				if (inst != null) {
 					services.add(inst);
 				}
