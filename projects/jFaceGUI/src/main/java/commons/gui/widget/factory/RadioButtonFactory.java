@@ -11,10 +11,6 @@ import commons.gui.widget.creation.binding.Binding;
 import commons.gui.widget.creation.metainfo.RadioButtonMetainfo;
 import commons.utils.ClassUtils;
 
-/**
- * 
- */
-
 public abstract class RadioButtonFactory {
 
 	public static Control createRadioButtonGroup(RadioButtonMetainfo metainfo) {
@@ -32,6 +28,7 @@ public abstract class RadioButtonFactory {
 		} else if (metainfo.enumClass != null) {
 			items = createLabelsAndValuesFrom(metainfo.enumClass);
 		} else {
+			@SuppressWarnings("rawtypes")
 			final EditType eType = binding.getCompositeModel().getValueType(binding.getPropertyName());
 			items = createLabelsAndValuesFrom(eType);
 		}
@@ -76,6 +73,7 @@ public abstract class RadioButtonFactory {
 		return selectedIndex;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static Object[][] createLabelsAndValuesFrom(Class<? extends Enum> enumType) {
 		Enum[] enumConstants = enumType.getEnumConstants();
 		Object[][] lblsAndValues = new Object[enumConstants.length][2];
@@ -85,8 +83,9 @@ public abstract class RadioButtonFactory {
 		return lblsAndValues;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static Object[][] createLabelsAndValuesFrom(EditType eType) {
+		@SuppressWarnings("unchecked")
 		final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(eType);
 
 		if (config == null || !(config instanceof EnumConfiguration)) {
