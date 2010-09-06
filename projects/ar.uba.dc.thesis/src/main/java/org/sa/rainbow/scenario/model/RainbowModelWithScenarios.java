@@ -50,6 +50,7 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RainbowModelWithScenarios implements Model, ModelRepository {
@@ -77,8 +78,8 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 		m_acmeEnv.useTypeChecker(TypeCheckerType.SYNCHRONOUS);
 
 		try { // load Acme model
-			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
-					.property(Rainbow.PROPKEY_MODEL_PATH));
+			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
+					Rainbow.property(Rainbow.PROPKEY_MODEL_PATH));
 			// set the family search path to the directory containing model file
 			m_acmeEnv.setProperty(StandaloneResourceProvider.FAMILY_SEARCH_PATH, modelDir.getParent());
 			String modelPath = modelDir.toString();
@@ -137,7 +138,7 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 	 * @param stimulus
 	 *            the stimulus who caused the update.
 	 */
-	public void updateProperty(String type, Object value, String stimulus) {
+	public void updateProperty(String type, Object value, Stimulus stimulus) {
 		this.updateProperty(type, value);
 		StringBuffer msg = new StringBuffer("Updated property because of stimulus: ");
 		msg.append(stimulus == null ? "NO STIMULUS!" : stimulus);
@@ -184,8 +185,8 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 		}
 	}
 
-	public List<String> getStimulus(String property) {
-		return this.selfHealingConfigurationManager.getStimulus(property);
+	public List<Stimulus> getStimuli(String property) {
+		return this.selfHealingConfigurationManager.getStimuli(property);
 	}
 
 	public List<Number> getAllInstancesPropertyValues(String systemName, String name, String property) {

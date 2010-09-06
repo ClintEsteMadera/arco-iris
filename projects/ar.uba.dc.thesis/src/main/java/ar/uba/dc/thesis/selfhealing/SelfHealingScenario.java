@@ -18,6 +18,7 @@ import ar.uba.dc.thesis.atam.scenario.model.AtamScenario;
 import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
@@ -48,12 +49,11 @@ public class SelfHealingScenario extends AtamScenario {
 		this.enabled = true;
 	}
 
-	public SelfHealingScenario(Long id, String name, Concern concern, String stimulusSource, String stimulus,
+	public SelfHealingScenario(Long id, String name, Concern concern, Stimulus stimulus,
 			List<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions, boolean enabled,
 			int priority) {
-		super(id, name, concern, stimulusSource, stimulus, environments, artifact, response, responseMeasure,
-				architecturalDecisions);
+		super(id, name, concern, stimulus, environments, artifact, response, responseMeasure, architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
 		this.repairStrategies = new ArrayList<String>();

@@ -10,6 +10,7 @@ import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
+import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
@@ -61,9 +62,8 @@ public class TestSelfHealingScenarioDao {
 
 	private SelfHealingScenario createClientResponseTimeScenario() {
 		String scenarioName = "Client Experienced Response Time Scenario";
-		String stimulusSource = NEWS_CONTENT_REQUEST_DESCRIPTION;
 		Artifact artifact = TestArtifactDao.CLIENT;
-		String stimulus = GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME;
+		Stimulus stimulus = new Stimulus(GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME, NEWS_CONTENT_REQUEST_DESCRIPTION);
 		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
@@ -73,15 +73,14 @@ public class TestSelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 1;
 
-		return new SelfHealingScenario(0L, scenarioName, Concern.RESPONSE_TIME, stimulusSource, stimulus, environments,
-				artifact, response, responseMeasure, archDecisions, enabled, priority);
+		return new SelfHealingScenario(0L, scenarioName, Concern.RESPONSE_TIME, stimulus, environments, artifact,
+				response, responseMeasure, archDecisions, enabled, priority);
 	}
 
 	private SelfHealingScenario createServerCostScenario() {
 		String scenarioName = "Server Cost Scenario";
-		String stimulusSource = "Anyone";
 		Artifact artifact = TestArtifactDao.SERVER;
-		String stimulus = "ANY";
+		Stimulus stimulus = Stimulus.ANY;
 		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
@@ -91,7 +90,7 @@ public class TestSelfHealingScenarioDao {
 		boolean enabled = true;
 		int priority = 2;
 
-		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulusSource, stimulus, environments,
-				artifact, response, responseMeasure, archDecisions, enabled, priority);
+		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulus, environments, artifact,
+				response, responseMeasure, archDecisions, enabled, priority);
 	}
 }
