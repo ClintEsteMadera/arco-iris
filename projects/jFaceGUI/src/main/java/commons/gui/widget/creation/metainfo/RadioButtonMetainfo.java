@@ -9,11 +9,27 @@ import org.eclipse.swt.widgets.Composite;
 import commons.gui.widget.creation.binding.Binding;
 import commons.properties.EnumProperty;
 
-/**
- * 
- */
-
 public class RadioButtonMetainfo extends ControlMetainfo {
+
+	private static RadioButtonMetainfo instance = new RadioButtonMetainfo();
+
+	public boolean emptyGroupName;
+
+	public boolean useGroup;
+
+	public boolean useCodedItems;
+
+	public Object[][] codedItems;
+
+	public Class<? extends Enum> enumClass;
+
+	public int numColumns;
+
+	public int selectedIndex;
+
+	public Object selectedValue;
+
+	public List<IPropertyChangeListener> listeners;
 
 	public static RadioButtonMetainfo create(Composite composite, EnumProperty label, Binding binding, boolean readOnly) {
 		instance.applyDefaults();
@@ -46,24 +62,4 @@ public class RadioButtonMetainfo extends ControlMetainfo {
 		this.listeners = new ArrayList<IPropertyChangeListener>();
 		this.applyDefaults();
 	}
-
-	private static RadioButtonMetainfo instance = new RadioButtonMetainfo();
-
-	public boolean emptyGroupName;
-
-	public boolean useGroup;
-
-	public boolean useCodedItems;
-
-	public Object[][] codedItems;
-
-	public Class<? extends Enum> enumClass;
-
-	public int numColumns;
-
-	public int selectedIndex;
-
-	public Object selectedValue;
-
-	public List<IPropertyChangeListener> listeners;
 }
