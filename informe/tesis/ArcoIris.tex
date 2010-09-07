@@ -9,7 +9,7 @@
 \todo{JONY: Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
 
 	\subsection{Idea Básica}
-	La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto-reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo; y en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto-reparación del sistema cuando uno de los escenarios no se cumple.
+	La idea de esta tesis es extender el \emph{framework} Rainbow para poder lograr una implementación más flexible y poderosa del mecanismo de auto reparación, ofreciendo a su vez la posibilidad de hacer visible dicho mecanismo a los \emph{stakeholders} de la aplicación, permitiéndoles involucrarse en la definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo; y en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto reparación del sistema cuando uno de los escenarios no se cumple.
 		
 	Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en Rainbow trabaja hoy en día. A continuación detallamos los cambios propuestos.
 
@@ -50,13 +50,13 @@
 	La \textbf{Cuantificación de la Respuesta} es también importante ya que de ella surgen las restricciones que deben ser evaluadas para lanzar la auto reparación. Al hacer estos cambios, las restricciones que se usaban anteriormente en Rainbow pasarían a ser en realidad una parte de un Escenario de Atributo de Calidad, dando de esta manera mayor visibilidad a los \emph{stakeholders} de estas restricciones en Rainbow solo conocidas por los arquitectos. Entonces, dadas las condiciones de que el estímulo del escenario haya sido invocado (o cualquier estímulo si así lo determina el escenario), y de que el entorno del escenario aplique al estado actual del sistema, el siguiente paso será evaluar la restricción definida en la cuantificación de la respuesta de cada escenario para ver si el mismo necesita ser reparado o no. Una vez se haya determinado que el sistema requiere ser reparado, se pasará a la siguiente etapa que constará en determinar cuál es la estrategia que deja al escenario en un mejor estado.
 					
 	\subsection{Prioridades entre Escenarios}
-	Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto-reparación, se tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de modo tal que la estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación considerada más importante para el usuario.
+	Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto reparación, se tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de modo tal que la estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación considerada más importante para el usuario.
 					
 	\subsection{Estrategias y su Relación con los Escenarios}
 	Asociar las estrategias de reparación a los escenarios. Por ejemplo, un escenario podría incluir información del estilo ``Si este escenario se ve comprometido, implementar tal reparación''. Esto agrega la ventaja de que ahora, gracias a los escenarios, los problemas y sus posibles soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Dichas estrategias (serían más de una, ordenadas por prioridad al igual que los escenarios) poseen la información necesaria para permitir simular su aplicación y estimar cómo quedaría el sistema luego de haber aplicado dicha estrategia. (estimación de la nueva ``utilidad del sistema''). Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o no de los escenarios requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de la estrategia simulada.
 
 
-	\subsection{Detección: cuando activar el mecanismo de auto-reparación}
+	\subsection{Detección: cuando activar el mecanismo de auto reparación}
 		Debido a que, con este nuevo enfoque, todo pasa por el concepto de escenario, es necesario establecer cambios en la lógica aplicada por el framework para detectar que es momento de intentar auto-reparar el sistema (i.e. evaluar restricciones o invariantes del mismo). Dichas restricciones ya no estarían más embebidas en los componentes de la arquitectura (modelados con ACME) sino que las \emph{constraints} a evaluar serían aquellas presentes en la cuantificación de la respuesta de cada escenario.
 		
 		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en ACME) e invoca finalmente al \textbf{Evaluador de Restricciones} para que busque aquellos escenarios que posean al estímulo ejecutado y que estén definidos para el \textbf{Entorno} de ejecución actual y que las restricciones asociadas a sus \textbf{Cuantificaciones de Respuesta} no se cumplan. Aquellos escenarios que cumplan dichas condiciones serán aquellos escenarios que el Manejador de Reparaciones deberá intentar reparar.
@@ -73,7 +73,7 @@
 		El objetivo final es, además de reparar el inconveniente hallado, evitar perjudicar algún otro escenario de mayor prioridad y mediante el uso de heurísticas, poder aproximar la mejor estrategia de reparación a llevar a cabo de modo que la \emph{utilidad del sistema} se maximize.
 
 	\subsection{Eliminación de limitaciones}
-		En la implementación actual de Rainbow, la cantidad de restricciones evaluada es fija. En nuestra versión, los stakeholders podrán cargar una cantidad ilimitada de escenarios y cambiar prioridades relativas y posibles estrategias de reparación. Esto hará que sólo el sistema pueda evaluar correctamente todos los factores a tener en cuenta al momento de aplicar la auto-reparación.
+		En la implementación actual de Rainbow, la cantidad de restricciones evaluada es fija. En nuestra versión, los stakeholders podrán cargar una cantidad ilimitada de escenarios y cambiar prioridades relativas y posibles estrategias de reparación. Esto hará que sólo el sistema pueda evaluar correctamente todos los factores a tener en cuenta al momento de aplicar la auto reparación.
 		
 		\begin{sidewaystable}
 		\begin{center}
