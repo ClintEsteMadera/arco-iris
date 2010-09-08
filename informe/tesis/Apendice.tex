@@ -401,6 +401,7 @@ System ZNewsSys : ZNewsFam = {
 \end{verbatim}
 }
 
+\newpage
 \section{Tácticas de Znn}\label{tacticasZNN}
 
 {\scriptsize
@@ -508,5 +509,63 @@ tactic raiseFidelity (int step, float fracReq) {
     forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
   }
 }
+\end{verbatim}
+}
+
+\newpage
+\section{Representación en XML del Escenario de Tiempo de Res\-pues\-ta}\label{scenarioExpRespTimeXML}
+
+{\scriptsize
+\begin{verbatim}
+    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
+      <concern>RESPONSE_TIME</concern>
+      <stimulusSource>Any Client requesting news content</stimulusSource>
+      <stimulus>GetNewsContentClientStimulus</stimulus>
+      <environments>
+        <defaultEnvironment></defaultEnvironment>
+      </environments>
+      <artifact reference="../../../artifacts/artifact"/>
+      <response>Requested News Content</response>
+      <responseMeasure>
+        <description>Experienced response time is within threshold</description>
+        <constraint class="numericBinaryRelationalConstraint" sum="false">
+          <artifact reference="../../../../../artifacts/artifact"/>
+          <property>experRespTime</property>
+          <binaryOperator>LESS_THAN</binaryOperator>
+          <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
+        </constraint>
+      </responseMeasure>
+      <architecturalDecisions/>
+      <repairStrategy></repairStrategy>
+    </selfHealingScenario>
+\end{verbatim}
+}
+
+\newpage
+\section{Representación en XML del Escenario de Costo}\label{scenarioCostXML}
+
+{\scriptsize
+\begin{verbatim}
+    <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
+      <concern>SERVER_COST</concern>
+      <stimulusSource>Anyone</stimulusSource>
+      <stimulus>ANY</stimulus>
+      <environments>
+        <defaultEnvironment reference="../../../selfHealingScenario/environments/defaultEnvironment"/>
+      </environments>
+      <artifact reference="../../../artifacts/artifact[2]"/>
+      <response>The proper response for the request</response>
+      <responseMeasure>
+        <description>Active servers amount is within threshold</description>
+        <constraint class="numericBinaryRelationalConstraint" sum="true">
+          <artifact reference="../../../../../artifacts/artifact[2]"/>
+          <property>cost</property>
+          <binaryOperator>LESS_THAN_OR_EQUALS</binaryOperator>
+          <constantToCompareThePropertyWith class="int">1</constantToCompareThePropertyWith>
+        </constraint>
+      </responseMeasure>
+      <architecturalDecisions/>
+      <repairStrategy></repairStrategy>
+    </selfHealingScenario>
 \end{verbatim}
 }
