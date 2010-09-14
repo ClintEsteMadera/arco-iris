@@ -128,7 +128,7 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 		}
 
 		this.selectionModel.addValueChangeListener(new ValueChangeListener() {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("rawtypes")
 			public void valueChange(ValueChangeEvent ev) {
 				updateState();
 			}
