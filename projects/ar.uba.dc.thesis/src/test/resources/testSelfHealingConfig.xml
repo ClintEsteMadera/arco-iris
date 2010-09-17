@@ -61,9 +61,7 @@
     <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
-      <environments>
-        <defaultEnvironment></defaultEnvironment>
-      </environments>
+      <defaultEnvironment></defaultEnvironment>
       <artifact reference="../../../artifacts/artifact"/>
       <response>Requested News Content</response>
       <responseMeasure>
@@ -75,15 +73,14 @@
           <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
-      <architecturalDecisions/>
-      <repairStrategy>VariedReduceResponseTime</repairStrategy>
+      <repairStrategies class="specificRepairStrategies">
+        <repairStrategy>ReduceOverallCost</repairStrategy>
+      </repairStrategies>
     </selfHealingScenario>
     <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
       <concern>SERVER_COST</concern>
       <stimulus any="true"/>
-      <environments>
-        <defaultEnvironment reference="../../../selfHealingScenario/environments/defaultEnvironment"/>
-      </environments>
+      <defaultEnvironment reference="../../selfHealingScenario/defaultEnvironment"/>
       <artifact reference="../../../artifacts/artifact[2]"/>
       <response>The proper response for the request</response>
       <responseMeasure>
@@ -95,8 +92,7 @@
           <constantToCompareThePropertyWith class="int">4</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
-      <architecturalDecisions/>
-      <repairStrategy>ReduceOverallCost</repairStrategy>
+      <repairStrategies class="allRepairStrategies"></repairStrategies>
     </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>

@@ -319,12 +319,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	/**
 	 * Algorithm:
 	 * <ol>
-	 * <li> Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to current
+	 * <li>Iterate through repertoire searching for enabled strategies, where "enabled" means applicable to current
 	 * system condition. NOTE: A Strategy is "applicable" iff the conditions of applicability of the root tactic is
 	 * true.
-	 * <li> Calculate scores of the enabled strategies (this involves evaluating the meta-information of the tactics in
+	 * <li>Calculate scores of the enabled strategies (this involves evaluating the meta-information of the tactics in
 	 * each strategy).
-	 * <li> Select and execute the highest scoring strategy
+	 * <li>Select and execute the highest scoring strategy
 	 */
 	public void triggerAdaptation(List<SelfHealingScenario> brokenScenarios) {
 		m_adaptNeeded = true;
@@ -334,7 +334,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.start();
 
-		Set<String> candidateStrategies = collectCandidateStrategies(brokenScenarios);
+		Set<String> candidateStrategies = collectCandidateStrategiesNames(brokenScenarios);
 
 		Environment currentSystemEnvironment = detectCurrentSystemEnvironment(this.m_model);
 		Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
@@ -420,12 +420,12 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		}
 	}
 
-	private Set<String> collectCandidateStrategies(List<SelfHealingScenario> brokenScenarios) {
-		Set<String> candidateStrategies = new HashSet<String>();
+	private Set<String> collectCandidateStrategiesNames(List<SelfHealingScenario> brokenScenarios) {
+		Set<String> candidateStrategiesNames = new HashSet<String>();
 		for (SelfHealingScenario brokenScenario : brokenScenarios) {
-			candidateStrategies.addAll(brokenScenario.getRepairStrategies());
+			candidateStrategiesNames.addAll(brokenScenario.getRepairStrategies().getRepairStrategiesNames());
 		}
-		return candidateStrategies;
+		return candidateStrategiesNames;
 	}
 
 	/**

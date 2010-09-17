@@ -1,7 +1,5 @@
 package scenariosui.gui.widget.composite;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -9,6 +7,9 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import scenariosui.gui.query.RepairStrategySearchCriteria;
 import scenariosui.gui.widget.dialog.RepairStrategiesSelectionDialog;
 import scenariosui.properties.ScenariosUIMessages;
+import ar.uba.dc.thesis.selfhealing.repair.AllRepairStrategies;
+import ar.uba.dc.thesis.selfhealing.repair.RepairStrategies;
+import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 
 import commons.exception.ValidationException;
 import commons.gui.widget.composite.ObjectSelectionMetainfo;
@@ -16,7 +17,7 @@ import commons.gui.widget.composite.SimpleObjectSelectionComposite;
 import commons.utils.Clonator;
 import commons.validation.ValidationError;
 
-public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionComposite<List<String>> {
+public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionComposite<RepairStrategies> {
 
 	private RepairStrategySearchCriteria criteria;
 
@@ -29,7 +30,7 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 	}
 
 	@Override
-	protected List<String> selectObject() {
+	protected RepairStrategies selectObject() {
 		DirectoryDialog dirDialog = new DirectoryDialog(this.getShell(), SWT.OPEN);
 		dirDialog.setText(ScenariosUIMessages.SELECT_STITCH_DIRECTORY.toString());
 		dirDialog.setFilterPath(this.stitchDir);
@@ -46,11 +47,21 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 		RepairStrategiesSelectionDialog repairStrategiesSelectionDialog = new RepairStrategiesSelectionDialog(criteria);
 		repairStrategiesSelectionDialog.open();
 
-		return repairStrategiesSelectionDialog.getSelectedRepairStrategyNames();
+		return new SpecificRepairStrategies(repairStrategiesSelectionDialog.getSelectedRepairStrategyNames());
 	}
 
 	@Override
-	protected void viewObject(List<String> object) {
+	protected void viewObject(RepairStrategies object) {
 		// we don't support viewing this kind of object
+	}
+
+	/**
+	 * We use the clear button to specify that all available Repair Strategies should be considered by Rainbow.
+	 * 
+	 * @return the value to be set when clearing.
+	 */
+	@Override
+	protected RepairStrategies getValueToSetWhenClearing() {
+		return AllRepairStrategies.getInstance();
 	}
 }

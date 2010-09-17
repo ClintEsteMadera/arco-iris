@@ -104,6 +104,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 		objectSelectionMetainfo = new ObjectSelectionMetainfo(swtGroup, ScenariosUILabels.REPAIR_STRATEGIES,
 				new BindingInfo(underlyingScenario, "repairStrategies"), super.readOnly);
 		objectSelectionMetainfo.canView = false;
+		objectSelectionMetainfo.nullable = true; // this button will be used for specifying "all repair strategies"
 		new RepairStrategiesSelectionComposite(objectSelectionMetainfo);
 
 		// TODO Architectural Decisions

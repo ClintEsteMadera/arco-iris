@@ -1,13 +1,11 @@
 MUST HAVES:
-- agregar el resto de los conceptos
-
-- Repair Strategies: poder elegir TODAS (null?)
+- agregar el resto de los conceptos a la GUI de environments
 
 - Ver DefaultEnvironment (cambiar pesos por default??)
 
 - cambiar la sumatoria por sumatoria o promedio
 
-- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
+- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3) y del dialogo de repair strategies
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
 
@@ -19,7 +17,7 @@ NICE TO HAVES:
 
 - poner como descripcion del SelfHealingConfiguration lo que el usuario pone como nombre de archivo?
 
-- ver el tema validaciones de objetos en gral?
+- ver el tema validaciones de objetos en gral? (invocar el metodo validate() de ThesisPojo?)
 
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.
 
