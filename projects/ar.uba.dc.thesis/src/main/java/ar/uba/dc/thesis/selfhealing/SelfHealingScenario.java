@@ -1,7 +1,5 @@
 package ar.uba.dc.thesis.selfhealing;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
@@ -22,10 +20,11 @@ import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
+import ar.uba.dc.thesis.selfhealing.repair.AllRepairStrategies;
+import ar.uba.dc.thesis.selfhealing.repair.RepairStrategies;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("selfHealingScenario")
 public class SelfHealingScenario extends AtamScenario {
@@ -38,14 +37,14 @@ public class SelfHealingScenario extends AtamScenario {
 	@XStreamAsAttribute
 	private int priority;
 
-	@XStreamImplicit(itemFieldName = "repairStrategy")
-	private final List<String> repairStrategies;
+	@XStreamAlias("repairStrategies")
+	private RepairStrategies repairStrategies;
 
 	private static RainbowLogger m_logger = RainbowLoggerFactory.logger(SelfHealingScenario.class);
 
 	public SelfHealingScenario() {
 		super();
-		this.repairStrategies = new ArrayList<String>();
+		this.repairStrategies = AllRepairStrategies.getInstance();
 		this.enabled = true;
 	}
 
@@ -56,7 +55,7 @@ public class SelfHealingScenario extends AtamScenario {
 		super(id, name, concern, stimulus, environments, artifact, response, responseMeasure, architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
-		this.repairStrategies = new ArrayList<String>();
+		this.repairStrategies = AllRepairStrategies.getInstance();
 
 		this.validate();
 	}
@@ -77,12 +76,12 @@ public class SelfHealingScenario extends AtamScenario {
 		this.priority = priority;
 	}
 
-	public List<String> getRepairStrategies() {
+	public RepairStrategies getRepairStrategies() {
 		return this.repairStrategies;
 	}
 
-	public void addRepairStrategy(String... repairStrategy) {
-		this.repairStrategies.addAll(Arrays.asList(repairStrategy));
+	public void setRepairStrategies(RepairStrategies repairStrategies) {
+		this.repairStrategies = repairStrategies;
 	}
 
 	public boolean applyFor(Environment environment) {
@@ -159,5 +158,4 @@ public class SelfHealingScenario extends AtamScenario {
 		}
 		return thereIsAnEnvironmentApplicable;
 	}
-
 }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
@@ -16,6 +15,7 @@ import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 
 public class SelfHealingConfigurationManager {
 
@@ -125,10 +125,10 @@ public class SelfHealingConfigurationManager {
 			this.maxPriority = Math.max(currentScenario.getPriority(), this.maxPriority);
 
 			// if the user does not specify any repair strategy, we consider all available ones
-			if (CollectionUtils.isEmpty(currentScenario.getRepairStrategies())) {
+			if (currentScenario.getRepairStrategies().useAllRepairStrategies()) {
 				String[] allRepairStrategies = Oracle.instance().stitchLoader().getAllStrategyNames()
 						.toArray(new String[] {});
-				currentScenario.addRepairStrategy(allRepairStrategies);
+				currentScenario.setRepairStrategies(new SpecificRepairStrategies(allRepairStrategies));
 			}
 		}
 

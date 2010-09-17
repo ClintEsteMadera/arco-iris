@@ -13,6 +13,8 @@ import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.selfhealing.repair.AllRepairStrategies;
+import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
@@ -82,9 +84,14 @@ public class SelfHealingConfigurationPersister {
 	private void initXStream() {
 		this.xstream = new XStream();
 		this.xstream.autodetectAnnotations(true);
+
 		this.xstream.alias("selfHealingConfiguration", SelfHealingConfiguration.class);
 		this.xstream.alias("numericBinaryRelationalConstraint", NumericBinaryRelationalConstraint.class);
 		this.xstream.alias("defaultEnvironment", DefaultEnvironment.class);
+		this.xstream.alias("specificRepairStrategies", SpecificRepairStrategies.class);
+		this.xstream.alias("allRepairStrategies", AllRepairStrategies.class);
+
 		this.xstream.registerConverter(new DefaultEnvironmentConverter());
+		this.xstream.registerConverter(new AllRepairStrategiesConverter());
 	}
 }

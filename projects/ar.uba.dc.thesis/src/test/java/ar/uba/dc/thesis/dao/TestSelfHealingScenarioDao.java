@@ -15,6 +15,8 @@ import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
+import ar.uba.dc.thesis.selfhealing.repair.AllRepairStrategies;
+import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 import ar.uba.dc.thesis.util.Collections;
 
 public class TestSelfHealingScenarioDao {
@@ -52,10 +54,10 @@ public class TestSelfHealingScenarioDao {
 
 	private List<SelfHealingScenario> createTestScenarios() {
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario();
-		clientResponseTimeScenario.addRepairStrategy("VariedReduceResponseTime");
+		clientResponseTimeScenario.setRepairStrategies(new SpecificRepairStrategies("VariedReduceResponseTime"));
 
 		SelfHealingScenario serverCostScenario = createServerCostScenario();
-		serverCostScenario.addRepairStrategy("ReduceOverallCost");
+		clientResponseTimeScenario.setRepairStrategies(new SpecificRepairStrategies("ReduceOverallCost"));
 
 		return Collections.createList(clientResponseTimeScenario, serverCostScenario);
 	}
