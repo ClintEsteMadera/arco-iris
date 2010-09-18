@@ -37,25 +37,24 @@ public class SelfHealingScenario extends AtamScenario {
 	@XStreamAsAttribute
 	private int priority;
 
-	@XStreamAlias("repairStrategies")
 	private RepairStrategies repairStrategies;
 
 	private static RainbowLogger m_logger = RainbowLoggerFactory.logger(SelfHealingScenario.class);
 
 	public SelfHealingScenario() {
 		super();
-		this.repairStrategies = AllRepairStrategies.getInstance();
 		this.enabled = true;
+		this.repairStrategies = AllRepairStrategies.getInstance();
 	}
 
 	public SelfHealingScenario(Long id, String name, Concern concern, Stimulus stimulus,
 			List<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions, boolean enabled,
-			int priority) {
+			int priority, RepairStrategies repairStrategies) {
 		super(id, name, concern, stimulus, environments, artifact, response, responseMeasure, architecturalDecisions);
 		this.enabled = enabled;
 		this.priority = priority;
-		this.repairStrategies = AllRepairStrategies.getInstance();
+		this.repairStrategies = repairStrategies;
 
 		this.validate();
 	}

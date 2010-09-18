@@ -73,8 +73,9 @@
           <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
+      <architecturalDecisions/>
       <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>ReduceOverallCost</repairStrategy>
+        <repairStrategy>VariedReduceResponseTime</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>
     <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
@@ -92,7 +93,10 @@
           <constantToCompareThePropertyWith class="int">4</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
-      <repairStrategies class="allRepairStrategies"></repairStrategies>
+      <architecturalDecisions/>
+      <repairStrategies class="specificRepairStrategies">
+        <repairStrategy>ReduceOverallCost</repairStrategy>
+      </repairStrategies>
     </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>
