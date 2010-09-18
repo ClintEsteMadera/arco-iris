@@ -1,26 +1,33 @@
 package ar.uba.dc.thesis.atam.scenario.model;
 
-import java.util.Collection;
+import java.util.Set;
 
 import ar.uba.dc.thesis.common.ThesisPojo;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 //TODO Decidir si tiene sentido incluír esto o no
+@XStreamAlias("architecturalDecision")
 public class ArchitecturalDecision extends ThesisPojo {
 
 	private static final long serialVersionUID = 1L;
 
 	private final String description;
 
-	private final Collection<String> sensitivityPoints;
+	@XStreamAlias("sensitivityPoints")
+	private final Set<String> sensitivityPoints;
 
-	private final Collection<String> tradeoffs;
+	@XStreamAlias("tradeoffs")
+	private final Set<String> tradeoffs;
 
-	private final Collection<String> risks;
+	@XStreamAlias("risk")
+	private final Set<String> risks;
 
-	private final Collection<String> nonRisks;
+	@XStreamAlias("nonRisk")
+	private final Set<String> nonRisks;
 
-	public ArchitecturalDecision(String description, Collection<String> sensitivityPoints,
-			Collection<String> tradeoffs, Collection<String> risks, Collection<String> nonRisks) {
+	public ArchitecturalDecision(String description, Set<String> sensitivityPoints, Set<String> tradeoffs,
+			Set<String> risks, Set<String> nonRisks) {
 		super();
 		this.description = description;
 		this.sensitivityPoints = sensitivityPoints;
@@ -35,19 +42,19 @@ public class ArchitecturalDecision extends ThesisPojo {
 		return this.description;
 	}
 
-	public Collection<String> getSensitivityPoints() {
+	public Set<String> getSensitivityPoints() {
 		return this.sensitivityPoints;
 	}
 
-	public Collection<String> getTradeoffs() {
+	public Set<String> getTradeoffs() {
 		return this.tradeoffs;
 	}
 
-	public Collection<String> getRisks() {
+	public Set<String> getRisks() {
 		return this.risks;
 	}
 
-	public Collection<String> getNonRisks() {
+	public Set<String> getNonRisks() {
 		return this.nonRisks;
 	}
 

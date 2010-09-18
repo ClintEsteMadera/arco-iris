@@ -29,7 +29,6 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private ResponseMeasure responseMeasure;
 
-	@XStreamImplicit
 	private Set<ArchitecturalDecision> architecturalDecisions;
 
 	public AtamScenario() {

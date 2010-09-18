@@ -15,7 +15,6 @@ import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
-import ar.uba.dc.thesis.selfhealing.repair.AllRepairStrategies;
 import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 import ar.uba.dc.thesis.util.Collections;
 
@@ -54,10 +53,7 @@ public class TestSelfHealingScenarioDao {
 
 	private List<SelfHealingScenario> createTestScenarios() {
 		SelfHealingScenario clientResponseTimeScenario = createClientResponseTimeScenario();
-		clientResponseTimeScenario.setRepairStrategies(new SpecificRepairStrategies("VariedReduceResponseTime"));
-
 		SelfHealingScenario serverCostScenario = createServerCostScenario();
-		clientResponseTimeScenario.setRepairStrategies(new SpecificRepairStrategies("ReduceOverallCost"));
 
 		return Collections.createList(clientResponseTimeScenario, serverCostScenario);
 	}
@@ -72,11 +68,13 @@ public class TestSelfHealingScenarioDao {
 				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN,
 						THRESHOLD_RESPONSE_TIME));
 		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
+
 		boolean enabled = true;
 		int priority = 1;
+		SpecificRepairStrategies repairStrategies = new SpecificRepairStrategies("VariedReduceResponseTime");
 
 		return new SelfHealingScenario(0L, scenarioName, Concern.RESPONSE_TIME, stimulus, environments, artifact,
-				response, responseMeasure, archDecisions, enabled, priority);
+				response, responseMeasure, archDecisions, enabled, priority, repairStrategies);
 	}
 
 	private SelfHealingScenario createServerCostScenario() {
@@ -88,11 +86,13 @@ public class TestSelfHealingScenarioDao {
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint(artifact, "cost", NumericBinaryOperator.LESS_THAN,
 						THRESHOLD_SERVER_COST, true));
+
 		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = true;
 		int priority = 2;
+		SpecificRepairStrategies repairStrategies = new SpecificRepairStrategies("ReduceOverallCost");
 
 		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulus, environments, artifact,
-				response, responseMeasure, archDecisions, enabled, priority);
+				response, responseMeasure, archDecisions, enabled, priority, repairStrategies);
 	}
 }
