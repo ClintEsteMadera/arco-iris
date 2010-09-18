@@ -76,7 +76,9 @@
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategy>EnlistServersResponseTime</repairStrategy>
+      <repairStrategies class="specificRepairStrategies">
+        <repairStrategy>EnlistServersResponseTime</repairStrategy>
+      </repairStrategies>
     </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>
