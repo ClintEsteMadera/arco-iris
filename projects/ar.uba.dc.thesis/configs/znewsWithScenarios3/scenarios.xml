@@ -76,7 +76,9 @@
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategy>ReduceOverallCost</repairStrategy>
+      <repairStrategies class="specificRepairStrategies">
+        <repairStrategy>ReduceOverallCost</repairStrategy>
+      </repairStrategies>
     </selfHealingScenario>
     <selfHealingScenario id="1" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
@@ -96,7 +98,9 @@
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategy>EnlistServersResponseTime</repairStrategy>
+      <repairStrategies>
+        <repairStrategy>EnlistServersResponseTime</repairStrategy>
+      </repairStrategies>
     </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>
