@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry excluding="org/sa/rainbow/CorePlugin.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="stitch"/>
 	<classpathentry kind="src" path="src-sim"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.deploy"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.lang"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
