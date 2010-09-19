@@ -7,7 +7,6 @@ import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.qa.Concern;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 public abstract class AtamScenario extends ThesisPojo {
 
@@ -20,7 +19,6 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private Stimulus stimulus;
 
-	@XStreamImplicit
 	private List<? extends Environment> environments;
 
 	private Artifact artifact;

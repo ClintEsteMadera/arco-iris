@@ -61,7 +61,9 @@
     <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
-      <defaultEnvironment></defaultEnvironment>
+      <environments>
+        <defaultEnvironment></defaultEnvironment>
+      </environments>
       <artifact reference="../../../artifacts/artifact"/>
       <response>Requested News Content</response>
       <responseMeasure>
@@ -81,7 +83,9 @@
     <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
       <concern>SERVER_COST</concern>
       <stimulus any="true"/>
-      <defaultEnvironment reference="../../selfHealingScenario/defaultEnvironment"/>
+      <environments>
+        <defaultEnvironment reference="../../../selfHealingScenario/environments/defaultEnvironment"/>
+      </environments>
       <artifact reference="../../../artifacts/artifact[2]"/>
       <response>The proper response for the request</response>
       <responseMeasure>

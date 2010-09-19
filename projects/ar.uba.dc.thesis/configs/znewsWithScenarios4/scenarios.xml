@@ -9,7 +9,6 @@
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
           <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
@@ -37,7 +36,6 @@
         <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>GREATER_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
           <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
@@ -75,14 +73,13 @@
         <constraint class="numericBinaryRelationalConstraint">
           <artifact reference="../../../../../artifacts/artifact[2]"/>
           <property>cost</property>
-          <quantifier>IN_SUM</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
           <eAvgPropertyName>[EAvg]ServerT.cost</eAvgPropertyName>
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategies>
+      <repairStrategies class="specificRepairStrategies">
         <repairStrategy>ReduceOverallCost</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>
@@ -99,14 +96,13 @@
         <constraint class="numericBinaryRelationalConstraint">
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
           <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategies>
+      <repairStrategies class="specificRepairStrategies">
         <repairStrategy>ExpensiveReduceResponseTime</repairStrategy>
         <repairStrategy>BruteReduceResponseTime</repairStrategy>
       </repairStrategies>
