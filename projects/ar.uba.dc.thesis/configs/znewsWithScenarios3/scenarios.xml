@@ -6,7 +6,7 @@
   <environments>
     <environment id="0" name="NORMAL">
       <conditions>
-        <numericBinaryRelationalConstraint>
+        <numericBinaryRelationalConstraint sum="false">
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>LESS_THAN</binaryOperator>
@@ -32,7 +32,7 @@
     </environment>
     <environment id="1" name="HIGH LOAD">
       <conditions>
-        <numericBinaryRelationalConstraint>
+        <numericBinaryRelationalConstraint sum="false">
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>GREATER_THAN</binaryOperator>
@@ -90,7 +90,7 @@
       <response>Requested News Content</response>
       <responseMeasure>
         <description>Experienced response time is within threshold</description>
-        <constraint class="numericBinaryRelationalConstraint">
+        <constraint class="numericBinaryRelationalConstraint" sum="false">
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>LESS_THAN</binaryOperator>
@@ -98,7 +98,7 @@
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
-      <repairStrategies>
+      <repairStrategies class="specificRepairStrategies">
         <repairStrategy>EnlistServersResponseTime</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>
