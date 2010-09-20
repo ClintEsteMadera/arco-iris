@@ -6,9 +6,10 @@
   <environments>
     <environment id="0" name="NORMAL">
       <conditions>
-        <numericBinaryRelationalConstraint sum="false">
+        <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
+          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
@@ -32,9 +33,10 @@
     </environment>
     <environment id="1" name="HIGH LOAD">
       <conditions>
-        <numericBinaryRelationalConstraint sum="false">
+        <numericBinaryRelationalConstraint>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
+          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>GREATER_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
@@ -68,9 +70,10 @@
       <response>Requested News Content</response>
       <responseMeasure>
         <description>Experienced response time is within threshold</description>
-        <constraint class="numericBinaryRelationalConstraint" sum="false">
+        <constraint class="numericBinaryRelationalConstraint">
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
+          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
         </constraint>
@@ -90,9 +93,10 @@
       <response>The proper response for the request</response>
       <responseMeasure>
         <description>Active servers amount is within threshold</description>
-        <constraint class="numericBinaryRelationalConstraint" sum="true">
+        <constraint class="numericBinaryRelationalConstraint">
           <artifact reference="../../../../../artifacts/artifact[2]"/>
           <property>cost</property>
+          <quantifier>SUM</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">4</constantToCompareThePropertyWith>
         </constraint>

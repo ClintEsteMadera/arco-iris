@@ -94,51 +94,69 @@ public class SelfHealingScenario extends AtamScenario {
 	 * es protected.
 	 */
 	protected boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
-		/*
-		 * It is not necessary to check the environment at this point because this scenario was already selected for
-		 * being repaired
-		 */
-
+		// It is not necessary to check the environment at this point because this scenario was already selected for
+		// being repaired
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
-		String eavgString = "(NO DATA)";
-		Double eavg = getEavgForConstraint(constraint, rainbowModelWithScenarios);
-		if (eavg != null) {
-			eavgString = eavg.toString();
-			isBroken = !constraint.holds(eavg);
+		String expValueAsString = "(NO DATA)";
+		Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
+		if (expValue != null) {
+			expValueAsString = expValue.toString();
+			isBroken = !constraint.holds(expValue);
 		}
-		log(Level.INFO, "Scenario " + this.getName() + " broken for eavg " + eavgString + "? " + isBroken);
+
+		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
+
+		log(Level.INFO, "Scenario " + this.getName() + " broken for " + exponentialQuantifierApplied + " "
+				+ expValueAsString + "? " + isBroken);
 		return isBroken;
 	}
 
 	protected boolean isBrokenAfterStrategy(final RainbowModelWithScenarios rainbowModelWithScenarios,
 			SortedMap<String, Double> strategyAggregateAttributes) {
-		/*
-		 * It is not necessary to check the environment at this point because this scenario was already selected for
-		 * being repaired
-		 */
-
+		// It is not necessary to check the environment at this point because this scenario was already selected for
+		// being repaired
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
-		String eavgAfterStrategyString = "(NO DATA)";
-		Double eavg = getEavgForConstraint(constraint, rainbowModelWithScenarios);
-		if (eavg != null) {
+		String expValueAfterStrategyAsString = "(NO DATA)";
+		Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
+		if (expValue != null) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
-			Double eavgAfterStrategy = eavg + concernDiffAfterStrategy;
-			eavgAfterStrategyString = eavgAfterStrategy.toString();
-			isBroken = !constraint.holds(eavgAfterStrategy);
+			Double expValueAfterStrategy = expValue + concernDiffAfterStrategy;
+			expValueAfterStrategyAsString = expValueAfterStrategy.toString();
+			isBroken = !constraint.holds(expValueAfterStrategy);
 		}
 
-		log(Level.INFO, "Scenario " + this.getName() + " broken after strategy for simulated eavg "
-				+ eavgAfterStrategyString + "? " + isBroken);
+		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
+
+		log(Level.INFO, "Scenario " + this.getName() + " broken after strategy for simulated "
+				+ exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + "? " + isBroken);
 		return isBroken;
 	}
 
-	private Double getEavgForConstraint(Constraint constraint, RainbowModelWithScenarios rainbowModelWithScenarios) {
+	/**
+	 * Obtains the exponential value (e.g. [EAvg], [ESum], etc...) from the constraint passed as parameter.
+	 * 
+	 * @param constraint
+	 *            the constraint to ask for this data.
+	 * @return if this kind of information is not supported by the class, it returns a general string that reads
+	 *         "exponential value", if it's supported, then something like EAvg] or [ESum] is returned.
+	 */
+	private String getExpPropertyPrefix(Constraint constraint) {
+		String exponentialQuantifierApplied = "exponential value";
+		if (NumericBinaryRelationalConstraint.class.isAssignableFrom(constraint.getClass())) {
+			exponentialQuantifierApplied = ((NumericBinaryRelationalConstraint) constraint).getQuantifier()
+					.getExpPropertyPrefix();
+		}
+		return exponentialQuantifierApplied;
+	}
+
+	private Double getExponentialValueForConstraint(Constraint constraint,
+			RainbowModelWithScenarios rainbowModelWithScenarios) {
 		Double result = null;
 		if (constraint instanceof NumericBinaryRelationalConstraint) {
 			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
-			result = (Double) rainbowModelWithScenarios.getProperty(numericConstraint.getEAvgPropertyName());
+			result = (Double) rainbowModelWithScenarios.getProperty(numericConstraint.getExponentialPropertyName());
 		}
 		return result;
 	}

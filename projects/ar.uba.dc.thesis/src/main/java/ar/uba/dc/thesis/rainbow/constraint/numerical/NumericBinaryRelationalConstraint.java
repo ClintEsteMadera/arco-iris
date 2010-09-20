@@ -3,8 +3,6 @@ package ar.uba.dc.thesis.rainbow.constraint.numerical;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
-import org.sa.rainbow.model.RainbowModel;
-import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
@@ -12,7 +10,6 @@ import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("numericBinaryRelationalConstraint")
@@ -24,15 +21,14 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	private static final RainbowLogger logger = RainbowLoggerFactory.logger(NumericBinaryRelationalConstraint.class);
 
+	private Quantifier quantifier;
+
 	private NumericBinaryOperator binaryOperator;
 
 	private Number constantToCompareThePropertyWith;
 
 	@XStreamOmitField
-	private String eAvgPropertyName;
-
-	@XStreamAsAttribute
-	private boolean sum;
+	private String exponentialPropertyName;
 
 	public NumericBinaryRelationalConstraint() {
 		super();
@@ -41,29 +37,30 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
 			Number constantToCompareThePropertyWith) {
-		this(artifact, property, binaryOperator, constantToCompareThePropertyWith, false);
+		this(Quantifier.IN_AVERAGE, artifact, property, binaryOperator, constantToCompareThePropertyWith);
 	}
 
-	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
-			Number constantToCompareThePropertyWith, boolean sum) {
+	public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, String property,
+			NumericBinaryOperator binaryOperator, Number constantToCompareThePropertyWith) {
 		super(artifact, property);
+		this.quantifier = quantifier;
 		this.binaryOperator = binaryOperator;
 		this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
-		this.sum = sum;
 		this.validate();
 	}
 
 	@Override
 	public void restoreToDefaultValues() {
 		this.constantToCompareThePropertyWith = Double.valueOf(0.0);
+		this.quantifier = Quantifier.IN_AVERAGE;
 	}
 
-	public boolean isSum() {
-		return sum;
+	public Quantifier getQuantifier() {
+		return quantifier;
 	}
 
-	public void setSum(boolean sum) {
-		this.sum = sum;
+	public void setQuantifier(Quantifier quantifier) {
+		this.quantifier = quantifier;
 	}
 
 	public Number getConstantToCompareThePropertyWith() {
@@ -82,18 +79,19 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		this.binaryOperator = binaryOperator;
 	}
 
-	public boolean holds(Number eavg) {
-		boolean holds = this.binaryOperator.performOperation(eavg, this.constantToCompareThePropertyWith);
-		log(Level.DEBUG, "Holds " + getFullyQualifiedPropertyName() + " for EAvg " + eavg + "? " + holds + "!!!!");
-		return holds;
+	public String getExponentialPropertyName() {
+		if (this.exponentialPropertyName == null) {
+			this.exponentialPropertyName = quantifier.getExpPropertyPrefix() + getArtifact().getName() + "."
+					+ getProperty();
+		}
+		return this.exponentialPropertyName;
 	}
 
-	public String getEAvgPropertyName() {
-		if (this.eAvgPropertyName == null) {
-			String expPropPrefix = sum ? RainbowModelWithScenarios.EXP_SUM_KEY : RainbowModel.EXP_AVG_KEY;
-			this.eAvgPropertyName = expPropPrefix + getArtifact().getName() + "." + getProperty();
-		}
-		return eAvgPropertyName;
+	public boolean holds(Number expValue) {
+		boolean holds = this.binaryOperator.performOperation(expValue, this.constantToCompareThePropertyWith);
+		log(Level.DEBUG, "Holds " + getFullyQualifiedPropertyName() + " for " + this.quantifier.getExpPropertyPrefix()
+				+ expValue + "? " + holds + "!!!!");
+		return holds;
 	}
 
 	@Override

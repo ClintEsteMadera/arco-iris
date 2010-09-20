@@ -13,6 +13,7 @@ import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.Quantifier;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
@@ -84,8 +85,8 @@ public class TestSelfHealingScenarioDao {
 		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
-				new NumericBinaryRelationalConstraint(artifact, "cost", NumericBinaryOperator.LESS_THAN,
-						THRESHOLD_SERVER_COST, true));
+				new NumericBinaryRelationalConstraint(Quantifier.SUM, artifact, "cost",
+						NumericBinaryOperator.LESS_THAN, THRESHOLD_SERVER_COST));
 
 		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = true;

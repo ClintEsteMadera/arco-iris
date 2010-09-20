@@ -7,11 +7,11 @@
     <environment id="0" name="NORMAL">
       <conditions>
         <numericBinaryRelationalConstraint>
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
@@ -34,11 +34,11 @@
     <environment id="1" name="HIGH LOAD">
       <conditions>
         <numericBinaryRelationalConstraint>
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>GREATER_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </numericBinaryRelationalConstraint>
       </conditions>
       <weights>
@@ -71,11 +71,11 @@
       <responseMeasure>
         <description>Active servers amount is within threshold</description>
         <constraint class="numericBinaryRelationalConstraint">
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact[2]"/>
           <property>cost</property>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ServerT.cost</eAvgPropertyName>
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
@@ -94,11 +94,11 @@
       <responseMeasure>
         <description>Experienced response time is within threshold</description>
         <constraint class="numericBinaryRelationalConstraint">
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
-          <eAvgPropertyName>[EAvg]ClientT.experRespTime</eAvgPropertyName>
         </constraint>
       </responseMeasure>
       <architecturalDecisions/>
