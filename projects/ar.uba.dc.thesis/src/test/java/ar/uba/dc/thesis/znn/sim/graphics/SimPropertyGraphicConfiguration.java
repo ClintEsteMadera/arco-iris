@@ -1,7 +1,6 @@
 package ar.uba.dc.thesis.znn.sim.graphics;
 
-import org.sa.rainbow.model.RainbowModel;
-import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.Quantifier;
 
 public class SimPropertyGraphicConfiguration {
 
@@ -10,14 +9,13 @@ public class SimPropertyGraphicConfiguration {
 	private String eavgPropertyName;
 
 	public SimPropertyGraphicConfiguration(String artifact, String property) {
-		this(artifact, property, false);
+		this(artifact, property, Quantifier.IN_AVERAGE);
 	}
 
-	public SimPropertyGraphicConfiguration(String artifact, String property, boolean sum) {
+	public SimPropertyGraphicConfiguration(String artifactName, String property, Quantifier quantifier) {
 		super();
 		this.property = property;
-		String expPropPrefix = sum ? RainbowModelWithScenarios.EXP_SUM_KEY : RainbowModel.EXP_AVG_KEY;
-		this.eavgPropertyName = expPropPrefix + artifact + "." + property;
+		this.eavgPropertyName = quantifier.getExpPropertyPrefix() + artifactName + "." + property;
 	}
 
 	public String getProperty() {

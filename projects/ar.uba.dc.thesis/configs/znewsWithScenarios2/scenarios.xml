@@ -7,6 +7,7 @@
     <environment id="0" name="NORMAL">
       <conditions>
         <numericBinaryRelationalConstraint>
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>LESS_THAN</binaryOperator>
@@ -33,6 +34,7 @@
     <environment id="1" name="HIGH LOAD">
       <conditions>
         <numericBinaryRelationalConstraint>
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>GREATER_THAN</binaryOperator>
@@ -69,6 +71,7 @@
       <responseMeasure>
         <description>Experienced response time is within threshold</description>
         <constraint class="numericBinaryRelationalConstraint">
+          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
           <binaryOperator>LESS_THAN</binaryOperator>

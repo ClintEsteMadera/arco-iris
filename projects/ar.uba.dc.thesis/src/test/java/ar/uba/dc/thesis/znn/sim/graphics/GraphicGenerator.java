@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -20,6 +20,7 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.Quantifier;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class GraphicGenerator extends AbstractRainbowRunnable {
@@ -88,7 +89,8 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		this.simGraphicConfiguration = new SimGraphicConfiguration();
 		SimPropertyGraphicConfiguration respTimeGraphicConfig = new SimPropertyGraphicConfiguration("ClientT",
 				"experRespTime");
-		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ServerT", "cost", true);
+		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ServerT", "cost",
+				Quantifier.SUM);
 		simGraphicConfiguration.add(respTimeGraphicConfig);
 		simGraphicConfiguration.add(costGraphicConfig);
 	}
