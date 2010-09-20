@@ -13,8 +13,6 @@ NICE TO HAVES:
 
 - Arreglar el layout en gral de los dialogos
 
-- poner como descripcion del SelfHealingConfiguration lo que el usuario pone como nombre de archivo?
-
 - ver el tema validaciones de objetos en gral? (invocar el metodo validate() de ThesisPojo?)
 
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.
