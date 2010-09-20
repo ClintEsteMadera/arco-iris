@@ -92,6 +92,18 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 		return null;
 	}
 
+	/**
+	 * This method can be overriden by subclasses if they want the tooltip over the Clear button to read something
+	 * different from "Clear".<br>
+	 * TODO It would be good to be consistent with all of the aspects of all of the buttons of this composite. A lot of
+	 * improvements can be done in this regard.
+	 * 
+	 * @return
+	 */
+	protected String getToolTip4ClearButton() {
+		return "Clear";
+	}
+
 	private static int calculateColumns(ObjectSelectionMetainfo info) {
 		return info.readOnly ? 2 : 3;
 	}
@@ -217,7 +229,7 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 	private void createClearButton() {
 		this.clearItem = new ToolItem(toolbar, SWT.PUSH);
 		this.clearItem.setImage(new Image(Display.getCurrent(), getClass().getResourceAsStream("/images/trash.gif")));
-		this.clearItem.setToolTipText("Clear");
+		this.clearItem.setToolTipText(getToolTip4ClearButton());
 
 		this.clearItem.addSelectionListener(new SelectionAdapter() {
 			@Override

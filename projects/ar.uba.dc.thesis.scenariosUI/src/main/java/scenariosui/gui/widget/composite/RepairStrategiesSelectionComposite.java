@@ -64,4 +64,12 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 	protected RepairStrategies getValueToSetWhenClearing() {
 		return AllRepairStrategies.getInstance();
 	}
+
+	/**
+	 * We want the tooltip text over the "Clear" button to display "All Available"
+	 */
+	@Override
+	protected String getToolTip4ClearButton() {
+		return "All Available";
+	}
 }
