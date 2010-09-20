@@ -76,8 +76,6 @@ Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente l
 
 	\subsubsection{Tácticas y Estrategias}
 
-	\todo{TURCO: dar una introducción sobre que es stitch}
-	
 	\todo{Definiciones del libro de Bass y Clements. Explicar la idea de una "táctica para atributo de calidad" (ejemplo, redundancia para disponibilidad o late binding para anticipación al cambio)}
 	
 	La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al verse la performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a un nivel adecuado.
@@ -85,7 +83,10 @@ Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente l
 	Las estrategias son desarrolladas para un \textit{concern} específico. Un \textit{concern} de un sistema abarca un subconjunto de propiedades del sistema, como por 
 ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor, el \textit{concern} performance abarcaría las propiedades ancho de banda y carga del sistema, mientras que el \textit{concern} costo se encargaría del costo de los servidores. 
 
-	Las estrategias se componen de tácticas, las cuales realizan la modificación en el sistema. Por ejemplo, una estrategia podría ser: agregar servidores mientras haya disponible, o hasta que el tiempo de respuesta haya alcanzado un determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica levantar-servidor la responsable de ejecutar la acción propiamente dicha.
+	Las estrategias se componen de tácticas, las cuales realizan la modificación en el sistema. Por ejemplo, una estrategia podría ser: agregar servidores mientras haya disponible, o hasta que el tiempo de respuesta haya alcanzado un determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica levantar-servidor la responsable de ejecutar la acción propiamente dicha, a la cual se la llama \textbf{operador}.
+
+	Rainbow provee un lenguaje de scripting llamado \textbf{Stitch}, pensado para permitir plasmar el conocimiento rutinario de las personas sobre adaptación de sistemas de software. Tanto las tácticas como las estrategias serán descriptas utilizando Stitch. Ofrece modularidad con respecto a las dimensiones de los atributos de calidad y al dominio, permite especificar estrategias de múltiples pasos con condiciones de aplicabilidad y efectos deseados y provee un mecanismo para extender las políticas de adaptación a dominios específicos de sistemas.
+	
 	
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
 	
