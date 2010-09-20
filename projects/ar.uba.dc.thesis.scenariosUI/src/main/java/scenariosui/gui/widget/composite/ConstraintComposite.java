@@ -17,15 +17,12 @@ import commons.gui.widget.composite.InvisibleTabFolder;
 import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.composite.Tab;
 import commons.gui.widget.creation.binding.BindingInfo;
-import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 import commons.gui.widget.creation.metainfo.ComboMetainfo;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
-import commons.gui.widget.factory.BooleanFactory;
 import commons.gui.widget.factory.ComboFactory;
 import commons.gui.widget.factory.LabelFactory;
 import commons.gui.widget.factory.TextFactory;
 import commons.properties.CommonLabels;
-import commons.properties.FakeEnumProperty;
 
 public class ConstraintComposite extends SimpleComposite {
 
@@ -119,7 +116,9 @@ public class ConstraintComposite extends SimpleComposite {
 	private void createTabForNumericBinaryRelationalConstraint() {
 		Tab tab = new Tab(this.tabFolder, super.readOnly);
 
-		DefaultLayoutFactory.setDefaultGridLayout(tab, 9);
+		DefaultLayoutFactory.setDefaultGridLayout(tab, 8);
+
+		LabelFactory.createLabel(tab);
 
 		LabelFactory.createLabel(tab, ScenariosUILabels.SYSTEM_NAME, false, false);
 
@@ -135,9 +134,10 @@ public class ConstraintComposite extends SimpleComposite {
 
 		LabelFactory.createLabel(tab);
 
-		LabelFactory.createLabel(tab);
-
-		LabelFactory.createLabel(tab);
+		ComboMetainfo comboMetainfo = ComboMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+				this.numericBinaryRelationalModel, "quantifier"), super.readOnly);
+		comboMetainfo.addEmptyOption = false;
+		ComboFactory.createCombo(comboMetainfo);
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
 				this.numericBinaryRelationalModel, "artifact.systemName"), super.readOnly);
@@ -158,17 +158,14 @@ public class ConstraintComposite extends SimpleComposite {
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
 
-		ComboMetainfo comboMetainfo = ComboMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
+		comboMetainfo = ComboMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
 				this.numericBinaryRelationalModel, "binaryOperator"), super.readOnly);
 		ComboFactory.createCombo(comboMetainfo);
+
 		textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
 				this.numericBinaryRelationalModel, "constantToCompareThePropertyWith"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
-
-		BooleanFieldMetainfo booleanMetainfo = BooleanFieldMetainfo.create(tab, new FakeEnumProperty("Σ"),
-				new BindingInfo(this.numericBinaryRelationalModel, "sum"), super.readOnly);
-		BooleanFactory.createBoolean(booleanMetainfo);
 	}
 
 	private void setCurrentActiveTab() {
