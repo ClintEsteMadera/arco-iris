@@ -3,8 +3,6 @@ MUST HAVES:
 
 - Ver DefaultEnvironment (cambiar pesos por default??)
 
-- cambiar la sumatoria por sumatoria o promedio
-
 - arreglar la posicion inicial de los dialogos de apertura de archivo (son 3) y del dialogo de repair strategies
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
