@@ -1,5 +1,6 @@
 package commons.gui.table;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -10,8 +11,6 @@ import commons.utils.ClassUtils;
 
 /**
  * Handler generico que crea un dialogo por reflection cada vez que se invoca.<br>
- * NOTA: Modificado para aceptar un purpose como parametro. Esto hace que este objeto no sea más common sino que está
- * atado a la aplicación "ScenariosUI"
  */
 public abstract class DialogEditHandler<T> implements EditHandler<T> {
 
@@ -25,7 +24,9 @@ public abstract class DialogEditHandler<T> implements EditHandler<T> {
 		if (dialog == null) {
 			return null;
 		}
-		boolean dialogResult = dialog.open(newItem);
+		// TODO we may need to do this when we finally decide how this whole thing of opening a dialog w/ an item works
+		// boolean dialogResult = dialog.open(newItem);
+		boolean dialogResult = dialog.open() == Dialog.OK;
 		return dialogResult ? newItem : null;
 	}
 
@@ -34,7 +35,7 @@ public abstract class DialogEditHandler<T> implements EditHandler<T> {
 		if (dialog == null) {
 			return false;
 		}
-		return dialog.open(item);
+		return dialog.open() == Dialog.OK;
 	}
 
 	public void handleView(T item, int index) {
@@ -42,7 +43,7 @@ public abstract class DialogEditHandler<T> implements EditHandler<T> {
 		if (dialog == null) {
 			return;
 		}
-		dialog.open(item);
+		dialog.open();
 	}
 
 	public boolean handleDelete(T e, int index) {

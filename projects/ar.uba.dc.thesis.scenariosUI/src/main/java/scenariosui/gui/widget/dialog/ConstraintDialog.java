@@ -15,8 +15,21 @@ public class ConstraintDialog<C extends Constraint> extends BaseScenariosUIMulti
 
 	private ConstraintComposite constraintComposite;
 
-	public ConstraintDialog(Purpose purpose) {
-		super(null, ScenariosUILabels.CONSTRAINT, purpose);
+	/**
+	 * FIXME This is a hack!!!
+	 * 
+	 * @param model
+	 *            an instance of {@link NumericBinaryRelationalConstraint}
+	 * @param purpose
+	 *            the purpose this dialog is being opened for.
+	 */
+	@SuppressWarnings("unchecked")
+	public ConstraintDialog(NumericBinaryRelationalConstraint model, Purpose purpose) {
+		this((C) model, purpose);
+	}
+
+	public ConstraintDialog(C model, Purpose purpose) {
+		super(model, ScenariosUILabels.CONSTRAINT, purpose);
 	}
 
 	@Override
