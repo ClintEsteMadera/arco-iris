@@ -44,7 +44,7 @@ public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> e
 
 		try {
 			if (this.dialogSupportsPurposeParam) {
-				dialog = c.newInstance(purpose);
+				dialog = c.newInstance(item, purpose);
 			} else {
 				dialog = c.newInstance();
 			}
@@ -58,11 +58,11 @@ public class GenericEditHandler<ITEM, DIALOG extends OpenableTrayDialog<ITEM>> e
 
 		if (this.dialogContructor == null) {
 			try {
-				this.dialogContructor = dialogClass.getConstructor(Purpose.class);
+				this.dialogContructor = dialogClass.getConstructor(this.getItemClass(), Purpose.class);
 				this.dialogSupportsPurposeParam = true;
 			} catch (Exception e1) {
 				try {
-					this.dialogContructor = dialogClass.getConstructor(this.itemClass);
+					this.dialogContructor = dialogClass.getConstructor(this.getItemClass());
 					this.dialogSupportsPurposeParam = false;
 				} catch (Exception e2) {
 					throw new IllegalArgumentException("Could not create dialog: " + e2.getMessage(), e2);
