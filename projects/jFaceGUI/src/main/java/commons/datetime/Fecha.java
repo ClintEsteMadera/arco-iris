@@ -6,15 +6,23 @@ import org.springframework.util.Assert;
 
 public class Fecha implements Serializable {
 
+	private int dd;
+
+	private int mm;
+
+	private int aaaa;
+
+	private static final long serialVersionUID = 1L;
+
 	// TODO Mejorar las validaciones (se puede usar el Enum "Mes")
-	public Fecha(int dia, int mes, int año) {
+	public Fecha(int dia, int mes, int aÃ±o) {
 		super();
 		validateDia(dia);
 		this.dd = dia;
 		validateMes(mes);
 		this.mm = mes;
-		validateAño(año);
-		this.aaaa = año;
+		validateAÃ±o(aÃ±o);
+		this.aaaa = aÃ±o;
 	}
 
 	public int getDia() {
@@ -25,7 +33,7 @@ public class Fecha implements Serializable {
 		return mm;
 	}
 
-	public int getAño() {
+	public int getAÃ±o() {
 		return aaaa;
 	}
 
@@ -39,9 +47,9 @@ public class Fecha implements Serializable {
 		this.mm = mes;
 	}
 
-	public void setAño(int año) {
-		validateAño(año);
-		this.aaaa = año;
+	public void setAÃ±o(int aÃ±o) {
+		validateAÃ±o(aÃ±o);
+		this.aaaa = aÃ±o;
 	}
 
 	@Override
@@ -50,22 +58,14 @@ public class Fecha implements Serializable {
 	}
 
 	private void validateDia(int dia) {
-		Assert.isTrue(dia >= 1 || dia <= 31, "El día tiene que estar entre 1 y 31");
+		Assert.isTrue(dia >= 1 || dia <= 31, "El dÃ±a tiene que estar entre 1 y 31");
 	}
 
 	private void validateMes(int mes) {
 		Assert.isTrue(mes >= 1 || mes <= 12, "El mes tiene que estar entre 1 y 12");
 	}
 
-	private void validateAño(int año) {
-		Assert.isTrue(año >= 1 || año <= 9999, "El año tiene que estar entre 1 y 9999");
+	private void validateAÃ±o(int aÃ±o) {
+		Assert.isTrue(aÃ±o >= 1 || aÃ±o <= 9999, "El aÃ±o tiene que estar entre 1 y 9999");
 	}
-
-	private int dd;
-
-	private int mm;
-
-	private int aaaa;
-
-	private static final long serialVersionUID = 1L;
 }
