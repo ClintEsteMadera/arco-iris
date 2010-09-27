@@ -2,6 +2,7 @@ package commons.gui.binding;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -14,8 +15,7 @@ import commons.gui.model.binding.WidgetContainer;
 import commons.gui.model.types.EditType;
 
 /**
- * Clase utilziada internamente para el binding de botones.
- * 
+ * Clase utilizada internamente para el binding de botones.
  * 
  */
 class ButtonValueModel implements ValueModel, WidgetContainer {
@@ -27,12 +27,10 @@ class ButtonValueModel implements ValueModel, WidgetContainer {
 
 		listeners = new ArrayList<ValueChangeListener>();
 
-		selectionListener = new SelectionListener() {
+		selectionListener = new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				onWidgetSelected(e);
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
+				notifyChange();
 			}
 		};
 	}
@@ -65,7 +63,6 @@ class ButtonValueModel implements ValueModel, WidgetContainer {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public final void notifyChange() {
 		final ValueChangeEvent changeEvent = new ValueChangeEvent(this, null, Boolean.valueOf(this.button
 				.getSelection()));
@@ -77,11 +74,6 @@ class ButtonValueModel implements ValueModel, WidgetContainer {
 
 	public Widget getWidget() {
 		return this.button;
-	}
-
-	@SuppressWarnings("unchecked")
-	private void onWidgetSelected(SelectionEvent e) {
-		this.notifyChange();
 	}
 
 	private ArrayList<ValueChangeListener> listeners;
