@@ -76,8 +76,16 @@ Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente l
 
 	\subsubsection{Tácticas y Estrategias}
 
-	\todo{Definiciones del libro de Bass y Clements. Explicar la idea de una "táctica para atributo de calidad" (ejemplo, redundancia para disponibilidad o late binding para anticipación al cambio)}
+	El objetivo de la auto reparación será alcanzar determinados atributos de calidad, pero ¿Cómo haremos para alcanzar dichos atributos? En el libro \textbf{Software Arquitectura in Practice}, Bass, Clements y Kazman presentan dos conceptos que nos permiten alcanzar los objetivos del sistema y que han sido ampliamente adoptados en la industria, estos conceptos son: tácticas y estrategias.
 	
+	En el libro definen las tácticas como una decisión de diseño que influye sobre la respuesta de un atributo de calidad, mientras que definen a una estrategia como una colección de tácticas. Básicamente, la visión que se presenta de las tácticas en el libro es la siguiente:
+
+	\begin{center}
+		\includegraphics{images/tactics_control_to_response.png}
+	\end{center}
+	
+	Las tácticas son herramientas que los arquitectos de software han utilizado durante años, en el libro mencionado simplemente se las aisla y se las describe, no pretende proclamar la invención de las tácticas sino más bien darle un nombre y organizar los patrones comunes utilizados en cuanto a decisiones de arquitectura y clasificarlos. Cada táctica es una opción de diseño para el arquitecto, por ejemplo, introducir redundancia para incrementar la disponibilidad del sistema. En resumen, en el libro se plantea que las estrategias afectan los atributos de calidad del sistema, y que estos proveen a los \textit{stakeholders} de cierto beneficio, al cual llaman utilidad. Cada estrategia provee un nivel específico de utilidad, pero en contrapartida presentan un costo en tiempo y en dinero. Por estos motivos se aconseja hacer participar a los \textit{stakeholders} a la hora de decidir qué estrategias se emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el retorno de la inversión (el ratio entre el beneficio y el costo) de aplicar cada estrategia para elegir la más conveniente. 
+
 	La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al verse la performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a un nivel adecuado.
 	
 	Las estrategias son desarrolladas para un \textit{concern} específico. Un \textit{concern} de un sistema abarca un subconjunto de propiedades del sistema, como por 
