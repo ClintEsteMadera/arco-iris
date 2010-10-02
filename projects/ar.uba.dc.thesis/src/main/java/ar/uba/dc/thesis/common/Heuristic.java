@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum Heuristic {
 
-	ALL {
+	ALL("Current evaluation + the entire history") {
 		@Override
 		public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
 			boolean result = currentConstraintsEvaluation;
@@ -16,7 +16,7 @@ public enum Heuristic {
 			return result;
 		}
 	},
-	MOST {
+	MOST("Most of the historic evaluations") {
 		@Override
 		public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
 			int holded = currentConstraintsEvaluation ? 1 : 0;
@@ -31,7 +31,7 @@ public enum Heuristic {
 			return holded > notHolded;
 		}
 	},
-	AT_LEAST_ONE {
+	AT_LEAST_ONE("At least one evaluation") {
 		@Override
 		public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
 			boolean result = currentConstraintsEvaluation;
@@ -42,6 +42,17 @@ public enum Heuristic {
 			return result;
 		}
 	};
+
+	private final String description;
+
+	Heuristic(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return this.description;
+	}
 
 	public abstract boolean run(boolean currentConstraintsEvaluation, List<Boolean> history);
 }

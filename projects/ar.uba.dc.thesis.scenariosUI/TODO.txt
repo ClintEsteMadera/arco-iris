@@ -1,7 +1,5 @@
 MUST HAVES:
 
-- Cambiar el nombre de ControlMetainfo.composite a "parent"
-
 - agregar el resto de los conceptos a la GUI de environments
 
 - VER TURCO: Ver DefaultEnvironment (cambiar pesos por default??) PARA MI ESTO PREFIERO DEJARLO COMO ESTÁ

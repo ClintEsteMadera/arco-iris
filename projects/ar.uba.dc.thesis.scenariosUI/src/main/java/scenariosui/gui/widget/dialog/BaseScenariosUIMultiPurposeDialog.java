@@ -8,6 +8,7 @@ import commons.exception.ServiceException;
 import commons.gui.background.BackgroundInvocationException;
 import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.dialog.BaseCompositeModelBoundedDialog;
+import commons.gui.widget.dialog.OpenableTrayDialog;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 import commons.properties.FakeEnumProperty;
@@ -72,7 +73,7 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 				operation = "deleted";
 				this.removeModelFromCurrentSHConfiguration();
 			} else {
-				throw new RuntimeException("The code does not contemplate the purpose " + this.purpose + "yet");
+				throw new RuntimeException("The code does not contemplate the purpose " + this.purpose + " yet");
 			}
 			scenariosUIManager.saveSelfHealingConfiguration();
 
@@ -124,10 +125,10 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 	/**
 	 * Provee el texto para el botón "Cancelar". Por defecto, este valor está dado por el propósito, siempre y cuando no
 	 * sea nulo. Si dicho valor fuera nulo, y no existe el botón "Aceptar", el texto es el dado por
-	 * {@link #CLOSE(CommonLabels)}.<br>
-	 * Si no se cumplen las anteriores condiciones, el texto es el dado por la superclase
+	 * {@link CommonLabels#CLOSE}.<br>
+	 * Si no se cumplen las anteriores condiciones, el texto es el dado por la superclase.
 	 * 
-	 * @see {@link #getCancelButtonText()BaseEmesDialog}
+	 * @see {@link OpenableTrayDialog#getCancelButtonText()}
 	 */
 	@Override
 	protected EnumProperty getCancelButtonText() {
@@ -137,8 +138,7 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 		if (cancelEnumProp != null) {
 			result = cancelEnumProp;
 		} else if (!this.isOkButtonAllowed()) {
-			// FIXME User CommonLabels.CLOSE
-			result = new FakeEnumProperty("Close");
+			result = CommonLabels.CLOSE;
 		}
 		return result;
 	}
