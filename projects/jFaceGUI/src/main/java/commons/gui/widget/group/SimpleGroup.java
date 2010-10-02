@@ -47,24 +47,29 @@ public class SimpleGroup {
 		this.readOnly = readOnly;
 	}
 
-	public void setLayoutData(GridData gridData) {
-		swtGroup.setLayoutData(gridData);
+	public GridLayout getLayout() {
+		return (GridLayout) this.getSwtGroup().getLayout();
+	}
+
+	public GridData getLayoutData() {
+		return (GridData) this.getSwtGroup().getLayoutData();
 	}
 
 	/**
 	 * Provee un layout por default, sobreescribir este método si se desea otro layout.
+	 * 
+	 * @return
 	 */
 	protected void applyLayout() {
 		DefaultLayoutFactory.setDefaultGridLayout(this.getSwtGroup(), numColumns);
-		GridLayout layout = (GridLayout) this.getSwtGroup().getLayout();
+		GridLayout layout = this.getLayout();
 		if (!StringUtils.isEmpty(this.getSwtGroup().getText())) {
 			layout.marginTop = 5;
 		}
 		layout.marginHeight = 5;
 		layout.marginWidth = 10;
 
-		GridData gridData = (GridData) this.getSwtGroup().getLayoutData();
-		gridData.horizontalSpan = columnsToSpan;
+		this.getLayoutData().horizontalSpan = columnsToSpan;
 	}
 
 	public Group getSwtGroup() {
