@@ -7,7 +7,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -52,8 +51,6 @@ public class RepairStrategiesSelectionDialog extends Dialog implements Advised<R
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(ScenariosUIMessages.SELECT_REPAIR_STRATEGIES.toString());
-		Rectangle centerLocation = PageHelper.getCenterLocation(800, 500);
-		shell.setBounds(centerLocation);
 	}
 
 	@Override
@@ -96,11 +93,6 @@ public class RepairStrategiesSelectionDialog extends Dialog implements Advised<R
 	@Override
 	protected void okPressed() {
 		rowDoubleClicked(repairStrategiesSelectionQueryComposite);
-	}
-
-	@Override
-	protected void cancelPressed() {
-		this.close();
 	}
 
 	public List<String> getSelectedRepairStrategyNames() {

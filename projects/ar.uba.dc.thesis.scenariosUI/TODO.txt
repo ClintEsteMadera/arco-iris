@@ -1,9 +1,12 @@
 MUST HAVES:
+
+- Cambiar el nombre de ControlMetainfo.composite a "parent"
+
 - agregar el resto de los conceptos a la GUI de environments
 
-- Ver DefaultEnvironment (cambiar pesos por default??)
+- VER TURCO: Ver DefaultEnvironment (cambiar pesos por default??) PARA MI ESTO PREFIERO DEJARLO COMO ESTÁ
 
-- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3) y del dialogo de repair strategies
+- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
 
@@ -13,7 +16,12 @@ NICE TO HAVES:
 
 - Arreglar el layout en gral de los dialogos
 
-- ver el tema validaciones de objetos en gral? (invocar el metodo validate() de ThesisPojo?)
+- ver el tema validaciones de objetos en gral?
+   - En cada ThesisPojo deberiamos hacer un método validador por cada atributo que nos interese validar e
+   invocar a todos esos metodos desde el validate(), el cual deberia ser invocado en los constructores que
+   construyen un objeto completo.
+   - Debido a que la GUI usa normalmente el constructor sin parámetros, deberiamos invocar a los validadores
+   desde los setters.
 
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.
 

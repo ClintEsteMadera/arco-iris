@@ -2,10 +2,13 @@ package ar.uba.dc.thesis.atam.scenario.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.sa.rainbow.model.RainbowModel;
@@ -35,13 +38,14 @@ public class Environment extends ThesisPojo {
 
 	private List<? extends Constraint> conditions;
 
-	private Map<Concern, Double> weights;
+	private SortedMap<Concern, Double> weights;
 
 	@XStreamOmitField
-	private HashMap<String, Double> weightsForRainbow;
+	private Map<String, Double> weightsForRainbow;
 
 	private Heuristic heuristic;
 
+	@XStreamOmitField
 	private List<Boolean> history;
 
 	/**
@@ -49,6 +53,8 @@ public class Environment extends ThesisPojo {
 	 */
 	public Environment() {
 		super();
+		this.conditions = new ArrayList<Constraint>();
+		this.weights = createMapWithEquallyDistributedWeights();
 	}
 
 	/**
@@ -65,7 +71,7 @@ public class Environment extends ThesisPojo {
 	 *            how Concerns are weightened in this particular Environment <b>NOTE: ALL concerns must be present,
 	 *            otherwise, an exception will be thrown</b>
 	 */
-	public Environment(Long id, String name, List<? extends Constraint> conditions, Map<Concern, Double> weights) {
+	public Environment(Long id, String name, List<? extends Constraint> conditions, SortedMap<Concern, Double> weights) {
 		this(id, name, conditions, weights, null, null);
 		this.validateId();
 	}
@@ -88,7 +94,7 @@ public class Environment extends ThesisPojo {
 	 * @param heuristic
 	 *            the Heuristic that needs to be used when weightening past evaluations of environment's constraints.
 	 */
-	public Environment(Long id, String name, List<? extends Constraint> conditions, Map<Concern, Double> weights,
+	public Environment(Long id, String name, List<? extends Constraint> conditions, SortedMap<Concern, Double> weights,
 			Integer historySize, Heuristic heuristic) {
 		super(id);
 		this.name = name;
@@ -117,12 +123,13 @@ public class Environment extends ThesisPojo {
 		this.conditions = conditions;
 	}
 
-	public Map<Concern, Double> getWeights() {
+	public SortedMap<Concern, Double> getWeights() {
 		return weights;
 	}
 
-	public void setWeights(Map<Concern, Double> weights) {
+	public void setWeights(SortedMap<Concern, Double> weights) {
 		this.weights = weights;
+		this.assertAllPossibleConcernsAreDefined(weights.keySet());
 	}
 
 	public Heuristic getHeuristic() {
@@ -182,15 +189,13 @@ public class Environment extends ThesisPojo {
 		if (this.getWeights() == null) {
 			throw new IllegalArgumentException("Concern-Multiplier map cannot be null");
 		}
-		Set<Concern> allDefinedConcerns = this.getWeights().keySet();
-		List<Concern> allPossibleConcerns = Arrays.asList(Concern.values());
-
-		allDefinedConcerns.containsAll(allPossibleConcerns);
+		Set<Concern> definedConcerns = this.getWeights().keySet();
+		this.assertAllPossibleConcernsAreDefined(definedConcerns);
 	}
 
 	@Override
 	protected String[] getEqualsAndHashCodeExcludedFields() {
-		return new String[] { "history" };
+		return new String[] { "weightsForRainbow", "history" };
 	}
 
 	/**
@@ -207,7 +212,7 @@ public class Environment extends ThesisPojo {
 	/**
 	 * Uses an heuristic (configured by the user) to decide if, based on the history, a current calculation of the
 	 * underlying constraints holds or not.<br>
-	 * The possible values are specified in {@link HeuristicType}
+	 * The possible values are specified in {@link Heuristic}
 	 * 
 	 * @param currentConstraintsEvaluation
 	 *            the current evaluation of the underlying constraints, to be quantified with the history.
@@ -236,4 +241,24 @@ public class Environment extends ThesisPojo {
 	public String toString() {
 		return this.getName();
 	}
+
+	private void assertAllPossibleConcernsAreDefined(Collection<Concern> definedConcerns) {
+		List<Concern> allPossibleConcerns = Arrays.asList(Concern.values());
+
+		if (!definedConcerns.containsAll(allPossibleConcerns)) {
+			throw new IllegalArgumentException("Concern-Multiplier map must contain all possible concerns");
+		}
+	}
+
+	protected static SortedMap<Concern, Double> createMapWithEquallyDistributedWeights() {
+		SortedMap<Concern, Double> equallyDistributedWeights = new TreeMap<Concern, Double>();
+		Concern[] values = Concern.values();
+		Double aWeight = (double) 1 / values.length;
+		for (Concern concern : values) {
+			equallyDistributedWeights.put(concern, aWeight);
+		}
+
+		return equallyDistributedWeights;
+	}
+
 }

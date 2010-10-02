@@ -11,11 +11,14 @@ import commons.gui.widget.creation.binding.Binding;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 
-/**
- * @author Gabriel Tursi
- * 
- */
-public abstract class LabelFactory {
+public final class LabelFactory {
+
+	/**
+	 * This class is not meant to be instantiated.
+	 */
+	private LabelFactory() {
+		super();
+	}
 
 	/**
 	 * Crea un campo read-only que consta de un Label y un <i>value</i> de sólo lectura. El binding se utiliza para que
@@ -93,8 +96,8 @@ public abstract class LabelFactory {
 	 *            especifica si el <i>value</i> debe crearse con un guión ("-") en el caso de ser blanco el texto
 	 *            especificado en el parametro <code>value</code>.
 	 * @return un campo de texto de sólo lectura con el valor especificado por parámetro. Si el mismo fuera
-	 *         <code>null</code> o de longitud cero, dicho valor se fija en el caracter guión ("-") <i>siempre y
-	 *         cuando se haya especificado en <code>true</code> el parámetro <code>dashIfBlank</code></i>
+	 *         <code>null</code> o de longitud cero, dicho valor se fija en el caracter guión ("-") <i>siempre y cuando
+	 *         se haya especificado en <code>true</code> el parámetro <code>dashIfBlank</code></i>
 	 */
 	public static Label createValue(Composite composite, Binding binding, boolean dashIfBlank) {
 		final Label label = createLabel(composite);

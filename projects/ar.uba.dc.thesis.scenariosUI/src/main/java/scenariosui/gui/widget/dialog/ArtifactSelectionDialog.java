@@ -4,7 +4,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -39,8 +38,6 @@ public class ArtifactSelectionDialog extends Dialog implements Advised<ArtifactS
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(ScenariosUILabels.SELECT_ARTIFACT.toString());
-		Rectangle centerLocation = PageHelper.getCenterLocation(800, 500);
-		shell.setBounds(centerLocation);
 	}
 
 	@Override
@@ -71,11 +68,6 @@ public class ArtifactSelectionDialog extends Dialog implements Advised<ArtifactS
 	@Override
 	protected void okPressed() {
 		rowDoubleClicked(artifactSelectionQueryComposite);
-	}
-
-	@Override
-	protected void cancelPressed() {
-		this.close();
 	}
 
 	public Artifact getSelectedArtifact() {

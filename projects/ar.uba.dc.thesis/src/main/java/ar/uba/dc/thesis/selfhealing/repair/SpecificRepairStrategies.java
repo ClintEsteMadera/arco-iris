@@ -37,6 +37,10 @@ public class SpecificRepairStrategies extends ThesisPojo implements RepairStrate
 
 	@Override
 	public String toString() {
-		return this.repairStrategiesNames.toString();
+		String result = "";
+		if (this.repairStrategiesNames != null) {
+			result = this.repairStrategiesNames.toString();
+		}
+		return result;
 	}
 }

@@ -9,7 +9,7 @@ public enum Concern {
 
 	RESPONSE_TIME("Response time", QualityAttribute.PERFORMANCE, "uR"),
 
-	SERVER_COST("Number of active servers", QualityAttribute.COST, "uC"),
+	SERVER_COST("Active servers", QualityAttribute.COST, "uC"),
 
 	CONTENT_FIDELITY("Content Fidelity", QualityAttribute.USABILITY, "uF");
 

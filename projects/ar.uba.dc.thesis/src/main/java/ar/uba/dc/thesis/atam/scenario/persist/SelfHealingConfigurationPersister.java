@@ -34,7 +34,9 @@ public class SelfHealingConfigurationPersister {
 
 	public SelfHealingConfiguration readFromFile(String selfHealingConfigXmlFullPath) {
 		try {
-			logger.info("Loading Self Healing Configuration from " + selfHealingConfigXmlFullPath + "...");
+			if (logger.isTraceEnabled()) {
+				logger.trace("Loading Self Healing Configuration from " + selfHealingConfigXmlFullPath + "...");
+			}
 			String scenariosInXml = FileUtils.readFileToString(new File(selfHealingConfigXmlFullPath), CHARSET);
 			SelfHealingConfiguration configLoadedFromXML = (SelfHealingConfiguration) this.xstream
 					.fromXML(scenariosInXml);

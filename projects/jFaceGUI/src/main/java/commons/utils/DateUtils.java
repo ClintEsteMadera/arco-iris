@@ -9,8 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import commons.datetime.Fecha;
-import commons.datetime.FechaHora;
+import commons.datetime.SimpleDate;
+import commons.datetime.DateTime;
 
 public abstract class DateUtils {
 
@@ -152,16 +152,16 @@ public abstract class DateUtils {
 		return result;
 	}
 
-	public static Calendar getFechaHoraAsCalendar(FechaHora fechaHora) {
+	public static Calendar getFechaHoraAsCalendar(DateTime fechaHora) {
 		try {
-			return getDateAsCalendar(fechaHoraDateFormat.parse(fechaHora.getFecha().toString()
-					+ fechaHora.getHora().toString()));
+			return getDateAsCalendar(fechaHoraDateFormat.parse(fechaHora.getDate().toString()
+					+ fechaHora.getTime().toString()));
 		} catch (ParseException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	public static Calendar getFechaAsCalendar(Fecha fecha) {
+	public static Calendar getFechaAsCalendar(SimpleDate fecha) {
 		try {
 			return getDateAsCalendar(fechaDateFormat.parse(fecha.toString()));
 		} catch (ParseException e) {

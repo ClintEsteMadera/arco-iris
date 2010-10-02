@@ -30,7 +30,14 @@ import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 import commons.utils.SbaStringUtils;
 
-public abstract class TextFactory {
+public final class TextFactory {
+
+	/**
+	 * This class is not meant to be instantiated.
+	 */
+	private TextFactory() {
+		super();
+	}
 
 	public static Control createText(TextFieldMetainfo textMetainfo) {
 		Control text = createTextField(textMetainfo);
@@ -55,10 +62,10 @@ public abstract class TextFactory {
 	/**
 	 * Crea un campo de texto a partir de la meta informción brindada.
 	 * 
-	 * @param metainfo:
-	 *            meta información de un campo de texto
-	 * @return el campo de texto creado, puede ser un <code>Label</code> si es de solo lectura o un <code>Text</code>
-	 *         si es de lectura escritura.
+	 * @param metainfo
+	 *            : meta información de un campo de texto
+	 * @return el campo de texto creado, puede ser un <code>Label</code> si es de solo lectura o un <code>Text</code> si
+	 *         es de lectura escritura.
 	 */
 	private static <T> Control createTextField(final TextFieldMetainfo metainfo) {
 		Control result = null;

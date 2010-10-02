@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Extension de SimpleDateFormat para soporat "fecha base"
+ * Extension de SimpleDateFormat para soportar "fecha base"
  * 
  * @author P.Pastorino
  */

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.util.Assert;
 
-public class Fecha implements Serializable {
+public class SimpleDate implements Serializable {
 
 	private int dd;
 
@@ -14,8 +14,8 @@ public class Fecha implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// TODO Mejorar las validaciones (se puede usar el Enum "Mes")
-	public Fecha(int dia, int mes, int año) {
+	// TODO improve validations ("Month" enum could be used)
+	public SimpleDate(int dia, int mes, int año) {
 		super();
 		validateDia(dia);
 		this.dd = dia;
@@ -58,7 +58,7 @@ public class Fecha implements Serializable {
 	}
 
 	private void validateDia(int dia) {
-		Assert.isTrue(dia >= 1 || dia <= 31, "El dña tiene que estar entre 1 y 31");
+		Assert.isTrue(dia >= 1 || dia <= 31, "El día tiene que estar entre 1 y 31");
 	}
 
 	private void validateMes(int mes) {
