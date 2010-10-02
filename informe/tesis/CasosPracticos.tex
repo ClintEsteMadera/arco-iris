@@ -1,7 +1,7 @@
 \section{Casos Prácticos}\label{CasoPracticoSection}
 
 	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la simulación que forma parte del proyecto Znn.
-	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de servidores y la fidelidad de la información que se provee, o sea, permite eliminar determinado tipo de contenido (e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio óptimo según los requerimientos planteados.
+	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido (e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio óptimo según los requerimientos planteados.
 	
 	\subsection{Arquitectura del Sistema}
 
@@ -35,7 +35,7 @@
 	Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá evaluar la variación de comportamiento al ir agregando escenarios y estrategias.
 	Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario y el costo de servidores del sistema, que en este caso reflejará simplemente la cantidad de servidores levantados con que cuenta el sistema en cada momento.
 	
-	Entonces, el comportamiento del sistema sin escenarios, o sea, sin autoreparación será el siguiente:
+	Entonces, el comportamiento del sistema sin escenarios, es decir, sin autoreparación será el siguiente:
 	\begin{center}
 		\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime.png}
 	\end{center}
@@ -44,7 +44,7 @@
 		\includegraphics[width=1.00\textwidth]{images/testcase1_1_cost.png}
 	\end{center}
 
-	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se así por unos 10 segundos, luego el mismo va bajando escalonadamente hasta estacionarse en 360ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, o sea que el sistema trabajó siempre con un único servidor.
+	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se así por unos 10 segundos, luego el mismo va bajando escalonadamente hasta estacionarse en 360ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó siempre con un único servidor.
 
 	\subsection{Comportamiento del Sistema con un único Escenario}
 	
