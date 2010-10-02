@@ -7,7 +7,7 @@ import java.util.Date;
 import commons.utils.DateUtils;
 
 /**
- * Parametros de configuracion de un valor de tipo Fecha.
+ * Parametros de configuracion de un valor de tipo SimpleDate.
  * 
  * @author P.Pastorino
  */
@@ -134,7 +134,7 @@ public class DateEditParameters implements Cloneable {
 	}
 
 	/**
-	 * Caracter seprador de los campos de una fecha
+	 * Caracter separador de los campos de una fecha
 	 */
 	public static char DEFAULT_DATE_SEPARATOR;
 

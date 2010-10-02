@@ -1,5 +1,7 @@
 package scenariosui.gui.widget.composite;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -47,7 +49,12 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 		RepairStrategiesSelectionDialog repairStrategiesSelectionDialog = new RepairStrategiesSelectionDialog(criteria);
 		repairStrategiesSelectionDialog.open();
 
-		return new SpecificRepairStrategies(repairStrategiesSelectionDialog.getSelectedRepairStrategyNames());
+		RepairStrategies result = null;
+		List<String> selectedRepairStrategyNames = repairStrategiesSelectionDialog.getSelectedRepairStrategyNames();
+		if (selectedRepairStrategyNames != null) {
+			result = new SpecificRepairStrategies(selectedRepairStrategyNames);
+		}
+		return result;
 	}
 
 	@Override

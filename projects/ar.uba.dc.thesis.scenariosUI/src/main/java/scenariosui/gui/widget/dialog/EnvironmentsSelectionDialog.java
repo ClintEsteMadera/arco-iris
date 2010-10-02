@@ -6,7 +6,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -41,8 +40,6 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(ScenariosUILabels.SELECT_ENVIRONMENTS.toString());
-		Rectangle centerLocation = PageHelper.getCenterLocation(800, 500);
-		shell.setBounds(centerLocation);
 	}
 
 	@Override
@@ -73,11 +70,6 @@ public class EnvironmentsSelectionDialog extends Dialog implements Advised<Envir
 	@Override
 	protected void okPressed() {
 		rowDoubleClicked(environmentsSelectionQuerycomposite);
-	}
-
-	@Override
-	protected void cancelPressed() {
-		this.close();
 	}
 
 	public List<Environment> getSelectedEnvironments() {

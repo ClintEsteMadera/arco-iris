@@ -10,11 +10,6 @@ import org.eclipse.swt.widgets.Label;
 import commons.gui.model.validation.ValidationStatusAware;
 import commons.gui.widget.DefaultLayoutFactory;
 
-/**
- * 
- * 
- */
-
 public class LabelStatusAware implements ValidationStatusAware {
 
 	public LabelStatusAware(Composite composite) {

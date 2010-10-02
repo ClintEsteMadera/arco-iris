@@ -1,12 +1,13 @@
 package commons.properties;
 
 /**
- * Fake Enum Property utilazada para wrappear un String.
- * 
- * 
+ * This is a wrapper for a simple String
  */
+public class FakeEnumProperty implements EnumProperty, Comparable<FakeEnumProperty> {
 
-public class FakeEnumProperty implements EnumProperty {
+	private String label;
+
+	private static final long serialVersionUID = 1L;
 
 	public FakeEnumProperty(String label) {
 		super();
@@ -18,7 +19,7 @@ public class FakeEnumProperty implements EnumProperty {
 		return label;
 	}
 
-	public String toString(Object... reemplazos) {
+	public <T> String toString(T... replacements) {
 		return label;
 	}
 
@@ -26,7 +27,8 @@ public class FakeEnumProperty implements EnumProperty {
 		return label;
 	}
 
-	private String label;
-
-	private static final long serialVersionUID = 1L;
+	@Override
+	public int compareTo(FakeEnumProperty another) {
+		return this.label.compareTo(another.label);
+	}
 }

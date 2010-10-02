@@ -1,9 +1,9 @@
 package ar.uba.dc.thesis.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
@@ -39,7 +39,7 @@ public class TestEnvironmentDao {
 
 	// TODO setear las condiciones de los environments(deben ser excluyentes)
 	private Environment createNormalEnvironment() {
-		Map<Concern, Double> normalConcernMultiplierMap = new HashMap<Concern, Double>();
+		SortedMap<Concern, Double> normalConcernMultiplierMap = new TreeMap<Concern, Double>();
 		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.333D);
 		normalConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.333D);
 		normalConcernMultiplierMap.put(Concern.SERVER_COST, 0.333D);
@@ -53,7 +53,7 @@ public class TestEnvironmentDao {
 	}
 
 	private Environment createHighLoadEnvironment() {
-		Map<Concern, Double> highLoadConcernMultiplierMap = new HashMap<Concern, Double>();
+		SortedMap<Concern, Double> highLoadConcernMultiplierMap = new TreeMap<Concern, Double>();
 		highLoadConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.7D);
 		highLoadConcernMultiplierMap.put(Concern.SERVER_COST, 0.2D);
 		highLoadConcernMultiplierMap.put(Concern.CONTENT_FIDELITY, 0.1D); // this one SHOULD exist in the map

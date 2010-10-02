@@ -7,6 +7,7 @@ import commons.gui.binding.ButtonBindingFactory;
 import commons.gui.binding.CalendarBindingFactory;
 import commons.gui.binding.ComboBindingFactory;
 import commons.gui.binding.DateTimeBindingFactory;
+import commons.gui.binding.IntegerModifierControlBindingFactory;
 import commons.gui.binding.ListBindingFactory;
 import commons.gui.binding.RadioButtonGroupBindingFactory;
 import commons.gui.binding.TableBindingFactory;
@@ -80,6 +81,7 @@ public class ValueBindingManager {
 		addBindingFactory(new DateTimeBindingFactory());
 		addBindingFactory(new ListBindingFactory());
 		addBindingFactory(new ValueModelBindingFactory());
+		addBindingFactory(new IntegerModifierControlBindingFactory());
 	}
 
 	private static ValueBindingManager instance = new ValueBindingManager();

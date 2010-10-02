@@ -38,7 +38,8 @@ public enum ScenariosUILabels implements EnumProperty {
 	FROM,
 	TO,
 	SUM,
-	CONDITIONS;
+	CONDITIONS,
+	CONCERNS_WEIGHTS;
 
 	@Override
 	public String toString() {

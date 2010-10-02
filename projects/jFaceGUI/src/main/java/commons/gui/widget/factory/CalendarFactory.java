@@ -5,14 +5,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
-import commons.datetime.Hora;
+import commons.datetime.Time;
 import commons.gui.model.validation.ValidationManager;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.composite.CalendarComposite;
 import commons.gui.widget.creation.metainfo.CalendarMetainfo;
 import commons.properties.CommonLabels;
 
-public abstract class CalendarFactory {
+public final class CalendarFactory {
+
+	/**
+	 * This class is not meant to be instantiated.
+	 */
+	private CalendarFactory() {
+		super();
+	}
 
 	public static CalendarComposite createCalendar(CalendarMetainfo metainfo) {
 		if (!CommonLabels.NO_LABEL.equals(metainfo.label)) {
@@ -45,10 +52,10 @@ public abstract class CalendarFactory {
 
 	}
 
-	private static void normalizeTime(DateTime dateTime, Hora hora) {
-		dateTime.setHours(Integer.valueOf(hora.getHoras()));
-		dateTime.setMinutes(Integer.valueOf(hora.getMinutos()));
-		dateTime.setSeconds(Integer.valueOf(hora.getSegundos()));
+	private static void normalizeTime(DateTime dateTime, Time hora) {
+		dateTime.setHours(Integer.valueOf(hora.getHours()));
+		dateTime.setMinutes(Integer.valueOf(hora.getMinutes()));
+		dateTime.setSeconds(Integer.valueOf(hora.getSeconds()));
 	}
 
 	private static Control createControl(CalendarMetainfo metainfo, int controlType) {

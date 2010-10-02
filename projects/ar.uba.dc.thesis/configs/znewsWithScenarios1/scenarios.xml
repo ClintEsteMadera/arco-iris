@@ -7,16 +7,17 @@
     <environment id="0" name="NORMAL">
       <conditions>
         <numericBinaryRelationalConstraint>
-          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
+          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
       </conditions>
-      <weights>
+      <weights class="tree-map">
+        <no-comparator/>
         <entry>
-          <concern>CONTENT_FIDELITY</concern>
+          <concern>RESPONSE_TIME</concern>
           <double>0.333</double>
         </entry>
         <entry>
@@ -24,39 +25,38 @@
           <double>0.333</double>
         </entry>
         <entry>
-          <concern>RESPONSE_TIME</concern>
+          <concern>CONTENT_FIDELITY</concern>
           <double>0.333</double>
         </entry>
       </weights>
       <heuristic>MOST</heuristic>
-      <history/>
     </environment>
     <environment id="1" name="HIGH LOAD">
       <conditions>
         <numericBinaryRelationalConstraint>
-          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
+          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>GREATER_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
       </conditions>
-      <weights>
+      <weights class="tree-map">
+        <no-comparator/>
         <entry>
-          <concern>CONTENT_FIDELITY</concern>
-          <double>0.1</double>
+          <concern>RESPONSE_TIME</concern>
+          <double>0.7</double>
         </entry>
         <entry>
           <concern>SERVER_COST</concern>
           <double>0.2</double>
         </entry>
         <entry>
-          <concern>RESPONSE_TIME</concern>
-          <double>0.7</double>
+          <concern>CONTENT_FIDELITY</concern>
+          <double>0.1</double>
         </entry>
       </weights>
       <heuristic>MOST</heuristic>
-      <history/>
     </environment>
   </environments>
   <scenarios>
@@ -71,9 +71,9 @@
       <responseMeasure>
         <description>Experienced response time is within threshold</description>
         <constraint class="numericBinaryRelationalConstraint">
-          <quantifier>IN_AVERAGE</quantifier>
           <artifact reference="../../../../../artifacts/artifact"/>
           <property>experRespTime</property>
+          <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
         </constraint>

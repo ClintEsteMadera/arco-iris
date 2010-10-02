@@ -14,7 +14,12 @@
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
       </conditions>
-      <weights>
+      <weights class="tree-map">
+        <no-comparator/>
+        <entry>
+          <concern>RESPONSE_TIME</concern>
+          <double>0.333</double>
+        </entry>
         <entry>
           <concern>SERVER_COST</concern>
           <double>0.333</double>
@@ -23,13 +28,8 @@
           <concern>CONTENT_FIDELITY</concern>
           <double>0.333</double>
         </entry>
-        <entry>
-          <concern>RESPONSE_TIME</concern>
-          <double>0.333</double>
-        </entry>
       </weights>
       <heuristic>MOST</heuristic>
-      <history/>
     </environment>
     <environment id="1" name="HIGH LOAD">
       <conditions>
@@ -41,7 +41,12 @@
           <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
         </numericBinaryRelationalConstraint>
       </conditions>
-      <weights>
+      <weights class="tree-map">
+        <no-comparator/>
+        <entry>
+          <concern>RESPONSE_TIME</concern>
+          <double>0.7</double>
+        </entry>
         <entry>
           <concern>SERVER_COST</concern>
           <double>0.2</double>
@@ -50,13 +55,8 @@
           <concern>CONTENT_FIDELITY</concern>
           <double>0.1</double>
         </entry>
-        <entry>
-          <concern>RESPONSE_TIME</concern>
-          <double>0.7</double>
-        </entry>
       </weights>
       <heuristic>MOST</heuristic>
-      <history/>
     </environment>
   </environments>
   <scenarios>

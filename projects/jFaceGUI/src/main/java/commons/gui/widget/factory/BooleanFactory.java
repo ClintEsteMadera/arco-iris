@@ -9,7 +9,14 @@ import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.creation.metainfo.BooleanFieldMetainfo;
 
-public abstract class BooleanFactory {
+public final class BooleanFactory {
+
+	/**
+	 * This class is not meant to be instantiated.
+	 */
+	private BooleanFactory() {
+		super();
+	}
 
 	public static Control createBoolean(BooleanFieldMetainfo metainfo) {
 		Composite booleanFieldComposite = new SimpleComposite(metainfo.composite, metainfo.readOnly,

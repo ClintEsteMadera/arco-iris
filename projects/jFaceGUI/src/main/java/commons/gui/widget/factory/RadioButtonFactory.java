@@ -11,7 +11,14 @@ import commons.gui.widget.creation.binding.Binding;
 import commons.gui.widget.creation.metainfo.RadioButtonMetainfo;
 import commons.utils.ClassUtils;
 
-public abstract class RadioButtonFactory {
+public final class RadioButtonFactory {
+
+	/**
+	 * This class is not meant to be instantiated.
+	 */
+	private RadioButtonFactory() {
+		super();
+	}
 
 	public static Control createRadioButtonGroup(RadioButtonMetainfo metainfo) {
 		String groupName = "";
