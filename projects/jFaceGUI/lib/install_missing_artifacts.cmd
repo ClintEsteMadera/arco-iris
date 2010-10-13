@@ -2,8 +2,10 @@ cmd /c mvn install:install-file -DgroupId=org.eclipse.core -DartifactId=core_com
 cmd /c mvn install:install-file -DgroupId=org.eclipse.core -DartifactId=equinox_common -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/equinox_common.jar
 cmd /c mvn install:install-file -DgroupId=org.eclipse -DartifactId=swt -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/swt.jar
 cmd /c mvn install:install-file -DgroupId=org.eclipse -DartifactId=jface -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/jface.jar
-cmd /c mvn install:install-file -DgroupId=org.eclipse.swt.win32.win32 -DartifactId=x86 -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/native-lib-win32.jar
 cmd /c mvn install:install-file -DgroupId=org.eclipse -DartifactId=osgi -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/osgi.jar
+cmd /c mvn install:install-file -DgroupId=org.eclipse.swt.win32.win32 -DartifactId=x86 -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/native-lib-win32.jar
+cmd /c mvn install:install-file -DgroupId=org.eclipse.swt.gtk.linux -DartifactId=x86_64 -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/native-lib-linux64.jar
+cmd /c mvn install:install-file -DgroupId=org.eclipse.swt.gtk.linux -DartifactId=x86 -Dversion=6.6.6 -Dpackaging=jar -Dfile=swt_jface/native-lib-linux32.jar
 
 cmd /c mvn install:install-file -DgroupId=javax.ejb -DartifactId=ejb -Dversion=2.1 -Dpackaging=jar -Dfile=ejb-2.1.jar
 cmd /c mvn install:install-file -DgroupId=org.eclipse.ui -DartifactId=forms -Dversion=3.2.0.v20060602 -Dpackaging=jar -Dfile=forms.jar
