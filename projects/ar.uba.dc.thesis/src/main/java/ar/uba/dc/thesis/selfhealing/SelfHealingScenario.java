@@ -1,7 +1,6 @@
 package ar.uba.dc.thesis.selfhealing;
 
 import java.util.List;
-import java.util.Set;
 import java.util.SortedMap;
 
 import org.apache.log4j.Level;
@@ -10,13 +9,14 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.AtamScenario;
 import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
+import ar.uba.dc.thesis.common.validation.Assert;
+import ar.uba.dc.thesis.common.validation.ValidationError;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
@@ -29,7 +29,9 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("selfHealingScenario")
 public class SelfHealingScenario extends AtamScenario {
 
-	private static final long serialVersionUID = 1L;
+	private static final String NO_DATA = "(NO DATA)";
+
+	private static final String VALIDATION_MSG_REPAIR_STRATEGIES = "Scenario's repair strategies cannot be empty";
 
 	@XStreamAsAttribute
 	private boolean enabled;
@@ -49,9 +51,8 @@ public class SelfHealingScenario extends AtamScenario {
 
 	public SelfHealingScenario(Long id, String name, Concern concern, Stimulus stimulus,
 			List<? extends Environment> environments, Artifact artifact, String response,
-			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions, boolean enabled,
-			int priority, RepairStrategies repairStrategies) {
-		super(id, name, concern, stimulus, environments, artifact, response, responseMeasure, architecturalDecisions);
+			ResponseMeasure responseMeasure, boolean enabled, int priority, RepairStrategies repairStrategies) {
+		super(id, name, concern, stimulus, environments, artifact, response, responseMeasure);
 		this.enabled = enabled;
 		this.priority = priority;
 		this.repairStrategies = repairStrategies;
@@ -94,22 +95,34 @@ public class SelfHealingScenario extends AtamScenario {
 	 * es protected.
 	 */
 	protected boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
-		// It is not necessary to check the environment at this point because this scenario was already selected for
-		// being repaired
-		Constraint constraint = getResponseMeasure().getConstraint();
-		boolean isBroken = false;
-		String expValueAsString = "(NO DATA)";
-		Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
-		if (expValue != null) {
-			expValueAsString = expValue.toString();
-			isBroken = !constraint.holds(expValue);
+		if (this.anyEnvironmentApplies(rainbowModelWithScenarios)) {
+			Constraint constraint = getResponseMeasure().getConstraint();
+			boolean isBroken = false;
+			String expValueAsString = NO_DATA;
+			Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
+			if (expValue != null) {
+				expValueAsString = expValue.toString();
+				isBroken = !constraint.holds(expValue);
+			}
+
+			String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
+
+			log(Level.INFO, "Scenario " + this.getName() + " broken for " + exponentialQuantifierApplied + " "
+					+ expValueAsString + "? " + isBroken);
+			return isBroken;
 		}
+		return false;
+	}
 
-		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
-
-		log(Level.INFO, "Scenario " + this.getName() + " broken for " + exponentialQuantifierApplied + " "
-				+ expValueAsString + "? " + isBroken);
-		return isBroken;
+	private boolean anyEnvironmentApplies(RainbowModelWithScenarios rainbowModelWithScenarios) {
+		boolean holds = false;
+		for (Environment environment : this.getEnvironments()) {
+			if (environment.holds(rainbowModelWithScenarios)) {
+				holds = true;
+				break;
+			}
+		}
+		return holds;
 	}
 
 	protected boolean isBrokenAfterStrategy(final RainbowModelWithScenarios rainbowModelWithScenarios,
@@ -118,7 +131,7 @@ public class SelfHealingScenario extends AtamScenario {
 		// being repaired
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
-		String expValueAfterStrategyAsString = "(NO DATA)";
+		String expValueAfterStrategyAsString = NO_DATA;
 		Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
 		if (expValue != null) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
@@ -165,13 +178,22 @@ public class SelfHealingScenario extends AtamScenario {
 		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
 	}
 
+	@Override
+	protected List<ValidationError> collectValidationErrors() {
+		List<ValidationError> validationErrors = super.collectValidationErrors();
+
+		Assert.notNullAndValid(this.repairStrategies, VALIDATION_MSG_REPAIR_STRATEGIES, validationErrors);
+
+		return validationErrors;
+	}
+
 	// FIXME no deberia usarse???
 	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean thereIsAnEnvironmentApplicable = false;
 
 		for (Environment environment : this.getEnvironments()) {
 			thereIsAnEnvironmentApplicable = thereIsAnEnvironmentApplicable
-					|| environment.holds4Scoring(rainbowModelWithScenarios);
+					|| environment.holds(rainbowModelWithScenarios);
 		}
 		return thereIsAnEnvironmentApplicable;
 	}

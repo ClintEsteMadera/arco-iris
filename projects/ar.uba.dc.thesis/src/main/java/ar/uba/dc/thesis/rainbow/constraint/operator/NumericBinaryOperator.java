@@ -2,13 +2,11 @@ package ar.uba.dc.thesis.rainbow.constraint.operator;
 
 import org.apache.commons.lang.StringUtils;
 
-import ar.uba.dc.thesis.common.Validatable;
-
 /**
  * This class is intended to provide a type-safe way to specify operators.
  * 
  */
-public enum NumericBinaryOperator implements Validatable {
+public enum NumericBinaryOperator {
 
 	LESS_THAN("<") {
 		@Override
@@ -46,18 +44,14 @@ public enum NumericBinaryOperator implements Validatable {
 	private NumericBinaryOperator(String symbol) {
 		this.symbol = symbol;
 
-		this.validate();
+		if (StringUtils.isBlank(this.symbol)) {
+			throw new IllegalArgumentException("Operator's symbol cannot be empty");
+		}
 	}
 
 	@Override
 	public String toString() {
 		return this.symbol;
-	}
-
-	public void validate() {
-		if (StringUtils.isBlank(this.symbol)) {
-			throw new IllegalArgumentException("Operator's symbol cannot be empty");
-		}
 	}
 
 	public abstract boolean performOperation(Number value1, Number value2);

@@ -13,14 +13,14 @@ import scenariosui.gui.query.RepairStrategySearchCriteria;
 import scenariosui.properties.ScenariosUIMessages;
 import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIManager;
+import ar.uba.dc.thesis.common.validation.ValidationError;
+import ar.uba.dc.thesis.common.validation.ValidationException;
 import ar.uba.dc.thesis.selfhealing.StrategyTO;
 
-import commons.exception.ValidationException;
 import commons.gui.Advised;
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.table.GenericTable;
 import commons.gui.util.purpose.Purpose;
-import commons.validation.ValidationError;
 
 public class RepairStrategiesSelectionQueryComposite extends ScenariosUIQueryComposite<StrategyTO> {
 
@@ -70,8 +70,8 @@ public class RepairStrategiesSelectionQueryComposite extends ScenariosUIQueryCom
 		List<StrategyTO> allStrategies = ScenariosUIManager.getInstance().getAllStrategies(this.getCriteria());
 
 		if (allStrategies.isEmpty()) {
-			throw new ValidationException(new ValidationError(ScenariosUIMessages.NO_REPAIR_STRATEGIES_FOUND, this
-					.getCriteria().getStitchDirectory()));
+			throw new ValidationException(new ValidationError(
+					ScenariosUIMessages.NO_REPAIR_STRATEGIES_FOUND.toString(), this.getCriteria().getStitchDirectory()));
 		}
 		return allStrategies;
 
@@ -98,7 +98,7 @@ public class RepairStrategiesSelectionQueryComposite extends ScenariosUIQueryCom
 	}
 
 	@Override
-	protected <P extends Purpose> OpenDialogWithPurposeAction<StrategyTO, P> getActionForNew() {
+	protected <P extends Purpose> OpenDialogWithPurposeAction<StrategyTO, P> getActionForCreate() {
 		throw new RuntimeException(
 				"This method should not be invoked since this composite does not allow creating new items");
 	}

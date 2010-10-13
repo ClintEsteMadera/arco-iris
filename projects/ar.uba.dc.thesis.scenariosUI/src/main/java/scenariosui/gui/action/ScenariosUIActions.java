@@ -56,7 +56,7 @@ public final class ScenariosUIActions {
 
 	// Environment
 
-	public static final EnvironmentOpenDialogWithPurposeAction NEW_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
+	public static final OpenDialogWithPurposeAction<Environment, Purpose> NEW_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(
 			"scenarioUI.environment.new", NO_SHORTCUT, BasePurpose.CREATION);
 
 	public static final OpenDialogWithPurposeAction<Environment, Purpose> EDIT_ENVIRONMENT = new EnvironmentOpenDialogWithPurposeAction(

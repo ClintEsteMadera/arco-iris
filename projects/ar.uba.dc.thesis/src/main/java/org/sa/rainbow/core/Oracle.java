@@ -36,7 +36,7 @@ import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.dao.FileSelfHealingConfigurationDao;
 import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
-import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
+import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector4CurrentSystemState;
 import ar.uba.dc.thesis.selfhealing.StitchLoader;
 import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
 
@@ -76,7 +76,7 @@ public class Oracle implements IDisposable {
 
 	private SelfHealingConfigurationRepository selfHealingConfigurationRepository;
 
-	private DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
+	private ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState;
 
 	private StitchLoader stitchLoader;
 
@@ -274,12 +274,12 @@ public class Oracle implements IDisposable {
 		return this.selfHealingConfigurationDao;
 	}
 
-	public DefaultScenarioBrokenDetector defaultScenarioBrokenDetector() {
-		if (this.defaultScenarioBrokenDetector == null) {
-			this.defaultScenarioBrokenDetector = new DefaultScenarioBrokenDetector((RainbowModelWithScenarios) this
+	public ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState() {
+		if (this.scenarioBrokenDetector4CurrentSystemState == null) {
+			this.scenarioBrokenDetector4CurrentSystemState = new ScenarioBrokenDetector4CurrentSystemState((RainbowModelWithScenarios) this
 					.rainbowModel());
 		}
-		return this.defaultScenarioBrokenDetector;
+		return this.scenarioBrokenDetector4CurrentSystemState;
 	}
 
 	public StitchLoader stitchLoader() {

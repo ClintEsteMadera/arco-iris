@@ -1,4 +1,4 @@
-<selfHealingConfiguration description="test">
+<selfHealingConfiguration description="znewsWithScenarios4">
   <artifacts>
     <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
     <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
@@ -78,7 +78,6 @@
           <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
-      <architecturalDecisions/>
       <repairStrategies class="specificRepairStrategies">
         <repairStrategy>ReduceOverallCost</repairStrategy>
       </repairStrategies>
@@ -101,7 +100,6 @@
           <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
-      <architecturalDecisions/>
       <repairStrategies class="specificRepairStrategies">
         <repairStrategy>ExpensiveReduceResponseTime</repairStrategy>
         <repairStrategy>BruteReduceResponseTime</repairStrategy>

@@ -1,12 +1,16 @@
 package ar.uba.dc.thesis.rainbow.constraint.numerical;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
+import ar.uba.dc.thesis.common.validation.Assert;
+import ar.uba.dc.thesis.common.validation.ValidationError;
 import ar.uba.dc.thesis.rainbow.constraint.operator.NumericBinaryOperator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -15,7 +19,11 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
-	private static final long serialVersionUID = 1L;
+	private static final String VALIDATION_MSG_QUANTIFIER = "The quantifier cannot be not empty";
+
+	private static final String VALIDATION_MSG_BINARY_OPERATOR = "The binary operator cannot be not empty";
+
+	private static final String VALIDATION_MSG_CONSTANT_TO_COMPARE_PROP_WITH = "The constant to compare the property with, cannot be not empty";
 
 	private static final String SPACE = " ";
 
@@ -32,7 +40,8 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 
 	public NumericBinaryRelationalConstraint() {
 		super();
-		this.restoreToDefaultValues();
+		this.constantToCompareThePropertyWith = Double.valueOf(0.0);
+		this.quantifier = Quantifier.IN_AVERAGE;
 	}
 
 	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,
@@ -46,13 +55,8 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		this.quantifier = quantifier;
 		this.binaryOperator = binaryOperator;
 		this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
-		this.validate();
-	}
 
-	@Override
-	public void restoreToDefaultValues() {
-		this.constantToCompareThePropertyWith = Double.valueOf(0.0);
-		this.quantifier = Quantifier.IN_AVERAGE;
+		this.validate();
 	}
 
 	public Quantifier getQuantifier() {
@@ -95,13 +99,19 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
+	protected List<ValidationError> collectValidationErrors() {
+		List<ValidationError> validationErrors = new ArrayList<ValidationError>();
 
-		if (StringUtils.isBlank(this.getFullyQualifiedPropertyName())) {
-			throw new IllegalArgumentException("The property involved in the comparison cannot be blank");
-		}
-		this.binaryOperator.validate();
+		String constraintId = this.getDescriptiveIdForReporting();
+
+		Assert.notNull(this.quantifier, constraintId + VALIDATION_MSG_QUANTIFIER, validationErrors);
+
+		Assert.notNull(this.binaryOperator, constraintId + VALIDATION_MSG_BINARY_OPERATOR, validationErrors);
+
+		Assert.notNull(this.constantToCompareThePropertyWith, constraintId
+				+ VALIDATION_MSG_CONSTANT_TO_COMPARE_PROP_WITH, validationErrors);
+
+		return validationErrors;
 	}
 
 	@Override

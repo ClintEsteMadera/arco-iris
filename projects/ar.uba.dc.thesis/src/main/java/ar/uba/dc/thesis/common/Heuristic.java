@@ -5,10 +5,10 @@ import java.util.List;
 
 public enum Heuristic {
 
-	ALL("Current evaluation + the entire history") {
+	ALL("All of the historic evaluations") {
 		@Override
-		public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
-			boolean result = currentConstraintsEvaluation;
+		public boolean run(List<Boolean> history) {
+			boolean result = true;
 			Iterator<Boolean> it = history.iterator();
 			while (result && it.hasNext()) {
 				result = result && it.next();
@@ -18,23 +18,22 @@ public enum Heuristic {
 	},
 	MOST("Most of the historic evaluations") {
 		@Override
-		public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
-			int holded = currentConstraintsEvaluation ? 1 : 0;
-			int notHolded = currentConstraintsEvaluation ? 0 : 1;
-			for (boolean historicalItem : history) {
-				if (historicalItem) {
+		public boolean run(List<Boolean> history) {
+			int holded = 0;
+			for (boolean historicalEval : history) {
+				if (historicalEval) {
 					holded++;
 				} else {
-					notHolded++;
+					holded--;
 				}
 			}
-			return holded > notHolded;
+			return holded > 0;
 		}
 	},
 	AT_LEAST_ONE("At least one evaluation") {
 		@Override
-		public boolean run(boolean currentConstraintsEvaluation, List<Boolean> history) {
-			boolean result = currentConstraintsEvaluation;
+		public boolean run(List<Boolean> history) {
+			boolean result = false;
 			Iterator<Boolean> it = history.iterator();
 			while (!result && it.hasNext()) {
 				result = result || it.next();
@@ -54,5 +53,5 @@ public enum Heuristic {
 		return this.description;
 	}
 
-	public abstract boolean run(boolean currentConstraintsEvaluation, List<Boolean> history);
+	public abstract boolean run(List<Boolean> history);
 }

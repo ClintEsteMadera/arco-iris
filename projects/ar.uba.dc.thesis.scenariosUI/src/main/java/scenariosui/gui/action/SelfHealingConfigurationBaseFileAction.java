@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.ScenariosUIMessages;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
-import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.common.ArcoIrisDomainObject;
 
 import commons.gui.action.BaseGuiAction;
 import commons.gui.util.PageHelper;
@@ -57,7 +57,7 @@ public abstract class SelfHealingConfigurationBaseFileAction extends BaseGuiActi
 		return dialog;
 	}
 
-	private <T extends ThesisPojo> void showQuery(ScenariosUIQueryAction<T> queryActionToBeTriggered) {
+	private <T extends ArcoIrisDomainObject> void showQuery(ScenariosUIQueryAction<T> queryActionToBeTriggered) {
 		queryActionToBeTriggered.getActionFor(null).run();
 	}
 

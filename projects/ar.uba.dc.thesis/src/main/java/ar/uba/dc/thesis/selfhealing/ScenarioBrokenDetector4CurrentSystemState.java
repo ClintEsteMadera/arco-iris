@@ -2,11 +2,11 @@ package ar.uba.dc.thesis.selfhealing;
 
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
-public class DefaultScenarioBrokenDetector implements ScenarioBrokenDetector {
+public class ScenarioBrokenDetector4CurrentSystemState implements ScenarioBrokenDetector {
 
 	private final RainbowModelWithScenarios rainbowModelWithScenarios;
 
-	public DefaultScenarioBrokenDetector(RainbowModelWithScenarios model) {
+	public ScenarioBrokenDetector4CurrentSystemState(RainbowModelWithScenarios model) {
 		super();
 		this.rainbowModelWithScenarios = model;
 	}

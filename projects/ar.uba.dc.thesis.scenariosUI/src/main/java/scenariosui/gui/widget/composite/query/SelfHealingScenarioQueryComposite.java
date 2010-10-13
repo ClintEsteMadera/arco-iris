@@ -32,7 +32,7 @@ public class SelfHealingScenarioQueryComposite extends ScenariosUIQueryComposite
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<SelfHealingScenario, Purpose> getActionForNew() {
+	protected OpenDialogWithPurposeAction<SelfHealingScenario, Purpose> getActionForCreate() {
 		return ScenariosUIActions.NEW_SELF_HEALING_SCENARIO;
 	}
 

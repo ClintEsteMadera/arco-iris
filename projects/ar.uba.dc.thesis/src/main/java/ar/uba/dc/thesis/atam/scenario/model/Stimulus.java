@@ -1,12 +1,17 @@
 package ar.uba.dc.thesis.atam.scenario.model;
 
-import ar.uba.dc.thesis.common.ThesisPojo;
+import org.apache.commons.lang.StringUtils;
+
+import ar.uba.dc.thesis.common.ArcoIrisDomainObject;
+import ar.uba.dc.thesis.common.validation.ValidationError;
+import ar.uba.dc.thesis.common.validation.ValidationException;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-public class Stimulus extends ThesisPojo {
+public class Stimulus extends ArcoIrisDomainObject {
 
-	private static final long serialVersionUID = 1L;
+	private static final ValidationError VALIDATION_ERROR_STIMULUS_NAME = new ValidationError(
+			"Stimulus cannot be blank");
 
 	/**
 	 * Convenience instance intended to act as a shortcut for the concept of "ANY" environment.<br>
@@ -52,6 +57,8 @@ public class Stimulus extends ThesisPojo {
 		this.name = name;
 		this.source = source;
 		this.any = false;
+
+		this.validate();
 	}
 
 	public String getName() {
@@ -113,6 +120,13 @@ public class Stimulus extends ThesisPojo {
 	@Override
 	protected String[] getEqualsAndHashCodeExcludedFields() {
 		return new String[] { "source", "any" };
+	}
+
+	@Override
+	public void validate() throws ValidationException {
+		if (!this.isAny() && StringUtils.isBlank(this.getName())) {
+			throw new ValidationException(VALIDATION_ERROR_STIMULUS_NAME);
+		}
 	}
 
 }

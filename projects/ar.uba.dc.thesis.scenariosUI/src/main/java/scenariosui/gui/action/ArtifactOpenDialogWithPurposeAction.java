@@ -1,13 +1,12 @@
 package scenariosui.gui.action;
 
-import org.eclipse.jface.dialogs.Dialog;
-
 import scenariosui.gui.widget.dialog.ArtifactDialog;
 import scenariosui.properties.ScenariosUILabels;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 
 import commons.gui.action.OpenDialogWithPurposeAction;
 import commons.gui.util.purpose.Purpose;
+import commons.gui.widget.dialog.BaseCompositeModelBoundedDialog;
 
 public class ArtifactOpenDialogWithPurposeAction extends OpenDialogWithPurposeAction<Artifact, Purpose> {
 
@@ -16,7 +15,7 @@ public class ArtifactOpenDialogWithPurposeAction extends OpenDialogWithPurposeAc
 	}
 
 	@Override
-	protected Dialog getDialogFor(Artifact model) {
+	protected BaseCompositeModelBoundedDialog<Artifact> getDialogFor(Artifact model) {
 		// in this case, we want to ensure we use a new instance
 		if (this.getPurpose().isCreation()) {
 			model = null;

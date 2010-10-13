@@ -14,6 +14,7 @@ import commons.gui.widget.creation.binding.BindingInfo;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
 import commons.gui.widget.factory.TextFactory;
 import commons.gui.widget.group.SimpleGroup;
+import commons.properties.CommonLabels;
 
 public class ArtifactComposite extends SimpleComposite {
 
@@ -24,7 +25,7 @@ public class ArtifactComposite extends SimpleComposite {
 			underlyingArtifact.getValue().setId(ScenariosUIManager.getInstance().getNextId(Artifact.class));
 		}
 
-		Group swtGroup = new SimpleGroup(parent, ScenariosUILabels.ATAM_SCENARIO_INFO, this.readOnly).getSwtGroup();
+		Group swtGroup = new SimpleGroup(parent, CommonLabels.BASIC_INFORMATION, this.readOnly).getSwtGroup();
 
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.ID, new BindingInfo(
 				underlyingArtifact, "id"), true);
@@ -32,10 +33,12 @@ public class ArtifactComposite extends SimpleComposite {
 
 		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.NAME, new BindingInfo(underlyingArtifact,
 				"name"), this.readOnly);
+		textMetainfo.visibleSize = 30;
 		TextFactory.createText(textMetainfo);
 
 		textMetainfo = TextFieldMetainfo.create(swtGroup, ScenariosUILabels.SYSTEM_NAME, new BindingInfo(
 				underlyingArtifact, "systemName"), this.readOnly);
+		textMetainfo.visibleSize = 30;
 		TextFactory.createText(textMetainfo);
 	}
 

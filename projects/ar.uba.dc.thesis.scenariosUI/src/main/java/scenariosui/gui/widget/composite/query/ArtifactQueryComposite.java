@@ -33,7 +33,7 @@ public class ArtifactQueryComposite extends ScenariosUIQueryComposite<Artifact> 
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<Artifact, Purpose> getActionForNew() {
+	protected OpenDialogWithPurposeAction<Artifact, Purpose> getActionForCreate() {
 		return ScenariosUIActions.NEW_ARTIFACT;
 	}
 

@@ -16,9 +16,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("defaultEnvironment")
 public final class DefaultEnvironment extends Environment {
 
-	private static final long serialVersionUID = 1L;
-
-	private static final String DESCRIPTION = "Default Environment (no restrictions)";
+	private static final String DESCRIPTION = "Any Environment (no restrictions)";
 
 	private static final String NAME = "DEFAULT";
 
@@ -36,13 +34,16 @@ public final class DefaultEnvironment extends Environment {
 	}
 
 	/**
-	 * Nothing special to validate specially on this class.
+	 * For a DefaultEnvironment there is no (easy ;-) ) way of using a different id from the specified in
+	 * {@link DefaultEnvironment#ID}
 	 * 
-	 * @see super{@link #validateId()}
+	 * @return true, always.
+	 * 
+	 * @see {@link Environment#isMyIdValid()}
 	 */
 	@Override
-	protected void validateId() {
-		// we specifically want to do nothing on this case
+	protected boolean isMyIdValid() {
+		return true;
 	}
 
 	private DefaultEnvironment() {

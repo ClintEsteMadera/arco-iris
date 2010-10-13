@@ -5,16 +5,25 @@ import java.util.List;
 
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
-import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.common.ArcoIrisDomainObject;
+import ar.uba.dc.thesis.common.validation.Assert;
+import ar.uba.dc.thesis.common.validation.ValidationError;
+import ar.uba.dc.thesis.common.validation.ValidationException;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("selfHealingConfiguration")
-public class SelfHealingConfiguration extends ThesisPojo {
+public class SelfHealingConfiguration extends ArcoIrisDomainObject {
 
-	private static final long serialVersionUID = 1L;
+	private static final String VALIDATION_MSG_DESCRIPTION = "Self Healing Configuration's description cannot be empty";
+
+	private static final String VALIDATION_MSG_ARTIFACTS = "Self Healing Configuration's artifacts cannot be empty";
+
+	private static final String VALIDATION_MSG_ENVIRONMENTS = "Self Healing Configuration's environments cannot be empty";
+
+	private static final String VALIDATION_MSG_SCENARIOS = "Self Healing Configuration's scenarios cannot be empty";
 
 	@XStreamAsAttribute
 	private String description;
@@ -24,6 +33,10 @@ public class SelfHealingConfiguration extends ThesisPojo {
 	private List<Environment> environments;
 
 	private List<SelfHealingScenario> scenarios;
+
+	public SelfHealingConfiguration() {
+		this("", null, null, null);
+	}
 
 	public SelfHealingConfiguration(String description) {
 		this(description, null, null, null);
@@ -98,17 +111,18 @@ public class SelfHealingConfiguration extends ThesisPojo {
 
 	@Override
 	public void validate() {
-		if (this.description == null) {
-			throw new IllegalStateException("The description cannot be null");
-		}
-		if (this.artifacts == null) {
-			throw new IllegalStateException("The list of artifacts cannot be null");
-		}
-		if (this.environments == null) {
-			throw new IllegalStateException("The list of environments cannot be null");
-		}
-		if (this.scenarios == null) {
-			throw new IllegalStateException("The list of scenarios cannot be null");
+		List<ValidationError> validationErrors = new ArrayList<ValidationError>();
+
+		Assert.notNull(this.description, VALIDATION_MSG_DESCRIPTION, validationErrors);
+
+		Assert.notNull(this.artifacts, VALIDATION_MSG_ARTIFACTS, validationErrors);
+
+		Assert.notNull(this.environments, VALIDATION_MSG_ENVIRONMENTS, validationErrors);
+
+		Assert.notNull(this.scenarios, VALIDATION_MSG_SCENARIOS, validationErrors);
+
+		if (!validationErrors.isEmpty()) {
+			throw new ValidationException(validationErrors);
 		}
 	}
 }

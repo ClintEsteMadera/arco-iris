@@ -2,6 +2,7 @@ package scenariosui.gui.widget.dialog;
 
 import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.common.Identifiable;
+import ar.uba.dc.thesis.common.validation.Validatable;
 
 import commons.exception.ApplicationException;
 import commons.exception.ServiceException;
@@ -17,7 +18,8 @@ import commons.properties.FakeEnumProperty;
  * Modela un diálogo básico dónde se puede saber si el mismo corresponde a un diálogo de Alta, Edición u otro tipo ,
  * determinado por un tipo enumerado adecuado para tal fin.
  */
-public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseCompositeModelBoundedDialog<T> {
+public abstract class BaseScenariosUIMultiPurposeDialog<T extends Validatable> extends
+		BaseCompositeModelBoundedDialog<T> {
 
 	protected Purpose purpose;
 
@@ -61,6 +63,8 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 
 	@Override
 	protected boolean performOK() {
+		this.getModel().validate();
+
 		String operation = null;
 		try {
 			ScenariosUIManager scenariosUIManager = ScenariosUIManager.getInstance();
@@ -97,7 +101,7 @@ public abstract class BaseScenariosUIMultiPurposeDialog<T> extends BaseComposite
 	protected void cancelPressed() {
 		if (doIHaveToAbandonChanges()) {
 			Class<?> modelClass = this.getModel().getClass();
-			if (Identifiable.class.isInstance(modelClass) && this.purpose.isCreation()) {
+			if (Identifiable.class.isAssignableFrom(modelClass) && this.purpose.isCreation()) {
 				// since we won't use it
 				ScenariosUIManager.getInstance().returnRecentlyRequestedId((Class<Identifiable>) modelClass);
 			}

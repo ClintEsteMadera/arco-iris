@@ -1,6 +1,6 @@
 package ar.uba.dc.thesis.rainbow.constraint;
 
-import ar.uba.dc.thesis.common.Validatable;
+import ar.uba.dc.thesis.common.validation.Validatable;
 
 public interface Constraint extends Validatable {
 
@@ -15,10 +15,4 @@ public interface Constraint extends Validatable {
 	 * @return usually, this method would return the same as toString().
 	 */
 	String getToString();
-
-	/**
-	 * Restores all the properties of the receiver to its default values FIXME we shouldn't need this
-	 */
-	void restoreToDefaultValues();
-
 }

@@ -35,7 +35,7 @@ public class ConstraintDialog<C extends Constraint> extends BaseScenariosUIMulti
 	@Override
 	@SuppressWarnings("unchecked")
 	protected C newModel() {
-		// FIXME this is a hack!!
+		// FIXME This is a hack!!!
 		return (C) new NumericBinaryRelationalConstraint();
 	}
 

@@ -1,14 +1,11 @@
 package ar.uba.dc.thesis.selfhealing;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import org.sa.rainbow.stitch.core.StrategyNode;
 import org.sa.rainbow.stitch.core.Var;
 
-public class StrategyTO implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class StrategyTO {
 
 	private String name;
 

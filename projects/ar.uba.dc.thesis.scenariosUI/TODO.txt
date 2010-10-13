@@ -1,25 +1,22 @@
 MUST HAVES:
 
-- agregar el resto de los conceptos a la GUI de environments
+- Ver por qué en campos numericos no se puede poner negativos
 
-- VER TURCO: Ver DefaultEnvironment (cambiar pesos por default??) PARA MI ESTO PREFIERO DEJARLO COMO ESTÁ
-
-- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
-
-- ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow
-
-- Traducir todo codigo al inglés.
+- ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow (ver http://launch4j.sourceforge.net/)
 
 NICE TO HAVES:
 
-- Arreglar el layout en gral de los dialogos
+- Traducir todo codigo al inglés.
 
-- ver el tema validaciones de objetos en gral?
-   - En cada ThesisPojo deberiamos hacer un método validador por cada atributo que nos interese validar e
-   invocar a todos esos metodos desde el validate(), el cual deberia ser invocado en los constructores que
-   construyen un objeto completo.
-   - Debido a que la GUI usa normalmente el constructor sin parámetros, deberiamos invocar a los validadores
-   desde los setters.
+- arreglar la posicion inicial de los dialogos de apertura de archivo (son 3)
+
+- poner al lado de cada campito si es obligatorio o no?
+
+- Cambiar el nombre de los paquetes de thesis a arcoiris!
+
+- Poner tooltips lo mas que se pueda para aclarar el significado de algunos campos
+
+- Arreglar el layout en gral de los dialogos
 
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.
 
