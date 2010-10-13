@@ -1,7 +1,6 @@
 package commons.gui.widget.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -9,13 +8,13 @@ import commons.gui.model.ComplexValueChangeEvent;
 import commons.gui.model.ComplexValueChangeListener;
 import commons.gui.model.CompositeModel;
 import commons.gui.model.bean.BeanModel;
-import commons.gui.widget.DefaultLayoutFactory;
+import commons.gui.widget.composite.SimpleComposite;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 
 /**
  * Provides an abstract dialog with an underlying model bounded to it<br>
- * Also, this dialog has a dirtiness check of the model bundled-in.
+ * Also, this dialog provides a dirtiness check of the model.
  * 
  * @param <T>
  *            The type of the model bounded to this dialog.
@@ -54,13 +53,12 @@ public abstract class BaseCompositeModelBoundedDialog<T> extends OpenableTrayDia
 
 	@Override
 	protected final Control createDialogArea(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		DefaultLayoutFactory.setDefaultGridLayout(composite, getNumColumns());
+		Composite composite = new SimpleComposite(parent, this.readOnly, getNumColumns());
 
 		this.addWidgetsToDialogArea(composite);
+
 		// model modification check
 		this.getCompositeModel().addComplexValueChangeListener(new ComplexValueChangeListener() {
-			@SuppressWarnings("unchecked")
 			public void complexValueChange(ComplexValueChangeEvent ev) {
 				modelDirty = true;
 			}

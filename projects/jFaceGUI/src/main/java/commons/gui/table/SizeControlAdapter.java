@@ -1,21 +1,18 @@
 package commons.gui.table;
 
-import commons.gui.widget.Alignment;
-
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.widgets.TableColumn;
 
+import commons.gui.widget.Alignment;
 import commons.pref.PreferencesManager;
 import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.TableInfo;
 import commons.properties.EnumProperty;
 
-/**
- * @author Margarita Buriano
- *
- */
 public class SizeControlAdapter extends ControlAdapter {
+
+	private final EnumProperty tableName;
 
 	public SizeControlAdapter(EnumProperty tableName) {
 		super();
@@ -30,6 +27,4 @@ public class SizeControlAdapter extends ControlAdapter {
 		columnInfo.setAlignment(Alignment.getAlignmentFrom(tableColumn.getStyle()));
 		columnInfo.setWidth(tableColumn.getWidth());
 	}
-
-	private final EnumProperty tableName;
 }

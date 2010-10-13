@@ -6,8 +6,6 @@ import java.util.Date;
 
 /**
  * Extension de SimpleDateFormat para soportar "fecha base"
- * 
- * @author P.Pastorino
  */
 class CalendarFormat extends AbstractFormat {
 

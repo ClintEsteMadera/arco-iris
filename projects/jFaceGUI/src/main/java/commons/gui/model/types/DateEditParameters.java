@@ -8,10 +8,39 @@ import commons.utils.DateUtils;
 
 /**
  * Parametros de configuracion de un valor de tipo SimpleDate.
- * 
- * @author P.Pastorino
  */
 public class DateEditParameters implements Cloneable {
+
+	public static char DEFAULT_DATE_SEPARATOR = '/';
+
+	public static char DEFAULT_HOUR_SEPARATOR = ':';
+
+	/**
+	 * Flag para mostrar el año con dos dígitos.
+	 */
+	public static boolean DEFAULT_SHORT_YEAR = false;
+
+	private static final boolean DEFAULT_SHOW_SECONDS = true;
+
+	public static final int MODE_DATE = 0;
+
+	public static final int MODE_DATE_HOUR = 1;
+
+	public static final int MODE_HOUR = 2;
+
+	private static final int DEFAULT_MODE = MODE_DATE;
+
+	private static Date s_prototype = new Date(0L);// epoch time, namely January 1, 1970, 00:00:00 GMT.
+
+	public int mode = DEFAULT_MODE;
+
+	public boolean shortYear = DEFAULT_SHORT_YEAR;
+
+	public boolean showSeconds = DEFAULT_SHOW_SECONDS;
+
+	private Calendar m_defaultTime;
+
+	private Calendar m_defaultDate;
 
 	public DateEditParameters() {
 		super();
@@ -132,54 +161,4 @@ public class DateEditParameters implements Cloneable {
 	public void setTodayDefaultDate() {
 		m_defaultDate = DateUtils.today();
 	}
-
-	/**
-	 * Caracter separador de los campos de una fecha
-	 */
-	public static char DEFAULT_DATE_SEPARATOR;
-
-	/**
-	 * Caracter separador de los campos de una hora
-	 */
-	public static char DEFAULT_HOUR_SEPARATOR;
-
-	/**
-	 * Flag para mostrar el año con dos dígitos.
-	 */
-	public static boolean DEFAULT_SHORT_YEAR;
-
-	private static final int DEFAULT_MODE;
-
-	private static final boolean DEFAULT_SHOW_SECONDS;
-
-	public static final int MODE_DATE;
-
-	public static final int MODE_DATE_HOUR;
-
-	public static final int MODE_HOUR;
-
-	public int mode = DEFAULT_MODE;
-
-	public boolean shortYear = DEFAULT_SHORT_YEAR;
-
-	public boolean showSeconds = DEFAULT_SHOW_SECONDS;
-
-	static {
-		MODE_DATE = 0; // default
-		MODE_DATE_HOUR = 1;
-		MODE_HOUR = 2;
-
-		DEFAULT_MODE = MODE_DATE;
-		DEFAULT_SHORT_YEAR = false;
-		DEFAULT_SHOW_SECONDS = true;
-		DEFAULT_DATE_SEPARATOR = '/';
-		DEFAULT_HOUR_SEPARATOR = ':';
-	};
-
-	// TODO Utilizar siempre el mismo valor como prototipo
-	private static Date s_prototype = new Date();
-
-	private Calendar m_defaultTime;
-
-	private Calendar m_defaultDate;
 }

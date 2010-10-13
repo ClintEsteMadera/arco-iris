@@ -9,10 +9,43 @@ import commons.validation.NumericConstraints;
 
 /**
  * Parametros para la edicion de numeros.
- * 
- * @author P.Pastorino
  */
 public class NumberEditParameters implements Cloneable {
+
+	/**
+	 * Flag para activar el agrupamiento por miles
+	 */
+	public static boolean DEFAULT_GROUPING;
+
+	/**
+	 * Flag para setear ',' como separador decimal.
+	 */
+	public static boolean DEFAULT_DECIMAL_SEPARATOR_COMMA;
+
+	static int DEFAULT_MAX_INT_DIGITS;
+
+	static int DEFAULT_MAX_FRACTION_DIGITS;
+
+	static int DEFAULT_MIN_FRACTION_DIGITS;
+
+	static boolean DEFAULT_ALLOWS_NEGATIVE;
+
+	static {
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		DEFAULT_DECIMAL_SEPARATOR_COMMA = symbols.getDecimalSeparator() == ',';
+		DEFAULT_GROUPING = true;
+		DEFAULT_MAX_INT_DIGITS = -1;
+		DEFAULT_MAX_FRACTION_DIGITS = -1;
+		DEFAULT_MIN_FRACTION_DIGITS = -1;
+		DEFAULT_ALLOWS_NEGATIVE = true;
+	};
+
+	// constantes utilizadas para obtener prototipos.
+	private static final String POSITIVE_INT = "99999999999999999999999";
+
+	private static final String NEGATIVE_INT = "-99999999999999999999999";
+
+	private static final String FRACTION = ".55555555555555555";
 
 	public boolean grouping = DEFAULT_GROUPING;
 
@@ -31,9 +64,9 @@ public class NumberEditParameters implements Cloneable {
 	@Override
 	public String toString() {
 		return new StringBuffer(getClass().getName()).append(" [grouping=").append(grouping).append(" maxIntDigits=")
-				.append(maxIntDigits).append(" maxFractionDigits=").append(maxFractionDigits).append(
-						" minFractionDigits=").append(minFractionDigits).append(" allowsNegative=").append(
-						allowsNegative).append(" prototype=").append(prototype).append("]").toString();
+				.append(maxIntDigits).append(" maxFractionDigits=").append(maxFractionDigits)
+				.append(" minFractionDigits=").append(minFractionDigits).append(" allowsNegative=")
+				.append(allowsNegative).append(" prototype=").append(prototype).append("]").toString();
 	}
 
 	public NumberEditParameters(NumericConstraints c) {
@@ -165,39 +198,4 @@ public class NumberEditParameters implements Cloneable {
 		return Integer.class.isAssignableFrom(valueClass) || Long.class.isAssignableFrom(valueClass)
 				|| Short.class.isAssignableFrom(valueClass) || BigInteger.class.isAssignableFrom(valueClass);
 	}
-
-	/**
-	 * Flag para activar el agrupamiento por miles
-	 */
-	public static boolean DEFAULT_GROUPING;
-
-	/**
-	 * Flag para setear ',' como separador decimal.
-	 */
-	public static boolean DEFAULT_DECIMAL_SEPARATOR_COMMA;
-
-	static int DEFAULT_MAX_INT_DIGITS;
-
-	static int DEFAULT_MAX_FRACTION_DIGITS;
-
-	static int DEFAULT_MIN_FRACTION_DIGITS;
-
-	static boolean DEFAULT_ALLOWS_NEGATIVE;
-
-	static {
-		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-		DEFAULT_DECIMAL_SEPARATOR_COMMA = symbols.getDecimalSeparator() == ',';
-		DEFAULT_GROUPING = true;
-		DEFAULT_MAX_INT_DIGITS = -1;
-		DEFAULT_MAX_FRACTION_DIGITS = -1;
-		DEFAULT_MIN_FRACTION_DIGITS = -1;
-		DEFAULT_ALLOWS_NEGATIVE = false;
-	};
-
-	// constantes utilizadas para obtener prototipos.
-	private static final String POSITIVE_INT = "99999999999999999999999";
-
-	private static final String NEGATIVE_INT = "-99999999999999999999999";
-
-	private static final String FRACTION = ".55555555555555555";
 }

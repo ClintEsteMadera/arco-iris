@@ -5,9 +5,6 @@ import java.util.Date;
 
 import commons.gui.util.ValueConversor;
 
-/**
- * @author P.Pastorino
- */
 class CalendarConversor implements ValueConversor {
 
 	/**

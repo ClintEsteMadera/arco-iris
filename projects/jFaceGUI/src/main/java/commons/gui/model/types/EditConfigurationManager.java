@@ -10,12 +10,9 @@ import java.util.Properties;
 /**
  * Diccionario para tipos de datos. Por medio de esta clase, es posible registrar y consultar la información asociada a
  * los tipos de datos. Si bien existen algunos tipos definidos por default (configuración para numéricos, string y
- * fechas) las aplicaciones pueden modificar estos defaults y registrar sus propios tipos de datos en el diccionario
- * <br>
+ * fechas) las aplicaciones pueden modificar estos defaults y registrar sus propios tipos de datos en el diccionario <br>
  * Esta información va a ser utilizada por otros componentes del framework principalmente para la creación de máscaras
  * de edición y formateo y para la configuración de componentes visuales.
- * 
- * @author P.Pastorino
  */
 public class EditConfigurationManager extends TypeDictionary {
 

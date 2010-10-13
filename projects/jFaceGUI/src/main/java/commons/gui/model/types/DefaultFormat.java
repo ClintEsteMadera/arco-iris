@@ -2,9 +2,6 @@ package commons.gui.model.types;
 
 import java.text.ParsePosition;
 
-/**
- * @author P.Pastorino
- */
 public class DefaultFormat extends AbstractFormat {
 
 	public static DefaultFormat getInstance() {

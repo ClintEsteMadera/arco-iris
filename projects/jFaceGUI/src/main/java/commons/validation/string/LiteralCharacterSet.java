@@ -2,8 +2,6 @@ package commons.validation.string;
 
 /**
  * Set de caracteres identificado mediante un String.
- * 
- * @author P.Pastorino
  */
 public class LiteralCharacterSet implements CharacterSet {
 

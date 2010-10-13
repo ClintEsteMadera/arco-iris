@@ -23,9 +23,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * @author H. Adrián Uribe
- */
 public abstract class ClassUtils {
 	public static Field[] getFields(Class clazz) {
 		Field[] fields = fieldsCache.get(clazz);
@@ -329,8 +326,8 @@ public abstract class ClassUtils {
 	}
 
 	/**
-	 * Retorna el valor establecido en el atributo denotado por <code>propertyName</code> en el objeto receptor
-	 * denotado por <code>model</code>.
+	 * Retorna el valor establecido en el atributo denotado por <code>propertyName</code> en el objeto receptor denotado
+	 * por <code>model</code>.
 	 * 
 	 * @param model
 	 *            el objeto que contiene la propertyName (o aquél a partir del cuál debe comenzar la búsqueda de campos,

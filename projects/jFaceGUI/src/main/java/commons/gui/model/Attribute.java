@@ -9,8 +9,6 @@ import commons.gui.model.types.EditType;
  * <br>
  * Esta interface representa una determinada propiedad o "atributo" de un objeto, y puede ser utilizada para consultar o
  * modificar el valor de la propiedad o para acceder a meta-información asociada a la propiedad.
- * 
- * @author P.Pastorino
  */
 public interface Attribute {
 

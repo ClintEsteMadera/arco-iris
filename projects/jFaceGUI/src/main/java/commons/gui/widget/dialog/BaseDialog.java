@@ -10,11 +10,11 @@ import org.eclipse.swt.widgets.Shell;
 
 import commons.gui.util.PageHelper;
 
-/**
- * 
- * 
- */
 public abstract class BaseDialog extends Dialog {
+
+	protected boolean readOnly;
+
+	private final String title;
 
 	public BaseDialog(String title, boolean readOnly) {
 		super(PageHelper.getMainShell());
@@ -24,7 +24,7 @@ public abstract class BaseDialog extends Dialog {
 	}
 
 	/**
-	 * Sobreescribir este método para definir un tamaño específico
+	 * note: Override this method if you need to specify a different size
 	 */
 	@Override
 	protected Point getInitialSize() {
@@ -55,9 +55,4 @@ public abstract class BaseDialog extends Dialog {
 		parent.setLayout(gridLayout);
 
 	}
-
-	protected boolean readOnly;
-
-	private final String title;
-
 }

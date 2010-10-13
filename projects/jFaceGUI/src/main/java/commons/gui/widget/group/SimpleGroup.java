@@ -61,8 +61,7 @@ public class SimpleGroup {
 	 * @return
 	 */
 	protected void applyLayout() {
-		DefaultLayoutFactory.setDefaultGridLayout(this.getSwtGroup(), numColumns);
-		GridLayout layout = this.getLayout();
+		GridLayout layout = DefaultLayoutFactory.setDefaultGridLayout(this.getSwtGroup(), numColumns);
 		if (!StringUtils.isEmpty(this.getSwtGroup().getText())) {
 			layout.marginTop = 5;
 		}

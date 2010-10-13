@@ -6,8 +6,6 @@ import commons.gui.model.ValueChangeEvent;
 
 /**
  * ValueModel basado en la propiedad de un bean.
- * 
- * @author P.Pastorino
  */
 class BeanAttributeValueModel extends AttributeValueModel {
 

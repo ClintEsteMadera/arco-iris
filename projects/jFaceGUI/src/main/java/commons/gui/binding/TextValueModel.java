@@ -78,7 +78,7 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 		try {
 			return format.parseObject(textControl.getText());
 		} catch (Exception e) {
-			// TODO: hacer algo mejor en algunos casos si el texto es vacío
+			// TODO hacer algo mejor en algunos casos si el texto es vacío
 			// debería retornarse null pero si es un error de formato, no.
 			return null;
 		}
@@ -122,8 +122,8 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 	}
 
 	public void notifyChange() {
-		final ValueChangeEvent<String> changeEvent = new ValueChangeEvent<String>(this, null, this.textControl
-				.getText());
+		final ValueChangeEvent<String> changeEvent = new ValueChangeEvent<String>(this, null,
+				this.textControl.getText());
 
 		for (ValueChangeListener listener : listeners) {
 			listener.valueChange(changeEvent);

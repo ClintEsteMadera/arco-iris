@@ -2,9 +2,6 @@ package commons.validation.string;
 
 /**
  * Conjunto de caracteres validos en un String.
- * 
- * @author P.Pastorino
- * 
  */
 public interface CharacterSet {
 

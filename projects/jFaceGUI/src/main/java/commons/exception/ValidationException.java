@@ -8,20 +8,23 @@ import commons.properties.FakeEnumProperty;
 import commons.validation.ValidationError;
 
 /**
- * Una excepción que encapsula una lista de errores de validación.<br>
- * 
+ * This exception encapsulares a list of validation errors
  */
 public class ValidationException extends ServiceException {
 
+	private ValidationError[] validationErrors;
+
+	private static final long serialVersionUID = 1L;
+
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
+
 	public ValidationException(List<ValidationError> validationErrors) {
-		super(null);
-		Assert.notNull(validationErrors, "La lista de errores de validación no puede ser nula");
-		this.validationErrors = validationErrors.toArray(new ValidationError[validationErrors.size()]);
+		this(validationErrors.toArray(new ValidationError[validationErrors.size()]));
 	}
 
 	public ValidationException(ValidationError... validationErrors) {
 		super(null);
-		Assert.notNull(validationErrors, "La lista de errores de validación no puede ser nula");
+		Assert.notNull(validationErrors, "The list of validation errors cannot be null");
 		this.validationErrors = validationErrors;
 	}
 
@@ -40,9 +43,9 @@ public class ValidationException extends ServiceException {
 	}
 
 	/**
-	 * Devuelve todos los mensajes de validaciones, uno por cada renglón.
+	 * Returns all of the validation messages, each one in a separate line.
 	 * 
-	 * @return lista de los mensajes de validaciones, separados por un <code>Enter</code>
+	 * @return the list of validation messages, separated by a new line separator.
 	 */
 	@Override
 	public String getMessage() {
@@ -59,10 +62,4 @@ public class ValidationException extends ServiceException {
 	public ValidationError[] getErrors() {
 		return validationErrors;
 	}
-
-	private ValidationError[] validationErrors;
-
-	private static final long serialVersionUID = 1L;
-
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 }

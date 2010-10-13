@@ -6,9 +6,9 @@ import commons.dataestructures.LazyList;
 
 /**
  * Soporte para manejar ValueListener. <br>
- * El enumerado "T" referencia al tipo del objeto que cambia (habitualmente "wrappeado" en un "ValueModel").
  * 
- * @author P.Pastorino
+ * @param <T>
+ *            referencia al tipo del objeto que cambia (habitualmente "wrappeado" en un "ValueModel").
  */
 class ValueChangeSupport<T> {
 

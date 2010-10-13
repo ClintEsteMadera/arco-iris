@@ -5,8 +5,6 @@ import java.util.List;
 
 /**
  * Set de caracteres compuesto por otros sets de caracteres.
- * 
- * @author P.Pastorino
  */
 public class CompoundCharacterSet implements CharacterSet, Cloneable {
 

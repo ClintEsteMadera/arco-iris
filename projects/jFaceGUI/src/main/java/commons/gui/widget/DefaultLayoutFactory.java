@@ -14,17 +14,33 @@ import org.eclipse.swt.widgets.Label;
 
 import commons.gui.util.PageHelper;
 
-/**
- * 
- * 
- */
-public abstract class DefaultLayoutFactory {
+public final class DefaultLayoutFactory {
 
-	public static void setDefaultGridLayout(Composite composite) {
-		setDefaultGridLayout(composite, 2);
+	/**
+	 * This class is not meant to be instantiated
+	 */
+	private DefaultLayoutFactory() {
+		super();
 	}
 
-	public static void setDefaultGridLayout(Composite composite, int numColumns, GridData gridData) {
+	/**
+	 * @return the layout that has just been set to the composite.
+	 */
+	public static GridLayout setDefaultGridLayout(Composite composite) {
+		return setDefaultGridLayout(composite, 2);
+	}
+
+	/**
+	 * @return the layout that has just been set to the composite.
+	 */
+	public static GridLayout setDefaultGridLayout(Composite composite, int numColumns) {
+		return setDefaultGridLayout(composite, numColumns, getDefaultGridData());
+	}
+
+	/**
+	 * @return the layout that has just been set to the composite.
+	 */
+	public static GridLayout setDefaultGridLayout(Composite composite, int numColumns, GridData gridData) {
 		boolean makeColumnsEqualWidth = false;
 		GridLayout layout = new GridLayout(numColumns, makeColumnsEqualWidth);
 		layout.marginWidth = 5;
@@ -32,10 +48,8 @@ public abstract class DefaultLayoutFactory {
 		layout.verticalSpacing = 6;
 		composite.setLayout(layout);
 		composite.setLayoutData(gridData);
-	}
 
-	public static void setDefaultGridLayout(Composite composite, int numColumns) {
-		DefaultLayoutFactory.setDefaultGridLayout(composite, numColumns, getDefaultGridData());
+		return layout;
 	}
 
 	public static void setGridHSpan(Control control, int n) {
@@ -79,7 +93,11 @@ public abstract class DefaultLayoutFactory {
 		return data;
 	}
 
-	public static void setGrabAllExcessesAndFillBothGridData(Composite composite, boolean cascadeToChildren) {
+	/**
+	 * @return the GridData object that has just been set to the composite and, if <code>cascadeToChildren</code> is
+	 *         true, to their children.
+	 */
+	public static GridData setGrabAllExcessesAndFillBothGridData(Composite composite, boolean cascadeToChildren) {
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		composite.setLayoutData(gridData);
 		if (cascadeToChildren) {
@@ -87,29 +105,46 @@ public abstract class DefaultLayoutFactory {
 				child.setLayoutData(gridData);
 			}
 		}
+
+		return gridData;
 	}
 
-	public static void setDefaultRowLayout(Composite composite) {
+	/**
+	 * @return The RowLayout that has just been set to the composite.
+	 */
+	public static RowLayout setDefaultRowLayout(Composite composite) {
 		RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 		layout.marginWidth = 5;
 		layout.marginHeight = 10;
 		composite.setLayout(layout);
+
+		return layout;
 	}
 
-	public static void setButtonRowLayoutData(Button button) {
+	/**
+	 * @return The RowData that has just been set to the button.
+	 */
+	public static RowData setButtonRowLayoutData(Button button) {
 		RowData data = new RowData();
 		int widthHint = PageHelper.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
 		Point minSize = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		data.width = Math.max(widthHint, minSize.x);
 		button.setLayoutData(data);
+
+		return data;
 	}
 
-	public static void setButtonGridLayoutData(Button button) {
+	/**
+	 * @return The GridData that has just been set to the button.
+	 */
+	public static GridData setButtonGridLayoutData(Button button) {
 		GridData data = new GridData();
 		int widthHint = PageHelper.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
 		Point minSize = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		data.widthHint = Math.max(widthHint, minSize.x);
 		button.setLayoutData(data);
+
+		return data;
 	}
 
 	public static void makeEqualsHeight(Control[] controls) {
@@ -123,7 +158,6 @@ public abstract class DefaultLayoutFactory {
 				}
 			}
 		}
-
 		for (Control b : controls) {
 			if (b != null) {
 				GridData gd = DefaultLayoutFactory.getGridData(b);
@@ -138,7 +172,7 @@ public abstract class DefaultLayoutFactory {
 		return new GridData(DEFAULT_GRID_DATA_STYLE);
 	}
 
-	public static final int DEFAULT_GRID_DATA_STYLE = GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL
+	private static final int DEFAULT_GRID_DATA_STYLE = GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL
 			| GridData.VERTICAL_ALIGN_BEGINNING;
 
 }

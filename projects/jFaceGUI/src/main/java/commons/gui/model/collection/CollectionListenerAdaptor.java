@@ -2,8 +2,6 @@ package commons.gui.model.collection;
 
 /**
  * Clase de soporte para adaptar listeners mas especificos a CollectionListener.
- * 
- * @author P.Pastorino
  */
 class CollectionListenerAdaptor implements ListChangeListener {
 	public CollectionListenerAdaptor(CollectionChangeListener listener) {

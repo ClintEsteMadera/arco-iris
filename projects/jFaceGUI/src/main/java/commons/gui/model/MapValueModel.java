@@ -11,8 +11,6 @@ import commons.gui.model.types.EditType;
  * <br>
  * Este tipo de modelo puede ser útil para construir dinámicamente un modelo a partir de objetos "sueltos" (no
  * contenidos en un mismo objeto "raíz")
- * 
- * @author P.Pastorino
  */
 public class MapValueModel extends ValueHolder implements CompositeModel {
 

@@ -2,9 +2,6 @@ package commons.gui.model.bean;
 
 import commons.gui.util.ValueConversor;
 
-/**
- * @author P.Pastorino
- */
 class TypeConversionInfo {
 
 	Class m_wrapperClass;

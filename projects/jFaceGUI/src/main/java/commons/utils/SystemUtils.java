@@ -6,12 +6,9 @@ package commons.utils;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author Adrian
- */
 public abstract class SystemUtils {
 	/*
-	 * TODO: Por ahora solo sirve para Windows.
+	 * TODO: Make this work in other OS, not only in Windows.
 	 */
 
 	public static void exec(String command, final String... args) throws IOException, InterruptedException {

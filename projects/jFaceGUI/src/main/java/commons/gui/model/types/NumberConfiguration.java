@@ -8,8 +8,6 @@ import java.text.ParsePosition;
 
 /**
  * Configuracion de edicion y rendering para tipos numericos.
- * 
- * @author P.Pastorino
  */
 public class NumberConfiguration implements EditConfiguration {
 
@@ -80,8 +78,9 @@ public class NumberConfiguration implements EditConfiguration {
 
 	@Override
 	public String toString() {
-		return new StringBuffer(getClass().getName()).append(" [valueClass=").append(m_valueClass.getName()).append(
-				" prototype=").append(m_prototype).append(" parameters={").append(m_parameters).append("}]").toString();
+		return new StringBuffer(getClass().getName()).append(" [valueClass=").append(m_valueClass.getName())
+				.append(" prototype=").append(m_prototype).append(" parameters={").append(m_parameters).append("}]")
+				.toString();
 	}
 
 	private class FormatImpl extends Format {

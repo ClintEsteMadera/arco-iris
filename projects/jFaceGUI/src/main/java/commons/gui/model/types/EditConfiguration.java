@@ -9,8 +9,6 @@ import java.text.Format;
  * <br>
  * La interface provee la información básica que puede ser utilizada para editar, formatear y configurar componentes
  * visuales.
- * 
- * @author P.Pastorino.
  */
 public interface EditConfiguration {
 

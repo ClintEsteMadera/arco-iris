@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 /**
  * Utilidades para la manipulación de Strings en forma eficiente, y operaciones que complementan el API de la clase
  * {@link String}.
- * 
- * @author H. Adrián Uribe
  */
 public abstract class SbaStringUtils {
 
@@ -315,9 +313,9 @@ public abstract class SbaStringUtils {
 	 *         caracteres de control. Técnicamente, verifica que todos los caracteres estén en el rango [32-175] de
 	 *         código ASCII. Algunos ejemplos de invocación del método:
 	 *         <ul>
-	 *         <li> isPrintable("@?$lajk#") = <code>true</code>
-	 *         <li> isPrintable("_¡+}´") = <code>true</code>
-	 *         <li> isPrintable(" |"()áéíóúñ") = <code>true</code>
+	 *         <li>isPrintable("@?$lajk#") = <code>true</code>
+	 *         <li>isPrintable("_¡+}´") = <code>true</code>
+	 *         <li>isPrintable(" |"()áéíóúñ") = <code>true</code>
 	 *         </ul>
 	 */
 	public static boolean isPrintable(String str) {

@@ -6,25 +6,21 @@ package commons.gui.model;
  */
 public class InvalidValueException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public InvalidValueException() {
 		super();
-		// TODO InvalidValueException IMPLEMENTAR!
 	}
 
 	public InvalidValueException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO InvalidValueException IMPLEMENTAR!
 	}
 
 	public InvalidValueException(String message) {
 		super(message);
-		// TODO InvalidValueException IMPLEMENTAR!
 	}
 
 	public InvalidValueException(Throwable cause) {
 		super(cause);
-		// TODO InvalidValueException IMPLEMENTAR!
 	}
-
-	private static final long serialVersionUID = 1L;
 }

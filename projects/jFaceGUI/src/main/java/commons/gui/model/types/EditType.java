@@ -9,8 +9,6 @@ package commons.gui.model.types;
  * El identificador <code>null</code> se utiliza para la configuración por default de la clase. Es decir que el
  * identificador <code>new EditType(Date.class,null)</code> será utilizado para todos los valores de tipo fecha que no
  * tengan asociado un identificador.
- * 
- * @author P.Pastorino
  */
 public class EditType<T> {
 
@@ -31,7 +29,8 @@ public class EditType<T> {
 	 * Construye un identificador por default para la clase. Asigna un
 	 * <code>null<null> a la propiedad <code>classConfiguration</code>
 	 * 
-	 * @param valueClass Clase asociada al tipo
+	 * @param valueClass
+	 *            Clase asociada al tipo
 	 */
 	public EditType(Class<T> valueClass) {
 		this(valueClass, null);

@@ -12,10 +12,12 @@ import commons.gui.model.types.EditConfigurationManager;
 import commons.gui.model.types.EditType;
 
 /**
- * Provider basado en reflection. TODO: cachear los valores.
- * 
+ * This Provider is based on reflection.<br>
+ * TODO cache the values.
  */
 public class GenericLabelProvider implements ITableLabelProvider {
+
+	private TableRowAdapter rowAdapter;
 
 	public GenericLabelProvider(TableRowAdapter rowAdapter) {
 		this.rowAdapter = rowAdapter;
@@ -25,7 +27,6 @@ public class GenericLabelProvider implements ITableLabelProvider {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public String getColumnText(Object o, int index) {
 		if (index < 0 || index >= rowAdapter.getColumnCount()) {
 			return "";
@@ -35,8 +36,8 @@ public class GenericLabelProvider implements ITableLabelProvider {
 			return "";
 		}
 
-		final EditType eType = new EditType(rowAdapter.getColumnClass(index), rowAdapter
-				.getColumnEditConfiguration(index));
+		final EditType eType = new EditType(rowAdapter.getColumnClass(index),
+				rowAdapter.getColumnEditConfiguration(index));
 
 		final EditConfiguration config = EditConfigurationManager.getInstance().getConfiguration(eType);
 
@@ -64,6 +65,4 @@ public class GenericLabelProvider implements ITableLabelProvider {
 
 	public void removeListener(ILabelProviderListener arg0) {
 	}
-
-	private TableRowAdapter rowAdapter;
 }

@@ -24,9 +24,7 @@ public abstract class DialogEditHandler<T> implements EditHandler<T> {
 		if (dialog == null) {
 			return null;
 		}
-		// TODO we may need to do this when we finally decide how this whole thing of opening a dialog w/ an item works
-		// boolean dialogResult = dialog.open(newItem);
-		boolean dialogResult = dialog.open() == Dialog.OK;
+		boolean dialogResult = dialog.open(newItem);
 		return dialogResult ? newItem : null;
 	}
 

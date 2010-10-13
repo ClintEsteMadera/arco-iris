@@ -307,25 +307,26 @@ public class GenericTable<T> extends TableViewer {
 		// agrego las columnas
 		for (int i = 0; i < aRowAdapter.getColumnCount(); i++) {
 
-			int alignementStyle = SWT.LEFT;
+			int alignmentStyle = SWT.LEFT;
 			if (isSmartAlignmentDeduction()) {
 				final EditConfiguration eC = EditConfigurationManager.getInstance().getConfiguration(
 						new EditType(aRowAdapter.getColumnClass(i), aRowAdapter.getColumnEditConfiguration(i)));
 
 				if (eC != null && eC.isRightAligned()) {
-					alignementStyle = SWT.RIGHT;
+					alignmentStyle = SWT.RIGHT;
 				}
 			} else {
 				// This approach sticks to what is configured in the preferences.xml file
-				alignementStyle = columnInfos[i].getAlignment().getSWTAlignmentStyle();
+				alignmentStyle = columnInfos[i].getAlignment().getSWTAlignmentStyle();
 			}
 
-			// TODO: en swt la primera columna es siempre "left aligned" en este
-			// caso si la primera columna es rigth-aligned podriamos crear un
-			// columna de ancho "0"
-			int style = i == 0 ? SWT.NULL : alignementStyle;
+			/*
+			 * TODO en swt la primera columna es siempre "left aligned" en este caso si la primera columna es
+			 * rigth-aligned podriamos crear un columna de ancho "0"
+			 */
+			int style = (i == 0) ? SWT.NULL : alignmentStyle;
 			final TableColumn column = new TableColumn(this.getTable(), style);
-			column.setAlignment(alignementStyle);
+			column.setAlignment(alignmentStyle);
 
 			// HACK: Se setea para recibir el nombre en los eventos generados
 			// por la columna

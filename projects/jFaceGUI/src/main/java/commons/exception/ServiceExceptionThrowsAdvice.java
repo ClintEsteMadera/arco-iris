@@ -14,10 +14,6 @@ import sba.common.security.exception.AuthenticationException;
  * genérico. <br>
  * NOTA: se podría realimentar esta clase para interpretar las excepciones más recurrentes y generar un mensaje más
  * específico.
- * 
- * @author Gabriel Tursi
- * @author Juan José Zapico
- * 
  */
 public class ServiceExceptionThrowsAdvice implements ThrowsAdvice {
 

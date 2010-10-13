@@ -7,16 +7,6 @@ import commons.properties.EnumProperty;
 
 public class ObjectSelectionMetainfo {
 
-	public ObjectSelectionMetainfo(Composite parent, EnumProperty label, Binding binding, boolean readOnly) {
-		this.parent = parent;
-		this.label = label;
-		this.readOnly = readOnly;
-		this.binding = binding;
-	}
-
-	/**
-	 * Parent
-	 */
 	public Composite parent;
 
 	/**
@@ -29,9 +19,6 @@ public class ObjectSelectionMetainfo {
 	 */
 	public String descriptionProperty = "";
 
-	/**
-	 * Texto para el label
-	 */
 	public EnumProperty label;
 
 	/**
@@ -54,9 +41,6 @@ public class ObjectSelectionMetainfo {
 	 */
 	public Object[] createOptions;
 
-	/**
-	 * Indica si el componente está en modo read-only
-	 */
 	public boolean readOnly = false;
 
 	/**
@@ -68,4 +52,19 @@ public class ObjectSelectionMetainfo {
 	 * Informacion para binding
 	 */
 	public Binding binding;
+
+	/**
+	 * If it is left null, the TextFactory will try to infer this size.
+	 */
+	public Integer textBoxVisibleSize;
+
+	/**
+	 * Constructor
+	 */
+	public ObjectSelectionMetainfo(Composite parent, EnumProperty label, Binding binding, boolean readOnly) {
+		this.parent = parent;
+		this.label = label;
+		this.readOnly = readOnly;
+		this.binding = binding;
+	}
 }

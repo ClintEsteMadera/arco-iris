@@ -67,7 +67,6 @@ public abstract class ListenerHelper {
 
 	public static void addIntegerFieldKeyListener(final Text textBox) {
 		KeyListener listener = new KeyAdapter() {
-			// TODO hacer que funcione el CTRL + C y el CTRL + V
 			@Override
 			public void keyPressed(KeyEvent event) {
 				boolean isNumeric = StringUtils.isNumeric(String.valueOf(event.character));

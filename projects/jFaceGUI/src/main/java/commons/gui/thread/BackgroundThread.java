@@ -2,37 +2,33 @@ package commons.gui.thread;
 
 import org.eclipse.swt.widgets.Display;
 
-/**
- * 
- * 
- */
 public abstract class BackgroundThread extends Thread {
 
-	public BackgroundThread(Display display) {
-		super();
-		this.display = display;
-		this.setUncaughtExceptionHandler(GUIUncaughtExceptionHandler.getInstance());
-	}
+	private final Display display;
 
-	@Override
-	public final void run() {
-		this.instance = this;
-		performBackgroundOperation();
-		display.asyncExec(runnable);
-	}
+	private BackgroundThread instance;
 
-	protected abstract void performBackgroundOperation();
-
-	protected abstract void updateUI();
-
-	private final Runnable runnable = new Runnable() {
+	private final Runnable updateUIRunnable = new Runnable() {
 
 		public void run() {
 			BackgroundThread.this.instance.updateUI();
 		}
 	};
 
-	private final Display display;
+	public BackgroundThread(Display display) {
+		super();
+		this.display = display;
+		this.setUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler());
+	}
 
-	private BackgroundThread instance;
+	@Override
+	public final void run() {
+		this.instance = this;
+		performBackgroundOperation();
+		display.asyncExec(this.updateUIRunnable);
+	}
+
+	protected abstract void performBackgroundOperation();
+
+	protected abstract void updateUI();
 }

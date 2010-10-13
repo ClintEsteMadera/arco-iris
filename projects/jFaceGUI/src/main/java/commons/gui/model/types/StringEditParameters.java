@@ -6,8 +6,6 @@ import commons.validation.string.LiteralCharacterSet;
 
 /**
  * Parametros par la edicion de Strings.
- * 
- * @author P.Pastorino
  */
 public class StringEditParameters implements Cloneable {
 

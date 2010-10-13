@@ -2,9 +2,6 @@ package commons.utils;
 
 import java.util.Comparator;
 
-/**
- * @author P.Pastorino
- */
 public class ComparisonUtilities {
 
 	/**
@@ -32,10 +29,10 @@ public class ComparisonUtilities {
 	/**
 	 * Verifica la pertenencia a un rango. Retorna <code>true</code> si <code>value &gt= from && value &lt=
 	 * to</code><br>
-	 * En caso de que <code>from</code> o <code>to</code> sean nulos la comparacion por &gt= o &lt= es siempre
-	 * verdadera (es decir que se asumen los valores "- infinto" y "+infinito" respectivamente).<br>
-	 * En caso de que <code>value</code> sea nulo retirna <code>true</code> solo si <code>from</code> y
-	 * <code>to</code> son nulos.
+	 * En caso de que <code>from</code> o <code>to</code> sean nulos la comparacion por &gt= o &lt= es siempre verdadera
+	 * (es decir que se asumen los valores "- infinto" y "+infinito" respectivamente).<br>
+	 * En caso de que <code>value</code> sea nulo retirna <code>true</code> solo si <code>from</code> y <code>to</code>
+	 * son nulos.
 	 * 
 	 * @param comp
 	 * @param value

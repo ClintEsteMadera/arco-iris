@@ -28,7 +28,7 @@ public abstract class OpenableTrayDialog<T> extends TrayDialog implements Openab
 	protected abstract boolean performOK();
 
 	/**
-	 * This implementation is temporal until we determine if we really use this or not
+	 * This implementation is temporary until we determine if we really use this or not
 	 */
 	@Override
 	public boolean open(T element) {

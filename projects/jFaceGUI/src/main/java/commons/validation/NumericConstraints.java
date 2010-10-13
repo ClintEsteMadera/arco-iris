@@ -40,7 +40,7 @@ public class NumericConstraints implements Validator<Number> {
 			valid = false;
 		}
 
-		// TODO: validar precision
+		// TODO: validate precision
 
 		return valid;
 	}

@@ -1,10 +1,5 @@
 package commons.exception;
 
-/**
- * Clase base para excepciones de servicio.
- * 
- * 
- */
 public abstract class ServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -18,6 +13,6 @@ public abstract class ServiceException extends RuntimeException {
 		super(message);
 	}
 
-	public static final String DEFAULT_ERROR_MESSAGE = "Ha ocurrido un error en la aplicación";
+	public static final String DEFAULT_ERROR_MESSAGE = "An error has occurred. See error log for more details.";
 
 }

@@ -9,8 +9,6 @@ import commons.gui.model.ValueModel;
 
 /**
  * Modelo que contiene un valor de tipo lista.
- * 
- * @author P.Pastorino
  */
 public interface ListValueModel<T> extends CollectionModel<T>, ValueModel<List<T>> {
 
