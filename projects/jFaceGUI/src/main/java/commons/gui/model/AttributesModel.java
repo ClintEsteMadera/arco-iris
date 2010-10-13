@@ -8,8 +8,6 @@ import commons.gui.model.types.EditType;
  * <br>
  * Este modelo contiene un valor "raíz" y valores "hijos" correspondientes a los atributos o propiedades del elemento
  * "raíz".
- * 
- * @author P.Pastorino
  */
 @SuppressWarnings("unchecked")
 public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel<T>, Attributes {
@@ -148,8 +146,7 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 	 * @return
 	 */
 	public <NESTED_TYPE> CompositeModel<NESTED_TYPE> getNestedModel(String key, Class<NESTED_TYPE> clazz) {
-		// TODO: Otra posibilidad sería inferir este tipo por reflection para no obligar a pasarlo
-		// desde afuera programáticamente...
+		// TODO We could infer this type using reflection, so that the user does not have to pass the class in...
 		return new NestedModel<NESTED_TYPE>(this, key);
 	}
 
@@ -172,8 +169,9 @@ public class AttributesModel<T> extends ValueHolder<T> implements CompositeModel
 	 * modelos "hijos" retornando <code>new AttributeValueModel(getAttribute(id), this, id);</new>.
 	 * <br>
 	 * Puede ser redefinido por una subclase.
-	 * 	
-	 * @param id Identificador del atributo.
+	 * 
+	 * @param id
+	 *            Identificador del atributo.
 	 * @return
 	 */
 	protected ValueModel createValueModel(Object id) {

@@ -86,16 +86,15 @@ public class IntegerModifierControlValueModel implements ValueModel<Double>, Wid
 
 		String newValueAsString = String.valueOf(intValue);
 		if (digits > 0) {
-			String decimalSeparator = getDecimalSeparator();
 			int index = newValueAsString.length() - digits;
 			StringBuffer buffer = new StringBuffer();
 			if (index > 0) {
 				buffer.append(newValueAsString.substring(0, index));
-				buffer.append(decimalSeparator);
+				buffer.append(DECIMAL_SEPARATOR);
 				buffer.append(newValueAsString.substring(index));
 			} else {
 				buffer.append(ZERO);
-				buffer.append(decimalSeparator);
+				buffer.append(DECIMAL_SEPARATOR);
 				while (index++ < 0) {
 					buffer.append(ZERO);
 				}
@@ -114,21 +113,12 @@ public class IntegerModifierControlValueModel implements ValueModel<Double>, Wid
 		if (value != null) {
 			BigDecimal normalizedDecimalPart = BigDecimal.valueOf(value).setScale(this.control.getDigits(),
 					BigDecimal.ROUND_HALF_UP);
-			String[] intAndDecimalParts = normalizedDecimalPart.toString().split("\\" + this.getDecimalSeparator());
+			String[] intAndDecimalParts = normalizedDecimalPart.toString().split("\\" + DECIMAL_SEPARATOR);
 			this.control.setSelection(Integer.valueOf(intAndDecimalParts[0] + intAndDecimalParts[1]));
 		}
 	}
 
 	public Widget getWidget() {
 		return (Widget) this.control;
-	}
-
-	/**
-	 * FIXME This can be improved!!
-	 * 
-	 * @return
-	 */
-	private String getDecimalSeparator() {
-		return DECIMAL_SEPARATOR;
 	}
 }

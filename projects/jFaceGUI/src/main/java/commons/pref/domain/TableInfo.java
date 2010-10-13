@@ -4,9 +4,7 @@ import commons.properties.EnumProperty;
 
 /**
  * Modela la información básica para una tabla visual.<br>
- * TODO Pensar en usar un mapa en lugar de un arreglo para las columnInfos para optimizar la performance.
- * 
- * @author Margarita Buriano
+ * TODO We could think about using a map instead of an array, in order to improve performance
  * 
  */
 public class TableInfo {

@@ -4,9 +4,6 @@ import java.text.Format;
 
 /**
  * Configuracion para edicion y rendering de Strings.
- * 
- * @author P.Pastorino
- * 
  */
 public class StringConfiguration implements EditConfiguration {
 
@@ -56,8 +53,8 @@ public class StringConfiguration implements EditConfiguration {
 
 	@Override
 	public String toString() {
-		return new StringBuffer(getClass().getName()).append(" {").append(" parameters=[").append(m_parameters).append(
-				" ] prototype=").append(m_prototype).append("}").toString();
+		return new StringBuffer(getClass().getName()).append(" {").append(" parameters=[").append(m_parameters)
+				.append(" ] prototype=").append(m_prototype).append("}").toString();
 	}
 
 	private class StringFormat extends DefaultFormat {

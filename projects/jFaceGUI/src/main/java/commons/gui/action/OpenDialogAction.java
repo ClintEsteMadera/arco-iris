@@ -1,9 +1,12 @@
 package commons.gui.action;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.Dialog;
+
+import commons.gui.widget.dialog.BaseCompositeModelBoundedDialog;
 
 public abstract class OpenDialogAction<T> extends BaseGuiAction<T> {
+
+	protected BaseCompositeModelBoundedDialog<T> dialog;
 
 	protected OpenDialogAction(String uniqueId, String shortcut) {
 		super(uniqueId, shortcut);
@@ -13,10 +16,15 @@ public abstract class OpenDialogAction<T> extends BaseGuiAction<T> {
 		return new OpenPageAction() {
 			@Override
 			protected void openPage() {
-				getDialogFor(model).open();
+				dialog = getDialogFor(model);
+				dialog.open();
 			}
 		};
 	}
 
-	protected abstract Dialog getDialogFor(T model);
+	public BaseCompositeModelBoundedDialog<T> getDialog() {
+		return this.dialog;
+	}
+
+	protected abstract BaseCompositeModelBoundedDialog<T> getDialogFor(T model);
 }

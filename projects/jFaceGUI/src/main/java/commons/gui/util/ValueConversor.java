@@ -2,8 +2,6 @@ package commons.gui.util;
 
 /**
  * Conversor de valores.
- * 
- * @author P.Pastorino
  */
 public interface ValueConversor {
 

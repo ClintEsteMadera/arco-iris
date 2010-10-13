@@ -4,6 +4,7 @@
 
 package commons.gui.widget.dialog;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -18,7 +19,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import commons.gui.model.validation.ValidationChangedListener;
 import commons.gui.model.validation.ValidationSource;
-import commons.gui.thread.GUIUncaughtExceptionHandler;
+import commons.gui.thread.DefaultGUIUncaughtExceptionHandler;
+import commons.gui.util.PageHelper;
 import commons.gui.widget.PreferenceNode;
 import commons.gui.widget.page.BasePreferencesPage;
 import commons.properties.EnumProperty;
@@ -103,14 +105,20 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 
 	@Override
 	protected void okPressed() {
-		ValidationSource prev = GUIUncaughtExceptionHandler.getInstance().getValidationSource();
-		GUIUncaughtExceptionHandler.getInstance().setValidationSource(this);
-		try {
-			if (performOK()) {
-				close();
+		UncaughtExceptionHandler exceptionHandler = PageHelper.getMainWindow().getDefaultUncaughtExceptionHandler();
+
+		if (exceptionHandler instanceof DefaultGUIUncaughtExceptionHandler) {
+			DefaultGUIUncaughtExceptionHandler defaultGUIUncaughtExceptionHandler = (DefaultGUIUncaughtExceptionHandler) exceptionHandler;
+
+			ValidationSource prev = defaultGUIUncaughtExceptionHandler.getValidationSource();
+			defaultGUIUncaughtExceptionHandler.setValidationSource(this);
+			try {
+				if (performOK()) {
+					close();
+				}
+			} finally {
+				defaultGUIUncaughtExceptionHandler.setValidationSource(prev);
 			}
-		} finally {
-			GUIUncaughtExceptionHandler.getInstance().setValidationSource(prev);
 		}
 	}
 
@@ -153,7 +161,7 @@ public abstract class BasePreferenceDialog extends PreferenceDialog implements V
 		}
 
 		if (page instanceof BasePreferencesPage) {
-			((BasePreferencesPage) page).setValidationSource(this);
+			((BasePreferencesPage<?>) page).setValidationSource(this);
 		}
 		return node;
 	}

@@ -10,10 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import commons.exception.ValidationException;
 import commons.properties.EnumProperty;
 
-/**
- * @author Pablo Pastorino
- * 
- */
 public abstract class ValidationUtils {
 
 	// Obligatoriedad y longitud
@@ -147,7 +143,7 @@ public abstract class ValidationUtils {
 	/**
 	 * @deprecated Usar tipo de dato
 	 * 
-	 * Método de conveniencia para facilitar las validaciones.
+	 *             Método de conveniencia para facilitar las validaciones.
 	 * @param string
 	 *            el String a validar.
 	 * @param result
@@ -162,9 +158,9 @@ public abstract class ValidationUtils {
 	 *            Indica la cantidad mínima de caracteres que debe poseer el <code>string</code>
 	 * @param max
 	 *            Indica la cantidad máxima de caracteres que debe poseer el <code>string</code>
-	 * @return <code>true</code> si el string no es vacío, posee entre 1 y 255 caracteres y sus caracteres son del
-	 *         tipo indicado por <code>characterType</code>. <code>false</code>, en otro caso, en cuyo caso,
-	 *         agrega un mensaje de error a <code>result</code>
+	 * @return <code>true</code> si el string no es vacío, posee entre 1 y 255 caracteres y sus caracteres son del tipo
+	 *         indicado por <code>characterType</code>. <code>false</code>, en otro caso, en cuyo caso, agrega un
+	 *         mensaje de error a <code>result</code>
 	 */
 	@Deprecated
 	public static boolean isMandatory(String string, ValidationResult result, String location, String valueDescription,
@@ -181,7 +177,7 @@ public abstract class ValidationUtils {
 	/**
 	 * @deprecated Usar tipo de dato
 	 * 
-	 * Método de conveniencia para facilitar las validaciones.
+	 *             Método de conveniencia para facilitar las validaciones.
 	 * @param string
 	 *            el String a validar.
 	 * @param result
@@ -197,8 +193,8 @@ public abstract class ValidationUtils {
 	 * @param max
 	 *            Indica la cantidad máxima de caracteres que debe poseer el <code>string</code>
 	 * @return <code>true</code> si el string es vacío ó no siendo vacío, posee entre 1 y 255 caracteres y sus
-	 *         caracteres son del tipo indicado por <code>characterType</code>. <code>false</code>, en otro caso,
-	 *         en cuyo caso, agrega un mensaje de error a <code>result</code>
+	 *         caracteres son del tipo indicado por <code>characterType</code>. <code>false</code>, en otro caso, en
+	 *         cuyo caso, agrega un mensaje de error a <code>result</code>
 	 */
 	@Deprecated
 	public static boolean isNotMandatory(String string, ValidationResult result, String location,
@@ -246,8 +242,8 @@ public abstract class ValidationUtils {
 	 *            el mensaje a agregar si la condición no se cumple
 	 * @param valueDescription
 	 *            la/s descripción/es que completa/n el mensaje de error
-	 * @return <code>true</code> si la condición provista por parámetro se verifica. <code>false</code>, en otro
-	 *         caso, en cuyo caso, agrega un mensaje de error a <code>result</code>
+	 * @return <code>true</code> si la condición provista por parámetro se verifica. <code>false</code>, en otro caso,
+	 *         en cuyo caso, agrega un mensaje de error a <code>result</code>
 	 */
 	public static boolean isValidCondition(ValidationResult result, String location, boolean condition,
 			EnumProperty message, Object... valueDescription) {

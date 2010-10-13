@@ -68,14 +68,14 @@ public class SimpleComposite extends Composite {
 	 * Provee un layout por default, sobreescribir este método si se desea otro layout.
 	 */
 	protected void applyLayout() {
-		DefaultLayoutFactory.setDefaultGridLayout(this, getNumColumns());
-		GridData gridData = (GridData) this.getLayoutData();
-		gridData.horizontalSpan = columnsToSpan;
-		gridData.horizontalAlignment = alignment;
-		GridLayout layout = (GridLayout) this.getLayout();
+		GridLayout layout = DefaultLayoutFactory.setDefaultGridLayout(this, getNumColumns());
 		layout.marginLeft = 0;
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
+
+		GridData gridData = (GridData) this.getLayoutData();
+		gridData.horizontalSpan = columnsToSpan;
+		gridData.horizontalAlignment = alignment;
 	}
 
 	protected int getNumColumns() {

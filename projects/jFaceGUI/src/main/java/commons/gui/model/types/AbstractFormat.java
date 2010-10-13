@@ -6,8 +6,6 @@ import java.text.ParsePosition;
 
 /**
  * Clase base para la implementación de {@link java.text.Format}
- * 
- * @author P.Pastorino
  */
 public abstract class AbstractFormat extends Format {
 

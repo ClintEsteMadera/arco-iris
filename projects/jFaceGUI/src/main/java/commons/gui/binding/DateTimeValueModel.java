@@ -20,10 +20,16 @@ import commons.utils.DateUtils;
 
 /**
  * Clase utilizada internamente para el binding de un DateTime
- * 
- * @author Jonathan Chiocchio
  */
 public class DateTimeValueModel implements ValueModel, WidgetContainer {
+
+	private ArrayList<ValueChangeListener> listeners;
+
+	private SelectionListener selectionListener;
+
+	private DateTime dateTime;
+
+	private static EditType<Calendar> editType = new EditType<Calendar>(Calendar.class);
 
 	public DateTimeValueModel(DateTime dateTime) {
 		this.dateTime = dateTime;
@@ -109,12 +115,4 @@ public class DateTimeValueModel implements ValueModel, WidgetContainer {
 		dateTime.setMinutes(calendar.get(Calendar.MINUTE));
 		dateTime.setSeconds(calendar.get(Calendar.SECOND));
 	}
-
-	private ArrayList<ValueChangeListener> listeners;
-
-	private SelectionListener selectionListener;
-
-	private DateTime dateTime;
-
-	private static EditType<Calendar> editType = new EditType<Calendar>(Calendar.class);
 }

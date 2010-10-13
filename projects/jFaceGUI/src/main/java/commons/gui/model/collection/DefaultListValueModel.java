@@ -15,8 +15,6 @@ import commons.gui.model.types.EditType;
 
 /**
  * Clase base para los modelos que contienen una lista.
- * 
- * @author P.Pastorino
  */
 public class DefaultListValueModel<T> implements ListValueModel<T> {
 	public DefaultListValueModel(ValueModel<List<T>> model) {

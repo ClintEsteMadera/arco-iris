@@ -15,10 +15,6 @@ import commons.gui.util.PageHelper;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.properties.EnumProperty;
 
-/**
- * 
- */
-
 public abstract class BasePreferencesPage<T> extends PreferencePage {
 
 	public BasePreferencesPage(CompositeModel<T> compositeModel, EnumProperty title, String description,

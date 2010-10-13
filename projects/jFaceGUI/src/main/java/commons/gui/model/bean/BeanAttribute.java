@@ -16,15 +16,13 @@ import commons.gui.model.AbstractAttribute;
  * Mediante reflection, esta clase invoca los getter y el setter de una propiedad para extraer valores de un objeto.
  * Además soporta: <br>
  * <ul>
- * <li> Propiedades anidadas: <br>
+ * <li>Propiedades anidadas: <br>
  * Es posible expresar una propiedad "anidada" (por ejemplo: la propiedad "calle.numero" utilizará los métodos
- * <code>getCalle().getNumero()</code> y <code>getCalle().setNumero()</code> </li>
- * <li> Conversiones de tipos: <br>
+ * <code>getCalle().getNumero()</code> y <code>getCalle().setNumero()</code></li>
+ * <li>Conversiones de tipos: <br>
  * Para tener una mayor flexibilidad, se utilizan las conversiones de tipos definidas en
- * {@link jface.gui.gui.model.bean.TypeConversionManager} </li>
+ * {@link jface.gui.gui.model.bean.TypeConversionManager}</li>
  * </ul>
- * 
- * @author P.Pastorino
  */
 public class BeanAttribute extends AbstractAttribute {
 
@@ -114,11 +112,12 @@ public class BeanAttribute extends AbstractAttribute {
 	 * @param value
 	 *            Valor que se quiere asignar. Si el tipo de dato de la propiedad tiene un conversor asociado a través
 	 *            de {@link jface.gui.gui.model.bean.TypeConversionManager}, se invoca
-	 *            {@link sba.ui.util.ValueConversor#convertFrom(java.lang.Object)} con el parámetro <code>value</code>
-	 *            y se asigna el valor retornado a la propiedad del bean. <br>
-	 *            <br>
+	 *            {@link sba.ui.util.ValueConversor#convertFrom(java.lang.Object)} con el parámetro <code>value</code> y
+	 *            se asigna el valor retornado a la propiedad del bean. <br>
+	 * <br>
 	 *            En caso de tartarse de una propiedad de tipo primitivo, se hace un tratamiento especial del
-	 *            <code>null</code> convirtiendolo al valor por default según el tipo (<ode>0</code> para <code>int</code>,<code>false</false>
+	 *            <code>null</code> convirtiendolo al valor por default según el tipo (<ode>0</code> para
+	 *            <code>int</code>,<code>false</false>
 	 *            para <code>boolean</code>, etc)
 	 * @see jface.gui.gui.model.Attribute#setValue(Object, Object)
 	 */

@@ -6,9 +6,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author P.Pastorino
- */
 public class LazyList<T> implements Cloneable {
 
 	public void add(T element) {

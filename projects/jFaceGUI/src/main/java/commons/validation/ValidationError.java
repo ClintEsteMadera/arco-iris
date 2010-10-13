@@ -6,33 +6,35 @@ import org.springframework.util.Assert;
 
 import commons.properties.EnumProperty;
 
-/**
- * 
- */
-
 public class ValidationError implements Serializable {
+
+	private String message;
+
+	private String errorLocation;
+
+	private static final long serialVersionUID = 1L;
 
 	public ValidationError(EnumProperty message) {
 		this(null, message);
 	}
 
-	public ValidationError(EnumProperty message, Object... reemplazos) {
-		this(null, message, reemplazos);
+	public ValidationError(EnumProperty message, Object... replacements) {
+		this(null, message, replacements);
 	}
 
 	public ValidationError(String errorLocation, EnumProperty message) {
 		super();
-		Assert.notNull(message, "El mensaje del error no puede ser un objeto nulo");
+		Assert.notNull(message, "The error message cannot be null");
 		this.errorLocation = errorLocation;
 		this.message = message.toString();
 	}
 
-	public ValidationError(String errorLocation, EnumProperty message, Object... reemplazos) {
+	public ValidationError(String errorLocation, EnumProperty message, Object... replacements) {
 		super();
-		Assert.notNull(message, "El mensaje del error no puede ser un objeto nulo");
-		Assert.notNull(reemplazos, "Los reemplazos no pueden ser nulos");
+		Assert.notNull(message, "The error message cannot be null");
+		Assert.notNull(replacements, "The replacements cannot be null");
 		this.errorLocation = errorLocation;
-		this.message = message.toString(reemplazos);
+		this.message = message.toString(replacements);
 	}
 
 	public String getErrorLocation() {
@@ -47,11 +49,4 @@ public class ValidationError implements Serializable {
 	public String toString() {
 		return this.getMessage();
 	}
-
-	private String message;
-
-	private String errorLocation;
-
-	private static final long serialVersionUID = 1L;
-
 }

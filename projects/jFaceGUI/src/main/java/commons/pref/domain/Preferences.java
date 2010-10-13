@@ -3,11 +3,10 @@ package commons.pref.domain;
 import commons.properties.EnumProperty;
 
 /**
- * Modela las preferencias visuales del usuario.<br>
- * TODO Pensar en usar un mapa en lugar de un arreglo para las tables para optimizar la performance.
+ * User visual preferences.<br>
+ * TODO We could think about using a map instead of an array, in order to improve performance
  * 
  */
-
 public class Preferences {
 
 	public TableInfo[] getTables() {

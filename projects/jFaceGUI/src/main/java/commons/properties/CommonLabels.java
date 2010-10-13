@@ -69,7 +69,8 @@ public enum CommonLabels implements EnumProperty {
 	ATTENTION,
 	PERCENTAGE_LABEL,
 	PERCENTAGE_SYMBOL,
-	DOT;
+	DOT,
+	CLEAR;
 
 	@Override
 	public String toString() {

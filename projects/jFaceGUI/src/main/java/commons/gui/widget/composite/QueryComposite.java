@@ -79,6 +79,8 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private SimpleComposite rightButtonBarComposite;
 
+	private Button createButton;
+
 	private Button editButton;
 
 	private Button viewButton;
@@ -87,7 +89,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private Button closeButton;
 
-	private BeanModel<BaseSearchCriteria<T>> wrappedCriteria;
+	private BeanModel<BaseSearchCriteria<T>> criteriaBeanModel;
 
 	private GenericTable<T> table;
 
@@ -102,10 +104,14 @@ public abstract class QueryComposite<T> extends Composite {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
 		this.tableContentClass = tableElementsClassName;
-		this.wrappedCriteria = new BeanModel<BaseSearchCriteria<T>>(searchCriteria);
+		this.criteriaBeanModel = new BeanModel<BaseSearchCriteria<T>>(searchCriteria);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
 		this.reset();
+	}
+
+	public Button getCreateButton() {
+		return createButton;
 	}
 
 	public GenericTable<T> getTable() {
@@ -144,26 +150,19 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	public BaseSearchCriteria<T> getCriteria() {
-		return this.getCriterioWrapped().getValue();
+		return this.criteriaBeanModel.getValue();
 	}
 
-	public BeanModel<BaseSearchCriteria<T>> getCriterioWrapped() {
-		return wrappedCriteria;
+	public BeanModel<BaseSearchCriteria<T>> getCriteriaBeanModel() {
+		return this.criteriaBeanModel;
 	}
 
 	public T getModel() {
-		return getTable().getSelectedElement();
+		return this.table.getSelectedElement();
 	}
 
 	public List<T> getSelectedElements() {
-		return getTable().getSelectedElements();
-	}
-
-	/**
-	 * Método de conveniencia. Provee acceso a la única instancia de AuthorizationManager.
-	 */
-	protected AuthorizationManager getAuthorizationHelper() {
-		return authHelper;
+		return this.table.getSelectedElements();
 	}
 
 	/**
@@ -174,8 +173,8 @@ public abstract class QueryComposite<T> extends Composite {
 	 *            el botón del cual extraer el texto y la acción a realizar cuando se seleccione el MenuItem agregado al
 	 *            menú contextual.
 	 */
-	protected void addMenuItem2MenuContextual(final Button button) {
-		MenuItem item = new MenuItem(contextMenu, SWT.PUSH);
+	protected void addMenuItem2ContextMenu(final Button button) {
+		MenuItem item = new MenuItem(this.contextMenu, SWT.PUSH);
 		item.setText(button.getText());
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -198,7 +197,7 @@ public abstract class QueryComposite<T> extends Composite {
 	protected void setEnabledState(Button button, boolean enabledState) {
 		if (button != null) {
 			button.setEnabled(enabledState);
-			MenuItem menuItem = getMenuContextualItem(button.getText());
+			MenuItem menuItem = this.getContextMenuItem(button.getText());
 			if (menuItem != null) {
 				menuItem.setEnabled(enabledState);
 			}
@@ -260,7 +259,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 */
 	protected void addButtons() {
 		if (newButtonAllowed()) {
-			this.editButton = addButton(getActionForNew());
+			this.createButton = addButton(getActionForCreate());
 		}
 		if (editButtonAllowed()) {
 			this.editButton = addButton(getActionForEdit());
@@ -286,7 +285,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 */
 	protected final <P extends Purpose> Button addButton(OpenDialogWithPurposeAction<T, P> action) {
 		Button button = null;
-		if (getAuthorizationHelper().isUserAuthorized(action)) {
+		if (authHelper.isUserAuthorized(action)) {
 			button = new Button(this.leftButtonBarComposite, SWT.PUSH | SWT.CENTER);
 			Purpose purpose = action.getPurpose();
 
@@ -295,58 +294,58 @@ public abstract class QueryComposite<T> extends Composite {
 			button.setEnabled(purpose.getLauncherButtonInitialEnabledState());
 			button.addSelectionListener(getButtonSelectionListenerFor(action));
 
-			this.addMenuItem2MenuContextual(button);
+			this.addMenuItem2ContextMenu(button);
 			DefaultLayoutFactory.setButtonRowLayoutData(button);
 		}
 		return button;
 	}
 
-	protected CalendarComposite agregarFiltroPorFecha(Composite parent, EnumProperty label, String propertyName) {
-		BindingInfo bindingInfo = new BindingInfo(this.getCriterioWrapped(), propertyName);
+	protected CalendarComposite addDateFilter(Composite parent, EnumProperty label, String propertyName) {
+		BindingInfo bindingInfo = new BindingInfo(this.getCriteriaBeanModel(), propertyName);
 		CalendarMetainfo metainfo = CalendarMetainfo.create(parent, label, bindingInfo, false);
 		return CalendarFactory.createCalendar(metainfo);
 	}
 
-	protected Text agregarFiltroNumero(Composite composite, EnumProperty label, String propertyName) {
+	protected Text addNumericFilter(Composite composite, EnumProperty label, String propertyName) {
 		LabelFactory.createLabel(composite, label, false, true);
 		Text text = new Text(composite, GuiStyle.DEFAULT_TEXTBOX_STYLE);
 		ListenerHelper.addIntegerFieldKeyListener(text);
 		return text;
 	}
 
-	protected Text agregarFiltroTexto(Composite parent, EnumProperty label, String propertyName) {
+	protected Text addTextFilter(Composite parent, EnumProperty label, String propertyName) {
 		GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, false, false);
 		gridData.widthHint = PageHelper.getCantidadDePixels(20);
-		return agregarFiltroTexto(parent, label, propertyName, gridData);
+		return addTextFilter(parent, label, propertyName, gridData);
 	}
 
-	protected Text agregarFiltroTexto(Composite parent, EnumProperty label, String propertyName, GridData gridData) {
-		Binding binding = new BindingInfo(this.getCriterioWrapped(), propertyName);
+	protected Text addTextFilter(Composite parent, EnumProperty label, String propertyName, GridData gridData) {
+		Binding binding = new BindingInfo(this.getCriteriaBeanModel(), propertyName);
 		TextFieldMetainfo metainfo = TextFieldMetainfo.create(parent, label, binding, false);
 		Control control = TextFactory.createText(metainfo);
 		control.setLayoutData(gridData);
 		return (Text) control;
 	}
 
-	protected Combo agregarFiltroCombo(Composite composite, EnumProperty label, String propertyName) {
-		return this.agregarFiltroCombo(composite, label, propertyName, null);
+	protected Combo addComboFilter(Composite composite, EnumProperty label, String propertyName) {
+		return this.addComboFilter(composite, label, propertyName, null);
 	}
 
-	protected Combo agregarFiltroCombo(Composite composite, EnumProperty label, String propertyName,
+	protected Combo addComboFilter(Composite composite, EnumProperty label, String propertyName,
 			ComboValuesMetainfo comboValuesMetainfo) {
 
-		Binding binding = new BindingInfo(this.getCriterioWrapped(), propertyName);
+		Binding binding = new BindingInfo(this.getCriteriaBeanModel(), propertyName);
 		ComboMetainfo metainfo = ComboMetainfo.create(composite, label, binding, false);
 
 		if (comboValuesMetainfo != null && comboValuesMetainfo.useStringItems()) {
 			metainfo.items = comboValuesMetainfo.items;
 		}
-		// TODO: Hay casos dónde el combo tiene un solo elemento que no se estan considerando...
-		boolean tieneUnSoloElemento = metainfo.items != null && metainfo.items.length == 1;
-		metainfo.addEmptyOption = !tieneUnSoloElemento;
+		// TODO: There are some cases where the combo box has a single element and we are not contemplating them...
+		boolean comboHasIOnlyOneElement = metainfo.items != null && metainfo.items.length == 1;
+		metainfo.addEmptyOption = !comboHasIOnlyOneElement;
 
 		Combo combo = (Combo) ComboFactory.createCombo(metainfo);
-		combo.setEnabled(!tieneUnSoloElemento);
+		combo.setEnabled(!comboHasIOnlyOneElement);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		return combo;
@@ -385,7 +384,8 @@ public abstract class QueryComposite<T> extends Composite {
 							((CalendarComposite) control).cleanText();
 						}
 					} else {
-						log.fatal("Tipo de Control no soportado! Imposible limpiar control!");
+						log.fatal("Unsupported control: " + control.getClass().getName()
+								+ " ! Unable to perform clean up!");
 					}
 				}
 			}
@@ -396,7 +396,6 @@ public abstract class QueryComposite<T> extends Composite {
 			final OpenDialogWithPurposeAction<T, P> action) {
 		return new SelectionAdapter() {
 			@Override
-			@SuppressWarnings("unchecked")
 			public void widgetSelected(SelectionEvent event) {
 				action.getActionFor(getModel()).run();
 				if (resetAfterAnyActionFinishedExecution()) {
@@ -472,9 +471,9 @@ public abstract class QueryComposite<T> extends Composite {
 	protected abstract boolean closeButtonAllowed();
 
 	/**
-	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Nuevo"
+	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Crear"
 	 */
-	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForNew();
+	protected abstract <P extends Purpose> OpenDialogWithPurposeAction<T, P> getActionForCreate();
 
 	/**
 	 * Provee la acción con el comportamiento concreto que la aplicación le da al término "Editar"
@@ -562,10 +561,10 @@ public abstract class QueryComposite<T> extends Composite {
 	 *            composite sobre el cuál se creará la tabla.
 	 */
 	private void addTable(Composite parent) {
-		GenericTable<T> newTable = new GenericTable<T>(parent, tableContentClass, tableName, null, true, this
-				.getTableStyle());
+		GenericTable<T> newTable = new GenericTable<T>(parent, tableContentClass, tableName, null, true,
+				this.getTableStyle());
 
-		this.createMenuContextual(parent);
+		this.createContextMenu(parent);
 		newTable.getTable().setMenu(this.contextMenu);
 
 		ISelectionChangedListener[] listeners = { this.getEnableButtonsSelectionChangedListener(),
@@ -608,11 +607,9 @@ public abstract class QueryComposite<T> extends Composite {
 	}
 
 	/**
-	 * Crea un menú contextual vacío.
-	 * 
-	 * @param parent
+	 * Creates an empty context menu.
 	 */
-	private void createMenuContextual(Composite parent) {
+	private void createContextMenu(Composite parent) {
 		this.contextMenu = new Menu(parent);
 		this.contextMenu.addMenuListener(new MenuAdapter() {
 			@Override
@@ -635,7 +632,7 @@ public abstract class QueryComposite<T> extends Composite {
 	 * @return el ítem de menú que posee el texto pasado por parámetro en caso de existir un ítem con dicho texto o
 	 *         <code>null</code> en caso de no encontrar ninguno.
 	 */
-	private MenuItem getMenuContextualItem(String text) {
+	private MenuItem getContextMenuItem(String text) {
 		MenuItem result = null;
 		for (MenuItem menuItem : this.contextMenu.getItems()) {
 			if (menuItem.getText().equals(text)) {

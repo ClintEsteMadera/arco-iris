@@ -10,8 +10,6 @@ import commons.properties.EnumProperty;
  * Extensión de {@link sba.ui.model.table.AbstractRowAdapter} que utiliza "atributos" para asignar y obtener los valores
  * de las columnas. <br>
  * <br>
- * 
- * @author P.Pastorino
  */
 public class AttributesRowAdapter extends AbstractRowAdapter {
 

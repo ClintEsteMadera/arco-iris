@@ -9,9 +9,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
@@ -101,7 +99,7 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 	 * @return
 	 */
 	protected String getToolTip4ClearButton() {
-		return "Clear";
+		return CommonLabels.CLEAR.toString();
 	}
 
 	private static int calculateColumns(ObjectSelectionMetainfo info) {
@@ -123,6 +121,7 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 		final TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(this, CommonLabels.NO_LABEL, new BindingInfo(
 				this.selectionModel, this.descriptionProperty), TextFieldMetainfo.READONLY_STYLE_TEXT);
 		textMetainfo.layoutData = gridData;
+		textMetainfo.visibleSize = info.textBoxVisibleSize;
 		Control text = TextFactory.createText(textMetainfo);
 		ValidationManager.setValidationProperty(text, info.binding);
 
@@ -178,8 +177,9 @@ public abstract class ObjectSelectionComposite<T> extends SimpleComposite {
 
 			final Menu menu = getCreateMenu(info);
 
-			createItem.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
+			createItem.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent event) {
 					if (event.detail == SWT.ARROW) {
 						Rectangle rect = createItem.getBounds();
 						Point pt = new Point(rect.x, rect.y + rect.height);

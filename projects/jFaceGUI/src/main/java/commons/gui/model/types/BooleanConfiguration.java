@@ -7,15 +7,13 @@ import commons.utils.ConversionUtilities;
 
 /**
  * Información para configurar tipos booleanos.
- * 
- * @author P.Pastorino
  */
 public class BooleanConfiguration implements EditConfiguration {
 	private static final BooleanFormat FORMAT = new BooleanFormat();
 
 	/**
-	 * Obtiene el formato. Se utilizan las constantes <code>YES</code> y <code>NO</code> para representar los
-	 * valores <code>true</code> y <code>false</code> respectivamente.
+	 * Obtiene el formato. Se utilizan las constantes <code>YES</code> y <code>NO</code> para representar los valores
+	 * <code>true</code> y <code>false</code> respectivamente.
 	 */
 	public Format getFormat() {
 		return FORMAT;

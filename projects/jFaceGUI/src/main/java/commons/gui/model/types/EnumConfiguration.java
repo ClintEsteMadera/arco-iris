@@ -5,8 +5,6 @@ import java.util.Properties;
 
 /**
  * Configuracion para edicion y rendering de enums.
- * 
- * @author P.Pastorino
  */
 public class EnumConfiguration implements EditConfiguration {
 

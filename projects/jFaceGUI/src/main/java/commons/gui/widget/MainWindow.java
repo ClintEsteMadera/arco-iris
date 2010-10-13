@@ -40,7 +40,7 @@ import commons.gui.action.AboutAction;
 import commons.gui.action.ChangePwdAction;
 import commons.gui.action.ExitAction;
 import commons.gui.action.HelpAction;
-import commons.gui.thread.GUIUncaughtExceptionHandler;
+import commons.gui.thread.DefaultGUIUncaughtExceptionHandler;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.dialog.LoginDialog;
 import commons.pref.PreferencesManager;
@@ -51,6 +51,36 @@ import commons.properties.EnumPropertyDirectory;
 
 public abstract class MainWindow extends ApplicationWindow {
 
+	public PreferencePage currentPreferencePage;
+
+	public CTabFolder mainTabFolder;
+
+	protected EnumPropertyDirectory enumPropertyDirectory;
+
+	protected static final Separator SEPARATOR = new Separator();
+
+	private static final AuthenticationManager AUTHENTICATION_MANAGER = new DummyAuthenticationManager();
+
+	private static final AuthorizationManager AUTHORIZATION_HELPER = new DummyAuthorizationManager();
+
+	private static final UncaughtExceptionHandler UNCAUGHT_EXCEPTION_HANDLER = new DefaultGUIUncaughtExceptionHandler();
+
+	private static final Log log = LogFactory.getLog(MainWindow.class);
+
+	protected MainWindow() {
+		super(null);
+		PageHelper.setMainWindow(this);
+		setShellStyle(SWT.MIN | SWT.MAX | SWT.RESIZE | SWT.CLOSE);
+		setDefaultImages(getImages());
+		setUpExceptionHandlers();
+		this.enumPropertyDirectory = new EnumPropertyDirectory();
+		doLogin();
+		initialize();
+		addMenuBar();
+		addStatusLine();
+		initializeUserPreferences();
+	}
+
 	public void run() {
 		// Don't return from open() until window closes
 		setBlockOnOpen(true);
@@ -60,12 +90,12 @@ public abstract class MainWindow extends ApplicationWindow {
 		Display.getCurrent().dispose();
 	}
 
-	public void setDefaultStatusMessage() {
-		super.setStatus(getDefaultStatusMessage());
-	}
-
 	public String getDefaultStatusMessage() {
 		return CommonConstants.APP_NAME.toString();
+	}
+
+	public void setDefaultStatusMessage() {
+		super.setStatus(getDefaultStatusMessage());
 	}
 
 	@Override
@@ -200,26 +230,13 @@ public abstract class MainWindow extends ApplicationWindow {
 		return super.canHandleShellCloseEvent() && ExitAction.confirmExit();
 	}
 
-	protected UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
-		return GUIUncaughtExceptionHandler.getInstance();
-	}
-
-	protected MainWindow() {
-		super(null);
-		PageHelper.setMainWindow(this);
-		setShellStyle(SWT.MIN | SWT.MAX | SWT.RESIZE | SWT.CLOSE);
-		setDefaultImages(getImages());
-		setUpExceptionHandlers();
-		this.enumPropertyDirectory = new EnumPropertyDirectory();
-		doLogin();
-		initialize();
-		addMenuBar();
-		addStatusLine();
-		initializeUserPreferences();
+	public UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
+		return UNCAUGHT_EXCEPTION_HANDLER;
 	}
 
 	private void setUpExceptionHandlers() {
-		final UncaughtExceptionHandler uncaughtExceptionHandler = getDefaultUncaughtExceptionHandler();
+		final UncaughtExceptionHandler uncaughtExceptionHandler = this.getDefaultUncaughtExceptionHandler();
+
 		// SWT Exception Handler
 		Window.setExceptionHandler(new IExceptionHandler() {
 			public void handleException(Throwable t) {
@@ -280,18 +297,4 @@ public abstract class MainWindow extends ApplicationWindow {
 	 * En este punto se debería inicializarse todo lo que sea posible/necesario.
 	 */
 	protected abstract void initialize();
-
-	public PreferencePage currentPreferencePage;
-
-	public CTabFolder mainTabFolder;
-
-	protected EnumPropertyDirectory enumPropertyDirectory;
-
-	protected static final Separator SEPARATOR = new Separator();
-
-	private static final AuthenticationManager AUTHENTICATION_MANAGER = new DummyAuthenticationManager();
-
-	private static final AuthorizationManager AUTHORIZATION_HELPER = new DummyAuthorizationManager();
-
-	private static final Log log = LogFactory.getLog(MainWindow.class);
 }

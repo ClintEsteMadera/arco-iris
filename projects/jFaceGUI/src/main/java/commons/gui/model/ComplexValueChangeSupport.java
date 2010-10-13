@@ -6,8 +6,6 @@ import commons.dataestructures.LazyList;
 
 /**
  * Soporte para manejar ComplexValueChangeListener
- * 
- * @author P.Pastorino
  */
 class ComplexValueChangeSupport {
 

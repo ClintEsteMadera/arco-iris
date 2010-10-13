@@ -9,8 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import commons.datetime.SimpleDate;
 import commons.datetime.DateTime;
+import commons.datetime.SimpleDate;
 
 public abstract class DateUtils {
 
@@ -89,7 +89,6 @@ public abstract class DateUtils {
 		return formatCalendarAsDateTime(getCurrentDatetimeAsCalendar());
 	}
 
-	// TODO Tomar hora del sistema del servidor
 	public static Calendar getCurrentDatetimeAsCalendar() {
 		return Calendar.getInstance();
 	}
@@ -112,12 +111,12 @@ public abstract class DateUtils {
 	 * Si el objeto es un Date, crea un Calendar y setea dicho Date.
 	 * <ul>
 	 * Si el objeto es un String, intenta parsearlo a Calendar utilizando los métodos
-	 * {@link #parseStringDateAsCalendar(String)} y {@link #parseDMY(String)} de esta clase, en ese orden. </li>
+	 * {@link #parseStringDateAsCalendar(String)} y {@link #parseDMY(String)} de esta clase, en ese orden.</li>
 	 * 
 	 * @param object
 	 *            objeto a convertir en un Calendar
-	 * @return Calendar un Calendar creado a partir del parámetro NO NULO <code>object</code>, o <code>null</code>
-	 *         si dicho paramétro fuera nulo.
+	 * @return Calendar un Calendar creado a partir del parámetro NO NULO <code>object</code>, o <code>null</code> si
+	 *         dicho paramétro fuera nulo.
 	 */
 	public static Calendar try2GetObjectAsCalendar(Object object) {
 		Calendar calendar = null;
@@ -280,7 +279,6 @@ public abstract class DateUtils {
 				&& c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH) && c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR);
 	}
 
-	// TODO Hacer configurables el formato de la fecha usando un preferences
 	private static DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

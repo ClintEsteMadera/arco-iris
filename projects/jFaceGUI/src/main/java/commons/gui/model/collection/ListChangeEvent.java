@@ -2,8 +2,6 @@ package commons.gui.model.collection;
 
 /**
  * Evento de modificacion de lista.
- * 
- * @author P.Pastorino
  */
 public class ListChangeEvent extends CollectionChangeEvent {
 

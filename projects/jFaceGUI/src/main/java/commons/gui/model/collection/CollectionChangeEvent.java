@@ -2,8 +2,6 @@ package commons.gui.model.collection;
 
 /**
  * Evento asociado a la modificacion de una coleccion.
- * 
- * @author P.Pastorino
  */
 public class CollectionChangeEvent {
 
