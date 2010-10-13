@@ -2,16 +2,15 @@ package ar.uba.dc.thesis.selfhealing.repair;
 
 import java.util.List;
 
-import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.common.ArcoIrisDomainObject;
+import ar.uba.dc.thesis.common.validation.ValidationException;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("allRepairStrategies")
-public final class AllRepairStrategies extends ThesisPojo implements RepairStrategies {
+public final class AllRepairStrategies extends ArcoIrisDomainObject implements RepairStrategies {
 
 	private static final String ALL_AVAILABLE_REPAIR_STRATEGIES = "<ALL AVAILABLE REPAIR STRATEGIES>";
-
-	private static final long serialVersionUID = 1L;
 
 	private static final AllRepairStrategies instance = new AllRepairStrategies();
 
@@ -36,5 +35,10 @@ public final class AllRepairStrategies extends ThesisPojo implements RepairStrat
 	@Override
 	public String toString() {
 		return ALL_AVAILABLE_REPAIR_STRATEGIES;
+	}
+
+	@Override
+	public void validate() throws ValidationException {
+		// do nothing
 	}
 }

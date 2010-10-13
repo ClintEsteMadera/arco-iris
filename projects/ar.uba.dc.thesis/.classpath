@@ -22,5 +22,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.deploy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.lang"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.communication"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

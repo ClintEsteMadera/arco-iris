@@ -189,7 +189,7 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 		return this.selfHealingConfigurationManager.getStimuli(property);
 	}
 
-	public List<Number> getAllInstancesPropertyValues(String systemName, String name, String property) {
+	public List<Number> getPropertyValuesOfAllInstances(String systemName, String name, String property) {
 		List<Number> propertyValues = new ArrayList<Number>();
 		// this is added in order to contemplate the case when the model is disposed.
 		if (m_acme == null) {

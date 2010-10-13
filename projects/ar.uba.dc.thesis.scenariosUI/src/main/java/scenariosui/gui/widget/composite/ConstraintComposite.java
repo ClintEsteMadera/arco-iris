@@ -14,6 +14,7 @@ import commons.gui.model.ValueChangeListener;
 import commons.gui.model.bean.BeanModel;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.composite.InvisibleTabFolder;
+import commons.gui.widget.composite.ObjectSelectionMetainfo;
 import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.composite.Tab;
 import commons.gui.widget.creation.binding.BindingInfo;
@@ -116,44 +117,37 @@ public class ConstraintComposite extends SimpleComposite {
 	private void createTabForNumericBinaryRelationalConstraint() {
 		Tab tab = new Tab(this.tabFolder, super.readOnly);
 
-		DefaultLayoutFactory.setDefaultGridLayout(tab, 8);
+		DefaultLayoutFactory.setDefaultGridLayout(tab, 6);
 
-		LabelFactory.createLabel(tab);
-
-		LabelFactory.createLabel(tab, ScenariosUILabels.SYSTEM_NAME, false, false);
-
-		LabelFactory.createLabel(tab);
+		this.createSeparator(tab);
 
 		LabelFactory.createLabel(tab, ScenariosUILabels.ARTIFACT, false, false);
 
-		LabelFactory.createLabel(tab);
+		this.createSeparator(tab);
 
 		LabelFactory.createLabel(tab, ScenariosUILabels.PROPERTY, false, false);
 
-		LabelFactory.createLabel(tab);
+		this.createSeparator(tab);
 
-		LabelFactory.createLabel(tab);
+		this.createSeparator(tab);
 
 		ComboMetainfo comboMetainfo = ComboMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
 				this.numericBinaryRelationalModel, "quantifier"), super.readOnly);
 		comboMetainfo.addEmptyOption = false;
 		ComboFactory.createCombo(comboMetainfo);
 
+		ObjectSelectionMetainfo objectSelectionMetainfo = new ObjectSelectionMetainfo(tab, CommonLabels.NO_LABEL,
+				new BindingInfo(this.numericBinaryRelationalModel, "artifact"), this.readOnly);
+		objectSelectionMetainfo.canView = false;
+		objectSelectionMetainfo.columnsToSpan = 1;
+		objectSelectionMetainfo.textBoxVisibleSize = 30;
+		objectSelectionMetainfo.canCreate = true;
+
+		new ArtifactSelectionComposite(objectSelectionMetainfo);
+
+		LabelFactory.createLabel(tab, CommonLabels.DOT, true, false);
+
 		TextFieldMetainfo textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
-				this.numericBinaryRelationalModel, "artifact.systemName"), super.readOnly);
-		textMetainfo.visibleSize = 10;
-		TextFactory.createText(textMetainfo);
-
-		LabelFactory.createLabel(tab, CommonLabels.DOT, true, false);
-
-		textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
-				this.numericBinaryRelationalModel, "artifact.name"), super.readOnly);
-		textMetainfo.visibleSize = 10;
-		TextFactory.createText(textMetainfo);
-
-		LabelFactory.createLabel(tab, CommonLabels.DOT, true, false);
-
-		textMetainfo = TextFieldMetainfo.create(tab, CommonLabels.NO_LABEL, new BindingInfo(
 				this.numericBinaryRelationalModel, "property"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
@@ -166,6 +160,10 @@ public class ConstraintComposite extends SimpleComposite {
 				this.numericBinaryRelationalModel, "constantToCompareThePropertyWith"), super.readOnly);
 		textMetainfo.visibleSize = 10;
 		TextFactory.createText(textMetainfo);
+	}
+
+	private void createSeparator(Tab tab) {
+		LabelFactory.createLabel(tab);
 	}
 
 	private void setCurrentActiveTab() {

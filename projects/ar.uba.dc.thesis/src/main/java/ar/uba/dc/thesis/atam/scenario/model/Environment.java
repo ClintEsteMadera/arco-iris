@@ -2,7 +2,6 @@ package ar.uba.dc.thesis.atam.scenario.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +9,13 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
 import ar.uba.dc.thesis.common.Heuristic;
-import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.common.IdentifiableArcoIrisDomainObject;
+import ar.uba.dc.thesis.common.validation.Assert;
+import ar.uba.dc.thesis.common.validation.ValidationError;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
@@ -25,13 +25,25 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("environment")
-public class Environment extends ThesisPojo {
+public class Environment extends IdentifiableArcoIrisDomainObject {
 
-	private static final long serialVersionUID = 1L;
+	private static final String FRIENDLY_NAME = "Environment";
+
+	private static final String VALIDATION_MSG_ID = "The identifier '-1' can only be used by the 'Default' environment";
+
+	private static final String VALIDATION_MSG_NAME = "Name cannot be empty";
+
+	private static final String VALIDATION_MSG_NULL_WEIGHTS = "Concern-Weight map cannot be empty";
+
+	private static final String VALIDATION_MSG_INVALID_WEIGHTS = "Concern-Weight map must contain all possible concerns";
+
+	private static final String VALIDATION_MSG_WEIGHTS_DO_NOT_SUM_ONE = "The sum of all weights should be between 0.99 and 1.00";
+
+	private static final String VALIDATION_MSG_NULL_HEURISTIC = "The heuristic to be used cannot be empty";
 
 	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
 
-	private static final int DEFAULT_HISTORY_SIZE = 10;
+	private static final int HISTORY_MAX_SIZE = 10;
 
 	@XStreamAsAttribute
 	private String name;
@@ -55,11 +67,13 @@ public class Environment extends ThesisPojo {
 		super();
 		this.conditions = new ArrayList<Constraint>();
 		this.weights = createMapWithEquallyDistributedWeights();
+		this.heuristic = DEFAULT_HEURISTIC;
+		this.history = new ArrayList<Boolean>(HISTORY_MAX_SIZE);
 	}
 
 	/**
 	 * This constructor has the same effect than invoking {@link #Environment(String, List, Map, Integer, Heuristic)}
-	 * with the latest two parameters in <code>null</code>
+	 * with the latest two parameters set as <code>null</code>
 	 * 
 	 * @param id
 	 *            environment's id
@@ -73,7 +87,6 @@ public class Environment extends ThesisPojo {
 	 */
 	public Environment(Long id, String name, List<? extends Constraint> conditions, SortedMap<Concern, Double> weights) {
 		this(id, name, conditions, weights, null, null);
-		this.validateId();
 	}
 
 	/**
@@ -101,8 +114,8 @@ public class Environment extends ThesisPojo {
 		this.conditions = conditions;
 		this.weights = weights;
 
-		this.history = new ArrayList<Boolean>(historySize == null ? DEFAULT_HISTORY_SIZE : historySize);
-		this.heuristic = heuristic == null ? DEFAULT_HEURISTIC : heuristic;
+		this.history = new ArrayList<Boolean>(historySize == null ? HISTORY_MAX_SIZE : historySize);
+		this.heuristic = (heuristic == null) ? DEFAULT_HEURISTIC : heuristic;
 
 		this.validate();
 	}
@@ -129,7 +142,6 @@ public class Environment extends ThesisPojo {
 
 	public void setWeights(SortedMap<Concern, Double> weights) {
 		this.weights = weights;
-		this.assertAllPossibleConcernsAreDefined(weights.keySet());
 	}
 
 	public Heuristic getHeuristic() {
@@ -158,9 +170,8 @@ public class Environment extends ThesisPojo {
 		return this.weightsForRainbow;
 	}
 
-	public boolean holds4Scoring(RainbowModelWithScenarios rainbowModelWithScenarios) {
+	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean holds = true;
-
 		for (Constraint constraint : this.getConditions()) {
 			if (constraint instanceof NumericBinaryRelationalConstraint) {
 				NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
@@ -171,26 +182,14 @@ public class Environment extends ThesisPojo {
 				holds = false;
 			}
 		}
-		holds = this.weightCurrentEvaluationUsingHistory(holds);
 
 		this.addToHistory(holds);
-
-		return holds;
+		return this.heuristic.run(this.history);
 	}
 
 	@Override
-	public void validate() {
-		if (StringUtils.isBlank(this.getName())) {
-			throw new IllegalArgumentException("Environment's name cannot be empty");
-		}
-		for (Constraint condition : this.getConditions()) {
-			condition.validate();
-		}
-		if (this.getWeights() == null) {
-			throw new IllegalArgumentException("Concern-Multiplier map cannot be null");
-		}
-		Set<Concern> definedConcerns = this.getWeights().keySet();
-		this.assertAllPossibleConcernsAreDefined(definedConcerns);
+	public String toString() {
+		return this.getName();
 	}
 
 	@Override
@@ -198,29 +197,59 @@ public class Environment extends ThesisPojo {
 		return new String[] { "weightsForRainbow", "history" };
 	}
 
-	/**
-	 * This method should ensure that the DefaultEnvironment's id is not being used for an object not instance of that
-	 * class. It should be overriden accordingly on all of the subclasses.
-	 */
-	protected void validateId() {
-		if (this.getId().equals(DefaultEnvironment.ID)) {
-			throw new RuntimeException("The identifier " + DefaultEnvironment.ID
-					+ " cannot be used for other Environment than the default one");
-		}
+	@Override
+	protected List<ValidationError> collectValidationErrors() {
+		List<ValidationError> validationErrors = new ArrayList<ValidationError>();
+
+		Assert.isTrue(this.isMyIdValid(), VALIDATION_MSG_ID, validationErrors);
+
+		Assert.notBlank(this.name, VALIDATION_MSG_NAME, validationErrors);
+
+		Assert.isValid(this.conditions, validationErrors);
+
+		Assert.notNull(this.heuristic, VALIDATION_MSG_NULL_HEURISTIC, validationErrors);
+
+		this.validateWeights(validationErrors);
+
+		return validationErrors;
 	}
 
 	/**
-	 * Uses an heuristic (configured by the user) to decide if, based on the history, a current calculation of the
-	 * underlying constraints holds or not.<br>
-	 * The possible values are specified in {@link Heuristic}
+	 * @return <code>true</code>, as long as the user did not try to use DefaultEnvironment's id for another instance of
+	 *         Environment. Otherwise, this method returns <code>false</code>
 	 * 
-	 * @param currentConstraintsEvaluation
-	 *            the current evaluation of the underlying constraints, to be quantified with the history.
-	 * @return a (hopefully) more accurate value than the last one obtained recently (i.e.
-	 *         <code>currentConstraintsEvaluation</code>)
+	 * @see DefaultEnvironment#isMyIdValid()
 	 */
-	private boolean weightCurrentEvaluationUsingHistory(boolean currentConstraintsEvaluation) {
-		return this.heuristic.run(currentConstraintsEvaluation, this.history);
+	protected boolean isMyIdValid() {
+		return !this.getId().equals(DefaultEnvironment.ID);
+	}
+
+	private void validateWeights(List<ValidationError> validationErrors) {
+		if (this.weights == null) {
+			validationErrors.add(new ValidationError((": " + VALIDATION_MSG_NULL_WEIGHTS)));
+		} else {
+			this.validateAllPossibleWeightsAreDefined(validationErrors);
+			this.validateAllWeightsSumUpOne(validationErrors);
+		}
+	}
+
+	private void validateAllWeightsSumUpOne(List<ValidationError> validationErrors) {
+		double sum = 0;
+		for (Double currentWeight : this.weights.values()) {
+			sum += currentWeight;
+		}
+		if (sum < 0.99 || sum > 1.00) {
+			validationErrors.add(new ValidationError(VALIDATION_MSG_WEIGHTS_DO_NOT_SUM_ONE));
+		}
+	}
+
+	private void validateAllPossibleWeightsAreDefined(List<ValidationError> validationErrors) {
+		Set<Concern> definedConcerns = this.getWeights().keySet();
+		List<Concern> allPossibleConcerns = Arrays.asList(Concern.values());
+
+		if (!definedConcerns.containsAll(allPossibleConcerns)) {
+			validationErrors.add(new ValidationError(VALIDATION_MSG_INVALID_WEIGHTS));
+		}
 	}
 
 	/**
@@ -230,23 +259,10 @@ public class Environment extends ThesisPojo {
 	 * @param holds
 	 */
 	private void addToHistory(boolean holds) {
-		if (this.history.size() == DEFAULT_HISTORY_SIZE) {
-			this.history.add(0, holds);
+		if (this.history.size() == HISTORY_MAX_SIZE) {
+			this.history.set(0, holds);
 		} else {
 			this.history.add(holds);
-		}
-	}
-
-	@Override
-	public String toString() {
-		return this.getName();
-	}
-
-	private void assertAllPossibleConcernsAreDefined(Collection<Concern> definedConcerns) {
-		List<Concern> allPossibleConcerns = Arrays.asList(Concern.values());
-
-		if (!definedConcerns.containsAll(allPossibleConcerns)) {
-			throw new IllegalArgumentException("Concern-Multiplier map must contain all possible concerns");
 		}
 	}
 
@@ -261,4 +277,8 @@ public class Environment extends ThesisPojo {
 		return equallyDistributedWeights;
 	}
 
+	@Override
+	protected String getObjectFriendlyName() {
+		return FRIENDLY_NAME;
+	}
 }

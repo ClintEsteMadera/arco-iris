@@ -32,9 +32,9 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.selfhealing.DefaultScenarioBrokenDetector;
 import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector;
-import ar.uba.dc.thesis.selfhealing.ScoringScenarioBrokenDetector;
+import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector4CurrentSystemState;
+import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector4StrategyScoring;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -78,7 +78,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private static List<SelfHealingScenario> currentBrokenScenarios;
 
-	private static DefaultScenarioBrokenDetector defaultScenarioBrokenDetector;
+	private static ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState;
 
 	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
 
@@ -109,7 +109,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public AdaptationManagerWithScenarios(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super(NAME);
 		m_logger = RainbowLoggerFactory.logger(getClass());
-		defaultScenarioBrokenDetector = Oracle.instance().defaultScenarioBrokenDetector();
+		scenarioBrokenDetector4CurrentSystemState = Oracle.instance().scenarioBrokenDetector4CurrentSystemState();
 		currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
 		this.m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
@@ -143,8 +143,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
-				if (scenario.getConcern().equals(concern) && defaultScenarioBrokenDetector.isBroken(scenario)) {
+				if (scenario.getConcern().equals(concern)
+						&& scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
 					result = true;
+					break;
 				}
 			}
 			doLog(Level.INFO, "Concern " + concern + (result == true ? " Still Broken!" : " Not Broken Anymore!!!"));
@@ -337,11 +339,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		Set<String> candidateStrategies = collectCandidateStrategiesNames(brokenScenarios);
 
 		Environment currentSystemEnvironment = detectCurrentSystemEnvironment(this.m_model);
-		Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
 
 		// We don't want the "simulated" system utility to be less than the current real one.
 		doLog(Level.INFO, "Computing Current System Utility...");
-		double maxScore4Strategy = scoreStrategyWithScenarios(currentSystemEnvironment, defaultScenarioBrokenDetector);
+		double maxScore4Strategy = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
+				scenarioBrokenDetector4CurrentSystemState);
 
 		doLog(Level.INFO, "Current System Utility: " + maxScore4Strategy);
 
@@ -376,8 +378,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				if (scenariosSolutionWeight > 0) {
 					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " with scenarios approach...");
 
-					strategyScore4Scenarios = scoreStrategyWithScenarios(currentSystemEnvironment,
-							new ScoringScenarioBrokenDetector(m_model, currentStrategy));
+					strategyScore4Scenarios = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
+							new ScenarioBrokenDetector4StrategyScoring(m_model, currentStrategy));
 					doLog(Level.INFO, "Scenarios approach score for strategy " + currentStrategy.getName() + ": "
 							+ strategyScore4Scenarios);
 				}
@@ -385,7 +387,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
 					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " with Rainbow approach...");
-					strategyScore4Rainbow = scoreStrategyByRainbow(currentStrategy, weights4Rainbow);
+					Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
+					strategyScore4Rainbow = scoreStrategyUsingRainbow(currentStrategy, weights4Rainbow);
 				}
 
 				double weightedScore = strategyScore4Scenarios * scenariosSolutionWeight + strategyScore4Rainbow
@@ -439,7 +442,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	private Environment detectCurrentSystemEnvironment(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		Collection<Environment> environments = this.selfHealingConfigurationManager.getAllNonDefaultEnvironments();
 		for (Environment environment : environments) {
-			if (environment.holds4Scoring(rainbowModelWithScenarios)) {
+			if (environment.holds(rainbowModelWithScenarios)) {
 				doLog(Level.INFO, "Current environment: " + environment.getName());
 				return environment;
 			}
@@ -448,13 +451,14 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		return this.selfHealingConfigurationManager.getDefaultEnvironment();
 	}
 
-	private Double scoreStrategyWithScenarios(Environment currentSystemEnvironment,
+	private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
 			ScenarioBrokenDetector scenarioBrokenDetector) {
 		double score = 0L;
 		Collection<SelfHealingScenario> scenarios = this.selfHealingConfigurationManager.getEnabledScenarios();
 		Map<Concern, Double> weights = currentSystemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
 			if (scenario.applyFor(currentSystemEnvironment)) {
+				// here, the "simulation" takes place...
 				boolean scenarioSatisfied = !scenarioBrokenDetector.isBroken(scenario);
 
 				if (scenarioSatisfied) {
@@ -466,9 +470,9 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					}
 					score = score + scenarioWeight(scenario.getPriority(), concernWeight4CurrentEnvironment);
 					// TODO TRATAR DE EVITAR INSTANCEOF!
-					if (scenarioBrokenDetector instanceof ScoringScenarioBrokenDetector) {
-						SortedMap<String, Double> aggAtts = ((ScoringScenarioBrokenDetector) scenarioBrokenDetector)
-								.getComputeAggregateAttributes();
+					if (scenarioBrokenDetector instanceof ScenarioBrokenDetector4StrategyScoring) {
+						SortedMap<String, Double> aggAtts = ((ScenarioBrokenDetector4StrategyScoring) scenarioBrokenDetector)
+								.getAggregateAttributes();
 						score = weightWithConcernUtilityFunction(score, scenario, aggAtts);
 					}
 				} else {
@@ -515,7 +519,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * 
 	 * @return the score of the strategy calculated by Rainbow
 	 */
-	private double scoreStrategyByRainbow(Strategy strategy, Map<String, Double> weights) {
+	private double scoreStrategyUsingRainbow(Strategy strategy, Map<String, Double> weights) {
 		double[] conds = null;
 		SortedMap<String, Double> aggAtt = strategy.computeAggregateAttributes();
 		// add the strategy failure history as another attribute

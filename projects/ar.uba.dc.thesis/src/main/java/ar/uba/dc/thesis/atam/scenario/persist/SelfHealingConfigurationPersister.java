@@ -18,6 +18,7 @@ import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 
 public class SelfHealingConfigurationPersister {
 
@@ -84,7 +85,9 @@ public class SelfHealingConfigurationPersister {
 	}
 
 	private void initXStream() {
-		this.xstream = new XStream();
+		// XStream, being constructed this way, will always invoke the constructor with no params during the
+		// deserialization process. Therefore, the default constructor should always exist, though it can be not public.
+		this.xstream = new XStream(new PureJavaReflectionProvider());
 		this.xstream.autodetectAnnotations(true);
 
 		this.xstream.alias("selfHealingConfiguration", SelfHealingConfiguration.class);

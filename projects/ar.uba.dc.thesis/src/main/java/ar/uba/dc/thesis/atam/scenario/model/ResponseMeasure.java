@@ -1,26 +1,27 @@
 package ar.uba.dc.thesis.atam.scenario.model;
 
-import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.common.ArcoIrisDomainObject;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 
-public class ResponseMeasure extends ThesisPojo {
-
-	private static final long serialVersionUID = 1L;
+public class ResponseMeasure extends ArcoIrisDomainObject {
 
 	private String description;
 
 	private Constraint constraint;
 
 	public ResponseMeasure() {
+		super();
+		this.description = "";
 		// FIXME This is a hack!
-		this("", new NumericBinaryRelationalConstraint());
+		this.constraint = new NumericBinaryRelationalConstraint();
 	}
 
 	public ResponseMeasure(String description, Constraint constraint) {
 		super();
 		this.description = description;
 		this.constraint = constraint;
+
 		this.validate();
 	}
 
@@ -42,7 +43,8 @@ public class ResponseMeasure extends ThesisPojo {
 
 	@Override
 	public void validate() {
-		// Do nothing
+		if (this.constraint != null) {
+			this.constraint.validate();
+		}
 	}
-
 }

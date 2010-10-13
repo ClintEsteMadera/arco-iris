@@ -1,5 +1,6 @@
 package scenariosui.gui.widget;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
@@ -8,6 +9,7 @@ import org.eclipse.swt.custom.CTabItem;
 import scenariosui.context.ScenariosUIApplicationContext;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.menu.SelfHealingConfigurationMenuCreator;
+import scenariosui.gui.thread.ScenariosUIUncaughtExceptionHandler;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
 
@@ -21,6 +23,8 @@ import commons.gui.widget.composite.QueryComposite;
  * 
  */
 public class ScenariosUIWindow extends MainWindow {
+
+	private static final ScenariosUIUncaughtExceptionHandler UNCAUGHT_EXCEPTION_HANDLER = new ScenariosUIUncaughtExceptionHandler();
 
 	private static ScenariosUIWindow instance = new ScenariosUIWindow();
 
@@ -103,5 +107,10 @@ public class ScenariosUIWindow extends MainWindow {
 	 */
 	public void resetQuery(UniqueTableIdentifier queryName) {
 		this.resetQuery(null, queryName);
+	}
+
+	@Override
+	public UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
+		return UNCAUGHT_EXCEPTION_HANDLER;
 	}
 }

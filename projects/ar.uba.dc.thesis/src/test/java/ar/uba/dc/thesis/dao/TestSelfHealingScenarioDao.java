@@ -1,11 +1,8 @@
 package ar.uba.dc.thesis.dao;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import ar.uba.dc.thesis.atam.scenario.model.ArchitecturalDecision;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
@@ -68,14 +65,12 @@ public class TestSelfHealingScenarioDao {
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN,
 						THRESHOLD_RESPONSE_TIME));
-		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
-
 		boolean enabled = true;
 		int priority = 1;
 		SpecificRepairStrategies repairStrategies = new SpecificRepairStrategies("VariedReduceResponseTime");
 
 		return new SelfHealingScenario(0L, scenarioName, Concern.RESPONSE_TIME, stimulus, environments, artifact,
-				response, responseMeasure, archDecisions, enabled, priority, repairStrategies);
+				response, responseMeasure, enabled, priority, repairStrategies);
 	}
 
 	private SelfHealingScenario createServerCostScenario() {
@@ -88,12 +83,11 @@ public class TestSelfHealingScenarioDao {
 				new NumericBinaryRelationalConstraint(Quantifier.SUM, artifact, "cost",
 						NumericBinaryOperator.LESS_THAN, THRESHOLD_SERVER_COST));
 
-		Set<ArchitecturalDecision> archDecisions = new HashSet<ArchitecturalDecision>();
 		boolean enabled = true;
 		int priority = 2;
 		SpecificRepairStrategies repairStrategies = new SpecificRepairStrategies("ReduceOverallCost");
 
 		return new SelfHealingScenario(1L, scenarioName, Concern.SERVER_COST, stimulus, environments, artifact,
-				response, responseMeasure, archDecisions, enabled, priority, repairStrategies);
+				response, responseMeasure, enabled, priority, repairStrategies);
 	}
 }

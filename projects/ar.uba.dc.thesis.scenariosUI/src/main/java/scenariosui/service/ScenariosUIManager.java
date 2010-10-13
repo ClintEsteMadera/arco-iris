@@ -10,7 +10,6 @@ import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfigurationPersister;
 import ar.uba.dc.thesis.common.Identifiable;
-import ar.uba.dc.thesis.common.ThesisPojo;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 import ar.uba.dc.thesis.selfhealing.StitchLoader;
 import ar.uba.dc.thesis.selfhealing.StrategyTO;
@@ -129,17 +128,17 @@ public final class ScenariosUIManager {
 		return stitchLoader.getAllStrategiesTO();
 	}
 
-	private <T extends ThesisPojo> List<T> getElement(List<T> elements, BaseSearchCriteria<T> criteria) {
+	private <I extends Identifiable> List<I> getElement(List<I> elements, BaseSearchCriteria<I> criteria) {
 		if (criteria.getId() == null) {
 			return elements;
 		} else {
-			T environment = this.findElement(elements, criteria.getId());
+			I environment = this.findElement(elements, criteria.getId());
 			return Collections.singletonList(environment);
 		}
 	}
 
-	private <T extends ThesisPojo> T findElement(List<T> elements, Long id) {
-		for (T element : elements) {
+	private <I extends Identifiable> I findElement(List<I> elements, Long id) {
+		for (I element : elements) {
 			if (element.getId().equals(id)) {
 				return element;
 			}

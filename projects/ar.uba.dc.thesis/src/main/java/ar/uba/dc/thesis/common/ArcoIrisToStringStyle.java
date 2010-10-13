@@ -10,13 +10,11 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * This class is intended to be used as a singleton.
  * 
  */
-public class ThesisToStringStyle extends ToStringStyle {
+public final class ArcoIrisToStringStyle extends ToStringStyle {
 
-	public static final ThesisToStringStyle THESIS_STYLE = new ThesisToStringStyle();
+	public static final ArcoIrisToStringStyle THESIS_STYLE = new ArcoIrisToStringStyle();
 
-	private static final long serialVersionUID = 1L;
-
-	private ThesisToStringStyle() {
+	private ArcoIrisToStringStyle() {
 		super();
 		this.setContentStart("[");
 		this.setFieldSeparator(SystemUtils.LINE_SEPARATOR + "  ");

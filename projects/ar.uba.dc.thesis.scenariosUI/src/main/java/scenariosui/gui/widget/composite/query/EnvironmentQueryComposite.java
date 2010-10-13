@@ -35,7 +35,7 @@ public class EnvironmentQueryComposite extends ScenariosUIQueryComposite<Environ
 	}
 
 	@Override
-	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForNew() {
+	protected OpenDialogWithPurposeAction<Environment, Purpose> getActionForCreate() {
 		return ScenariosUIActions.NEW_ENVIRONMENT;
 	}
 

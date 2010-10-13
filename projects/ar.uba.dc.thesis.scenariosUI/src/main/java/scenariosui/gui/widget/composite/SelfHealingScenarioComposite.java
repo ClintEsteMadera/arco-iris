@@ -79,6 +79,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 		objectSelectionMetainfo.nullable = true; // to be used for the "Default" environment
 		objectSelectionMetainfo.canView = false;
 		objectSelectionMetainfo.columnsToSpan = 3;
+		objectSelectionMetainfo.canCreate = true;
 
 		new EnvironmentsSelectionComposite(objectSelectionMetainfo);
 
@@ -88,6 +89,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 				new BindingInfo(underlyingScenario, "artifact"), this.readOnly);
 		objectSelectionMetainfo.canView = false;
 		objectSelectionMetainfo.columnsToSpan = 3;
+		objectSelectionMetainfo.canCreate = true;
 
 		new ArtifactSelectionComposite(objectSelectionMetainfo);
 
@@ -106,8 +108,6 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 		objectSelectionMetainfo.canView = false;
 		objectSelectionMetainfo.nullable = true; // this button will be used for specifying "all repair strategies"
 		new RepairStrategiesSelectionComposite(objectSelectionMetainfo);
-
-		// TODO Architectural Decisions
 	}
 
 	private void addStimulusFields(SimpleComposite fourColumnsComposite,
@@ -137,7 +137,7 @@ public class SelfHealingScenarioComposite extends SimpleComposite {
 			@SuppressWarnings("rawtypes")
 			public void complexValueChange(ComplexValueChangeEvent ev) {
 				Object newValue = ev.getNewValue();
-				if (Boolean.class.isAssignableFrom(newValue.getClass())) {
+				if (newValue instanceof Boolean) {
 					Boolean anyStimulusSelected = (Boolean) newValue;
 
 					stimulusSourceControl.setEnabled(!anyStimulusSelected);

@@ -1,5 +1,5 @@
 znewsWithScenarios1:
-	Este test case sirve para mostrar el compartamiento del sistema sin autoreparacion.
+	Este test case sirve para mostrar el comportamiento del sistema sin auto-reparacion.
 	Existe un escenario de response time solamente para poder graficar el threshold, sin embargo, al no existir estrategias, la autoreparacion
 	no se disparará.
 

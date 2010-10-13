@@ -3,7 +3,6 @@ package ar.uba.dc.thesis.selfhealing;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +19,7 @@ import org.sa.rainbow.stitch.visitor.Stitch;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
-public class StitchLoader implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class StitchLoader {
 
 	private static RainbowLogger rainbowLogger = RainbowLoggerFactory.logger(StitchLoader.class);
 

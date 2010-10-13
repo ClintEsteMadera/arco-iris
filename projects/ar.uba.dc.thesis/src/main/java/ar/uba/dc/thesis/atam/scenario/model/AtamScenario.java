@@ -1,16 +1,33 @@
 package ar.uba.dc.thesis.atam.scenario.model;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import ar.uba.dc.thesis.common.ThesisPojo;
+import ar.uba.dc.thesis.common.IdentifiableArcoIrisDomainObject;
+import ar.uba.dc.thesis.common.validation.Assert;
+import ar.uba.dc.thesis.common.validation.ValidationError;
 import ar.uba.dc.thesis.qa.Concern;
+import ar.uba.dc.thesis.util.Collections;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-public abstract class AtamScenario extends ThesisPojo {
+public abstract class AtamScenario extends IdentifiableArcoIrisDomainObject {
 
-	private static final long serialVersionUID = 1L;
+	private static final String FRIENDLY_NAME = "Scenario";
+
+	private static final String VALIDATION_MSG_NAME = "Scenario's name cannot be empty";
+
+	private static final String VALIDATION_MSG_CONCERN = "Scenario's concern cannot be empty";
+
+	private static final String VALIDATION_MSG_STIMULUS = "Scenario's stimulus cannot be empty";
+
+	private static final String VALIDATION_MSG_ENVIRONMENTS = "Scenario's environments cannot be empty";
+
+	private static final String VALIDATION_MSG_ARTIFACT = "Scenario's artifact cannot be empty";
+
+	private static final String VALIDATION_MSG_RESPONSE = "Scenario's expected response cannot be empty";
+
+	private static final String VALIDATION_MSG_RESPONSE_MEASURE = "Scenario's response measure cannot be empty";
 
 	@XStreamAsAttribute
 	private String name;
@@ -27,16 +44,16 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	private ResponseMeasure responseMeasure;
 
-	private Set<ArchitecturalDecision> architecturalDecisions;
-
 	public AtamScenario() {
 		super();
 		this.responseMeasure = new ResponseMeasure();
+		this.stimulus = Stimulus.ANY;
+		this.environments = Collections.createList(DefaultEnvironment.getInstance());
 	}
 
 	public AtamScenario(Long id, String name, Concern concern, Stimulus stimulus,
 			List<? extends Environment> environments, Artifact artifact, String response,
-			ResponseMeasure responseMeasure, Set<ArchitecturalDecision> architecturalDecisions) {
+			ResponseMeasure responseMeasure) {
 		super(id);
 		this.name = name;
 		this.concern = concern;
@@ -45,7 +62,6 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.artifact = artifact;
 		this.response = response;
 		this.responseMeasure = responseMeasure;
-		this.architecturalDecisions = architecturalDecisions;
 	}
 
 	public String getName() {
@@ -70,10 +86,6 @@ public abstract class AtamScenario extends ThesisPojo {
 
 	public ResponseMeasure getResponseMeasure() {
 		return this.responseMeasure;
-	}
-
-	public Set<ArchitecturalDecision> getArchitecturalDecisions() {
-		return this.architecturalDecisions;
 	}
 
 	public List<? extends Environment> getEnvironments() {
@@ -108,12 +120,34 @@ public abstract class AtamScenario extends ThesisPojo {
 		this.responseMeasure = responseMeasure;
 	}
 
-	public void setArchitecturalDecisions(Set<ArchitecturalDecision> architecturalDecisions) {
-		this.architecturalDecisions = architecturalDecisions;
-	}
-
 	@Override
 	public String toString() {
 		return "\"" + this.getName() + "\" " + super.toString();
+	}
+
+	@Override
+	protected List<ValidationError> collectValidationErrors() {
+		List<ValidationError> validationErrors = new ArrayList<ValidationError>();
+
+		Assert.notBlank(this.name, VALIDATION_MSG_NAME, validationErrors);
+
+		Assert.notNull(this.concern, VALIDATION_MSG_CONCERN, validationErrors);
+
+		Assert.notNullAndValid(this.stimulus, VALIDATION_MSG_STIMULUS, validationErrors);
+
+		Assert.notEmptyAndValid(this.environments, VALIDATION_MSG_ENVIRONMENTS, validationErrors);
+
+		Assert.notNullAndValid(this.artifact, VALIDATION_MSG_ARTIFACT, validationErrors);
+
+		Assert.notBlank(this.response, VALIDATION_MSG_RESPONSE, validationErrors);
+
+		Assert.notNullAndValid(this.responseMeasure, VALIDATION_MSG_RESPONSE_MEASURE, validationErrors);
+
+		return validationErrors;
+	}
+
+	@Override
+	protected String getObjectFriendlyName() {
+		return FRIENDLY_NAME;
 	}
 }

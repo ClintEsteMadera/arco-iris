@@ -45,6 +45,7 @@ public class RepairStrategiesSelectionDialog extends Dialog implements Advised<R
 		super(PageHelper.getMainShell());
 		this.criteria = criteria;
 		this.strategyCodeModel = new BeanModel<String>(String.class);
+		this.selectedRepairStrategyNames = new ArrayList<String>();
 	}
 
 	@Override
@@ -101,7 +102,7 @@ public class RepairStrategiesSelectionDialog extends Dialog implements Advised<R
 	}
 
 	public void setSelectedRepairStrategyNames(List<StrategyTO> strategiesTO) {
-		this.selectedRepairStrategyNames = new ArrayList<String>(strategiesTO.size());
+		this.selectedRepairStrategyNames.clear();
 		for (StrategyTO strategyTO : strategiesTO) {
 			this.selectedRepairStrategyNames.add(strategyTO.getName());
 		}

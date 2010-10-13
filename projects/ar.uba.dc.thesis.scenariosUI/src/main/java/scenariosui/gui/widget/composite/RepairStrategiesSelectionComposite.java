@@ -2,6 +2,7 @@ package scenariosui.gui.widget.composite;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -9,17 +10,19 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import scenariosui.gui.query.RepairStrategySearchCriteria;
 import scenariosui.gui.widget.dialog.RepairStrategiesSelectionDialog;
 import scenariosui.properties.ScenariosUIMessages;
+import ar.uba.dc.thesis.common.validation.ValidationError;
+import ar.uba.dc.thesis.common.validation.ValidationException;
 import ar.uba.dc.thesis.selfhealing.repair.AllRepairStrategies;
 import ar.uba.dc.thesis.selfhealing.repair.RepairStrategies;
 import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 
-import commons.exception.ValidationException;
 import commons.gui.widget.composite.ObjectSelectionMetainfo;
-import commons.gui.widget.composite.SimpleObjectSelectionComposite;
+import commons.gui.widget.composite.SingleObjectSelectionComposite;
 import commons.utils.Clonator;
-import commons.validation.ValidationError;
 
-public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionComposite<RepairStrategies> {
+public class RepairStrategiesSelectionComposite extends SingleObjectSelectionComposite<RepairStrategies> {
+
+	private static final String TOOLTIP_ALL_AVAILABLE = "All Available";
 
 	private RepairStrategySearchCriteria criteria;
 
@@ -40,7 +43,7 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 		this.stitchDir = dirDialog.open();
 
 		if (StringUtils.isBlank(this.stitchDir)) {
-			throw new ValidationException(new ValidationError(ScenariosUIMessages.NO_REPAIR_STRATEGIES_SELECTED));
+			throw new ValidationException(new ValidationError(ScenariosUIMessages.INVALID_DIRECTORY.toString()));
 		}
 
 		this.criteria.setStitchDirectory(stitchDir);
@@ -51,7 +54,7 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 
 		RepairStrategies result = null;
 		List<String> selectedRepairStrategyNames = repairStrategiesSelectionDialog.getSelectedRepairStrategyNames();
-		if (selectedRepairStrategyNames != null) {
+		if (CollectionUtils.isNotEmpty(selectedRepairStrategyNames)) {
 			result = new SpecificRepairStrategies(selectedRepairStrategyNames);
 		}
 		return result;
@@ -77,6 +80,6 @@ public class RepairStrategiesSelectionComposite extends SimpleObjectSelectionCom
 	 */
 	@Override
 	protected String getToolTip4ClearButton() {
-		return "All Available";
+		return TOOLTIP_ALL_AVAILABLE;
 	}
 }
