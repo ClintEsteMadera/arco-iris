@@ -97,6 +97,9 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 	
 	
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
+
+	\todo{TURCO: Mover esto a una subseccion aparte}	
+	\todo{TURCO: ZNN no es parte de Rainbow sino una tesis del chino, referenciar a la misma}
 	
 	Dentro del proyecto Rainbow se ha desarrollado un caso de estudio para validar el enfoque propuesto, dicho proyecto ha recibido el nombre de Znn, que cumple la función de simular un sitio web de noticias.
 	
@@ -107,29 +110,27 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 
 	\subsection{Escenarios de Atributos de Calidad y QAW}
 	
-	Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable''). 
+		Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable''). 
 
-	Los atributos de calidad pueden ser representados mediante escenarios. Los escenarios están compuestos por:
+		Los atributos de calidad pueden ser representados mediante escenarios. Los escenarios están compuestos por:
 	
-\begin{itemize}
-\item \textbf{Fuente del estímulo}: Interna o externa
-\item \textbf{Estímulo}: condición que debe ser tenida en cuenta al llegar al sistema
-\item \textbf{Entorno}: condiciones en las cuales ocurre el estímulo
-\item \textbf{Artefacto}: el sistema o partes de él afectadas por el estímulo
-\item \textbf{Respuesta}: qué hace el sistema ante la llegada del estímulo
-\item \textbf{Medición de la respuesta}: cuantificación de un atributo de la respuesta
-\end{itemize}
+		\begin{itemize}
+			\item \textbf{Fuente del estímulo}: Interna o externa
+			\item \textbf{Estímulo}: condición que debe ser tenida en cuenta al llegar al sistema
+			\item \textbf{Entorno}: condiciones en las cuales ocurre el estímulo
+			\item \textbf{Artefacto}: el sistema o partes de él afectadas por el estímulo
+			\item \textbf{Respuesta}: qué hace el sistema ante la llegada del estímulo
+			\item \textbf{Medición de la respuesta}: cuantificación de un atributo de la respuesta
+		\end{itemize}
 
-	\begin{center}
-		\includegraphics{images/scenario.png}
-	\end{center}
+		\begin{center}
+			\includegraphics{images/scenario.png}
+		\end{center}
 
-
-	Los escenarios son pequeñas historias que describen una interacción con el sistema, que impacta sobre un atributo de calidad en particular. Por ejemplo, un escenario sobre disponibilidad podría ser:
-
-\begin{quote}
-``Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El proceso informa al operador y continúa su operación sin caídas.''
-\end{quote}
+		Los escenarios son pequeñas historias que describen una interacción con el sistema, que impacta sobre un atributo de calidad en particular. Por ejemplo, un escenario sobre disponibilidad podría ser:
+		\begin{quote}
+		``Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El proceso informa al operador y continúa su operación sin caídas.''
+		\end{quote}
 
 Este escenario se descompone de la siguiente manera:
 \begin{itemize}
