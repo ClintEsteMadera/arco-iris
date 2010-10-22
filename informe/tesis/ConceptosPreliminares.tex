@@ -97,12 +97,15 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 	
 	
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
-	\label{sec:QAS}
-
-	\todo{TURCO: Mover esto a una subseccion aparte}	
-	\todo{TURCO: ZNN no es parte de Rainbow sino una tesis del chino, referenciar a la misma}
 	
-	Dentro del proyecto Rainbow se ha desarrollado un caso de estudio para validar el enfoque propuesto, dicho proyecto ha recibido el nombre de Znn, que cumple la función de simular un sitio web de noticias.
+	Znn es un sistema que simula un sitio web de noticias, el mismo nació como proyecto de tesis \cite{TesisOwen} de Shang-Wen Cheng, sus objetivos fueron evaluar la efectividad de Rainbow en los siguientes aspectos:
+		\begin{itemize}
+			\item su efectividad para mantener los atributos de calidad al enfrentar condiciones cambiantes
+			\item el \textit{overhead} de procesamiento que implica la auto reparación
+			\item el esfuerzo que implica agregar auto reparación mediante Rainbow a Znn
+		\end{itemize}
+		
+	Si bien Znn nació como herramienta para evaluar Rainbow, Znn y las herramientas asociadas utilizadas para evaluar Rainbow han sido abiertas a la comunidad para que puedan ser utilizadas para tomar métricas y poder comparar distintos sistemas de auto reparación.
 	
 	Znn provee un entorno de simulación de una arquitectura cliente servidor ampliamente configurable que permite representar situaciones y controlar las variables de simulación permitiendo modificarlas en cualquier punto de la simulación. Por ejemplo, el sistema que se está simulando podría comenzar con solamente 2 clientes, mostrando allí una performance aceptable, pero a partir de un momento dado, se agregan 10 clientes comprometiendo así la performance del mismo. De esta manera permite simular como responderían las estrategias implementadas ante dicha situación.
 	
@@ -110,6 +113,7 @@ ejemplo performance, costo o confiabilidad. En una arquitectura cliente-servidor
 	 
 
 	\subsection{Escenarios de Atributos de Calidad y QAW}
+	\label{sec:QAS}
 	
 		Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable''). 
 
