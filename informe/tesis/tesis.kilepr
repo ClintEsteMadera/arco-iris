@@ -4,7 +4,7 @@ img_extIsRegExp=false
 img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
 kileprversion=2
 kileversion=2.1 beta1
-lastDocument=tesis/Introduccion.tex
+lastDocument=Introduccion.tex
 masterDocument=
 name=tesis
 pkg_extIsRegExp=false
@@ -16,7 +16,25 @@ src_extensions=.tex .ltx .latex .dtx .ins
 MakeIndex=
 QuickBuild=
 
-[item:tesis/Abstract.tex]
+[item:Abstract.tex]
+archive=true
+column=0
+encoding=System
+highlight=LaTeX
+line=0
+open=false
+order=-1
+
+[item:Apendice.tex]
+archive=true
+column=9
+encoding=System
+highlight=LaTeX
+line=0
+open=false
+order=-1
+
+[item:ArcoIris.tex]
 archive=true
 column=1730055904
 encoding=
@@ -25,7 +43,7 @@ line=0
 open=false
 order=-1
 
-[item:tesis/Apendice.tex]
+[item:Bibliografia.tex]
 archive=true
 column=1730055904
 encoding=
@@ -34,25 +52,7 @@ line=0
 open=false
 order=-1
 
-[item:tesis/ArcoIris.tex]
-archive=true
-column=1730055904
-encoding=
-highlight=
-line=0
-open=false
-order=-1
-
-[item:tesis/Bibliografia.tex]
-archive=true
-column=1730055904
-encoding=
-highlight=
-line=0
-open=false
-order=-1
-
-[item:tesis/CasosPracticos.tex]
+[item:CasosPracticos.tex]
 archive=true
 column=5
 encoding=System
@@ -61,7 +61,7 @@ line=0
 open=false
 order=-1
 
-[item:tesis/ConceptosPreliminares.tex]
+[item:ConceptosPreliminares.tex]
 archive=true
 column=0
 encoding=System
@@ -70,7 +70,7 @@ line=16
 open=false
 order=-1
 
-[item:tesis/Conclusiones.tex]
+[item:Conclusiones.tex]
 archive=true
 column=15
 encoding=System
@@ -79,16 +79,16 @@ line=0
 open=false
 order=-1
 
-[item:tesis/Introduccion.tex]
+[item:Introduccion.tex]
 archive=true
-column=529
+column=0
 encoding=System
 highlight=LaTeX
-line=8
-open=true
+line=2
+open=false
 order=0
 
-[item:tesis/ScenariosUI.tex]
+[item:ScenariosUI.tex]
 archive=true
 column=7602222
 encoding=
@@ -97,16 +97,16 @@ line=0
 open=false
 order=-1
 
-[item:tesis/Tesis.tex]
+[item:Tesis.tex]
 archive=true
-column=32
+column=0
 encoding=System
 highlight=LaTeX
-line=25
-open=true
+line=0
+open=false
 order=1
 
-[item:tesis/TrabajoFuturo.tex]
+[item:TrabajoFuturo.tex]
 archive=true
 column=146862704
 encoding=
@@ -115,7 +115,7 @@ line=0
 open=false
 order=-1
 
-[item:tesis/caratula.sty]
+[item:caratula.sty]
 archive=true
 column=1730055904
 encoding=
@@ -124,7 +124,7 @@ line=0
 open=false
 order=-1
 
-[item:tesis/tesis.kilepr]
+[item:tesis.kilepr]
 archive=true
 column=4
 encoding=
