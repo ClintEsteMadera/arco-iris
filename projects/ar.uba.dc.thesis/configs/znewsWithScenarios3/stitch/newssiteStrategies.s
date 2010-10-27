@@ -16,7 +16,7 @@ define boolean COST_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernStill
  *
  * Note:  Tested successfully in simulation, znews-varied
  */
-strategy EnlistServersResponseTime
+ strategy EnlistServerResponseTime
 [ styleApplies ] {
   t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
 	  t1: (!RESP_TIME_STILL_BROKEN) -> done;
@@ -26,13 +26,12 @@ strategy EnlistServersResponseTime
 
 /* This Strategy is triggered by the total server costs rising above acceptable
  * threshold; this Strategy reduces the number of active servers
- *
- * Note:  Tested successfully in simulation, znews-reducecost + znews-improvefidelity
  */
 strategy ReduceOverallCost
 [ styleApplies ] {
-  t0: (true) -> dischargeServers(1) @[5000 /*ms*/] {
+  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
     t1: (!COST_STILL_BROKEN) -> done;
-    t2: (default) -> TNULL;
+    t3: (default) -> TNULL;
   }
 }
+

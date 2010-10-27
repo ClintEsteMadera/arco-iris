@@ -8,6 +8,8 @@
 	<classpathentry kind="src" path="configs/znewsWithScenarios2"/>
 	<classpathentry kind="src" path="configs/znewsWithScenarios3"/>
 	<classpathentry kind="src" path="configs/znewsWithScenarios4"/>
+	<classpathentry kind="src" path="configs/znewsWithScenarios0"/>
+	<classpathentry excluding="znewsWithScenarios1/|znewsWithScenarios2/|znewsWithScenarios3/|znewsWithScenarios4/|znewsWithScenarios0/" kind="src" path="configs"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar" sourcepath="lib/commons-lang-2.4-sources.jar"/>
