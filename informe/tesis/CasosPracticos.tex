@@ -1,6 +1,6 @@
 \section{Casos Prácticos}\label{CasoPracticoSection}
 
-	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la simulación que forma parte del proyecto Znn.
+	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la simulación presentada en Znn.
 	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido (e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio óptimo según los requerimientos planteados.
 	
 	\subsection{Arquitectura del Sistema}
@@ -44,11 +44,11 @@
 		\includegraphics[width=1.00\textwidth]{images/testcase1_1_cost.png}
 	\end{center}
 
-	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se así por unos 10 segundos, luego el mismo va bajando escalonadamente hasta estacionarse en 360ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó siempre con un único servidor.
+	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se allí hasta los 30 segundos, luego el mismo va bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a ninguna acción propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el ancho de banda de cada uno de sus clientes.
 
 	\subsection{Comportamiento del Sistema con un único Escenario}
 	
-	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un umbral (\emph{threshold} de 600ms para el tiempo de respuesta experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar. A continuación se muestra el detalle del escenario creado:
+	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600ms para el tiempo de respuesta experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar. A continuación se muestra el detalle del escenario creado:
 
 	\todo{TURCO: Refrescar screenshot de la GUI}
 
@@ -63,8 +63,6 @@
 	\begin{center}
 		\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime_threshold.png}
 	\end{center}
-	
-	\todo{TURCO: ver porqué no se comportó igual al grafico sin escenarios???}
 	
 	\todo{JONY/TURCO: Mostramos log o lo ponemos en el Apendice???}
 	
@@ -83,6 +81,7 @@
 	\end{verbatim}
 
 	Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi instantáneamente, como podemos ver en el siguiente gráfico:
+
 	
 	\begin{center}
 		\includegraphics[width=1.00\textwidth]{images/testcase1_2_expRespTime.png}
