@@ -101,7 +101,7 @@
         </constraint>
       </responseMeasure>
       <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>EnlistServersResponseTime</repairStrategy>
+        <repairStrategy>EnlistServerResponseTime</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>
   </scenarios>

@@ -1,3 +1,6 @@
+znewsWithScenarios0:
+	Este test case sirve para mostrar el comportamiento del sistema sin auto-reparacion y sin escenarios.
+
 znewsWithScenarios1:
 	Este test case sirve para mostrar el comportamiento del sistema sin auto-reparacion.
 	Existe un escenario de response time solamente para poder graficar el threshold, sin embargo, al no existir estrategias, la autoreparacion

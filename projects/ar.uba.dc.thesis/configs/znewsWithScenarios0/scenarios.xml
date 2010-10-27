@@ -1,4 +1,4 @@
-<selfHealingConfiguration description="znewsWithScenarios2">
+<selfHealingConfiguration description="znewsWithScenarios1">
   <artifacts>
     <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
     <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
@@ -60,27 +60,5 @@
     </environment>
   </environments>
   <scenarios>
-    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
-      <concern>RESPONSE_TIME</concern>
-      <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
-      <environments>
-        <defaultEnvironment></defaultEnvironment>
-      </environments>
-      <artifact reference="../../../artifacts/artifact"/>
-      <response>Requested News Content</response>
-      <responseMeasure>
-        <description>Experienced response time is within threshold</description>
-        <constraint class="numericBinaryRelationalConstraint">
-          <artifact reference="../../../../../artifacts/artifact"/>
-          <property>experRespTime</property>
-          <quantifier>IN_AVERAGE</quantifier>
-          <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
-        </constraint>
-      </responseMeasure>
-      <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>EnlistServerResponseTime</repairStrategy>
-      </repairStrategies>
-    </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>
