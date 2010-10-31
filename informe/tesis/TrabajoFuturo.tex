@@ -1,52 +1,81 @@
 \section{Trabajo Futuro}
-
-	\todo{Posibles TODOs?}
-	
 	\todo{Cómo seleccionar la mejor estrategia. Lo del ``utility function'' es limitado.
-- Cómo incluir algo de aprendizaje sobre el resultado de las reparaciones anteriores (más sofisticado, lo que hay ahora es muy limitado)
-- Mi idea original de usar para algo los ``artifacts'' vinculados al escenario
-- Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar e.g. alta carga y super alta carga (a.k.a. hasta las tetas) ).
-- No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas por fuera)}
+	- Cómo incluir algo de aprendizaje sobre el resultado de las reparaciones anteriores (más sofisticado, lo que hay
+	ahora es muy limitado)
+	- Mi idea original de usar para algo los ``artifacts'' vinculados al escenario
+	- Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar e.g.
+	alta carga y super alta carga (a.k.a. hasta las tetas) ).
+	- No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas por
+	fuera)}
 
-	Desde ya se entiende que el presente trabajo deja abiertas muchas posibilidades de mejoras que serán necesarias al momento de implementar este framework como una herramienta de uso generalizado en la industria, a continuación citaremos las más importantes desde nuestro punto de vista.
+		Desde ya se entiende que el presente trabajo deja abiertas muchas posibilidades de mejoras que serán necesarias al
+momento de implementar este framework como una herramienta de uso generalizado en la industria, a continuación citaremos
+las más importantes desde nuestro punto de vista.
 
-\subsection{Análisis y Aprendizaje de la Auto Reparación}
+	\subsection{Análisis y Aprendizaje de la Auto Reparación}
+		Supongamos que los \emph{stakeholders} ya han definido todos los escenarios que se utilizarán en la reparación via
+Arco Iris. Ahora bien, imaginemos que existe un escenario cuya prioridad es muy alta y a su vez las condiciones
+necesarias para que el mismo se rompa se dan con mucha frecuencia. Esto resultará en la auto reparación repetida del
+mencionado escenario. Pero ¿qué sucedería si la única que estrategia que repara dicho escenario rompe constantemente
+otros, digamos 3 escenarios de menor prioridad? A priori pareciera que este es el comportamiento esperado, pero ¿podrían
+los \emph{stakeholders} convalidar este comportamiento? Claramente se necesitan una serie de estadísticas que nos
+permitan analizar lo que se está reparando, y el impacto sobre los escenarios perjudicados, y también sería necesaria
+una vista sobre el impacto en cada uno de los \emph{concerns} del sistema.
 
-	Supongamos que los \emph{stakeholders} ya han definido todos los escenarios que se utilizarán en la reparación via Arco Iris. Ahora bien, imaginemos que existe un escenario cuya prioridad es muy alta y a su vez las condiciones necesarias para que el mismo se rompa se dan con mucha frecuencia. Esto resultará en la auto reparación repetida del mencionado escenario. Pero ¿qué sucedería si la única que estrategia que repara dicho escenario rompe constantemente otros, digamos 3 escenarios de menor prioridad? A priori pareciera que este es el comportamiento esperado, pero ¿podrían los \emph{stakeholders} convalidar este comportamiento? Claramente se necesitan una serie de estadísticas que nos permitan analizar lo que se está reparando, y el impacto sobre los escenarios perjudicados, y también sería necesaria una vista sobre el impacto en cada uno de los \emph{concerns} del sistema.
-	
-	Por otro lado, supongamos que bajo la misma situación, la única estrategia que aplica para reparar el escenario falla en un 95\% de los casos, ¿tiene sentido continuar ejecutando dicha estrategia teniendo en cuenta cómo afecta la performance del sistema y de la auto reparación? Una solución sencilla sería permitirle definir al usuario un umbral de fallos, por ejemplo definiendo que si una estrategia falla el 90\% de los intentos o más, la misma queda eliminada de las estrategias candidatas.
-	
-	Si bien lo menciona en el último párrafo se encuentra implementado, consideramos que la implementación es bastante básica y poco flexible. Por ejemplo sería útil que antes de llegado a ese punto, se notifique, a modo de alarma, al responsable de la auto reparación de que una estrategia a estado fallando. Podrían existir sucesivas alarmas antes de desactivar la estrategia. También debería permitirse modificar dinámicamente tanto la lógica de la estrategia como las condiciones esperadas en el escenario.
+		Por otro lado, supongamos que bajo la misma situación, la única estrategia que aplica para reparar el escenario
+	falla en un 95\% de los casos, ¿tiene sentido continuar ejecutando dicha estrategia teniendo en cuenta cómo afecta la
+	performance del sistema y de la auto reparación? Una solución sencilla sería permitirle definir al usuario un umbral
+de	fallos, por ejemplo definiendo que si una estrategia falla el 90\% de los intentos o más, la misma queda eliminada
+de	las estrategias candidatas.
 
-	También sería útil proveer una herramienta que permita analizar que estrategias se fueron ejecutando, y cómo se llegó a decidir que cada estrategia era la adecuada para reparar el sistema en cada momento. Otra vista que sería útil para analizar la configuración de la auto reparación del sistema podría ser un \emph{ranking} de estrategias, en el que se presente el porcentaje de éxito de cada una así como la cantidad de veces que se ejecutó, como quedó el \emph{Utility Function} en promedio luego de ejecutar la estrategia, etc.
+		Si bien lo menciona en el último párrafo se encuentra implementado, consideramos que la implementación es bastante
+	básica y poco flexible. Por ejemplo sería útil que antes de llegado a ese punto, se notifique, a modo de alarma, al
+	responsable de la auto reparación de que una estrategia a estado fallando. Podrían existir sucesivas alarmas antes de
+	desactivar la estrategia. También debería permitirse modificar dinámicamente tanto la lógica de la estrategia como las
+	condiciones esperadas en el escenario.
 
-\todo{JONY: se te ocurre algo mas sobre el aprendizaje sobre el resultado de las reparaciones anteriores???}
+		También sería útil proveer una herramienta que permita analizar que estrategias se fueron ejecutando, y cómo se
+	llegó a decidir que cada estrategia era la adecuada para reparar el sistema en cada momento. Otra vista que sería útil
+	para analizar la configuración de la auto reparación del sistema podría ser un \emph{ranking} de estrategias, en el
+que	se presente el porcentaje de éxito de cada una así como la cantidad de veces que se ejecutó, como quedó el
+\emph{Utility	Function} en promedio luego de ejecutar la estrategia, etc.
 
-\subsection{Configuración Dinámica}
+		\todo{JONY: se te ocurre algo mas sobre el aprendizaje sobre el resultado de las reparaciones anteriores???}
 
-	Cuando se desarrolla un sistema se hacen presunciones y supuestos, asumiendo determinados comportamiento que indefectiblemente variarán cuando el sistema se esté ejecutando: errores del sistema, cambios en el entorno (variación de recursos), cambios en las preferencias del usuario, etc. El reconocimiento de dichas presunciones es muy importante ya que esto acercará al sistema al ``mundo real'', y serán muy importantes a la hora de reparar el sistema, y más aún si se desea implementar un mecanismo de auto reparación flexible y dinámico.
-	
-	Dicho esto, se propone como trabajo a futuro dinamizar la configuración de auto reparación de Arco Iris, permitiendo que los \emph{stakeholders} modifiquen los escenarios en caliente, es decir, sin necesidad de detener el framework. Esto es importante ya que de requerir un sistema alta disponibilidad, no podrá darse el lujo de que el mecanismo de auto reparación que utilice sea detenido para reconfigurarlo, sino que debe adaptarse a las nuevas condiciones prácticamente sin impasse.
-	
-\subsection{Configuración de Escenarios en AcmeStudio}
+	\subsection{Configuración Dinámica}
+		Cuando se desarrolla un sistema se hacen presunciones y supuestos, asumiendo determinados comportamiento que
+indefectiblemente variarán cuando el sistema se esté ejecutando: errores del sistema, cambios en el entorno (variación
+de recursos), cambios en las preferencias del usuario, etc. El reconocimiento de dichas presunciones es muy importante
+ya que esto acercará al sistema al ``mundo real'', y serán muy importantes a la hora de reparar el sistema, y más aún si
+se desea implementar un mecanismo de auto reparación flexible y dinámico.
 
-	Actualmente existe una herramienta de creación y edición de arquitecturas modeladas en Acme, llamado AcmeStudio\cite{AcmeStudio} la cual se encuentra integrada en la popular herramienta de desarrollo Eclipse\cite{Eclipse} como un \emph{plug-in}.
+		Dicho esto, se propone como trabajo a futuro dinamizar la configuración de auto reparación de Arco Iris, permitiendo
+que los \emph{stakeholders} modifiquen los escenarios en caliente, es decir, sin necesidad de detener el framework. Esto
+es importante ya que de requerir un sistema alta disponibilidad, no podrá darse el lujo de que el mecanismo de auto
+reparación que utilice sea detenido para reconfigurarlo, sino que debe adaptarse a las nuevas condiciones prácticamente
+sin impasse.
 
-	Se propone como trabajo a futuro extender la herramienta AcmeStudio para que dé soporte a las extensiones propuestas en el presente trabajo, permitiendo así la integración del modelado de la arquitectura con el modelado de los escenarios que la complementan, utilizando la misma herramienta.
+	\subsection{Configuración de Escenarios en AcmeStudio}
+		Actualmente existe una herramienta de creación y edición de arquitecturas modeladas en Acme, llamado
+AcmeStudio\cite{AcmeStudio} la cual se encuentra integrada en la popular herramienta de desarrollo Eclipse\cite{Eclipse}
+como un \emph{plug-in}.
 
-\subsection{Optimización en la Selección de la Estrategia}
+		Se propone como trabajo a futuro extender la herramienta AcmeStudio para que dé soporte a las extensiones propuestas
+en el presente trabajo, permitiendo así la integración del modelado de la arquitectura con el modelado de los escenarios
+que la complementan, utilizando la misma herramienta.
 
-\todo{Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function'' es limitado)}
+	\subsection{Optimización en la Selección de la Estrategia}
+		\todo{Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function'' es limitado)}
 
-\subsection{\todo{Puntas sueltas:}}
-
-
-\begin{itemize}
-	\item Mi idea original de usar para algo los ``artifacts'' vinculados al escenario
-	\item Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar e.g. alta carga y super alta carga).
-	\item No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas por fuera). Por ejemplo: usamos la tablita de las utility functions.
-	\item{Ni Rainbow bi Arco Iris permiten cambair en runtime la configuracion}
-	\item{Permitir agregar concerns nuevos}
-	\item{leer los artifacts y sus properties desde el .ACME}
-	\item{agregar mas tipos de constraints}
-\end{itemize}
+	\subsection{\todo{Puntas sueltas:}}
+		\begin{itemize}
+			\item Mi idea original de usar para algo los ``artifacts'' vinculados al escenario
+			\item Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden
+solapar		e.g. alta carga y super alta carga).
+			\item No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas
+		por fuera). Por ejemplo: usamos la tablita de las utility functions.
+			\item{Ni Rainbow bi Arco Iris permiten cambair en runtime la configuracion}
+			\item{Permitir agregar concerns nuevos}
+			\item{leer los artifacts y sus properties desde el .ACME}
+			\item{agregar mas tipos de constraints}
+		\end{itemize}
