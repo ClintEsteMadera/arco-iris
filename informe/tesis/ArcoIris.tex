@@ -1,25 +1,37 @@
 \section{Extensión a Rainbow: Arco Iris}
 	\todo{JONY: Copy paste del Capítulo 3 de la propuesta. REVISARLO!!}
-	
+
 	\todo{JONY: Explicación de lo que hicimos con mas detalle (funcional).}
-	
-	\todo{JONY: Explicar concepto de Utility Function.}
-	
+
 	\todo{JONY: Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
 
 	\subsection{Idea Básica}
-		La idea de esta tesis es extender el \emph{framework} ``Rainbow'' para poder lograr una implementación más flexible y con con mayor capacidad expresiva del mecanismo de auto reparación, con el objetivo de proveer mayor visibilidad a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiendoles así involucrarse en la definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo. La solución intenta involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto-reparación del sistema cuando uno de los escenarios no se cumple.
-			
-		Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en que Rainbow trabaja hoy en día. A continuación, se detallan los cambios propuestos.
-	
+		La idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder lograr un mecanismo de auto
+reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor visibilidad a los
+\emph{stakeholders} de la aplicación sobre dicho proceso, permitiendoles así involucrarse en la definición de escenarios
+de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo. La solución intenta
+involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a considerar en la
+auto-reparación del sistema cuando uno de los escenarios no se cumple.
+
+		Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en que Rainbow
+trabaja hoy en día. A continuación, se detallan los cambios propuestos.
+
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
-		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de arquitectura expresado en \textbf{Acme}. Uno de los objetivos de Arco Iris es extender el conocimiento que el framework de reparación tiene sobre el sistema en general. Obviamente toda esta información será necesaria por Arco Iris en tiempo de ejecución.
-	
-		Básicamente incluimos información sobre los atributos de calidad que la arquitectura implementa y que son relevantes para los \emph{stakeholders} del sistema en tiempo de ejecución. Por ejemplo, poder describir la importancia (relativa) de la \emph{performance}, la usabilidad, la disponibilidad, etc.
-	
-		Nuestro enfoque para lograr esto consiste en especificar \textbf{Escenarios de Atributos de Calidad}\cite{Scenarios} (de ahora en más, simplemente ``Escenarios''), tal cual fueron descriptos anteriormente, aunque con algunos agregados de información orientados a la auto reparación.
-	
-		Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de una manera esperada. Los escenarios están compuestos por la siguiente información:
+		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de
+arquitectura expresado en el lenguaje de descripciíon de arquitecturas \textbf{Acme}. Uno de los objetivos de Arco Iris
+es extender el conocimiento que el framework de reparación tiene sobre el sistema en general. Obviamente toda esta
+información será necesaria por Arco Iris en tiempo de ejecución.
+
+		Básicamente incluimos información sobre los atributos de calidad que la arquitectura implementa y que son
+relevantes para los \emph{stakeholders} del sistema en tiempo de ejecución. Por ejemplo, poder describir la importancia
+(relativa) de la \emph{performance}, la usabilidad, la disponibilidad, etc.
+
+		Nuestro enfoque para lograr esto consiste en especificar \textbf{Escenarios de Atributos de
+Calidad}\cite{Scenarios} (de ahora en más, simplemente ``Escenarios''), tal cual fueron descriptos anteriormente, aunque
+con algunos agregados de información orientados a la auto reparación.
+
+		Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de
+una manera esperada. Los escenarios están compuestos por la siguiente información:
 		\begin{itemize}
 		    \item Fuente del Estímulo
 		    \item Estímulo
@@ -28,34 +40,76 @@
 		    \item Respuesta
 		    \item Cuantificación de la Respuesta
 		\end{itemize}
-			
-		\indent De todos estos atributos, son particularmente importantes el \textbf{Estímulo}, \textbf{Artefacto}, el \textbf{Entorno} y la \textbf{Cuantificación de la Respuesta}.
-					
+
+		\indent De todos estos atributos, son particularmente importantes el \textbf{Estímulo}, \textbf{Artefacto},
+el \textbf{Entorno} y la \textbf{Cuantificación de la Respuesta}.
+
 		\subsubsection{El Estímulo en la Auto Reparación}
-			El \textbf{Estímulo} normalmente se asocia a un evento desencadenado sobre el sistema. Este evento es el disparador que da origen a todo el escenario, es el punto de entrada. Saber cual es el estímulo de cada escenario permite optimizar la autoreparación, ya que dado determinado estímulo, sabremos cuales son los potenciales escenarios que pueden verse afectados, entonces la auto reparación verificará dicho subconjunto de escenarios, evitando así verificaciones innecesarias.
-					
+			El \textbf{Estímulo} normalmente se asocia a un evento desencadenado sobre el sistema. Este evento es el
+disparador que da origen a todo el escenario, es el punto de entrada. Saber cual es el estímulo de cada escenario
+permite optimizar la autoreparación, ya que dado determinado estímulo, sabremos cuales son los potenciales escenarios
+que pueden verse afectados, entonces la auto reparación verificará dicho subconjunto de escenarios, evitando así
+verificaciones innecesarias.
+
 		\subsubsection{El Artefacto en la Auto Reparación}
-			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que en Acme se especifican los componentes y los conectores del sistema, el escenario tendrá entonces una vinculación directa en la especificación con los componentes afectados. El artefacto seleccionado acotará las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la Respuesta}.
+			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario.
+Dado que en Acme se especifican los componentes y los conectores del sistema, el escenario tendrá entonces una
+vinculación directa en la especificación con los componentes afectados. El artefacto seleccionado acotará las
+propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la Respuesta}.
 
 		\subsubsection{El Entorno en la Auto Reparación}
-			El \textbf{Entorno} condiciona la validez del escenario en cuestión a que el sistema se encuentre en un determinado estado. Por ejemplo, se especifica un escenario dónde se dice como el sistema debe responder ante un \emph{request} de determinado tipo en un entorno de alta carga. Esto también reduce la búsqueda de escenarios rotos, ya que se ignorarán escenarios cuyo entorno no se corresponda con el entorno actual del sistema. También se da la posibilidad de que el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto puede ser muy útil para casos más genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el usuario nunca sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando.
+			El \textbf{Entorno} condiciona la validez del escenario en cuestión a que el sistema se encuentre en un
+determinado estado. Por ejemplo, se especifica un escenario dónde se dice como el sistema debe responder ante un
+\emph{request} de determinado tipo en un entorno de alta carga. Esto también reduce la búsqueda de escenarios rotos, ya
+que se ignorarán escenarios cuyo entorno no se corresponda con el entorno actual del sistema. También se da la
+posibilidad de que el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto
+puede ser muy útil para casos más genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el
+usuario nunca sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando.
 
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
-			La \textbf{Cuantificación de la Respuesta} es también importante ya que de ella surgen las restricciones que deben ser evaluadas para lanzar la auto reparación. Al hacer estos cambios, las restricciones que se usaban anteriormente en Rainbow pasarían a ser en realidad una parte de un Escenario de Atributo de Calidad, dando de esta manera mayor visibilidad a los \emph{stakeholders} de estas restricciones en Rainbow solo conocidas por los arquitectos. Entonces, dadas las condiciones de que el estímulo del escenario haya sido invocado (o cualquier estímulo si así lo determina el escenario), y de que el entorno del escenario aplique al estado actual del sistema, el siguiente paso será evaluar la restricción definida en la cuantificación de la respuesta de cada escenario para ver si el mismo necesita ser reparado o no. Una vez se haya determinado que el sistema requiere ser reparado, se pasará a la siguiente etapa que constará en determinar cuál es la estrategia que deja al escenario en un mejor estado.
-					
+			La \textbf{Cuantificación de la Respuesta} es también importante ya que de ella surgen las restricciones que
+deben ser evaluadas para lanzar la auto reparación. Al hacer estos cambios, las restricciones que se usaban
+anteriormente en Rainbow pasarían a ser en realidad una parte de un Escenario de Atributo de Calidad, dando de esta
+manera mayor visibilidad a los \emph{stakeholders} de estas restricciones en Rainbow solo conocidas por los arquitectos.
+Entonces, dadas las condiciones de que el estímulo del escenario haya sido invocado (o cualquier estímulo si así lo
+determina el escenario), y de que el entorno del escenario aplique al estado actual del sistema, el siguiente paso será
+evaluar la restricción definida en la cuantificación de la respuesta de cada escenario para ver si el mismo necesita ser
+reparado o no. Una vez se haya determinado que el sistema requiere ser reparado, se pasará a la siguiente etapa que
+constará en determinar cuál es la estrategia que deja al escenario en un mejor estado.
+
 	\subsection{Prioridades entre Escenarios}
-		Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto reparación, se tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de modo tal que la estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación considerada más importante para el usuario.
-					
+		Asignar prioridades a estos escenarios, para que a la hora de escoger una estrategia de auto reparación, se
+tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de modo tal que la
+estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación considerada más importante
+para el usuario.
+
 	\subsection{Estrategias y su Relación con los Escenarios}
-		Asociar las estrategias de reparación a los escenarios. Por ejemplo, un escenario podría incluir información del estilo ``Si este escenario se ve comprometido, implementar tal reparación''. Esto agrega la ventaja de que ahora, gracias a los escenarios, los problemas y sus posibles soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Dichas estrategias (serían más de una, ordenadas por prioridad al igual que los escenarios) poseen la información necesaria para permitir simular su aplicación y estimar cómo quedaría el sistema luego de haber aplicado dicha estrategia. (estimación de la nueva ``utilidad del sistema''). Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o no de los escenarios requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de la estrategia simulada.
+		Asociar las estrategias de reparación a los escenarios. Por ejemplo, un escenario podría incluir información del
+estilo ``Si este escenario se ve comprometido, implementar tal reparación''. Esto agrega la ventaja de que ahora,
+gracias a los escenarios, los problemas y sus posibles soluciones (i.e. estrategias de reparación), pueden ser visibles
+a los usuarios y stakeholders de la aplicación. Dichas estrategias (serían más de una, ordenadas por prioridad al igual
+que los escenarios) poseen la información necesaria para permitir simular su aplicación y estimar cómo quedaría el
+sistema luego de haber aplicado dicha estrategia. (estimación de la nueva ``utilidad del sistema''). Cabe aclarar que la
+``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o no de los escenarios requeridos por
+los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de la estrategia simulada.
 
 	\subsection{Detección: cuando activar el mecanismo de auto reparación}
-		Debido a que, con este nuevo enfoque, todo pasa por el concepto de escenario, es necesario establecer cambios en la lógica aplicada por el \emph{framework} para detectar que es momento de intentar auto-reparar el sistema (i.e. evaluar restricciones o invariantes del mismo). Dichas restricciones ya no estarían más embebidas en los componentes de la arquitectura (modelados con ACME) sino que las \emph{constraints} a evaluar serían aquellas presentes en la cuantificación de la respuesta de cada escenario.
-		
-		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en ACME) e invoca finalmente al \textbf{Evaluador de Restricciones} para que busque aquellos escenarios que posean al estímulo ejecutado y que estén definidos para el \textbf{Entorno} de ejecución actual y que las restricciones asociadas a sus \textbf{Cuantificaciones de Respuesta} no se cumplan. Aquellos escenarios que cumplan dichas condiciones serán aquellos escenarios que el Manejador de Reparaciones deberá intentar reparar.
+		Debido a que, con este nuevo enfoque, todo pasa por el concepto de escenario, es necesario establecer cambios en
+la lógica aplicada por el \emph{framework} para detectar que es momento de intentar auto-reparar el sistema (i.e.
+evaluar restricciones o invariantes del mismo). Dichas restricciones ya no estarían más embebidas en los componentes de
+la arquitectura (modelados con ACME) sino que las \emph{constraints} a evaluar serían aquellas presentes en la
+cuantificación de la respuesta de cada escenario.
+
+		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta
+situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en
+ACME) e invoca finalmente al \textbf{Evaluador de Restricciones} para que busque aquellos escenarios que posean al
+estímulo ejecutado y que estén definidos para el \textbf{Entorno} de ejecución actual y que las restricciones asociadas
+a sus \textbf{Cuantificaciones de Respuesta} no se cumplan. Aquellos escenarios que cumplan dichas condiciones serán
+aquellos escenarios que el Manejador de Reparaciones deberá intentar reparar.
 
 	\subsection{Selección de estrategia a aplicar}
-    La modificación en la elección de la estrategia para reparar el sistema se modificará para que utilice el conocimiento plasmado en los escenarios para optar por la estrategia de reparación a aplicar, teniendo en cuenta:
+    La modificación en la elección de la estrategia para reparar el sistema se modificará para que utilice el
+conocimiento plasmado en los escenarios para optar por la estrategia de reparación a aplicar, teniendo en cuenta:
     \begin{itemize}
 			\item el estado del sistema actual,
 			\item el atributo de calidad asociado al escenario,
@@ -63,26 +117,52 @@
 			\item las prioridades relativas de los escenarios y
 			\item la prioridad relativa de la estrategia
 		\end{itemize}
-		El objetivo final es, además de reparar el inconveniente hallado, evitar perjudicar algún otro escenario de mayor prioridad y mediante el uso de heurísticas, poder aproximar la mejor estrategia de reparación a llevar a cabo de modo que la \emph{utilidad del sistema} se maximize.
+		El objetivo final es, además de reparar el inconveniente hallado, evitar perjudicar algún otro escenario de
+mayor prioridad y mediante el uso de heurísticas, poder aproximar la mejor estrategia de reparación a llevar a cabo de
+modo que la \emph{utilidad del sistema} se maximize.
 
 	\subsection{Eliminación de limitaciones}
-		En la implementación actual de Rainbow, la cantidad de restricciones evaluada es fija. En nuestra versión, los stakeholders podrán cargar una cantidad ilimitada de escenarios y cambiar prioridades relativas y posibles estrategias de reparación. Esto hará que sólo el sistema pueda evaluar correctamente todos los factores a tener en cuenta al momento de aplicar la auto reparación.
-		
+		En la implementación actual de Rainbow, la cantidad de restricciones evaluada es fija. En nuestra versión, los
+stakeholders podrán cargar una cantidad ilimitada de escenarios y cambiar prioridades relativas y posibles estrategias
+de reparación. Esto hará que sólo el sistema pueda evaluar correctamente todos los factores a tener en cuenta al momento
+de aplicar la auto reparación.
+
 		\begin{sidewaystable}
 			\begin{center}
 					\footnotesize{
 					\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
 					\begin{tabularx}{\textwidth}{|X|X|X|X|}
 						\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en Arco Iris} & \textbf{Ventajas}\\
-						Información sobre restricciones & Las restricciones son guardadas en el modelo de la arquitectura (expresado en \mbox{ACME}) & Los \mbox{\emph{stakeholders}} usan una interfaz visual para expresar restricciones del sistema en formato de escenarios de QAW. Esa información es analizada por Rainbow para tomar decisiones sobre las auto-reparaciones a realizar. & Las res\-tri\-ccio\-nes pue\-den ser a\-gre\-ga\-das y/o editadas dinámicamente y de una manera simplificada para los \emph{stakeholders}.\\
-						Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de calidad no tiene un modelado específico en Rainbow. Sí está presente en Znn, y son llamados llamados ``Quality Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los atributos suman 1) & Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de ATAM. Un escenario puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que nuestra extensión a Rainbow deberá hacer al momento de escoger una estrategia de reparación. & Los \emph{stakeholders} tienen la posibilidad de cambiar esta información dinámicamente y consecuentemente, afectar la manera en que el \emph{framework} opera.\\
-						Decisiones sobre que reparaciones realizar & Las reparaciones a realizar también se encuentran en archivos de configuración & El sistema evalúa los escenarios cargados y como se afectan entre ellos. Luego invoca a un módulo que decide qué reparaciones pueden llevarse a cabo de acuerdo a las restricciones. & Dicho módulo puede ser extendido para incluír complejas heurísticas que aprendan de los efectos de reparaciones pasadas y puedan así mejorar los resultados.\\
-						Entorno de ejecución (e.g. Alta Carga)& El entorno de ejecución es estáticamente configurado en un archivo de configuración y no se modifica de acuerdo al estado dinámico del sistema que se intenta reparar. Para modificar tal estático y limitado valor, es necesario el reinicio de Rainbow. & El modelo de nuestra extensión a Rainbow permite al usuario especificar distintos entornos de ejecución, los cuales tienen restricciones asociadas que se chequean continuamente y que, de cumplirse, hacen que el sistema automáticamente se considere que está en otro entorno de ejecución, afectando al algoritmo de decisión de estrategias de reparación. & Lo antedicho, agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación del sistema en \emph{runtime}.
+						Información sobre restricciones & Las restricciones son guardadas en el modelo de la
+arquitectura (expresado en \mbox{ACME}) & Los \mbox{\emph{stakeholders}} usan una interfaz visual para expresar
+restricciones del sistema en formato de escenarios de QAW. Esa información es analizada por Rainbow para tomar
+decisiones sobre las auto-reparaciones a realizar. & Las res\-tri\-ccio\-nes pue\-den ser a\-gre\-ga\-das y/o editadas
+dinámicamente y de una manera simplificada para los \emph{stakeholders}.\\
+						Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de
+atributo de calidad no tiene un modelado específico en Rainbow. Sí está presente en Znn, y son llamados llamados
+``Quality Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los
+atributos suman 1) & Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de
+ATAM. Un escenario puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que nuestra extensión a
+Rainbow deberá hacer al momento de escoger una estrategia de reparación. & Los \emph{stakeholders} tienen la posibilidad
+de cambiar esta información dinámicamente y consecuentemente, afectar la manera en que el \emph{framework} opera.\\
+						Decisiones sobre que reparaciones realizar & Las reparaciones a realizar también se encuentran
+en archivos de configuración & El sistema evalúa los escenarios cargados y como se afectan entre ellos. Luego invoca a
+un módulo que decide qué reparaciones pueden llevarse a cabo de acuerdo a las restricciones. & Dicho módulo puede ser
+extendido para incluír complejas heurísticas que aprendan de los efectos de reparaciones pasadas y puedan así mejorar
+los resultados.\\
+						Entorno de ejecución (e.g. Alta Carga)& El entorno de ejecución es estáticamente configurado en
+un archivo de configuración y no se modifica de acuerdo al estado dinámico del sistema que se intenta reparar. Para
+modificar tal estático y limitado valor, es necesario el reinicio de Rainbow. & El modelo de nuestra extensión a Rainbow
+permite al usuario especificar distintos entornos de ejecución, los cuales tienen restricciones asociadas que se
+chequean continuamente y que, de cumplirse, hacen que el sistema automáticamente se considere que está en otro entorno
+de ejecución, afectando al algoritmo de decisión de estrategias de reparación. & Lo antedicho, agrega una nueva arista a
+las variables consideradas al momento de elegir la mejor estrategia de reparación, aumentando las probabilidades de que
+la estrategia seleccionada sea más precisa de acuerdo a la situación del sistema en \emph{runtime}.
 					\end{tabularx}
 					}
 			\end{center}
 		\end{sidewaystable}
-	
+
 	\subsection{Resúmen}
 		En resumidas palabras, el alcance del trabajo consiste en:
 		\begin{itemize}
@@ -90,14 +170,27 @@
 				\begin{itemize}
 	          \item Posibilidad de modelar escenarios de atributos de calidad siguiendo los principios de ATAM y QAW.
 	          \item Posibilidad de relacionar escenarios con componentes de la arquitectura.
-	          \item Posibilidad de especificar prioridades relativas entre escenarios, a ser utilizadas en la elección de la estrategia de reparación a ejecutar.
+	          \item Posibilidad de especificar prioridades relativas entre escenarios, a ser utilizadas en la elección
+de la estrategia de reparación a ejecutar.
 	          \item Posibilidad de modelar estrategias de reparación y asociarlas a escenarios.
-	          \item Posibilidad de definir Entornos de ejecución para el sistema, los cuales tengan un papel clave en el algoritmo de elección de estrategias de reparación.
-				\end{itemize}          
-	    \item Proponer los cambios en el \emph{Manejador de Reparaciones} y el \emph{Evaluador de Restricciones} de Rainbow, e implementar algunos casos prácticos que permitan mostrar cómo esta estrategia puede funcionar y llevar a un framework de adaptación más flexible y poderoso.
-			\item Evaluar la factibilidad de que esta nueva versión extendida de Rainbow sea compatible con la original, es decir que idealmente cualquier usuario que ya posea Rainbow funcionando en su sistema podría incorporar estas extensiones sin tener que modificar la configuración actual.
+	          \item Posibilidad de definir Entornos de ejecución para el sistema, los cuales tengan un papel clave en el
+algoritmo de elección de estrategias de reparación.
+				\end{itemize}
+	    \item Proponer los cambios en el \emph{Manejador de Reparaciones} y el \emph{Evaluador de Restricciones} de
+Rainbow, e implementar algunos casos prácticos que permitan mostrar cómo esta estrategia puede funcionar y llevar a un
+framework de adaptación más flexible y poderoso.
+			\item Evaluar la factibilidad de que esta nueva versión extendida de Rainbow sea compatible con la original,
+es decir que idealmente cualquier usuario que ya posea Rainbow funcionando en su sistema podría incorporar estas
+extensiones sin tener que modificar la configuración actual.
 		\end{itemize}
-				
-		Todo lo antedicho tiene como consecuencia que los usuarios tendrán más herramientas para influir sobre lo que el sistema decida hacer para auto-repararse: sólo con modificar la información de los escenarios el sistema modificará su comportamiento. Como contrapartida, las extensiones propuestas en este trabajo hacen que el sistema se comporte de manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el procedimiento de auto-reparación se vuelve más complejo, complicando el seguimiento de las decisiones tomadas por el \emph{framework}.
-		
-		Por otro lado, luego de la extensión, muchos aspectos del \emph{framework} de auto-reparación serán más automáticos y no estarán tan fijos como lo están actualmente en Rainbow. Asimismo, se agregan nuevos conceptos que amplían la participación y visibilidad de los usuarios, lo que conlleva múltiples beneficios asociados.
+
+		Todo lo antedicho tiene como consecuencia que los usuarios tendrán más herramientas para influir sobre lo que el
+sistema decida hacer para auto-repararse: sólo con modificar la información de los escenarios el sistema modificará su
+comportamiento. Como contrapartida, las extensiones propuestas en este trabajo hacen que el sistema se comporte de
+manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el
+procedimiento de auto-reparación se vuelve más complejo, complicando el seguimiento de las decisiones tomadas por el
+\emph{framework}.
+
+		Por otro lado, luego de la extensión, muchos aspectos del \emph{framework} de auto-reparación serán más
+automáticos y no estarán tan fijos como lo están actualmente en Rainbow. Asimismo, se agregan nuevos conceptos que
+amplían la participación y visibilidad de los usuarios, lo que conlleva múltiples beneficios asociados.
