@@ -1,129 +1,167 @@
-\section{Casos Prácticos}\label{CasoPracticoSection}
+\section{Casos Prácticos}
+	\label{sec:casosPracticos}
 
-	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la simulación presentada en Znn.
+	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la
+simulación presentada en Znn.
 
-	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido (e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio óptimo según los requerimientos planteados.
-	
+	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de
+servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido
+(e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos
+permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio
+óptimo según los requerimientos planteados.
+
 	\subsection{Arquitectura del Sistema}
+		La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos
+no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
+los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A
+continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
 
-	La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
+		\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
 
-	\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
+		Puede verse el código fuente de la arquitectura en la sección \ref{sec:arquitecturaZNN}.
 
-	Puede verse el código fuente de la arquitectura en la sección \ref{arquitecturaZNN}.
+		Existen 3 \emph{concerns} en la arquitectura, a saber:
+		\begin{itemize}
+			\item Tiempo de Respuesta
+			\item Fidelidad
+			\item Costo
+		\end{itemize}
 
-	Existen 3 \emph{concerns} en la arquitectura, a saber:
-	\begin{itemize}
-		\item Tiempo de Respuesta
-		\item Fidelidad
-		\item Costo
-	\end{itemize}
-	
-	Las tácticas que nos permitirán modificar el comportamiento del sistema en ejecución serán:
-	\begin{itemize}
-		\item Dar de alta un servidor
-		\item Dar de baja un servidor
-		\item Aumentar la fidelidad de la información
-		\item Reducir la fidelidad de la información
-	\end{itemize}
-	
-	Para que todas estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, que serán invocados desde las tácticas implementadas en Stitch, y serán los que efectuarán el cambio propiamente dicho sobre la arquitectura del sistema. Puede verse las tácticas implementadas para Znn en la sección \ref{tacticasZNN}.
-	
-	Antes de comenzar, cabe aclarar que si bien deberíamos configurar los pesos de cada uno de los tres \emph{concerns} mencionados anteriormente, a los efectos prácticos de este ejemplo los ignoraremos, pero lo que en realidad estará sucediendo en la simulación es que todos los \emph{concerns} tienen el mismo peso. Esto nos permitirá poder concentrarnos en las prioridades entre escenarios a la hora de escoger la estrategia candidata a reparar el sistema, simplificando así los cálculos, lo que nos permitirá comprender más fácilmente los resultados.
+		Las tácticas que nos permitirán modificar el comportamiento del sistema en ejecución serán:
+		\begin{itemize}
+			\item Dar de alta un servidor
+			\item Dar de baja un servidor
+			\item Aumentar la fidelidad de la información
+			\item Reducir la fidelidad de la información
+		\end{itemize}
+
+		Para que todas estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, que serán
+	invocados desde las tácticas implementadas en Stitch, y serán los que efectuarán el cambio propiamente dicho sobre la
+	arquitectura del sistema. Puede verse las tácticas implementadas para Znn en la sección \ref{sec:tacticasZNN}.
+
+		Antes de comenzar, cabe aclarar que si bien deberíamos configurar los pesos de cada uno de los tres \emph{concerns}
+	mencionados anteriormente, a los efectos prácticos de este ejemplo los ignoraremos, pero lo que en realidad estará
+	sucediendo en la simulación es que todos los \emph{concerns} tienen el mismo peso. Esto nos permitirá poder
+	concentrarnos en las prioridades entre escenarios a la hora de escoger la estrategia candidata a reparar el sistema,
+	simplificando así los cálculos, lo que nos permitirá comprender más fácilmente los resultados.
 
 	\subsection{Comportamiento del Sistema sin Auto Reparación}
-	
-	Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá evaluar la variación de comportamiento al ir agregando escenarios y estrategias.
-	Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario y el costo de servidores del sistema, que en este caso reflejará simplemente la cantidad de servidores levantados con que cuenta el sistema en cada momento.
-	
-	Entonces, el comportamiento del sistema sin escenarios, es decir, sin auto reparación será el siguiente:
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime.png}
-	\end{center}
-	
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_1_cost.png}
-	\end{center}
+		Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá
+evaluar la variación de comportamiento al ir agregando escenarios y estrategias.
 
-	Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se allí hasta los 30 segundos, luego el mismo va bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de los servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a ninguna acción propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el ancho de banda de cada uno de sus clientes.
+		Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario
+y el costo de servidores del sistema, que en este caso reflejará simplemente la cantidad de servidores levantados con
+que cuenta el sistema en cada momento.
+
+		Entonces, el comportamiento del sistema sin escenarios, es decir, sin auto reparación será el siguiente:
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime.png}
+		\end{center}
+
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_1_cost.png}
+		\end{center}
+
+		Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se allí hasta los 30
+segundos, luego el mismo va bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de los
+servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó siempre
+con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a ninguna acción
+propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el ancho de banda de
+cada uno de sus clientes.
 
 	\subsection{Comportamiento del Sistema con un único Escenario}
-	
-	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600ms para el tiempo de respuesta experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar. A continuación se muestra el detalle del escenario creado:
+		Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer
+escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600ms para el tiempo de respuesta
+experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará
+que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar. A
+continuación se muestra el detalle del escenario creado:
 
-	\todo{Refrescar todos los screenshots de la GUI (al final!)}
+		\todo{Refrescar todos los screenshots de la GUI (al final!)}
 
-	\begin{center}
-		\includegraphics[width=0.80\textwidth]{images/scenario_expRespTime.png}
-	\end{center}
-	
-	En la sección \ref{scenarioExpRespTimeXML} podemos ver la representación de este escenario en XML.
-	
-	Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico será el mismo que el del caso anterior, salvo que permite observar en qué momento se supera el umbral determinado para el tiempo de respuesta:
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{images/scenario_expRespTime.png}
+		\end{center}
 
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime_threshold.png}
-	\end{center}
-	
-	\todo{Mostramos log o lo ponemos en el Apendice???}
-	
+		En la sección \ref{scenarioExpRespTimeXML} podemos ver la representación de este escenario en XML.
+
+		Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico será el mismo
+	que el del caso anterior, salvo que permite observar en qué momento se supera el umbral determinado para el tiempo de
+	respuesta:
+
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime_threshold.png}
+		\end{center}
+
+		\todo{Mostramos log o lo ponemos en el Apendice???}
+
 	\subsection{Comportamiento del Sistema con un único Escenario y una única Estrategia}
+		El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La
+misma consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia,
+definida en Stitch, será la siguiente:
 
-	El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia, definida en Stitch, será la siguiente:
-	
-	\begin{verbatim}	
-		strategy EnlistServersResponseTime
-		[ styleApplies ] {
-		  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
-		    t1: (!RESP_TIME_STILL_BROKEN) -> done;
-		    t2: (default) -> TNULL;
-		  }
-		}
-	\end{verbatim}
+		\begin{verbatim}
+			strategy EnlistServersResponseTime
+			[ styleApplies ] {
+				t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+					t1: (!RESP_TIME_STILL_BROKEN) -> done;
+					t2: (default) -> TNULL;
+				}
+			}
+		\end{verbatim}
 
-	Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi instantáneamente, como podemos ver en el siguiente gráfico:
+		Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi
+	instantáneamente, como podemos ver en el siguiente gráfico:
 
-	
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_2_expRespTime.png}
-	\end{center}
 
-	Desde ya que este comportamiento se debe a la aplicación de la estrategia, el siguiente gráfico nos muestra cómo varía el costo de servidores al aplicarse la estrategia, simultáneamente con la mejora del tiempo de respuesta:
-	
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_2_cost.png}
-	\end{center}
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_2_expRespTime.png}
+		\end{center}
 
-	En resumen, lo que hemos visto hasta aquí consiste en:
-	\begin{enumerate}
-		\item Comportamiento del sistema sin ninguna información de auto reparación.
-		\item Comportamiento del sistema con un escenario definido pero sin estrategias que lo puedan reparar.
-		\item Comportamiento del sistema con un escenario definido y con una estrategia que lo repara.
-	\end{enumerate}
-	
+		Desde ya que este comportamiento se debe a la aplicación de la estrategia, el siguiente gráfico nos muestra cómo
+	varía el costo de servidores al aplicarse la estrategia, simultáneamente con la mejora del tiempo de respuesta:
+
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_2_cost.png}
+		\end{center}
+
+		En resumen, lo que hemos visto hasta aquí consiste en:
+		\begin{enumerate}
+			\item Comportamiento del sistema sin ninguna información de auto reparación.
+			\item Comportamiento del sistema con un escenario definido pero sin estrategias que lo puedan reparar.
+			\item Comportamiento del sistema con un escenario definido y con una estrategia que lo repara.
+		\end{enumerate}
+
 	\subsection{Tradeoff entre Estrategias}
+		Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento
+las condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto reparación.
+Esto hace que el escenario de tiempo de respuesta se siga cumpliendo, pero observemos que el sistema sigue funcionando
+con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno
+solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya
+restricción consistirá en que no exista más de un servidor levantado. El escenario que crearemos será el siguiente:
 
-	Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento las condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto reparación. Esto hace que el escenario de tiempo de respuesta se siga cumpliendo, pero observemos que el sistema sigue funcionando con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya restricción consistirá en que no exista más de un servidor levantado. El escenario que crearemos será el siguiente:
-	
-	\begin{center}
-		\includegraphics[width=0.80\textwidth]{images/scenario_cost.png}
-	\end{center}
-	
-	En la sección \ref{scenarioCostXML} podemos ver la representación de este escenario en XML.
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{images/scenario_cost.png}
+		\end{center}
 
+		En la sección \ref{sec:scenarioCostXML} podemos ver la representación de este escenario en XML.
 
-	Recordemos que el escenario de tiempo de respuesta es el primero en romperse, y que para ser corregido debe levantarse un servidor pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería ocurrir. ¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de los escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en detrimento del escenario del costo de servidores.
-	
-	Una vez reparado el tiempo de respuesta el escenario del costo quedará roto, pero la auto reparación no intentará repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de reparar el escenario de costo. Esto hará que recién se repare dicho escenario cuando esta reparación no rompa el escenario de tiempo de respuesta.
-	
-	\todo{comentar gráficos de auto reparación con 2 estrategias en puja}
-	
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_3_expRespTime.png}
-	\end{center}
-	
-	\begin{center}
-		\includegraphics[width=1.00\textwidth]{images/testcase1_3_cost.png}
-	\end{center}
-	
-	
+		Recordemos que el escenario de tiempo de respuesta es el primero en romperse, y que para ser corregido debe
+levantarse un servidor pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería ocurrir.
+¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de los escenarios:
+nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en detrimento del
+escenario del costo de servidores.
+
+		Una vez reparado el tiempo de respuesta el escenario del costo quedará roto, pero la auto reparación no intentará
+repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de reparar el
+escenario de costo. Esto hará que recién se repare dicho escenario cuando esta reparación no rompa el escenario de
+tiempo de respuesta.
+
+		\todo{comentar gráficos de auto reparación con 2 estrategias en puja}
+
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_3_expRespTime.png}
+		\end{center}
+
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/testcase1_3_cost.png}
+		\end{center}
