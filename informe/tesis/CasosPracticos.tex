@@ -8,7 +8,7 @@
 
 	La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
 
-	\todo{TURCO: eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
+	\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
 
 	Puede verse el código fuente de la arquitectura en la sección \ref{arquitecturaZNN}.
 
@@ -51,7 +51,7 @@
 	
 	Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600ms para el tiempo de respuesta experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar. A continuación se muestra el detalle del escenario creado:
 
-	\todo{TURCO: Refrescar todos los screenshots de la GUI (al final!)}
+	\todo{Refrescar todos los screenshots de la GUI (al final!)}
 
 	\begin{center}
 		\includegraphics[width=0.80\textwidth]{images/scenario_expRespTime.png}
@@ -65,7 +65,7 @@
 		\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime_threshold.png}
 	\end{center}
 	
-	\todo{JONY/TURCO: Mostramos log o lo ponemos en el Apendice???}
+	\todo{Mostramos log o lo ponemos en el Apendice???}
 	
 	\subsection{Comportamiento del Sistema con un único Escenario y una única Estrategia}
 
@@ -116,7 +116,7 @@
 	
 	Una vez reparado el tiempo de respuesta el escenario del costo quedará roto, pero la auto reparación no intentará repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de reparar el escenario de costo. Esto hará que recién se repare dicho escenario cuando esta reparación no rompa el escenario de tiempo de respuesta.
 	
-	\todo{TURCO: comentar gráficos de auto reparación con 2 estrategias en puja}
+	\todo{comentar gráficos de auto reparación con 2 estrategias en puja}
 	
 	\begin{center}
 		\includegraphics[width=1.00\textwidth]{images/testcase1_3_expRespTime.png}
