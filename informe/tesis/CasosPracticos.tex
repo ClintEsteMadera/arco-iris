@@ -145,11 +145,11 @@ restricción consistirá en que no exista más de un servidor levantado. El escenar
 
 		En la sección \ref{sec:scenarioCostXML} podemos ver la representación de este escenario en XML.
 
-		Recordemos que el escenario de tiempo de respuesta es el primero en romperse, y que para que sea corregido debe
-levantarse un servidor pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería ocurrir.
-¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de los escenarios:
-nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en detrimento del
-escenario del costo de servidores.
+		Recordemos que el escenario de tiempo de respuesta es el primero que deja de cumplirse, y que para que sea 
+corregido debe levantarse un servidor, pero esto es justamente lo que acabamos de definir en el nuevo escenario que no 
+debería ocurrir. ¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de 
+los escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en 
+detrimento del escenario del costo de servidores.
 
 		Una vez reparado el tiempo de respuesta, el escenario del costo quedará roto, pero la auto reparación no intentará
 repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de reparar el
