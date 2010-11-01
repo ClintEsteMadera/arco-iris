@@ -11,10 +11,10 @@ permiten, mediante la auto reparación, alterar el comportamiento del sistema par
 óptimo según los requerimientos planteados.
 
 	\subsection{Arquitectura del Sistema}
-		La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. 
-Éstos no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las 
-peticiones de los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los 
-mismos. A continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
+		La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos
+no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
+los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A
+continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
 
 		\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
 
@@ -36,14 +36,14 @@ mismos. A continuación mostramos una imagen de la arquitectura del sistema tomad
 		\end{itemize}
 
 		Para que todas estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, que serán
-invocados desde las tácticas implementadas en Stitch, y serán los que efectuarán el cambio propiamente dicho sobre la
-arquitectura del sistema. Puede verse las tácticas implementadas para Znn en la sección \ref{sec:tacticasZNN}.
+	invocados desde las tácticas implementadas en Stitch, y serán los que efectuarán el cambio propiamente dicho sobre la
+	arquitectura del sistema. Puede verse las tácticas implementadas para Znn en la sección \ref{sec:tacticasZNN}.
 
 		Antes de comenzar, cabe aclarar que si bien deberíamos configurar los pesos de cada uno de los tres \emph{concerns}
-mencionados anteriormente, a los efectos prácticos de este ejemplo los ignoraremos, pero lo que en realidad estará
-sucediendo en la simulación es que todos los \emph{concerns} tienen el mismo peso. Esto nos permitirá poder
-concentrarnos en las prioridades entre escenarios a la hora de escoger la estrategia candidata a reparar el sistema,
-simplificando así los cálculos, lo que nos permitirá comprender más fácilmente los resultados.
+	mencionados anteriormente, a los efectos prácticos de este ejemplo los ignoraremos, pero lo que en realidad estará
+	sucediendo en la simulación es que todos los \emph{concerns} tienen el mismo peso. Esto nos permitirá poder
+	concentrarnos en las prioridades entre escenarios a la hora de escoger la estrategia candidata a reparar el sistema,
+	simplificando así los cálculos, lo que nos permitirá comprender más fácilmente los resultados.
 
 	\subsection{Comportamiento del Sistema sin Auto Reparación}
 		Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá
@@ -100,13 +100,13 @@ misma consistirá simplemente en agregar un servidor, siempre y cuando existan se
 definida en Stitch, será la siguiente:
 
 		\begin{verbatim}
-      strategy EnlistServerResponseTime
-      [ styleApplies ] {
-        t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
-          t1: (!RESP_TIME_STILL_BROKEN) -> done;
-          t2: (default) -> TNULL;
-        }
-      }
+			strategy EnlistServerResponseTime
+			[ styleApplies ] {
+				t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+					t1: (!RESP_TIME_STILL_BROKEN) -> done;
+					t2: (default) -> TNULL;
+				}
+			}
 		\end{verbatim}
 
 		Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi
@@ -146,10 +146,10 @@ restricción consistirá en que no exista más de un servidor levantado. El escenar
 		En la sección \ref{sec:scenarioCostXML} podemos ver la representación de este escenario en XML.
 
 		Recordemos que el escenario de tiempo de respuesta es el primero en romperse, y que para que sea corregido debe
-levantarse un servidor, pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería 
-ocurrir. ¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de los 
-escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en 
-detrimento del escenario del costo de servidores.
+levantarse un servidor pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería ocurrir.
+¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de los escenarios:
+nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en detrimento del
+escenario del costo de servidores.
 
 		Una vez reparado el tiempo de respuesta, el escenario del costo quedará roto, pero la auto reparación no intentará
 repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de reparar el
@@ -169,7 +169,7 @@ solo servidor:
 		
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/testcase1_3_cost.png}
-		\end{center}
+		\end{center}		
 		
 		Esto nos muestra cómo pueden convivir varios escenarios, y cómo Arco Iris sabrá detectar cual será la estrategia
 que le permitirá maximizar la utilidad del sistema gracias a la configuración de escenarios y sus respectivas 
