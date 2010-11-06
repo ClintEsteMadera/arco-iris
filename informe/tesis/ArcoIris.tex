@@ -5,47 +5,47 @@
 	\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
 
 	\subsection{Idea Básica}
-		\todo{Esta sección debería condensar brevemente todo lo que hicimos a nivel implementativo en lugar de volver a
+\todo{Esta sección debería condensar brevemente todo lo que hicimos a nivel implementativo en lugar de volver a
 repetir el chamuyo de la visibilidad de los stakeholders que ya lo dijimos antes. Una cosa así:\\
-		Basicamente incorporamos la idea de Escenario de ATAM, con algunas extensiones orientadas al self healing, luego se
+Basicamente incorporamos la idea de Escenario de ATAM, con algunas extensiones orientadas al self healing, luego se
 codearon distintos componentes que extienden a los definidos por Rainbow para que tomen esta información y decidan cual
 es la mejor estrategia a ejecutar, considerando trafeoffs entre atributos de calidad, prioridades relativas entre
 escenarios, el entorno de ejecución actual, etc.}
 
-			\todo{\textbf{Cacho de texto cortado de otra sección}: Entonces, dadas las condiciones de que el estímulo del
-escenario haya sido invocado (o cualquier estímulo si
-así lo determina el escenario), y de que el entorno del escenario aplique al estado actual del sistema, el siguiente
-paso será evaluar la restricción definida en la cuantificación de la respuesta de cada escenario para ver si el mismo
-necesita ser reparado o no. Una vez se haya determinado que el sistema requiere ser reparado, se pasará a la siguiente
-etapa que constará en determinar cuál es la estrategia que deja al escenario en un mejor estado.}
+\todo{\textbf{Cacho de texto cortado de otra sección}: Entonces, dadas las condiciones de que el estímulo del escenario
+haya sido invocado (o cualquier estímulo si así lo determina el escenario), y de que el entorno del escenario aplique al
+estado actual del sistema, el siguiente paso será evaluar la restricción definida en la cuantificación de la respuesta
+de cada escenario para ver si el mismo necesita ser reparado o no. Una vez se haya determinado que el sistema requiere
+ser reparado, se pasará a la siguiente etapa que constará en determinar cuál es la estrategia que deja al escenario en
+un mejor estado.}
 
-		La idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder lograr un mecanismo de auto
+La idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder lograr un me\-ca\-nis\-mo de auto
 reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor visibilidad a los
 \emph{stakeholders} de la aplicación sobre dicho proceso, permitiendoles así involucrarse en la definición de escenarios
 de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo. La solución intenta
-involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a considerar en la
-auto reparación del sistema cuando uno de los escenarios no se cumple.
+involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto
+reparación del sistema cuando uno de los escenarios no se cumple.
 
-		Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en que Rainbow
-trabaja hoy en día. A continuación, se detallan los cambios propuestos.
+Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en que Rainbow trabaja hoy en
+día. A continuación, se detallan los cambios propuestos.
 
   \subsection{ATAM para Flexibilizar la Auto Reparación}
-		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de
-arquitectura expresado en el lenguaje de descripción de arquitecturas Acme. Uno de los objetivos de Arco Iris
-es extender el conocimiento que el \emph{framework} tiene sobre el sistema en general. Este nuevo conocimiento
-será utilizado por Arco Iris en tiempo de ejecución.
+Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante su modelo de arquitectura
+expresado en el lenguaje de descripción de arquitecturas Acme. Uno de los objetivos de Arco Iris es extender el
+conocimiento que el \emph{framework} tiene sobre el sistema en general. Este nuevo conocimiento será utilizado por Arco
+Iris en tiempo de ejecución.
 
-		Esencialmente, se incluye información sobre los atributos de calidad que la arquitectura implementa y
-que son relevantes para los \emph{stakeholders} del sistema en tiempo de ejecución. Se permite, por ejemplo, poder
-describir la importancia relativa de la \emph{performance}, la usabilidad, la disponibilidad, etc.; definiendo así una
-serie de \emph{tradeoffs} entre distintos atributos de calidad requeridos por el sistema.
+Esencialmente, se incluye información sobre los atributos de calidad que la arquitectura implementa y que son relevantes
+para los \emph{stakeholders} del sistema en tiempo de ejecución. Se permite, por ejemplo, poder describir la importancia
+relativa de la \emph{performance}, la usabilidad, la disponibilidad, etc.; definiendo así una serie de \emph{tradeoffs}
+entre distintos atributos de calidad requeridos por el sistema.
 
-		El enfoque propuesto para lograr esto consiste en especificar \textbf{Escenarios de Atributos de Calidad}
-\cite{Scenarios} (de ahora en más, simplemente ``Escenarios''), tal cual fueron descriptos anteriormente, aunque
-con algunos agregados de información orientados a la auto reparación.
+El enfoque propuesto para lograr esto consiste en especificar \textbf{Escenarios de Atributos de Calidad}
+\cite{Scenarios} (de ahora en más, simplemente ``Escenarios''), tal cual fueron descriptos anteriormente, aunque con
+algunos agregados de información orientados a la auto reparación.
 
-		Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de
-una manera esperada. Los escenarios contienen la siguiente información:
+Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de una
+manera esperada. Los escenarios contienen la siguiente información:
 		\begin{itemize}
 			\item Fuente del Estímulo
 			\item Estímulo
@@ -221,4 +221,4 @@ la estrategia seleccionada sea más precisa de acuerdo a la situación del sistema
 					\end{tabularx}
 					}
 			\end{center}
-		\end{sidewaystable}
+		\end{sidewaystable}
