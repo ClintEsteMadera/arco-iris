@@ -78,8 +78,8 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 		m_acmeEnv.useTypeChecker(TypeCheckerType.SYNCHRONOUS);
 
 		try { // load Acme model
-			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
-					Rainbow.property(Rainbow.PROPKEY_MODEL_PATH));
+			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
+					.property(Rainbow.PROPKEY_MODEL_PATH));
 			// set the family search path to the directory containing model file
 			m_acmeEnv.setProperty(StandaloneResourceProvider.FAMILY_SEARCH_PATH, modelDir.getParent());
 			String modelPath = modelDir.toString();
@@ -142,7 +142,7 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 		this.updateProperty(type, value);
 		StringBuffer msg = new StringBuffer("Updated property because of stimulus: ");
 		msg.append(stimulus == null ? "NO STIMULUS!" : stimulus);
-		log(Level.INFO, msg.toString());
+		log(Level.DEBUG, msg.toString());
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
 				.adaptationManager();
 		List<SelfHealingScenario> brokenScenarios;
