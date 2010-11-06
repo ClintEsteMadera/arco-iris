@@ -174,40 +174,7 @@ System ZNewsSys : ZNewsFam = {
         Property load = 0.01;
 
     }
-    Component s2 : ServerT, ArchElementT = new ServerT, ArchElementT extended with {
-        Port http0 : HttpPortT, ArchPortT = new HttpPortT, ArchPortT extended with {
 
-            Property isArchEnabled = false;
-
-        }
-
-        Property deploymentLocation = "127.0.0.3";
-
-        Property isArchEnabled = false;
-
-        Property fidelity = 5;
-
-        Property load = 0.99;
-
-        Property cost = 1.0;
-
-    }
-    Component s3 : ServerT, ArchElementT = new ServerT, ArchElementT extended with {
-        Port http0 : HttpPortT, ArchPortT = new HttpPortT, ArchPortT extended with {
-
-        }
-
-        Property deploymentLocation = "127.0.0.4";
-
-        Property isArchEnabled = false;
-
-        Property cost = 1.0;
-
-        Property fidelity = 3;
-
-        Property load = 0.891;
-
-    }
     Component s0 : ServerT, ArchElementT = new ServerT, ArchElementT extended with {
         Port http0 : HttpPortT = new HttpPortT extended with {
 
@@ -351,10 +318,8 @@ System ZNewsSys : ZNewsFam = {
     Attachment lbproxy.http2 to conn1.rec;
     Attachment lbproxy.http1 to conn.rec;
     Attachment c0.p0 to conn0.req;
-    Attachment s2.http0 to proxyconn2.rec;
     Attachment lbproxy.fwd1 to proxyconn1.req;
     Attachment s1.http0 to proxyconn1.rec;
-    Attachment s3.http0 to proxyconn3.rec;
     Attachment lbproxy.fwd3 to proxyconn3.req;
     Attachment lbproxy.fwd2 to proxyconn2.req;
 

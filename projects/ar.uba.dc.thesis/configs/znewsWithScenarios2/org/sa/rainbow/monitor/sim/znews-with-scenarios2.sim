@@ -15,7 +15,7 @@ sim.5 = 60000:sim:terminate
 sim.size = 6
 
 # list the elements on which to explicitly check rules
-elements = ZNewsSys.lbproxy, ZNewsSys.s0, ZNewsSys.s1, ZNewsSys.s2, ZNewsSys.s3, ZNewSys.c0, ZNewSys.c1, ZNewSys.c2, ZNewsSys.conn0, ZNewsSys.conn1, ZNewsSys.conn2, ZNewsSys.proxyconn0, ZNewsSys.proxyconn1
+elements = ZNewsSys.lbproxy, ZNewsSys.s0, ZNewsSys.s1, ZNewSys.c0, ZNewSys.c1, ZNewSys.c2, ZNewsSys.conn0, ZNewsSys.conn1, ZNewsSys.conn2, ZNewsSys.proxyconn0, ZNewsSys.proxyconn1
 #elements.check = ZNewsSys.c0, ZNewsSys.c1, ZNewsSys.c2
 client.count = 3
 server.count = 4
@@ -77,12 +77,5 @@ ZNewsSys.s1.cost = 1.0
 ZNewsSys.s1.fidelity = 5
 ZNewsSys.s1.replication = 1
 ZNewsSys.s1.perf.service.time = 15
-## server 2
-ZNewsSys.s2.isArchEnabled = false
-ZNewsSys.s2.type = ZNewsFam.ServerT
-ZNewsSys.s2.load = 0.01
-ZNewsSys.s2.cost = 1.0
-ZNewsSys.s2.fidelity = 5
-ZNewsSys.s2.replication = 1
-ZNewsSys.s2.perf.service.time = 15
+
 

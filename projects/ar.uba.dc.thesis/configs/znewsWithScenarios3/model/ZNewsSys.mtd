@@ -339,16 +339,6 @@
         </userdata>
       </port>
     </component>
-    <component name="s3">
-      <userdata key="vis-information">
-        <data category="component" rotation="0.0" x="320" y="25"/>
-      </userdata>
-      <port name="http0">
-        <userdata key="vis-information">
-          <data category="port" componentManaged="false" relPosX="-37" relPosY="25" rotation="0.0" x="283" y="50"/>
-        </userdata>
-      </port>
-    </component>
     <component name="s0">
       <userdata key="vis-information">
         <data category="component" height="50" rotation="0.0" width="80" x="85" y="215"/>
