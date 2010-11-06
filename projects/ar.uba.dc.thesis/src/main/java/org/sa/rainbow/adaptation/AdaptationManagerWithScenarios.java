@@ -405,21 +405,22 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 			}
 
-			if (_stopWatchForTesting != null)
-				_stopWatchForTesting.stop();
-			if (selectedStrategy != null) {
-				doLog(Level.INFO, "Selected strategy: " + selectedStrategy.getName() + "!!!");
-				// strategy args removed...
-				Object[] args = new Object[0];
-				m_pendingStrategies.add(selectedStrategy);
-				((Executor) Oracle.instance().strategyExecutor()).enqueueStrategy(selectedStrategy, args);
-				doLog(Level.TRACE, "<< Adaptation cycle awaits Executor...");
-			} else {
-				Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
-				doLog(Level.INFO, "NO applicable strategy, adaptation cycle ended.");
-				m_adaptNeeded = false;
-				m_model.clearConstraintViolated();
-			}
+		}
+
+		if (_stopWatchForTesting != null)
+			_stopWatchForTesting.stop();
+		if (selectedStrategy != null) {
+			doLog(Level.INFO, "Selected strategy: " + selectedStrategy.getName() + "!!!");
+			// strategy args removed...
+			Object[] args = new Object[0];
+			m_pendingStrategies.add(selectedStrategy);
+			((Executor) Oracle.instance().strategyExecutor()).enqueueStrategy(selectedStrategy, args);
+			doLog(Level.TRACE, "<< Adaptation cycle awaits Executor...");
+		} else {
+			Util.dataLogger().info(IRainbowHealthProtocol.DATA_ADAPTATION_END);
+			doLog(Level.INFO, "NO applicable strategy, adaptation cycle ended.");
+			m_adaptNeeded = false;
+			m_model.clearConstraintViolated();
 		}
 	}
 
