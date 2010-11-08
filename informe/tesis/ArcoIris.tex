@@ -60,50 +60,99 @@
 		\textbf{Cuantificación de la Respuesta} son particularmente relevantes a los fines de establecer información útil para
 		el mecanismo de auto reparación.
 
-	
+
 		\subsubsection{El Estímulo en la Auto Reparación}
 
-			El \textbf{Estímulo} normalmente se asocia a un evento desencadenado en el sistema por la acción del algún  usuario
-			del mismo. Dicho evento es el punto de entrada del escenario, el disparador (interno o
-			externo) que inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión.
-			Saber cual es el estímulo de cada escenario
-			permite optimizar la auto reparación, ya que habiendo ocurrido determinado estímulo, Arco Iris podrá detectar cuáles son
-			los potenciales escenarios que pueden verse afectados y trabajará verificando dicho subconjunto, evitando así chequeos
-			innecesarios.
+			El \textbf{Estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
+			algún  usuario del mismo. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
+			inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión. Por ejemplo,
+			supongamos que en un sistema de administración de cuentas bancarias un cliente intenta hacer una transferencia,
+			en este caso la fuente del estímulo sería el cliente y el estímulo en sí mismo sería realizar transferencia.
 
-			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que
+			Saber cual es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido determinado
+			estímulo, Arco Iris podrá detectar cuáles son los potenciales escenarios que pueden verse afectados y trabajará
+			verificando dicho subconjunto, evitando así chequeos innecesarios.
+			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que
 			el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto puede ser muy útil
 			para casos más genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el usuario nunca
-			sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando, o bien si se toma
-			la decisión de evaluar todas las estrategias en cada auto reparación, aceptando así el \emph{overhead} que implica
-			verificar todas las estrategias. Esta es la manera en que trabaja Rainbow.
+			sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De no configurar
+			ningún estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada iteración.
+			Esta es la manera en que trabaja Rainbow.
 
-			A diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por medio del
-			estímulo que ocasionó el problema, esto reducirá la cantidad de estrategias que se evaluarán para intentar
-			resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta posibilidad), la única manera de limitar el uso de
-			las estrategias es agregar restricciones en la misma estrategia, siendo esto algo muy técnico y quedando fuera del alcance
-			de la mayor parte de los \emph{stakeholders} del sistema, por ejemplo, para que una estrategia que soluciona problemas de
-			performance no sea tenida en cuenta al reparar un escenario relacionado a un atributo de calidad distinto, como por
-			ejemplo el costo, debe agregarse una precondición como la siguiente en la estrategia:
+			Entonces, a diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por
+			medio del estímulo que ocasionó el problema, reduciendo así la cantidad de escenarios a verificar y sobre todo la
+			cantidad de estrategias a evaluar para intentar resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta
+			posibilidad), la única manera de limitar el uso de las estrategias es agregar restricciones en la misma estrategia,
+			siendo esto algo muy técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del sistema, por
+			ejemplo, para que una estrategia que soluciona problemas de performance no sea tenida en cuenta al reparar un escenario
+			relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una precondición como la
+			siguiente en la estrategia:
 
+			{\scriptsize
 			\begin{verbatim}
     strategy SimpleReduceResponseTime
       [ styleApplies && responseTimeConstraintViolation ] {
       ...
     }
 			\end{verbatim}
+			}
 
 			Donde \emph{responseTimeConstraintViolation} es un predicado que permite determinar si existe algún cliente cuyo tiempo
 			de respuesta haya sobrepasado el máximo tiempo de respuesta permitido:
 
+			{\scriptsize
 			\begin{verbatim}
     define boolean responseTimeConstraintViolation =
-    exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+      exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
 			\end{verbatim}
+			}
 
 			Es importante remarcar que, en caso de que el problema que se está intentando reparar no esté relacionado con la
 			performance, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que en
 			Arco Iris existe la posibilidad de evitarlo al configurar correctamente los estímulos de cada escenario.
+
+			Adentrándonos ya en la implementación, tengamos en cuenta que el estímulo era un concepto inexistente en Rainbow, por lo
+			cual en Arco Iris debimos modificar algunos de los componentes existentes para poder tomar conocimiento de qué estímulo
+			desencadenaba una determinada acción, así como también para interpretar luego dicha información.
+			Dado a que Rainbow permite trabajar en modo simulación, fue necesario implementar dos soluciones para poder utilizar el
+			concepto de estímulo en ambos escenarios.
+			
+			Al trabajar en el modo de simulación, dado que no participan ni los \emph{probes} ni los \emph{gauges}, fue necesario
+			implementar un mecanismo ad hoc, que consistió en barrer todos los escenarios al iniciar Arco Iris, recogiendo en un
+			mapa la información de qué estímulos eran los posibles responsables de las modificaciones causadas sobre cada una de las
+			propiedades de los artefactos configurados en los escenarios. A continuación mostramos el concepto de dicha
+			implementación en pseudocódigo:
+
+			\begin{verbatim}
+    por cada escenario habilitado
+      por cada constraint del escenario
+        por cada propiedad involucrada en el constraint
+          escenariosPorEstimulo.agregar(escenario.estimulo, escenario)
+          estimulosPorPropiedades.agregar(propiedad, escenario.estimulo)
+        }
+      }
+    }
+			\end{verbatim}
+
+			El modo simulación funciona notificando los cambios en las propiedades de interés, las cuales son
+			determinadas a la hora de implementar la simulación. Entonces, al contar los estímulos relacionados con cada
+			propiedad y los escenarios por cada estímulo, podemos acotar la cantidad de escenarios a verificar en cada
+			ejecución de la auto reparación.
+
+			En modo real, o sea sin simulación, para notificar el estímulo desencadente fue necesario extender los
+			\emph{probes}, que son los componentes encargados de testear una determinada funcionalidad del sistema,
+			siendo el responsable también de medir la respuesta y de reportar dicha información a un bus, del cual
+			luego la consumirán los \emph{gauges}, quienes interpretarán los datos transformándolos en cambios en el
+			modelo de la arquitectura. Obviamente también fue necesario extender la funcionalidad de los \emph{gauges}
+			para poder intrepretar la información de estímulo agregada en cada uno de los \emph{probes}. En ambos
+			casos, y gracias al mecanismo empleado por Rainbow, no fue necesario modificar las interfaces ni de los
+			\emph{probes} ni de los \emph{gauges}, ya que éstos se comunican mediante cadenas de texto, justamente
+			para ofrecer una amplia libertad a la hora de implementarlos ya que pueden existir maneras muy diversas de
+			testear y tomar métricas de las distintas funcionalidades de los sistemas. Luego, una vez obtenido el estímulo
+			correspondiente, no resta más que recurrir al mapa de escenarios por estímulos (utilizado también en el modo
+			simulación) para acotar la cantidad de escenarios a comprobar.
+
+\todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos}
 
 		\subsubsection{El Artefacto en la Auto Reparación}
 			\todo{Mejorar esto, no está muy claro ni aporta mucho. Dar un ejemplo concreto.}
@@ -145,7 +194,7 @@
 		\todo{Explicar que son enteros y un poquito más de detalle implementativo}
 
 	\subsection{Estrategias y su Relación con los Escenarios}
-		\todo{explicar como se configuran normalmente las estrategias en Rainbow, como reutilizamos la misma implementación y 
+		\todo{explicar como se configuran normalmente las estrategias en Rainbow, como reutilizamos la misma implementación y
 		explicar que la información para determinar la utilidad del sistema de acuerdo a lo que se estima que la estrategia
 		arregla sigue sacandose de lo que ya estaba (rainbow o znn?)}
 
@@ -165,12 +214,12 @@
 		aplicada por el \emph{framework} para decidir en que momento es necesario intentar auto reparar el sistema (i.e.
 		evaluar restricciones o invariantes del mismo).
 
-		En Rainbow, dichas restricciones se encuentran embebidas en los componentes de la arquitectura (modelados con ACME). 	
+		En Rainbow, dichas restricciones se encuentran embebidas en los componentes de la arquitectura (modelados con ACME).
 		En Arco Iris, las \emph{constraints} a evaluar son aquellas presentes en la cuantificación de la respuesta de cada
 		escenario. El formato y sintáxis no se modifica, sólo se cambia la ubicación de las constraints para mayor visibilidad
 		de los \emph{stakeholders} funcionales. \todo{mencionar los de EAvg y ESum? Si no es acá, ¿donde?}
 
-		\todo{Ampliar gigantescamente la siguiente explicación, con gráficos, mas detalle, etc. y dejando en claro como 	
+		\todo{Ampliar gigantescamente la siguiente explicación, con gráficos, mas detalle, etc. y dejando en claro como
 		funcionaba en Rainbow y que agregamos nosotros}
 
 		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta
@@ -230,7 +279,7 @@
 						formato de escenarios de QAW. Esa información es analizada por Rainbow para tomar decisiones sobre las auto
 						reparaciones a realizar. & Las res\-tri\-ccio\-nes pue\-den ser a\-gre\-ga\-das y/o editadas dinámicamente y de
 						una manera simplificada para los \emph{stakeholders}.\\
-						Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de 					
+						Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de
 						calidad no tiene un modelado específico en Rainbow. Sí está presente en Znn, y son llamados llamados ``Quality
 						Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los atributos
 						suman 1) & Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de
