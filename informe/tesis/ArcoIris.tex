@@ -1,4 +1,4 @@
-\section{Extensión a Rainbow: Arco Iris}a
+\section{Extensión a Rainbow: Arco Iris}
 
 	\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
 
@@ -56,9 +56,28 @@
 			\item Cuantificación de la Respuesta
 		\end{itemize}
 
+		Supongamos que tenemos el siguiente escenario:
+
+		\begin{quote}
+			Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El
+			proceso informa al operador y continúa su operación son caídas.
+		\end{quote}
+
+		Veamos cómo se desgloza la información de este escenario según la descomposición antes mencionada:
+
+		\begin{itemize}
+			\item Fuente: Sistema externo
+			\item Estímulo: Mensaje no anticipado
+			\item Entorno: Operación normal
+			\item Artefacto: Proceso interno
+			\item Respuesta: Informar al operador y seguir operando
+			\item Medición de la respuesta: sin caídas (downtime)
+		\end{itemize}
+
 		\indent De todos estos atributos, el \textbf{Estímulo}, el \textbf{Artefacto}, el \textbf{Entorno} y la
 		\textbf{Cuantificación de la Respuesta} son particularmente relevantes a los fines de establecer información útil para
-		el mecanismo de auto reparación.
+		el mecanismo de auto reparación. A lo largo de las próximas subsecciones mostraremos cómo Arco Iris hace uso de esta
+		información para modificar, optimizar y refinar la auto reparación realizada por Rainbow.
 
 
 		\subsubsection{El Estímulo en la Auto Reparación}
@@ -72,7 +91,8 @@
 			Saber cual es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido determinado
 			estímulo, Arco Iris podrá detectar cuáles son los potenciales escenarios que pueden verse afectados y trabajará
 			verificando dicho subconjunto, evitando así chequeos innecesarios.
-			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que
+
+			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que
 			el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto puede ser muy útil
 			para casos más genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el usuario nunca
 			sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De no configurar
@@ -116,7 +136,7 @@
 			desencadenaba una determinada acción, así como también para interpretar luego dicha información.
 			Dado a que Rainbow permite trabajar en modo simulación, fue necesario implementar dos soluciones para poder utilizar el
 			concepto de estímulo en ambos escenarios.
-			
+
 			Al trabajar en el modo de simulación, dado que no participan ni los \emph{probes} ni los \emph{gauges}, fue necesario
 			implementar un mecanismo ad hoc, que consistió en barrer todos los escenarios al iniciar Arco Iris, recogiendo en un
 			mapa la información de qué estímulos eran los posibles responsables de las modificaciones causadas sobre cada una de las
@@ -155,12 +175,17 @@
 \todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos}
 
 		\subsubsection{El Artefacto en la Auto Reparación}
-			\todo{Mejorar esto, no está muy claro ni aporta mucho. Dar un ejemplo concreto.}
 
 			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que en
 			Acme se especifican los componentes y los conectores del sistema, el escenario tendrá entonces una vinculación
-			directa en su especificación con los componentes afectados. El artefacto seleccionado acotará las propiedades sobre
-			las cuales podrá predicar la \textbf{Cuantificación de la Respuesta}.
+			directa en su especificación con los componentes afectados. Al seleccionar un artefacto, el usuario de Arco Iris
+			estará acotando las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la	Respuesta}.
+
+			Supongamos que estamos agregando auto reparación mediante Arco Iris a un sistema cliente-servidor, y queremos definir
+			un escenario que indique que el mismo debe poseer Alta Disponibilidad, el artefacto sobre el cual predicaremos en
+			este caso será el servidor. Una vez que el usuario haya seleccionado como artefacto del escenario al servidor, solo
+			podrá predicar las propiedades del mismo, acotando las relacionadas a la disponibilidad.
+
 
 		\subsubsection{El Entorno en la Auto Reparación}
 			El \textbf{Entorno} condiciona la validez del escenario en cuestión a que el sistema se encuentre en un determinado
