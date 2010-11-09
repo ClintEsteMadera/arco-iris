@@ -203,6 +203,7 @@
 
 			Y supongamos que se define el siguiente escenario:
 
+			\label{escenarioPerformance}
 			\begin{quote}
 				Znn news debe servir el contenido de las noticias a los clientes en un tiempo de respuesta menor a 3 segundos en un
 				entorno de operación normal.
@@ -217,18 +218,21 @@
 
 
 		\subsubsection{El Entorno en la Auto Reparación}
-			El \textbf{Entorno} condiciona la validez del escenario en cuestión a que el sistema se encuentre en un determinado
-			estado. \todo{¿Cómo se determina el estado? Hablar de las properties, las constraints, etc.} Por ejemplo, se podría
-			crear un escenario dónde se especifica como el sistema debe responder ante un \emph{request} de determinado tipo en
-			un entorno de alta carga. Esto también reduce la búsqueda de escenarios que no cumplen con la cuantificación de la
-			respuesta (de ahora en más, los llamaremos escenarios ``rotos'') ya que se ignorarán escenarios cuyo entorno no se
-			corresponda con el entorno actual del sistema.
+			Dentro de la definición de escenario, el \textbf{Entorno} se refiere al estado en el que el sistema se encuentra
+			cuando se recibe el estímulo, por ejemplo ``operatoria normal'' o ``alta carga''. El entorno condiciona la validez
+			del escenario en cuestión a que el sistema se encuentre en un determinado estado. Por ejemplo, en el escenario
+			planteado anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un entorno de
+			``alta carga'' el escenario automáticamente se cumple, ya que no están dadas las condiciones del entorno que el mismo plantea.
+
+			El entorno también permite a Arco Iris reducir la búsqueda de escenarios que no se cumplan ya que se ignorarán los
+			escenarios cuyo entorno posea condiciones que no se satisfagan en el estado del sistema a la hora de recibir el			estímulo.			\todo{¿Cómo se determina el estado? Hablar de las properties, las constraints, etc.}
+			\todo{Contar la estructura de un Environment, el mapa $<$Concern, Weight$>$, etc...}
+
 
 			También se permite especificar que un determinado escenario aplica bajo cualquier entorno, esto es, que en ese caso
 			existe una única condición subyacente: \verb@true@. \todo{Esto va a tener más sentido luego de que se amplíe esta
 			sección contando sobre las condiciones del environment, quizás hasta graficando un poco...}
 
-			\todo{Contar la estructura de un Environment, el mapa $<$Concern, Weight$>$, etc...}
 
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			La \textbf{Cuantificación de la Respuesta} es quizás la propiedad más importante: de ella surgen las restricciones
