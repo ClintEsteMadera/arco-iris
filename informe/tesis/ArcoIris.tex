@@ -60,7 +60,7 @@
 
 		\begin{quote}
 			Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El
-			proceso informa al operador y continúa su operación son caídas.
+			proceso informa al operador y continúa su operación sin caídas.
 		\end{quote}
 
 		Veamos cómo se desgloza la información de este escenario según la descomposición antes mencionada:
@@ -176,15 +176,44 @@
 
 		\subsubsection{El Artefacto en la Auto Reparación}
 
-			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que en
-			Acme se especifican los componentes y los conectores del sistema, el escenario tendrá entonces una vinculación
-			directa en su especificación con los componentes afectados. Al seleccionar un artefacto, el usuario de Arco Iris
-			estará acotando las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la	Respuesta}.
+			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que
+			Rainbow trabaja con el modelo de la arquitectura descripto en  Acme, contaremos con la especificación de los
+			de las propiedades de los componentes y los conectores del sistema, entonces en el escenario de Arco Iris podremos
+			contar con una vinculación directa con los componentes afectados. Al seleccionar un artefacto,
+			el usuario de Arco Iris no estará más que eligiendo un componente o conector de la arquitectura del sistema, esto lo
+			aprovecharemos para acotar las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la
+			Respuesta}.
 
-			Supongamos que estamos agregando auto reparación mediante Arco Iris a un sistema cliente-servidor, y queremos definir
-			un escenario que indique que el mismo debe poseer Alta Disponibilidad, el artefacto sobre el cual predicaremos en
-			este caso será el servidor. Una vez que el usuario haya seleccionado como artefacto del escenario al servidor, solo
-			podrá predicar las propiedades del mismo, acotando las relacionadas a la disponibilidad.
+			Para ejemplificar el concepto de artefacto utilizaremos la arquitectura presentada en Znn, recordemos que es una
+			arquitectura cliente-servidor, de la cual en este caso tomaremos la especificación del componente \emph{ClientT}, a
+			saber:
+
+			\scriptsize{
+			\begin{verbatim}
+    Component Type ClientT extends ArchElementT with {
+
+      Property deploymentLocation : string <<  default : string = "localhost"; >> ;
+
+      Property experRespTime : float <<  default : float = 100.0; >> ;
+
+      Property reqRate : float <<  default : float = 0.0; >> ;
+    }
+			\end{verbatim}
+			}
+
+			Y supongamos que se define el siguiente escenario:
+
+			\begin{quote}
+				Znn news debe servir el contenido de las noticias a los clientes en un tiempo de respuesta menor a 3 segundos en un
+				entorno de operación normal.
+			\end{quote}
+
+			Claramente en este ejemplo \emph{ClientT} será el artefacto sobre el cual predicará la verificación de validez de
+			este escenario, más adelante veremos cómo se configurará dicha restricción.
+
+			En la sección \ref{sec:scenariosUI} se explicará en más detalle cómo se podrá emplear esta información para mejorar
+			la experiencia de los \emph{stakeholders} a la hora de especificar escenarios mediante la herramienta visual
+			presentada junto a Arco Iris: \textbf{scenarios UI}
 
 
 		\subsubsection{El Entorno en la Auto Reparación}
