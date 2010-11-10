@@ -1,35 +1,90 @@
 \section{Extensión a Rainbow: Arco Iris}
 
-	\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
-
 	\subsection{Idea Básica}
-		\todo{Esta sección debería condensar brevemente todo lo que hicimos a nivel implementativo en lugar de volver a
-		repetir el chamuyo de la visibilidad de los stakeholders que ya lo dijimos antes. Una cosa así:\\
-		Basicamente incorporamos la idea de Escenario de ATAM, con algunas extensiones orientadas al self healing, luego se
-		codearon distintos componentes que extienden a los definidos por Rainbow para que tomen esta información y decidan
-		cual es la mejor estrategia a ejecutar, considerando trafeoffs entre atributos de calidad, prioridades relativas entre
-		escenarios, el entorno de ejecución actual, etc.}
+		Como ya se ha comentado anteriormente, la idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder
+		lograr un mecanismo de auto reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor
+		visibilidad a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiendoles así involucrarse en la
+		definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo.
+		La solución intenta involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a
+		considerar en la auto reparación del sistema cuando uno de los escenarios no se cumple.
 
-		IDEA:\\
-		Empezar poniendo como funciona Rainbow (grafico), como funcionaria con nuestra extension (grafico) y encontrar la
-		excusa para poner el diagrama de clases de Arco Iris
+		A fin de lograr lo antedicho, se consideró necesario extender el framework Rainbow, cuyo código se encuentra escrito
+		mayormente en el lenguaje de programación Java.
+		
+		Los integrantes del grupo ABLE \cite{ABLE}, que son quienes poseen propiedad intelectual sobre el \emph{framework}, no
+		sólo decidieron proveer el código fuente completo para poder realizar esta extensión, sino que estuvieron dispuestos
+		en todo momento a colaborar, responder dudas e inquietudes, hacer sugerencias, etc.
+		
+		El primer paso fue inspeccionar el código del framework y leer su documentación (no muy abundante, por cierto).
+		Luego de ese primer paso, se tuvo una buena noción sobre el funcionamiento de Rainbow y sus componentes principales de
+		arquitectura, las cuales se pueden observar en el siguiente diagrama de colaboración de objetos:
+		
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture.png}
+		\end{center}
+		
+		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar al framework
+		utilizando, básicamente, dos vías:
+		\begin{enumerate}
+			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow va a adaptar. Dicho modelo se
+			especifica utilizando el estilo C\&C y el lenguaje de descripción de arquitecturas ACME, anteriormente descripto en
+			el presente trabajo. Los componentes y conectores poseen propiedades (con valores asociados), constraints y también
+			existe la posibilidad de especificar invariantes a nivel de sistema o sub sistema. Dichos invariantes serán evaluados
+			periódicamente por Rainbow para verificar que el sistema funcione dentro de los límites determinados como normales.
+			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con la
+			definición del sistema a auto-reparar, como por ejemplo: ubicación física del archivo ACME con la arquitectura del
+			sistema a adaptar, archivos de tácticas y estrategias de reparación (estos escritos en un lenguaje de scripting
+			llamado ``stitch''), datos para la configuración de la conexión de Rainbow con el sistema en \emph{runtime}, etc. 
+		\end{enumerate}
 
-		\todo{\textbf{Cacho de texto cortado de otra sección}: Entonces, dadas las condiciones de que el estímulo del
-		escenario haya sido invocado (o cualquier estímulo si así lo determina el escenario), y de que el entorno del
-		escenario aplique al estado actual del sistema, el siguiente paso será evaluar la restricción definida en la
-		cuantificación de la respuesta de cada escenario para ver si el mismo necesita ser reparado o no. Una vez se haya
-		determinado que el sistema requiere ser reparado, se pasará a la siguiente etapa que constará en determinar cuál es la
-		estrategia que deja al escenario en un mejor estado.}
+		Podemos ver también en el gráfico anterior, cómo los denominados ``Probes'' son los componentes designados en Rainbow
+		para interactuar directamente con el sistema a adaptar (``Target System''), obteniendo así información relevante a los
+		fines de la auto-reparación del mismo. Dicha información no será interpretada dentro de los ``probes'' sino que ellos
+		delegaran dicha tarea a los denominados ``Gauges''. Estos componentes son los encargados de entender la información
+		provista por los gauges y traducirla a pares \verb@<Propiedad, Valor>@ dónde \verb@Propiedad@ es el nombre de una
+		propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del sistema a
+		adaptar; y \verb@Valor@ es ni más ni menos que el nuevo valor que posee dicha propiedad.
+		
+		Normalmente, existe un par $<$Gauge, Probe$>$ distinto (a nivel implementativo son clases Java) por cada tipo
+		relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución. Un ejemplo de \emph{concern} podría
+		ser: ``tiempo de respuesta experimentado por el usuario'', el cual es un \emph{concern} relacionado al atributo de
+		calidad \emph{performance}.
+		
+		Asociado al tipo de componente ``Gauge'', se encuentra el ``Gauge Coordinator'' el cual, tal como su nombre lo indica,
+		coordina la información provista por todos los Gauges e invoca a la operación ``update property" del denominado
+		``Rainbow Model''.
+		
+		El Rainbow Model, componente clave en la arquitectura del \emph{framework}, tiene, entre otras cosas, la
+		responsabilidad de saber como impactar el cambio de los valores de la propiedades de los componentes, conectores,
+		sub-sistemas o sistemas del modelo de arquitectura de la aplicación a adaptar. También sabe verificar si se ha violado
+		alguna de las constraints presentes en el modelo de arquitectura con el cual el \emph{framework} ha sido inicializado.
+		
+		Por otra parte, existe otro componente llamado ``Architecture Evaluator'', el cual consulta periódicamente a
+		\emph{Rainbow Model} sobre si se ha violado alguna constraint. En ese caso, el \emph{Architecture Evaluator} dispara
+		el mecanismo de adaptación invocando al ``Adaptation Manager'' (junto con el Rainbow Model, el componente más
+		importante de todos).
+		
+		El \emph{Adaptation Manager} sigue una lógica un tanto compleja para determinar la mejor estrategia de	reparación a
+		realizar y luego, mediante ``Effectors'' (no mostrados en el gráfico anterior por claridad), las estrategias llegan a
+		impactarse, en tiempo de ejecución, en el sistema a ser adaptado y siempre con la intención de restituir los
+		invariantes planteados para el sistema en cuestión.
+		
+		Pues bien, a continuación veremos cómo queda el sistema conceptualmente luego de incorporar las extensiones
+		planteadas en el presente trabajo (a las cuales denominamos ``Arco Iris'').
+		
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture_With_Scenarios.png}
+		\end{center}
 
-		La idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder lograr un me\-ca\-nis\-mo de auto
-		reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor visibilidad a los
-		\emph{stakeholders} de la aplicación sobre dicho proceso, permitiendoles así involucrarse en la definición de escenarios
-		de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo. La solución intenta
-		involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a considerar en la auto
-		reparación del sistema cuando uno de los escenarios no se cumple.
+		\todo{JONY: Completar explicación sobre los agregados de Rainbow}
+		
+		\todo{JONY: Introducir el diagrama de clases}
 
-		Lo antedicho se pretende lograr con importantes cambios conceptuales en cuanto a la manera en que Rainbow trabaja hoy
-		en día. A continuación, se detallan los cambios propuestos.
+		\begin{center}
+			\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Model.png}
+		\end{center}
+
+		\todo{JONY: Comentar sobre el diagrama de clases y chau.}
 
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
 
@@ -252,6 +307,8 @@
 		\todo{Explicar que son enteros y un poquito más de detalle implementativo}
 
 	\subsection{Estrategias y su Relación con los Escenarios}
+		\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
+	
 		\todo{explicar como se configuran normalmente las estrategias en Rainbow, como reutilizamos la misma implementación y
 		explicar que la información para determinar la utilidad del sistema de acuerdo a lo que se estima que la estrategia
 		arregla sigue sacandose de lo que ya estaba (rainbow o znn?)}
