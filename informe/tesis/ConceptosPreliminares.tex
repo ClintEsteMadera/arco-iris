@@ -1,5 +1,7 @@
 \section{Conceptos Preliminares}
+
 	\subsection{Auto Reparación}
+
 		\todo{Self Healing, incluyendo una descripción previa sobre la complejidad creciente de los sistemas y su necesidad
 de non-stop que justifica este enfoque. Reusar parte de la tesina de Casuscelli de la UCA que está bastante bien escrita
 (y no vale la pena gastar más tiempo en esto).}
@@ -23,6 +25,7 @@ El presente trabajo utilizará como base gran parte del trabajo generado por dich
 detalle más adelante.
 
 	\subsubsection{Auto Reparación de Sistemas Basada en Modelos de Arquitectura}
+
 		Este enfoque ha sido propuesto por el Dr. Garlan, el cual intenta basar la auto reparación en el modelo de la
 arquitectura del sistema, en lugar de los mecanismos tradicionales para detección y recuperación de errores que se
 implementan a nivel de código.
@@ -40,6 +43,7 @@ extendidos y reutilizados a través de distintos sistemas.
 	El 	proyecto Rainbow, también del proyecto Able, utiliza esta técnica de \textit{closed-loop} para monitorear y reparar sistemas, más adelante profundizaremos sobre Rainbow.
 
 	\subsection{Lenguajes de Descripción de Arquitecturas}
+
 		Un problema fundamental de las arquitecturas de los sistemas basados en componentes ha sido encontrar la notación
 apropiada para definir dichos sistemas.
 
@@ -50,6 +54,7 @@ apropiada para definir dichos sistemas.
 		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de que ya permiten definir una base formal para la descripción y el análisis de los mismos.
 
 	\subsubsection{Acme}
+
 		Acme es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon University, más
 precisamente por el proyecto ABLE \cite{ABLE}, liderado por el Dr. David Garlan.
 
@@ -79,6 +84,7 @@ completa en Acme de la arquitectura del sistema que utilizaremos para mostrar lo
 implementada en el presente trabajo.
 
 	\subsection{Rainbow}
+
 		\subsubsection{Introducción a Rainbow}
 
 			La herramienta Rainbow, desarrollada también dentro del marco del proyecto Able, tiene como finalidad permitir
@@ -113,6 +119,7 @@ tareas del usuario, y estimaciones orientadas a la performance en tiempo de ejec
 			runtime}
 
 		\subsubsection{Tácticas y Estrategias}
+
 			El objetivo de la auto reparación será alcanzar determinados atributos de calidad, pero ¿Cómo haremos para
 alcanzar dichos atributos? En el libro \textbf{Software Arquitectura in Practice}, Bass, Clements y Kazman presentan dos
 conceptos que nos permiten alcanzar los objetivos del sistema y que han sido ampliamente adoptados en la industria,
@@ -159,8 +166,9 @@ la	responsable de ejecutar la acción propiamente dicha, a la cual se la llama \t
 provee	un mecanismo para extender las políticas de adaptación a dominios específicos de sistemas.
 
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
+
 		Znn es un sistema que simula un sitio web de noticias, el mismo nació como proyecto de tesis \cite{TesisOwen} de
-Shang-Wen Cheng, sus objetivos fueron evaluar la efectividad de Rainbow en los siguientes aspectos:
+		Shang-Wen Cheng, sus objetivos fueron evaluar la efectividad de Rainbow en los siguientes aspectos:
 		\begin{itemize}
 			\item su efectividad para mantener los atributos de calidad al enfrentar condiciones cambiantes
 			\item el \emph{overhead} de procesamiento que implica la auto reparación
