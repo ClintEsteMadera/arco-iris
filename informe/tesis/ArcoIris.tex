@@ -10,19 +10,19 @@
 
 		A fin de lograr lo antedicho, se consideró necesario extender el framework Rainbow, cuyo código se encuentra escrito
 		mayormente en el lenguaje de programación Java.
-		
+
 		Los integrantes del grupo ABLE \cite{ABLE}, que son quienes poseen propiedad intelectual sobre el \emph{framework}, no
 		sólo decidieron proveer el código fuente completo para poder realizar esta extensión, sino que estuvieron dispuestos
 		en todo momento a colaborar, responder dudas e inquietudes, hacer sugerencias, etc.
-		
+
 		El primer paso fue inspeccionar el código del framework y leer su documentación (no muy abundante, por cierto).
 		Luego de ese primer paso, se tuvo una buena noción sobre el funcionamiento de Rainbow y sus componentes principales de
 		arquitectura, las cuales se pueden observar en el siguiente diagrama de colaboración de objetos:
-		
+
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture.png}
 		\end{center}
-		
+
 		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar al framework
 		utilizando, básicamente, dos vías:
 		\begin{enumerate}
@@ -34,7 +34,7 @@
 			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con la
 			definición del sistema a auto-reparar, como por ejemplo: ubicación física del archivo ACME con la arquitectura del
 			sistema a adaptar, archivos de tácticas y estrategias de reparación (estos escritos en un lenguaje de scripting
-			llamado ``stitch''), datos para la configuración de la conexión de Rainbow con el sistema en \emph{runtime}, etc. 
+			llamado ``stitch''), datos para la configuración de la conexión de Rainbow con el sistema en \emph{runtime}, etc.
 		\end{enumerate}
 
 		Podemos ver también en el gráfico anterior, cómo los denominados ``Probes'' son los componentes designados en Rainbow
@@ -44,40 +44,40 @@
 		provista por los gauges y traducirla a pares \verb@<Propiedad, Valor>@ dónde \verb@Propiedad@ es el nombre de una
 		propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del sistema a
 		adaptar; y \verb@Valor@ es ni más ni menos que el nuevo valor que posee dicha propiedad.
-		
+
 		Normalmente, existe un par $<$Gauge, Probe$>$ distinto (a nivel implementativo son clases Java) por cada tipo
 		relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución. Un ejemplo de \emph{concern} podría
 		ser: ``tiempo de respuesta experimentado por el usuario'', el cual es un \emph{concern} relacionado al atributo de
 		calidad \emph{performance}.
-		
+
 		Asociado al tipo de componente ``Gauge'', se encuentra el ``Gauge Coordinator'' el cual, tal como su nombre lo indica,
 		coordina la información provista por todos los Gauges e invoca a la operación ``update property" del denominado
 		``Rainbow Model''.
-		
+
 		El Rainbow Model, componente clave en la arquitectura del \emph{framework}, tiene, entre otras cosas, la
 		responsabilidad de saber como impactar el cambio de los valores de la propiedades de los componentes, conectores,
 		sub-sistemas o sistemas del modelo de arquitectura de la aplicación a adaptar. También sabe verificar si se ha violado
 		alguna de las constraints presentes en el modelo de arquitectura con el cual el \emph{framework} ha sido inicializado.
-		
+
 		Por otra parte, existe otro componente llamado ``Architecture Evaluator'', el cual consulta periódicamente a
 		\emph{Rainbow Model} sobre si se ha violado alguna constraint. En ese caso, el \emph{Architecture Evaluator} dispara
 		el mecanismo de adaptación invocando al ``Adaptation Manager'' (junto con el Rainbow Model, el componente más
 		importante de todos).
-		
+
 		El \emph{Adaptation Manager} sigue una lógica un tanto compleja para determinar la mejor estrategia de	reparación a
 		realizar y luego, mediante ``Effectors'' (no mostrados en el gráfico anterior por claridad), las estrategias llegan a
 		impactarse, en tiempo de ejecución, en el sistema a ser adaptado y siempre con la intención de restituir los
 		invariantes planteados para el sistema en cuestión.
-		
+
 		Pues bien, a continuación veremos cómo queda el sistema conceptualmente luego de incorporar las extensiones
 		planteadas en el presente trabajo (a las cuales denominamos ``Arco Iris'').
-		
+
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture_With_Scenarios.png}
 		\end{center}
 
 		\todo{JONY: Completar explicación sobre los agregados de Rainbow}
-		
+
 		\todo{JONY: Introducir el diagrama de clases}
 
 		\begin{center}
@@ -232,16 +232,15 @@
 		\subsubsection{El Artefacto en la Auto Reparación}
 
 			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que
-			Rainbow trabaja con el modelo de la arquitectura descripto en  Acme, contaremos con la especificación de los
-			de las propiedades de los componentes y los conectores del sistema, entonces en el escenario de Arco Iris podremos
-			contar con una vinculación directa con los componentes afectados. Al seleccionar un artefacto,
-			el usuario de Arco Iris no estará más que eligiendo un componente o conector de la arquitectura del sistema, esto lo
-			aprovecharemos para acotar las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la
-			Respuesta}.
+			Rainbow trabaja con el modelo de la arquitectura del sistema descripto en el lenguaje Acme, contaremos con la
+			especificación de las propiedades de los componentes y los conectores del sistema, entonces en el escenario de Arco Iris
+			podremos contar con una vinculación directa con los componentes afectados. Al seleccionar un artefacto, el usuario de
+			Arco Iris no estará más que eligiendo un componente o conector de la arquitectura del sistema, esto lo aprovecharemos
+			para acotar las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la Respuesta}.
 
 			Para ejemplificar el concepto de artefacto utilizaremos la arquitectura presentada en Znn, recordemos que es una
-			arquitectura cliente-servidor, de la cual en este caso tomaremos la especificación del componente \emph{ClientT}, a
-			saber:
+			arquitectura cliente-servidor, de la cual en este caso tomaremos la especificación del componente cliente definido como
+			\emph{ClientT}, a saber:
 
 			\scriptsize{
 			\begin{verbatim}
@@ -261,8 +260,7 @@
 			\label{escenarioPerformance}
 			\begin{quote}
 				Znn news debe servir el contenido de las noticias a los clientes en un tiempo de respuesta menor a 3 segundos en un
-				entorno de operación normal.
-			\end{quote}
+				entorno de operación normal.			\end{quote}
 
 			Claramente en este ejemplo \emph{ClientT} será el artefacto sobre el cual predicará la verificación de validez de
 			este escenario, más adelante veremos cómo se configurará dicha restricción.
@@ -280,7 +278,9 @@
 			``alta carga'' el escenario automáticamente se cumple, ya que no están dadas las condiciones del entorno que el mismo plantea.
 
 			El entorno también permite a Arco Iris reducir la búsqueda de escenarios que no se cumplan ya que se ignorarán los
-			escenarios cuyo entorno posea condiciones que no se satisfagan en el estado del sistema a la hora de recibir el			estímulo.			\todo{¿Cómo se determina el estado? Hablar de las properties, las constraints, etc.}
+			escenarios cuyo entorno posea condiciones que no se satisfagan en el estado del sistema a la hora de recibir el	estímulo.
+
+			\todo{¿Cómo se determina el estado? Hablar de las properties, las constraints, etc.}
 			\todo{Contar la estructura de un Environment, el mapa $<$Concern, Weight$>$, etc...}
 
 
@@ -308,7 +308,7 @@
 
 	\subsection{Estrategias y su Relación con los Escenarios}
 		\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
-	
+
 		\todo{explicar como se configuran normalmente las estrategias en Rainbow, como reutilizamos la misma implementación y
 		explicar que la información para determinar la utilidad del sistema de acuerdo a lo que se estima que la estrategia
 		arregla sigue sacandose de lo que ya estaba (rainbow o znn?)}
