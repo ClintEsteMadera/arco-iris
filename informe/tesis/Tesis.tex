@@ -19,6 +19,7 @@
 \usepackage{caratula}                                                    % incluye caratula estándar
 \usepackage{graphicx}                                                    % permite insertar gráficos
 \usepackage{color}                                                       % permite el uso de colores en el documento
+\definecolor{gray97}{gray}{.97}
 \usepackage[dvipsnames,table,svgnames]{xcolor}
 \usepackage{url}                                                         % permite el uso de urls
 \usepackage[pdfcreator={LaTeX2e},
@@ -31,6 +32,33 @@
 			colorlinks,                   % links con bellos colores
 			linkcolor=blue]								% permite cambiar el color de los links
 			{hyperref}                    % Permite jugar con algunas cosas que aparecerán en el PDF final
+\usepackage{listings}
+\lstset{ %
+	language=XML,                         % choose the language of the code
+	basicstyle=\scriptsize\ttfamily,      % the size of the fonts that are used for the code
+	numbers=none,                         % where to put the line-numbers
+	numberstyle=\scriptsize,              % the size of the fonts that are used for the line-numbers
+	stepnumber=1,                         % the step between two line-numbers. If it is 1 each line will be numbered
+	numbersep=0pt,                        % how far the line-numbers are from the code
+	backgroundcolor=\color{gray97},       % choose the background color. You must add \usepackage{color}
+	rulesepcolor=\color{black},
+	showspaces=false,                     % show spaces adding particular underscores
+	showstringspaces=false,               % underline spaces within strings
+	showtabs=false,                       % show tabs within strings adding particular underscores
+	frame=single,                         % adds a frame around the code
+	%frameround=tttt,                      % round corners
+	framerule=0pt,
+	framesep=0pt,
+	rulesep=0pt,
+	framextopmargin=0pt,
+	framexbottommargin=0pt,
+	framexleftmargin=0pt,
+	tabsize=2,                            % sets default tabsize to 2 spaces
+	captionpos=b,                         % sets the caption-position to bottom
+	breaklines=true,                      % sets automatic line breaking
+	breakatwhitespace=false,              % sets if automatic breaks should only happen at whitespace
+	escapeinside={\%}{)}                  % if you want to add a comment within your code
+}
 
 \selectlanguage{spanish}
 
@@ -48,12 +76,6 @@
 
 % macro 'todo' para To-Do's
 \def\todo#1{\textcolor{red}{#1}}
-
-% Macro 'borde' para un texto con borde
-\newsavebox{\fmbox}
-\newenvironment{borde}[1]
-{\begin{lrbox}{\fmbox}\begin{minipage}{#1}}
-{\end{minipage}\end{lrbox}\fbox{\usebox{\fmbox}}\\[10pt]}
 
 %%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%
 
