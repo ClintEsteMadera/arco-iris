@@ -1,27 +1,27 @@
 \documentclass[11pt, a4paper, spanish]{article}
 
-%%%%%%%%%% COMIENZO DEL PREAMBULO %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMIENZO DEL PREAMBULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Info sobre este documento
 \author{Jonathan Chiocchio, Gabriel Tursi}
 \title{Tesis de Licenciatura Chiocchio - Tursi}
 
-\usepackage{tabularx}                                                    % permite usar tablas mas inteligentes que con ``tabular''
-\usepackage{lscape}
-\usepackage{slashbox}
-\usepackage{rotating}
+\usepackage{caratula}                     % incluye caratula estándar
+\usepackage{tabularx}                     % permite usar tablas mas inteligentes que con ``tabular''
+\usepackage{lscape}                       % pone un parte del texto de forma apaisada
+\usepackage{slashbox}                     % separación en diagonal en las celdas de las esquinas de tablas
+\usepackage{rotating}                     % rotar cualquier objeto en cualquier ángulo
 %\usepackage{multirow}
 %\usepackage{ltxtable}
-\usepackage[top=2.75cm, bottom=2.75cm, left=2.75cm, right=2.75cm]{geometry} % márgenes
-\usepackage[ansinew]{inputenc}                                           % permite que los acentos del estilo áéíóú salgan joya
-\usepackage[spanish, activeacute]{babel}                                 % idioma español, acentos fáciles y deletreo de palabras
-\usepackage{indentfirst}                                                 % permite indentar un parrafo a mano
-\usepackage{caratula}                                                    % incluye caratula estándar
-\usepackage{graphicx}                                                    % permite insertar gráficos
-\usepackage{color}                                                       % permite el uso de colores en el documento
+\usepackage[ansinew]{inputenc}            % permite que los acentos del estilo áéíóú salgan joya
+\usepackage[spanish, activeacute]{babel}  % idioma español, acentos fáciles y deletreo de palabras
+\usepackage{indentfirst}                  % permite indentar un parrafo a mano
+\usepackage{graphicx}                     % permite insertar gráficos
+\usepackage{color}                        % permite el uso de colores en el documento
 \definecolor{gray97}{gray}{.97}
 \usepackage[dvipsnames,table,svgnames]{xcolor}
-\usepackage{url}                                                         % permite el uso de urls
+\usepackage{url}                          % permite el uso de urls
+\usepackage[top=2.75cm, bottom=2.75cm, left=2.75cm, right=2.75cm]{geometry} % márgenes
 \usepackage[pdfcreator={LaTeX2e},
 			pdfauthor={Jonathan Chiocchio, Gabriel Tursi},
 			pdftitle={Hacia un modelo m'as flexible para la implementaci'on de la auto reparaci'on de sistemas de software basada en Arquitectura},
@@ -30,109 +30,121 @@
 			pdfstartview=FitH,            % Fits the width of the page to the window
 			bookmarksnumbered,            % los bookmarks numerados se ven mejor...
 			colorlinks,                   % links con bellos colores
-			linkcolor=blue]								% permite cambiar el color de los links
+			linkcolor=blue]               % permite cambiar el color de los links
 			{hyperref}                    % Permite jugar con algunas cosas que aparecerán en el PDF final
 \usepackage{listings}
-\lstset{ %
-	language=XML,                         % choose the language of the code
-	basicstyle=\scriptsize\ttfamily,      % the size of the fonts that are used for the code
-	numbers=none,                         % where to put the line-numbers
-	numberstyle=\scriptsize,              % the size of the fonts that are used for the line-numbers
-	stepnumber=1,                         % the step between two line-numbers. If it is 1 each line will be numbered
-	numbersep=0pt,                        % how far the line-numbers are from the code
-	backgroundcolor=\color{gray97},       % choose the background color. You must add \usepackage{color}
-	rulesepcolor=\color{black},
-	showspaces=false,                     % show spaces adding particular underscores
-	showstringspaces=false,               % underline spaces within strings
-	showtabs=false,                       % show tabs within strings adding particular underscores
-	frame=single,                         % adds a frame around the code
-	%frameround=tttt,                      % round corners
-	framerule=0pt,
-	framesep=0pt,
-	rulesep=0pt,
-	framextopmargin=0pt,
-	framexbottommargin=0pt,
-	framexleftmargin=0pt,
-	tabsize=2,                            % sets default tabsize to 2 spaces
-	captionpos=b,                         % sets the caption-position to bottom
-	breaklines=true,                      % sets automatic line breaking
-	breakatwhitespace=false,              % sets if automatic breaks should only happen at whitespace
-	escapeinside={\%}{)}                  % if you want to add a comment within your code
+\lstset{
+%	language=XML,                         % choose the language of the code
+ 	basicstyle=\scriptsize\ttfamily,      % the size of the fonts that are used for the code
+	keywordstyle=\scriptsize\ttfamily,    % NOTE that \ttfamily does NOT have a BOLD version     
+	commentstyle=\scriptsize\ttfamily,
+	stringstyle=\scriptsize\ttfamily,
+	identifierstyle=\scriptsize\ttfamily,
+%	numbers=none,                         % where to put the line-numbers
+%	numberstyle=\scriptsize,              % the size of the fonts that are used for the line-numbers
+%	stepnumber=1,                         % the step between two line-numbers. If it is 1 each line will be numbered
+%	numbersep=0pt,                        % how far the line-numbers are from the code
+	extendedchars=true,                   % allow extended characters
+ 	backgroundcolor=\color{lightgray!20}, % specify the colour of the background. You must add \usepackage{color}
+	rulecolor=\color{lightgray!20},       % specify the colour of the rules
+%	fillcolor=\color{white},              % specify the colour of the space between 'text box' and first rule
+%	rulesepcolor=\color{gray97},          % specify the colour of the space between two rules (useful for shadows)
+ 	showspaces=false,                     % show spaces adding particular underscores
+ 	showstringspaces=false,               % underline spaces within strings
+ 	showtabs=false,                       % show tabs within strings adding particular underscores
+ 	tabsize=2,                            % sets default tabsize to 2 spaces
+%	linewidth=\linewidth,                 % define the base line width for listings
+ 	frame=single,                         % adds a frame around the code
+%	frameround=tttt,                      % round corners
+%	framerule=0.4pt,                      % controls the width of the rules
+ 	framesep=0pt,                         % control the separation btw the frame both interior and exterior margins
+%	rulesep=2pt,                          % control the space between frame and listing and between double rules
+	xleftmargin=0pt,                      % extra left margin
+%	xrightmargin=0pt,                     % extra right margin
+%	framextopmargin=0pt,                  % defines 'how far' we move the top frame margin
+%	framexbottommargin=0pt,               % defines 'how far' we move the bottom frame margin
+%	framexleftmargin=0pt,                 % defines 'how far' we move the left frame margin to the left
+%	framexrightmargin=0pt,                % defines 'how far' we move the right margin to the right
+%	captionpos=b,                         % sets the caption-position to bottom
+ 	breaklines=true,                      % sets automatic line breaking
+	breakautoindent=true,                 % activates or deactivates automatic indention of broken lines
+%	breakatwhitespace=false,              % sets if automatic breaks should only happen at whitespace
+%	morecomment=[l]{//}                   % displays comments in italics (language dependent)
+%	escapeinside={\%}{)}                  % if you want to add a comment within your code
 }
 
 \selectlanguage{spanish}
 
-\linespread{1.3}                    % interlineado equivalente al 1.5 líneas de Word...
-\pagestyle{myheadings}              % encabezado personalizable con \markboth{}{}
-\markboth{}{}												% PONER TITULO PARA ENCABEZADOS DE PAGINAS(el nombre de la tesis es muy largo)
-\headsep = 30pt                     % separación entre encabezado y comienzo del párrafo
+\linespread{1.3}                          % interlineado equivalente al 1.5 líneas de Word...
+\headsep = 30pt                           % separación entre encabezado y comienzo del párrafo
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex} % aumenta la separación entre párrafos
 
-%\setlength{\parindent}{0pt}                         % eliminar el indentado en todo el documento
-\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}     % aumenta la separación entre párrafos
+%\setlength{\parindent}{0pt}              % eliminar el indentado en todo el documento
+%\pagestyle{myheadings}                   % encabezado personalizable con \markboth{}{}
+% \markboth{}{Encabezado custom}          % permite especificar un encabezado personalizado
 
-%\addtolength{\oddsidemargin}{-2cm}	% configuracion IDEAL!!!
+%\addtolength{\oddsidemargin}{-2cm}       % configuracion IDEAL!!!
 %\addtolength{\textwidth}{4cm}
 %\addtolength{\textheight}{2cm}
 
-% macro 'todo' para To-Do's
-\def\todo#1{\textcolor{red}{#1}}
+\def\todo#1{\textcolor{red}{#1}}          % macro 'todo' para To-Do's
 
-%%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
-\materia{Tesis de Licenciatura en\\[0.3em]Ciencias de la Computación}
-\titulo{Hacia un modelo más flexible para la implementación de la auto reparación de sistemas de software basada en Arquitectura}
-\integrante{Chiocchio, Jonathan}{849/02}{jchiocchio@gmail.com}
-\integrante{Tursi, Germán Gabriel}{699/02}{gabrieltursi@gmail.com}
-\director{Santiago Ceria}
-
-\maketitle
-
-\thispagestyle{empty}
-
-\newpage
-
-\input{Abstract}
-
-\newpage
-
-\tableofcontents
-
-\newpage
-
-\input{Introduccion}
-
-\newpage
-
-\input{ConceptosPreliminares}
-
-\newpage
-
-\input{ArcoIris}
-
-\newpage
-
-\input{ScenariosUI}
-
-\newpage
-
-\input{CasosPracticos}
-
-\newpage
-
-\input{TrabajoFuturo}
-
-\newpage
-
-\input{Conclusiones}
-
-\newpage
-
-\input{Apendice}
-
-\newpage
-
-\input{Bibliografia}
+	\materia{Tesis de Licenciatura en\\[0.3em]Ciencias de la Computación}
+	\titulo{Hacia un modelo más flexible para la implementación de la auto reparación de sistemas de software basada en Arquitectura}
+	\integrante{Chiocchio, Jonathan}{849/02}{jchiocchio@gmail.com}
+	\integrante{Tursi, Germán Gabriel}{699/02}{gabrieltursi@gmail.com}
+	\director{Santiago Ceria}
+	
+	\maketitle
+	
+	\newpage
+	
+	\input{Abstract}
+	
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\pagestyle{headings}                  % poniendo esto acá evitamos que se encabece la caratula, el abstract y el
+	
+	\input{Introduccion}
+	
+	\newpage
+	
+	\input{ConceptosPreliminares}
+	
+	\newpage
+	
+	\input{ArcoIris}
+	
+	\newpage
+	
+	\input{ScenariosUI}
+	
+	\newpage
+	
+	\input{CasosPracticos}
+	
+	\newpage
+	
+	\input{TrabajoFuturo}
+	
+	\newpage
+	
+	\input{Conclusiones}
+	
+	\newpage
+	
+	\input{Apendice}
+	
+	\newpage
+	
+	\input{Bibliografia}
 
 \end{document}

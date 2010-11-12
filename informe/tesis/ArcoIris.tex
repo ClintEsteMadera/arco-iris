@@ -202,12 +202,27 @@
 			propiedades de los artefactos configurados en los escenarios. A continuación mostramos el concepto de dicha
 			implementación en pseudocódigo:
 
-			\begin{lstlisting}[language=Pascal, caption={Pseudo código},label={code:pseudocodigo}]
+			\todo{Elegir cual es mejor!}
+
+			{\scriptsize
+			\begin{verbatim}
 				por cada escenario habilitado
 				  por cada constraint del escenario
 				    por cada propiedad involucrada en el constraint
 				      escenariosPorEstimulo.agregar(escenario.estimulo, escenario)
 				      estimulosPorPropiedades.agregar(propiedad, escenario.estimulo)
+			\end{verbatim}
+			}
+
+			\begin{lstlisting}[language=Pascal]
+por cada escenario habilitado {
+	por cada constraint del escenario {
+		por cada propiedad involucrada en el constraint {
+			escenariosPorEstimulo.agregar(escenario.estimulo, escenario)
+			estimulosPorPropiedades.agregar(propiedad, escenario.estimulo)
+		}
+	}
+}
 			\end{lstlisting}
 
 			El modo simulación funciona notificando los cambios en las propiedades de interés, las cuales son
@@ -241,7 +256,7 @@
 
 			Para ejemplificar el concepto de artefacto utilizaremos la arquitectura presentada en Znn, recordemos que es una
 			arquitectura cliente-servidor, de la cual en este caso tomaremos la especificación del componente cliente definido como
-			\emph{ClientT}, a saber:
+			\emph{ClientT}, a saber:
 
 			\scriptsize{
 			\begin{verbatim}
