@@ -1,20 +1,20 @@
 \section{Casos Prácticos}
 	\label{sec:casosPracticos}
 
-	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la
-simulación presentada en Znn.
+	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la simulación
+	presentada en Znn.
 
 	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de
-servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido
-(e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos
-permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio
-óptimo según los requerimientos planteados.
+	servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido
+	(e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos
+	permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio
+	óptimo según los requerimientos planteados.
 
 	\subsection{Arquitectura del Sistema}
 		La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos
-no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
-los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A
-continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
+		no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
+		los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A
+		continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
 
 		\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
 
@@ -47,11 +47,11 @@ continuación mostramos una imagen de la arquitectura del sistema tomada de la he
 
 	\subsection{Comportamiento del Sistema sin Auto Reparación}
 		Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá
-evaluar la variación de comportamiento al ir agregando escenarios y estrategias.
+		evaluar la variación de comportamiento al ir agregando escenarios y estrategias.
 
-		Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario
-y el costo de servidores del sistema, que en este caso reflejará simplemente la cantidad de servidores levantados con
-que cuenta el sistema en cada momento.
+		Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario y
+		el costo de servidores del sistema, que en este caso reflejará simplemente la cantidad de servidores levantados con
+		que cuenta el sistema en cada momento.
 
 		Entonces, el comportamiento del sistema sin escenarios, es decir, sin auto reparación será el siguiente:
 		\begin{center}
@@ -63,18 +63,18 @@ que cuenta el sistema en cada momento.
 		\end{center}
 
 		Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se allí hasta los 30
-segundos, luego el mismo va bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de los
-servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó siempre
-con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a ninguna acción
-propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el ancho de banda de
-cada uno de sus clientes.
+		segundos, luego el mismo va bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de los
+		servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó
+		siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a
+		ninguna acción propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el
+		ancho de banda de cada uno de sus clientes.
 
 	\subsection{Comportamiento del Sistema con un único Escenario}
 		Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer
-escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600ms para el tiempo de respuesta
-experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se detectará
-que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda reparar. A
-continuación se muestra el detalle del escenario creado:
+		escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600ms para el tiempo de respuesta
+		experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se
+		detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda
+		reparar. A continuación se muestra el detalle del escenario creado:
 
 		\todo{Refrescar todos los screenshots de la GUI (al final!)}
 
@@ -84,9 +84,9 @@ continuación se muestra el detalle del escenario creado:
 
 		En la sección \ref{scenarioExpRespTimeXML} podemos ver la representación de este escenario en XML.
 
-		Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico será el
-mismo que el del caso anterior, salvo que permite observar en qué momento se supera el umbral determinado para el 
-tiempo de respuesta:
+		Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico será el mismo
+		que el del caso anterior, salvo que permite observar en qué momento se supera el umbral determinado para el tiempo de
+		respuesta:
 
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime_threshold.png}
@@ -95,23 +95,22 @@ tiempo de respuesta:
 		\todo{Mostramos el log? lo ponemos en el Apendice???}
 
 	\subsection{Comportamiento del Sistema con un único Escenario y una única Estrategia}
-		El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La
-misma consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia,
-definida en Stitch, será la siguiente:
+		El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma
+		consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia,
+		definida en Stitch, será la siguiente:
 
-		\begin{verbatim}
-      strategy EnlistServerResponseTime
-      [ styleApplies ] {
-        t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
-          t1: (!RESP_TIME_STILL_BROKEN) -> done;
-          t2: (default) -> TNULL;
-        }
-      }
-		\end{verbatim}
+		\begin{Verbatim}[gobble=3]
+			strategy EnlistServerResponseTime
+			[ styleApplies ] {
+			  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+			    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+			    t2: (default) -> TNULL;
+			  }
+			}
+		\end{Verbatim}
 
 		Al agregar esta estrategia, observamos que el tiempo de respuesta experimentado por el usuario se corrige casi
 	instantáneamente, como podemos ver en el siguiente gráfico:
-
 
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/testcase1_2_expRespTime.png}
@@ -132,13 +131,13 @@ definida en Stitch, será la siguiente:
 		\end{enumerate}
 
 	\subsection{Tradeoff entre Estrategias}
-		Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento
-las condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto reparación.
+		Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento las
+		condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto reparación.
 
 		Esto hace que el escenario de tiempo de respuesta se siga cumpliendo, pero observemos que el sistema sigue funcionando
-con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno
-solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya
-restricción consistirá en definir que no exista más de un servidor funcionando simultáneamente. 
+		con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno
+		solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya
+		restricción consistirá en definir que no exista más de un servidor funcionando simultáneamente.
 
 		El escenario que crearemos será el siguiente:
 
@@ -148,41 +147,49 @@ restricción consistirá en definir que no exista más de un servidor funcionando s
 
 		En la sección \ref{sec:scenarioCostXML} podemos ver la representación de este escenario en XML.
 		
-		Relacionado a este escenario, agregaremos la siguiente estrategia que podrá ser utilizada en caso de Arco Iris considere necesario repararlo:
+		Relacionado a este escenario, agregaremos la siguiente estrategia que podrá ser utilizada en caso de Arco Iris
+		considere necesario repararlo:
 
-		\begin{verbatim}
-      strategy ReduceOverallCost
-      [ styleApplies ] {
-        t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
-          t1: (!COST_STILL_BROKEN) -> done;
-          t3: (default) -> TNULL;
-        }
-      }
-		\end{verbatim}
-		
+		\begin{Verbatim}[gobble=3]
+			strategy ReduceOverallCost
+			[ styleApplies ] {
+			  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
+			    t1: (!COST_STILL_BROKEN) -> done;
+			    t3: (default) -> TNULL;
+			  }
+			}
+		\end{Verbatim}
 
-		Recordemos que el escenario de tiempo de respuesta es el primero que deja de cumplirse, y que para que sea 
-corregido debe levantarse un servidor, pero esto es justamente lo que acabamos de definir en el nuevo escenario que no 
-debería ocurrir. ¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de 
-los escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en 
-detrimento del escenario del costo de servidores.
+		Recordemos que el escenario de tiempo de respuesta es el primero que deja de cumplirse, y que para que sea corregido
+		debe levantarse un servidor, pero esto es justamente lo que acabamos de definir en el nuevo escenario que no debería
+		ocurrir. ¿Cómo repararemos el tiempo de respuesta entonces? Aquí es donde entran en juego las prioridades de los
+		escenarios: nuestro escenario prioritario será el del tiempo de respuesta, por lo cual este podrá repararse en
+		detrimento del escenario del costo de servidores.
 
-		Una vez reparado el tiempo de respuesta, el escenario de costo dejará de cumplirse y la auto reparación 
-no intentará repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de 
-repararlo. Esto hará que recién se repare el escenario de costo cuando esta reparación no rompa el escenario de tiempo de respuesta.
+		Una vez reparado el tiempo de respuesta, el escenario de costo dejará de cumplirse y la auto reparación no intentará
+		repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de repararlo. Esto
+		hará que recién se repare el escenario de costo cuando esta reparación no rompa el escenario de tiempo de respuesta.
 
-		Como podemos observar en el gráfico presentado a continuación, efectivamente era factible bajar un servidor sin que se dejara de satisfacer el escenario de tiempo de respuesta, llegando así al estado ideal en que ambos escenarios se satisfacen simultáneamente. Si bien el tiempo de respuesta sufre un pequeño detrimento al trabajar el sistema con un servidor menos, los valores obtenidos siguen siendo suficientemente buenos debido a los cambios que se han suscitado en el entorno en que funciona el sistema, sin ninguna intervención de la auto reparación. En resumen, al configurar los escenarios más prioritarios permitimos a Arco Iris tomar la decisión de qué escenario reparar en cada instante y con qué estrategia, aquí vemos en un ejemplo concreto la potencia de definir prioridades entre escenarios:
+		Como podemos observar en el gráfico presentado a continuación, efectivamente era factible bajar un servidor sin que se
+		dejara de satisfacer el escenario de tiempo de respuesta, llegando así al estado ideal en que ambos escenarios se
+		satisfacen simultáneamente. Si bien el tiempo de respuesta sufre un pequeño detrimento al trabajar el sistema con un
+		servidor menos, los valores obtenidos siguen siendo suficientemente buenos debido a los cambios que se han suscitado
+		en el entorno en que funciona el sistema, sin ninguna intervención de la auto reparación. En resumen, al configurar
+		los escenarios más prioritarios permitimos a Arco Iris tomar la decisión de qué escenario reparar en cada instante y
+		con qué estrategia, aquí vemos en un ejemplo concreto la potencia de definir prioridades entre escenarios:
 
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/testcase1_3_expRespTime.png}
 		\end{center}
 
-	Aquí podemos observar cómo el sistema desactiva un servidor en el preciso momento en que el entorno de la aplicación cambia y el tiempo de respuesta mejora por razones externas a la auto reparación, aprovechando esto Arco Iris logra satisfacer así un escenario que estaba sin cumplirse, sin perjudicar a ninguno de los escenarios que se estaban cunmpliendo hasta ese momento:
+		Aquí podemos observar cómo el sistema desactiva un servidor en el preciso momento en que el entorno de la aplicación
+		cambia y el tiempo de respuesta mejora por razones externas a la auto reparación, aprovechando esto Arco Iris logra
+		satisfacer así un escenario que estaba sin cumplirse, sin perjudicar a ninguno de los escenarios que se estaban
+		cunmpliendo hasta ese momento:
 		
 		\begin{center}
 			\includegraphics[width=1.00\textwidth]{images/testcase1_3_cost.png}
 		\end{center}		
 		
-		Esto nos muestra cómo pueden convivir varios escenarios, y cómo Arco Iris sabrá detectar cual será la estrategia
-que le permitirá maximizar la utilidad del sistema gracias a la configuración de escenarios y sus respectivas 
-prioridades.
+		Esto nos muestra cómo pueden convivir varios escenarios, y cómo Arco Iris sabrá detectar cual será la estrategia que
+		le permitirá maximizar la utilidad del sistema gracias a la configuración de escenarios y sus respectivas prioridades.
