@@ -35,3 +35,72 @@
 		manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el
 		procedimiento de auto reparación se vuelve más complejo, dificultando el seguimiento de las decisiones tomadas por el
 		\emph{framework}.
+
+	\subsection{Arco Iris comparado con Rainbow}
+
+		En la presente sección, repasaremos las ventajas que posee Arco Iris por sobre Rainbow. Se entrará en
+		detalle en los siguientes puntos básicos:
+
+		\begin{center}
+			\scriptsize{
+			\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+			\begin{tabularx}{\textwidth}{|X|X|X|X|}
+				\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en Arco Iris} & \textbf{Ventajas}\\
+				Información sobre restricciones & Guardadas en el modelo de la arquitectura (en ACME) & Mediante escenarios de
+				QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
+				Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de
+				calidad no tiene un modelado específico en Rainbow. & Los atributos de calidad son parte de los escenarios y se
+				consideran al momento de escoger una estrategia de reparación. & Los \emph{stakeholders} tienen la posibilidad de
+				cambiar esta información dinámicamente, afectando así la manera en que el \emph{framework} opera.\\
+				Decisiones sobre que reparaciones realizar & También se encuentran en archivos de configuración & Se evaluán los
+				escenarios cargados y como se afectan entre ellos. Luego se invoca a un módulo que decide qué reparaciones pueden
+				llevarse a cabo en ese contexto. & Posibilidad de extensión de dicho módulo para incluír complejas heurísticas que
+				aprendan de los efectos de reparaciones pasadas, etc.\\
+				Entorno de ejecución (e.g. Alta Carga)& Configurado estáticamente. Para modificarlo es necesario el reinicio del
+				\emph{framework}. & Se permite especificar distintos entornos de ejecución. El sistema cambia dinámicamente de
+				entorno sin necesidad de intervención humana ni reinicio del \emph{framework}. & Se agrega una nueva variable a
+				considerar para la elección de una estrategia, aumentando la probabilidad de que la misma se adeque mejor a la
+				situación actual del sistema.
+			\end{tabularx}
+			}
+		\end{center}
+		
+		\todo{JONY: Continuar desde acá explayando cada uno de los puntos de la tabla y si es posible agregar más}
+% 		\begin{sidewaystable}
+% 			\begin{center}
+% 					\footnotesize{
+% 					\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+% 					\begin{tabularx}{\textwidth}{|X|X|X|X|}
+% 						\label{ventajasArcoIris}
+% 						\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en Arco Iris} & \textbf{Ventajas}\\
+% 						Información sobre restricciones & Las restricciones son guardadas en el modelo de la arquitectura (expresado en
+% 						\mbox{ACME}) & Los \mbox{\emph{stakeholders}} usan una interfaz visual para expresar restricciones del sistema en
+% 						formato de escenarios de QAW. Esa información es analizada por Rainbow para tomar decisiones sobre las auto
+% 						reparaciones a realizar. & Las res\-tri\-ccio\-nes pue\-den ser a\-gre\-ga\-das y/o editadas dinámicamente y de
+% 						una manera simplificada para los \emph{stakeholders}.\\
+% 						Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de
+% 						calidad no tiene un modelado específico en Rainbow. Sí está presente en Znn, y son llamados llamados ``Quality
+% 						Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los atributos
+% 						suman 1) & Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de
+% 						ATAM. Un escenario puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que nuestra extensión
+% 						a Rainbow deberá hacer al momento de escoger una estrategia de reparación. & Los \emph{stakeholders} tienen la
+% 						posibilidad de cambiar esta información dinámicamente y consecuentemente, afectar la manera en que el
+% 						\emph{framework} opera.\\
+% 						Decisiones sobre que reparaciones realizar & Las reparaciones a realizar también se encuentran en archivos de
+% 						configuración & El sistema evalúa los escenarios cargados y como se afectan entre ellos. Luego invoca a un módulo
+% 						que decide qué reparaciones pueden llevarse a cabo de acuerdo a las restricciones. & Dicho módulo puede ser
+% 						extendido para incluír complejas heurísticas que aprendan de los efectos de reparaciones pasadas y puedan así
+% 						mejorar los resultados.\\
+% 						Entorno de ejecución (e.g. Alta Carga)& El entorno de ejecución es estáticamente configurado en un archivo de
+% 						configuración y no se modifica de acuerdo al estado dinámico del sistema que se intenta reparar. Para modificar
+% 						tal estático y limitado valor, es necesario el reinicio de Rainbow. & El modelo de Arco Iris permite al usuario
+% 						especificar distintos entornos de ejecución, los cuales tienen restricciones asociadas que se chequean
+% 						continuamente y que, de cumplirse, hacen que el sistema automáticamente se considere que está en otro entorno de
+% 						ejecución, afectando al algoritmo de decisión de estrategias de reparación. & Lo antedicho, agrega una nueva
+% 						arista a las variables consideradas al momento de elegir la mejor estrategia de reparación, aumentando las
+% 						probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación del sistema en
+% 						\emph{runtime}.
+% 					\end{tabularx}
+% 					}
+% 			\end{center}
+% 		\end{sidewaystable}
