@@ -1,38 +1,37 @@
 \section{Conclusiones}
 
 	\todo{Alcances de los resultados obtenidos, ventajas y desventajas, futuros trabajos, etc.}
-	\todo{Disertar sobre los roles que una metodología como la presentada puede jugar en el desarrollo de sistemas y
-sobre
-los beneficios que supone su uso.}
+	\todo{Disertar sobre los roles que una metodología como la presentada puede jugar en el desarrollo de sistemas y sobre
+	los beneficios que supone su uso.}
 
 	\subsection{Resúmen (copy paste de la propuesta, REVISAR!)}
 
-		En resumidas palabras, este trabajo añade las siguientes características a Rainbow, todas ellas tendientes a
-disponer de una herramienta genérica de auto reparación más poderosa y al mismo tiempo, a involucrar a los actores
-funcionales del sistema, puesto que este tipo de actores son los que saben (junto obviamente a arquitectos,
-diseñadores, etc.) como se debe comportar el sistema ante determinadas situaciones de operación (normal o no):
+		En resumidas palabras, este trabajo añade las siguientes características a Rainbow, todas ellas tendientes a disponer
+		de una herramienta genérica de auto reparación más poderosa y al mismo tiempo, a involucrar a los actores funcionales
+		del sistema, puesto que este tipo de actores son los que saben (junto obviamente a arquitectos, diseñadores, etc.)
+		como se debe comportar el sistema ante determinadas situaciones de operación (normal o no):
 		\begin{itemize}
 			\item Definir las siguientes extensiones:
 				\begin{itemize}
 						\item Posibilidad de modelar escenarios de atributos de calidad siguiendo los principios de ATAM y QAW.
 						\item Posibilidad de relacionar escenarios con componentes de la arquitectura.
-						\item Posibilidad de especificar prioridades relativas entre escenarios, a ser utilizadas en la elección
-de la estrategia de reparación a ejecutar.
+						\item Posibilidad de especificar prioridades relativas entre escenarios, a ser utilizadas en la elección de la
+						estrategia de reparación a ejecutar.
 						\item Posibilidad de modelar estrategias de reparación y asociarlas a escenarios.
 						\item Posibilidad de definir Entornos de ejecución para el sistema, los cuales tengan un papel clave en el
-algoritmo de elección de estrategias de reparación.
+						algoritmo de elección de estrategias de reparación.
 				\end{itemize}
-			\item Proponer los cambios en el \emph{Manejador de Reparaciones} y el \emph{Evaluador de Restricciones} de
-Rainbow, e implementar algunos casos prácticos que permitan mostrar cómo esta estrategia puede funcionar y llevar a un
-framework de adaptación más flexible y poderoso.
-			\item Evaluar la factibilidad de que esta nueva versión extendida de Rainbow sea compatible con la original,
-es decir que idealmente cualquier usuario que ya posea Rainbow funcionando en su sistema podría incorporar estas
-extensiones sin tener que modificar la configuración actual.
+			\item Proponer los cambios en el \emph{Manejador de Reparaciones} y el \emph{Evaluador de Restricciones} de Rainbow,
+			e implementar algunos casos prácticos que permitan mostrar cómo esta estrategia puede funcionar y llevar a un
+			framework de adaptación más flexible y poderoso.
+			\item Evaluar la factibilidad de que esta nueva versión extendida de Rainbow sea compatible con la original, es decir
+			que idealmente cualquier usuario que ya posea Rainbow funcionando en su sistema podría incorporar estas extensiones
+			sin tener que modificar la configuración actual.
 		\end{itemize}
 
 		Todo lo antedicho tiene como consecuencia que los usuarios tendrán más herramientas para influir sobre lo que el
-sistema decida hacer para auto repararse: sólo con modificar la información de los escenarios el sistema modificará su
-comportamiento. Como contrapartida, las extensiones propuestas en este trabajo hacen que el sistema se comporte de
-manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el
-procedimiento de auto reparación se vuelve más complejo, dificultando el seguimiento de las decisiones tomadas por el
-\emph{framework}.
+		sistema decida hacer para auto repararse: sólo con modificar la información de los escenarios el sistema modificará su
+		comportamiento. Como contrapartida, las extensiones propuestas en este trabajo hacen que el sistema se comporte de
+		manera más autónoma a medida que se agregan escenarios; esto paradójicamente le quita control al usuario, ya que el
+		procedimiento de auto reparación se vuelve más complejo, dificultando el seguimiento de las decisiones tomadas por el
+		\emph{framework}.

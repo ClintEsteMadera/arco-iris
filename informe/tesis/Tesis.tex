@@ -35,11 +35,11 @@
 \usepackage{listings}
 \lstset{
 %	language=XML,                         % choose the language of the code
- 	basicstyle=\scriptsize\ttfamily,      % the size of the fonts that are used for the code
-	keywordstyle=\scriptsize\ttfamily,    % NOTE that \ttfamily does NOT have a BOLD version     
-	commentstyle=\scriptsize\ttfamily,
-	stringstyle=\scriptsize\ttfamily,
-	identifierstyle=\scriptsize\ttfamily,
+ 	basicstyle=\scriptsize\tt,      % the size of the fonts that are used for the code
+	keywordstyle=\scriptsize\tt,    % NOTE that \ttfamily does NOT have a BOLD version     
+	commentstyle=\scriptsize\tt,
+	stringstyle=\scriptsize\tt,
+	identifierstyle=\scriptsize\tt,
 %	numbers=none,                         % where to put the line-numbers
 %	numberstyle=\scriptsize,              % the size of the fonts that are used for the line-numbers
 %	stepnumber=1,                         % the step between two line-numbers. If it is 1 each line will be numbered
@@ -72,6 +72,8 @@
 %	morecomment=[l]{//}                   % displays comments in italics (language dependent)
 %	escapeinside={\%}{)}                  % if you want to add a comment within your code
 }
+\usepackage{fancyvrb}                     % Fancy Verbatim
+\RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
 
 \selectlanguage{spanish}
 
