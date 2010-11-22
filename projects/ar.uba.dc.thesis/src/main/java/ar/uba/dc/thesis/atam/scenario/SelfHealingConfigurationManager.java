@@ -13,11 +13,12 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
+import ar.uba.dc.thesis.repository.SelfHealingConfigurationChangeListener;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 import ar.uba.dc.thesis.selfhealing.repair.SpecificRepairStrategies;
 
-public class SelfHealingConfigurationManager {
+public class SelfHealingConfigurationManager implements SelfHealingConfigurationChangeListener {
 
 	/** Holds a list of Scenarios keyed by their corresponding stimulus name */
 	private Map<Stimulus, List<SelfHealingScenario>> scenariosMap;
@@ -43,6 +44,7 @@ public class SelfHealingConfigurationManager {
 		super();
 		this.selfHealingConfigurationRepository = selfHealingConfigurationRepository;
 		this.loadScenarios();
+		this.selfHealingConfigurationRepository.register(this);
 	}
 
 	public List<Stimulus> getStimuli(String qualifiedPropertyName) {
@@ -92,6 +94,15 @@ public class SelfHealingConfigurationManager {
 
 	public Environment getDefaultEnvironment() {
 		return this.selfHealingConfigurationRepository.getDefaultEnvironment();
+	}
+
+	/**
+	 * Reload in-memory information about Scenarios every time the underlying configuration changes.
+	 */
+	@Override
+	public void selfHealingConfigurationHasChanged() {
+		logger.info("Reloading in-memory information about Self Healing Scenarios...");
+		this.loadScenarios();
 	}
 
 	protected void log(Level level, String txt, Throwable... t) {
@@ -148,5 +159,4 @@ public class SelfHealingConfigurationManager {
 		}
 		stimulusPerScenarioList.add(stimulus);
 	}
-
 }
