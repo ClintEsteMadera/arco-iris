@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
+import ar.uba.dc.thesis.repository.SelfHealingConfigurationChangeListener;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -39,5 +40,10 @@ public class TestSelfHealingConfigurationDao implements SelfHealingConfiguration
 
 	public List<Artifact> getAllArtifacts() {
 		return this.artifactDao.getAllArtifacts();
+	}
+
+	@Override
+	public void register(SelfHealingConfigurationChangeListener listener) {
+		// This method is not implemented yet
 	}
 }

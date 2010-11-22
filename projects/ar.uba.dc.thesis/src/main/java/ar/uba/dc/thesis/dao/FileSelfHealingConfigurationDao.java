@@ -1,8 +1,15 @@
 package ar.uba.dc.thesis.dao;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sa.rainbow.core.Rainbow;
 import org.sa.rainbow.util.Util;
 
@@ -10,20 +17,39 @@ import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfiguration;
 import ar.uba.dc.thesis.atam.scenario.persist.SelfHealingConfigurationPersister;
+import ar.uba.dc.thesis.common.FileChangeDetector;
+import ar.uba.dc.thesis.repository.SelfHealingConfigurationChangeListener;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class FileSelfHealingConfigurationDao implements SelfHealingConfigurationDao {
 
-	private static final String SCENARIO_SPEC_PATH = "customize.scenarios.path";
+	private static final String SELF_HEALING_CONFIG_FILE_NAME = Rainbow.property("customize.scenarios.path");
+
+	private static final File SELF_HEALING_CONFIG_FILE = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
+			SELF_HEALING_CONFIG_FILE_NAME);
+
+	private static final Log logger = LogFactory.getLog(FileSelfHealingConfigurationDao.class);
 
 	private SelfHealingConfiguration scenariosConfig;
 
+	private final Collection<SelfHealingConfigurationChangeListener> listeners;
+
 	public FileSelfHealingConfigurationDao() {
 		super();
-		File scenarioSpec = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
-				.property(SCENARIO_SPEC_PATH));
-		SelfHealingConfigurationPersister persister = new SelfHealingConfigurationPersister();
-		this.scenariosConfig = persister.readFromFile(scenarioSpec.getAbsolutePath());
+		this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
+		this.loadSelfHealingConfigurationFromFile();
+
+		TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
+			@Override
+			protected void onChange(File file) {
+				logger.info(SELF_HEALING_CONFIG_FILE_NAME + " has just changed, reloading Self Healing Configuration!");
+				loadSelfHealingConfigurationFromFile();
+				notifyListeners();
+			}
+		};
+
+		Timer timer = new Timer();
+		timer.schedule(task, new Date(), 5000); // repeat the check every 5 seconds
 	}
 
 	public List<SelfHealingScenario> getAllScenarios() {
@@ -45,5 +71,20 @@ public class FileSelfHealingConfigurationDao implements SelfHealingConfiguration
 
 	public List<Artifact> getAllArtifacts() {
 		return this.scenariosConfig.getArtifacts();
+	}
+
+	public void register(SelfHealingConfigurationChangeListener listener) {
+		this.listeners.add(listener);
+	}
+
+	protected void notifyListeners() {
+		for (SelfHealingConfigurationChangeListener listener : this.listeners) {
+			listener.selfHealingConfigurationHasChanged();
+		}
+	}
+
+	private void loadSelfHealingConfigurationFromFile() {
+		SelfHealingConfigurationPersister persister = new SelfHealingConfigurationPersister();
+		this.scenariosConfig = persister.readFromFile(SELF_HEALING_CONFIG_FILE.getAbsolutePath());
 	}
 }
