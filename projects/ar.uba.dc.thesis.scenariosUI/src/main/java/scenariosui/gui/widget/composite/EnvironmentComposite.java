@@ -11,7 +11,6 @@ import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
 import scenariosui.service.ScenariosUIManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
-import ar.uba.dc.thesis.common.Heuristic;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 
@@ -23,9 +22,7 @@ import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.DefaultLayoutFactory;
 import commons.gui.widget.composite.SimpleComposite;
 import commons.gui.widget.creation.binding.BindingInfo;
-import commons.gui.widget.creation.metainfo.RadioButtonMetainfo;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
-import commons.gui.widget.factory.RadioButtonFactory;
 import commons.gui.widget.factory.TextFactory;
 import commons.gui.widget.group.SimpleGroup;
 
@@ -71,11 +68,5 @@ public class EnvironmentComposite extends SimpleComposite {
 		CrudTableComposite crudTableComposite = new CrudTableComposite(tableMetaInfo, ConstraintDialog.class);
 		crudTableComposite.getTable().setVisibleRows(VISIBLE_ROWS);
 
-		RadioButtonMetainfo radioButtonMetainfo = RadioButtonMetainfo.create(conditionsGroup.getSwtGroup(),
-				ScenariosUILabels.ENVIRONMENT_HEURISTIC, new BindingInfo(underlyingEnvironment, "heuristic"),
-				this.readOnly);
-		radioButtonMetainfo.enumClass = Heuristic.class;
-		radioButtonMetainfo.numColumns = 1;
-		RadioButtonFactory.createRadioButtonGroup(radioButtonMetainfo);
 	}
 }
