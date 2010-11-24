@@ -99,7 +99,7 @@ public class SelfHealingScenario extends AtamScenario {
 			Constraint constraint = getResponseMeasure().getConstraint();
 			boolean isBroken = false;
 			String expValueAsString = NO_DATA;
-			Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
+			Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
 			if (expValue != null) {
 				expValueAsString = expValue.toString();
 				isBroken = !constraint.holds(expValue);
@@ -132,7 +132,7 @@ public class SelfHealingScenario extends AtamScenario {
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
 		String expValueAfterStrategyAsString = NO_DATA;
-		Double expValue = this.getExponentialValueForConstraint(constraint, rainbowModelWithScenarios);
+		Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
 		if (expValue != null) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
 			Double expValueAfterStrategy = expValue + concernDiffAfterStrategy;
@@ -164,16 +164,6 @@ public class SelfHealingScenario extends AtamScenario {
 		return exponentialQuantifierApplied;
 	}
 
-	private Double getExponentialValueForConstraint(Constraint constraint,
-			RainbowModelWithScenarios rainbowModelWithScenarios) {
-		Double result = null;
-		if (constraint instanceof NumericBinaryRelationalConstraint) {
-			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
-			result = (Double) rainbowModelWithScenarios.getProperty(numericConstraint.getExponentialPropertyName());
-		}
-		return result;
-	}
-
 	protected void log(Level level, String txt, Throwable... t) {
 		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
 	}
@@ -187,14 +177,4 @@ public class SelfHealingScenario extends AtamScenario {
 		return validationErrors;
 	}
 
-	// FIXME no deberia usarse???
-	private boolean isThereAnyEnvironmentApplicable(final RainbowModelWithScenarios rainbowModelWithScenarios) {
-		boolean thereIsAnEnvironmentApplicable = false;
-
-		for (Environment environment : this.getEnvironments()) {
-			thereIsAnEnvironmentApplicable = thereIsAnEnvironmentApplicable
-					|| environment.holds(rainbowModelWithScenarios);
-		}
-		return thereIsAnEnvironmentApplicable;
-	}
 }

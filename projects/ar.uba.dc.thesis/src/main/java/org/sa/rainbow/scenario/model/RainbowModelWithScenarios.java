@@ -51,6 +51,8 @@ import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
+import ar.uba.dc.thesis.rainbow.constraint.Constraint;
+import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class RainbowModelWithScenarios implements Model, ModelRepository {
@@ -515,6 +517,18 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 
 	public String getGenericOperatorName(String archOpName) {
 		return m_opMap.getProperty(archOpName);
+	}
+
+	public Double getExponentialValueForConstraint(Constraint constraint) {
+		Double result = null;
+		if (constraint instanceof NumericBinaryRelationalConstraint) {
+			NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
+			result = (Double) getProperty(numericConstraint.getExponentialPropertyName());
+		}
+		if (result == null) {
+			log(Level.WARN, "Exponential value not found for constraint: " + constraint);
+		}
+		return result;
 	}
 
 	private void updateExponentialAverage(String iden, double val) {

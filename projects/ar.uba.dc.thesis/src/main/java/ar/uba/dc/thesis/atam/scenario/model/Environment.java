@@ -9,16 +9,13 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.sa.rainbow.model.RainbowModel;
 import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 
-import ar.uba.dc.thesis.common.Heuristic;
 import ar.uba.dc.thesis.common.IdentifiableArcoIrisDomainObject;
 import ar.uba.dc.thesis.common.validation.Assert;
 import ar.uba.dc.thesis.common.validation.ValidationError;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.rainbow.constraint.Constraint;
-import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -39,12 +36,6 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 
 	private static final String VALIDATION_MSG_WEIGHTS_DO_NOT_SUM_ONE = "The sum of all weights should be between 0.99 and 1.00";
 
-	private static final String VALIDATION_MSG_NULL_HEURISTIC = "The heuristic to be used cannot be empty";
-
-	private static final Heuristic DEFAULT_HEURISTIC = Heuristic.MOST;
-
-	private static final int HISTORY_MAX_SIZE = 10;
-
 	@XStreamAsAttribute
 	private String name;
 
@@ -55,11 +46,6 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 	@XStreamOmitField
 	private Map<String, Double> weightsForRainbow;
 
-	private Heuristic heuristic;
-
-	@XStreamOmitField
-	private List<Boolean> history;
-
 	/**
 	 * Constructor
 	 */
@@ -67,8 +53,6 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 		super();
 		this.conditions = new ArrayList<Constraint>();
 		this.weights = createMapWithEquallyDistributedWeights();
-		this.heuristic = DEFAULT_HEURISTIC;
-		this.history = new ArrayList<Boolean>(HISTORY_MAX_SIZE);
 	}
 
 	/**
@@ -86,36 +70,10 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 	 *            otherwise, an exception will be thrown</b>
 	 */
 	public Environment(Long id, String name, List<? extends Constraint> conditions, SortedMap<Concern, Double> weights) {
-		this(id, name, conditions, weights, null, null);
-	}
-
-	/**
-	 * /** This constructor has the same effect than invoking
-	 * {@link #Environment(String, List, Map, Integer, Heuristic)} with the latest two parameters in <code>null</code>
-	 * 
-	 * @param id
-	 *            environment's id
-	 * @param name
-	 *            environment's name
-	 * @param conditions
-	 *            the conditions that need to hold in order to consider this Environment applicable
-	 * @param weights
-	 *            how Concerns are weightened in this particular Environment <b>NOTE: ALL concerns must be present,
-	 *            otherwise, an exception will be thrown</b>
-	 * @param historySize
-	 *            the size of the collection holding the latest N past evaluations of environment's constraints.
-	 * @param heuristic
-	 *            the Heuristic that needs to be used when weightening past evaluations of environment's constraints.
-	 */
-	public Environment(Long id, String name, List<? extends Constraint> conditions, SortedMap<Concern, Double> weights,
-			Integer historySize, Heuristic heuristic) {
 		super(id);
 		this.name = name;
 		this.conditions = conditions;
 		this.weights = weights;
-
-		this.history = new ArrayList<Boolean>(historySize == null ? HISTORY_MAX_SIZE : historySize);
-		this.heuristic = (heuristic == null) ? DEFAULT_HEURISTIC : heuristic;
 
 		this.validate();
 	}
@@ -144,22 +102,6 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 		this.weights = weights;
 	}
 
-	public Heuristic getHeuristic() {
-		return heuristic;
-	}
-
-	public void setHeuristic(Heuristic heuristic) {
-		this.heuristic = heuristic;
-	}
-
-	public List<Boolean> getHistory() {
-		return history;
-	}
-
-	public void setHistory(List<Boolean> history) {
-		this.history = history;
-	}
-
 	public Map<String, Double> getWeightsForRainbow() {
 		if (this.weightsForRainbow == null) {
 			this.weightsForRainbow = new HashMap<String, Double>(this.weights.size());
@@ -173,18 +115,15 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 	public boolean holds(RainbowModelWithScenarios rainbowModelWithScenarios) {
 		boolean holds = true;
 		for (Constraint constraint : this.getConditions()) {
-			if (constraint instanceof NumericBinaryRelationalConstraint) {
-				NumericBinaryRelationalConstraint numericConstraint = (NumericBinaryRelationalConstraint) constraint;
-				Number eavg = (Number) rainbowModelWithScenarios.getProperty(RainbowModel.EXP_AVG_KEY
-						+ numericConstraint.getArtifact().getName() + "." + numericConstraint.getProperty());
-				holds = holds && eavg != null && numericConstraint.holds(eavg);
+			Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
+			if (expValue != null) {
+				holds = holds && constraint.holds(expValue);
 			} else {
 				holds = false;
+				break;
 			}
 		}
-
-		this.addToHistory(holds);
-		return this.heuristic.run(this.history);
+		return holds;
 	}
 
 	@Override
@@ -194,7 +133,7 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 
 	@Override
 	protected String[] getEqualsAndHashCodeExcludedFields() {
-		return new String[] { "weightsForRainbow", "history" };
+		return new String[] { "weightsForRainbow" };
 	}
 
 	@Override
@@ -206,8 +145,6 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 		Assert.notBlank(this.name, VALIDATION_MSG_NAME, validationErrors);
 
 		Assert.isValid(this.conditions, validationErrors);
-
-		Assert.notNull(this.heuristic, VALIDATION_MSG_NULL_HEURISTIC, validationErrors);
 
 		this.validateWeights(validationErrors);
 
@@ -250,19 +187,6 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 		if (!definedConcerns.containsAll(allPossibleConcerns)) {
 			validationErrors.add(new ValidationError(VALIDATION_MSG_INVALID_WEIGHTS));
 		}
-	}
-
-	/**
-	 * Adds the value to the history. If the history has reached its maximum size, then the oldest value is overriden
-	 * (FIFO Cache)
-	 * 
-	 * @param holds
-	 */
-	private void addToHistory(boolean holds) {
-		if (this.history.size() == HISTORY_MAX_SIZE) {
-			this.history.remove(0);
-		}
-		this.history.add(holds);
 	}
 
 	protected static SortedMap<Concern, Double> createMapWithEquallyDistributedWeights() {

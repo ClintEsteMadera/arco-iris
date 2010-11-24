@@ -29,7 +29,6 @@
           <double>0.333</double>
         </entry>
       </weights>
-      <heuristic>MOST</heuristic>
     </environment>
     <environment id="1" name="HIGH LOAD">
       <conditions>
@@ -56,7 +55,6 @@
           <double>0.1</double>
         </entry>
       </weights>
-      <heuristic>MOST</heuristic>
     </environment>
   </environments>
   <scenarios>
