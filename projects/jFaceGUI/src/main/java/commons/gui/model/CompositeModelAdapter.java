@@ -7,12 +7,10 @@ import commons.gui.model.types.EditType;
  */
 public class CompositeModelAdapter<T> implements CompositeModel<T> {
 
-	@SuppressWarnings("unchecked")
 	public CompositeModelAdapter(Class<T> clazz) {
 		this(new ValueHolder<T>(clazz));
 	}
 
-	@SuppressWarnings("unchecked")
 	public CompositeModelAdapter(T value) {
 		this(new ValueHolder<T>(value));
 	}
@@ -30,8 +28,8 @@ public class CompositeModelAdapter<T> implements CompositeModel<T> {
 		if (this.m_valueChangeListener == null) {
 			this.m_valueChangeListener = new ValueChangeListener() {
 				public void valueChange(ValueChangeEvent ev) {
-					CompositeModelAdapter.this.complexListeners.fireChange("", ev.getOldValue(), ev.getNewValue(), ev
-							.isCanceling());
+					CompositeModelAdapter.this.complexListeners.fireChange("", ev.getOldValue(), ev.getNewValue(),
+							ev.isCanceling());
 				}
 			};
 			this.addValueChangeListener(this.m_valueChangeListener);

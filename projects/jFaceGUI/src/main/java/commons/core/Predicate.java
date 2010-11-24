@@ -1,6 +1,5 @@
 package commons.core;
 
-@SuppressWarnings("unchecked")
 public interface Predicate<T> {
 
 	public static final Predicate TRUE = new Predicate<Object>() {

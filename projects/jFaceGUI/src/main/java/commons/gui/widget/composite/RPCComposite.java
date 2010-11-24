@@ -1,6 +1,7 @@
 package commons.gui.widget.composite;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -24,18 +25,30 @@ import commons.utils.SbaStringUtils;
 
 /**
  * Modela los campos de RPC con las restricciones numéricas necesarias y el layout usual para este tipo de campos.
- * 
- * 
  */
 public class RPCComposite extends SimpleComposite implements ValueModel<String> {
+
+	private Text nro;
+
+	private Text folio;
+
+	private Text libro;
+
+	private Text tomo;
+
+	private BindingInfo binding;
+
+	private List<ValueChangeListener<String>> valueListeners;
+
+	private static final EditType<String> editType = new EditType<String>(String.class);
+
+	private static final String NULL_STRING = "";
 
 	public RPCComposite(Composite parent, CompositeModel model, String propertyName, boolean readOnly) {
 		super(parent, readOnly, 1);
 
-		this.valueListeners = new ArrayList<ValueChangeListener>();
-
+		this.valueListeners = new ArrayList<ValueChangeListener<String>>();
 		this.binding = new BindingInfo(model, propertyName);
-
 		this.nro = this.createTextBox(6);
 		createSeparatorLabel();
 		this.folio = this.createTextBox(3);
@@ -47,10 +60,12 @@ public class RPCComposite extends SimpleComposite implements ValueModel<String> 
 		this.binding.bind(this);
 	}
 
+	@Override
 	public String getValue() {
 		return SbaStringUtils.concat(nro.getText(), folio.getText(), libro.getText(), tomo.getText());
 	}
 
+	@Override
 	public void setValue(String value) {
 		this.clear();
 
@@ -69,23 +84,27 @@ public class RPCComposite extends SimpleComposite implements ValueModel<String> 
 		}
 	}
 
+	@Override
 	public EditType<String> getValueType() {
 		return editType;
 	}
 
+	@Override
 	public void notifyChange() {
-		ValueChangeEvent ev = new ValueChangeEvent<String>(this, null, null);
+		ValueChangeEvent<String> ev = new ValueChangeEvent<String>(this, null, null);
 
-		for (ValueChangeListener l : this.valueListeners) {
-			l.valueChange(ev);
+		for (ValueChangeListener<String> listener : this.valueListeners) {
+			listener.valueChange(ev);
 		}
 	}
 
-	public void addValueChangeListener(ValueChangeListener listener) {
+	@Override
+	public void addValueChangeListener(ValueChangeListener<String> listener) {
 		valueListeners.add(listener);
 	}
 
-	public void removeValueChangeListener(ValueChangeListener listener) {
+	@Override
+	public void removeValueChangeListener(ValueChangeListener<String> listener) {
 		valueListeners.remove(listener);
 	}
 
@@ -159,20 +178,4 @@ public class RPCComposite extends SimpleComposite implements ValueModel<String> 
 			}
 		});
 	}
-
-	private Text nro;
-
-	private Text folio;
-
-	private Text libro;
-
-	private Text tomo;
-
-	private BindingInfo binding;
-
-	private ArrayList<ValueChangeListener> valueListeners;
-
-	private static final EditType<String> editType = new EditType<String>(String.class);
-
-	private static final String NULL_STRING = "";
 }

@@ -19,7 +19,6 @@ public abstract class MenuCreator {
 
 	protected abstract void createMenu(MenuManager menuManager);
 
-	@SuppressWarnings("unchecked")
 	protected void addMenuItem(MenuManager menu, Object menutext, GuiAction guiAction) {
 		this.addMenuItem(menu, menutext, guiAction, true);
 	}

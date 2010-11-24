@@ -34,7 +34,6 @@ public class DateTimeBindingFactory extends ValueModelAdapterBindingFactory {
 		return binding;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
 		return new DateTimeValueModel((DateTime) component);

@@ -6,7 +6,6 @@ import commons.gui.widget.RadioButtonGroup;
 
 public class RadioButtonGroupBindingFactory extends ValueModelAdapterBindingFactory {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
 		return new RadioButtonGroupValueModel((RadioButtonGroup) component);

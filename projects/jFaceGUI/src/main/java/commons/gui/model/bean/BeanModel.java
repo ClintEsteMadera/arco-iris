@@ -17,11 +17,11 @@ import commons.gui.model.collection.DefaultListValueModel;
  * bean. Estos modelos tienen las siguientes características: <br>
  * <br>
  * <ul>
- * <li> En el caso de una propiedad "simple" se crea un sub-modelo que utiliza
- * {@link jface.gui.gui.model.bean.BeanAttributes} para acceder a la propiedad. </li>
+ * <li>En el caso de una propiedad "simple" se crea un sub-modelo que utiliza
+ * {@link jface.gui.gui.model.bean.BeanAttributes} para acceder a la propiedad.</li>
  * <br>
- * <li> En el caso de una propiedad de tipo "lista" (<code>java.util.List</code> o <code>Object[]</code>) se crea
- * un sub-modelo de tipo {@link sba.ui.model.collection.ListValueModel} </li>
+ * <li>En el caso de una propiedad de tipo "lista" (<code>java.util.List</code> o <code>Object[]</code>) se crea un
+ * sub-modelo de tipo {@link sba.ui.model.collection.ListValueModel}</li>
  * </ul>
  * 
  * @see jface.gui.gui.model.bean.BeanAttribute
@@ -34,7 +34,6 @@ public class BeanModel<T> extends AttributesModel<T> {
 	 * @param clazz
 	 *            Clase de los objetos del modelo.
 	 */
-	@SuppressWarnings("unchecked")
 	public BeanModel(Class<T> clazz) {
 		super(clazz, new BeanAttributes(clazz));
 	}

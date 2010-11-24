@@ -27,7 +27,6 @@ public class NestedModel<T> implements CompositeModel<T> {
 		this.valueChange.addValueListener(listener);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void notifyChange() {
 		this.valueChange.fireValueChange();
 	}

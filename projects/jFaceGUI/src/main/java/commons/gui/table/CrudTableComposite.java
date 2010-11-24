@@ -23,7 +23,7 @@ import commons.utils.Clonator;
 /**
  * This composite provides CRUD functionality
  */
-public class CrudTableComposite extends SimpleComposite {
+public class CrudTableComposite<T> extends SimpleComposite {
 
 	public static final int ADD_BUTTON = (1 << 0);
 
@@ -51,25 +51,25 @@ public class CrudTableComposite extends SimpleComposite {
 
 	private ListValueModel model;
 
-	private GenericTable table;
+	private GenericTable<T> table;
 
-	public CrudTableComposite(TableMetainfo metainfo, EditHandler handler) {
+	public CrudTableComposite(TableMetainfo<T> metainfo, EditHandler<T> handler) {
 		this(metainfo, handler, DEFAULT_BUTTONS);
 	}
 
 	@SuppressWarnings("unchecked")
-	public CrudTableComposite(TableMetainfo metainfo, Class editDialogClass, int buttonFlags) {
+	public CrudTableComposite(TableMetainfo<T> metainfo, Class<T> editDialogClass, int buttonFlags) {
 		this(metainfo, new GenericEditHandler(metainfo.parent.getShell(), editDialogClass, metainfo.itemClass),
 				buttonFlags);
 	}
 
 	@SuppressWarnings("unchecked")
-	public CrudTableComposite(TableMetainfo metainfo, Class editDialogClass) {
+	public CrudTableComposite(TableMetainfo<T> metainfo, Class<T> editDialogClass) {
 		this(metainfo, new GenericEditHandler(metainfo.parent.getShell(), editDialogClass, metainfo.itemClass),
 				DEFAULT_BUTTONS);
 	}
 
-	public CrudTableComposite(TableMetainfo metainfo, EditHandler handler, int buttonFlags) {
+	public CrudTableComposite(TableMetainfo<T> metainfo, EditHandler<T> handler, int buttonFlags) {
 
 		super(metainfo.parent, metainfo.readOnly, 1);
 
@@ -78,7 +78,7 @@ public class CrudTableComposite extends SimpleComposite {
 		Composite parent = metainfo.parent; // save this parent since we will use "this" as the table's parent
 		metainfo.parent = this;
 
-		this.table = new GenericTable(metainfo);
+		this.table = new GenericTable<T>(metainfo);
 
 		metainfo.parent = parent; // restore the original parent within the metainfo
 
