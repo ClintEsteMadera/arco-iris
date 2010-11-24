@@ -20,7 +20,6 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar" sourcepath="lib/lib-src/commons-lang-2.4-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/ejb-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/framework_app-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/sba-security-0.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/sba-session-1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/spring-1.2.8.jar" sourcepath="lib/lib-src/spring-src-1.2.8.zip"/>
