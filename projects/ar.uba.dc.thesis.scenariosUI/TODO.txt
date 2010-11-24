@@ -1,5 +1,7 @@
 MUST HAVES:
 
+- Renombrar todo usando el brand "Arco Iris"
+
 - Ver por qué en campos numericos no se puede poner negativos
 
 - ver como se empaqueta tanto esta aplicacion como nuestra extension a Rainbow (ver http://launch4j.sourceforge.net/)

@@ -1,7 +1,6 @@
 package commons.validation;
 
 import commons.annotations.DataTypeAnnotation;
-import commons.validation.ValidationResult;
 
 public class ValidateDataTypeHandler implements ValidationHandler<DataTypeAnnotation> {
 

@@ -6,9 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 
-import sba.common.session.SessionHelper;
-
 import commons.gui.action.GuiAction;
+import commons.session.SessionHelper;
 
 /**
  * This Authorization Manager uses the roles of the connected user to grant or deny access to some action(s)in the GUI.
