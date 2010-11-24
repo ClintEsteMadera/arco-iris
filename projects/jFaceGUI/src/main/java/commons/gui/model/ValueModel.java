@@ -18,7 +18,7 @@ import commons.gui.model.types.EditType;
  * <li>Obtener meta-información asociada al modelo</li>
  * </ul>
  */
-public interface ValueModel<T> extends ValueChangeNotifier {
+public interface ValueModel<T> extends ValueChangeNotifier<T> {
 	/**
 	 * Asigna un valor al modelo
 	 * 

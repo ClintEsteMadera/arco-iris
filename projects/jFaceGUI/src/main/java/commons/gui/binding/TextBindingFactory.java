@@ -7,7 +7,6 @@ import commons.gui.model.binding.ValueModelAdapterBindingFactory;
 
 public class TextBindingFactory extends ValueModelAdapterBindingFactory {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
 		return new TextValueModel((Control) component, model.getValueType());

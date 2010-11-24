@@ -23,7 +23,6 @@ public abstract class ComboFactory {
 		return (ComboEditor) control.getData(COMBO_EDITOR_KEY);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T extends Enum> Control createCombo(ComboMetainfo comboMetainfo) {
 		Control combo = createControl(comboMetainfo);
 

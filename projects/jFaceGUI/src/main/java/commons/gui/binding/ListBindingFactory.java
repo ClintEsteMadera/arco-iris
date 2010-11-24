@@ -7,7 +7,6 @@ import commons.gui.model.binding.ValueModelAdapterBindingFactory;
 
 public class ListBindingFactory extends ValueModelAdapterBindingFactory {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
 		return createAdapterForEditor(model, (List) component);

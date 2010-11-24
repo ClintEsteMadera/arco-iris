@@ -33,7 +33,6 @@ public class ValidationContext {
 		this.enumPropertiesDirectory = enumPropertiesDirectory;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addGenericValidator(Class cl) {
 		this.addValidator(cl, new GenericValidator(cl, this));
 	}

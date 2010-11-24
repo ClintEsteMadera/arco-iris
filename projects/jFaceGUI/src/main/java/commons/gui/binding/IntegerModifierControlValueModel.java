@@ -27,7 +27,7 @@ import commons.gui.widget.adapter.IntegerModifierControl;
  */
 public class IntegerModifierControlValueModel implements ValueModel<Double>, WidgetContainer {
 
-	private List<ValueChangeListener<?>> listeners;
+	private List<ValueChangeListener<Double>> listeners;
 
 	private SelectionListener selectionListener;
 
@@ -44,7 +44,7 @@ public class IntegerModifierControlValueModel implements ValueModel<Double>, Wid
 
 		this.control = control;
 
-		this.listeners = new ArrayList<ValueChangeListener<?>>();
+		this.listeners = new ArrayList<ValueChangeListener<Double>>();
 
 		this.selectionListener = new SelectionAdapter() {
 			@Override
@@ -55,21 +55,21 @@ public class IntegerModifierControlValueModel implements ValueModel<Double>, Wid
 	}
 
 	public final void notifyChange() {
-		final ValueChangeEvent changeEvent = new ValueChangeEvent(this, null, this.getValue());
+		final ValueChangeEvent<Double> changeEvent = new ValueChangeEvent<Double>(this, null, this.getValue());
 
-		for (ValueChangeListener listener : listeners) {
+		for (ValueChangeListener<Double> listener : listeners) {
 			listener.valueChange(changeEvent);
 		}
 	}
 
-	public void addValueChangeListener(ValueChangeListener listener) {
+	public void addValueChangeListener(ValueChangeListener<Double> listener) {
 		listeners.add(listener);
 		if (listeners.size() == 1) {
 			this.control.addSelectionListener(this.selectionListener);
 		}
 	}
 
-	public void removeValueChangeListener(ValueChangeListener listener) {
+	public void removeValueChangeListener(ValueChangeListener<Double> listener) {
 		listeners.remove(listener);
 		if (listeners.isEmpty()) {
 			this.control.removeSelectionListener(this.selectionListener);

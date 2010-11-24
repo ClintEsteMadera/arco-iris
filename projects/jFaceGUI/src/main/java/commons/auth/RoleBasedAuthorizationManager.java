@@ -13,7 +13,6 @@ import commons.gui.action.GuiAction;
 /**
  * This Authorization Manager uses the roles of the connected user to grant or deny access to some action(s)in the GUI.
  */
-@SuppressWarnings("unchecked")
 public class RoleBasedAuthorizationManager implements AuthorizationManager {
 
 	private Map<String, String[]> permissions = new HashMap<String, String[]>();

@@ -59,7 +59,6 @@ public class ValueModelBinding implements ValueBinding {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void bind() {
 		if (BindingInitializationMode.UpdateComponent.equals(initMode)) {
 			updateComponent(false);
@@ -138,7 +137,6 @@ public class ValueModelBinding implements ValueBinding {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void onValueChanged(ValueChangeEvent ev) {
 		// si no es una actualizacion que provenga del modelo o de una
 		// cancelacion

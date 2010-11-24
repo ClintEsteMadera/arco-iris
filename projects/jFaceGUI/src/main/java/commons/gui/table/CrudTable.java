@@ -157,7 +157,6 @@ public class CrudTable<T> extends GenericTable<T> {
 
 	protected IDoubleClickListener getReadOnlyDoubleClickListener(final RowSelectionHandler rowSelectionHandler) {
 		return new IDoubleClickListener() {
-			@SuppressWarnings("unchecked")
 			public void doubleClick(DoubleClickEvent event) {
 				viewButton.notifyListeners(SWT.Selection, null);
 			}

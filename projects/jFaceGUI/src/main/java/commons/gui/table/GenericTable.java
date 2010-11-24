@@ -40,7 +40,6 @@ public class GenericTable<T> extends TableViewer {
 
 	public static final int DEFAULT_TABLE_STYLE = SWT.FULL_SELECTION | SWT.BORDER;
 
-	@SuppressWarnings("unchecked")
 	private HashMap<Button, List<Predicate>> buttonPredicates = new HashMap<Button, List<Predicate>>();
 
 	private static int COLUMN_MARGINS = 20;
@@ -212,7 +211,6 @@ public class GenericTable<T> extends TableViewer {
 		addAdditionalButton(button, Predicate.NOT_NULL);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addAdditionalButton(Button button, Predicate predicate) {
 		List<Predicate> predicates = this.buttonPredicates.get(button);
 		if (predicates == null) {
@@ -246,7 +244,6 @@ public class GenericTable<T> extends TableViewer {
 		this.smartAlignmentDeduction = smartAlignmentDeduction;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void enableButtons(Object element) {
 		for (Entry<Button, List<Predicate>> e : this.buttonPredicates.entrySet()) {
 			applyEnabledState(e.getKey(), e.getValue());
@@ -263,7 +260,6 @@ public class GenericTable<T> extends TableViewer {
 		this.applyEnabledState(button, Collections.singletonList(Predicate.TRUE));
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void applyEnabledState(Button button, List<Predicate> predicates) {
 		T selectedElement = this.getSelectedElement();
 

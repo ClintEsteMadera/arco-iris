@@ -6,7 +6,6 @@ import commons.gui.widget.ComboEditor;
 
 public class ComboBindingFactory extends ValueModelAdapterBindingFactory {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ValueModel createAdapter(ValueModel model, Object component) {
 		return createAdapterForEditor(model, (ComboEditor) component);
