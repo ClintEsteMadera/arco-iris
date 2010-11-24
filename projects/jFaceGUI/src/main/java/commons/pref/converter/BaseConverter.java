@@ -1,7 +1,6 @@
 package commons.pref.converter;
 
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-
 import commons.gui.util.PageHelper;
 import commons.properties.EnumProperty;
 import commons.properties.EnumPropertyDirectory;

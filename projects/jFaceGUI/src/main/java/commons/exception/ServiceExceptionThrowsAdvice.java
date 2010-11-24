@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.aop.ThrowsAdvice;
 
-import sba.common.security.exception.AuthenticationException;
+import commons.security.exception.AuthenticationException;
 
 /**
  * Clase encargada de interceptar todas las excepciones y asegurarse que se retorne un mensaje adecuado para ser

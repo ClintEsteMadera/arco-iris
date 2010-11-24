@@ -28,8 +28,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import sba.common.session.SessionHelper;
-
 import commons.auth.AuthenticationManager;
 import commons.auth.AuthorizationManager;
 import commons.auth.DummyAuthenticationManager;
@@ -48,6 +46,7 @@ import commons.properties.CommonConstants;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 import commons.properties.EnumPropertyDirectory;
+import commons.session.SessionHelper;
 
 public abstract class MainWindow extends ApplicationWindow {
 

@@ -2,8 +2,6 @@ package commons.properties;
 
 import java.util.Properties;
 
-import commons.properties.EnumProperty;
-
 public enum CommonConstants implements EnumProperty {
 
 	/*

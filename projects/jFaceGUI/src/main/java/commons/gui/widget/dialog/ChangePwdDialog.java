@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.springframework.util.Assert;
 
-import sba.common.session.SessionHelper;
-
 import commons.auth.AuthenticationManager;
 import commons.exception.ValidationException;
 import commons.gui.GuiStyle;
@@ -28,6 +26,7 @@ import commons.gui.widget.factory.LabelFactory;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
 import commons.properties.FakeEnumProperty;
+import commons.session.SessionHelper;
 import commons.validation.ValidationError;
 
 public class ChangePwdDialog extends Dialog {
@@ -49,7 +48,7 @@ public class ChangePwdDialog extends Dialog {
 	private AuthenticationManager authManager;
 
 	private static final Log log = LogFactory.getLog(ChangePwdDialog.class);
-	
+
 	public ChangePwdDialog(Shell parentShell, String username, boolean forceChange, AuthenticationManager authManager) {
 		super(parentShell);
 		super.setShellStyle(SWT.TITLE);
@@ -155,10 +154,10 @@ public class ChangePwdDialog extends Dialog {
 			MessageDialog.openInformation(super.getShell(), "Cambio de contraseña",
 					"Se ha cambiado la contraseña exitosamente.");
 		} catch (Exception ex) {
-			log.error("Error en cambio de password del usuario " + this.username + ": " + ex.getMessage(), ex
-					.getCause());
-			final Status status = new Status(IStatus.ERROR, "dummy plugin", IStatus.ERROR, ex.getLocalizedMessage(), ex
-					.getCause());
+			log.error("Error en cambio de password del usuario " + this.username + ": " + ex.getMessage(),
+					ex.getCause());
+			final Status status = new Status(IStatus.ERROR, "dummy plugin", IStatus.ERROR, ex.getLocalizedMessage(),
+					ex.getCause());
 			ErrorDialog.openError(super.getShell(), "Error", null, status);
 		}
 		return operationSuccessful;
