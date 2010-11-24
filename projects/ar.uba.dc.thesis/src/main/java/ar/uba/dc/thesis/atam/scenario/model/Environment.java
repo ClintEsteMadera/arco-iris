@@ -260,10 +260,9 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 	 */
 	private void addToHistory(boolean holds) {
 		if (this.history.size() == HISTORY_MAX_SIZE) {
-			this.history.set(0, holds);
-		} else {
-			this.history.add(holds);
+			this.history.remove(0);
 		}
+		this.history.add(holds);
 	}
 
 	protected static SortedMap<Concern, Double> createMapWithEquallyDistributedWeights() {
