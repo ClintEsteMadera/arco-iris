@@ -349,9 +349,9 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		Strategy selectedStrategy = null;
 
-		// idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
+		// TODO idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
 		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double scenariosSolutionWeight = SCENARIOS_BASED_SOLUTION_WEIGHT;
+		double arcoIrisSolutionWeight = SCENARIOS_BASED_SOLUTION_WEIGHT;
 		double rainbowSolutionWeight = RAINBOW_SOLUTION_WEIGHT;
 
 		for (Stitch stitch : m_repertoire) {
@@ -364,34 +364,37 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			for (Strategy currentStrategy : stitch.script.strategies) {
 				// TODO Esto por el momento no funciona ya que hay que agregar una property a rainbow.properties:
 				// customize.utility.trackStrategy
-				// TODO Ver si esto no es muy fuerte (dilapidar una estrategia para siempre!!!)
 				if (!candidateStrategies.contains(currentStrategy.getName())
 						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "not selected in broken scenarios"
 							: "failure rate threshold reached";
 					doLog(Level.INFO, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
 					continue; // don't consider this Strategy
+					// TODO Ver si esto no es muy fuerte (dilapidar una estrategia para siempre!!!)
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
 
-				double strategyScore4Scenarios = 0;
-				if (scenariosSolutionWeight > 0) {
-					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " with scenarios approach...");
+				double strategyScore4ArcoIris = 0;
+				if (arcoIrisSolutionWeight > 0) {
+					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Arco Iris' approach...");
 
-					strategyScore4Scenarios = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
+					strategyScore4ArcoIris = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
 							new ScenarioBrokenDetector4StrategyScoring(m_model, currentStrategy));
-					doLog(Level.INFO, "Scenarios approach score for strategy " + currentStrategy.getName() + ": "
-							+ strategyScore4Scenarios);
+					doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach) : "
+							+ strategyScore4ArcoIris);
 				}
 
 				double strategyScore4Rainbow = 0;
 				if (rainbowSolutionWeight > 0) {
-					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " with Rainbow approach...");
+					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Rainbow's approach...");
 					Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
 					strategyScore4Rainbow = scoreStrategyUsingRainbow(currentStrategy, weights4Rainbow);
+
+					doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Rainbow approach) : "
+							+ strategyScore4Rainbow);
 				}
 
-				double weightedScore = strategyScore4Scenarios * scenariosSolutionWeight + strategyScore4Rainbow
+				double weightedScore = strategyScore4ArcoIris * arcoIrisSolutionWeight + strategyScore4Rainbow
 						+ rainbowSolutionWeight;
 
 				if (weightedScore > maxScore4Strategy) {
@@ -516,7 +519,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	/**
-	 * The Rainbow's calculus for the score of a strategy
+	 * Rainbow's algorithm for calculate the score of a strategy
 	 * 
 	 * @return the score of the strategy calculated by Rainbow
 	 */
