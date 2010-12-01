@@ -138,6 +138,10 @@
 			del componente original que soporta tanto invocaciones desde el \emph{Architecture Evaluator} original de Rainbow,
 			como así también invocaciones con un conjunto de escenarios detectados como ``rotos'' a los cuales debe intentar
 			reparar considerando diversas variables como por ejemplo sus prioridades relativas.
+		
+		\subsubsection{Actualización dinámica de cambios de configuración}
+
+			\todo{JONY: Explicar con detalle la implementación del refresco de configuración}
 
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
 
@@ -338,12 +342,15 @@
 			circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular, en tal caso, de no
 			especificar el entorno no podremos darle mayor peso a la \emph{performance} por sobre otros \emph{concerns}, quedando
 			únicamente la opción de aumentar la prioridad del escenario tergiverzando así dicha información, ya que en realidad lo
-			óptimo era darle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
+			óptimo era darle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
+
 
 			En definitiva, al establecer que el escenario aplica para cualquier entorno, Arco Iris estará interpretando que el
 			entorno carece de importancia, por lo tanto se hacen a un lado los pesos de los \emph{concerns}, por lo cual Arco Iris
 			distribuirá equitativamente la importancia entre los mismos, lo cual sería equivalente a que no exista el concepto de
-			\emph{concerns}.
+			\emph{concerns}.
+
+
 			La estructura del entorno estará formada de la siguiente manera:
 			\begin{itemize}
 				\item Un conjunto de condiciones, y
@@ -359,13 +366,15 @@
 
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
 			simplemente implementando la interface \verb@Contraint@ \footnote{Dicha implementación deberá ser agregada al enumerado
-			ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
+			ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
+
 			\todo{JONY: Explicamos que Constraint define el metodo boolean holds(Number value) y que la unica implementacion es
 			NumericBinaryRelationalConstraint???}
 
 			Pasemos al mapa presente en la estructura del entorno, el mismo deberá contener todos los \emph{concerns}  definidos
 			para el sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la
-			preponderencia relativa entre los \emph{concerns}.
+			preponderencia relativa entre los \emph{concerns}.
+
 			A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente chequear las condiciones definidas
 			para el entorno tomando los datos actuales del sistema, ya que deberíamos eliminar el ruido provocados por los
 			\emph{outlier}, pues para que el sistema se encuentre en un determinado estado es lógico esperar que dicho estado se
@@ -387,7 +396,8 @@
 			muy dinámicos o en los cuales la adaptación pueda resultar muy costosa. En el caso contrario, o sea, al configurar un
 			alpha muy elevado, es probable que el sistema se vea afectado por unos pocos valores que estén muy por fuera del rango
 			considerado como normal, aunque de no ser costoso lanzar una adaptación o volverla atrás, puede llegar a lograrse un
-			rendimiento muy óptimo y dinámico del sistema.
+			rendimiento muy óptimo y dinámico del sistema.
+
 
 			\todo{Buscar definicion de Exponential Average para ver si conviene explicar aca}
 
