@@ -46,12 +46,17 @@
 			\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
 			\begin{tabularx}{\textwidth}{|X|X|X|X|}
 				\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en \mbox{Arco Iris}} &
-				\textbf{Ventajas}\\ Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{ACME}) &
-				Mediante escenarios de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
-				Relación entre \emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de
-				calidad no tiene un modelado específico en Rainbow. & Los atributos de calidad son parte de los escenarios y se
-				consideran al momento de escoger una estrategia de reparación. & Los \emph{stakeholders} tienen la posibilidad de
-				cambiar esta información dinámicamente, afectando así la manera en que el \emph{framework} opera.\\
+				\textbf{Ventajas}\\
+				Rapidez en el cambio de configuración & La configuración se lee una vez al principio y no puede ser cambiada
+				dinámicamente mientras Rainbow está funcionando. & Los escenarios se actualizan dinámicamente en \emph{runtime} al
+				ser modificados. & Una gran parte de los cambios de configuración pasan a impactarse instantáneamente, evitando
+				reiniciar el sistema para cambiar la configuración\\
+				Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{ACME}) & Mediante escenarios
+				de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\ Relación entre
+				\emph{concerns} arquitecturales (e.g. tiempo de respuesta) & El concepto de atributo de calidad no tiene un modelado
+				específico en Rainbow. & Los atributos de calidad son parte de los escenarios y se consideran al momento de escoger
+				una estrategia de reparación. & Los \emph{stakeholders} tienen la posibilidad de cambiar esta información
+				dinámicamente, afectando así la manera en que el \emph{framework} opera.\\
 				Decisiones sobre que reparaciones realizar & También se encuentran en archivos de configuración & Se evaluán los
 				escenarios cargados y como se afectan entre ellos. Luego se invoca a un módulo que decide qué reparaciones pueden
 				llevarse a cabo en ese contexto. & Posibilidad de extensión de dicho módulo para incluír complejas heurísticas que
@@ -65,34 +70,63 @@
 			}
 		\end{center}
 		
+		\subsubsection{Rapidez en el cambio de configuración}
+			Como se ha mencionado anteriormente, Arco Iris (es decir, Rainbow con las extensiones realizadas en este trabajo)
+			trabaja utilizando:
+			\begin{itemize}
+				\item por un lado, una configuración de \emph{self healing} en formato XML, producida ya sea por la herramientas
+				``Scenarios UI'' o bien manualmente; la cual incluye: escenarios de QAW, entornos de ejecución y \emph{artifacts}.
+				\item por otro, una batería de archivos de configuración heredados de Rainbow, en distintos formatos: stitch, ACME,
+				\emph{properties files}, etc.
+			\end{itemize}
+			Una de las mejoras que agrega este trabajo a Rainbow es el de proveer un mecanismo dinámico de actualización de la
+			configuración de \emph{self healing} mediante el cual cualquier modificación en el archivo XML de configuración
+			cargada al iniciar Arco Iris, conlleva un ``refresco'' de la configuración que está siendo usada en tiempo de
+			ejecución por el \emph{framework}, sin necesidad de intervención alguna de un operador.
+			
+			Este dinamismo agregado en lo que respecta a los cambios de configuración, trae aparejado una serie de ventajas muy
+			importantes, a saber:
+			\begin{itemize}
+				\item ya no es necesario reiniciar el \emph{framework} de auto reparación para modificar cualquier característica
+				relacionada con los escenarios, entornos de ejecución y artifacts utilizados en el sistema. Esto evita tiempos de
+				no-servicio, recursos involucrados en la reconfiguración y reinicio del sistema, etc. 
+				\item se agrega flexibilidad al uso de la herramienta: se podrían agregar nuevos escenarios, nuevos entornos de
+				ejecución que (re)definan situaciones de ejecución concretas, cambiar pesos de concerns y/o prioridades relativas
+				entre escenarios de acuerdo a necesidades puntuales del negocio e infinidad de otros cambios de configuración
+				relevantes a la auto reparación quedarían impactados en el sistema automáticamente.
+			\end{itemize}
+			
 		\subsubsection{Información sobre restricciones}
-			Como se ha visto anteriormente, en Rainbow las restricciones impuestas sobre el funcionamiento del  sistema (e.g.
+			Como se ha visto anteriormente, en Rainbow las restricciones impuestas sobre el funcionamiento del sistema (e.g.
 			``el tiempo de respuesta para cualquier tipo de \emph{request} no debe superar los 5 mílisegundos'') son guardadas en
 			el modelo de la arquitectura, el cual está expresado en el lenguaje de descripción de arquitecturas \mbox{ACME}.
 			Esto claramente representa un impedimento para que los \emph{stakeholders} no técnicos del sistema puedan participar
-			activamente en la definición de requerimientos de auto reparación para el mismo.
+			activamente en la definición de requerimientos de auto reparación para el mismo; ya que de intentarlo, deberían
+			poder comprender y modificar correctamente un diagrama de arquitectura, con sus restricciones escritas en un lenguaje
+			no coloquial sino especialmente técnico.
 			
 			En Arco Iris, los \emph{stakeholders} usan una interfaz visual\ref{sec:scenariosUI} intuitiva y fácil de utilizar
 			para expresar restricciones del sistema en formato de escenarios de QAW; los cuales a su vez fueron pensados
-			especialmente para facilitar la participación de personas con este tipo de roles.
+			originalmente para facilitar la participación de personas con roles funcionales.
 			
-			Tal información es analizada por Arco Iris para tomar decisiones en tiempo de ejecución sobre las auto reparaciones a
-			realizar, considerando una variedad de aspectos, todos ellos configurados en un único lugar: los escenarios de QAW.
+			La información incorporada de esta manera, es analizada por Arco Iris para tomar decisiones en tiempo de ejecución
+			sobre las auto reparaciones a realizar, considerando una variedad de aspectos, todos ellos configurados en un único
+			lugar: los escenarios de QAW.
 			
 			Como vemos, Arco Iris provee una manera simplificada de agregar y/o editar restricciones sobre el sistema, sin
 			necesidad de modificar su modelo de arquitectura, sino por medio de los escenarios de QAW. Esto representa una avance
-			sobre como funciona Rainbow en ese aspecto.
+			sobre como funciona Rainbow hoy día en ese aspecto.
 
 		\subsubsection{Relación entre \emph{concerns} arquitecturales}
 
-			\todo{TODO}
-			
-			El concepto de atributo de calidad no tiene un modelado específico en Rainbow. Sí está presente en Znn, y son
-			llamados llamados ``Quality Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el
-			valor de los atributos suman 1)
+			\todo{JONY: Cambiar lo que habiamos puesto ya que esto SI existe en Rainbow!}
+
+			El concepto de atributo de calidad no tiene un modelado específico en Rainbow. Consecuentemente, los \emph{concerns}
+			arquitecturales tampoco están modelados en Rainbow aunque sí están presentes en ``Znn'', y son llamados ``Quality
+			Dimensions''. Los mismos se relacionan estáticamente en una función de utilidad (dónde el valor de los atributos suman 1)
 			
 			Los atributos de calidad son parte de los escenarios y se relacionan utilizando la terminología de ATAM. Un escenario
-			puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que nuestra extensión a Rainbow deberá
+			puede tener mayor prioridad que otro y esto afecta a los \emph{tradeoffs} que la presente extensión a Rainbow deberá
 			hacer al momento de escoger una estrategia de reparación.
 			
 			Los \emph{stakeholders} tienen la posibilidad de cambiar esta información dinámicamente y consecuentemente, afectar
