@@ -25,19 +25,20 @@ public class StitchLoader {
 
 	private List<Stitch> repertoire = new ArrayList<Stitch>();
 
-	private boolean rainbowClient;
+	private boolean rainbowIsTheClient;
 
 	/**
 	 * 
 	 * @param stitchDirectory
 	 *            the full path to the directory where the .s files are located.
-	 * @param rainbowClient
+	 * @param rainbowIsTheClient
 	 *            this flag specifies that the client of this loader is Rainbow. This will affect some functionalities
-	 *            within the loader as, for example, the event logging.
+	 *            within the loader as, for example, the event logging or whether we have to load the utility preference
+	 *            description parsed from an Yaml file.
 	 */
-	public StitchLoader(File stitchDirectory, boolean rainbowClient) {
+	public StitchLoader(File stitchDirectory, boolean rainbowIsTheClient) {
 		super();
-		this.rainbowClient = rainbowClient;
+		this.rainbowIsTheClient = rainbowIsTheClient;
 		this.initAdaptationRepertoire(stitchDirectory);
 	}
 
@@ -103,7 +104,7 @@ public class StitchLoader {
 						stitch = Stitch.newInstance(file.getCanonicalPath(), new DummyStitchProblemHandler());
 						Ohana.instance().parseFile(stitch);
 						Map<String, Map<String, Object>> attributeVectorMap = Collections.emptyMap();
-						if (this.rainbowClient) {
+						if (rainbowIsTheClient) {
 							attributeVectorMap = Rainbow.instance().preferenceDesc().attributeVectors;
 						}
 						// apply attribute vectors to tactics, if available
@@ -137,7 +138,7 @@ public class StitchLoader {
 	}
 
 	private void log(Level level, String txt, Throwable... t) {
-		if (this.rainbowClient) {
+		if (rainbowIsTheClient) {
 			Oracle.instance().writeEnginePanel(rainbowLogger, level, txt, t);
 		} else {
 			if (t.length > 0) {
