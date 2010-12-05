@@ -135,9 +135,9 @@ public class SelfHealingScenario extends AtamScenario {
 		Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
 		if (expValue != null) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
-			Double expValueAfterStrategy = expValue + concernDiffAfterStrategy;
-			expValueAfterStrategyAsString = expValueAfterStrategy.toString();
-			isBroken = !constraint.holds(expValueAfterStrategy);
+			Double estimatedExpValueAfterStrategy = expValue + concernDiffAfterStrategy;
+			expValueAfterStrategyAsString = estimatedExpValueAfterStrategy.toString();
+			isBroken = !constraint.holds(estimatedExpValueAfterStrategy);
 		}
 
 		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
