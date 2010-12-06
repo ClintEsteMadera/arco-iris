@@ -11,6 +11,8 @@ import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
 
 public class AttributeValueTripleWithStimulus extends AttributeValueTriple {
 
+	private static final long serialVersionUID = 1L;
+
 	private static Pattern m_valueTriplePattern;
 
 	private final Stimulus stimulus;

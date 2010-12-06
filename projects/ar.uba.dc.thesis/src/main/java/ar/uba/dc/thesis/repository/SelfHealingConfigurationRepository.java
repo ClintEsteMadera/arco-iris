@@ -28,7 +28,7 @@ public class SelfHealingConfigurationRepository implements SelfHealingConfigurat
 
 	/**
 	 * <b>Important Note:</b>It is assumed that we are not using this Repository for holding scenarios for more than one
-	 * application.<br>
+	 * instance of the application.<br>
 	 */
 	public Collection<SelfHealingScenario> getEnabledScenarios() {
 		return this.enabledScenarios;

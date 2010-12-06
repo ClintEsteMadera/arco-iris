@@ -5,7 +5,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("concern")
 public enum Concern {
 
-	// TODO We can extract the Concerns to the XML in order to increase flexibility (low priority)
+	// TODO In order to move these concerns to SelfHealingConfiguration we may need to determine first how are we going
+	// to deal with the problem of retrieving ALL of the instances when dealing with Environment's weights, and how we
+	// would deal with updated and removed Concerns and their relationship with those weight maps.
 
 	RESPONSE_TIME("Response time", QualityAttribute.PERFORMANCE, "uR"),
 

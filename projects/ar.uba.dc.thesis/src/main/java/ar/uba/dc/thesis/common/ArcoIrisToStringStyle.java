@@ -12,6 +12,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public final class ArcoIrisToStringStyle extends ToStringStyle {
 
+	private static final long serialVersionUID = 1L;
+
 	public static final ArcoIrisToStringStyle THESIS_STYLE = new ArcoIrisToStringStyle();
 
 	private ArcoIrisToStringStyle() {
