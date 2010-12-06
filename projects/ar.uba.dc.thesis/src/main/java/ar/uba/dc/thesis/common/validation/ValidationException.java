@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class ValidationException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	private ValidationError[] validationErrors;
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
