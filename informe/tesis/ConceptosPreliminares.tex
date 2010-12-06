@@ -176,9 +176,28 @@
 
 		\subsubsection{EMA: Suavizando el Comportamiento}
 
-			Rainbow implementa un mecanismo que permite evitar accionamientos indebidos de la auto reparación por la
-			presencia de \emph{outliers},
-	\todo{Continuar explicacion de Exponential Moving Average}
+			El proceso de adaptar un sistema de manera dinámica puede llegar a ser muy costoso, por ejemplo podría requerir
+			asignar más servidores a atender las peticiones de los usuarios, con el respectivo coste monetario que esto implica,
+			también podría significar una merma en calidad del servicio ofrecido, por ejemplo eliminando temporalmente la
+			posibilidad de que los usuarios pueden visualizar los videos de un sitio de noticias. Esto hace que lanzar la auto
+			reparación de un sistema deba ser una decisión tomada con cierta cautela y en base a datos confiables y sostenidos en
+			el tiempo. Rainbow implementa un mecanismo que permite evitar accionamientos prematuros de la auto reparación por la
+			presencia de \emph{outliers}, dicho mecanismo utiliza Exponential Moving Average (EMA), que permite ponderar los
+			valores históricos versus el actual gracias a la siguiente fórmula:
+
+			\todo{tomar formula de wikipedia? }
+
+			donde \alpha es el factor de suavizado, siendo 0 < \alpha < 1. En otras
+			palabras, el valor suavizado \smash{$s_{t}$} es un simple promedio ponderado de la observación previa \smash{$x_{t-1}$} y el valor suavizado previo
+			\smash{$s_{t-1}$}. El nombre factor de suavizado no es un nombre muy adecuado, ya que en realidad a mayor \alpha
+			menor será el suavizado del promedio, mientras que valores cercanos a cero serán harán que el promedio se vea menos
+			afectado por el nuevo valor observado. No existe un procedimiento formal para determinar el valor de \alpha, en el
+			caso de Rainbow el valor escogido para las pruebas realizadas ha sido 0.3.
+
+#- Alpha factor for exponential average of properties, expAvg = (1-alpha)*expAvg + alpha*newVal
+# (a greater number means "the new value is more important")
+customize.model.expavg.alpha = 0.30
+
 
 
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
