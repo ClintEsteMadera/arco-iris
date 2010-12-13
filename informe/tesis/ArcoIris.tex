@@ -387,34 +387,90 @@
 			volverla atrás, puede llegar a lograrse un rendimiento muy óptimo y dinámico del sistema.
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
-			
-For scenarios to be well-formed it must be clear \ldots what the measurable or observable manifestation of the response
-is.
 
-Latency and throughput are two of the types of response measures noted in the attribute characterization.
+			La \textbf{Cuantificación de la Respuesta} es quizás la propiedad más importante de un escenario: de ella surgen las
+			restricciones que deben ser evaluadas para que, en caso de no cumplirse, se lance la auto reparación. De hecho, para
+			que un escenario se considere bien formado debe quedar claro cuál es la métrica o manifestación observable de su
+			respuesta que se debe satisfacer. Latencia y \emph{throughput} son ejemplos de las manifestaciones sobre las cuales
+			puede predicar la cuantificación de la respuesta. En pocas palabras, la cuantificación será la métrica según la cual
+			se decida la aceptación de una respuesta del sistema ante un determinado estímulo.
 
-Response: <a precise statement of the quality attribute response (e.g., response time, measure
-of difficulty of modification)>
+			Para graficar la importancia de contar con una cuantificación de la respuesta precisa, supongamos que contamos con la
+			siguiente definición:
 
-An important part of the response is a clear response measure. Simply saying ``modify the system
-to incorporate the new discrete event generator'' would not describe how well the architecture
-accommodated the modification. Given enough time and money, any modification is
-possible. However, in this scenario, a response measure of ``two person-weeks'' is imposed,
-forcing the architect to ensure that the system is modifiable with respect to some very particular
-and measurable criteria.
+			\begin{quote}
+				``Modificar el sistema para incorporar un nuevo generador de eventos discretos''
+			\end{quote}
 
-response measure: the measure by which the system's response will be evaluated
+			Esta premisa no es suficiente para medir el éxito de la incorporación de la nueva funcionalidad, ya que con
+			suficiente tiempo y dinero, cualquier modificación es posible. En este escenario se necesitaría una métrica del
+			siguiente tipo por ejemplo: ``Utilizando 160 horas hombre''. Esto forzaría al arquitecto a asegurar que el sistema
+			sea modificable basándose en un criterio bien particular y con una métrica aplicable.
 
-			La \textbf{Cuantificación de la Respuesta} es quizás la propiedad más importante: de ella surgen las restricciones
-			que deben ser evaluadas para que, en caso de no cumplirse, se lance la auto reparación.
-
-			En este caso, las restricciones genéricas que usa Rainbow se reutilizan, \todo{contar un poco sobre su sintaxis}
-			poniéndolas en el contexto de un Escenario de Atributo de Calidad, proveyendo así mayor visibilidad a los
+			Sumergiéndonos ya en la implementación, cabe mencionar que Arco Iris reutiliza las restricciones genéricas brindadas
+			por Rainbow, poniéndolas en el contexto de un Escenario de Atributo de Calidad, proveyendo así mayor visibilidad a los
 			\emph{stakeholders} sobre estas restricciones, anteriormente sólo conocidas por los arquitectos o encargados de
-			configurar \todo{¿cómo?} Rainbow.
+			configurar Rainbow, ya que dichas restricciones en Rainbow terminaban siendo implementadas en el modelo
+			de la arquitectura descripto en el lenguaje Acme, perdiendo toda correlación con su estímulo desencadenador. Veamos			un ejemplo extraído de Znn de cómo se implementan dichas restricciones al utilizar Rainbow:
+			\begin{Verbatim}[gobble=4]
+                Component Type ClientT {
+                    Property experRespTime : float <<  default : float = 100.0; >> ;
+                    rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
+                }
+			\end{Verbatim}
 
-			\todo{explicar q en rainbow las restricciones se usan para saber si una estrategia debe aplicarse o no mientras que
-			en arco iris se usan en un paso previo (response measure del escenario.)}
+			Es importante recordar que en Rainbow, una vez que se detectó que la auto reparación debe ser ejecutada, se volverán
+			a ejecutar todas las restricciones dictadas en la precondición de las estrategias para saber si las mismas aplican
+			en el estado actual del sistema, volvemos a tomar un ejemplo de Znn:
+
+			\begin{Verbatim}[gobble=4]
+                define boolean cViolation =
+                    exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+
+                strategy BruteReduceResponseTime
+                [ cViolation ] {
+  					...
+  					do some tactic
+  					...
+                }
+			\end{Verbatim}
+
+			En Arco Iris no será necesario contar con éstas últimas restricciones ya que el conocimiento de cuáles estrategias
+			son capaces de reparar una determinada condición ya están plasmado en cada escenario. En definitiva, al utilizar Arco
+			Iris el usuario no tendrá más que configurar la Cuantificación de la respuesta de cada escenario, tarea que se ve
+			sumamente facilitada al utilizar UI Scenarios (ver sección~\ref{sec:scenariosUI} en la
+			página~\pageref{sec:scenariosUI}).
+
+			Otra diferencia vital ante el uso de las mencionados restricciones entre la visión de Rainbow y de Arco Iris consiste
+			en el momento en que se aplican. Rainbow posee un componente llamado \emph{``Architecture Evaluator''}, cuya
+			responsabilidad consiste en chequear la arquitectura del modelo de a intervalos y de manera asincrónica, siempre y
+			cuando este haya sido modificado y la auto reparación no se encuentre ya en ejecución, esto implica verificar
+			absolutamente todas las restricciones. Mientras que Arco Iris, al descubrir un cambio en el modelo de la
+			arquitectura, la acción que tomará consistirá en verificar los escenarios, pero no cualquier escenario, solamente los
+			que coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo de la arquitectura, optimizando
+			así de manera determinante la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
+			Dado al cambio en el manejo de restricciones, en Arco Iris se implementó el concepto de Constraint como una
+			interface, dando así la posibilidad de extender el \emph{framework} con el tipo de Constraint que el usuario
+			considere necesario. La interface planteada presentada es la siguiente:
+
+			\begin{Verbatim}[gobble=4]
+                public interface Constraint {
+
+                    boolean holds(Number value);
+
+                    String getFullyQualifiedPropertyName();
+                }
+			\end{Verbatim}
+
+			Donde el método \emph{holds} será el encargado de determinar si la Constraint se cumple o no, recibiendo como
+			parámetro el valor de la propiedad a evaluar, mientras que el método \emph{getFullyQualifiedPropertyName} retornará
+			el nombre completo cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que
+			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}. Para el presente trabajo se utilizó
+			una única implementación, que consiste en una comparación binaria de una propiedad del modelo de la arquitectura con
+			un  valor fijo preestablecido al configurar la cuantificación de la respuesta del escenario, la implementación
+			mencionada es \emph{NumericBinaryRelationalConstraint}.
+
+			\todo{JONY: ponemos la implementación de NumericBinaryRelationalConstraint en el apéndice?}
 
 	\subsection{Prioridades entre Escenarios}
 
