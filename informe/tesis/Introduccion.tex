@@ -1,8 +1,5 @@
 \section{Introducción}
 
-	\todo{Reusar parte de la tesina de Casuscelli de la UCA que está bastante bien escrita (y no vale la pena gastar más
-	tiempo en esto).}
-
 	\subsection{Motivación para este trabajo}
 
 		La complejidad creciente de los sistemas de software desafía de forma permanente el estado del arte de las Ciencias de
@@ -27,8 +24,8 @@
 		forma de incluir a los \emph{stakeholders} en el proceso, siempre considerando que su participación debe contribuir
 		principalmente en la definición de los potenciales problemas y sus posibles soluciones. Para esto, se consideró el uso
 		de los denominados \emph{Escenarios de Atributos de Calidad} o de sus siglas en inglés, QAS (\emph{Quality Attribute
-		Scenarios}); los cuales permiten definir cómo debería responder el sistema ante determinados estímulos, en ciertos
-		entornos de ejecución. Se profundizará sobre el concepto de QAS en la sección \ref{sec:QAS}.
+		Scenarios})\todo{referencia!}; los cuales permiten definir cómo debería responder el sistema ante determinados
+		estímulos, en ciertos entornos de ejecución. Se profundizará sobre el concepto de QAS en la sección \ref{sec:QAS}.
 
 		Una vez definidos los escenarios por los \emph{stakeholders}, el paso siguiente consiste en utilizar toda esa
 		información en tiempo de ejecución para que el sistema sea capaz de auto repararse. Allí nos servimos de un
@@ -37,9 +34,9 @@
 		en tiempo de ejecución. Así, el objetivo planteado es superar algunas de dichas limitaciones mediante el agregado del
 		concepto central de este trabajo: los escenarios de atributos de calidad como forma central de expresar el
 		conocimiento de los \emph{stakeholders}. El objetivo final que se persigue es involucrar a dichos actores en el
-		proceso de auto reparación y proveerles una mejor visibilidad de las posibles consecuencias en el desempeño del
-		sistema que dicho proceso conlleva; todo esto, sin perder en absoluto la funcionalidad ya provista por Rainbow. Así,
-		nuestra extensión a Rainbow, la cuál llamaremos ``Arco Iris'', puede ser entendida como un agregado (o \emph{plugin})
+		proceso de auto reparación y proveerles una mejor visibilidad de las posibles consecuencias que dicho proceso
+		conlleva en el desempeño del sistema; todo esto, sin perder en absoluto la funcionalidad ya provista por Rainbow.
+		Así, nuestra extensión a Rainbow, la cuál llamaremos ``Arco Iris'', puede ser entendida como un agregado (o \emph{plugin})
 		al \emph{framework} Rainbow, lo cual es una cualidad no necesaria aunque altamente deseable en un trabajo de estas
 		características.
 
@@ -50,7 +47,7 @@
 		El presente trabajo consta de cinco partes conceptuales, a saber:
 		\begin{enumerate}
 			\item \textbf{Conceptos Preliminares:} en esta sección se introducen todos los conceptos, \emph{frameworks},
-			herramientas y metodologías necesarias para comprender el resto del informe.
+			herramientas y metodologías necesarias para comprender el trabajo en su conjunto.
 			\item \textbf{Extensión a Rainbow:} aquí se explican en detalle los objetivos de la extensión realizada a Rainbow
 			(llamada ``Arco Iris''), su implementación y los problemas que dicha extensión intenta resolver.
 			\item \textbf{Interfaz Gráfica para ``Arco Iris'':} En esta parte del trabajo se justifica la inclusión de una
