@@ -8,19 +8,20 @@
 
 \usepackage{caratula}                     % incluye caratula estándar
 \usepackage{tabularx}                     % permite usar tablas mas inteligentes que con ``tabular''
-\usepackage{lscape}                       % pone un parte del texto de forma apaisada
-\usepackage{slashbox}                     % separación en diagonal en las celdas de las esquinas de tablas
-\usepackage{rotating}                     % rotar cualquier objeto en cualquier ángulo
+%\usepackage{lscape}                       % pone un parte del texto de forma apaisada
+%\usepackage{slashbox}                     % separación en diagonal en las celdas de las esquinas de tablas
+%\usepackage{rotating}                     % rotar cualquier objeto en cualquier ángulo
 %\usepackage{multirow}
+%\usepackage{tabulary}
 %\usepackage{ltxtable}
 \usepackage[ansinew]{inputenc}            % permite que los acentos del estilo áéíóú salgan joya
 \usepackage[spanish, activeacute]{babel}  % idioma español, acentos fáciles y deletreo de palabras
 \usepackage{indentfirst}                  % permite indentar un parrafo a mano
 \usepackage{graphicx}                     % permite insertar gráficos
 \usepackage{color}                        % permite el uso de colores en el documento
-\definecolor{gray97}{gray}{.97}
-\usepackage[dvipsnames,table,svgnames]{xcolor}
-\usepackage{url}                          % permite el uso de urls
+%\usepackage[dvipsnames,table,svgnames]{xcolor}
+%\definecolor{gray97}{gray}{.97}
+%\usepackage{url}                          % permite el uso de urls
 \usepackage[top=2.75cm, bottom=2.75cm, left=2.75cm, right=2.75cm]{geometry} % márgenes
 \usepackage[pdfcreator={LaTeX2e},
 			pdfauthor={Jonathan Chiocchio, Gabriel Tursi},
@@ -32,46 +33,46 @@
 			colorlinks,                   % links con bellos colores
 			linkcolor=blue]               % permite cambiar el color de los links
 			{hyperref}                    % Permite jugar con algunas cosas que aparecerán en el PDF final
-\usepackage{listings}
-\lstset{
-%	language=XML,                         % choose the language of the code
- 	basicstyle=\scriptsize\tt,      % the size of the fonts that are used for the code
-	keywordstyle=\scriptsize\tt,    % NOTE that \ttfamily does NOT have a BOLD version     
-	commentstyle=\scriptsize\tt,
-	stringstyle=\scriptsize\tt,
-	identifierstyle=\scriptsize\tt,
-%	numbers=none,                         % where to put the line-numbers
-%	numberstyle=\scriptsize,              % the size of the fonts that are used for the line-numbers
-%	stepnumber=1,                         % the step between two line-numbers. If it is 1 each line will be numbered
-%	numbersep=0pt,                        % how far the line-numbers are from the code
-	extendedchars=true,                   % allow extended characters
- 	backgroundcolor=\color{lightgray!20}, % specify the colour of the background. You must add \usepackage{color}
-	rulecolor=\color{lightgray!20},       % specify the colour of the rules
-%	fillcolor=\color{white},              % specify the colour of the space between 'text box' and first rule
-%	rulesepcolor=\color{gray97},          % specify the colour of the space between two rules (useful for shadows)
- 	showspaces=false,                     % show spaces adding particular underscores
- 	showstringspaces=false,               % underline spaces within strings
- 	showtabs=false,                       % show tabs within strings adding particular underscores
- 	tabsize=2,                            % sets default tabsize to 2 spaces
-%	linewidth=\linewidth,                 % define the base line width for listings
- 	frame=single,                         % adds a frame around the code
-%	frameround=tttt,                      % round corners
-%	framerule=0.4pt,                      % controls the width of the rules
- 	framesep=0pt,                         % control the separation btw the frame both interior and exterior margins
-%	rulesep=2pt,                          % control the space between frame and listing and between double rules
-	xleftmargin=0pt,                      % extra left margin
-%	xrightmargin=0pt,                     % extra right margin
-%	framextopmargin=0pt,                  % defines 'how far' we move the top frame margin
-%	framexbottommargin=0pt,               % defines 'how far' we move the bottom frame margin
-%	framexleftmargin=0pt,                 % defines 'how far' we move the left frame margin to the left
-%	framexrightmargin=0pt,                % defines 'how far' we move the right margin to the right
-%	captionpos=b,                         % sets the caption-position to bottom
- 	breaklines=true,                      % sets automatic line breaking
-	breakautoindent=true,                 % activates or deactivates automatic indention of broken lines
-%	breakatwhitespace=false,              % sets if automatic breaks should only happen at whitespace
-%	morecomment=[l]{//}                   % displays comments in italics (language dependent)
-%	escapeinside={\%}{)}                  % if you want to add a comment within your code
-}
+%\usepackage{listings}
+%\lstset{
+%%	language=XML,                         % choose the language of the code
+% 	basicstyle=\scriptsize\tt,      % the size of the fonts that are used for the code
+%	keywordstyle=\scriptsize\tt,    % NOTE that \ttfamily does NOT have a BOLD version     
+%	commentstyle=\scriptsize\tt,
+%	stringstyle=\scriptsize\tt,
+%	identifierstyle=\scriptsize\tt,
+%%	numbers=none,                         % where to put the line-numbers
+%%	numberstyle=\scriptsize,              % the size of the fonts that are used for the line-numbers
+%%	stepnumber=1,                         % the step between two line-numbers. If it is 1 each line will be numbered
+%%	numbersep=0pt,                        % how far the line-numbers are from the code
+%	extendedchars=true,                   % allow extended characters
+% 	backgroundcolor=\color{lightgray!20}, % specify the colour of the background. You must add \usepackage{color}
+%	rulecolor=\color{lightgray!20},       % specify the colour of the rules
+%%	fillcolor=\color{white},              % specify the colour of the space between 'text box' and first rule
+%%	rulesepcolor=\color{gray97},          % specify the colour of the space between two rules (useful for shadows)
+% 	showspaces=false,                     % show spaces adding particular underscores
+% 	showstringspaces=false,               % underline spaces within strings
+% 	showtabs=false,                       % show tabs within strings adding particular underscores
+% 	tabsize=2,                            % sets default tabsize to 2 spaces
+%%	linewidth=\linewidth,                 % define the base line width for listings
+% 	frame=single,                         % adds a frame around the code
+%%	frameround=tttt,                      % round corners
+%%	framerule=0.4pt,                      % controls the width of the rules
+% 	framesep=0pt,                         % control the separation btw the frame both interior and exterior margins
+%%	rulesep=2pt,                          % control the space between frame and listing and between double rules
+%	xleftmargin=0pt,                      % extra left margin
+%%	xrightmargin=0pt,                     % extra right margin
+%%	framextopmargin=0pt,                  % defines 'how far' we move the top frame margin
+%%	framexbottommargin=0pt,               % defines 'how far' we move the bottom frame margin
+%%	framexleftmargin=0pt,                 % defines 'how far' we move the left frame margin to the left
+%%	framexrightmargin=0pt,                % defines 'how far' we move the right margin to the right
+%%	captionpos=b,                         % sets the caption-position to bottom
+% 	breaklines=true,                      % sets automatic line breaking
+%	breakautoindent=true,                 % activates or deactivates automatic indention of broken lines
+%%	breakatwhitespace=false,              % sets if automatic breaks should only happen at whitespace
+%%	morecomment=[l]{//}                   % displays comments in italics (language dependent)
+%%	escapeinside={\%}{)}                  % if you want to add a comment within your code
+%}
 \usepackage{fancyvrb}                     % Fancy Verbatim
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
 
@@ -113,8 +114,8 @@
 	
 	\newpage
 	
-	\pagestyle{headings}                  % poniendo esto acá evitamos que se encabece la caratula, el abstract y el
-	
+	\pagestyle{headings}                  % poniendo esto acá evitamos que se encabece la caratula, el abstract y el indice
+
 	\input{Introduccion}
 	
 	\newpage
