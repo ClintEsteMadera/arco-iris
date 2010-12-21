@@ -41,31 +41,36 @@
 		\noindent En la presente sección repasaremos las ventajas que posee Arco Iris por sobre Rainbow. Profundizaremos en
 		los siguientes puntos básicos:
 
+		\noindent \todo{sacar grafico y poner tabla cuando imprimamos la versión definitiva (es para evitar falsos bad boxes)}
+%  		\begin{center}
+%  			\scriptsize{
+%  			\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+%  			\begin{tabularx}{\textwidth}{|X|X|X|X|}
+%   			\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en \mbox{Arco Iris}} &
+%   			\textbf{Ventajas}\\
+%   			Rapidez en el cambio de configuración & La configuración se lee una vez al principio y no puede ser cambiada
+%   			dinámicamente mientras Rainbow está funcionando. & Los escenarios se actualizan dinámicamente en \emph{runtime} al
+%   			ser modificados. & Una gran parte de los cambios de configuración pasan a impactarse ins\-tan\-tá\-nea\-men\-te,
+%   			evitando reiniciar el sistema para cambiar la configuración\\
+%   			Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{ACME}) & Mediante escenarios
+%   			de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
+%   			Decisiones sobre que reparaciones realizar & También se encuentran en archivos de configuración & Se evaluán los
+%   			escenarios cargados y como se afectan entre ellos. Luego se invoca a un módulo que decide qué reparaciones pueden
+%   			llevarse a cabo en ese contexto. & Posibilidad de extensión de dicho módulo para incluír complejas heurísticas que
+%   			aprendan de los efectos de reparaciones pasadas, etc.\\
+%   			Entorno de ejecución (e.g. Alta Carga)& Configurado estáticamente. Para modificarlo es necesario el reinicio del
+%   			\emph{framework}. & Se permite especificar distintos entornos de ejecución. El sistema cambia
+%   			di\-ná\-mi\-ca\-men\-te de en\-tor\-no sin necesidad de in\-ter\-ven\-ción humana ni reinicio del \emph{framework}.
+%   			& Se agrega una nueva variable a considerar para la elección de una estrategia, aumentando la probabilidad de que
+%   			la misma se adeque mejor a la situación actual del sistema.
+%  			\end{tabularx}
+%  			}
+%  		\end{center}
+			
 		\begin{center}
-			\scriptsize{
-			\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
-			\begin{tabularx}{\textwidth}{|X|X|X|X|}
-				\textbf{Problema} & \textbf{Implementación en Rainbow} & \textbf{Implementación en \mbox{Arco Iris}} &
-				\textbf{Ventajas}\\
-				Rapidez en el cambio de configuración & La configuración se lee una vez al principio y no puede ser cambiada
-				dinámicamente mientras Rainbow está funcionando. & Los escenarios se actualizan dinámicamente en \emph{runtime} al
-				ser modificados. & Una gran parte de los cambios de configuración pasan a impactarse instantáneamente, evitando
-				reiniciar el sistema para cambiar la configuración\\
-				Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{ACME}) & Mediante escenarios
-				de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
-				Decisiones sobre que reparaciones realizar & También se encuentran en archivos de configuración & Se evaluán los
-				escenarios cargados y como se afectan entre ellos. Luego se invoca a un módulo que decide qué reparaciones pueden
-				llevarse a cabo en ese contexto. & Posibilidad de extensión de dicho módulo para incluír complejas heurísticas que
-				aprendan de los efectos de reparaciones pasadas, etc.\\
-				Entorno de ejecución (e.g. Alta Carga)& Configurado estáticamente. Para modificarlo es necesario el reinicio del
-				\emph{framework}. & Se permite especificar distintos entornos de ejecución. El sistema cambia dinámicamente de
-				entorno sin necesidad de intervención humana ni reinicio del \emph{framework}. & Se agrega una nueva variable a
-				considerar para la elección de una estrategia, aumentando la probabilidad de que la misma se adeque mejor a la
-				situación actual del sistema.
-			\end{tabularx}
-			}
+			\includegraphics[width=1.00\textwidth]{images/ArcoIrisVsRainbow.png}
 		\end{center}
-		
+
 		\subsubsection{Rapidez en el cambio de configuración}
 			Como se ha mencionado anteriormente, Arco Iris (es decir, Rainbow con las extensiones realizadas en este trabajo)
 			trabaja utilizando:
