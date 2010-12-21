@@ -7,22 +7,36 @@
 		(y no vale la pena gastar más tiempo en esto).}
 
 		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
-		cuanto a disponibilidad se trata. Hoy en día ya operan en ambientes muy dinámicos, con requerimientos que el usuario
-		va cambiando rápidamente, y con la necesidad de seguir operando prácticamente sin interrupción, resultando esto en un
+		cuanto a disponibilidad se trata. Hoy en día los mismo operan en ambientes muy dinámicos, con requerimientos del
+		usuario muy cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un
 		mayor crecimiento en la administración operativa del software, lo cual representa un costo importante para que el
-		sistema pueda funcionar. Para reducir este costo, se espera que los sistemas se adapten de manera dinámica para poder
-		utilizar los recursos existentes, para poder atender los cambiantes requerimientos del usuario y los errores en el
-		sistema. Esto es lo que se conoce como \textbf{self healing} (auto reparación).
+		sistema pueda funcionar. Para reducir este costo, se puede plantear que los sistemas se adapten de manera dinámica
+		para poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos del usuario y los
+		errores en el sistema. Esto es lo que se conoce como \emph{self healing} o, en castellano, auto reparación.
 
 		Si bien ya existen mecanismos para mitigar dichos problemas, los mismos son parte del lenguaje de programación
 		utilizados, tales como tratamiento de excepciones, protocolos de to\-le\-ran\-cia a fallos, etc. Pero estos mecanismos
-		son comúnmente dependientes de cada aplicación y generalmente muy atados al código. Así, la adaptación del sistema hoy
-		en día es costosa de construir, dificil de modificar, y generalmente solo provee soluciones a fallos de manera puntual.
+		son comúnmente dependientes de cada aplicación y generalmente muy dependientes del código de la aplicación que se
+		intenta adaptar. Así, hoy en día, la adaptación de sistemas de software es costosa de construir, dificil de
+		modificar, poco reusable entre distintos sistemas y generalmente solo provee soluciones a fallos de manera puntual.
 
-		Uno de los primeros investigadores en acuñar el término Self Healing fue el Dr. David Garlan, de la Carnegie Mellon
-		University, quien formó un grupo de investigación que dedicó años a estudiar el tema dentro del marco del proyecto
-		Able. El presente trabajo utilizará como base gran parte del trabajo generado por dicho proyecto, los cuales se
-		describirán en detalle más adelante.
+		En cuanto al estado del arte en materia de auto reparación (o de manera más genérica, sistemas autónomos) existen
+		diversos enfoques tanto en el ámbito académico como en la industria del software. 
+
+		Dentro del ámbito de la industria, el concepto de sistemas autónomos se encuentra - al igual que en el plano académico
+		- ampliamente difundido. Sin dudas el enfoque de IBM, denominado ``Autonomic Computing''\cite{IBM-AC} es el más
+		completo, apalancado por un gran grupo de investigación y abarcando el problema desde distintos aspectos. También se
+		destaca la iniciativa de Microsoft denominada ``BNla'', y no tanto la iniciativa de Sun (``Bla''), por estar más
+		ligada a adaptar el enfoque al dominio de los sistemas operativos.
+
+		Por otro lado, existen distintos investigadores ligados a prestigiosas instituciones académicas abocados al estudio de
+		la autonomía de los sistemas. Uno de los primeros investigadores en acuñar el término ``Self Healing'' fue el Dr. David
+		Garlan, de la Universidad de Carnegie Mellon, quien formó un grupo de investigación que dedicó años a estudiar el tema
+		dentro del marco del proyecto Able.
+		
+		El presente trabajo toma como base el trabajo generado por el proyecto ABLE de Carnegie Mellon, el cual implementa
+		el concepto de ``Auto Reparación de Sistemas Basada en Modelos de Arquitectura'', el cual se describirá en detalle a
+		continuación.
 
 	\subsubsection{Auto Reparación de Sistemas Basada en Modelos de Arquitectura}
 
@@ -107,7 +121,7 @@
 			\begin{itemize}
 				\item Detección: la habilidad de determinar dinámicamente (i.e. en \emph{run-time}) propiedades de sistemas
 				complejos y distribuidos.
-				\item Resolution: la habilidad de determinar cuándo las propiedades observadas del sistema violen los supuestos
+				\item Resolución: la habilidad de determinar cuándo las propiedades observadas del sistema violen los supuestos
 				críticos del diseño del sistema.
 				\item Adaptación: la habilidad de automatizar la adaptación del sistema en respuesta a las violaciones de los
 				supuestos del diseño del sistema.
