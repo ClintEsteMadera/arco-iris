@@ -474,12 +474,27 @@
 
 	\subsection{Prioridades entre Escenarios}
 
-		Arco Iris permite asignar prioridades entre escenarios, de modo tal que al momento de escoger una estrategia de
-		autoreparación, se tengan en consideración otros aspectos del sistema (especificados como atributos de calidad) de
-		modo tal que la estrategia de reparación elegida no comprometa a alguna otra funcionalidad de la aplicación
-		considerada más importante para el usuario.
+		\todo{Mostrar cómo se configura en Rainbow (utilities.yml) vs Arco Iris (usando la GUI, mucho mas amigable)}
 
-		\todo{Explicar que son enteros y un poquito más de detalle implementativo}
+		Rainbow permite priorizar básicamente por \emph{concerns}, mientras que Arco Iris permite además priorizar escenarios
+		asignando prioridades relativas a los mismos, de modo tal que al momento de escoger una estrategia de autoreparación
+		la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación considerada más importante
+		según la visión de los \emph{stakeholders}.
+
+		Entonces, cada escenario tendrá asignada una prioridad, la cual será un entero mayor a cero, uno será la prioridad
+		máxima asignable, mientras que su valor máximo no estará acotado, permitiendo  así asignar valores muy grandes para
+		escenarios de muy baja prioridad. Si bien se ofrece esta posibilidad al usuario, la misma debe manejarse con mucho
+		cuidado, ya que es probable que, al configurar escenarios con prioridades tan grandes, éstos no tengan prácticamente
+		ningún peso a la hora de seleccionar la estrategia de autoreparación a aplicar, por lo cual dichos escenarios nunca
+		serán reparados, careciendo de sentido directamente su existencia.
+
+		La prioridad del escenario es una propiedad fundamental para el correcto funcionamiento de Arco Iris, veremos su
+		importancia al detallar cómo Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la sección
+		\ref{sec:strategySelection}. Por esta razón será muy importante realizar una configuración a conciencia de cuáles
+		serán los escenarios prioritarios, los mismos deberán reflejar la importancia fundamental de los servicios ofrecidos
+		por el sistema  según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad
+		de cada escenario como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección
+		\ref{sec:QAS}.
 
 	\subsection{Estrategias y su Relación con los Escenarios}
 
@@ -522,7 +537,7 @@
 		condiciones serán aquellos a los cuales el Manejador de Reparaciones intentará reparar.
 
 	\subsection{Selección de estrategia a aplicar}
-
+	\label{sec:strategySelection}
 
 		\todo{Esta subsección probablemente necesite ser reescrita en su totalidad, explicando en una subsubsection el
 		concepto de utilidad del sistema, explicar primero como se calcula el peso de un escenario}
