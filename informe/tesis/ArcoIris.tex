@@ -141,7 +141,55 @@
 
 		\subsubsection{Actualización dinámica de cambios de configuración}
 
-			\todo{JONY: Explicar con detalle la implementación del refresco de configuración}
+			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del
+			\emph{framework} sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación,
+			proponemos un simple mecanismo de detección de cambios en el archivo de configuración de Arco Iris \todo{poner una
+			referencia a la parte del doc donde se explica en detalle este archivo}, el cual, al detectar cualquier cambio en
+			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
+			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
+			
+			El mecanismo se ejecuta periódicamente cada $X$ milisegundos dónde $X$ es configurable utilizando el archivo de
+			configuración estándar de Rainbow (inicialmente, $X = 5000$, es decir, el mecanismo se ejecuta cada 5 segundos).
+			
+			Se utiliza el patrón \emph{Observer}\cite{Observer} como modo de notificar a todos aquellos objetos interesados en
+			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente más interesado en
+			conocer cuándo un cambio en la configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
+			el cual, en ese caso, recalcula una variada cantidad de información guardada en memoria para que pueda ser usada
+			instantáneamente por el componente \textbf{RainbowModelWithScenarios}.
+			
+			El mecanismo descripto en este apartado se encuentra implementado en la clase\\
+			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
+			
+			\begin{Verbatim}[gobble=4]
+				private static final long CONFIG_RELOAD_INTERVAL_MS =
+					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
+			
+				private static final String SELF_HEALING_CONFIG_FILE_NAME =
+					Rainbow.property("customize.scenarios.path");
+			
+				private static final File SELF_HEALING_CONFIG_FILE =
+					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
+				(...)
+				public FileSelfHealingConfigurationDao() {
+					super();
+					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
+					this.loadSelfHealingConfigurationFromFile();
+			
+					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
+						@Override
+						protected void onChange(File file) {
+							logger.info(SELF_HEALING_CONFIG_FILE_NAME +
+								" has just changed, reloading Self Healing Configuration!");
+							loadSelfHealingConfigurationFromFile();
+							notifyListeners();
+						}
+					};
+			
+					Timer timer = new Timer();
+					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
+				}
+				(...)
+			\end{Verbatim}
 
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
 
