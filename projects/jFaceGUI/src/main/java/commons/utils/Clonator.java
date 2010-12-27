@@ -8,26 +8,22 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-/**
- * Clonador de objetos.
- */
-
 public class Clonator {
+
+	private static final String CLONE_METHOD_NAME = "clone";
 
 	private Clonator() {
 		super();
 	}
 
 	/**
-	 * Clona un objeto de acuerdo a los siguientes pasos:
-	 * <li>Si implementa {@link java.lang.Cloneable Cloneable}, invoca el método <code>clone()</code> utilizando
-	 * reflection.</li>
-	 * <li>Si implementa {@link java.io.Serializable Serializable}, invoca el método
-	 * {@link sbaui.util.SerializableClonator#clone(Object) SerializableClonator.clone(Object}
-	 * <li>.
+	 * Clones an object according to the following criteria:<br>
+	 * <li>If the object implements {@link java.lang.Cloneable Cloneable}, it invokes {@link Cloneable#clone()} using
+	 * reflection.</li> <li>If not but in turn it implements {@link java.io.Serializable}, this method tries to clonate
+	 * the object by serializing and deserializing it using the standard Serialization mechanism.<li>.
 	 * 
 	 * @throws CloneNotSupportedException
-	 *             si no se pudo realizar ninguno de los pasos anteriores.
+	 *             if neither of the above steps could be performed.
 	 */
 	public static <T> T clone(T o) {
 		if (o == null) {
@@ -45,9 +41,10 @@ public class Clonator {
 			if (Serializable.class.isAssignableFrom(o.getClass())) {
 				return tryCloneSerializable(o);
 			}
-			throw new IllegalArgumentException("Error clonando el objeto: el objeto no es serializable");
+			throw new IllegalArgumentException("Error when cloning object: the class " + o.getClass().getName()
+					+ " does not implement Serializable");
 		} catch (CloneNotSupportedException e) {
-			throw new IllegalArgumentException("Error clonando el objeto: " + e.getMessage(), e);
+			throw new IllegalArgumentException("Error when cloning object: " + e.getMessage(), e);
 		}
 	}
 
@@ -88,6 +85,4 @@ public class Clonator {
 			throw new UnsupportedOperationException(ioE.getMessage());
 		}
 	}
-
-	private static final String CLONE_METHOD_NAME = "clone";
 }
