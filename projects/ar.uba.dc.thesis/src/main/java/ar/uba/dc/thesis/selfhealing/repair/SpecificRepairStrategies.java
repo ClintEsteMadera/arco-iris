@@ -14,6 +14,8 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 @XStreamAlias("specificRepairStrategies")
 public class SpecificRepairStrategies extends ArcoIrisDomainObject implements RepairStrategies {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final ValidationError VALIDATION_ERROR_REPAIR_STRATEGIES_NAMES = new ValidationError(
 			"At least one strategy name must be provided");
 

@@ -24,6 +24,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("environment")
 public class Environment extends IdentifiableArcoIrisDomainObject {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String FRIENDLY_NAME = "Environment";
 
 	private static final String VALIDATION_MSG_ID = "The identifier '-1' can only be used by the 'Default' environment";
@@ -152,13 +154,13 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 	}
 
 	/**
-	 * @return <code>true</code>, as long as the user did not try to use DefaultEnvironment's id for another instance of
+	 * @return <code>true</code>, as long as the user did not try to use AnyEnvironment's id for another instance of
 	 *         Environment. Otherwise, this method returns <code>false</code>
 	 * 
-	 * @see DefaultEnvironment#isMyIdValid()
+	 * @see AnyEnvironment#isMyIdValid()
 	 */
 	protected boolean isMyIdValid() {
-		return !this.getId().equals(DefaultEnvironment.ID);
+		return !this.getId().equals(AnyEnvironment.ID);
 	}
 
 	private void validateWeights(List<ValidationError> validationErrors) {

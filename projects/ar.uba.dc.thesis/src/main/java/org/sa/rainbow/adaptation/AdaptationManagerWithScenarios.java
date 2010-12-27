@@ -444,15 +444,15 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	 * @return the current system enviroment
 	 */
 	private Environment detectCurrentSystemEnvironment(RainbowModelWithScenarios rainbowModelWithScenarios) {
-		Collection<Environment> environments = this.selfHealingConfigurationManager.getAllNonDefaultEnvironments();
+		Collection<Environment> environments = this.selfHealingConfigurationManager.getAllEnvironments();
 		for (Environment environment : environments) {
 			if (environment.holds(rainbowModelWithScenarios)) {
 				doLog(Level.INFO, "Current environment: " + environment.getName());
 				return environment;
 			}
 		}
-		doLog(Level.INFO, "System is currently in default environment");
-		return this.selfHealingConfigurationManager.getDefaultEnvironment();
+		doLog(Level.INFO, "Until further notice, any environment will apply in the current state of the system");
+		return this.selfHealingConfigurationManager.getAnyEnvironment();
 	}
 
 	private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,

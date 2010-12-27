@@ -9,9 +9,9 @@ import org.sa.rainbow.scenario.model.RainbowModelWithScenarios;
 import org.sa.rainbow.util.RainbowLogger;
 import org.sa.rainbow.util.RainbowLoggerFactory;
 
+import ar.uba.dc.thesis.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
 import ar.uba.dc.thesis.atam.scenario.model.AtamScenario;
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
@@ -28,6 +28,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("selfHealingScenario")
 public class SelfHealingScenario extends AtamScenario {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final String NO_DATA = "(NO DATA)";
 
@@ -85,13 +87,13 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	public boolean applyFor(Environment environment) {
-		return getEnvironments().contains(DefaultEnvironment.getInstance()) || getEnvironments().contains(environment);
+		return getEnvironments().contains(AnyEnvironment.getInstance()) || getEnvironments().contains(environment);
 	}
 
 	/**
-	 * Este método es el que normalmente se usa para determinar si un escenario está roto.
+	 * Este mï¿½todo es el que normalmente se usa para determinar si un escenario estï¿½ roto.
 	 * <p>
-	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
+	 * Este mï¿½todo estï¿½ pensado para ser usado ï¿½nicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
 	 * es protected.
 	 */
 	protected boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {

@@ -13,6 +13,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 public abstract class AtamScenario extends IdentifiableArcoIrisDomainObject {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String FRIENDLY_NAME = "Scenario";
 
 	private static final String VALIDATION_MSG_NAME = "Scenario's name cannot be empty";
@@ -48,7 +50,7 @@ public abstract class AtamScenario extends IdentifiableArcoIrisDomainObject {
 		super();
 		this.responseMeasure = new ResponseMeasure();
 		this.stimulus = Stimulus.ANY;
-		this.environments = Collections.createList(DefaultEnvironment.getInstance());
+		this.environments = Collections.createList(AnyEnvironment.getInstance());
 	}
 
 	public AtamScenario(Long id, String name, Concern concern, Stimulus stimulus,

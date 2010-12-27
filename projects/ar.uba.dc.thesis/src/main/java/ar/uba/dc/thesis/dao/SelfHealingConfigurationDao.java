@@ -11,7 +11,7 @@ public interface SelfHealingConfigurationDao {
 
 	public List<SelfHealingScenario> getAllScenarios();
 
-	public List<Environment> getAllNonDefaultEnvironments();
+	public List<Environment> getAllEnvironments();
 
 	public Environment getEnvironment(String name);
 

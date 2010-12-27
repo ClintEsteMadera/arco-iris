@@ -11,6 +11,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 public abstract class IdentifiableArcoIrisDomainObject extends ArcoIrisDomainObject implements Identifiable {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String VALIDATION_MSG_ID = "'s unique identifier (id) cannot be empty";
 
 	@XStreamAsAttribute

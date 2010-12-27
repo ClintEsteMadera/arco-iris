@@ -62,7 +62,7 @@
       <concern>SERVER_COST</concern>
       <stimulus any="true"/>
       <environments>
-        <defaultEnvironment></defaultEnvironment>
+        <anyEnvironment></anyEnvironment>
       </environments>
       <artifact reference="../../../artifacts/artifact[2]"/>
       <response>The proper response for the request</response>
@@ -84,7 +84,7 @@
       <concern>RESPONSE_TIME</concern>
       <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
       <environments>
-        <defaultEnvironment></defaultEnvironment>
+        <anyEnvironment></anyEnvironment>
       </environments>
       <artifact reference="../../../artifacts/artifact"/>
       <response>Requested News Content</response>

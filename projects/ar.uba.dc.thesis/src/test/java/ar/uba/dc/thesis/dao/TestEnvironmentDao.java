@@ -24,7 +24,7 @@ public class TestEnvironmentDao {
 		this.environments.add(createHighLoadEnvironment());
 	}
 
-	public List<Environment> getAllNonDefaultEnvironments() {
+	public List<Environment> getAllEnvironments() {
 		return this.environments;
 	}
 

@@ -19,6 +19,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String VALIDATION_MSG_QUANTIFIER = "The quantifier cannot be not empty";
 
 	private static final String VALIDATION_MSG_BINARY_OPERATOR = "The binary operator cannot be not empty";

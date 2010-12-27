@@ -10,6 +10,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("allRepairStrategies")
 public final class AllRepairStrategies extends ArcoIrisDomainObject implements RepairStrategies {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String ALL_AVAILABLE_REPAIR_STRATEGIES = "<ALL AVAILABLE REPAIR STRATEGIES>";
 
 	private static final AllRepairStrategies instance = new AllRepairStrategies();

@@ -8,8 +8,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import ar.uba.dc.thesis.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -92,11 +92,11 @@ public class SelfHealingConfigurationPersister {
 
 		this.xstream.alias("selfHealingConfiguration", SelfHealingConfiguration.class);
 		this.xstream.alias("numericBinaryRelationalConstraint", NumericBinaryRelationalConstraint.class);
-		this.xstream.alias("defaultEnvironment", DefaultEnvironment.class);
+		this.xstream.alias("anyEnvironment", AnyEnvironment.class);
 		this.xstream.alias("specificRepairStrategies", SpecificRepairStrategies.class);
 		this.xstream.alias("allRepairStrategies", AllRepairStrategies.class);
 
-		this.xstream.registerConverter(new DefaultEnvironmentConverter());
+		this.xstream.registerConverter(new AnyEnvironmentConverter());
 		this.xstream.registerConverter(new AllRepairStrategiesConverter());
 	}
 }

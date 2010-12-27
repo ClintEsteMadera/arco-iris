@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.uba.dc.thesis.atam.scenario.model.Artifact;
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
+import ar.uba.dc.thesis.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.thesis.atam.scenario.model.Stimulus;
@@ -60,7 +60,7 @@ public class TestSelfHealingScenarioDao {
 		String scenarioName = "Client Experienced Response Time Scenario";
 		Artifact artifact = TestArtifactDao.CLIENT;
 		Stimulus stimulus = new Stimulus(GET_NEWS_CONTENT_CLIENT_STIMULUS_NAME, NEWS_CONTENT_REQUEST_DESCRIPTION);
-		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
+		List<AnyEnvironment> environments = Collections.createList(AnyEnvironment.getInstance());
 		String response = REQUESTED_NEWS_CONTENT_DESCRIPTION;
 		ResponseMeasure responseMeasure = new ResponseMeasure("Experienced response time is within threshold",
 				new NumericBinaryRelationalConstraint(artifact, "experRespTime", NumericBinaryOperator.LESS_THAN,
@@ -77,7 +77,7 @@ public class TestSelfHealingScenarioDao {
 		String scenarioName = "Server Cost Scenario";
 		Artifact artifact = TestArtifactDao.SERVER;
 		Stimulus stimulus = Stimulus.ANY;
-		List<DefaultEnvironment> environments = Collections.createList(DefaultEnvironment.getInstance());
+		List<AnyEnvironment> environments = Collections.createList(AnyEnvironment.getInstance());
 		String response = "The proper response for the request";
 		ResponseMeasure responseMeasure = new ResponseMeasure("Active servers amount is within threshold",
 				new NumericBinaryRelationalConstraint(Quantifier.SUM, artifact, "cost",

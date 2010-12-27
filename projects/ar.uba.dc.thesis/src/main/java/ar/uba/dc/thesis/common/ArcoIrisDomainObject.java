@@ -1,5 +1,7 @@
 package ar.uba.dc.thesis.common;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -9,7 +11,9 @@ import ar.uba.dc.thesis.common.validation.Validatable;
 /**
  * Abstract behavior for all domain objects used in this project.
  */
-public abstract class ArcoIrisDomainObject implements Validatable {
+public abstract class ArcoIrisDomainObject implements Validatable, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public boolean equals(Object obj) {

@@ -50,7 +50,7 @@ public class SelfHealingConfigurationPersisterTest extends TestCase {
 		SelfHealingConfigurationDao shConfigDao = new TestSelfHealingConfigurationDao();
 
 		SelfHealingConfiguration configToMarshal = new SelfHealingConfiguration("test", shConfigDao.getAllArtifacts(),
-				shConfigDao.getAllNonDefaultEnvironments(), shConfigDao.getAllScenarios());
+				shConfigDao.getAllEnvironments(), shConfigDao.getAllScenarios());
 		return configToMarshal;
 	}
 }

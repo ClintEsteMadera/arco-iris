@@ -88,12 +88,12 @@ public class SelfHealingConfigurationManager implements SelfHealingConfiguration
 		return maxPriority;
 	}
 
-	public Collection<Environment> getAllNonDefaultEnvironments() {
-		return this.selfHealingConfigurationRepository.getAllNonDefaultEnvironments();
+	public Collection<Environment> getAllEnvironments() {
+		return this.selfHealingConfigurationRepository.getAllEnvironments();
 	}
 
-	public Environment getDefaultEnvironment() {
-		return this.selfHealingConfigurationRepository.getDefaultEnvironment();
+	public Environment getAnyEnvironment() {
+		return this.selfHealingConfigurationRepository.getAnyEnvironment();
 	}
 
 	/**

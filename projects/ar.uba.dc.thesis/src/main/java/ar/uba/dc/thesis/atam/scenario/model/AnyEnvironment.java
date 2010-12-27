@@ -13,8 +13,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * for <b>any</b> environment"). The weights in this particular environment are equally distributed considering the
  * amount of concerns returned by {@link Concern#values()}
  */
-@XStreamAlias("defaultEnvironment")
-public final class DefaultEnvironment extends Environment {
+@XStreamAlias("anyEnvironment")
+public final class AnyEnvironment extends Environment {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final String DESCRIPTION = "Any Environment (no restrictions)";
 
@@ -27,15 +29,15 @@ public final class DefaultEnvironment extends Environment {
 
 	private static final SortedMap<Concern, Double> equallyDistributedWeights = createMapWithEquallyDistributedWeights();
 
-	private static final DefaultEnvironment instance = new DefaultEnvironment();
+	private static final AnyEnvironment instance = new AnyEnvironment();
 
-	public static synchronized DefaultEnvironment getInstance() {
+	public static synchronized AnyEnvironment getInstance() {
 		return instance;
 	}
 
 	/**
-	 * For a DefaultEnvironment there is no (easy ;-) ) way of using a different id from the specified in
-	 * {@link DefaultEnvironment#ID}
+	 * For a AnyEnvironment there is no (easy ;-) ) way of using a different id from the specified in
+	 * {@link AnyEnvironment#ID}
 	 * 
 	 * @return true, always.
 	 * 
@@ -46,7 +48,7 @@ public final class DefaultEnvironment extends Environment {
 		return true;
 	}
 
-	private DefaultEnvironment() {
+	private AnyEnvironment() {
 		super(ID, NAME, CONDITIONS, equallyDistributedWeights);
 	}
 
