@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
+import ar.uba.dc.thesis.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
@@ -34,16 +34,16 @@ public class SelfHealingConfigurationRepository implements SelfHealingConfigurat
 		return this.enabledScenarios;
 	}
 
-	public List<Environment> getAllNonDefaultEnvironments() {
-		return this.selfHealingConfigurationDao.getAllNonDefaultEnvironments();
+	public List<Environment> getAllEnvironments() {
+		return this.selfHealingConfigurationDao.getAllEnvironments();
 	}
 
 	public Environment getEnvironment(String name) {
 		return this.selfHealingConfigurationDao.getEnvironment(name);
 	}
 
-	public Environment getDefaultEnvironment() {
-		return DefaultEnvironment.getInstance();
+	public Environment getAnyEnvironment() {
+		return AnyEnvironment.getInstance();
 	}
 
 	public void register(SelfHealingConfigurationChangeListener listener) {

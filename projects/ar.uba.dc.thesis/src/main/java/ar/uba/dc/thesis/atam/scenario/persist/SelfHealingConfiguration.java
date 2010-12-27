@@ -17,6 +17,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("selfHealingConfiguration")
 public class SelfHealingConfiguration extends ArcoIrisDomainObject {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String VALIDATION_MSG_DESCRIPTION = "Self Healing Configuration's description cannot be empty";
 
 	private static final String VALIDATION_MSG_ARTIFACTS = "Self Healing Configuration's artifacts cannot be empty";

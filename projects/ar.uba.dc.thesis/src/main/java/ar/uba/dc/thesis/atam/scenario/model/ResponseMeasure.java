@@ -6,6 +6,8 @@ import ar.uba.dc.thesis.rainbow.constraint.numerical.NumericBinaryRelationalCons
 
 public class ResponseMeasure extends ArcoIrisDomainObject {
 
+	private static final long serialVersionUID = 1L;
+
 	private String description;
 
 	private Constraint constraint;

@@ -15,6 +15,8 @@ import ar.uba.dc.thesis.rainbow.constraint.Constraint;
 
 public abstract class BaseSinglePropertyInvolvedConstraint extends ArcoIrisDomainObject implements Constraint {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String VALIDATION_MSG_PROPERTY = "The property involved in the comparison cannot be blank";
 
 	private static final String VALIDATION_MSG_ARTIFACT = "The artifact cannot be empty";

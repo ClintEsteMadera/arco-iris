@@ -15,6 +15,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("artifact")
 public class Artifact extends IdentifiableArcoIrisDomainObject {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final String EMPTY_STRING = "";
 
 	private static final String FRIENDLY_NAME = "Artifact";

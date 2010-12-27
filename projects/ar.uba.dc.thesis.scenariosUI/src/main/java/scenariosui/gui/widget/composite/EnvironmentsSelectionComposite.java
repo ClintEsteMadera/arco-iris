@@ -7,7 +7,7 @@ import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.query.EnvironmentSearchCriteria;
 import scenariosui.gui.widget.dialog.EnvironmentsSelectionDialog;
 import scenariosui.properties.UniqueTableIdentifier;
-import ar.uba.dc.thesis.atam.scenario.model.DefaultEnvironment;
+import ar.uba.dc.thesis.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.util.Collections;
 
@@ -44,8 +44,8 @@ public class EnvironmentsSelectionComposite extends MultipleObjectsSelectionComp
 
 	@Override
 	protected List<Environment> getValueToSetWhenClearing() {
-		Environment defaultEnvironment = DefaultEnvironment.getInstance();
-		return Collections.createList(defaultEnvironment);
+		Environment anyEnvironment = AnyEnvironment.getInstance();
+		return Collections.createList(anyEnvironment);
 	}
 
 	@Override

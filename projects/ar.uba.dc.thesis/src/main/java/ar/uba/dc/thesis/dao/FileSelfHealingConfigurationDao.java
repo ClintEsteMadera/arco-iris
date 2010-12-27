@@ -23,6 +23,9 @@ import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 public class FileSelfHealingConfigurationDao implements SelfHealingConfigurationDao {
 
+	private static final long CONFIG_RELOAD_INTERVAL_MS = Long.valueOf(Rainbow
+			.property("customize.scenarios.reloadInterval"));
+
 	private static final String SELF_HEALING_CONFIG_FILE_NAME = Rainbow.property("customize.scenarios.path");
 
 	private static final File SELF_HEALING_CONFIG_FILE = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
@@ -49,19 +52,19 @@ public class FileSelfHealingConfigurationDao implements SelfHealingConfiguration
 		};
 
 		Timer timer = new Timer();
-		timer.schedule(task, new Date(), 5000); // repeat the check every 5 seconds
+		timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
 	}
 
 	public List<SelfHealingScenario> getAllScenarios() {
 		return this.scenariosConfig.getScenarios();
 	}
 
-	public List<Environment> getAllNonDefaultEnvironments() {
+	public List<Environment> getAllEnvironments() {
 		return this.scenariosConfig.getEnvironments();
 	}
 
 	public Environment getEnvironment(String name) {
-		for (Environment environment : this.getAllNonDefaultEnvironments()) {
+		for (Environment environment : this.getAllEnvironments()) {
 			if (environment.getName().equals(name)) {
 				return environment;
 			}

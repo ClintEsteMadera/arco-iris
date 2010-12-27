@@ -10,6 +10,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 public class Stimulus extends ArcoIrisDomainObject {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final ValidationError VALIDATION_ERROR_STIMULUS_NAME = new ValidationError(
 			"Stimulus cannot be blank");
 

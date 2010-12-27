@@ -30,8 +30,8 @@ public class TestSelfHealingConfigurationDao implements SelfHealingConfiguration
 		return this.scenarioDao.getAllScenarios();
 	}
 
-	public List<Environment> getAllNonDefaultEnvironments() {
-		return this.environmentDao.getAllNonDefaultEnvironments();
+	public List<Environment> getAllEnvironments() {
+		return this.environmentDao.getAllEnvironments();
 	}
 
 	public Environment getEnvironment(String name) {
