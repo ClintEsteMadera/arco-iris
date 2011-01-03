@@ -1,22 +1,62 @@
 \section{Interfaz Gráfica: Scenarios UI}
 	\label{sec:scenariosUI}
 
-	\subsection{Motivaciones para una ``GUI''}
-		Aún considerando las mejoras provistas por la extensión a Rainbow propuesta en el presente trabajo, uno de los
-		escollos más notorios para poder utilizar de manera amena, ágil y productiva a ``Arco Iris'' es, sin dudas, la
-		ausencia de una interfaz visual para que los \emph{stakeholders} y arquitectos de la aplicación a adaptar puedan
-		crear, editar y eliminar escenarios, entornos, artifacts y otros conceptos introducidos en ``Arco Iris''; así también
-		como otros conceptos ya existentes en ``Rainbow''.
-		
-		% TODO CONTINUAR! A fin de supEn el presente apartado nos concentraremos en repasar 
-	
-	
-		\todo{Chamuyo de que nos llevó a hacer esto, incluir pq es en ingles}
-		
-		Se propone el desarrollo de una interfaz de usuario gráfica (GUI, de sus siglas en inglés: Graphical User Interface)
-		para que los distintos \emph{stakeholders}, incluyendo usuarios y arquitectos, puedan colaborar creando y editando
-		escenarios que luego serán importados y utilizados por Rainbow.
+	\subsection{Introducción}
+		\subsubsection{Motivaciones para una ``GUI''}
+			Aún considerando las mejoras provistas por la extensión a Rainbow propuesta en el presente trabajo, uno de los
+			escollos más notorios para poder utilizar de manera amena, ágil y productiva a ``Arco Iris'' es, sin dudas, la
+			ausencia de una interfaz visual para que los \emph{stakeholders} y arquitectos de la aplicación puedan crear, editar
+			y eliminar escenarios, entornos, artifacts y otros conceptos introducidos en ``Arco Iris''; así también como otros
+			conceptos ya existentes en ``Rainbow''.
+			
+			A fin de superar esta dificultad, se propone el desarrollo de una interfaz de usuario gráfica (GUI, de sus siglas en
+			inglés: \emph{Graphical User Interface}) para que los distintos \emph{stakeholders}, incluyendo usuarios y
+			arquitectos, puedan expresar los requerimientos no funcionales (o ``illities'') del sistema en formato de escenarios
+			de QAW, que luego serán importados y utilizados por ``Arco Iris''.
+			
+			En el presente apartado nos dedicaremos a repasar los aspectos más importantes de la aplicación, bautizada
+			``Scenarios UI''.
 
+		\subsubsection{Herramienta de escritorio}
+			Hoy en día, con el apogeo de cientos de lenguajes, herramientas, \emph{frameworks}, etc. para desarrollar
+			aplicaciones, al momento de definir cuestiones arquitecturales de una interfaz gráfica, muy pocos desarrolladores
+			se cuestionan si tiene sentido o no que la misma sea web: la abundancia de herramientas que facilitan el
+			enriquecimiento de una interfaz web (que naturalmente es pobre en usabilidad y tiempo de respuesta, entre otras
+			cosas) terminan ganando la batalla frente a las aplicaciones conocidas como ``de escritorio''.
+			
+			Por otro lado, dentro de los argumentos más esgrimidos por los defensores de las interfaces web, se encuentran el
+			hecho de su accesibilidad desde cualquier computadora o dispositivo que cuente con un navegador e internet; así como
+			también la facilidad de aplicación de parches y actualizaciones a la misma. Estos argumentos son sencillamente
+			irrefutables.
+			
+			Entonces bien, ¿por qué hemos elegido construír ``Scenarios UI'' basado en una interfaz gráfica de usuario de
+			escritorio?
+			
+			\begin{itemize}
+				\item porque consideramos que para el caso concreto de ``Arco Iris'', dónde se pretende que los \emph{stakeholders}
+				de la aplicación junto a el o los arquitectos de la misma \textbf{colaboren} para llevar a cabo una especificación
+				de sus requerimientos de auto reparación para el sistema; es más importante la agilidad de uso y la rapidez de
+				respuesta de la aplicación.
+				\item porque, gracias a Java Web Start\footnote{\emph{Java Web Start} es una herramienta de Oracle (originalmente
+				de Sun) que permite que aplicaciones Java \emph{standalone} sean desplegadas con un sólo click a traves de
+				la red, asegurando también que la versión correcta de la máquina virtual de Java (JRE) esté instalada. Más
+				información en \url{http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136112.html}}, la aplicación de
+				parches o actualizaciones sobre la aplicación es sencillamene automática, conservando así uno de los más grandes
+				beneficios de una aplicación web ordinaria.
+				\item porque los \emph{widgets} disponibles en la librería \emph{JFace-SWT}\footnote{JFace es un conjunto de widgets
+				para realizar interfaces de usuario construido sobre SWT. Fue desarrollado por IBM para facilitar la construcción
+				del entorno de desarrollo Eclipse, pero su uso no está limitado a éste. JFace proporciona una serie de
+				construcciones muy frecuentes a la hora de desarrollar interfaces gráficas de usuario, tales como cuadros de
+				diálogo, evitando al programador la tediosa tarea de lidiar manualmente con los widgets de SWT. Fuente:
+				\url{http://es.wikipedia.org/wiki/JFace}} resultan muy adecuados para modelar los diferentes controles
+				visuales de la aplicación.
+			\end{itemize}
+			
+		\subsubsection{Idioma por defecto: inglés}
+			Dado que Rainbow es una aplicación originalmente creada en Estados Unidos, y previendo que tanto ``Arco Iris'' como
+			``Scenarios UI'' puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, decidimos que lo más
+			razonable es que estas aplicaciones estén codificadas en el idioma inglés.
+		
 	\subsection{Conceptos básicos de uso de la herramienta}
 		\todo{Explicar que siempre hay por debajo un SHC, que se va actualizando siempre, que la estructura es
 		siempre ver todo actualizado en las consultas, etc\ldots}
