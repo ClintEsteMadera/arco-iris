@@ -2,7 +2,9 @@
 	\label{sec:scenariosUI}
 
 	\subsection{Introducción}
+
 		\subsubsection{Motivaciones para una ``GUI''}
+
 			Aún considerando las mejoras provistas por la extensión a Rainbow propuesta en el presente trabajo, uno de los
 			escollos más notorios para poder utilizar de manera amena, ágil y productiva a ``Arco Iris'' es, sin dudas, la
 			ausencia de una interfaz visual para que los \emph{stakeholders} y arquitectos de la aplicación puedan crear, editar
@@ -18,6 +20,7 @@
 			``Scenarios UI''.
 
 		\subsubsection{Herramienta de escritorio}
+
 			Hoy en día, con el apogeo de cientos de lenguajes, herramientas, \emph{frameworks}, etc. para desarrollar
 			aplicaciones, al momento de definir cuestiones arquitecturales de una interfaz gráfica, muy pocos desarrolladores
 			se cuestionan si tiene sentido o no que la misma sea web: la abundancia de herramientas que facilitan el
@@ -55,21 +58,86 @@
 			\todo{Implementar realmente con Java Web Start o sacar este chamuyo!}
 			
 		\subsubsection{Idioma por defecto: inglés}
+
 			Dado que Rainbow es una aplicación originalmente creada en Estados Unidos, y previendo que tanto ``Arco Iris'' como
 			``Scenarios UI'' puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, decidimos que lo más
-			razonable es que estas aplicaciones estén codificadas en el idioma inglés.
+			razonable es que estas aplicaciones estén codificadas en el idioma inglés. En el caso de ``Scenarios UI'', todos los
+			textos mostrados en pantalla también están escritos en inglés, aunque todas las etiquetas están externalizadas a
+			archivos de configuración 
+			
+		\subsubsection{Multi plataforma}
+
+			``Scenarios UI'' es, como la gran mayoría de las aplicaciones Java, ejecutable desde los sistemas operativos
+			más importantes, como por ejemplo Windows, Unix, MAC OS o Solaris. Debido a la utilización de las librerías SWT-JFace
+			para la creación de la herramienta, las cuales poseen dependencias nativas del sistema operativo (i.e. el encargado
+			de dibujar y refrescar los componentes visuales no es la máquina virtual de Java sino el sistema operativo) es
+			necesario empaquetar la aplicación con diferentes dependencias java (i.e. archivos JAR) en el \emph{classpath} para
+			poder correr la aplicación en distintas plataformas. \todo{cuando decidamos como empaquetamos todo, mejorar esta
+			subsección}
 		
 	\subsection{Conceptos básicos de uso de la herramienta}
 
 		\subsubsection{Formato de salida: XML}
-			\todo{Explicar por que elegimos el formato XML para el output y mostrar ejemplo}
+
+			La configuración de \emph{self healing} que ``Scenarios UI'' debe generar debe ser guardada en un archivo, en un
+			determinado formato. Consideramos que el mejor formato para dicho archivo es el formato XML porque es un formato
+			entendible no sólo por la computadora sino también por seres humanos. Dentro de este tipo de lenguajes (dónde se
+			encuentran otros como JSON o YAML\footnote{Para más información sobre estos lenguajes de intercambio de
+			datos, visitar \url{http://www.json.org/} o \url{http://www.yaml.org/}}) elegimos el formato XML por ser el más
+			ampliamente conocido.
+			
+			La mecánica de serialización de una configuración de ``Self Healing'' creada en Java utilizando ``Scenarios UI'' a
+			XML y la importación de dicho XML en Arco Iris es llevada a cabo utilizando el reconocido parser
+			``XStream''\footnote{Para más información, visitar \url{http://xstream.codehaus.org/}}, el cual permite fácilmente
+			convertir objetos Java en XML y viceversa.
+			
+			En la sección \ref{SelfHealingConfigXML} del apéndice, podemos observar un ejemplo de un archivo de
+			configuración de self healing generado por ``Scenarios UI''.			
 	
-		\todo{Explicar que siempre hay por debajo un SHC, que se va actualizando siempre, que la estructura es
-		siempre ver todo actualizado en las consultas, etc\ldots}
+		\subsubsection{Una configuración de ``Self Healing'' subyacente}
+
+			La idea básica de uso de ``Scenarios UI'' es que, en todo momento, exista una configuración de ``Self Healing''
+			subyacente. Bien sea que el usuario la haya creado ``desde cero'' o bien, que el usuario haya abierto una
+			configuración preexistente desde un archivo.
+
+			\begin{figure}[h]
+				\centering
+					\includegraphics[scale=0.5]{images/scenariosUI_newORopen.png}
+				\caption{Diálogo de creación o apertura de archivo}
+			\end{figure}
+
+			Ante cualquier acción del usuario de ``Scenarios UI'' dónde se guarden cambios hechos en la configuración activa, la
+			aplicación \textbf{guardará automáticamente dichos cambios en el archivo subyacente}, garantizando así la
+			persistencia de los cambios hechos por el usuario en casos especiales de pérdida de energía o fallas inesperadas en
+			la computadora que se encuentra corriendo ``Scenarios UI''. Recordemos que, de estar el usuario editando el archivo
+			de configuración que Arco Iris está utilizando en \emph{runtime}, cualquier cambio automáticamente guardado por
+			``Scenarios UI'' será automáticamente detectado por ``Arco Iris'', lo cual dinamiza el comportamiento original
+			presente en \emph{Rainbow}.
+			
+		\subsubsection{Auto refresco de tablas}
+
+			Como veremos más adelante en detalle, en ``Scenarios UI'' se visualizan los componentes (i.e. escenarios, entornos,
+			artifacts, etc.) existentes en el sistema con una tabla que sumariza sus propiedades más relevantes. En general,
+			estas tablas se refrescarán automáticamente de acuerdo a los cambios hechos en los objetos subyacentes que componen
+			la configuración de \emph{self healing}.
 		
 		\subsubsection{Constraints}
-			\todo{Mencionar que es extensible el composite pero que por ahora solo implementamos la numeric relational binary
-			constraint}
+
+			Tanto en el contexto de creación/edición de un entorno (al imponer restricciones sobre la ocurrencia del mismo) como
+			al crear o editar el \emph{response measure} de un escenario, las llamadas ``restricciones'' (o \emph{constraints})
+			son una parte fundamental de la configuración requerida para que Arco Iris provea su funcionalidad adecuadamente.
+			
+			El componente visual asociado a una restricción fue diseñado para ser fácilmente extendido pero, sólo a fines del
+			presente trabajo y con el objetivo de acotar la funcionalidad a los límites impuestos en los objetivos del mismo,
+			sólo hemos implementado un sólo tipo de restricción: la restricción numérica relacional binaria. Esto es ni más ni
+			menos que una relación de orden (igual, mayor, mayor o igual, menor, menor o igual) entre una propiedad de la
+			arquitectura (e.g. \verb@server1.responseTime@) y un número (puede ser entero o flotante).
+			
+			\begin{figure}[h]
+				\centering
+					\includegraphics[scale=0.5]{images/scenariosUI_numericBinaryRelationalConstraint.png}
+				\caption{Diálogo de creación o edición de una restricción numérica binaria relacional}
+			\end{figure}
 
 	\subsection{Administración de Artifacts}
 
