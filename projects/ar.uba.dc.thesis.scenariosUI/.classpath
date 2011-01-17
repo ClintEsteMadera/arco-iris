@@ -3,11 +3,11 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/swt_jface/swt-64.jar"/>
-	<classpathentry kind="lib" path="lib/swt_jface/native-lib-linux64.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/swt.jar"/>
-	<classpathentry kind="lib" path="lib/swt_jface/native-lib-win64.jar"/>
+	<classpathentry kind="lib" path="lib/swt_jface/swt-64.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/native-lib-win32.jar"/>
+	<classpathentry kind="lib" path="lib/swt_jface/native-lib-linux64.jar"/>
+	<classpathentry kind="lib" path="lib/swt_jface/native-lib-win64.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/native-lib-linux32.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/core_commands.jar" sourcepath="lib/lib-src/core_commands_src.zip"/>
 	<classpathentry kind="lib" path="lib/swt_jface/equinox_common.jar" sourcepath="lib/lib-src/equinox_common_src.zip"/>
