@@ -129,6 +129,7 @@
 			Iris''.
 		
 		\subsubsection{Constraints}
+		\label{sec:scenariosUI_constraints}
 
 			Tanto en el contexto de creación/edición de un entorno (al imponer restricciones sobre la ocurrencia del mismo) como
 			al crear o editar el \emph{response measure} de un escenario, las llamadas ``restricciones'' (o \emph{constraints})
@@ -138,7 +139,10 @@
 			presente trabajo y con el objetivo de acotar la funcionalidad a los límites impuestos en los objetivos del mismo,
 			sólo hemos implementado un sólo tipo de restricción: la restricción numérica relacional binaria. Esto es ni más ni
 			menos que una relación de orden (igual, mayor, mayor o igual, menor, menor o igual) entre una propiedad de la
-			arquitectura (e.g. \verb@server1.responseTime@) y un número (puede ser entero o flotante).
+			arquitectura (e.g. \verb@server1.responseTime@) y un número (puede ser entero o flotante). Se permiten dos
+			cuantificadores: sumatoria y promedio, los que especifican si la condición debe cumplirse para la suma de todas las
+			instancias en \emph{runtime} de dicho componente o si la condición debe darse ``en promedio'' para todas aquellas
+			instancias; respectivamente.
 			
 			\begin{figure}[h]
 				\centering
@@ -155,7 +159,7 @@
 		junto con una solapa dentro de la pantalla principal de la aplicación para poder visualizar las propiedades más
 		importantes de dichos objetos.
 
-		\begin{figure}[h]
+		\begin{figure}[ht]
 			\centering
 				\includegraphics[scale=0.5]{images/scenariosUI_artifact.png}
 			\caption{Diálogo de creación o edición de un \emph{artifact}, con su solapa ABM en segundo plano}
@@ -168,7 +172,7 @@
 		Al igual que para los \emph{artifacts}, ``Scenarios UI'' provee la funcionalidad de ABM para administrar escenarios
 		junto con una solapa para visualizar sus propiedades más relevantes.
 
-		\begin{figure}[h]
+		\begin{figure}[ht]
 			\centering
 				\includegraphics[scale=0.5]{images/scenariosUI_environment.png}
 			\caption{Diálogo de creación o edición de un entorno, con su solapa ABM en segundo plano}
@@ -178,7 +182,7 @@
 		\emph{concerns} existentes en el sistema e inicialmente asignarle a cada uno un peso equidistribuído $P$
 		determinado de la siguiente forma:
 		\begin{equation}
-			P &= \frac{1}{K}
+			P = \frac{1}{K}
 		\end{equation}
 		dónde $K$ es la cantidad de concerns existentes en el sistema.
 		
@@ -186,16 +190,81 @@
 		\emph{runtime}. Aquí se reutiliza un componente genérico para restricciones, también utilizado en el diálogo de
 		creación de un escenario (Ver figura \ref{fig:numericBinaryRelationalConstraint})
 
-		\subsubsection{Pesos relativos de Concerns}
-		
-		\subsubsection{El entorno ``ANY''}
-
 	\subsection{Administración de Escenarios}
 
+		Finalmente, llegamos al concepto central del presente trabajo: el escenario de auto reparación. El mismo contiene los
+		elementos ya vistos anteriormente junto con otros atributos que repasaremos a continuación. Por supuesto que existe,
+		al igual que para los otros conceptos anteriormente vistos, una solapa dedicada para maneja las altas, bajas y
+		modificaciones de escenarios.
+
+		\begin{figure}[ht]
+			\centering
+				\includegraphics[scale=0.5]{images/scenariosUI_selfHealingScenario.png}
+			\caption{Diálogo de creación o edición de un escenario, con su solapa ABM en segundo plano}
+		\end{figure}
+		
+		En la figura anterior observamos que:
+		\begin{itemize}
+			\item Existe la posibilidad de marcar un escenario como habilitado o deshabilitado. Recordemos que Arco Iris
+			únicamente considera escenarios habilitados.
+			\item El combo box de \emph{Concerns} se llena con los Concerns existentes en el sistema al momento de cargarse el
+			cuadro de diálogo.
+			\item Se permite especificar que el estímulo correspondiente al escenario es ``cualquiera''.
+			\item Se permite elegir artifacts, considerando los existentes en el sistema o creando ad-hoc uno nuevo.
+			\item En el componente ``Response Measure'' se reutiliza el componente mencionado anteriormente en la sección
+			\ref{sec:scenariosUI_constraints} para crear y editar constraints.
+		\end{itemize}
+
 		\subsubsection{Selección de Entornos}
+			La selección de entornos merece un apartado especial debido a la presencia del pseudo-entorno denominado ``ANY'', el
+			cual es automáticamente asignado al escenario si el usuario no elige explícitamente ningún entorno o en su defecto si
+			decide explícitamente expresar su deseo de que el escenario aplique ``para cualquier entorno de ejecución''. A
+			continuación, una breve descripción de dicho pseudo-entorno:
+
+			\todo{DEBERIAMOS PONER ESTA EXPLICACION EN LA SECCION ``ARCO IRIS''??}
+			\paragraph{El entorno ``ANY''}
+
+				Existe un entorno no mostrado en la solapa de Entornos (ya que el mismo no es editable) pero que posee una
+				relevancia no menor: el (pseudo-)entorno ``ANY'' (cualquiera) es una suerte de comodín utilizado para denotar la
+				siguiente semántica: ``El presente escenario aplica para cualquier condición de \emph{runtime} (i.e. para cualquier
+				entorno de ejecución). Consecuentemente, en dicho entorno especial, la distribución de pesos es la que uno puede
+				esperar: los pesos se encuentran equidistribuídos para no ``inclinar la balanza'' hacia ningún \emph{concern} en
+				particular y por otro lado, el entorno no impone ninguna condición, con lo cual el mismo aplicará siempre en todos
+				los casos, trivialmente.
 
 		\subsubsection{Selección de Estrategias de Reparación}
 
-	\subsection{Puntos de extensión}
+			Una funcionalidad interesante de ``Scenarios UI'' es su capacidad para, en el contexto de la creación o edición de un
+			escenario, poder elegir una estrategia de reparación directamente desde el archivo \emph{stitch}\todo{referencia?} en
+			el cual se encuentra definida la misma. Se elige primeramente el archivo que contiene las estrategias, para luego
+			seleccionar la estrategia deseada, visualizando el código (en el lenguaje de scripting \emph{stitch}) de la misma.
 
-		\todo{Los artifacts podrían seleccionarse del .ACME en lugar de escribir a mano su nombre y systemName}
+			Notar que para el caso de las estrategias de reparación, y a diferencia del resto de los otros conceptos explicados
+			hasta este momento, no es posible crear una estrategia ad-hoc, sino que se deben usar únicamente las ya existentes.
+
+			\begin{figure}[ht]
+				\centering
+					\includegraphics[scale=0.5]{images/scenariosUI_select_repair_strategy_1.png}
+				\caption{Diálogo de selección del archivo que contiene las estrategias}
+			\end{figure}
+		
+			\begin{figure}[ht]
+				\centering
+					\includegraphics[scale=0.4]{images/scenariosUI_select_repair_strategy_2.png}
+				\caption{Diálogo de selección de la estrategia de reparación}
+			\end{figure}
+
+	\subsection{Puntos de extensión}
+	
+		A continuación, enunciaremos algunos de los posibles puntos de extensión para únicamente para la
+		herramienta ``Scenarios UI'' (para ver puntos de extensión para ``Arco Iris'', remitirse a la sección
+		\ref{sec:puntos_extension}):
+		\begin{itemize}
+			\item Los artifacts podrían seleccionarse del archivo .acme que contiene la descripción de la arquitectura del
+			sistema a adaptar, en lugar de tener que escribir el usuario el `system name'' y ``property name'' del componente en
+			cuestión.
+			\item lo mismo se podría hacer con los estímulos, ya que los mismos serán normalmente la etiqueta de un puerto, en
+			el contexto del diagrama de C\&C (componentes y conectores)
+			\item se podrían soportar nuevos tipos de \emph{constraint}, además de la ya mencionada ``numérica binaria
+			relacional''.
+		\end{itemize}
