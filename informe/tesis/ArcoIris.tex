@@ -522,15 +522,56 @@
 
 	\subsection{Prioridades entre Escenarios}
 
-		\todo{Mostrar cómo se configura en Rainbow (utilities.yml) vs Arco Iris (usando la GUI, mucho mas amigable)}
+		Si bien Rainbow maneja el concepto de escenario, el mismo no es equivalente al manejado por Arco Iris, el cual
+		toma el concepto de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo configurable
+		pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el arquitecto
+		deberá configurar el escenario\footnote{Recordar que aquí escenario no es el mismo concepto utilizado por Arco Iris,
+		tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo al inicio de la herramienta,
+		intentando vislumbrar cuáles serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
+		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha
+		configuración en Rainbow:
+		\begin{Verbatim}[gobble=4]
+            weights:
+              scenario 1:
+                uR: 0.35
+                uF: 0.4
+                uC: 0.25
+              scenario 2:
+                uR: 0.5
+                uF: 0.3
+                uC: 0.2
+              scenario 2b:
+                uR: 0.5
+                uF: 0.2
+                uC: 0.3
+		\end{Verbatim}
+		
+		Cada una de las líneas representa el valor que se le asigna a cada \emph{concern}, en donde uR representa al Tiempo de
+		Respuesta, uF a la Fidelidad de la información y uC al Costo.
+		
+		Esto es lo que veremos, entre otras cosas, en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow.
+		Aquí, como vemos, existe más de una configuracion del escenario, luego se deberá seleccionar una de estas opciones en
+		el archivo de configuración \emph{rainbow.properties}. Estos valores serán luego utilizados por Rainbow a la hora de
+		seleccionar una estrategia, veremos en detalle su utilización en la sección \ref{sec:strategySelection}.
+		
+		Presentado ya el concepto de escenario utilizado por Rainbow, pasaremos estas ideas a su contrapartida en Arco Iris.
+		Como hemos visto anteriormente, en Arco Iris existen los conceptos de \emph{Entorno} y \emph{Escenario}, los cuales
+		respetan al pie de la letra los conceptos introducidos por ATAM (ver sección \ref{sec:atam}). El concepto de escenario
+		utilizado por Rainbow se asemeja mucho más al concepto de \emph{Entorno} de ATAM que al de \emph{Escenario}. La
+		diferencia fundamental radica en que en Arco Iris no se requiere que el usuario configure en qué entorno se encuentra
+		el sistema, sino que el usuario debe detallar cuáles son las condiciones que definen al entorno, y, en caso de
+		cumplirse dichas condiciones, cuáles serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
+		
+		Dicho esto podemos introducirnos de lleno en la relación de prioriades entre escenarios, sin confundir los
+		conceptos manejados en ambos frameworks.
 
-		Rainbow permite priorizar básicamente por \emph{concerns}, mientras que Arco Iris permite además priorizar escenarios
-		asignando prioridades relativas a los mismos, de modo tal que al momento de escoger una estrategia de autoreparación
-		la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación considerada más importante
-		según la visión de los \emph{stakeholders}.
+		En resumen, Rainbow permite priorizar básicamente por \emph{concerns}, y de manera estática, mientras que Arco Iris
+		permite priorizar escenarios asignando prioridades relativas a los mismos, de modo tal que al momento de escoger una
+		estrategia de autoreparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación
+		considerada más importante según la visión de los \emph{stakeholders}.
 
-		Entonces, cada escenario tendrá asignada una prioridad, la cual será un entero mayor a cero, uno será la prioridad
-		máxima asignable, mientras que su valor máximo no estará acotado, permitiendo  así asignar valores muy grandes para
+		Para lograr esto, cada escenario tendrá asignada una prioridad, la cual será un entero mayor a cero, uno será la
+		prioridad máxima asignable, mientras que su valor máximo no estará acotado, permitiendo  así asignar valores muy grandes para
 		escenarios de muy baja prioridad. Si bien se ofrece esta posibilidad al usuario, la misma debe manejarse con mucho
 		cuidado, ya que es probable que, al configurar escenarios con prioridades tan grandes, éstos no tengan prácticamente
 		ningún peso a la hora de seleccionar la estrategia de autoreparación a aplicar, por lo cual dichos escenarios nunca
