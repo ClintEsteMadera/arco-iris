@@ -120,6 +120,13 @@
 			artifacts, etc.) existentes en el sistema con una tabla que sumariza sus propiedades más relevantes. En general,
 			estas tablas se refrescarán automáticamente de acuerdo a los cambios hechos en los objetos subyacentes que componen
 			la configuración de \emph{self healing}.
+
+		\subsubsection{Ids ``inteligentes''}
+			El identificador único de los objetos que componen un escenario de auto reparación (e.g. artifacts, entornos, etc.)
+			es encarado en todos los casos de una única manera, tomemos el \emph{artifact} a modo de ejemplo: la aplicación
+			considera los id's de los artifacts existentes en el sistema y al momento de crear un artifact nuevo, sugiere
+			automáticamente un id no utilizado, de modo de garantizar la unicidad de dicho objeto cuando sea usado en ``Arco
+			Iris''.
 		
 		\subsubsection{Constraints}
 
@@ -137,12 +144,48 @@
 				\centering
 					\includegraphics[scale=0.5]{images/scenariosUI_numericBinaryRelationalConstraint.png}
 				\caption{Diálogo de creación o edición de una restricción numérica binaria relacional}
+				\label{fig:numericBinaryRelationalConstraint}
 			\end{figure}
 
 	\subsection{Administración de Artifacts}
+		Uno de los componentes relevantes a un escenario de auto reparación es el llamado \emph{Artifact}, el cuál representa
+		al componente de arquitectura que está involucrado en el escenario en cuestión.
+		
+		``Scenarios UI'' provee la funcionalidad de alta, baja y modificación (ABM) básica para administrar \emph{artifacts}
+		junto con una solapa dentro de la pantalla principal de la aplicación para poder visualizar las propiedades más
+		importantes de dichos objetos.
+
+		\begin{figure}[h]
+			\centering
+				\includegraphics[scale=0.5]{images/scenariosUI_artifact.png}
+			\caption{Diálogo de creación o edición de un \emph{artifact}, con su solapa ABM en segundo plano}
+		\end{figure}
 
 	\subsection{Administración de Entornos}
-	
+		El ``Entorno'' es uno de los componentes más relevantes dentro de un escenario de auto reparación: representa la
+		situación concreta (en tiempo de ejecución) dónde el escenario en cuestión va a aplicar.
+		
+		Al igual que para los \emph{artifacts}, ``Scenarios UI'' provee la funcionalidad de ABM para administrar escenarios
+		junto con una solapa para visualizar sus propiedades más relevantes.
+
+		\begin{figure}[h]
+			\centering
+				\includegraphics[scale=0.5]{images/scenariosUI_environment.png}
+			\caption{Diálogo de creación o edición de un entorno, con su solapa ABM en segundo plano}
+		\end{figure}
+
+		El cuadro de diálogo que muestra las propiedades de un entorno está diseñado para recoger dinámicamente todos los
+		\emph{concerns} existentes en el sistema e inicialmente asignarle a cada uno un peso equidistribuído $P$
+		determinado de la siguiente forma:
+		\begin{equation}
+			P &= \frac{1}{K}
+		\end{equation}
+		dónde $K$ es la cantidad de concerns existentes en el sistema.
+		
+		Se observa también la funcionalidad de ABM para las condiciones que se deben cumplir para que el entorno se cumpla en
+		\emph{runtime}. Aquí se reutiliza un componente genérico para restricciones, también utilizado en el diálogo de
+		creación de un escenario (Ver figura \ref{fig:numericBinaryRelationalConstraint})
+
 		\subsubsection{Pesos relativos de Concerns}
 		
 		\subsubsection{El entorno ``ANY''}
@@ -150,7 +193,9 @@
 	\subsection{Administración de Escenarios}
 
 		\subsubsection{Selección de Entornos}
-		
+
 		\subsubsection{Selección de Estrategias de Reparación}
 
 	\subsection{Puntos de extensión}
+
+		\todo{Los artifacts podrían seleccionarse del .ACME en lugar de escribir a mano su nombre y systemName}
