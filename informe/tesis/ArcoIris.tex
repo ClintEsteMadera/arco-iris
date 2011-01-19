@@ -547,7 +547,8 @@
 		\end{Verbatim}
 		
 		Cada una de las líneas representa el valor que se le asigna a cada \emph{concern}, en donde uR representa al Tiempo de
-		Respuesta, uF a la Fidelidad de la información y uC al Costo.
+		Respuesta, uF a la Fidelidad de la información y uC al Costo. Notar que la sumatoria de los pesos de los distintos
+		concern debe ser igual a 1 dentro de cada escenario, al igual que sucede en el \emph{Entorno} al configurar Arco Iris.
 		
 		Esto es lo que veremos, entre otras cosas, en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow.
 		Aquí, como vemos, existe más de una configuracion del escenario, luego se deberá seleccionar una de estas opciones en
@@ -587,22 +588,37 @@
 
 	\subsection{Estrategias y su Relación con los Escenarios}
 
+		Antes de sumergirnos en cómo Arco iris utiliza las estrategias implementadas para reparar escenarios, recordemos
+		brevemente su utilización en Rainbow.
+		
+		Las estrategias en Rainbow tienen un conjunto de precondiciones que nos indican si dicha estrategia puede ser
+		utilizada para reparar el sistema en un determinado momento. Esto implica que, en cuanto Rainbow detecta un problema
+		en el sistema, deba recorrer todas las estrategias existentes para ver si aplicables para las condiciones actuales, o
+		sea que Rainbow no tiene manera de determinar a priori la utilidad de una estrategia en un momento dado. Además, la
+		solución está atada a la detección del problema, entonces, al no poder modularizar en detección del problema y
+		solución, se deben repetir las precondiciones por cada solución (estrategia) implementada.
+		
+		En Arco Iris se propone desacoplar la detección del problema y solución, y para lograr esto utilizaremos los escenarios.
+		Allí se definirán las condiciones de detección del problema, y se referenciarán las posibles estrategias de reparación a
+		ser consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido, quedando así las
+		estrategias exentas de conocer cuales son las circunstancias en las que su ejecución tiene sentido. Esto permite al
+		arquitecto tener un mayor control sobre las estrategias a ejecutar en determinadas condiciones, ya que al situarse en un
+		escenario concreto, él sabrá cuales serán las soluciones más adecuadas basándose en el entorno del sistema y en la
+		prioridad de el escenario actual. Obviamente, Arco Iris también ofrece la posibilidad de utilizar el comportamiento
+		brindado por Rainbow, esto se logra simplemente indicando la opción que representa a todas las estrategias existentes
+		(para más detalle ver \ref{sec:strategySelection})cuando se configura el escenario.
+		Una ventaja derivada del agregado del concepto de \emph{Escenario} es que ahora los problemas y sus posibles
+		soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Como
+		ya sucedía en Rainbow, las estrategias poseen la información necesaria para permitir simular su aplicación y estimar
+		en que condiciones quedaría el sistema luego de haber aplicado dicha estrategia (esta información será
+		utilizada para la estimación de la nueva ``utilidad del sistema\footnote{Para más detalle acerca del concepto
+		Utilidad del Sistema ver sección \ref{sec:systemUtility}}'').
+		
 		\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
 
 		\todo{explicar como se configuran normalmente las estrategias en Rainbow, como reutilizamos la misma implementación y
 		explicar que la información para determinar la utilidad del sistema de acuerdo a lo que se estima que la estrategia
 		arregla sigue sacandose de lo que ya estaba (rainbow o znn?)}
-
-		En Arco Iris, las estrategias de reparación si bien tienen su vida propia, se pueden asociar a los escenarios. La idea
-		subyacente debajo de esta decisión de diseño es que se pueda especificar un conjunto de estrategias de reparación a
-		ser consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido.
-
-		Una ventaja derivada del agregado del concepto de Escenarios es que ahora los problemas y sus posibles soluciones
-		(i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Como ya sucedía
-		en Rainbow, las estrategias poseen la información necesaria para permitir simular su aplicación y estimar cómo
-		quedaría el sistema luego de haber aplicado dicha estrategia. (estimación de la nueva ``utilidad del sistema''). Cabe
-		aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o no de los escenarios
-		requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de la estrategia simulada.
 
 	\subsection{Detección: cuando activar el mecanismo de auto reparación}
 
@@ -635,6 +651,7 @@
 			\label{sec:scenarioWeight}
 
 		\subsubsection{Utilidad del Sistema}
+		\label{sec:systemUtility}
 
 			\todo{Explicar Utilidad del sistema}
 
@@ -652,6 +669,11 @@
 		algún otro escenario de mayor prioridad \todo{Esto es un efecto colateral de la utility function pero...podemos
 		garantizar que esto es asi siempre? Creo que esto necesita ser reescrito} y mediante el uso de heurísticas, poder
 		aproximar la mejor estrategia de reparación a llevar a cabo de modo que la \emph{utilidad del sistema} se maximize.
+
+	
+		\todo{REVISAR}Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o
+		no de los escenarios requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de
+		la estrategia simulada.
 
 	\subsection{Modelo de Arco Iris}
 
