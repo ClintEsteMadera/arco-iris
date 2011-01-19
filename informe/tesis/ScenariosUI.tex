@@ -233,10 +233,11 @@
 				los casos, trivialmente.
 
 		\subsubsection{Selección de Estrategias de Reparación}
+		\label{sec:strategySelection}
 
 			Una funcionalidad interesante de ``Scenarios UI'' es su capacidad para, en el contexto de la creación o edición de un
 			escenario, poder elegir una estrategia de reparación directamente desde el archivo \emph{stitch}\todo{referencia?} en
-			el cual se encuentra definida la misma. Se elige primeramente el archivo que contiene las estrategias, para luego
+			el cual se encuentra definida la misma. Primeramente, se elige el archivo que contiene las estrategias, para luego
 			seleccionar la estrategia deseada, visualizando el código (en el lenguaje de scripting \emph{stitch}) de la misma.
 
 			Notar que para el caso de las estrategias de reparación, y a diferencia del resto de los otros conceptos explicados
@@ -252,6 +253,27 @@
 				\centering
 					\includegraphics[scale=0.4]{images/scenariosUI_select_repair_strategy_2.png}
 				\caption{Diálogo de selección de la estrategia de reparación}
+			\end{figure}
+			
+			Al momento de especificar estrategias de reparación, es importante mencionar que la aplicación también permite
+			especificar la siguiente semántica:
+
+			``Considerar \textbf{todas} las estrategias de reparación disponibles en Arco Iris al momento de la ejecución''
+			
+			Lo anterior significa ni más ni menos que el usuario que configura ``Arco Iris'' vía ``Scenarios UI'', no impone un
+			conjunto específico de estrategias de reparación a ser utilizadas sino que por lo contrario, permite que cualquier
+			estrategia disponible sea considerada por ``Arco Iris'' para la reparación del escenario subyacente.
+
+			\begin{figure}[ht]
+				\centering
+					\includegraphics[width=1.00\textwidth]{images/scenariosUI_select_repair_strategy_all_1.png}
+				\caption{Elección de \textbf{todas} las estrategias de reparación disponibles}
+			\end{figure}
+
+			\begin{figure}[ht]
+				\centering
+					\includegraphics[width=1.00\textwidth]{images/scenariosUI_select_repair_strategy_all_2.png}
+				\caption{\textbf{Todas} las estrategias de reparación disponibles seleccionadas}
 			\end{figure}
 
 	\subsection{Puntos de extensión}
