@@ -14,11 +14,11 @@
 		para poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos del usuario y los
 		errores en el sistema. Esto es lo que se conoce como \emph{self healing} o, en castellano, auto reparación.
 
-		Si bien ya existen mecanismos para mitigar dichos problemas, los mismos son parte del lenguaje de programación
-		utilizados, tales como tratamiento de excepciones, protocolos de to\-le\-ran\-cia a fallos, etc. Pero estos mecanismos
+		Si bien ya existen mecanismos para mitigar dichos problemas, ellos forman parte del lenguaje de programación
+		utilizado, tales como tratamiento de excepciones, protocolos de tolerancia a fallos, etc. Pero estos mecanismos
 		son comúnmente dependientes de cada aplicación y generalmente muy dependientes del código de la aplicación que se
-		intenta adaptar. Así, hoy en día, la adaptación de sistemas de software es costosa de construir, dificil de
-		modificar, poco reusable entre distintos sistemas y generalmente solo provee soluciones a fallos de manera puntual.
+		intenta adaptar. Así, hoy en día, la adaptación de sistemas de software es costosa de construir, dificil de modificar,
+		poco reusable entre distintos sistemas y generalmente solo provee soluciones a fallos de manera puntual.
 
 		En cuanto al estado del arte en materia de auto reparación (o de manera más genérica, sistemas autónomos) existen
 		diversos enfoques tanto en el ámbito académico como en la industria del software. 
@@ -72,15 +72,18 @@
 		ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que
 		no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre
 		propiedades críticas del sistema, como por ejemplo la performance o la confiabilidad. Ésta es la razón principal que
-		ha motivado el avance de los ADLs (Architecture Description Language).\cite{GMW99}
+		ha motivado el avance de los ADLs (Architecture Description Language).\cite{ACME}
 
 		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de
-		que ya permiten definir una base formal para la descripción y el análisis de los mismos.
+		que ya permiten definir una base formal para su descripción y análisis.
 
 	\subsubsection{Acme}
 
 		Acme es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon University, más
-		precisamente por el proyecto ABLE \cite{ABLE}, liderado por el Dr. David Garlan.
+		precisamente por el proyecto ABLE \footnote{El proyecto ABLE (\emph{``Architecture Based Languages and
+		Environments''}) de la Universidad de Carnegie Mellon lleva a cabo investigaciones que conducen a una base de
+		ingeniería para la arquitectura de software. Para más información, visitar \url{http://www.cs.cmu.edu/~able}},
+		liderado por el Dr. David Garlan.
 
 		Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de
 		software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los
@@ -121,7 +124,7 @@
 			\begin{itemize}
 				\item Detección: la habilidad de determinar dinámicamente (i.e. en \emph{run-time}) propiedades de sistemas
 				complejos y distribuidos.
-				\item Resolución: la habilidad de determinar cuándo las propiedades observadas del sistema violen los supuestos
+				\item Resolución: la habilidad de determinar cuando las propiedades observadas del sistema violen los supuestos
 				críticos del diseño del sistema.
 				\item Adaptación: la habilidad de automatizar la adaptación del sistema en respuesta a las violaciones de los
 				supuestos del diseño del sistema.
@@ -201,9 +204,12 @@
 			y sostenidos en el tiempo. Rainbow implementa un mecanismo que permite evitar accionamientos prematuros de la auto
 			reparación por la presencia de \emph{outliers}, dicho mecanismo utiliza Exponential Moving Average (EMA), que permite
 			ponderar los valores históricos versus el actual basándose en la siguiente fórmula:
-
-			$S_{0} = Y_{0}$\\
-			$S_{t} = \alpha \times Y_{t} + (1-\alpha) \times S_{t-1}$
+			\begin{equation}
+				S_{0} = Y_{0}
+			\end{equation}
+			\begin{equation}
+				S_{t} = \alpha \times Y_{t} + (1-\alpha) \times S_{t-1}
+			\end{equation}
 
 			donde $\alpha$ es el factor de suavizado, siendo $0 < \alpha < 1$. En otras palabras, el valor suavizado \smash{$S_{t}$}
 			es un simple promedio ponderado de la última observación \smash{$Y_{t}$} y el valor suavizado previo \smash{$S_{t-1}$}.
@@ -215,8 +221,9 @@
 
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
 
-		Znn es un sistema que simula un sitio web de noticias, el mismo nació como proyecto de tesis \cite{TesisOwen} de
-		Shang-Wen Cheng, sus objetivos fueron evaluar la efectividad de Rainbow en los siguientes aspectos:
+		Znn es un sistema que simula un sitio web de noticias, el cual nació como proyecto de tesis de doctorado
+		\cite{TesisOwen} de un investigadora de Carnegie Mellon, Shang-Wen Cheng. Sus objetivos fueron evaluar la efectividad
+		de Rainbow en los siguientes aspectos:
 		\begin{itemize}
 			\item su efectividad para mantener los atributos de calidad al enfrentar condiciones cambiantes
 			\item el \emph{overhead} de procesamiento que implica la auto reparación
@@ -285,8 +292,8 @@
 		(QAW), cuya principal herramienta son los escenarios. Esta metodología provee un método para identificar los atributos
 		de calidad críticos de la arquitectura de un sistema, tales como disponibilidad, performance, seguridad, etc, que son
 		derivados de objetivos del negocio del sistema. QAW no asume la existencia de una arquitectura del software, sino que
-		fue desarrollado en base a reclamos de los clientes que necesitaban un método para identifar los atributos de calidad
-		importantes, y aclarar requerimientos del sistema antes de que exista la arquitectura del mismo.
+		fue desarrollado en base a reclamos de los clientes que necesitaban un método para identificar los atributos de
+		calidad importantes, y aclarar requerimientos del sistema antes de que su arquitectura esté definida.
 
 		En los QAW se organizan reuniones con todos los stakeholders del sistema, en las que se definen los escenarios que en
 		definitiva representarán los requerimientos de atributos de calidad que el sistema idealmente deberá satisfacer. Un

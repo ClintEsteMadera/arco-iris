@@ -13,7 +13,7 @@
 	\subsection{Arquitectura del Sistema}
 		La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos
 		no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
-		los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre los mismos. A
+		los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre ellos. A
 		continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
 
 		\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
@@ -63,7 +63,7 @@
 		\end{center}
 
 		Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se allí hasta los 30
-		segundos, luego el mismo va bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de los
+		segundos, para luego ir bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de  los
 		servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó
 		siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a
 		ninguna acción propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el

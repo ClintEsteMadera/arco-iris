@@ -5,21 +5,21 @@
 		Como ya se ha comentado anteriormente, la idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder
 		lograr un mecanismo de auto reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor
 		visibilidad a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiéndoles así involucrarse en la
-		definición de escenarios de uso real del sistema y su relación con los atributos de calidad requeridos para el mismo.
-		La solución intenta involucrarlos también en la definición de prioridades de los escenarios y/o estrategias a
-		considerar en la auto reparación del sistema cuando uno de los escenarios no se cumple.
+		definición de escenarios de uso real del sistema, incluyendo la relación de estos últimos con los atributos de
+		calidad requeridos. La solución intenta involucrarlos también en la definición de prioridades de los escenarios
+		y/o estrategias a considerar en la auto reparación del sistema cuando uno de los escenarios no se cumple.
 
 		A fin de lograr lo antedicho, se consideró necesario extender el \emph{framework} Rainbow, cuyo código se encuentra
 		escrito mayormente en el lenguaje de programación Java.
 
-		Los integrantes del grupo ABLE \cite{ABLE}, que son quienes poseen propiedad intelectual sobre el \emph{framework}, no
+		Los integrantes del proyecto ABLE, que son quienes poseen propiedad intelectual sobre el \emph{framework}, no
 		sólo decidieron proveer el código fuente completo para poder realizar esta extensión, sino que estuvieron dispuestos
 		en todo momento a colaborar, responder dudas e inquietudes, hacer sugerencias, etc.
 
 	\subsection{Rainbow ``out of the box''}
 
-		El primer paso fue inspeccionar el código del framework y leer su documentación (no muy abundante, por cierto).
-		Luego de ese primer paso, se tuvo una buena noción sobre el funcionamiento de Rainbow y sus componentes principales
+		El primer paso fue inspeccionar el código del framework y leer su documentación (la cual no es abundante, por
+		cierto). Luego de ese primer paso, se tuvo una buena noción sobre el funcionamiento de Rainbow y sus componentes principales
 		de arquitectura, las cuales se pueden observar en el siguiente diagrama de colaboración de objetos:
 
 		\begin{center}
@@ -30,11 +30,11 @@
 		utilizando, básicamente, dos vías:
 		\begin{enumerate}
 			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow va a adaptar. Dicho modelo se
-			especifica utilizando el estilo C\&C y el lenguaje de descripción de arquitecturas ACME, ya descripto en el presente
-			trabajo. En dicho lenguaje, los componentes y conectores poseen propiedades (con valores asociados),
-			\emph{constraints} y también existe la posibilidad de especificar invariantes a nivel de sistema o sub sistema.
-			Dichos invariantes serán evaluados periódicamente por Rainbow para verificar que el sistema funcione dentro de los
-			límites determinados como normales.
+			especifica utilizando el estilo de componentes y conectores (C\&C) y el lenguaje de descripción de arquitecturas
+			ACME, ya descripto en el presente trabajo. En dicho lenguaje, los componentes y conectores poseen propiedades (con
+			valores asociados), \emph{constraints} y también existe la posibilidad de especificar invariantes a nivel de sistema
+			o sub sistema. Dichos invariantes serán evaluados periódicamente por Rainbow para verificar que el sistema funcione
+			dentro de los límites determinados como normales.
 			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con
 			la definición del sistema a auto-reparar, como por ejemplo: ubicación física del archivo ACME que describe la
 			arquitectura de este último, archivos de tácticas y estrategias de reparación (estos escritos en un lenguaje de
@@ -44,11 +44,11 @@
 
 		Podemos ver también en el gráfico anterior, cómo los denominados \emph{Probes} son los componentes designados en
 		Rainbow para interactuar directamente con el sistema a adaptar (el \emph{Target System}), obteniendo así información
-		relevante a los fines de la auto-reparación del mismo. Dicha información no es interpretada dentro de los probes sino
-		que ellos delegan dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de entender la
-		información provista por los gauges y traducirla a pares $<$Propiedad,Valor$>$ dónde la \emph{Propiedad} refiere al
-		nombre de una propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del
-		sistema a adaptar; y \emph{Valor} es ni más ni menos que el nuevo valor que posee dicha propiedad.
+		relevante a los fines de su auto-reparación. Dicha información no es interpretada dentro de los probes sino que ellos
+		delegan dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de entender la información
+		provista por los gauges y traducirla a pares $<$Propiedad,Valor$>$ dónde la \emph{Propiedad} refiere al nombre de una
+		propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del sistema a
+		adaptar; y \emph{Valor} es ni más ni menos que el nuevo valor que posee dicha propiedad.
 
 		Normalmente, existe un par $<$Gauge, Probe$>$ distinto (que a nivel implementativo son clases Java) por cada tipo
 		relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución. Un ejemplo de \emph{concern} podría
@@ -73,7 +73,7 @@
 		El \emph{Adaptation Manager} sigue una lógica un tanto compleja (que luego explicaremos en detalle) para determinar la
 		mejor estrategia de reparación a realizar y luego, mediante \emph{Effectors} (no mostrados en el gráfico anterior por
 		claridad), la lógica embebida en las estrategias de reparación impactan en el sistema a ser adaptado, siempre
-		intentando acercar el estado del sistema a los invariantes establecidos para el mismo.
+		intentando acercar el estado del sistema a sus invariantes pre-establecidos.
 
 	\subsection{Rainbow + Escenarios = ``Arco Iris''}
 
@@ -84,16 +84,15 @@
 
 			Uno de los objetivos de diseño más importantes planteados al momento de pensar ``Arco Iris'' fue sin
 			duda el intentar que la presente extensión fuera ``compatible hacia atrás'' con \emph{Rainbow}, es decir, es
-			altamente deseable que la extensión se inserte en el framework (conceptualmente hablando) de manera similar a cómo un
-			\emph{plug-in} trabaja en cualquier otro sistema de software; pudiendo en este caso el usuario de manera
-			relativamente simple poder elegir entre utilizar los mecanismos de auto reparación provistos por Arco Iris solos,
-			conjuntamente con los de Rainbow, o usar unicamente Rainbow original sin extensión alguna.
-
-			La implementación de ``Arco Iris'' cumple con dicho requerimiento ya que en la misma se extienden (en el sentido
-			estricto de la palabra) componentes, sin cambiar la lógica original de los mismos. Es importante notar que para que
-			la extensión sea fácilmente adicionable y/o removible se necesitaría que los creadores de Rainbow hagan mínimos
-			cambios a la visibilidad de algunos componentes del \emph{framework} (i.e. clases Java), ya que la implementación
-			de los mismos está hecha de tal manera que impide la extensión, ya sea vía herencia o composición de clases.
+			altamente deseable que la extensión se inserte en el \emph{framework} (conceptualmente hablando) de manera similar a
+			cómo un \emph{plug-in} trabaja en cualquier otro sistema de software; pudiendo en este caso el usuario de manera
+			relativamente simple poder elegir entre utilizar los mecanismos de auto reparación provistos por ``Arco Iris'' solos,
+			conjuntamente con los de Rainbow, o usar unicamente Rainbow original sin extensión alguna.  La implementación de
+			``Arco Iris'' cumple con dicho requerimiento ya que en la misma se extienden (en el sentido estricto de la palabra)
+			componentes, sin cambiar su lógica original. Es importante notar que para que la extensión sea fácilmente adicionable
+			y/o removible se necesitaría que los creadores de Rainbow hagan mínimos cambios a la visibilidad de algunos
+			componentes del \emph{framework} (i.e. clases Java), ya que su implementación está hecha de tal manera que impide la
+			extensión, ya sea vía herencia o composición de clases.
 
 		\subsubsection{Arquitectura de Arco Iris}
 
@@ -151,9 +150,10 @@
 			El mecanismo se ejecuta periódicamente cada $X$ milisegundos dónde $X$ es configurable utilizando el archivo de
 			configuración estándar de Rainbow (inicialmente, $X = 5000$, es decir, el mecanismo se ejecuta cada 5 segundos).
 			
-			Se utiliza el patrón \emph{Observer}\cite{Observer} como modo de notificar a todos aquellos objetos interesados en
+			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca de Eclipse, visitar
+			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
 			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente más interesado en
-			conocer cuándo un cambio en la configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
+			conocer cuando un cambio en la configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
 			el cual, en ese caso, recalcula una variada cantidad de información guardada en memoria para que pueda ser usada
 			instantáneamente por el componente \textbf{RainbowModelWithScenarios}.
 			
@@ -205,8 +205,8 @@
 		\textbf{Escenarios de Atributos de Calidad} \cite{Scenarios} (de ahora en más, simplemente ``Escenarios''), tal cual
 		fueron descriptos anteriormente, aunque con algunos agregados de información orientados a la auto reparación.
 
-		Un Escenario modela una situación concreta y real de uso del sistema ante la cual el mismo debe comportarse de una
-		manera esperada. Los escenarios contienen la siguiente información:
+		Como ya vimos anteriormente, un Escenario modela una situación concreta y real de uso del sistema ante la cual debe
+		comportarse de una manera esperada. Los escenarios contienen la siguiente información:
 		\begin{itemize}
 			\item Fuente del Estímulo
 			\item Estímulo
@@ -243,30 +243,30 @@
 		\subsubsection{El Estímulo en la Auto Reparación}
 
 			El \textbf{Estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
-			algún  usuario del mismo. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
+			alguno de sus usuarios. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
 			inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión. Por ejemplo,
-			supongamos que en un sistema de administración de cuentas bancarias un cliente intenta hacer una transferencia,
-			en este caso la fuente del estímulo sería el cliente y el estímulo en sí mismo sería realizar transferencia.
+			supongamos que en un sistema de administración de cuentas bancarias un cliente intenta hacer una transferencia, en
+			este caso la fuente del estímulo sería el cliente y el estímulo en sí mismo sería realizar transferencia.
 
 			Saber cual es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido determinado
-			estímulo, Arco Iris podrá detectar cuáles son los potenciales escenarios que pueden verse afectados y trabajará
+			estímulo, Arco Iris podrá detectar cuales son los potenciales escenarios que pueden verse afectados y trabajará
 			verificando dicho subconjunto, evitando así chequeos innecesarios.
 
-			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que
-			el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto puede ser muy útil
-			para casos más genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el usuario nunca
-			sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De no configurar
-			ningún estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada iteración.
-			Esta es la manera en que trabaja Rainbow.
+			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que el escenario
+			aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto puede ser útil para casos más
+			genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el usuario nunca sobrepase
+			determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De no configurar ningún
+			estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada iteración. Esta es
+			la manera en que trabaja Rainbow.
 
 			Entonces, a diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por
 			medio del estímulo que ocasionó el problema, reduciendo así la cantidad de escenarios a verificar y sobre todo la
 			cantidad de estrategias a evaluar para intentar resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta
 			posibilidad), la única manera de limitar el uso de las estrategias es agregar restricciones en la misma estrategia,
-			siendo esto algo muy técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del sistema, por
-			ejemplo, para que una estrategia que soluciona problemas de performance no sea tenida en cuenta al reparar un escenario
-			relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una precondición como la
-			siguiente en la estrategia:
+			siendo esto algo bastante técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del
+			sistema, por ejemplo, para que una estrategia que soluciona problemas de performance no sea tenida en cuenta al
+			reparar un escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una
+			precondición como la siguiente en la estrategia:
 
 			\begin{Verbatim}[gobble=4]
 				strategy SimpleReduceResponseTime
@@ -392,9 +392,7 @@
 			únicamente la opción de aumentar la prioridad del escenario tergiverzando así dicha información, ya que en realidad lo
 			óptimo era darle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
 			En definitiva, al establecer que el escenario aplica para cualquier entorno, Arco Iris estará interpretando que el
-			entorno carece de importancia, por lo tanto se hacen a un lado los pesos de los \emph{concerns}, por lo cual Arco Iris
-			distribuirá equitativamente la importancia entre los mismos, lo cual sería equivalente a que no exista el concepto de
-			\emph{concerns}.
+			entorno carece de importancia, dejando así de lado los pesos de los \emph{concerns} y distribuyendo equitativamente			su importancia relativa, lo cual es equivalente a que no exista el concepto de \emph{concern}.
 			La estructura del entorno estará formada de la siguiente manera:
 			\begin{itemize}
 				\item Un conjunto de condiciones, y
@@ -409,22 +407,24 @@
 			diferencia vital del concepto de restricción utilizado en Rainbow con el de Arco Iris.
 
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
-			simplemente implementando la interface \verb@Contraint@ \footnote{Dicha implementación deberá ser agregada al enumerado
-			ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
-			\todo{JONY: Explicamos que Constraint define el metodo boolean holds(Number value) y que la unica implementacion es
-			NumericBinaryRelationalConstraint???}
+			simplemente implementando la interface \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
+			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
+			\todo{TURCO: Esto era un To-Do para que yo opine: ``Explicar que Constraint define el metodo boolean holds(Number
+			value) y que la unica implementacion es NumericBinaryRelationalConstraint.???'' Fijate que vos mismo ya explicás eso
+			en la sección ``La Cuantificación de la Respuesta en la Auto Reparación'' y que yo algo expliqué de eso en la
+			sección Scenarios UI, fijate de poner la misma info en un sólo lado\ldots quizás convenga ponerlo acá y sacarlo de
+			la sección de Scenarios UI\ldots}
 
-			En cuanto al mapa presente en la estructura del entorno, el mismo deberá contener todos los \emph{concerns}
-			definidos para el sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es
-			determinar la preponderencia relativa entre los \emph{concerns}. Se detallará cómo se utilizan estos pesos para			calcular el valor de un escenaio en la sección \ref{sec:scenarioWeight}.
+			En cuanto al mapa presente en la estructura del entorno, deberá contener todos los \emph{concerns} definidos para el
+			sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la			preponderencia relativa entre los \emph{concerns}. Se detallará cómo se utilizan estos pesos para calcular el valor			de un escenaio en la sección \ref{sec:scenarioWeight}.
 			A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente chequear las condiciones definidas para
 			el entorno tomando los datos actuales del sistema, ya que deberíamos eliminar el ruido provocados por los
 			\emph{outlier}, pues para que el sistema se encuentre en un determinado estado es lógico esperar que dicho estado se
 			mantenga por un tiempo mínimo. Entonces, para definir el valor más real para las propiedades del sistema tomamos los
 			valores nuevos con un determinado peso, configurable, que nos permite ir adecuando los valores del sistema de manera
 			paulatina evitando el impacto de los valores que puedan darse por alguna ocasión excepcional, como por ejemplo algún
-			cliente que experimenta un tiempo de respuesta excesivo por algún problema es su conexión o en estación de trabajo. Para
-			mitigar estos casos, utilizaremos el mismo mecanismo utilizado por Rainbow explicado ya en la sección
+			cliente que experimenta un tiempo de respuesta excesivo por algún problema es su conexión o en estación de trabajo.
+			Para mitigar estos casos, utilizaremos el mismo mecanismo utilizado por Rainbow explicado ya en la sección
 			\ref{sec:exponentialAverage}.
 
 			Un valor recomendable para el factor de suavizado utilizado tanto en las pruebas de Rainbow como en las de Arco Iris
@@ -438,7 +438,7 @@
 
 			La \textbf{Cuantificación de la Respuesta} es quizás la propiedad más importante de un escenario: de ella surgen las
 			restricciones que deben ser evaluadas para que, en caso de no cumplirse, se lance la auto reparación. De hecho, para
-			que un escenario se considere bien formado debe quedar claro cuál es la métrica o manifestación observable de su
+			que un escenario se considere bien formado debe quedar claro cual es la métrica o manifestación observable de su
 			respuesta que se debe satisfacer. Latencia y \emph{throughput} son ejemplos de las manifestaciones sobre las cuales
 			puede predicar la cuantificación de la respuesta. En pocas palabras, la cuantificación será la métrica según la cual
 			se decida la aceptación de una respuesta del sistema ante un determinado estímulo.
@@ -483,7 +483,7 @@
                 }
 			\end{Verbatim}
 
-			En Arco Iris no será necesario contar con éstas últimas restricciones ya que el conocimiento de cuáles estrategias
+			En Arco Iris no será necesario contar con éstas últimas restricciones ya que el conocimiento de cuales estrategias
 			son capaces de reparar una determinada condición ya están plasmado en cada escenario. En definitiva, al utilizar Arco
 			Iris el usuario no tendrá más que configurar la Cuantificación de la respuesta de cada escenario, tarea que se ve
 			sumamente facilitada al utilizar UI Scenarios (ver sección~\ref{sec:scenariosUI} en la
@@ -518,20 +518,23 @@
 			un  valor fijo preestablecido al configurar la cuantificación de la respuesta del escenario, la implementación
 			mencionada es \emph{NumericBinaryRelationalConstraint}.
 
-			\todo{JONY: ponemos la implementación de NumericBinaryRelationalConstraint en el apéndice?}
+			\todo{TURCO: poner la implementación de NumericBinaryRelationalConstraint en el apéndice}
 
 	\subsection{Prioridades entre Escenarios}
 
-		Si bien Rainbow maneja el concepto de escenario, el mismo no es equivalente al manejado por Arco Iris, el cual
-		toma el concepto de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo configurable
-		pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el arquitecto
-		deberá configurar el escenario\footnote{Recordar que aquí escenario no es el mismo concepto utilizado por Arco Iris,
-		tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo al inicio de la herramienta,
-		intentando vislumbrar cuáles serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
-		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha
-		configuración en Rainbow:
+		\todo{TURCO: Esto está confuso, aclarar que nosotros usamos escenarios de QAW pero que los llamamos por simplicidad
+		``escenarios'', dejarle al lector más claro este punto.}
+
+		Rainbow maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el concepto
+		de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo configurable pero
+		estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el arquitecto deberá
+		configurar el escenario\footnote{Recordar que aquí escenario no es el mismo concepto utilizado por Arco Iris, tan sólo
+		se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo al inicio de la herramienta,
+		intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
+		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha configuración
+		en Rainbow:
 		\begin{Verbatim}[gobble=4]
-            weights:
+		weights:
               scenario 1:
                 uR: 0.35
                 uF: 0.4
@@ -560,16 +563,16 @@
 		respetan al pie de la letra los conceptos introducidos por ATAM (ver sección \ref{sec:atam}). El concepto de escenario
 		utilizado por Rainbow se asemeja mucho más al concepto de \emph{Entorno} de ATAM que al de \emph{Escenario}. La
 		diferencia fundamental radica en que en Arco Iris no se requiere que el usuario configure en qué entorno se encuentra
-		el sistema, sino que el usuario debe detallar cuáles son las condiciones que definen al entorno, y, en caso de
-		cumplirse dichas condiciones, cuáles serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
+		el sistema, sino que el usuario debe detallar cuales son las condiciones que definen al entorno, y, en caso de
+		cumplirse dichas condiciones, cuales serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
 		
 		Dicho esto podemos introducirnos de lleno en la relación de prioriades entre escenarios, sin confundir los
 		conceptos manejados en ambos frameworks.
 
 		En resumen, Rainbow permite priorizar básicamente por \emph{concerns}, y de manera estática, mientras que Arco Iris
-		permite priorizar escenarios asignando prioridades relativas a los mismos, de modo tal que al momento de escoger una
-		estrategia de autoreparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación
-		considerada más importante según la visión de los \emph{stakeholders}.
+		permite priorizar escenarios asignandoles prioridades relativas, de modo tal que al momento de escoger una estrategia
+		de autoreparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación considerada
+		más importante según la visión de los \emph{stakeholders}.
 
 		Para lograr esto, cada escenario tendrá asignada una prioridad, la cual será un entero mayor a cero, uno será la
 		prioridad máxima asignable, mientras que su valor máximo no estará acotado, permitiendo  así asignar valores muy grandes para
@@ -580,11 +583,10 @@
 
 		La prioridad del escenario es una propiedad fundamental para el correcto funcionamiento de Arco Iris, veremos su
 		importancia al detallar cómo Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la sección
-		\ref{sec:strategySelection}. Por esta razón será muy importante realizar una configuración a conciencia de cuáles
-		serán los escenarios prioritarios, los mismos deberán reflejar la importancia fundamental de los servicios ofrecidos
-		por el sistema  según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad
-		de cada escenario como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección
-		\ref{sec:QAS}.
+		\ref{sec:strategySelection}. Por esta razón será muy importante realizar una configuración a conciencia de cuales
+		serán los escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el
+		sistema  según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad de cada
+		escenario como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAS}.
 
 	\subsection{Estrategias y su Relación con los Escenarios}
 
@@ -624,7 +626,7 @@
 
 		Con este nuevo enfoque, dónde el Escenario es el concepto central, es necesario establecer cambios en la lógica
 		aplicada por el \emph{framework} para decidir en que momento es necesario intentar auto reparar el sistema (i.e.
-		evaluar restricciones o invariantes del mismo).
+		evaluar sus restricciones o invariantes).
 
 		En Rainbow, dichas restricciones se encuentran embebidas en los componentes de la arquitectura (modelados con ACME).
 		En Arco Iris, las \emph{constraints} a evaluar son aquellas presentes en la cuantificación de la respuesta de cada
