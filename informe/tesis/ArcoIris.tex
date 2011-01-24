@@ -409,12 +409,6 @@
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
 			simplemente implementando la interface \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
 			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
-			\todo{TURCO: Esto era un To-Do para que yo opine: ``Explicar que Constraint define el metodo boolean holds(Number
-			value) y que la unica implementacion es NumericBinaryRelationalConstraint.???'' Fijate que vos mismo ya explicás eso
-			en la sección ``La Cuantificación de la Respuesta en la Auto Reparación'' y que yo algo expliqué de eso en la
-			sección Scenarios UI, fijate de poner la misma info en un sólo lado\ldots quizás convenga ponerlo acá y sacarlo de
-			la sección de Scenarios UI\ldots}
-
 			En cuanto al mapa presente en la estructura del entorno, deberá contener todos los \emph{concerns} definidos para el
 			sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la			preponderencia relativa entre los \emph{concerns}. Se detallará cómo se utilizan estos pesos para calcular el valor			de un escenaio en la sección \ref{sec:scenarioWeight}.
 			A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente chequear las condiciones definidas para
@@ -513,40 +507,41 @@
 			Donde el método \emph{holds} será el encargado de determinar si la Constraint se cumple o no, recibiendo como
 			parámetro el valor de la propiedad a evaluar, mientras que el método \emph{getFullyQualifiedPropertyName} retornará
 			el nombre completo cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que
-			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}. Para el presente trabajo se utilizó
-			una única implementación, que consiste en una comparación binaria de una propiedad del modelo de la arquitectura con
-			un  valor fijo preestablecido al configurar la cuantificación de la respuesta del escenario, la implementación
-			mencionada es \emph{NumericBinaryRelationalConstraint}.
-
-			\todo{TURCO: poner la implementación de NumericBinaryRelationalConstraint en el apéndice}
+			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}. 
+			
+			Para el presente trabajo se utilizó	una única implementación, que consiste en una relación binaria de orden (igual,
+			mayor, mayor o igual, menor, menor o igual) entre una propiedad de la arquitectura (e.g. \verb@server1.responseTime@)
+			y un valor fijo (puede ser entero o flotante) preestablecido al configurar la cuantificación de la respuesta del
+			escenario. Esta restricción será configurada mediante un cuantificador, el cual provee dos opciones: sumatoria y
+			promedio, los que especifican si la condición debe cumplirse para la suma de todas las instancias en \emph{runtime}
+			de dicha propiedad o si la condición debe darse ``en promedio'' para todas las instancias; respectivamente.
+			La implementación mencionada recibe el nombre de \emph{NumericBinaryRelationalConstraint} y puede verse su código
+			en la sección \ref{sec:numericBinaryRelationalConstraintCode}.
+			
 
 	\subsection{Prioridades entre Escenarios}
 
-		\todo{TURCO: Esto está confuso, aclarar que nosotros usamos escenarios de QAW pero que los llamamos por simplicidad
-		``escenarios'', dejarle al lector más claro este punto.}
-
-		Rainbow maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el concepto
-		de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo configurable pero
+		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
+		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo configurable pero
 		estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el arquitecto deberá
-		configurar el escenario\footnote{Recordar que aquí escenario no es el mismo concepto utilizado por Arco Iris, tan sólo
-		se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo al inicio de la herramienta,
+		configurar el escenario\footnote{Recordar que aquí``escenario'' no se refiere a los Escenarios de QAW utilizados por
+		Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a iniciar Rainbow,
 		intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
 		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha configuración
-		en Rainbow:
-		\begin{Verbatim}[gobble=4]
-		weights:
-              scenario 1:
-                uR: 0.35
-                uF: 0.4
-                uC: 0.25
-              scenario 2:
-                uR: 0.5
-                uF: 0.3
-                uC: 0.2
-              scenario 2b:
-                uR: 0.5
-                uF: 0.2
-                uC: 0.3
+		en Rainbow: \begin{Verbatim}[gobble=4] 
+				weights: 
+					scenario 1:
+						uR: 0.35
+						uF: 0.4
+						uC: 0.25
+					scenario 2:
+						uR: 0.5
+						uF: 0.3
+						uC: 0.2
+					scenario 2b:
+						uR: 0.5
+						uF: 0.2
+						uC: 0.3
 		\end{Verbatim}
 		
 		Cada una de las líneas representa el valor que se le asigna a cada \emph{concern}, en donde uR representa al Tiempo de
@@ -595,32 +590,73 @@
 		
 		Las estrategias en Rainbow tienen un conjunto de precondiciones que nos indican si dicha estrategia puede ser
 		utilizada para reparar el sistema en un determinado momento. Esto implica que, en cuanto Rainbow detecta un problema
-		en el sistema, deba recorrer todas las estrategias existentes para ver si aplicables para las condiciones actuales, o
-		sea que Rainbow no tiene manera de determinar a priori la utilidad de una estrategia en un momento dado. Además, la
-		solución está atada a la detección del problema, entonces, al no poder modularizar en detección del problema y
-		solución, se deben repetir las precondiciones por cada solución (estrategia) implementada.
+		en el sistema, deba recorrer todas las estrategias existentes para ver si son aplicables para las condiciones
+		actuales, o sea que Rainbow no tiene manera de determinar a priori la utilidad de una estrategia en un momento dado.
+		Por otro lado, la solución está atada a la detección del problema, entonces, al no poder modularizar en detección del
+		problema y solución, se deben repetir las precondiciones por cada solución (estrategia) implementada.
 		
-		En Arco Iris se propone desacoplar la detección del problema y solución, y para lograr esto utilizaremos los escenarios.
-		Allí se definirán las condiciones de detección del problema, y se referenciarán las posibles estrategias de reparación a
-		ser consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido, quedando así las
-		estrategias exentas de conocer cuales son las circunstancias en las que su ejecución tiene sentido. Esto permite al
-		arquitecto tener un mayor control sobre las estrategias a ejecutar en determinadas condiciones, ya que al situarse en un
-		escenario concreto, él sabrá cuales serán las soluciones más adecuadas basándose en el entorno del sistema y en la
-		prioridad de el escenario actual. Obviamente, Arco Iris también ofrece la posibilidad de utilizar el comportamiento
-		brindado por Rainbow, esto se logra simplemente indicando la opción que representa a todas las estrategias existentes
-		(para más detalle ver \ref{sec:strategySelection})cuando se configura el escenario.
+		En Arco Iris se propone desacoplar la detección del problema de la solución, y para lograr esto utilizaremos los
+		escenarios. Allí se definirán las condiciones de detección del problema, y se referenciarán las posibles estrategias
+		de reparación a ser consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido,
+		quedando así las estrategias exentas de conocer cuales son las circunstancias en las que su ejecución tiene sentido.
+		Esto permite al arquitecto tener un mayor control sobre las estrategias a ejecutar en determinadas condiciones, ya que
+		al situarse en un escenario concreto, él sabrá cuales serán las soluciones más adecuadas basándose en el entorno del
+		sistema y en la prioridad del escenario actual. Obviamente, Arco Iris también ofrece la posibilidad de utilizar el
+		comportamiento brindado por Rainbow, esto se logra simplemente indicando la opción que representa a todas las
+		estrategias existentes (para más detalle ver \ref{sec:strategySelection}) cuando se configura el escenario.
 		Una ventaja derivada del agregado del concepto de \emph{Escenario} es que ahora los problemas y sus posibles
 		soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Como
 		ya sucedía en Rainbow, las estrategias poseen la información necesaria para permitir simular su aplicación y estimar
-		en que condiciones quedaría el sistema luego de haber aplicado dicha estrategia (esta información será
-		utilizada para la estimación de la nueva ``utilidad del sistema\footnote{Para más detalle acerca del concepto
-		Utilidad del Sistema ver sección \ref{sec:systemUtility}}'').
+		en que condiciones quedaría el sistema luego de haber sido aplicadas (esta información será utilizada para la
+		estimación de la nueva ``utilidad del sistema\footnote{Para más detalle acerca del concepto Utilidad del Sistema ver
+		sección \ref{sec:systemUtility}}'').
 		
-		\todo{Explicar RESP\_TIME\_STILL\_BROKEN y COST\_STILL\_BROKEN en las estrategias}
+		En Arco Iris, para poder escribir estrategias que involucren varias tácticas, el usuario contará con un mecanismo que
+		le permitirá verificar si los escenarios de un determinado \emph{concern} y que han sido marcados para reparar, aún
+		siguen sin cumplirse. En base a esta información la estrategia podrá decidir cómo continuar su ejecución. A
+		continuación se muestra un ejemplo de su utilización:
+		
+		\begin{Verbatim}[gobble=4] 
+				define boolean RESP_TIME_STILL_BROKEN = 
+						AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
+				
+				/*
+				 * This Strategy will drop fidelity once, observe, then drop again if necessary.
+				 */
+				strategy BruteReduceResponseTime
+				[ styleApplies ] {
+				  t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
+				    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+				    t2: (RESP_TIME_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+				      t2a: (!RESP_TIME_STILL_BROKEN) -> done;
+				      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
+				    }
+				  }
+				}	
+			\end{Verbatim}
 
-		\todo{explicar como se configuran normalmente las estrategias en Rainbow, como reutilizamos la misma implementación y
-		explicar que la información para determinar la utilidad del sistema de acuerdo a lo que se estima que la estrategia
-		arregla sigue sacandose de lo que ya estaba (rainbow o znn?)}
+		Cómo se puede observar en el código, para que esto funcione es necesario tener definida la función
+		\emph{isConcernStillBroken} en la clase \emph{AdaptationManagerWithScenarios}, a continuación vemos la implementación,
+		notar que el usuario solamente deberá indicar cual es el \emph{concern} de su interés:
+
+		\begin{Verbatim}[gobble=4] 
+				public static boolean isConcernStillBroken(String concernString) {
+					Concern concern = Concern.valueOf(concernString);
+					doLog(Level.INFO, "Is Concern " + concern + " Still Broken?");
+		
+					boolean result = false;
+					for (SelfHealingScenario scenario : currentBrokenScenarios) {
+						if (scenario.getConcern().equals(concern) &&
+								scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
+							result = true;
+							break;
+						}
+					}
+					doLog(Level.INFO, "Concern " + concern + (result == true ? 
+							" Still Broken!" : " Not Broken Anymore!!!"));
+					return result;
+				}		
+		\end{Verbatim}
 
 	\subsection{Detección: cuando activar el mecanismo de auto reparación}
 
