@@ -676,5 +676,40 @@
 		</selfHealingScenario>
 	\end{Verbatim}
 
+\section{Implementación de NumericBinaryRelationalConstraint}
+	\label{sec:numericBinaryRelationalConstraintCode}
+
+	\begin{Verbatim}[gobble=4]
+				@XStreamAlias("numericBinaryRelationalConstraint")
+				public class NumericBinaryRelationalConstraint 
+						extends BaseSinglePropertyInvolvedConstraint {
+				
+					private NumericBinaryOperator binaryOperator;
+				
+					private Number constantToCompareThePropertyWith;
+				
+					@XStreamOmitField
+					private String exponentialPropertyName;
+				
+					public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, 
+							String property,NumericBinaryOperator binaryOperator, 
+							Number constantToCompareThePropertyWith) {
+						super(artifact, property);
+						this.quantifier = quantifier;
+						this.binaryOperator = binaryOperator;
+						this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
+					}			
+					
+					public boolean holds(Number expValue) {
+						boolean holds = this.binaryOperator.performOperation(expValue, 
+								this.constantToCompareThePropertyWith);
+						return holds;
+					}
+				
+					...
+				}	
+	
+	\end{Verbatim}
+	
 \section{Instrucciones para ejecutar ``Scenarios UI''}
 	\todo{Completar!!!}
