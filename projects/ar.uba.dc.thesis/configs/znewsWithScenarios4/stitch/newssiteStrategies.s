@@ -26,7 +26,7 @@ define boolean hiCost = totalCost >= M.THRESHOLD_COST;
 define float avgFidelity = Model.sumOverProperty("fidelity", servers) / Set.size(servers);
 define boolean lowFi = avgFidelity < M.THRESHOLD_FIDELITY;
 
-define boolean CONCERN_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
+define boolean RESP_TIME_STILL_BROKEN = AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
 
 /* Esta estrategia repara el response time pero es muy costosa,
  * no deberia ser elegida ya que existe un escenario de Server Cost que se rompería.
@@ -45,9 +45,9 @@ strategy ExpensiveReduceResponseTime
 strategy BruteReduceResponseTime
 [ styleApplies ] {
   t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
-    t1: (!CONCERN_STILL_BROKEN) -> done;
-    t2: (CONCERN_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
-      t2a: (!CONCERN_STILL_BROKEN) -> done;
+    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+    t2: (RESP_TIME_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+      t2a: (!RESP_TIME_STILL_BROKEN) -> done;
       t2b: (default) -> TNULL;  // in this case, we have no more steps to take
     }
   }
