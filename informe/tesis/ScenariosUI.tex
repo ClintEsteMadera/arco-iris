@@ -131,9 +131,9 @@
 		\subsubsection{Constraints}
 		\label{sec:scenariosUI_constraints}
 
-			Tanto en el contexto de creación/edición de un entorno (al imponer restricciones sobre la ocurrencia del mismo) como
-			al crear o editar el \emph{response measure} de un escenario, las llamadas ``restricciones'' (o \emph{constraints})
-			son una parte fundamental de la configuración requerida para que Arco Iris provea su funcionalidad adecuadamente.
+			Tanto en el contexto de creación/edición de un entorno (al imponer restricciones sobre su ocurrencia) como al crear o
+			editar el \emph{response measure} de un escenario, las llamadas ``restricciones'' (o \emph{constraints}) son una
+			parte fundamental de la configuración requerida para que Arco Iris provea su funcionalidad adecuadamente.
 			
 			El componente visual asociado a una restricción fue diseñado para ser fácilmente extendido pero, sólo a fines del
 			presente trabajo y con el objetivo de acotar la funcionalidad a los límites impuestos en los objetivos del mismo,
@@ -152,7 +152,7 @@
 			\end{figure}
 
 	\subsection{Administración de Artifacts}
-		Uno de los componentes relevantes a un escenario de auto reparación es el llamado \emph{Artifact}, el cuál representa
+		Uno de los componentes relevantes a un escenario de auto reparación es el llamado \emph{Artifact}, el cual representa
 		al componente de arquitectura que está involucrado en el escenario en cuestión.
 		
 		``Scenarios UI'' provee la funcionalidad de alta, baja y modificación (ABM) básica para administrar \emph{artifacts}
@@ -221,16 +221,16 @@
 			decide explícitamente expresar su deseo de que el escenario aplique ``para cualquier entorno de ejecución''. A
 			continuación, una breve descripción de dicho pseudo-entorno:
 
-			\todo{DEBERIAMOS PONER ESTA EXPLICACION EN LA SECCION ``ARCO IRIS''??}
+			\todo{TURCO: DEBERIAMOS PONER ESTA EXPLICACION EN LA SECCION ``ARCO IRIS''??}
 			\paragraph{El entorno ``ANY''}
 
-				Existe un entorno no mostrado en la solapa de Entornos (ya que el mismo no es editable) pero que posee una
-				relevancia no menor: el (pseudo-)entorno ``ANY'' (cualquiera) es una suerte de comodín utilizado para denotar la
-				siguiente semántica: ``El presente escenario aplica para cualquier condición de \emph{runtime} (i.e. para cualquier
-				entorno de ejecución). Consecuentemente, en dicho entorno especial, la distribución de pesos es la que uno puede
-				esperar: los pesos se encuentran equidistribuídos para no ``inclinar la balanza'' hacia ningún \emph{concern} en
-				particular y por otro lado, el entorno no impone ninguna condición, con lo cual el mismo aplicará siempre en todos
-				los casos, trivialmente.
+				Existe un entorno no mostrado en la solapa de Entornos (ya que no es editable) pero que posee una relevancia no
+				menor: el (pseudo-)entorno ``ANY'' (cualquiera) es una suerte de comodín utilizado para denotar la siguiente
+				semántica: ``El presente escenario aplica para cualquier condición de \emph{runtime} (i.e. para cualquier entorno de
+				ejecución). Consecuentemente, en dicho entorno especial, la distribución de pesos es la que uno puede esperar: los
+				pesos se encuentran equidistribuídos para no ``inclinar la balanza'' hacia ningún \emph{concern} en particular y por
+				otro lado, el entorno no impone ninguna condición, con lo cual el mismo aplicará siempre en todos los casos,
+				trivialmente.
 
 		\subsubsection{Selección de Estrategias de Reparación}
 		\label{sec:strategySelection}
@@ -285,8 +285,8 @@
 			\item Los artifacts podrían seleccionarse del archivo .acme que contiene la descripción de la arquitectura del
 			sistema a adaptar, en lugar de tener que escribir el usuario el `system name'' y ``property name'' del componente en
 			cuestión.
-			\item lo mismo se podría hacer con los estímulos, ya que los mismos serán normalmente la etiqueta de un puerto, en
-			el contexto del diagrama de C\&C (componentes y conectores)
+			\item lo mismo podría hacerse con los estímulos, ya que ellos serán normalmente la etiqueta de un puerto, en el
+			contexto del diagrama de C\&C (componentes y conectores)
 			\item se podrían soportar nuevos tipos de \emph{constraint}, además de la ya mencionada ``numérica binaria
 			relacional''.
 		\end{itemize}
