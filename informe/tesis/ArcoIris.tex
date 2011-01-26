@@ -603,7 +603,7 @@
 		al situarse en un escenario concreto, él sabrá cuales serán las soluciones más adecuadas basándose en el entorno del
 		sistema y en la prioridad del escenario actual. Obviamente, Arco Iris también ofrece la posibilidad de utilizar el
 		comportamiento brindado por Rainbow, esto se logra simplemente indicando la opción que representa a todas las
-		estrategias existentes (para más detalle ver \ref{sec:strategySelection}) cuando se configura el escenario.
+		estrategias existentes (para más detalle ver \ref{sec:strategySelectionUI}) cuando se configura el escenario.
 		Una ventaja derivada del agregado del concepto de \emph{Escenario} es que ahora los problemas y sus posibles
 		soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Como
 		ya sucedía en Rainbow, las estrategias poseen la información necesaria para permitir simular su aplicación y estimar
@@ -660,20 +660,79 @@
 
 	\subsection{Detección: cuando activar el mecanismo de auto reparación}
 
-		Con este nuevo enfoque, dónde el Escenario es el concepto central, es necesario establecer cambios en la lógica
-		aplicada por el \emph{framework} para decidir en que momento es necesario intentar auto reparar el sistema (i.e.
-		evaluar sus restricciones o invariantes).
+		Con el nuevo enfoque presentado en este trabajo, dónde el \emph{Escenario} es el concepto central, es necesario
+		establecer cambios en la lógica aplicada por el \emph{framework} a la hora de decidir en qué momento es necesario
+		intentar auto reparar el sistema (i.e. evaluar sus restricciones o invariantes).
 
-		En Rainbow, dichas restricciones se encuentran embebidas en los componentes de la arquitectura (modelados con ACME).
-		En Arco Iris, las \emph{constraints} a evaluar son aquellas presentes en la cuantificación de la respuesta de cada
-		escenario. El formato y sintáxis no se modifica, sólo se cambia la ubicación de las constraints para mayor visibilidad
-		de los \emph{stakeholders} funcionales. \todo{mencionar los de EAvg y ESum? Si no es acá, ¿donde?}
+		En Rainbow, las restricciones del sistema se encuentran embebidas en la descripción arquitectónica de sus componentes,
+		más precisamente en el modelo de la arquitectura, el cual se describe utilizando el lenguaje de descripción de
+		arquitectura ACME (\ref{sec:acme}). Por ejemplo, para determinar que el tiempo de respuesta no debe exceder un
+		umbral determinado es necesario definir un invariante en el componente que posee dicha propiedad, como se puede
+		observar en el siguiente ejemplo tomado de la arquitectura de Znn:
+		
+		\begin{Verbatim}[gobble=4] 
+				Component Type ClientT extends ArchElementT with {
+				
+					Property experRespTime : float <<  default : float = 100.0; >> ;
+				
+					rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
+				}
+				
+				Property MAX_RESPTIME : float = 1000.0;
+		\end{Verbatim}
 
+		En Arco Iris ya no será necesario definir estas \emph{constraints} en la arquitectura, desacoplando así la arquitectura
+		del sistema de la definición de condiciones a evaluar para lanzar la auto reparación. Ahora las restricciones estarán
+		presentes en la \emph{Cuantificación de la Respuesta}(\ref{sec:responseMeasure}) de cada escenario. Al cambiar el modo
+		de difinir las constraints, se logra dar mayor visibilidad a los \emph{stakeholders} del sistema. Arco Iris también
+		añade la posibilidad de definir las restricciones de manera visual utilizando Scenarios UI (\ref{sec:scenariosUI}), para
+		más detalle ver la sección \ref{sec:scenariosUI_constraints}. Todo esto hace que los \emph{stakeholders} puedan  
+		acceder de manera sencilla a las restricciones a las cuales debe acatarse el sistema, pudiendo editarlas sin la  
+		necesidad de poseer conocientos sobre las tecnologías utilizadas por el sistema o por el \emph{framework} de auto  
+		reparación.		
+		Para determinar si el sistema necesita auto repararse, Rainbow utilizará una funcionalidad ofrecida por ACME, que
+		permite evaluar las restricciones descriptas en el modelado de la arquitectura, para esto ACME provee los \emph{Types
+		Checkers}. A continuación podemos observar cómo Rainbow se sirve de esta utilidad para saber si debe lanzar la auto
+		reparación:
+		
+		\begin{Verbatim}[gobble=4]
+				public void evaluateConstraints () {
+					IAcmeTypeChecker typechecker = m_acmeEnv.getTypeChecker();
+					if (typechecker instanceof SynchronousTypeChecker) {
+						SynchronousTypeChecker synchChecker = (SynchronousTypeChecker) typechecker;
+						synchChecker.typecheckAllModelsNow();
+						m_constraintViolated = !synchChecker.typechecks(m_acmeSys);
+						if (m_constraintViolated) {
+							Set<?> errors = m_acmeEnv.getAllRegisteredErrors();
+							Oracle.instance().writeEvaluatorPanel(m_logger, errors.toString());
+						}
+					}
+				}
+		\end{Verbatim}
+
+		Recordemos que en Arco Iris hemos desacoplado el modelado de la arquitectura de las restricciones que deben
+		satisfacerse, por lo cual no podremos utilizar la funcionalidad provista por ACME. Para suplir esto, y también para
+		poder permitir incluir toda la información necesaria en los escenarios y que la misma pueda ser visualizada y editada
+		por todos los \emph{stakeholders} involucrados, hemos desarrollado nuestras propias implementación de las
+		restricciones, las cuales permiten expresar las mismas \emph{constraints} definidas en ACME, y en caso de ser
+		necesario agregar un nuevo tipo de restricción permite fácilmente agregar una nueva implementación. Estas
+		\emph{constraints} serán vitales a la hora de activar el mecanismo de auto reparación.
+		
+		Al iniciar, Arco Iris leerá todos los escenarios definidos, y armará un mapa que le permitirá optimizar las
+		verificaciones recurrentes de los escenarios ante la llegada de cada estímulo. El mapa almacena todos los escenarios
+		correspondientes a cada estímulo, así, ante la invocación de un estímulo en el sistema, Arco Iris solo deberá
+		verificar que se cumplan los escenarios relacionados con dicho estímulo, acotando así de manera sustancial la cantidad
+		de chequeos a realizar. Recordar que en Rainbow, ante cualquier modificación en el estado de la arquitectura, es
+		necesario verificar todas las restricciones definidas para la auto reparación.
+		
 		\todo{Ampliar gigantescamente la siguiente explicación, con gráficos, mas detalle, etc. y dejando en claro como
 		funcionaba en Rainbow y que agregamos nosotros}
+	
+		\todo{continuar desde aca!!!}
 
-		Ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema informa de esta
-		situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en
+
+		En el caso de Arco Iris, ante la invocación de un estímulo en el sistema en ejecución, el \textbf{Monitor} del sistema
+		informa de esta situación al \textbf{Intérprete}, que a su vez actualiza las propiedades del modelo de la arquitectura (recordemos: en
 		ACME) e invoca finalmente al \textbf{Evaluador de Restricciones} para que busque aquellos escenarios que posean al
 		estímulo ejecutado y que estén definidos para el \textbf{Entorno} de ejecución actual y que las restricciones
 		asociadas a sus \textbf{Cuantificaciones de Respuesta} no se cumplan. Aquellos escenarios que cumplan dichas
