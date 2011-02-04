@@ -737,19 +737,56 @@
 	\subsection{Selección de estrategia a aplicar}
 	\label{sec:strategySelection}
 
-		\todo{Esta subsección probablemente necesite ser reescrita en su totalidad, explicando en una subsubsection el
-		concepto de utilidad del sistema, explicar primero como se calcula el peso de un escenario}
+		Arco Iris selecciona la estrategia a aplicar para reparar el sistema de un manera sustancialmente diferente con
+		respecto a Rainbow. Para comenzar, Rainbow considerará todas las estrategias existentes mientras que Arco Iris se
+		limitará a considerar las estrategias propuestas en el escenario que se ha dejado de satisfacer, esto obviamente
+		achica muchísimo el universo de posibilidades. Recordemos que la configuración de Arco Iris también permite la
+		posibilidad de considerar todas las estrategias. Rainbow descartará las estrategias cuyas condiciones no se
+		satisfagan, están condiciones generalmente se corresponden con la restricción que ha dejado de cumplirse, por lo cual
+		su lógica se encuentra duplicada en el modelado de la arquitectura y en la condición de la estrategia, consideremos la
+		siguiente estrategia tomada de Znn a modo de ejemplo:
+		
+				\begin{Verbatim}[gobble=4]
+				define boolean cViolation = exists c : T.ClientT in M.components | 
+						c.experRespTime > M.MAX_RESPTIME;
+						
+				strategy QuickDirtyReduceResponseTime
+				[ cViolation ] {
+				  t0: (/*hiLoad*/ cViolation) -> lowerFidelity(2, 100) @[2000 /*ms*/] {
+				    t1: (!cViolation) -> done;
+				  }
+				}
+				\end{Verbatim}
+				
+		Donde \emph{cViolation} representa la misma lógica dispuesta en el invariante en el modelado de la arquitectura:
+				\begin{Verbatim}[gobble=4]
+				Component Type ClientT extends ArchElementT with {
+		    
+			        Property experRespTime : float <<  default : float = 100.0; >> ;
+					...			
+			        rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
+			    }
+				\end{Verbatim}
+
+		En Arco Iris, una vez que se ha detectado que un escenario dejo de satisfacerse, simplemente se toman como estrategias
+		candidatas las definidas en él, evitando así el \emph{overhead} de volver a verificar las condiciones.
+		
+		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarles un peso para poder
+		seleccionar la que se espera mejor la funcionalidad ofrecida por el sistema, para esto definiremos el concepto de
+		\emph{Utilidad del Sistema} y mostraremos la heurística propuesta para su cálculo tanto en Rainbow como en Arco Iris.
+				
+		\subsubsection{Utilidad del Sistema}
+		\label{sec:systemUtility}
+
+			\todo{Explicar Utilidad del sistema, CONTINUAR DESDE ACA!}
 
 		\subsubsection{Peso de un escenario}
 			\label{sec:scenarioWeight}
 
-		\subsubsection{Utilidad del Sistema}
-		\label{sec:systemUtility}
+			\todo{Explicar Peso de un escenario}
+			
 
-			\todo{Explicar Utilidad del sistema}
-
-		El módulo denominado como ``Adaptation Manager'' es uno de los módulos que han sufrido más modificaciones como parte
-		de esta extensión a Rainbow. El mismo ha sido extendido \todo{¿cómo?} para que utilice el conocimiento plasmado en los
+	 El mismo ha sido extendido \todo{¿cómo?} para que utilice el conocimiento plasmado en los
 		escenarios para que determine la mejor (en un sentido heurístico) estrategia de reparación a aplicar, teniendo en
 		cuenta:
 		\begin{itemize}
