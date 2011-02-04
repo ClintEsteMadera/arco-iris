@@ -11,7 +11,7 @@
 	óptimo según los requerimientos planteados.
 
 	\subsection{Arquitectura del Sistema}
-		La arquitectura que tomaremos de Znn es muy sencilla, los componentes principales serán servidores y clientes. Éstos
+		La arquitectura que tomaremos de Znn es muy sencilla: los componentes principales serán servidores y clientes. Éstos
 		no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
 		los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre ellos. A
 		continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
@@ -135,8 +135,8 @@
 		condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin incumbencia de la auto reparación.
 
 		Esto hace que el escenario de tiempo de respuesta se siga cumpliendo, pero observemos que el sistema sigue funcionando
-		con dos servidores, cuando en realidad es muy probable que pueda cumplir con las necesidades de performance con uno
-		solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya
+		con dos servidores, cuando en realidad es altamente probable que pueda cumplir con las necesidades de performance con
+		uno solo. Entonces, ¿por qué no minimizar el costo de los servidores? Pues lograremos esto definiendo otro escenario cuya
 		restricción consistirá en definir que no exista más de un servidor funcionando simultáneamente.
 
 		El escenario que crearemos será el siguiente:

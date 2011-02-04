@@ -6,9 +6,13 @@
 		non-stop que justifica este enfoque. Reusar parte de la tesina de Casuscelli de la UCA que está bastante bien escrita
 		(y no vale la pena gastar más tiempo en esto).}
 
+		\todo{Ceria: toda esta sección hay que mejorarla un poco. Cuando hablen de self healing, aclaren que se refiere a
+		reparar fallas, mientras que hay otros conceptos como self configuring o self adapting que se refieren a otros cambios
+		que el sistema puede hacer.}
+
 		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
-		cuanto a disponibilidad se trata. Hoy en día los mismo operan en ambientes muy dinámicos, con requerimientos del
-		usuario muy cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un
+		cuanto a disponibilidad se trata. Hoy en día los mismo operan en ambientes dinámicos, con requerimientos del
+		usuario altamente cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un
 		mayor crecimiento en la administración operativa del software, lo cual representa un costo importante para que el
 		sistema pueda funcionar. Para reducir este costo, se puede plantear que los sistemas se adapten de manera dinámica
 		para poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos del usuario y los
@@ -16,9 +20,9 @@
 
 		Si bien ya existen mecanismos para mitigar dichos problemas, ellos forman parte del lenguaje de programación
 		utilizado, tales como tratamiento de excepciones, protocolos de tolerancia a fallos, etc. Pero estos mecanismos
-		son comúnmente dependientes de cada aplicación y generalmente muy dependientes del código de la aplicación que se
-		intenta adaptar. Así, hoy en día, la adaptación de sistemas de software es costosa de construir, dificil de modificar,
-		poco reusable entre distintos sistemas y generalmente solo provee soluciones a fallos de manera puntual.
+		son comúnmente dependientes de cada aplicación y generalmente dependen del código de la aplicación que se intenta
+		adaptar. Así, hoy en día, la adaptación de sistemas de software es costosa de construir, dificil de modificar, poco
+		reusable entre distintos sistemas y generalmente solo provee soluciones a fallos de manera puntual.
 
 		En cuanto al estado del arte en materia de auto reparación (o de manera más genérica, sistemas autónomos) existen
 		diversos enfoques tanto en el ámbito académico como en la industria del software. 
@@ -205,6 +209,10 @@
 			y sostenidos en el tiempo. Rainbow implementa un mecanismo que permite evitar accionamientos prematuros de la auto
 			reparación por la presencia de \emph{outliers}, dicho mecanismo utiliza Exponential Moving Average (EMA), que permite
 			ponderar los valores históricos versus el actual basándose en la siguiente fórmula:
+
+			\todo{Ceria: Esto queda medio descolgado acá. Falta bastante detalle de rainbow... el típico grafiquito de su
+			arquitectura por ejemplo}
+
 			\begin{equation}
 				S_{0} = Y_{0}
 			\end{equation}
@@ -214,10 +222,10 @@
 
 			donde $\alpha$ es el factor de suavizado, siendo $0 < \alpha < 1$. En otras palabras, el valor suavizado \smash{$S_{t}$}
 			es un simple promedio ponderado de la última observación \smash{$Y_{t}$} y el valor suavizado previo \smash{$S_{t-1}$}.
-			El nombre factor de suavizado no es un nombre muy adecuado, ya que en realidad a mayor $\alpha$ menor será el suavizado
-			del promedio, mientras que valores cercanos a cero harán que el promedio se vea menos afectado por el nuevo valor
-			observado. No existe un procedimiento formal para determinar el valor de $\alpha$, en el caso de Rainbow el valor
-			escogido para las pruebas realizadas ha sido 0.3.
+			El nombre factor de suavizado no es un nombre especialmente adecuado ya que en realidad a mayor $\alpha$ menor
+			será el suavizado del promedio, mientras que valores cercanos a cero harán que el promedio se vea menos afectado por
+			el nuevo valor observado. No existe un procedimiento formal para determinar el valor de $\alpha$, en el caso de
+			Rainbow el valor escogido para las pruebas realizadas ha sido 0.3.
 
 
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
