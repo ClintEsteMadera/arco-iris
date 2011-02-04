@@ -207,6 +207,9 @@
 
 		Como ya vimos anteriormente, un Escenario modela una situación concreta y real de uso del sistema ante la cual debe
 		comportarse de una manera esperada. Los escenarios contienen la siguiente información:
+		
+		\todo{Ceria: Esto ya estaba explicado antes. Tenemos que "sincronizar bien" las dos secciones.}
+		
 		\begin{itemize}
 			\item Fuente del Estímulo
 			\item Estímulo
@@ -320,10 +323,10 @@
 			para poder intrepretar la información de estímulo agregada en cada uno de los \emph{probes}. En ambos
 			casos, y gracias al mecanismo empleado por Rainbow, no fue necesario modificar las interfaces ni de los
 			\emph{probes} ni de los \emph{gauges}, ya que éstos se comunican mediante cadenas de texto, justamente
-			para ofrecer una amplia libertad a la hora de implementarlos ya que pueden existir maneras muy diversas de
-			testear y tomar métricas de las distintas funcionalidades de los sistemas. Luego, una vez obtenido el estímulo
-			correspondiente, no resta más que recurrir al mapa de escenarios por estímulos (utilizado también en el modo
-			simulación) para acotar la cantidad de escenarios a comprobar.
+			para ofrecer una amplia libertad a la hora de implementarlos ya que pueden existir diversas maneras de probar y tomar
+			métricas de las distintas funcionalidades de los sistemas. Luego, una vez obtenido el estímulo correspondiente, no
+			resta más que recurrir al mapa de escenarios por estímulos (utilizado también en el modo simulación) para acotar la
+			cantidad de escenarios a comprobar.
 
 			\todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos}
 
@@ -373,10 +376,9 @@
 			se recibe el estímulo que desencadena el escenario, por ejemplo, al recibir una solicitud de creación de una cuenta
 			bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. El entorno condiciona la validez del
 			escenario en cuestión a que el sistema se encuentre en un determinado estado. Una respuesta aceptable o fácil de cumplir
-			bajo un entorno puede ser inaceptable o muy costosa de cumplir en un entorno diferente. En el escenario planteado
+			bajo un entorno puede ser inaceptable o muy costosa de cumplir en otro entorno. En el escenario planteado
 			anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un entorno de ``alta carga'' el
-			escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema debería encontrarse en un entorno
-			de ``operación normal''.
+			escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema debería encontrarse en un			entorno de ``operación normal''.
 			Por otro lado, el entorno del escenario permite a Arco Iris optimizar la búsqueda de escenarios que no se satisfagan ya
 			que se ignorarán los escenarios cuyo entorno posea condiciones que no se cumplan en el estado del sistema en el instante
 			en que se recibe el estímulo. Es importante mencionar que si bien según la definición de ATAM, cada escenario posee			un único entorno, en Arco Iris hemos decidido, por razones de flexibilidad, permitir configurar varios escenarios,			siendo obligatorio indicar al menos uno.
@@ -421,12 +423,10 @@
 			Para mitigar estos casos, utilizaremos el mismo mecanismo utilizado por Rainbow explicado ya en la sección
 			\ref{sec:exponentialAverage}.
 
-			Un valor recomendable para el factor de suavizado utilizado tanto en las pruebas de Rainbow como en las de Arco Iris
-			es 0.3. Si se configura un valor muy pequeño Arco Iris tardará en adaptarse a los cambios en el entorno del sistema,
-			aunque ésto podría ser útil sistemas no muy dinámicos o en los cuales la adaptación pueda resultar muy costosa. En el
-			caso contrario, o sea, al configurar un alpha muy elevado, es probable que el sistema se vea afectado por unos pocos
-			valores que estén muy por fuera del rango considerado como normal, aunque de no ser costoso lanzar una adaptación o
-			volverla atrás, puede llegar a lograrse un rendimiento muy óptimo y dinámico del sistema.
+			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en
+			las de Arco Iris es 0.3. Si se configura un valor muy pequeño, Arco Iris tardará en adaptarse a los cambios en el
+			entorno del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la
+			adaptación pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es			probable que el sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como			normal, aunque de no ser costoso lanzar una adaptación o volverla atrás, podría llegarse a lograr un rendimiento			aceptable del sistema.
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
 
@@ -569,19 +569,19 @@
 		de autoreparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación considerada
 		más importante según la visión de los \emph{stakeholders}.
 
-		Para lograr esto, cada escenario tendrá asignada una prioridad, la cual será un entero mayor a cero, uno será la
-		prioridad máxima asignable, mientras que su valor máximo no estará acotado, permitiendo  así asignar valores muy grandes para
-		escenarios de muy baja prioridad. Si bien se ofrece esta posibilidad al usuario, la misma debe manejarse con mucho
-		cuidado, ya que es probable que, al configurar escenarios con prioridades tan grandes, éstos no tengan prácticamente
-		ningún peso a la hora de seleccionar la estrategia de autoreparación a aplicar, por lo cual dichos escenarios nunca
-		serán reparados, careciendo de sentido directamente su existencia.
+		Para lograr esto, cada escenario tendrá asignada una prioridad, la cual estará dada por un entero mayor a cero
+		cuyo valor es inversamente proporcional a la prioridad que se desea asignar a un escenario. Por ejemplo, un escenario
+		con prioridad 2 es considerado más prioritario que otro con prioridad 6. Si bien se ofrece esta posibilidad al
+		usuario, la misma debe manejarse con sumo cuidado ya que es probable que, al configurar escenarios con prioridades
+		muy grandes, éstos no tengan prácticamente ningún peso a la hora de seleccionar la estrategia de autoreparación a
+		aplicar, por lo cual dichos escenarios nunca serán reparados, careciendo de sentido así su existencia.
 
 		La prioridad del escenario es una propiedad fundamental para el correcto funcionamiento de Arco Iris, veremos su
 		importancia al detallar cómo Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la sección
-		\ref{sec:strategySelection}. Por esta razón será muy importante realizar una configuración a conciencia de cuales
-		serán los escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el
-		sistema  según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad de cada
-		escenario como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAS}.
+		\ref{sec:strategySelection}. Por esta razón será de extrema importancia el configurar a conciencia cuales serán los
+		escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el sistema 
+		según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad de cada escenario
+		como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAS}.
 
 	\subsection{Estrategias y su Relación con los Escenarios}
 
@@ -731,7 +731,7 @@
 			siempre y cuando el entorno del escenario coincida con el actual, de lo contrario el escenario se considera verificado automáticamente.
 			\item En el caso de detectar que uno o más escenarios dejaron de cumplirse, se lanzará la auto reparación del
 			sistema, para lo cual la primer tarea a realizar será decidir cual será la estrategia más conveniente a aplicar, o
-			sea, cual estrategia maximiza la \emp{Utilidad del Sistema} en entorno de operación actual.
+			sea, cual estrategia maximiza la \emph{Utilidad del Sistema} en entorno de operación actual.
 		\end{enumerate}
 
 	\subsection{Selección de estrategia a aplicar}
