@@ -54,12 +54,15 @@
 		concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados,
 		extendidos y reutilizados a través de distintos sistemas.
 
-		\begin{center}
-			\includegraphics{images/selfhealing-closed-loop.png}
-		\end{center}
+		\begin{figure}[h]
+			\centering
+				\includegraphics{images/selfhealing-closed-loop.png}
+			\caption{Bucle cerrado}
+			\label{fig:selfhealing-closed-loop}
+		\end{figure}
 
-		El 	proyecto Rainbow, también del proyecto Able, utiliza esta técnica de \textit{closed-loop} para monitorear y reparar
-		sistemas, más adelante profundizaremos sobre Rainbow.
+		Otro sub-proyecto del proyecto Able, Rainbow (sobre el cual profundizaremos más adelante) utiliza esta técnica de
+		\textit{closed-loop} para monitorear y reparar sistemas.
 
 	\subsection{Lenguajes de Descripción de Arquitecturas}
 
@@ -155,17 +158,20 @@
 			\todo{agregar ejemplo de estrategia, tomarlo de algun newssiteStrategies.s}
 
 			El objetivo de la auto reparación será alcanzar determinados atributos de calidad, pero ¿Cómo haremos para alcanzar
-			dichos atributos? En el libro \textbf{Software Arquitectura in Practice}, Bass, Clements y Kazman presentan dos
-			conceptos que nos permiten alcanzar los objetivos del sistema y que han sido ampliamente adoptados en la industria,
-			estos conceptos son: tácticas y estrategias.
+			dichos atributos? En el libro \textbf{Software Arquitectura in Practice} \cite{BassClementz}, Bass, Clements y Kazman
+			presentan dos conceptos que nos permiten alcanzar los objetivos del sistema y que han sido ampliamente adoptados en
+			la industria, estos conceptos son: tácticas y estrategias.
 
-			En el libro definen las tácticas como una decisión de diseño que influye sobre la respuesta de un atributo de
-			calidad, mientras que definen a una estrategia como una colección de tácticas. Básicamente, la visión que se presenta
-			de las tácticas en el libro es la siguiente:
+			Allí se definen las tácticas como una decisión de diseño que influye sobre la respuesta de un atributo de
+			calidad, mientras que definen a una estrategia como una colección de tácticas. La figura
+			\ref{fig:tactics_control_to_response} muestra gráficamente la visión de las tácticas presentada por los autores.
 
-			\begin{center}
-				\includegraphics{images/tactics_control_to_response.png}
-			\end{center}
+			\begin{figure}[h]
+				\centering
+					\includegraphics{images/tactics_control_to_response.png}
+				\caption{Visión gráfica del concepto de táctica}
+				\label{fig:tactics_control_to_response}
+			\end{figure}
 
 			Las tácticas son herramientas que los arquitectos de software han utilizado durante años, en el libro mencionado
 			simplemente se las aisla y se las describe, no pretende proclamar la invención de las tácticas sino más bien darle un
@@ -270,9 +276,12 @@
 			\item \textbf{Medición de la respuesta}: cuantificación de un atributo de la respuesta
 		\end{itemize}
 
-		\begin{center}
-			\includegraphics{images/scenario.png}
-		\end{center}
+		\begin{figure}[h]
+			\centering
+				\includegraphics{images/scenario.png}
+			\caption{Visión gráfica de un escenario de QAW}
+			\label{fig:scenario}
+		\end{figure}
 
 		Los escenarios son pequeñas historias que describen una interacción con el sistema, que impacta sobre un atributo de
 		calidad en particular. Por ejemplo, un escenario sobre disponibilidad podría ser:
