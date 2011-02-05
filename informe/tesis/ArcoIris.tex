@@ -20,11 +20,16 @@
 
 		El primer paso fue inspeccionar el código del framework y leer su documentación (la cual no es abundante, por
 		cierto). Luego de ese primer paso, se tuvo una buena noción sobre el funcionamiento de Rainbow y sus componentes principales
-		de arquitectura, las cuales se pueden observar en el siguiente diagrama de colaboración de objetos:
+		de arquitectura, las cuales se pueden observar en el diagrama de colaboración de objetos (figura
+		\ref{fig:Rainbow_Architecture}).
 
-		\begin{center}
-			\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture.png}
-		\end{center}
+		\afterpage{\clearpage
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture.png}
+			\caption{Arquitectura de Rainbow}
+			\label{fig:Rainbow_Architecture}
+		\end{figure}}
 
 		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar el framework
 		utilizando, básicamente, dos vías:
@@ -96,11 +101,16 @@
 
 		\subsubsection{Arquitectura de Arco Iris}
 
-			A continuación, veremos cómo luce la arquitectura del framework con la incorporación de las extensiones realizadas:
+			En la figura \ref{fig:Rainbow_Architecture_With_Scenarios} podemos observar cómo luce la arquitectura
+			del \emph{framework} con la incorporación de las extensiones realizadas.
 
-			\begin{center}
+			\afterpage{\clearpage
+			\begin{figure}[H]
+				\centering
 				\includegraphics[width=1.00\textwidth]{images/Rainbow_Architecture_With_Scenarios.png}
-			\end{center}
+				\caption{Arquitectura de Arco Iris}
+				\label{fig:Rainbow_Architecture_With_Scenarios}
+			\end{figure}}
 
 			El arquitecto sigue realizando las mismas tareas que realizaba en Rainbow (i.e. ``alimentar'' a Rainbow con un
 			modelo de la arquitectura del sistema a adaptar y archivos de configuración) pero ahora se le suma una tarea más: el
@@ -378,10 +388,10 @@
 			escenario en cuestión a que el sistema se encuentre en un determinado estado. Una respuesta aceptable o fácil de cumplir
 			bajo un entorno puede ser inaceptable o muy costosa de cumplir en otro entorno. En el escenario planteado
 			anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un entorno de ``alta carga'' el
-			escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema debería encontrarse en un			entorno de ``operación normal''.
+			escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema debería encontrarse en un			entorno de ``operación normal''.
 			Por otro lado, el entorno del escenario permite a Arco Iris optimizar la búsqueda de escenarios que no se satisfagan ya
 			que se ignorarán los escenarios cuyo entorno posea condiciones que no se cumplan en el estado del sistema en el instante
-			en que se recibe el estímulo. Es importante mencionar que si bien según la definición de ATAM, cada escenario posee			un único entorno, en Arco Iris hemos decidido, por razones de flexibilidad, permitir configurar varios escenarios,			siendo obligatorio indicar al menos uno.
+			en que se recibe el estímulo. Es importante mencionar que si bien según la definición de ATAM, cada escenario posee			un único entorno, en Arco Iris hemos decidido, por razones de flexibilidad, permitir configurar varios escenarios,			siendo obligatorio indicar al menos uno.
 			Arco Iris también provee la posibilidad de especificar que un determinado escenario aplica bajo cualquier entorno,
 			esto sería equivalente a que el entorno del escenario tenga como única condición subyacente \verb@true@. Esto puede
 			ser útil para simplificar la configuración del escenario, pero se debe tener en cuenta que esto acota la posibilidad
@@ -392,9 +402,9 @@
 			circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular, en tal caso, de no
 			especificar el entorno no podremos darle mayor peso a la \emph{performance} por sobre otros \emph{concerns}, quedando
 			únicamente la opción de aumentar la prioridad del escenario tergiverzando así dicha información, ya que en realidad lo
-			óptimo era darle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
+			óptimo era darle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
 			En definitiva, al establecer que el escenario aplica para cualquier entorno, Arco Iris estará interpretando que el
-			entorno carece de importancia, dejando así de lado los pesos de los \emph{concerns} y distribuyendo equitativamente			su importancia relativa, lo cual es equivalente a que no exista el concepto de \emph{concern}.
+			entorno carece de importancia, dejando así de lado los pesos de los \emph{concerns} y distribuyendo equitativamente			su importancia relativa, lo cual es equivalente a que no exista el concepto de \emph{concern}.
 			La estructura del entorno estará formada de la siguiente manera:
 			\begin{itemize}
 				\item Un conjunto de condiciones, y
@@ -410,9 +420,9 @@
 
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
 			simplemente implementando la interface \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
-			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
+			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
 			En cuanto al mapa presente en la estructura del entorno, deberá contener todos los \emph{concerns} definidos para el
-			sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la			preponderencia relativa entre los \emph{concerns}. Se detallará cómo se utilizan estos pesos para calcular el valor			de un escenaio en la sección \ref{sec:scenarioWeight}.
+			sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la			preponderencia relativa entre los \emph{concerns}. Se detallará cómo se utilizan estos pesos para calcular el valor			de un escenaio en la sección \ref{sec:scenarioWeight}.
 			A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente chequear las condiciones definidas para
 			el entorno tomando los datos actuales del sistema, ya que deberíamos eliminar el ruido provocados por los
 			\emph{outlier}, pues para que el sistema se encuentre en un determinado estado es lógico esperar que dicho estado se
@@ -426,7 +436,7 @@
 			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en
 			las de Arco Iris es 0.3. Si se configura un valor muy pequeño, Arco Iris tardará en adaptarse a los cambios en el
 			entorno del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la
-			adaptación pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es			probable que el sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como			normal, aunque de no ser costoso lanzar una adaptación o volverla atrás, podría llegarse a lograr un rendimiento			aceptable del sistema.
+			adaptación pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es			probable que el sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como			normal, aunque de no ser costoso lanzar una adaptación o volverla atrás, podría llegarse a lograr un rendimiento			aceptable del sistema.
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
 
@@ -453,7 +463,7 @@
 			por Rainbow, poniéndolas en el contexto de un Escenario de Atributo de Calidad, proveyendo así mayor visibilidad a los
 			\emph{stakeholders} sobre estas restricciones, anteriormente sólo conocidas por los arquitectos o encargados de
 			configurar Rainbow, ya que dichas restricciones en Rainbow terminaban siendo implementadas en el modelo
-			de la arquitectura descripto en el lenguaje Acme, perdiendo toda correlación con su estímulo desencadenador. Veamos			un ejemplo extraído de Znn de cómo se implementan dichas restricciones al utilizar Rainbow:
+			de la arquitectura descripto en el lenguaje Acme, perdiendo toda correlación con su estímulo desencadenador. Veamos			un ejemplo extraído de Znn de cómo se implementan dichas restricciones al utilizar Rainbow:
 			\begin{Verbatim}[gobble=4]
                 Component Type ClientT {
                     Property experRespTime : float <<  default : float = 100.0; >> ;
@@ -490,7 +500,7 @@
 			absolutamente todas las restricciones. Mientras que Arco Iris, al descubrir un cambio en el modelo de la
 			arquitectura, la acción que tomará consistirá en verificar los escenarios, pero no cualquier escenario, solamente los
 			que coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo de la arquitectura, optimizando
-			así de manera determinante la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
+			así de manera determinante la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
 			Dado al cambio en el manejo de restricciones, en Arco Iris se implementó el concepto de Constraint como una
 			interface, dando así la posibilidad de extender el \emph{framework} con el tipo de Constraint que el usuario
 			considere necesario. La interface planteada presentada es la siguiente:
@@ -516,7 +526,7 @@
 			promedio, los que especifican si la condición debe cumplirse para la suma de todas las instancias en \emph{runtime}
 			de dicha propiedad o si la condición debe darse ``en promedio'' para todas las instancias; respectivamente.
 			La implementación mencionada recibe el nombre de \emph{NumericBinaryRelationalConstraint} y puede verse su código
-			en la sección \ref{sec:numericBinaryRelationalConstraintCode}.
+			en el apéndice \ref{sec:numericBinaryRelationalConstraintCode}.
 			
 
 	\subsection{Prioridades entre Escenarios}
@@ -603,7 +613,7 @@
 		al situarse en un escenario concreto, él sabrá cuales serán las soluciones más adecuadas basándose en el entorno del
 		sistema y en la prioridad del escenario actual. Obviamente, Arco Iris también ofrece la posibilidad de utilizar el
 		comportamiento brindado por Rainbow, esto se logra simplemente indicando la opción que representa a todas las
-		estrategias existentes (para más detalle ver \ref{sec:strategySelectionUI}) cuando se configura el escenario.
+		estrategias existentes (para más detalle ver \ref{sec:strategySelectionUI}) cuando se configura el escenario.
 		Una ventaja derivada del agregado del concepto de \emph{Escenario} es que ahora los problemas y sus posibles
 		soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Como
 		ya sucedía en Rainbow, las estrategias poseen la información necesaria para permitir simular su aplicación y estimar
@@ -689,7 +699,7 @@
 		(\ref{sec:scenariosUI}), para más detalle ver la sección \ref{sec:scenariosUI_constraints}. Todo esto hace que los
 		\emph{stakeholders} puedan acceder de manera sencilla a las restricciones a las cuales debe acatarse el sistema,
 		pudiendo editarlas sin la necesidad de poseer conocientos sobre las tecnologías utilizadas por el sistema o por el
-		\emph{framework} de auto reparación.		
+		\emph{framework} de auto reparación.		
 		Para determinar si el sistema necesita auto repararse, Rainbow utilizará una funcionalidad ofrecida por ACME, que
 		permite evaluar las restricciones descriptas en el modelado de la arquitectura, para esto ACME provee una herramienta
 		llamada \emph{Type Checker}. A continuación podemos observar cómo Rainbow se sirve de esta utilidad para decidir si
@@ -715,13 +725,13 @@
 		poder permitir incluir toda la información necesaria en los escenarios y que la misma pueda ser visualizada y editada
 		por todos los \emph{stakeholders} involucrados, hemos desarrollado nuestra propia implementación de las restricciones,
 		la cual permiten expresar las mismas \emph{constraints} definidas en ACME, y en caso de ser necesario agregar un nuevo
-		tipo de restricción permite fácilmente incorporar una nueva implementación implementando una \emph{interface} muy		sencilla (ver \ref{sec:numericBinaryRelationalConstraintCode}). Estas \emph{constraints} serán de vital importancia a		la hora de activar el mecanismo de auto reparación.		
+		tipo de restricción permite fácilmente incorporar una nueva implementación implementando una \emph{interface} muy		sencilla (ver el apéndice \ref{sec:numericBinaryRelationalConstraintCode}). Estas \emph{constraints} serán de vital		importancia a la hora de activar el mecanismo de auto reparación.		
 		Al iniciar, Arco Iris leerá todos los escenarios definidos, y armará un mapa que le permitirá optimizar las
 		verificaciones recurrentes de los escenarios ante la llegada de cada estímulo. El mapa almacena todos los escenarios
 		correspondientes a cada estímulo, así, ante la invocación de un estímulo en el sistema, Arco Iris solo deberá verificar
 		que se cumplan los escenarios relacionados con dicho estímulo, acotando así de manera sustancial la cantidad de chequeos
 		a realizar. Recordar que en Rainbow, ante cualquier modificación en el estado de la arquitectura, es necesario verificar
-		todas las restricciones definidas para la auto reparación.
+		todas las restricciones definidas para la auto reparación.
 		Paso a paso el proceso de activación de la auto reparación en Arco Iris consiste en lo siguiente:
 		\begin{enumerate}
 			\item El sistema en ejecución recibe la invocación de un estímulo.
@@ -810,8 +820,12 @@
 		\todo{La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene sentido
 		ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
 
-		\begin{center}
-			\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Model.png}
-		\end{center}
+		\afterpage{\clearpage
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Model.png}
+			\caption{Modelo de Arco Iris}
+			\label{fig:Arco_Iris_Model}
+		\end{figure}}
 
 		\todo{Explicar un poco sobre el diagrama anterior.}

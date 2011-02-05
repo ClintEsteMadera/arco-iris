@@ -18,6 +18,8 @@
 \usepackage[spanish, activeacute]{babel}  % idioma español, acentos fáciles y deletreo de palabras
 \usepackage{indentfirst}                  % permite indentar un parrafo a mano
 \usepackage{graphicx}                     % permite insertar gráficos
+\usepackage{float}                        % permite poner graficos flotantes en posiciones mas personalizadas
+\usepackage{afterpage}                    % evita que Latex haga un salto de página al poner figuras flotantes
 \usepackage{color}                        % permite el uso de colores en el documento
 %\usepackage[dvipsnames,table,svgnames]{xcolor}
 %\definecolor{gray97}{gray}{.97}
@@ -90,6 +92,8 @@
 %\addtolength{\textwidth}{4cm}
 %\addtolength{\textheight}{2cm}
 
+\restylefloat{figure}                     % Esto permite usar ``H'' como parametro de posicion para figuras flotantes 
+
 \def\todo#1{\textcolor{red}{#1}}          % macro 'todo' para To-Do's
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,6 +115,10 @@
 	\newpage
 	
 	\tableofcontents
+
+	\newpage
+
+	\listoffigures
 	
 	\newpage
 	
