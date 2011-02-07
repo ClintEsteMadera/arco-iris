@@ -1,42 +1,47 @@
 \section{Conceptos Preliminares}
 
-	\subsection{Auto Reparación}
+	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
 
-		\todo{Self Healing, incluyendo una descripción previa sobre la complejidad creciente de los sistemas y su necesidad de
-		non-stop que justifica este enfoque. Reusar parte de la tesina de Casuscelli de la UCA que está bastante bien escrita
-		(y no vale la pena gastar más tiempo en esto).}
-
-		\todo{Ceria: toda esta sección hay que mejorarla un poco. Cuando hablen de self healing, aclaren que se refiere a
-		reparar fallas, mientras que hay otros conceptos como self configuring o self adapting que se refieren a otros cambios
-		que el sistema puede hacer.}
-
-		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
-		cuanto a disponibilidad se trata. Hoy en día los mismo operan en ambientes dinámicos, con requerimientos del
+ 		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
+		cuanto a disponibilidad se trata. Hoy en día los mismos operan en ambientes dinámicos, con requerimientos del
 		usuario altamente cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un
 		mayor crecimiento en la administración operativa del software, lo cual representa un costo importante para que el
 		sistema pueda funcionar. Para reducir este costo, se puede plantear que los sistemas se adapten de manera dinámica
 		para poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos del usuario y los
-		errores en el sistema. Esto es lo que se conoce como \emph{self healing} o, en castellano, auto reparación.
+		errores en el sistema. De forma genérica, a los sistemas de software que cumplen con estas características, se los
+		denomina \textbf{Sistemas Autónomos}.
+		
+		Hilando más fino en la caracterización de sistemas autónomos, encontramos términos en inglés como \textbf{Self
+		Configuring} o \textbf{Self Adapting} para referirse a sistemas autónomos que tienen la capacidad de auto configurarse
+		(o auto adaptarse) a condiciones cambiantes en el entorno \emph{normal} de ejecución del sistema.
+		
+		Por otro lado, cuando la adaptación dinámica del sistema responde a errores o situaciones excepcionales del mismo,
+		el término más utilizado actualmente es \emph{self healing} o, en castellano, \textbf{auto reparación}.
 
-		Si bien ya existen mecanismos para mitigar dichos problemas, ellos forman parte del lenguaje de programación
-		utilizado, tales como tratamiento de excepciones, protocolos de tolerancia a fallos, etc. Pero estos mecanismos
-		son comúnmente dependientes de cada aplicación y generalmente dependen del código de la aplicación que se intenta
-		adaptar. Así, hoy en día, la adaptación de sistemas de software es costosa de construir, dificil de modificar, poco
-		reusable entre distintos sistemas y generalmente solo provee soluciones a fallos de manera puntual.
+		Si bien ya existen mecanismos para mitigar los mencionados problemas, ellos normalmente están intrínsecamente ligados
+		al lenguaje de programación utilizado para construír la aplicación, tales como tratamiento de excepciones, protocolos de
+		tolerancia a fallos, etc. Además, estos mecanismos generalmente dependen del código de la aplicación que se intenta
+		adaptar y consecuentemente, no son fácilmente reutilizables entre distintos sistemas. En resúmen: hoy en día, la
+		adaptación de sistemas de software es costosa de construir, dificil de modificar, poco reusable y generalmente solo
+		provee soluciones a fallos de manera puntual.
 
-		En cuanto al estado del arte en materia de auto reparación (o de manera más genérica, sistemas autónomos) existen
-		diversos enfoques tanto en el ámbito académico como en la industria del software. 
+		En cuanto al estado del arte en materia de sistemas autónomos existen diversos enfoques tanto en el ámbito académico
+		como en la industria del software.
 
-		Dentro del ámbito de la industria, el concepto de sistemas autónomos se encuentra - al igual que en el plano académico
-		- ampliamente difundido. Sin dudas el enfoque de IBM, denominado ``Autonomic Computing''\cite{IBM-AC} es el más
-		completo, apalancado por un gran grupo de investigación y abarcando el problema desde distintos aspectos. También se
-		destaca la iniciativa de Microsoft denominada ``BNla'', y no tanto la iniciativa de Sun (``Bla''), por estar más
-		ligada a adaptar el enfoque al dominio de los sistemas operativos.
+		Dentro del ámbito de la industria, el concepto de sistemas autónomos se encuentra ampliamente difundido. Sin dudas, el
+		enfoque de IBM, denominado ``Autonomic Computing''\cite{IBM-AC} es el más completo, apalancado por un gran grupo de
+		investigación y abarcando el problema desde distintos aspectos. También se destaca la iniciativa de Microsoft
+		denominada ``Dynamic Systems Initiative'', y no tanto la iniciativa de Sun (``Predictive Self-Healing'' y
+		``Conscientious Software''), por estar más ligada a adaptar el enfoque al dominio de los sistemas operativos. Para más
+		información sobre estos enfoques, remitirse a \cite{Casuscelli}
 
 		Por otro lado, existen distintos investigadores ligados a prestigiosas instituciones académicas abocados al estudio de
-		la autonomía de los sistemas. Uno de los primeros investigadores en acuñar el término ``Self Healing'' fue el Dr. David
-		Garlan, de la Universidad de Carnegie Mellon, quien formó un grupo de investigación que dedicó años a estudiar el tema
-		dentro del marco del proyecto Able.
+		distintos aspectos de la autonomía de los sistemas. Uno de los primeros investigadores en acuñar el término ``Self
+		Healing'' fue el Dr. David Garlan, de la Universidad de Carnegie Mellon, quien formó un grupo de investigación que
+		dedicó años a estudiar el tema dentro del marco del proyecto Able.\footnote{El proyecto ABLE (\emph{``Architecture
+		Based Languages and Environments''}) de la Universidad de Carnegie Mellon lleva a cabo investigaciones que conducen a
+		una base de ingeniería para la arquitectura de software. Para más información, visitar
+		\url{http://www.cs.cmu.edu/~able}}
 		
 		El presente trabajo toma como base el trabajo generado por el proyecto ABLE de Carnegie Mellon, el cual implementa
 		el concepto de ``Auto Reparación de Sistemas Basada en Modelos de Arquitectura'', el cual se describirá en detalle a
@@ -48,11 +53,11 @@
 		arquitectura del sistema, en lugar de los mecanismos tradicionales para detección y recuperación de errores que se
 		implementan a nivel de código.
 
-		La idea propuesta consiste básicamente en un \textit{closed-loop} (bucle cerrado), donde existe una capa que actúa
-		como mecanismo de control y otra encargada de monitorear el sistema (ver figura), separada del sistema que está siendo
-		ejecutado, lo cual provee una solución mas efectiva que cualquier mecanismo interno porque permite agrupar todo lo
-		concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados,
-		extendidos y reutilizados a través de distintos sistemas.
+		La idea propuesta consiste básicamente en un \textit{closed-loop} (bucle cerrado), donde existe capas (externas al
+		sistema que está siendo ejecutado) que actúan, una como mecanismo de control y otra monitoreando el sistema, lo cual
+		provee una solución mas efectiva que cualquier mecanismo interno porque permite agrupar todo lo concerniente a la
+		detección y solución del problema en módulos separados, pudiendo ser analizados, modificados, extendidos y
+		reutilizados a través de distintos sistemas.
 
 		\begin{figure}[h]
 			\centering
@@ -66,32 +71,33 @@
 
 	\subsection{Lenguajes de Descripción de Arquitecturas}
 
-		Un problema fundamental de las arquitecturas de los sistemas basados en componentes ha sido encontrar la notación
-		apropiada para definir dichos sistemas.
+		Un problema fundamental en el diseño de arquitecturas de sistemas utilizando el estilo de componentes y
+		conectores ha sido encontrar la notación apropiada para definir dichas arquitecturas.
 
-		Un buen lenguaje para la descripción de arquitecturas permite generar una documentación clara sobre los componentes
-		del sistema, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las propiedades del
-		sistema y automatizar su análisis y hasta puede llegar a utilizarse para la generación automática del sistema. También
-		puede utilizarse para validar de manera temprana decisiones de arquitecturas, reduciendo así el tiempo de
-		implementación y evitando malgastar recursos en el desarrollo de un sistema.
+		Un buen lenguaje para la descripción de arquitecturas debería permitir generar una documentación clara sobre los
+		componentes del sistema, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las
+		propiedades del sistema y automatizar su análisis, hasta pudiendo quizás llegar a utilizarse para la generación
+		automática de parte del sistema. También debería ser efectivo para poder validar de manera temprana decisiones
+		arquitectónicas, reduciendo así el tiempo de implementación y evitando utilizar ineficientemente recursos en el
+		desarrollo de un sistema.
 
 		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido
 		ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que
 		no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre
 		propiedades críticas del sistema, como por ejemplo la performance o la confiabilidad. Ésta es la razón principal que
-		ha motivado el avance de los ADLs (Architecture Description Language).\cite{ACME}
+		ha motivado el avance de los ADLs (Architecture Description Languages). Para más información sobre la discusión ADL's
+		vs. UML, remitirse a \cite{ADLsVsUML}.
 
-		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado muchísimo en las últimas 2 décadas, al punto de
-		que ya permiten definir una base formal para su descripción y análisis.
+		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado considerablemente en las últimas dos décadas,
+		al punto de que ya permiten definir una base formal para su descripción y análisis.
 
 	\subsubsection{Acme}
 	\label{sec:acme}
 
-		Acme es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon University, más
-		precisamente por el proyecto ABLE \footnote{El proyecto ABLE (\emph{``Architecture Based Languages and
-		Environments''}) de la Universidad de Carnegie Mellon lleva a cabo investigaciones que conducen a una base de
-		ingeniería para la arquitectura de software. Para más información, visitar \url{http://www.cs.cmu.edu/~able}},
-		liderado por el Dr. David Garlan.
+		\todo{TASK: Extender definición de ACME. Poner un ejemplo básico}
+
+		Acme\cite{ACME} es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon
+		University, más precisamente por el proyecto ABLE, liderado por el Dr. David Garlan.
 
 		Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de
 		software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los
@@ -119,6 +125,8 @@
 		implementada en el presente trabajo.
 
 	\subsection{Rainbow}
+
+		\todo{TASK: Explicar Rainbow con gráficos}
 
 		\subsubsection{Introducción a Rainbow}
 
@@ -198,6 +206,8 @@
 			un	determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica
 			levantar-servidor la responsable de ejecutar la acción propiamente dicha, a la cual se la llama \textbf{operador}.
 
+			\todo{TASK: Explicar Stitch con más detalle}
+
 			Rainbow provee un lenguaje de scripting llamado \textbf{Stitch}, pensado para permitir plasmar el conocimiento
 			rutinario de las personas sobre adaptación de sistemas de software. Tanto las tácticas como las estrategias serán
 			descriptas utilizando Stitch. Ofrece modularidad con respecto a las dimensiones de los atributos de calidad y al
@@ -233,7 +243,6 @@
 			el nuevo valor observado. No existe un procedimiento formal para determinar el valor de $\alpha$, en el caso de
 			Rainbow el valor escogido para las pruebas realizadas ha sido 0.3.
 
-
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
 
 		Znn es un sistema que simula un sitio web de noticias, el cual nació como proyecto de tesis de doctorado
@@ -261,6 +270,8 @@
 
 	\subsection{Escenarios de Atributos de Calidad y QAW}
 		\label{sec:QAS}
+
+		\todo{TASK: Extender definición de Escenarios de Atributos de Calidad (poco, está casi OK así)}
 
 		Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente
 		especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable'').
@@ -328,6 +339,9 @@
 	\subsection{ATAM}
 	\label{sec:atam}
 		\todo{fuente: svn/doc/atam/ATAM Method for Architecture Evaluation.pdf}
+
+		\todo{TASK: Extender definición de ATAM, poner grafiquito, poner foco en la parte de sensitivity point y tradeoff
+		point que son los que nos sirven. Poner un ejemplo de c/u.}
 
 		ATAM (Architecture Tradeoff Analysis Method) ha sido desarrollado por el SEI, al igual que QAW, y es una técnica que
 		permite analizar arquitecturas de software. Las arquitecturas son complejas, e involucran muchos tradeoffs de diseño.
