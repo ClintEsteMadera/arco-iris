@@ -750,7 +750,7 @@
 		Arco Iris selecciona la estrategia a aplicar para reparar el sistema de un manera sustancialmente diferente con
 		respecto a Rainbow. Para comenzar, Rainbow considerará todas las estrategias existentes mientras que Arco Iris se
 		limitará a considerar las estrategias propuestas en el escenario que se ha dejado de satisfacer, esto obviamente
-		achica muchísimo el universo de posibilidades. Recordemos que la configuración de Arco Iris también permite la
+		reduce ampliamente el universo de posibilidades. Recordemos que la configuración de Arco Iris también permite la
 		posibilidad de considerar todas las estrategias. Rainbow descartará las estrategias cuyas condiciones no se
 		satisfagan, están condiciones generalmente se corresponden con la restricción que ha dejado de cumplirse, por lo cual
 		su lógica se encuentra duplicada en el modelado de la arquitectura y en la condición de la estrategia, consideremos la
@@ -768,7 +768,8 @@
 				}
 				\end{Verbatim}
 				
-		Donde \emph{cViolation} representa la misma lógica dispuesta en el invariante en el modelado de la arquitectura:
+		Donde \emph{cViolation} representa la misma lógica dispuesta en el invariante determinado al modelar la
+		arquitectura: 
 				\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
 		    
@@ -776,19 +777,41 @@
 					...			
 			        rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
 			    }
+			    ...
+			    Property MIN_RESPTIME : float = 100.0;
+			    
 				\end{Verbatim}
 
 		En Arco Iris, una vez que se ha detectado que un escenario dejo de satisfacerse, simplemente se toman como estrategias
 		candidatas las definidas en él, evitando así el \emph{overhead} de volver a verificar las condiciones.
 		
-		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarles un peso para poder
-		seleccionar la que se espera mejor la funcionalidad ofrecida por el sistema, para esto definiremos el concepto de
-		\emph{Utilidad del Sistema} y mostraremos la heurística propuesta para su cálculo tanto en Rainbow como en Arco Iris.
+		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarle un peso a cada
+		una para poder seleccionar la estrategia que luego de ser aplicada maximice el rendimiento del sistema, para esto
+		definiremos el concepto de \emph{Utilidad del Sistema} y mostraremos la heurística propuesta para su cálculo tanto en
+		Rainbow como en Arco Iris.
 				
 		\subsubsection{Utilidad del Sistema}
 		\label{sec:systemUtility}
 
-			\todo{Explicar Utilidad del sistema, CONTINUAR DESDE ACA!}
+			Rainbow utiliza la teoría de la utilidad, concepto forjado en el estudio de la economía, que permite asignar una
+			medida relativa de satisfacción sobre un sistema sobre el cual es necesario medir el impacto ante cambios
+			determinados. Una vez definida esta medida, permite hablar con sentido sobre incrementar o decrementar la utilidad del
+			sistema, y así explicar el impacto de una determinada decisión sobre el comportamiento del sistema.
+			
+			En el caso de Rainbow esta medida permitirá dilucidar como impactará una determinada estrategia sobre el sistema,
+			para lo cual cada estrategia deberá explicitar los \emph{concerns} sobre los que impacta y en qué medida lo hace. Por
+			ejemplo, en el caso de bajar un servidor en Znn se establece el siguiente impacto:
+			
+			\begin{Verbatim}[gobble=4]
+				dischargeServers:
+	    			uR: +144
+    				uF: 0
+    				uC: -1.00
+			\end{Verbatim}
+			
+			Esto representa que la performance se verá degrada en 144 milisegundos, mientras que el costo se reduce en 1.
+			
+			\todo{CONTINUAR DE ACA!}
 
 		\subsubsection{Peso de un escenario}
 			\label{sec:scenarioWeight}
