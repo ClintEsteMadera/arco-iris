@@ -571,7 +571,7 @@
 		el sistema, sino que el usuario debe detallar cuales son las condiciones que definen al entorno, y, en caso de
 		cumplirse dichas condiciones, cuales serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
 		
-		Dicho esto podemos introducirnos de lleno en la relación de prioriades entre escenarios, sin confundir los
+		Dicho esto podemos introducirnos directamente en la relación de prioriades entre escenarios, sin confundir los
 		conceptos manejados en ambos frameworks.
 
 		En resumen, Rainbow permite priorizar básicamente por \emph{concerns}, y de manera estática, mientras que Arco Iris
@@ -750,11 +750,11 @@
 		Arco Iris selecciona la estrategia a aplicar para reparar el sistema de un manera sustancialmente diferente con
 		respecto a Rainbow. Para comenzar, Rainbow considerará todas las estrategias existentes mientras que Arco Iris se
 		limitará a considerar las estrategias propuestas en el escenario que se ha dejado de satisfacer, esto obviamente
-		reduce ampliamente el universo de posibilidades. Recordemos que la configuración de Arco Iris también permite la
-		posibilidad de considerar todas las estrategias. Rainbow descartará las estrategias cuyas condiciones no se
-		satisfagan, están condiciones generalmente se corresponden con la restricción que ha dejado de cumplirse, por lo cual
-		su lógica se encuentra duplicada en el modelado de la arquitectura y en la condición de la estrategia, consideremos la
-		siguiente estrategia tomada de Znn a modo de ejemplo:
+		reduce ampliamente el universo de posibilidades reduciendo así el tiempo de la autoreparación. Recordemos que la
+		configuración de Arco Iris también permite la posibilidad de considerar todas las estrategias existentes. Rainbow
+		descartará las estrategias cuyas condiciones no se satisfagan, están condiciones generalmente se corresponden con la
+		restricción que ha dejado de cumplirse, por lo cual su lógica se encuentra duplicada en el modelado de la arquitectura
+		y en la condición de la estrategia, consideremos la siguiente estrategia tomada de Znn a modo de ejemplo:
 		
 				\begin{Verbatim}[gobble=4]
 				define boolean cViolation = exists c : T.ClientT in M.components | 
@@ -798,9 +798,9 @@
 			determinados. Una vez definida esta medida, permite hablar con sentido sobre incrementar o decrementar la utilidad del
 			sistema, y así explicar el impacto de una determinada decisión sobre el comportamiento del sistema.
 			
-			En el caso de Rainbow esta medida permitirá dilucidar como impactará una determinada estrategia sobre el sistema,
-			para lo cual cada estrategia deberá explicitar los \emph{concerns} sobre los que impacta y en qué medida lo hace. Por
-			ejemplo, en el caso de bajar un servidor en Znn se establece el siguiente impacto:
+			En el caso de Rainbow esta medida permitirá tener una noción de como impactará una determinada estrategia sobre el
+			sistema, para lo cual cada táctica deberá explicitar los \emph{concerns} sobre los cuales impacta y en qué medida
+			lo hace. Por ejemplo, en el caso de bajar un servidor en Znn se establece el siguiente impacto:
 			
 			\begin{Verbatim}[gobble=4]
 				dischargeServers:
@@ -809,15 +809,22 @@
     				uC: -1.00
 			\end{Verbatim}
 			
-			Esto representa que la performance se verá degrada en 144 milisegundos, mientras que el costo se reduce en 1.
+			Esto representa que la performance se verá degrada en 144 milisegundos y la fidelidad permanecerá intacta, mientras
+			que el costo se reduce en 1, respectivamente.
 			
-			\todo{CONTINUAR DE ACA!}
+		\subsection{Selección de estrategia según Rainbow}
+	
+			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow se encargará de asignarle un
+		
+		Calculate scores of the enabled strategies
+	 *     = this involves evaluating the meta-information of the tactics
+	 *       in each strategy
+	 
+			\todo{Mencionar como se usan los pesos asignados a los concerns en los scenarios de Rainbow (utilities.yml)}
+		
+		\subsection{Selección de estrategia según Arco Iris}
 
-		\subsubsection{Peso de un escenario}
-			\label{sec:scenarioWeight}
-
-			\todo{Explicar Peso de un escenario}
-			
+			\todo{mencionar que primero se calcula la utility actual para no empeorar las cosas}
 
 	 El mismo ha sido extendido \todo{¿cómo?} para que utilice el conocimiento plasmado en los
 		escenarios para que determine la mejor (en un sentido heurístico) estrategia de reparación a aplicar, teniendo en
