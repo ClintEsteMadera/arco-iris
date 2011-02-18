@@ -156,27 +156,27 @@
 			referencia a la parte del doc donde se explica en detalle este archivo}, el cual, al detectar cualquier cambio en
 			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
 			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
-			
+
 			El mecanismo se ejecuta periódicamente cada $X$ milisegundos dónde $X$ es configurable utilizando el archivo de
 			configuración estándar de Rainbow (inicialmente, $X = 5000$, es decir, el mecanismo se ejecuta cada 5 segundos).
-			
+
 			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca de Eclipse, visitar
 			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
 			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente más interesado en
 			conocer cuando un cambio en la configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
 			el cual, en ese caso, recalcula una variada cantidad de información guardada en memoria para que pueda ser usada
 			instantáneamente por el componente \textbf{RainbowModelWithScenarios}.
-			
+
 			El mecanismo descripto en este apartado se encuentra implementado en la clase\\
 			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
-			
+
 			\begin{Verbatim}[gobble=4]
 				private static final long CONFIG_RELOAD_INTERVAL_MS =
 					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
-			
+
 				private static final String SELF_HEALING_CONFIG_FILE_NAME =
 					Rainbow.property("customize.scenarios.path");
-			
+
 				private static final File SELF_HEALING_CONFIG_FILE =
 					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
 				(...)
@@ -184,7 +184,7 @@
 					super();
 					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
 					this.loadSelfHealingConfigurationFromFile();
-			
+
 					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
 						@Override
 						protected void onChange(File file) {
@@ -194,7 +194,7 @@
 							notifyListeners();
 						}
 					};
-			
+
 					Timer timer = new Timer();
 					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
 				}
@@ -217,9 +217,9 @@
 
 		Como ya vimos anteriormente, un Escenario modela una situación concreta y real de uso del sistema ante la cual debe
 		comportarse de una manera esperada. Los escenarios contienen la siguiente información:
-		
+
 		\todo{Ceria: Esto ya estaba explicado antes. Tenemos que "sincronizar bien" las dos secciones.}
-		
+
 		\begin{itemize}
 			\item Fuente del Estímulo
 			\item Estímulo
@@ -463,7 +463,8 @@
 			por Rainbow, poniéndolas en el contexto de un Escenario de Atributo de Calidad, proveyendo así mayor visibilidad a los
 			\emph{stakeholders} sobre estas restricciones, anteriormente sólo conocidas por los arquitectos o encargados de
 			configurar Rainbow, ya que dichas restricciones en Rainbow terminaban siendo implementadas en el modelo
-			de la arquitectura descripto en el lenguaje Acme, perdiendo toda correlación con su estímulo desencadenador. Veamos			un ejemplo extraído de Znn de cómo se implementan dichas restricciones al utilizar Rainbow:
+			de la arquitectura descripto en el lenguaje Acme, perdiendo toda correlación con su estímulo desencadenador. Veamos
+			un ejemplo extraído de Znn de cómo se implementan dichas restricciones al utilizar Rainbow:
 			\begin{Verbatim}[gobble=4]
                 Component Type ClientT {
                     Property experRespTime : float <<  default : float = 100.0; >> ;
@@ -517,8 +518,8 @@
 			Donde el método \emph{holds} será el encargado de determinar si la Constraint se cumple o no, recibiendo como
 			parámetro el valor de la propiedad a evaluar, mientras que el método \emph{getFullyQualifiedPropertyName} retornará
 			el nombre completo cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que
-			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}. 
-			
+			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}.
+
 			Para el presente trabajo se utilizó	una única implementación, que consiste en una relación binaria de orden (igual,
 			mayor, mayor o igual, menor, menor o igual) entre una propiedad de la arquitectura (e.g. \verb@server1.responseTime@)
 			y un valor fijo (puede ser entero o flotante) preestablecido al configurar la cuantificación de la respuesta del
@@ -527,19 +528,20 @@
 			de dicha propiedad o si la condición debe darse ``en promedio'' para todas las instancias; respectivamente.
 			La implementación mencionada recibe el nombre de \emph{NumericBinaryRelationalConstraint} y puede verse su código
 			en el apéndice \ref{sec:numericBinaryRelationalConstraintCode}.
-			
+
 
 	\subsection{Prioridades entre Escenarios}
 
 		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
-		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo configurable pero
-		estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el arquitecto deberá
-		configurar el escenario\footnote{Recordar que aquí``escenario'' no se refiere a los Escenarios de QAW utilizados por
-		Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a iniciar Rainbow,
-		intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
-		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha configuración
-		en Rainbow: \begin{Verbatim}[gobble=4] 
-				weights: 
+		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo
+		configurable pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el
+		arquitecto deberá configurar el escenario\footnote{Recordar que aquí``escenario'' no se refiere a los Escenarios de QAW
+		utilizados por Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a
+		iniciar Rainbow, intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo
+		cual configurará la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha
+		configuración en Rainbow\label{rainbowScenario}:
+		\begin{Verbatim}[gobble=4]
+				weights:
 					scenario 1:
 						uR: 0.35
 						uF: 0.4
@@ -553,16 +555,16 @@
 						uF: 0.2
 						uC: 0.3
 		\end{Verbatim}
-		
+
 		Cada una de las líneas representa el valor que se le asigna a cada \emph{concern}, en donde uR representa al Tiempo de
 		Respuesta, uF a la Fidelidad de la información y uC al Costo. Notar que la sumatoria de los pesos de los distintos
 		concern debe ser igual a 1 dentro de cada escenario, al igual que sucede en el \emph{Entorno} al configurar Arco Iris.
-		
+
 		Esto es lo que veremos, entre otras cosas, en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow.
 		Aquí, como vemos, existe más de una configuracion del escenario, luego se deberá seleccionar una de estas opciones en
 		el archivo de configuración \emph{rainbow.properties}. Estos valores serán luego utilizados por Rainbow a la hora de
 		seleccionar una estrategia, veremos en detalle su utilización en la sección \ref{sec:strategySelection}.
-		
+
 		Presentado ya el concepto de escenario utilizado por Rainbow, pasaremos estas ideas a su contrapartida en Arco Iris.
 		Como hemos visto anteriormente, en Arco Iris existen los conceptos de \emph{Entorno} y \emph{Escenario}, los cuales
 		respetan al pie de la letra los conceptos introducidos por ATAM (ver sección \ref{sec:atam}). El concepto de escenario
@@ -570,7 +572,7 @@
 		diferencia fundamental radica en que en Arco Iris no se requiere que el usuario configure en qué entorno se encuentra
 		el sistema, sino que el usuario debe detallar cuales son las condiciones que definen al entorno, y, en caso de
 		cumplirse dichas condiciones, cuales serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
-		
+
 		Dicho esto podemos introducirnos directamente en la relación de prioriades entre escenarios, sin confundir los
 		conceptos manejados en ambos frameworks.
 
@@ -589,7 +591,7 @@
 		La prioridad del escenario es una propiedad fundamental para el correcto funcionamiento de Arco Iris, veremos su
 		importancia al detallar cómo Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la sección
 		\ref{sec:strategySelection}. Por esta razón será de extrema importancia el configurar a conciencia cuales serán los
-		escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el sistema 
+		escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el sistema
 		según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad de cada escenario
 		como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAS}.
 
@@ -597,14 +599,14 @@
 
 		Antes de sumergirnos en cómo Arco iris utiliza las estrategias implementadas para reparar escenarios, recordemos
 		brevemente su utilización en Rainbow.
-		
+
 		Las estrategias en Rainbow tienen un conjunto de precondiciones que nos indican si dicha estrategia puede ser
 		utilizada para reparar el sistema en un determinado momento. Esto implica que, en cuanto Rainbow detecta un problema
 		en el sistema, deba recorrer todas las estrategias existentes para ver si son aplicables para las condiciones
 		actuales, o sea que Rainbow no tiene manera de determinar a priori la utilidad de una estrategia en un momento dado.
 		Por otro lado, la solución está atada a la detección del problema, entonces, al no poder modularizar en detección del
 		problema y solución, se deben repetir las precondiciones por cada solución (estrategia) implementada.
-		
+
 		En Arco Iris se propone desacoplar la detección del problema de la solución, y para lograr esto utilizaremos los
 		escenarios. Allí se definirán las condiciones de detección del problema, y se referenciarán las posibles estrategias
 		de reparación a ser consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido,
@@ -620,16 +622,16 @@
 		en que condiciones quedaría el sistema luego de haber sido aplicadas (esta información será utilizada para la
 		estimación de la nueva ``utilidad del sistema\footnote{Para más detalle acerca del concepto Utilidad del Sistema ver
 		sección \ref{sec:systemUtility}}'').
-		
+
 		En Arco Iris, para poder escribir estrategias que involucren varias tácticas, el usuario contará con un mecanismo que
 		le permitirá verificar si los escenarios de un determinado \emph{concern} y que han sido marcados para reparar, aún
 		siguen sin cumplirse. En base a esta información la estrategia podrá decidir cómo continuar su ejecución. A
 		continuación se muestra un ejemplo de su utilización:
-		
-		\begin{Verbatim}[gobble=4] 
-				define boolean RESP_TIME_STILL_BROKEN = 
+
+		\begin{Verbatim}[gobble=4]
+				define boolean RESP_TIME_STILL_BROKEN =
 						AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
-				
+
 				/*
 				 * This Strategy will drop fidelity once, observe, then drop again if necessary.
 				 */
@@ -642,18 +644,18 @@
 				      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
 				    }
 				  }
-				}	
+				}
 			\end{Verbatim}
 
 		Cómo se puede observar en el código, para que esto funcione es necesario tener definida la función
 		\emph{isConcernStillBroken} en la clase \emph{AdaptationManagerWithScenarios}, a continuación vemos la implementación,
 		notar que el usuario solamente deberá indicar cual es el \emph{concern} de su interés:
 
-		\begin{Verbatim}[gobble=4] 
+		\begin{Verbatim}[gobble=4]
 				public static boolean isConcernStillBroken(String concernString) {
 					Concern concern = Concern.valueOf(concernString);
 					doLog(Level.INFO, "Is Concern " + concern + " Still Broken?");
-		
+
 					boolean result = false;
 					for (SelfHealingScenario scenario : currentBrokenScenarios) {
 						if (scenario.getConcern().equals(concern) &&
@@ -662,10 +664,10 @@
 							break;
 						}
 					}
-					doLog(Level.INFO, "Concern " + concern + (result == true ? 
+					doLog(Level.INFO, "Concern " + concern + (result == true ?
 							" Still Broken!" : " Not Broken Anymore!!!"));
 					return result;
-				}		
+				}
 		\end{Verbatim}
 
 	\subsection{Detección: cuando activar el mecanismo de auto reparación}
@@ -679,15 +681,15 @@
 		arquitectura ACME (\ref{sec:acme}). Por ejemplo, para determinar que el tiempo de respuesta no debe exceder un
 		umbral determinado es necesario definir un invariante en el componente que posee dicha propiedad, como se puede
 		observar en el siguiente ejemplo tomado de la arquitectura de Znn:
-		
-		\begin{Verbatim}[gobble=4] 
+
+		\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
-				
+
 					Property experRespTime : float <<  default : float = 100.0; >> ;
-				
+
 					rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
 				}
-				
+
 				Property MAX_RESPTIME : float = 1000.0;
 		\end{Verbatim}
 
@@ -699,12 +701,12 @@
 		(\ref{sec:scenariosUI}), para más detalle ver la sección \ref{sec:scenariosUI_constraints}. Todo esto hace que los
 		\emph{stakeholders} puedan acceder de manera sencilla a las restricciones a las cuales debe acatarse el sistema,
 		pudiendo editarlas sin la necesidad de poseer conocientos sobre las tecnologías utilizadas por el sistema o por el
-		\emph{framework} de auto reparación.		
+		\emph{framework} de auto reparación.
 		Para determinar si el sistema necesita auto repararse, Rainbow utilizará una funcionalidad ofrecida por ACME, que
 		permite evaluar las restricciones descriptas en el modelado de la arquitectura, para esto ACME provee una herramienta
 		llamada \emph{Type Checker}. A continuación podemos observar cómo Rainbow se sirve de esta utilidad para decidir si
 		debe lanzar la auto reparación o no:
-		
+
 		\begin{Verbatim}[gobble=4]
 				public void evaluateConstraints () {
 					IAcmeTypeChecker typechecker = m_acmeEnv.getTypeChecker();
@@ -725,13 +727,15 @@
 		poder permitir incluir toda la información necesaria en los escenarios y que la misma pueda ser visualizada y editada
 		por todos los \emph{stakeholders} involucrados, hemos desarrollado nuestra propia implementación de las restricciones,
 		la cual permiten expresar las mismas \emph{constraints} definidas en ACME, y en caso de ser necesario agregar un nuevo
-		tipo de restricción permite fácilmente incorporar una nueva implementación implementando una \emph{interface} muy		sencilla (ver el apéndice \ref{sec:numericBinaryRelationalConstraintCode}). Estas \emph{constraints} serán de vital		importancia a la hora de activar el mecanismo de auto reparación.		
-		Al iniciar, Arco Iris leerá todos los escenarios definidos, y armará un mapa que le permitirá optimizar las
-		verificaciones recurrentes de los escenarios ante la llegada de cada estímulo. El mapa almacena todos los escenarios
-		correspondientes a cada estímulo, así, ante la invocación de un estímulo en el sistema, Arco Iris solo deberá verificar
-		que se cumplan los escenarios relacionados con dicho estímulo, acotando así de manera sustancial la cantidad de chequeos
-		a realizar. Recordar que en Rainbow, ante cualquier modificación en el estado de la arquitectura, es necesario verificar
-		todas las restricciones definidas para la auto reparación.
+		tipo de restricción permite fácilmente incorporar una nueva implementación implementando una \emph{interface} muy
+		sencilla (ver el apéndice \ref{sec:numericBinaryRelationalConstraintCode}). Estas \emph{constraints} serán de vital
+		importancia a la hora de activar el mecanismo de auto reparación. Al iniciar, Arco Iris leerá todos los escenarios
+		definidos, y armará un mapa que le permitirá optimizar las verificaciones recurrentes de los escenarios ante la llegada
+		de cada estímulo. El mapa almacena todos los escenarios correspondientes a cada estímulo, así, ante la invocación de un
+		estímulo en el sistema, Arco Iris solo deberá verificar que se cumplan los escenarios relacionados con dicho estímulo,
+		acotando así de manera sustancial la cantidad de chequeos a realizar. Recordar que en Rainbow, ante cualquier
+		modificación en el estado de la arquitectura, es necesario verificar todas las restricciones definidas para la auto
+		reparación.
 		Paso a paso el proceso de activación de la auto reparación en Arco Iris consiste en lo siguiente:
 		\begin{enumerate}
 			\item El sistema en ejecución recibe la invocación de un estímulo.
@@ -751,15 +755,17 @@
 		respecto a Rainbow. Para comenzar, Rainbow considerará todas las estrategias existentes mientras que Arco Iris se
 		limitará a considerar las estrategias propuestas en el escenario que se ha dejado de satisfacer, esto obviamente
 		reduce ampliamente el universo de posibilidades reduciendo así el tiempo de la autoreparación. Recordemos que la
-		configuración de Arco Iris también permite la posibilidad de considerar todas las estrategias existentes. Rainbow
-		descartará las estrategias cuyas condiciones no se satisfagan, están condiciones generalmente se corresponden con la
-		restricción que ha dejado de cumplirse, por lo cual su lógica se encuentra duplicada en el modelado de la arquitectura
-		y en la condición de la estrategia, consideremos la siguiente estrategia tomada de Znn a modo de ejemplo:
-		
+		configuración de Arco Iris también ofrece la posibilidad de considerar todas las estrategias existentes.
+
+		Por su parte, Rainbow descartará las estrategias cuyas condiciones no se satisfagan, están condiciones generalmente se
+		corresponden con la restricción que ha dejado de cumplirse, por lo cual su lógica se encuentra duplicada en el
+		modelado de la arquitectura y en la condición de la estrategia, consideremos la siguiente estrategia tomada de Znn a
+		modo de ejemplo:
+
 				\begin{Verbatim}[gobble=4]
-				define boolean cViolation = exists c : T.ClientT in M.components | 
+				define boolean cViolation = exists c : T.ClientT in M.components |
 						c.experRespTime > M.MAX_RESPTIME;
-						
+
 				strategy QuickDirtyReduceResponseTime
 				[ cViolation ] {
 				  t0: (/*hiLoad*/ cViolation) -> lowerFidelity(2, 100) @[2000 /*ms*/] {
@@ -767,29 +773,29 @@
 				  }
 				}
 				\end{Verbatim}
-				
+
 		Donde \emph{cViolation} representa la misma lógica dispuesta en el invariante determinado al modelar la
-		arquitectura: 
+		arquitectura:
 				\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
-		    
+
 			        Property experRespTime : float <<  default : float = 100.0; >> ;
-					...			
+					...
 			        rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
 			    }
 			    ...
 			    Property MIN_RESPTIME : float = 100.0;
-			    
+
 				\end{Verbatim}
 
 		En Arco Iris, una vez que se ha detectado que un escenario dejo de satisfacerse, simplemente se toman como estrategias
 		candidatas las definidas en él, evitando así el \emph{overhead} de volver a verificar las condiciones.
-		
-		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarle un peso a cada
+
+		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarle un valor a cada
 		una para poder seleccionar la estrategia que luego de ser aplicada maximice el rendimiento del sistema, para esto
 		definiremos el concepto de \emph{Utilidad del Sistema} y mostraremos la heurística propuesta para su cálculo tanto en
 		Rainbow como en Arco Iris.
-				
+
 		\subsubsection{Utilidad del Sistema}
 		\label{sec:systemUtility}
 
@@ -797,32 +803,50 @@
 			medida relativa de satisfacción sobre un sistema sobre el cual es necesario medir el impacto ante cambios
 			determinados. Una vez definida esta medida, permite hablar con sentido sobre incrementar o decrementar la utilidad del
 			sistema, y así explicar el impacto de una determinada decisión sobre el comportamiento del sistema.
-			
+
+			La idea principal al utilizar la teoría de la utilidad en Rainbow es enumerar explícitamente los atributos de calidad
+			para las cuales se está evaluando la técnica de autoreparación; luego, indicar el peso dado a cada dimensión (ver
+			\ref{rainbowScenario}). La suma ponderada de los valores de todos los atributos de calidad dará como resultado un
+			único valor, al que llamaremos \emph{Utilidad del Sistema}.
 			En el caso de Rainbow esta medida permitirá tener una noción de como impactará una determinada estrategia sobre el
 			sistema, para lo cual cada táctica deberá explicitar los \emph{concerns} sobre los cuales impacta y en qué medida
 			lo hace. Por ejemplo, en el caso de bajar un servidor en Znn se establece el siguiente impacto:
-			
+
 			\begin{Verbatim}[gobble=4]
 				dischargeServers:
-	    			uR: +144
-    				uF: 0
-    				uC: -1.00
+					uR: +144
+					uF: 0
+					uC: -1.00
 			\end{Verbatim}
-			
+
 			Esto representa que la performance se verá degrada en 144 milisegundos y la fidelidad permanecerá intacta, mientras
 			que el costo se reduce en 1, respectivamente.
-			
-		\subsection{Selección de estrategia según Rainbow}
-	
-			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow se encargará de asignarle un
-		
-		Calculate scores of the enabled strategies
-	 *     = this involves evaluating the meta-information of the tactics
-	 *       in each strategy
-	 
-			\todo{Mencionar como se usan los pesos asignados a los concerns en los scenarios de Rainbow (utilities.yml)}
-		
-		\subsection{Selección de estrategia según Arco Iris}
+
+		\subsubsection{Valoración de estrategias según Rainbow}
+
+			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow se encargará de asignarle un puntaje a cada
+			una, el cual será un valor entre $0$ y $100$, y luego aplicará la estrategia de mayor puntaje. Para calcular el
+			puntaje, lo primero que hará Rainbow será obtener los pesos asignados a cada \emph{concern}(e.g. costo, fidelidad,
+			etc) según el escenario seleccionado (recordemos que el escenario ha sido configurado previo inicio de Rainbow), con
+			los cuales pesará los valores estimados para cada \emph{concern} luego de la potencial aplicación de la	estrategia.
+
+			La heurística aplicada por Rainbow para estimar el valor de cada \emph{concern} una vez aplicada la estrategia
+			resulta de considerar la probabilidad de que se ejecute cada rama de la estrategia y los atributos de las tácticas
+			presentes en cada rama. Estos valores luego serán ponderados por el peso de cada \emph{concern} para obtener			finalmente el puntaje de la estrategia. En la figura \ref{fig:scoreStrategyCode} se muestra un pseudocódigo del			cálculo de puntuación de una estrategia dada.
+
+			\begin{Verbatim}[gobble=4]
+				puntaje = 0
+				Estimar los valores para cada concern luego de aplicar la estrategia
+				Por cada concern
+					uf = Funcion de Utilidad para el concern actual
+					estimacion = valor estimado para el concern
+					valorUtilidad = uf(estimacion)
+					valorPonderado = valorUtilidad * peso asignado al concern en el escenario
+					puntaje = puntaje + valorPonderado
+					\label{fig:scoreStrategyCode}
+			\end{Verbatim}
+
+		\subsubsection{Valoración de estrategias según Arco Iris}
 
 			\todo{mencionar que primero se calcula la utility actual para no empeorar las cosas}
 
@@ -840,7 +864,7 @@
 		garantizar que esto es asi siempre? Creo que esto necesita ser reescrito} y mediante el uso de heurísticas, poder
 		aproximar la mejor estrategia de reparación a llevar a cabo de modo que la \emph{utilidad del sistema} se maximize.
 
-	
+
 		\todo{REVISAR}Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o
 		no de los escenarios requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de
 		la estrategia simulada.
