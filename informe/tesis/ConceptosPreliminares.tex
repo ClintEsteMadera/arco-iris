@@ -13,10 +13,10 @@
 		
 		Hilando más fino en la caracterización de sistemas autónomos, encontramos términos en inglés como \textbf{Self
 		Configuring} o \textbf{Self Adapting} para referirse a sistemas autónomos que tienen la capacidad de auto configurarse
-		(o auto adaptarse) a condiciones cambiantes en el entorno \emph{normal} de ejecución del sistema.
+		(o auto adaptarse) a condiciones cambiantes \textbf{en un entorno normal de ejecución del sistema}.
 		
-		Por otro lado, cuando la adaptación dinámica del sistema responde a errores o situaciones excepcionales del mismo,
-		el término más utilizado actualmente es \emph{self healing} o, en castellano, \textbf{auto reparación}.
+		Por otro lado, cuando la adaptación dinámica del sistema responde a \textbf{errores o situaciones excepcionales} del
+		mismo, el término más utilizado actualmente es \emph{self healing} o, en castellano, \textbf{auto reparación}.
 
 		Si bien ya existen mecanismos para mitigar los mencionados problemas, ellos normalmente están intrínsecamente ligados
 		al lenguaje de programación utilizado para construír la aplicación, tales como tratamiento de excepciones, protocolos de
@@ -38,7 +38,7 @@
 		Por otro lado, existen distintos investigadores ligados a prestigiosas instituciones académicas abocados al estudio de
 		distintos aspectos de la autonomía de los sistemas. Uno de los primeros investigadores en acuñar el término ``Self
 		Healing'' fue el Dr. David Garlan, de la Universidad de Carnegie Mellon, quien formó un grupo de investigación que
-		dedicó años a estudiar el tema dentro del marco del proyecto Able.\footnote{El proyecto ABLE (\emph{``Architecture
+		dedicó años a estudiar el tema dentro del marco del proyecto ABLE.\footnote{El proyecto ABLE (\emph{``Architecture
 		Based Languages and Environments''}) de la Universidad de Carnegie Mellon lleva a cabo investigaciones que conducen a
 		una base de ingeniería para la arquitectura de software. Para más información, visitar
 		\url{http://www.cs.cmu.edu/~able}}
@@ -53,11 +53,11 @@
 		arquitectura del sistema, en lugar de los mecanismos tradicionales para detección y recuperación de errores que se
 		implementan a nivel de código.
 
-		La idea propuesta consiste básicamente en un \textit{closed-loop} (bucle cerrado), donde existe capas (externas al
-		sistema que está siendo ejecutado) que actúan, una como mecanismo de control y otra monitoreando el sistema, lo cual
-		provee una solución mas efectiva que cualquier mecanismo interno porque permite agrupar todo lo concerniente a la
-		detección y solución del problema en módulos separados, pudiendo ser analizados, modificados, extendidos y
-		reutilizados a través de distintos sistemas.
+		La idea propuesta consiste básicamente en un bucle cerrado (\emph{closed-loop} en inglés), donde existen dos capas
+		(externas al sistema que está siendo ejecutado) que actúan, una como mecanismo de control y otra monitoreando el
+		sistema, lo cual provee una solución mas efectiva que cualquier mecanismo interno porque permite agrupar todo lo
+		concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados,
+		extendidos y reutilizados a través de distintos sistemas.
 
 		\begin{figure}[h]
 			\centering
@@ -66,20 +66,20 @@
 			\label{fig:selfhealing-closed-loop}
 		\end{figure}
 
-		Otro sub-proyecto del proyecto Able, Rainbow (sobre el cual profundizaremos más adelante) utiliza esta técnica de
-		\textit{closed-loop} para monitorear y reparar sistemas.
+		Otro sub-proyecto del proyecto ABLE, denominado \textbf{Rainbow} (sobre el cual profundizaremos más adelante) utiliza
+		esta técnica de \emph{closed-loop} para monitorear y reparar sistemas.
 
 	\subsection{Lenguajes de Descripción de Arquitecturas}
 
 		Un problema fundamental en el diseño de arquitecturas de sistemas utilizando el estilo de componentes y
 		conectores ha sido encontrar la notación apropiada para definir dichas arquitecturas.
 
-		Un buen lenguaje para la descripción de arquitecturas debería permitir generar una documentación clara sobre los
-		componentes del sistema, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las
+		Un buen lenguaje para describir arquitecturas debería permitir generar una documentación clara sobre los componentes
+		de la arquitectura, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las
 		propiedades del sistema y automatizar su análisis, hasta pudiendo quizás llegar a utilizarse para la generación
-		automática de parte del sistema. También debería ser efectivo para poder validar de manera temprana decisiones
-		arquitectónicas, reduciendo así el tiempo de implementación y evitando utilizar ineficientemente recursos en el
-		desarrollo de un sistema.
+		automática de parte del código que implementará la arquitectura. También debería ser efectivo para poder validar de
+		manera temprana decisiones arquitectónicas, reduciendo así el tiempo de implementación y evitando utilizar
+		ineficientemente recursos en el desarrollo del sistema.
 
 		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido
 		ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que
@@ -94,21 +94,21 @@
 	\subsubsection{Acme}
 	\label{sec:acme}
 
-		\todo{TASK: Extender definición de ACME. Poner un ejemplo básico}
-
 		Acme\cite{ACME} es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon
 		University, más precisamente por el proyecto ABLE, liderado por el Dr. David Garlan.
 
-		Acme es un pilar fundamental dentro del proyecto Able, ya que todo el proyecto gira en torno a la arquitectura de
+		Acme es un pilar fundamental dentro del proyecto ABLE, ya que todo el proyecto gira en torno a la arquitectura de
 		software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los
-		restantes subproyectos dentro de Able utilizan Acme en menor o en mayor medida.
+		restantes subproyectos utilizan Acme en menor o mayor medida.
 
 		Además de los benecifios de todo ADL, el lenguaje Acme y su kit de herramientas \emph{AcmeLib (Acme Tool Developer's
 		Library)} proveen las siguientes capacidades fundamentales:
 
 		\begin{itemize}
 			\item Intercambio Arquitectural: al proveer un formato de intercambio genérico para diseñar arquitecturas de
-			software, Acme permite a los desarrolladores de herramientas integrar fácilmente con otras herramientas
+			software, Acme permite a los desarrolladores de herramientas de este tipo \footnote{ejemplos de herramientas de
+			descripción de arquitecturas y modelado UML podrían ser: Enterprise Architect (\url{http://www.sparxsystems.com.au/})
+			o Poseidón (\url{http://www.gentleware.com/}), entre tantas otras.} integrar fácilmente con otras herramientas
 			complementarias. De esta manera, los arquitectos que usan herramientas basadas en Acme tienen un espectro más amplio
 			de herramientas de	análisis y diseño que quienes diseñan sus arquitecturas usando otros ADLs.
 			\item Extensibilidad: Acme provee una base sólida, genérica y extensible, y una infraestructura que evita que los
@@ -120,25 +120,51 @@
 		Actualmente, el lenguaje Acme y \emph{Acme Tool Developer's Library (AcmeLib)}, proveen una infraestructura genérica y
 		extensible para describir, representar, analizar y generar descripciones de arquitecturas de software.
 
-		Más adelante, en la sección \ref{sec:casosPracticos}, veremos un ejemplo del lenguaje al mostrar la descripción
-		completa en Acme de la arquitectura del sistema que utilizaremos para mostrar los resultados de la extensión
+		A continuación, observamos un breve ejemplo de una arquitectura modelada en el lenguaje ACME, la cual posee un
+		sistema que contiene:
+		\begin{itemize}
+			\item un servidor HTTP (con algunas propiedades como por ejemplo fidelidad del contenido que provee)
+			\item un cliente HTTP, también con algunas propiedades particulares como el tiempo de respuesta experimentado por el
+			usuario.
+		\end{itemize}
+
+		\begin{Verbatim}[gobble=3]
+			System system : EnvType = {
+			    Component server : ServerT, ArchElementT = new ServerT, ArchElementT extended with {
+			        Port http0 : HttpPortT;
+			        Property cost;
+			        Property fidelity;
+			        Property load;
+			    }
+			    Component client : ClientT = new ClientT extended with {
+			        Port p0 : HttpReqPortT = new HttpReqPortT extended with {
+			            Property isArchEnabled = true;
+			        }
+			        Property deploymentLocation = "127.0.0.1";
+			        Property isArchEnabled = true;
+			        Property experRespTime;
+			    }
+			}
+		\end{Verbatim}
+
+		Más adelante, en la sección \ref{sec:casosPracticos}, veremos otro ejemplo (más extenso) del lenguaje al mostrar la
+		descripción completa en Acme de la arquitectura del sistema que utilizaremos para mostrar los resultados de la extensión
 		implementada en el presente trabajo.
 
 	\subsection{Rainbow}
 
-		\todo{TASK: Explicar Rainbow con gráficos}
-
 		\subsubsection{Introducción a Rainbow}
 
-			La herramienta Rainbow, desarrollada también dentro del marco del proyecto Able, tiene como finalidad permitir
+			\todo{Explicar más en detalle como funciona Rainbow}
+
+			La herramienta Rainbow, desarrollada también dentro del marco del proyecto ABLE, tiene como finalidad permitir
 			reducir el costo e incrementar la confiabilidad al realizar cambios en sistemas complejos, para esto Rainbow
-			automatiza la adaptación de sistemas dinámicos via el modelo de la arquitectura del sistema, representaciones
+			automatiza la adaptación de sistemas dinámicos vía el modelo de la arquitectura del sistema, representaciones
 			explícitas de las tareas del usuario, y estimaciones orientadas a la performance en tiempo de ejecución.
 
 			La tecnología en la cual se apoya Rainbow esta basada en innovaciones en tres áreas críticas:
-
 			\begin{itemize}
-				\item Detección: la habilidad de determinar dinámicamente (i.e. en \emph{run-time}) propiedades de sistemas
+				\item Detección: la habilidad de determinar dinámicamente (i.e. en \emph{runtime}) propiedades de sistemas
 				complejos y distribuidos.
 				\item Resolución: la habilidad de determinar cuando las propiedades observadas del sistema violen los supuestos
 				críticos del diseño del sistema.
@@ -147,7 +173,6 @@
 			\end{itemize}
 
 			Éstas habilidades proveerán:
-
 			\begin{itemize}
 				\item La posibilidad de manipular los cambios en el sistema con respecto a estimaciones soportadas por Rainbow.
 				\item Un framework extensible para manipular estimaciones y estrategias de adaptación creadas por terceros.
@@ -160,6 +185,15 @@
 			\todo{hablar sobre closed-loop: In contrast to these internal mechanisms, recent work uses external models and
 			mechanisms in a closed-loop control fashion to achieve various goals by monitoring and adapting system behavior at
 			runtime}
+
+			\begin{figure}[H]
+				\centering
+					\includegraphics{images/Rainbow_Framework.png}
+				\caption{Rainbow usa un modelo abstracto para monitorear las propiedades de un sistema en tiempo de ejecución,
+				evalúa el modelo detectando violaciones en las restricciones y al encontrar una, ejecuta adaptaciones sobre el
+				sistema en ejecución}
+				\label{fig:Rainbow_Framework}
+			\end{figure}
 
 		\subsubsection{Tácticas y Estrategias}
 		
@@ -186,9 +220,9 @@
 			nombre y organizar los patrones comunes utilizados en cuanto a decisiones de arquitectura y clasificarlos. Cada
 			táctica	es una opción de diseño para el arquitecto, por ejemplo, introducir redundancia para incrementar la
 			disponibilidad del	sistema. En resumen, en el libro se plantea que las estrategias afectan los atributos de calidad
-			del sistema, y que	estos proveen a los \textit{stakeholders} de cierto beneficio, al cual llaman utilidad. Cada
+			del sistema, y que	estos proveen a los \emph{stakeholders} de cierto beneficio, al cual llaman utilidad. Cada
 			estrategia provee un nivel	específico de utilidad, pero en contrapartida presentan un costo en tiempo y en dinero.
-			Por estos motivos se aconseja hacer participar a los \textit{stakeholders} a la hora de decidir qué estrategias se
+			Por estos motivos se aconseja hacer participar a los \emph{stakeholders} a la hora de decidir qué estrategias se
 			emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el retorno de la
 			inversión (el ratio entre el beneficio y el costo) de aplicar cada estrategia para elegir la más conveniente.
 
@@ -196,10 +230,10 @@
 			verse la performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a
 			un nivel adecuado.
 
-			Las estrategias son desarrolladas para un \textit{concern} específico. Un \textit{concern} de un sistema abarca un
+			Las estrategias son desarrolladas para un \emph{concern} específico. Un \emph{concern} de un sistema abarca un
 			subconjunto de propiedades del sistema, como por ejemplo performance, costo o confiabilidad. En una arquitectura
-			cliente-servidor, el \textit{concern} performance abarcaría las propiedades ancho de banda y carga del sistema,
-			mientras que el \textit{concern} costo se encargaría del costo de los servidores.
+			cliente-servidor, el \emph{concern} performance abarcaría las propiedades ancho de banda y carga del sistema,
+			mientras que el \emph{concern} costo se encargaría del costo de los servidores.
 
 			Las estrategias se componen de tácticas, las cuales realizan la modificación en el sistema. Por ejemplo, una
 			estrategia podría ser: agregar servidores mientras haya disponible, o hasta que el tiempo de respuesta haya alcanzado
