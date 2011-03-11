@@ -1,7 +1,7 @@
 package ar.uba.dc.thesis.selfhealing;
 
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.sa.rainbow.core.Oracle;
@@ -91,9 +91,9 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	/**
-	 * Este mï¿½todo es el que normalmente se usa para determinar si un escenario estï¿½ roto.
+	 * Este método es el que normalmente se usa para determinar si un escenario está roto.
 	 * <p>
-	 * Este mï¿½todo estï¿½ pensado para ser usado ï¿½nicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
+	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
 	 * es protected.
 	 */
 	protected boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
@@ -128,7 +128,7 @@ public class SelfHealingScenario extends AtamScenario {
 	}
 
 	protected boolean isBrokenAfterStrategy(final RainbowModelWithScenarios rainbowModelWithScenarios,
-			SortedMap<String, Double> strategyAggregateAttributes) {
+			Map<String, Double> strategyAggregateAttributes) {
 		// It is not necessary to check the environment at this point because this scenario was already selected for
 		// being repaired
 		Constraint constraint = getResponseMeasure().getConstraint();
