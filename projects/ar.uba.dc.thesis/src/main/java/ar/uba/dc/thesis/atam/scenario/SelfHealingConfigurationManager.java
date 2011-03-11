@@ -70,7 +70,7 @@ public class SelfHealingConfigurationManager implements SelfHealingConfiguration
 		for (SelfHealingScenario scenario : scenariosWithStimulus) {
 			log(Level.INFO, "Is scenario " + scenario.getName() + " broken?");
 			String scenarioStatus = " --> PASSED";
-			if (Oracle.instance().scenarioBrokenDetector4CurrentSystemState().isBroken(scenario)) {
+			if (Oracle.instance().scenarioScoreAssigner4CurrentSystemState().isBroken(scenario)) {
 				scenarioStatus = " --> BROKEN";
 				brokenScenarios.add(scenario);
 			}

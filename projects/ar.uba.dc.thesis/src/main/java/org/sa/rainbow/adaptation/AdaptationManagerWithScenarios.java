@@ -32,9 +32,10 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
-import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector;
-import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector4CurrentSystemState;
-import ar.uba.dc.thesis.selfhealing.ScenarioBrokenDetector4StrategyScoring;
+import ar.uba.dc.thesis.selfhealing.ScenarioRelativePriorityAssigner;
+import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner;
+import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner4CurrentSystemState;
+import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner4StrategyScoring;
 import ar.uba.dc.thesis.selfhealing.SelfHealingScenario;
 
 /**
@@ -50,7 +51,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private static final int RAINBOW_SOLUTION_WEIGHT = NumberUtils.INTEGER_ZERO;
 
-	private static final int SCENARIOS_BASED_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
+	private static final int ARCO_IRIS_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
 
 	public static final String NAME = "Rainbow Adaptation Manager With Scenarios";
 
@@ -78,9 +79,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 	private static List<SelfHealingScenario> currentBrokenScenarios;
 
-	private static ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState;
+	private static ScenarioScoreAssigner4CurrentSystemState scenarioScoreAssigner4CurrentSystemState;
 
 	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
+
+	private ScenarioRelativePriorityAssigner scenarioRelativePriorityAssigner;
 
 	private final Mode m_mode = Mode.SERIAL;
 
@@ -109,9 +112,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public AdaptationManagerWithScenarios(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super(NAME);
 		m_logger = RainbowLoggerFactory.logger(getClass());
-		scenarioBrokenDetector4CurrentSystemState = Oracle.instance().scenarioBrokenDetector4CurrentSystemState();
+		scenarioScoreAssigner4CurrentSystemState = Oracle.instance().scenarioScoreAssigner4CurrentSystemState();
 		currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
+		scenarioRelativePriorityAssigner = new ScenarioRelativePriorityAssigner(this.selfHealingConfigurationManager);
 		this.m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		this.m_utils = new TreeMap<String, UtilityFunction>();
 		this.m_pendingStrategies = new ArrayList<Strategy>();
@@ -144,7 +148,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
-						&& scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
+						&& scenarioScoreAssigner4CurrentSystemState.isBroken(scenario)) {
 					result = true;
 					break;
 				}
@@ -251,24 +255,17 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	public double computeSystemInstantUtility() {
 		Map<String, Double> weights = Rainbow.instance().preferenceDesc().weights.get(Rainbow
 				.property(Rainbow.PROPKEY_SCENARIO));
-		double[] conds = new double[m_utils.size()];
-		int i = 0;
 		double score = 0.0;
-		for (String k : new ArrayList<String>(m_utils.keySet())) {
-			double v = 0.0;
+		for (String k : m_utils.keySet()) {
 			// find the applicable utility function
 			UtilityFunction u = m_utils.get(k);
-			// add attribute value from current condition to accumulated agg value
 			Object condVal = m_model.getProperty(u.mapping());
-			if (condVal != null && condVal instanceof Double) {
+			// now compute the utility, apply weight, and accumulate to sum
+			// but only if weight is defined and the value is a Double
+			if (condVal != null && condVal instanceof Double && weights.containsKey(k)) {
 				if (m_logger.isTraceEnabled())
 					doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + condVal);
-				conds[i] = ((Double) condVal).doubleValue();
-				v += conds[i];
-			}
-			// now compute the utility, apply weight, and accumulate to sum
-			if (weights.containsKey(k)) { // but only if weight is defined
-				score += weights.get(k) * u.f(v);
+				score += weights.get(k) * u.f(((Double) condVal).doubleValue());
 			}
 		}
 		return score;
@@ -343,15 +340,15 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		// We don't want the "simulated" system utility to be less than the current real one.
 		doLog(Level.INFO, "Computing Current System Utility...");
 		double maxScore4Strategy = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
-				scenarioBrokenDetector4CurrentSystemState);
+				scenarioScoreAssigner4CurrentSystemState);
 
 		doLog(Level.INFO, "Current System Utility: " + maxScore4Strategy);
 
 		Strategy selectedStrategy = null;
 
-		// TODO idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
+		// TODO (TRADUCIR) Idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
 		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double arcoIrisSolutionWeight = SCENARIOS_BASED_SOLUTION_WEIGHT;
+		double arcoIrisSolutionWeight = ARCO_IRIS_SOLUTION_WEIGHT;
 		double rainbowSolutionWeight = RAINBOW_SOLUTION_WEIGHT;
 
 		for (Stitch stitch : m_repertoire) {
@@ -379,7 +376,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Arco Iris' approach...");
 
 					strategyScore4ArcoIris = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
-							new ScenarioBrokenDetector4StrategyScoring(m_model, currentStrategy));
+							new ScenarioScoreAssigner4StrategyScoring(m_model, currentStrategy));
 					doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach) : "
 							+ strategyScore4ArcoIris);
 				}
@@ -456,66 +453,22 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
-			ScenarioBrokenDetector scenarioBrokenDetector) {
-		double score = 0L;
+			ScenarioScoreAssigner scenarioScoreAssigner) {
+		double strategyScore = 0L;
 		Collection<SelfHealingScenario> scenarios = this.selfHealingConfigurationManager.getEnabledScenarios();
-		Map<Concern, Double> weights = currentSystemEnvironment.getWeights();
 		for (SelfHealingScenario scenario : scenarios) {
-			if (scenario.applyFor(currentSystemEnvironment)) {
-				// here, the "simulation" takes place...
-				boolean scenarioSatisfied = !scenarioBrokenDetector.isBroken(scenario);
-
-				if (scenarioSatisfied) {
-					doLog(Level.DEBUG, "Scenario " + scenario.getName() + " satisfied");
-					Double concernWeight4CurrentEnvironment = weights.get(scenario.getConcern());
-					if (concernWeight4CurrentEnvironment == null) {
-						// if there is no weight for the concern then its weight it is assumed to be zero
-						concernWeight4CurrentEnvironment = new Double(0);
-					}
-					score = score + scenarioWeight(scenario.getPriority(), concernWeight4CurrentEnvironment);
-					// TODO TRATAR DE EVITAR INSTANCEOF!
-					if (scenarioBrokenDetector instanceof ScenarioBrokenDetector4StrategyScoring) {
-						SortedMap<String, Double> aggAtts = ((ScenarioBrokenDetector4StrategyScoring) scenarioBrokenDetector)
-								.getAggregateAttributes();
-						score = weightWithConcernUtilityFunction(score, scenario, aggAtts);
-					}
-				} else {
-					doLog(Level.DEBUG, "Scenario " + scenario.getName() + " NOT satisfied");
-				}
-			} else {
-				doLog(Level.DEBUG, "Scenario " + scenario.getName() + " does not apply for current system environment("
-						+ currentSystemEnvironment.getName() + ")");
+			Double concernWeight4CurrentEnv = currentSystemEnvironment.getWeights().get(scenario.getConcern());
+			// no weight for the concern then its weight it is assumed to be zero hence the scenario's score is zero
+			if (concernWeight4CurrentEnv != null) {
+				double scenarioRelativePriority = scenarioRelativePriorityAssigner.relativePriority(scenario);
+				double concernWeightedScenarioRelativePriority = scenarioRelativePriority * concernWeight4CurrentEnv;
+				UtilityFunction concernUtilityFunction = m_utils.get(scenario.getConcern().getRainbowName());
+				double scenarioScore = scenarioScoreAssigner.scenarioScore(scenario, currentSystemEnvironment,
+						concernWeightedScenarioRelativePriority, m_model, concernUtilityFunction);
+				strategyScore = strategyScore + scenarioScore;
 			}
 		}
-		return score;
-	}
-
-	private double weightWithConcernUtilityFunction(double score, SelfHealingScenario scenario,
-			Map<String, Double> aggAtts) {
-		UtilityFunction u = m_utils.get(scenario.getConcern().getRainbowName());
-		Object eavgPropValue = m_model.getProperty(u.mapping());
-		if (eavgPropValue != null && eavgPropValue instanceof Double) {
-			if (m_logger.isTraceEnabled()) {
-				doLog(Level.TRACE, "Avg value of prop: " + u.mapping() + " == " + eavgPropValue);
-			}
-			Double concernDiffAfterStrategy = aggAtts.get(u.id());
-			double concernValueAfterStrategy = concernDiffAfterStrategy + ((Double) eavgPropValue).doubleValue();
-			double concernUtilityValue = u.f(concernValueAfterStrategy);
-			score = score * concernUtilityValue;
-		}
-		return score;
-	}
-
-	private double scenarioWeight(int scenarioPriority, double concernWeight4CurrentEnvironment) {
-		double scenariosRelativePriority = this.scenariosAssignedPriority2RelativePriority(scenarioPriority);
-
-		return scenariosRelativePriority * concernWeight4CurrentEnvironment;
-	}
-
-	private double scenariosAssignedPriority2RelativePriority(int scenarioPriority) {
-		double maxPriority = this.selfHealingConfigurationManager.getMaxPriority() + 1;
-
-		return (maxPriority - scenarioPriority) / maxPriority;
+		return strategyScore;
 	}
 
 	/**
