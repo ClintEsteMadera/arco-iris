@@ -402,10 +402,11 @@
 			circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular, en tal caso, de no
 			especificar el entorno no podremos darle mayor peso a la \emph{performance} por sobre otros \emph{concerns}, quedando
 			únicamente la opción de aumentar la prioridad del escenario tergiverzando así dicha información, ya que en realidad lo
-			óptimo era darle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
+			óptimo hubiese sido asignarle más peso a la \emph{performance} en el entorno de ``Alta Carga''.
 			En definitiva, al establecer que el escenario aplica para cualquier entorno, Arco Iris estará interpretando que el
-			entorno carece de importancia, dejando así de lado los pesos de los \emph{concerns} y distribuyendo equitativamente			su importancia relativa, lo cual es equivalente a que no exista el concepto de \emph{concern}.
-			La estructura del entorno estará formada de la siguiente manera:
+			entorno carece de importancia, dejando así de lado los pesos de los \emph{concerns} y distribuyendo equitativamente   su
+			importancia relativa, lo cual es equivalente a que no exista el concepto de \emph{concern}. La estructura del entorno
+			estará formada de la siguiente manera:
 			\begin{itemize}
 				\item Un conjunto de condiciones, y
 				\item Un mapa $<$Concern, Peso$>$
@@ -419,24 +420,27 @@
 			diferencia vital del concepto de restricción utilizado en Rainbow con el de Arco Iris.
 
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
-			simplemente implementando la interface \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
-			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}.
-			En cuanto al mapa presente en la estructura del entorno, deberá contener todos los \emph{concerns} definidos para el
-			sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la			preponderencia relativa entre los \emph{concerns}. Se detallará cómo se utilizan estos pesos para calcular el valor			de un escenaio en la sección \ref{sec:scenarioWeight}.
-			A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente chequear las condiciones definidas para
-			el entorno tomando los datos actuales del sistema, ya que deberíamos eliminar el ruido provocados por los
-			\emph{outlier}, pues para que el sistema se encuentre en un determinado estado es lógico esperar que dicho estado se
-			mantenga por un tiempo mínimo. Entonces, para definir el valor más real para las propiedades del sistema tomamos los
-			valores nuevos con un determinado peso, configurable, que nos permite ir adecuando los valores del sistema de manera
-			paulatina evitando el impacto de los valores que puedan darse por alguna ocasión excepcional, como por ejemplo algún
-			cliente que experimenta un tiempo de respuesta excesivo por algún problema es su conexión o en estación de trabajo.
-			Para mitigar estos casos, utilizaremos el mismo mecanismo utilizado por Rainbow explicado ya en la sección
-			\ref{sec:exponentialAverage}.
-
-			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en
-			las de Arco Iris es 0.3. Si se configura un valor muy pequeño, Arco Iris tardará en adaptarse a los cambios en el
-			entorno del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la
-			adaptación pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es			probable que el sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como			normal, aunque de no ser costoso lanzar una adaptación o volverla atrás, podría llegarse a lograr un rendimiento			aceptable del sistema.
+			simplemente implementando la interface \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al enumerado
+			ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}. En cuanto al mapa presente en la estructura del
+			entorno, este deberá contener todos los \emph{concerns} definidos para el sistema, y obviamente la suma de los pesos
+			debe ser igual a uno, ya que la utilidad del mapa es determinar la preponderencia relativa entre los \emph{concerns}. Se
+			detallará cómo se utilizarán estos pesos para calcular el valor de un escenario al escoger una estrategia en la sección
+			\ref{sec:arcoIrisStrategyScoring}. A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente
+			chequear las condiciones definidas para el entorno tomando los datos actuales del sistema, ya que deberíamos eliminar el
+			ruido provocados por los \emph{outlier}, pues para que el sistema se encuentre en un determinado estado es lógico
+			esperar que dicho estado se mantenga por un tiempo mínimo. Entonces, para definir el valor más real para las propiedades
+			del sistema tomamos los valores nuevos con un determinado peso, configurable, que nos permite ir adecuando los valores
+			del sistema de manera paulatina evitando el impacto de los valores que puedan darse por alguna ocasión excepcional, como
+			por ejemplo algún cliente que experimenta un tiempo de respuesta excesivo por algún problema es su conexión o en
+			estación de trabajo. Para mitigar estos casos, utilizaremos el mismo mecanismo utilizado por Rainbow explicado ya en la
+			sección \ref{sec:exponentialAverage}.
+			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en las
+			de Arco Iris es 0.3. Si se configura un valor muy pequeño, Arco Iris tardará en adaptarse a los cambios en el entorno
+			del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la adaptación
+			pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es   probable que el
+			sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como   normal, aunque
+			de no ser costoso lanzar una adaptación o volverla atrás, podría llegarse a lograr un rendimiento   aceptable del
+			sistema.
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
 
@@ -810,7 +814,8 @@
 			único valor, al que llamaremos \emph{Utilidad del Sistema}.
 			En el caso de Rainbow esta medida permitirá tener una noción de como impactará una determinada estrategia sobre el
 			sistema, para lo cual cada táctica deberá explicitar los \emph{concerns} sobre los cuales impacta y en qué medida
-			lo hace. Por ejemplo, en el caso de bajar un servidor en Znn se establece el siguiente impacto:
+			lo hace. Por ejemplo, en el caso de bajar un servidor en Znn se especifica la siguiente metainformación asociada la
+			táctica, representando el impacto estimado sobre el sistema:
 
 			\begin{Verbatim}[gobble=4]
 				dischargeServers:
@@ -819,50 +824,114 @@
 					uC: -1.00
 			\end{Verbatim}
 
-			Esto representa que la performance se verá degrada en 144 milisegundos y la fidelidad permanecerá intacta, mientras
-			que el costo se reduce en 1, respectivamente.
+			Esto significa que una vez ejecutada esta táctica, aproximadamente la performance se verá degrada en 144
+			milisegundos y la fidelidad permanecerá intacta, mientras que el costo se reduce en 1, respectivamente.
 
-		\subsubsection{Valoración de estrategias según Rainbow}
+			\todo{La utilidad del sistema se calcula diferente en ambos frameworks, explicar!}
 
-			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow se encargará de asignarle un puntaje a cada
-			una, el cual será un valor entre $0$ y $100$, y luego aplicará la estrategia de mayor puntaje. Para calcular el
-			puntaje, lo primero que hará Rainbow será obtener los pesos asignados a cada \emph{concern}(e.g. costo, fidelidad,
-			etc) según el escenario seleccionado (recordemos que el escenario ha sido configurado previo inicio de Rainbow), con
-			los cuales pesará los valores estimados para cada \emph{concern} luego de la potencial aplicación de la	estrategia.
+		\subsubsection{Puntuación de estrategias según Rainbow}
 
-			La heurística aplicada por Rainbow para estimar el valor de cada \emph{concern} una vez aplicada la estrategia
-			resulta de considerar la probabilidad de que se ejecute cada rama de la estrategia y los atributos de las tácticas
-			presentes en cada rama. Estos valores luego serán ponderados por el peso de cada \emph{concern} para obtener			finalmente el puntaje de la estrategia. En la figura \ref{fig:scoreStrategyCode} se muestra un pseudocódigo del			cálculo de puntuación de una estrategia dada.
+			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow precederá a asignarle un puntaje a cada
+			una, el cual será un valor entre $0$ y $100$, y luego aplicará la estrategia de mayor puntaje.
 
+			Para calcular el puntaje, lo primero que hará Rainbow será obtener los pesos asignados a cada \emph{concern}(e.g. costo,
+			fidelidad, etc) según el escenario seleccionado (recordemos que el escenario ha sido configurado previo inicio de
+			Rainbow), con los cuales pesará los valores estimados para cada \emph{concern} luego de la potencial aplicación de la
+			estrategia.
+			La heurística aplicada por Rainbow para estimar el valor de cada \emph{concern} una vez aplicada la estrategia resulta
+			de considerar la probabilidad que tiene cada rama de la estrategia de ser ejecutada y los atributos de las tácticas
+			presentes en cada rama, esto es, el impacto que cada táctica representa sobre los \emph{concerns} del sistema, concepto
+			explicado previamente en la sección (\ref{sec:systemUtility}). Estos valores luego serán ponderados por el peso de cada
+			\emph{concern} para el escenario seleccionado para obtener finalmente el puntaje de la estrategia. A continuación se
+			muestra en pseudocódigo el cálculo de puntuación de una estrategia llevado a cabo por Rainbow:			\todo{mejorar pseudocodigo}
 			\begin{Verbatim}[gobble=4]
 				puntaje = 0
-				Estimar los valores para cada concern luego de aplicar la estrategia
+				estimacionPorConcern = Estimar los valores para cada concern luego de aplicar la estrategia
 				Por cada concern
 					uf = Funcion de Utilidad para el concern actual
-					estimacion = valor estimado para el concern
+					estimacion = estimacionPorConcern.get(concern)
 					valorUtilidad = uf(estimacion)
 					valorPonderado = valorUtilidad * peso asignado al concern en el escenario
 					puntaje = puntaje + valorPonderado
-					\label{fig:scoreStrategyCode}
 			\end{Verbatim}
 
-		\subsubsection{Valoración de estrategias según Arco Iris}
+		\subsubsection{Puntuación de estrategias según Arco Iris}
+		\label{sec:arcoIrisStrategyScoring}
 
-			\todo{mencionar que primero se calcula la utility actual para no empeorar las cosas}
+			En el caso de Arco Iris el primer paso será calcular la utilidad del sistema antes de iniciar la autoreparación,
+			asegurándose así de que la estrategia a aplicar no perjudique el rendimiento de la aplicación, i.e, la estrategia que
+			resulte tener la puntuación máxima deberá mejorar la utilidad del sistema, de lo contrario Arco Iris no procederá a
+			ejecutarla.
 
-	 El mismo ha sido extendido \todo{¿cómo?} para que utilice el conocimiento plasmado en los
-		escenarios para que determine la mejor (en un sentido heurístico) estrategia de reparación a aplicar, teniendo en
-		cuenta:
-		\begin{itemize}
-			\item el entorno de ejecución en que se encuentra la aplicación,
-			\item el atributo de calidad asociado al escenario, \todo{Hablamos por todos lados de QA pero en realidad es
-			Concern!} y
-			\item las prioridades relativas de los escenarios.
-		\end{itemize}
-		El objetivo final es el de intentar reparar el inconveniente hallado pero siempre restricto a evitar perjudicar
-		algún otro escenario de mayor prioridad \todo{Esto es un efecto colateral de la utility function pero...podemos
-		garantizar que esto es asi siempre? Creo que esto necesita ser reescrito} y mediante el uso de heurísticas, poder
-		aproximar la mejor estrategia de reparación a llevar a cabo de modo que la \emph{utilidad del sistema} se maximize.
+			La heurística aplicada por Arco Iris para el cálculo de la puntuación de una estrategia utilizará el conocimiento
+			plasmado en los escenarios para determinar la mejor estrategia de reparación a aplicar, teniendo en cuenta, además
+			del impacto estimado de la potencial ejecución de la estrategia sobre el sistema calculado ya por Rainbow, lo
+			siguiente:
+			\begin{itemize}
+				\item el entorno de ejecución en que se encuentra la aplicación y los pesos que el mismo asigna a cada
+				\emph{concern},
+				\item el \emph{concern} asociado al escenario, y
+				\item las prioridades relativas de los escenarios.
+			\end{itemize}
+			
+			Es importante mencionar que para calcular la utilidad del sistema Arco Iris solo considerará los escenarios			habilitados.
+			
+			Para calcular la utilidad del sistema, Arco Iris asignará un determinado puntaje a cada escenario habilitado que			se satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada			escenario habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de aplicar
+			el escenario se satisface trivialmente, por lo sumará a la utilidad del sistema. Para los escenarios que si apliquen
+			al entorno actual, Arco Iris evaluará si las condiciones del mismo se satisfacen y sólo en caso afirmativo sumarán a
+			la utilidad del sistema.
+			
+		\todo{EXPLICAR MAS DE LA SIMULACION?}
+
+			
+			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
+			asignará un puntaje a cada uno. 
+					\todo{JONY: verificar refactoring para poder continuar escribiendo esta seccion!!}
+			
+			\begin{Verbatim}[gobble=3]
+			private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
+				ScenarioScoreAssigner scenarioScoreAssigner) {
+				
+				double strategyScore = 0L;
+				
+				for (SelfHealingScenario scenario : scenarios) {
+					double scenarioRelativePriority = scenarioRelativePriorityAssigner.relativePriority(scenario);
+					double concernWeightedScenarioRelativePriority = scenarioRelativePriority * concernWeight4CurrentEnv;
+					UtilityFunction concernUtilityFunction = m_utils.get(scenario.getConcern().getRainbowName());
+					double scenarioScore = scenarioScoreAssigner.scenarioScore(scenario, currentSystemEnvironment,
+							concernWeightedScenarioRelativePriority, m_model, concernUtilityFunction);
+					strategyScore = strategyScore + scenarioScore;
+				}
+			}
+		
+		
+			public int relativePriority(SelfHealingScenario scenario) {
+				int maxPriority = selfHealingConfigurationManager.getMaxPriority() + 1;
+				return (maxPriority - scenario.getPriority()) / maxPriority;
+			}
+			
+			protected double doScenarioScore(double concernWeightedScenarioRelativePriority, double eavgPropValue,
+				UtilityFunction uf) {
+				
+				double concernPropertyValue = getConcernPropertyValue(eavgPropValue, uf);
+				double concernUtilityValue = uf.f(concernPropertyValue);
+				return concernWeightedScenarioRelativePriority * concernUtilityValue;
+			}
+			
+			//implementacion que simula la ejecucion de la estrategia 
+			protected double getConcernPropertyValue(double eavgPropValue, UtilityFunction uf) {
+				Double concernDiffAfterStrategy = getAggregateAttributes().get(uf.id());
+				return concernDiffAfterStrategy + eavgPropValue;
+			}
+		
+			\end{Verbatim}
+
+
+		El objetivo final de Arco Iris es el de intentar reparar el inconveniente hallado en el sistema pero siempre
+		considerando que se debe evitar perjudicar algún otro escenario de mayor prioridad \todo{Esto es un efecto colateral
+		de la utility function pero...podemos garantizar que esto es asi siempre? Creo que esto necesita ser reescrito} y
+		mediante el uso de heurísticas, poder aproximar la mejor estrategia de reparación a llevar a cabo de modo que la
+		\emph{utilidad del sistema} se maximize.
 
 
 		\todo{REVISAR}Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o
