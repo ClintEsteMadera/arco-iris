@@ -810,13 +810,46 @@
 
 			La idea principal al utilizar la teoría de la utilidad en Rainbow es enumerar explícitamente los atributos de calidad
 			para las cuales se está evaluando la técnica de autoreparación; luego, indicar el peso dado a cada dimensión (ver
-			\ref{rainbowScenario}). La suma ponderada de los valores de todos los atributos de calidad dará como resultado un
-			único valor, al que llamaremos \emph{Utilidad del Sistema}.
-			En el caso de Rainbow esta medida permitirá tener una noción de como impactará una determinada estrategia sobre el
-			sistema, para lo cual cada táctica deberá explicitar los \emph{concerns} sobre los cuales impacta y en qué medida
-			lo hace. Por ejemplo, en el caso de bajar un servidor en Znn se especifica la siguiente metainformación asociada la
-			táctica, representando el impacto estimado sobre el sistema:
+			\ref{rainbowScenario}). Por otro lado, al valor de cada atributo de calidad en el sistema se le aplicará la función
+			de utilidad correspondiente, la cual se encuentra definida para cada \emph{concern} en el archivo de configuración de
+			Rainbow llamado \emph{utilities.yml}. Ejemplo de función de utilidad correspondiente al tiempo de respuesta tomada de
+			Znn:
+			
+				\begin{Verbatim}[gobble=4]
+				utilities:
+				  uR:
+				    label: Average Response Time
+				    mapping: "[EAvg]ClientT.experRespTime"
+				    description: "Client experienced response time in milliseconds, R, defined as 
+				    				a float property 'ClientT.experRespTime' in the architecture"
+				    utility:
+				      0: 1.00
+				      100: 1.00
+				      200: 0.99
+				      500: 0.90
+				      1000: 0.75
+				      1500: 0.50
+				      2000: 0.25
+				      4000: 0.00
+				\end{Verbatim}
+			
+			Por último, Rainbow realizará la suma de estos valores ponderados por el peso de cada \emph{concern}, el resultado de			esta suma recibirá el nombre de \emph{Utilidad del Sistema}. Pseudocódigo del cálculo de la utilidad del sistema en			Rainbow:
 
+			\begin{Verbatim}[gobble=4]
+				puntaje = 0
+				valoresPorConcern = valores actuales del sistema para cada concern
+				Por cada concern
+					uf = Funcion de Utilidad para el concern actual
+					valorConcern = valoresPorConcern.get(concern)
+					valorUtilidad = uf(valorConcern)
+					valorPonderado = valorUtilidad * peso asignado al concern en la configuración estática de Rainbow
+					puntaje = puntaje + valorPonderado
+			\end{Verbatim}
+
+			En el caso de Rainbow esta medida permitirá tener una noción de como impactará una determinada estrategia sobre el
+			sistema, para lo cual cada táctica deberá explicitar los \emph{concerns} sobre los cuales impacta y en qué medida lo
+			hace. Por ejemplo, en el caso de bajar un servidor en Znn se especifica la siguiente metainformación asociada a la
+			táctica, representando el impacto estimado sobre el sistema:
 			\begin{Verbatim}[gobble=4]
 				dischargeServers:
 					uR: +144
@@ -825,33 +858,30 @@
 			\end{Verbatim}
 
 			Esto significa que una vez ejecutada esta táctica, aproximadamente la performance se verá degrada en 144
-			milisegundos y la fidelidad permanecerá intacta, mientras que el costo se reduce en 1, respectivamente.
-
-			\todo{La utilidad del sistema se calcula diferente en ambos frameworks, explicar!}
+			milisegundos y la fidelidad permanecerá intacta, mientras que el costo se reduce en 1.
 
 		\subsubsection{Puntuación de estrategias según Rainbow}
 
-			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow precederá a asignarle un puntaje a cada
+			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow procederá a asignarle un puntaje a cada
 			una, el cual será un valor entre $0$ y $100$, y luego aplicará la estrategia de mayor puntaje.
 
 			Para calcular el puntaje, lo primero que hará Rainbow será obtener los pesos asignados a cada \emph{concern}(e.g. costo,
 			fidelidad, etc) según el escenario seleccionado (recordemos que el escenario ha sido configurado previo inicio de
 			Rainbow), con los cuales pesará los valores estimados para cada \emph{concern} luego de la potencial aplicación de la
-			estrategia.
+			estrategia y aplicados a la función de utilidad del respectivo \emph{concern}.
 			La heurística aplicada por Rainbow para estimar el valor de cada \emph{concern} una vez aplicada la estrategia resulta
 			de considerar la probabilidad que tiene cada rama de la estrategia de ser ejecutada y los atributos de las tácticas
 			presentes en cada rama, esto es, el impacto que cada táctica representa sobre los \emph{concerns} del sistema, concepto
-			explicado previamente en la sección (\ref{sec:systemUtility}). Estos valores luego serán ponderados por el peso de cada
+			explicado previamente en la sección \ref{sec:systemUtility}. Estos valores luego serán ponderados por el peso de cada
 			\emph{concern} para el escenario seleccionado para obtener finalmente el puntaje de la estrategia. A continuación se
-			muestra en pseudocódigo el cálculo de puntuación de una estrategia llevado a cabo por Rainbow:			\todo{mejorar pseudocodigo}
-			\begin{Verbatim}[gobble=4]
+			muestra en pseudocódigo el cálculo de puntuación de una estrategia llevado a cabo por Rainbow:			\begin{Verbatim}[gobble=4]
 				puntaje = 0
 				estimacionPorConcern = Estimar los valores para cada concern luego de aplicar la estrategia
 				Por cada concern
 					uf = Funcion de Utilidad para el concern actual
 					estimacion = estimacionPorConcern.get(concern)
 					valorUtilidad = uf(estimacion)
-					valorPonderado = valorUtilidad * peso asignado al concern en el escenario
+					valorPonderado = valorUtilidad * peso asignado al concern en la configuración estática de Rainbow
 					puntaje = puntaje + valorPonderado
 			\end{Verbatim}
 
@@ -876,17 +906,17 @@
 			
 			Es importante mencionar que para calcular la utilidad del sistema Arco Iris solo considerará los escenarios			habilitados.
 			
-			Para calcular la utilidad del sistema, Arco Iris asignará un determinado puntaje a cada escenario habilitado que			se satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada			escenario habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de aplicar
-			el escenario se satisface trivialmente, por lo sumará a la utilidad del sistema. Para los escenarios que si apliquen
-			al entorno actual, Arco Iris evaluará si las condiciones del mismo se satisfacen y sólo en caso afirmativo sumarán a
-			la utilidad del sistema.
-			
-		\todo{EXPLICAR MAS DE LA SIMULACION?}
+			Para calcular la utilidad del sistema, Arco Iris asignará un determinado puntaje a cada escenario habilitado que se
+			satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada escenario
+			habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de no aplicar el
+			escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios que si apliquen al
+			entorno actual, Arco Iris evaluará si las condiciones del mismo se satisfacen y sólo en caso afirmativo sumarán a la
+			utilidad del sistema.			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
+			asignará un puntaje a cada uno.
 
-			
-			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
-			asignará un puntaje a cada uno. 
-					\todo{JONY: verificar refactoring para poder continuar escribiendo esta seccion!!}
+		\todo{JONY: verificar refactoring para poder continuar escribiendo esta seccion!!}
+		\todo{Mencionar que se toma el peso asignado al concern pero del env actual, a diferencia de rainbow que utiliza un
+		valor estatico}
 			
 			\begin{Verbatim}[gobble=3]
 			private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
@@ -925,18 +955,6 @@
 			}
 		
 			\end{Verbatim}
-
-
-		El objetivo final de Arco Iris es el de intentar reparar el inconveniente hallado en el sistema pero siempre
-		considerando que se debe evitar perjudicar algún otro escenario de mayor prioridad \todo{Esto es un efecto colateral
-		de la utility function pero...podemos garantizar que esto es asi siempre? Creo que esto necesita ser reescrito} y
-		mediante el uso de heurísticas, poder aproximar la mejor estrategia de reparación a llevar a cabo de modo que la
-		\emph{utilidad del sistema} se maximize.
-
-
-		\todo{REVISAR}Cabe aclarar que la ``utilidad del sistema'' es una función que se calcula a partir del cumplimiento o
-		no de los escenarios requeridos por los stakeholders, teniendo en cuenta sus prioridades relativas y la prioridad de
-		la estrategia simulada.
 
 	\subsection{Modelo de Arco Iris}
 
