@@ -759,9 +759,11 @@
 		respecto a Rainbow. Para comenzar, Rainbow considerará todas las estrategias existentes mientras que Arco Iris se
 		limitará a considerar las estrategias propuestas en el escenario que se ha dejado de satisfacer, esto obviamente
 		reduce ampliamente el universo de posibilidades reduciendo así el tiempo de la autoreparación. Recordemos que la
-		configuración de Arco Iris también ofrece la posibilidad de considerar todas las estrategias existentes.
+		configuración de Arco Iris también ofrece la posibilidad de considerar todas las estrategias existentes, simulando
+		así el comportamiento ofrecido por Rainbow evitándose el usuario de realizar una configuración más rigurosa en
+		desmedro de la performance de la autoreparación.
 
-		Por su parte, Rainbow descartará las estrategias cuyas condiciones no se satisfagan, están condiciones generalmente se
+		Por su parte, Rainbow descartará las estrategias cuyas condiciones no se satisfagan, estás condiciones generalmente se
 		corresponden con la restricción que ha dejado de cumplirse, por lo cual su lógica se encuentra duplicada en el
 		modelado de la arquitectura y en la condición de la estrategia, consideremos la siguiente estrategia tomada de Znn a
 		modo de ejemplo:
@@ -792,8 +794,8 @@
 
 				\end{Verbatim}
 
-		En Arco Iris, una vez que se ha detectado que un escenario dejo de satisfacerse, simplemente se toman como estrategias
-		candidatas las definidas en él, evitando así el \emph{overhead} de volver a verificar las condiciones.
+		En Arco Iris, una vez que se ha detectado que un escenario ha dejado de satisfacerse, simplemente se toman como
+		estrategias candidatas las definidas en él, evitando así el \emph{overhead} de volver a verificar las condiciones.
 
 		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarle un valor a cada
 		una para poder seleccionar la estrategia que luego de ser aplicada maximice el rendimiento del sistema, para esto
