@@ -900,10 +900,10 @@
 			del impacto estimado de la potencial ejecución de la estrategia sobre el sistema calculado ya por Rainbow, lo
 			siguiente:
 			\begin{itemize}
-				\item el entorno de ejecución en que se encuentra la aplicación y los pesos que el mismo asigna a cada
-				\emph{concern},
+				\item el entorno de ejecución en el que se encuentra la aplicación y el peso que cada \emph{concern} tiene para
+				dicho entorno,
 				\item el \emph{concern} asociado al escenario, y
-				\item las prioridades relativas de los escenarios.
+				\item las prioridades relativas entre los escenarios.
 			\end{itemize}
 			
 			Es importante mencionar que para calcular la utilidad del sistema Arco Iris solo considerará los escenarios			habilitados.
@@ -912,14 +912,20 @@
 			satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada escenario
 			habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de no aplicar el
 			escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios que si apliquen al
-			entorno actual, Arco Iris evaluará si las condiciones del mismo se satisfacen y sólo en caso afirmativo sumarán a la
-			utilidad del sistema.			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
+			entorno actual, Arco Iris evaluará si las condiciones del escenario se satisfacen y sólo en caso afirmativo sumarán a
+			la utilidad del sistema.			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
 			asignará un puntaje a cada uno.
-
-		\todo{JONY: verificar refactoring para poder continuar escribiendo esta seccion!!}
-		\todo{Mencionar que se toma el peso asignado al concern pero del env actual, a diferencia de rainbow que utiliza un
-		valor estatico}
 			
+			\todo{calcular la prioridad relativa del escenario (maxPriority - scenario.getPriority()) / maxPriority)}
+			\todo{obtener el peso que el env actual asigna al concern del escenario}
+			\todo{pesar la prioridad relativa por el peso del concern del escenario}
+			\todo{Obtener la funcion de utilidad para el concern del escenario}
+			\todo{simular la estrategia y luego obtener el valor estimado del concern}
+			\todo{al valor estimado aplicarle la funcion de utilidad}
+			\todo{al valor retornado por la uf pesarlo con la prioridad relativa y con el peso del concern}
+			\todo{este ultimo valor sumara al score de la estrategia}
+			
+
 			\begin{Verbatim}[gobble=3]
 			private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
 				ScenarioScoreAssigner scenarioScoreAssigner) {
@@ -957,6 +963,10 @@
 			}
 		
 			\end{Verbatim}
+
+		\todo{Mencionar que se toma el peso asignado al concern pero del env actual, a diferencia de rainbow que utiliza un
+		valor estatico}
+			
 
 	\subsection{Modelo de Arco Iris}
 
