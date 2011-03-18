@@ -911,63 +911,87 @@
 			Para calcular la utilidad del sistema, Arco Iris asignará un determinado puntaje a cada escenario habilitado que se
 			satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada escenario
 			habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de no aplicar el
-			escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios que si apliquen al
-			entorno actual, Arco Iris evaluará si las condiciones del escenario se satisfacen y sólo en caso afirmativo sumarán a
+			escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios que sí apliquen
+			al entorno actual, Arco Iris evaluará si las condiciones del escenario se satisfacen y sólo en caso afirmativo sumarán a
 			la utilidad del sistema.			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
 			asignará un puntaje a cada uno.
 			
-			\todo{calcular la prioridad relativa del escenario (maxPriority - scenario.getPriority()) / maxPriority)}
-			\todo{obtener el peso que el env actual asigna al concern del escenario}
-			\todo{pesar la prioridad relativa por el peso del concern del escenario}
-			\todo{Obtener la funcion de utilidad para el concern del escenario}
-			\todo{simular la estrategia y luego obtener el valor estimado del concern}
-			\todo{al valor estimado aplicarle la funcion de utilidad}
-			\todo{al valor retornado por la uf pesarlo con la prioridad relativa y con el peso del concern}
-			\todo{este ultimo valor sumara al score de la estrategia}
+			A continuación se puede ver plasmado en pseudocódigo el cálculo del puntaje de un escenario:
 			
-
-			\begin{Verbatim}[gobble=3]
-			private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
-				ScenarioScoreAssigner scenarioScoreAssigner) {
+			\begin{Verbatim}[gobble=4]
+				scoreMaximo = utilidad del sistema
 				
-				double strategyScore = 0L;
-				
-				for (SelfHealingScenario scenario : scenarios) {
-					double scenarioRelativePriority = scenarioRelativePriorityAssigner.relativePriority(scenario);
-					double concernWeightedScenarioRelativePriority = scenarioRelativePriority * concernWeight4CurrentEnv;
-					UtilityFunction concernUtilityFunction = m_utils.get(scenario.getConcern().getRainbowName());
-					double scenarioScore = scenarioScoreAssigner.scenarioScore(scenario, currentSystemEnvironment,
-							concernWeightedScenarioRelativePriority, m_model, concernUtilityFunction);
-					strategyScore = strategyScore + scenarioScore;
-				}
-			}
-		
-		
-			public int relativePriority(SelfHealingScenario scenario) {
-				int maxPriority = selfHealingConfigurationManager.getMaxPriority() + 1;
-				return (maxPriority - scenario.getPriority()) / maxPriority;
-			}
-			
-			protected double doScenarioScore(double concernWeightedScenarioRelativePriority, double eavgPropValue,
-				UtilityFunction uf) {
-				
-				double concernPropertyValue = getConcernPropertyValue(eavgPropValue, uf);
-				double concernUtilityValue = uf.f(concernPropertyValue);
-				return concernWeightedScenarioRelativePriority * concernUtilityValue;
-			}
-			
-			//implementacion que simula la ejecucion de la estrategia 
-			protected double getConcernPropertyValue(double eavgPropValue, UtilityFunction uf) {
-				Double concernDiffAfterStrategy = getAggregateAttributes().get(uf.id());
-				return concernDiffAfterStrategy + eavgPropValue;
-			}
-		
+				Por cada estrategia
+					scoreStrategia = 0
+					estimacionPorConcern = simular la aplicación de la estrategia y 
+							obtener el valor resultante para los concerns
+					
+					Por cada escenario habilitado
+						prioridadRelativa = calcular prioridad relativa del escenario
+						pesoConcern = peso que el entorno actual asigna al concern del escenario
+						scenarioConcern = concern del escenario
+						uf = funcion de utilidad para el concern del escenario
+						utilidad = uf(estimacionPorConcern(scenarioConcern))
+						puntajeEscenario = utilidad * prioridadRelativa * pesoConcern
+						scoreStrategia = scoreStrategia + puntajeEscenario 
+					Fin
+					
+					Si scoreStrategia > scoreMaximo
+						estrategiaSeleccionada = estrategia actual
+					Fin			
+				Fin
 			\end{Verbatim}
 
-		\todo{Mencionar que se toma el peso asignado al concern pero del env actual, a diferencia de rainbow que utiliza un
-		valor estatico}
+			Como se puede observar, el primer paso es calcular la utilidad del sistema, ya que para que una estrategia sea
+			seleccionada para reparar el sistema su aplicación debe mejorar al sistema en su conjunto, de lo contrario Arco Iris
+			no efectuará ninguna acción de autoreparación. Luego, por cada estrategia, Arco Iris simulará su aplicación
+			reutilizando para este punto la implementación de Rainbow. Lo importante de la simulación es obtener los valores
+			estimado para cada \emph{concern}.
+	
+			Una vez obtenidos los valores estimado, Arco Iris iterará por los escenarios habilitados, por cada escenario primero
+			se deberá calcular la prioridad relativa del escenario, recordemos que cada escenario tiene una prioridad asignada,
+			pero esa prioridad no puede ser tomada directamente para calcular la Utilidad del Sistema ya que los escenarios cuyas
+			prioridades son valores menores representan una mayor importacia para los \emph{stakeholders}. Para calcular la
+			prioridad relativa y permitir extender y/o modificar su lógica se ha definido la interface
+			\verb@ScenarioRelativePriorityAssigner@, la cual define el siguiente método:
 			
+			\begin{Verbatim}[gobble=4]
+				public abstract int relativePriority(SelfHealingScenario scenario);
+			\end{Verbatim}
+			 
+			Por defecto se provee la implementación \verb@DefaultScenarioRelativePriorityAssigner@, que calcula la prioridad
+			relativa pesando los valores absolutos de las prioridades de los escenarios contra el escenario de menor prioridad,
+			esto es, el escenario cuya prioridad tiene el máximo valor asignado de entre todos los escenarios:
 
+			\begin{Verbatim}[gobble=4]
+				public class DefaultScenarioRelativePriorityAssigner 
+						implements ScenarioRelativePriorityAssigner {
+
+					@Override
+					public int relativePriority(SelfHealingScenario scenario) {
+						return (maxPriority - scenario.getPriority()) / maxPriority;
+					}
+	
+					public DefaultScenarioRelativePriorityAssigner(int maxPriority) {
+						this.maxPriority = maxPriority;
+					}
+				
+					private int maxPriority;
+
+			}
+			\end{Verbatim}
+
+			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
+			asigna al concern del escenario en cuestión. Por ejemplo, si el entorno actual es de alta carga, es lógico que los
+			escenarios de performance tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según su
+			\emph{concern} y el entorno en el que se encuentra el sistema.
+			
+			Luego, al igual que Rainbow, Arco Iris calculará la utilidad de los \emph{concerns} mediante la función de utilidad
+			en base al valor estimado por la simulación para el \emph{concern} del escenario, pero además de pesar luego la 		
+			utilidad por el peso del \emph{concern} (que en Rainbow es estático mientras que en Arco Iris dependerá del entorno
+			actual del sistema), Arco Iris lo pesará con la prioridad relativa del escenario. Una vez obtenido este valor, será
+			acumuludo al puntaje de la estrategia, escogiendo finalmente la estrategia de mayor puntaje para reparar el sistema.
+			
 	\subsection{Modelo de Arco Iris}
 
 		\todo{La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene sentido
