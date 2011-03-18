@@ -33,6 +33,7 @@ import ar.uba.dc.thesis.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.thesis.atam.scenario.model.Environment;
 import ar.uba.dc.thesis.qa.Concern;
 import ar.uba.dc.thesis.selfhealing.ScenarioRelativePriorityAssigner;
+import ar.uba.dc.thesis.selfhealing.DefaultScenarioRelativePriorityAssigner;
 import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner;
 import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner4CurrentSystemState;
 import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner4StrategyScoring;
@@ -115,7 +116,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		scenarioScoreAssigner4CurrentSystemState = Oracle.instance().scenarioScoreAssigner4CurrentSystemState();
 		currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
-		scenarioRelativePriorityAssigner = new ScenarioRelativePriorityAssigner(this.selfHealingConfigurationManager);
+		scenarioRelativePriorityAssigner = new DefaultScenarioRelativePriorityAssigner(this.selfHealingConfigurationManager);
 		this.m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		this.m_utils = new TreeMap<String, UtilityFunction>();
 		this.m_pendingStrategies = new ArrayList<Strategy>();
@@ -359,11 +360,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			}
 
 			for (Strategy currentStrategy : stitch.script.strategies) {
-				// TODO Esto por el momento no funciona ya que hay que agregar una property a rainbow.properties:
+				// TODO FailureRate por el momento no funciona ya que hay que agregar una property a rainbow.properties:
 				// customize.utility.trackStrategy
-				if (!candidateStrategies.contains(currentStrategy.getName())
-						|| (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
-					String cause = !candidateStrategies.contains(currentStrategy.getName()) ? "not selected in broken scenarios"
+				boolean isNotCandidate = !candidateStrategies.contains(currentStrategy.getName());
+				if (isNotCandidate || (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
+					String cause = isNotCandidate ? "not selected in broken scenarios"
 							: "failure rate threshold reached";
 					doLog(Level.INFO, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
 					continue; // don't consider this Strategy
