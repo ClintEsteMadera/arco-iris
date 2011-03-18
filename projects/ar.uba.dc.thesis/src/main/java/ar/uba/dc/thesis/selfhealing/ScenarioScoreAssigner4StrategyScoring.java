@@ -30,7 +30,6 @@ public class ScenarioScoreAssigner4StrategyScoring extends BaseScenarioScoreAssi
 
 	@Override
 	protected double getConcernPropertyValue(double eavgPropValue, UtilityFunction uf) {
-		// TODO los aggregateAttributes son la diferencia o el valor total? Verificar!
 		Double concernDiffAfterStrategy = getAggregateAttributes().get(uf.id());
 		return concernDiffAfterStrategy + eavgPropValue;
 	}
