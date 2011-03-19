@@ -1,7 +1,7 @@
 \begin{abstract}
 	Los sistemas auto-reparables, también llamados autónomos, son aquellos que pueden adaptarse dinámicamente a las
 	condiciones cambiantes del entorno (contexto, usuarios, hardware) y a las fallas que puedan producirse, para asegurar
-	su propia estabilidad y utilidad sin depender de la intervención de un usuario administrador.
+	su propia estabilidad y utilidad sin intervención humana.
 
 	Existen hoy diversos enfoques en materia de auto-reparación. Sin embargo, en ninguno de ellos se considera al usuario
 	como un actor crucial en la determinación de requerimientos de auto reparación de un sistema. Con el objetivo de
@@ -9,8 +9,8 @@
 	de Carnegie Mellon. En este framework el sistema conoce su arquitectura a través de un modelo creado en un ADL
 	(Lenguaje de Descripción de Arquitectura) y usa ese conocimiento al decidir e implementar la adaptación o reparación.
 	La extensión realizada permite a los \emph{stakeholders} de la aplicación definir cuales son los requerimientos de
-	atributos de calidad que tiene el sistema, sus prioridades relativas, \emph{tradeoffs} y estrategias y tácticas de
-	reparación asociadas.
+	atributos de calidad que tiene el sistema y sus prioridades relativas dependientes del contexto de ejecución del
+	sistema; así también como sus estrategias y tácticas de reparación asociadas.
 
 	En síntesis, en este trabajo establecemos el marco teórico para estudiar el tema, extendemos el \emph{framework}
 	Rainbow para que contemple esta nueva funcionalidad, creamos una herramienta visual para facilitarle al usuario la
@@ -19,6 +19,7 @@
 \end{abstract}
 
 \def\abstractname{Abstract}
+\todo{Revisar traducción de la corrección hecha al 2do párrafo}
 \begin{abstract}
 	Self healing systems, also referred to as Autonomous Systems, are those which can adapt dynamically to changing
 	environments (context, users, hardware) and faults, without human intervention, to ensure stability and utility.
@@ -28,8 +29,8 @@
 	implemented an extension to the framework named ``Rainbow'', created by researchers from Carnegie Mellon University. In
 	this framework the system knows its architecture through a model created in an ADL (Architecture Description Language)
 	and this knowledge is used when the adaptation or repair has to be decided and implemented. Our extension allows
-	stakeholders to define which are the quality attribute requirements that affect the system, their relative priorities,
-	tradeoffs and associated repair strategies and tactics.
+	stakeholders to define which are the quality attribute requirements that affect the system and their execution
+	context-dependent relative priorities, as well as their associated repair strategies and tactics.
 	 
 	In summary, in this work we establish the theoretical basis for studying the subject, we extend the Rainbow Framework
 	in order to make it contemplate these new features, we create a visual tool to make it easier for the user to configure
