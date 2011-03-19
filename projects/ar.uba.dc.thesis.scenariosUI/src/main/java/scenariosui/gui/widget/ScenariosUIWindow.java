@@ -4,7 +4,9 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.graphics.Image;
 
 import scenariosui.context.ScenariosUIApplicationContext;
 import scenariosui.gui.action.ScenariosUIActions;
@@ -112,5 +114,13 @@ public class ScenariosUIWindow extends MainWindow {
 	@Override
 	public UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() {
 		return UNCAUGHT_EXCEPTION_HANDLER;
+	}
+
+	@Override
+	protected Image[] getIcons() {
+		return new Image[] {
+				ImageDescriptor.createFromFile(MainWindow.class, "/images/arco_iris_16x16.png").createImage(),
+				ImageDescriptor.createFromFile(MainWindow.class, "/images/arco_iris_32x32.png").createImage(),
+				ImageDescriptor.createFromFile(MainWindow.class, "/images/arco_iris_48x48.png").createImage() };
 	}
 }
