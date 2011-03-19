@@ -3,20 +3,20 @@
 	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
 
  		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
-		cuanto a disponibilidad se trata. Hoy en día los mismos operan en ambientes dinámicos, con requerimientos del
-		usuario altamente cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un
-		mayor crecimiento en la administración operativa del software, lo cual representa un costo importante para que el
-		sistema pueda funcionar. Para reducir este costo, se puede plantear que los sistemas se adapten de manera dinámica
-		para poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos del usuario y los
-		errores en el sistema. De forma genérica, a los sistemas de software que cumplen con estas características, se los
-		denomina \textbf{Sistemas Autónomos}.
+		cuanto a disponibilidad se trata. Hoy en día los mismos operan en ambientes dinámicos, con requerimientos de usuario
+		altamente cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un aumento
+		en la administración operativa del software, lo cual representa un costo importante para que el sistema pueda
+		mantenerse operativo. Para reducir este costo, se puede plantear que los sistemas se adapten de manera dinámica para
+		poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos de atributos de
+		calidad, así también como los errores en el sistema. De forma genérica, a los sistemas de software que cumplen con
+		estas características, se los denomina \textbf{Sistemas Autónomos}.
 		
-		Hilando más fino en la caracterización de sistemas autónomos, encontramos términos en inglés como \textbf{Self
-		Configuring} o \textbf{Self Adapting} para referirse a sistemas autónomos que tienen la capacidad de auto configurarse
-		(o auto adaptarse) a condiciones cambiantes \textbf{en un entorno normal de ejecución del sistema}.
+		Hilando más fino en la caracterización de sistemas autónomos, encontramos términos en inglés como \emph{Self
+		Configuring} o \emph{Self Adapting} para referirse a sistemas autónomos que tienen la capacidad de auto configurarse
+		(o auto adaptarse) a condiciones cambiantes en el entorno de ejecución del sistema.
 		
-		Por otro lado, cuando la adaptación dinámica del sistema responde a \textbf{errores o situaciones excepcionales} del
-		mismo, el término más utilizado actualmente es \emph{self healing} o, en castellano, \textbf{auto reparación}.
+		Por otro lado, cuando la adaptación dinámica del sistema responde a errores o situaciones excepcionales del
+		mismo, el término más utilizado actualmente es \emph{Self Healing} o, en castellano, Auto Reparación.
 
 		Si bien ya existen mecanismos para mitigar los mencionados problemas, ellos normalmente están intrínsecamente ligados
 		al lenguaje de programación utilizado para construír la aplicación, tales como tratamiento de excepciones, protocolos de
@@ -29,7 +29,7 @@
 		como en la industria del software.
 
 		Dentro del ámbito de la industria, el concepto de sistemas autónomos se encuentra ampliamente difundido. Sin dudas, el
-		enfoque de IBM, denominado ``Autonomic Computing''\cite{IBM-AC} es el más completo, apalancado por un gran grupo de
+		enfoque de IBM, denominado ``Autonomic Computing'' \cite{IBM-AC} es el más completo, apalancado por un gran grupo de
 		investigación y abarcando el problema desde distintos aspectos. También se destaca la iniciativa de Microsoft
 		denominada ``Dynamic Systems Initiative'', y no tanto la iniciativa de Sun (``Predictive Self-Healing'' y
 		``Conscientious Software''), por estar más ligada a adaptar el enfoque al dominio de los sistemas operativos. Para más
@@ -48,16 +48,25 @@
 		continuación.
 
 	\subsubsection{Auto Reparación de Sistemas Basada en Modelos de Arquitectura}
-
-		Este enfoque ha sido propuesto por el Dr. Garlan, el cual intenta basar la auto reparación en el modelo de la
-		arquitectura del sistema, en lugar de los mecanismos tradicionales para detección y recuperación de errores que se
-		implementan a nivel de código.
+	\label{sec:ARSBMA}
+		
+		En contraste con los mecanismos tradicionales para detección y recuperación de errores que se implementan como parte
+		del código específico de la aplicación, con mecanismos localizados y poco escalables entre distintos sistemas; el
+		enfoque propuesto por el Dr. David Garlan, usa \textbf{el modelo de la arquitectura} del sistema que se desea adaptar
+		como instrumento para razonar sobre sus propiedades (e.g. tiempo de respuesta de un servidor) y sus correlatos
+		con la dinámica del sistema en tiempo de ejecución.
+		
+		Diversos investigadores han propuesto usar modelos arquitecturales \cite{ArchBasedApproach} que representan al
+		sistema como una mera composición de componentes, sus interconexiones (conectores) y sus propiedades de
+		interés. Este modelo es conocido comunmente como \textbf{C\&C} (componentes y conectores)\cite{C&C}. Tal propuesta
+		ofrece diversos beneficios, el más significativo: un modelo arquitectural abstracto provee una perspectiva global del
+		sistema y expone sus propiedades y restricciones de integridad.
 
 		La idea propuesta consiste básicamente en un bucle cerrado (\emph{closed-loop} en inglés), donde existen dos capas
-		(externas al sistema que está siendo ejecutado) que actúan, una como mecanismo de control y otra monitoreando el
-		sistema, lo cual provee una solución mas efectiva que cualquier mecanismo interno porque permite agrupar todo lo
-		concerniente a la detección y solución del problema en módulos separados, pudiendo ser analizados, modificados,
-		extendidos y reutilizados a través de distintos sistemas.
+		(externas al sistema que está siendo ejecutado) que actúan, una encargada del monitoreo del sistema y la otra
+		proveyendo un mecanismo de control y adaptación. Esto ofrece una solución mas efectiva que cualquier mecanismo interno
+		porque permite agrupar todo lo concerniente a la detección y solución del problema en módulos separados, pudiendo ser
+		analizados, modificados, extendidos y reutilizados a través de distintos sistemas.
 
 		\begin{figure}[h]
 			\centering
@@ -75,18 +84,18 @@
 		conectores ha sido encontrar la notación apropiada para definir dichas arquitecturas.
 
 		Un buen lenguaje para describir arquitecturas debería permitir generar una documentación clara sobre los componentes
-		de la arquitectura, que luego servirá como base a los desarrolladores, permitiendo a su vez razonar sobre las
-		propiedades del sistema y automatizar su análisis, hasta pudiendo quizás llegar a utilizarse para la generación
+		de la arquitectura, que luego servirá como base a los de\-sa\-rro\-lla\-do\-res, permitiendo a su vez razonar sobre
+		las propiedades del sistema y automatizar su análisis, hasta pudiendo quizás llegar a utilizarse para la generación
 		automática de parte del código que implementará la arquitectura. También debería ser efectivo para poder validar de
 		manera temprana decisiones arquitectónicas, reduciendo así el tiempo de implementación y evitando utilizar
 		ineficientemente recursos en el desarrollo del sistema.
 
-		Una forma de describir dichas arquitecturas es mediante el modelado de objetos, si bien este método ha sido
-		ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante y bloqueante es que
-		no proveen un soporte directo para describir propiedades no funcionales, esto hace dificultoso razonar sobre
-		propiedades críticas del sistema, como por ejemplo la performance o la confiabilidad. Ésta es la razón principal que
-		ha motivado el avance de los ADLs (Architecture Description Languages). Para más información sobre la discusión ADL's
-		vs. UML, remitirse a \cite{ADLsVsUML}.
+		Una forma de describir dichas arquitecturas es mediante el modelado de objetos mediante UML, si bien este método ha
+		sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante e
+		invalidante es que no provee un soporte directo para describir propiedades no funcionales, esto hace dificultoso
+		razonar sobre propiedades críticas del sistema, como por ejemplo la \emph{performance} o la confiabilidad. Ésta es la
+		razón principal que ha motivado el avance de los ADLs (\emph{Architecture Description Languages}). Para más
+		información sobre la discusión ADL's vs. UML, remitirse a \cite{ADLsVsUML}.
 
 		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado considerablemente en las últimas dos décadas,
 		al punto de que ya permiten definir una base formal para su descripción y análisis.
@@ -94,19 +103,19 @@
 	\subsubsection{Acme}
 	\label{sec:acme}
 
-		Acme\cite{ACME} es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la Carnegie Mellon
-		University, más precisamente por el proyecto ABLE, liderado por el Dr. David Garlan.
+		Acme\cite{ACME} es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la universidad de Carnegie
+		Mellon, más precisamente por el proyecto ABLE, liderado por el Dr. David Garlan.
 
 		Acme es un pilar fundamental dentro del proyecto ABLE, ya que todo el proyecto gira en torno a la arquitectura de
 		software de los sistemas, y es Acme quien permite describir formalmente dichas arquitecturas, por lo tanto todos los
-		restantes subproyectos utilizan Acme en menor o mayor medida.
+		restantes sub proyectos utilizan Acme en menor o mayor medida.
 
 		Además de los beneficios de todo ADL, el lenguaje Acme y su kit de herramientas \emph{AcmeLib (Acme Tool Developer's
 		Library)} proveen las siguientes capacidades fundamentales:
 
 		\begin{itemize}
 			\item Intercambio Arquitectural: al proveer un formato de intercambio genérico para diseñar arquitecturas de
-			software, Acme permite a los desarrolladores de herramientas de este tipo \footnote{ejemplos de herramientas de
+			software, Acme permite a los desarrolladores de herramientas de este tipo \footnote{Ejemplos de herramientas de
 			descripción de arquitecturas y modelado UML podrían ser: Enterprise Architect (\url{http://www.sparxsystems.com.au/})
 			o Poseidón (\url{http://www.gentleware.com/}), entre tantas otras.} integrar fácilmente con otras herramientas
 			complementarias. De esta manera, los arquitectos que usan herramientas basadas en Acme tienen un espectro más amplio
@@ -123,14 +132,14 @@
 		A continuación, observamos un breve ejemplo de una arquitectura modelada en el lenguaje ACME, la cual posee un
 		sistema que contiene:
 		\begin{itemize}
-			\item un servidor HTTP (con algunas propiedades como por ejemplo fidelidad del contenido que provee)
+			\item un servidor HTTP, con algunas propiedades como por ejemplo fidelidad del contenido que provee.
 			\item un cliente HTTP, también con algunas propiedades particulares como el tiempo de respuesta experimentado por el
 			usuario.
 		\end{itemize}
 
 		\begin{Verbatim}[gobble=3]
-			System system : EnvType = {
-			    Component server : ServerT, ArchElementT = new ServerT, ArchElementT extended with {
+			System system : ClientServerType = {
+			    Component server : ServerT = new ServerT extended with {
 			        Port http0 : HttpPortT;
 			        Property cost;
 			        Property fidelity;
@@ -155,143 +164,89 @@
 
 		\subsubsection{Introducción a Rainbow}
 
-			Software-based systems today increasingly operate in changing environments with variable user needs, resulting in the
-			continued increase in administrative overhead for managing these systems. To reduce these costs, systems are
-			increasingly expected to dynamically self-adapt to accommodate resource variability, changing user needs, and system
-			faults. Mechanisms that support self-adaptation currently exist in the form of programming language features
-			such as exceptions and in algorithms such as fault-tolerant protocols. But these mechanisms are
-			often highly specific to the application and tightly bound to the code. As a result, self-adaptation in
-			today's systems is costly to build, diffiult to modify, and usually provides only localized treatment of
-			system faults.
-			
-			In contrast to these internal mechanisms, recent work uses external models and mechanisms in a closed-loop control
-			fashion to achieve various goals by monitoring and adapting system behavior at run-time.1,2 As illustrated in Figure 1,
-			control of system adaptation becomes the responsibility of compo- nents outside the system that is being adapted.
-			In principle, external control mechanisms provide a more effective engineering solution than internal mechanisms for
-			self-adaptation because they localize the concerns of problem detection and
-			
-			
-			resolution in separable modules that can be analyzed, modified, extended, and reused across different systems.
-			Additionally, developers can use this approach to add self-adaptation to legacy systems for which the source code may
-			not be available. This external approach requires using an appropriate model to reason about the system's dynamic
-			behavior. Several researchers have proposed using architectural models,3 which represent the system as a gross
-			composition of components, their inter- connections, and their properties of interest.4 Such an architecture-based
-			self-adaptation approach offers many benefits. Most significantly, an abstract architectural model can provide a global
-			perspective of the system and expose important system-level properties and integrity constraints.
-			While attractive in principle, architecture-based self-adaptation raises a number of research and engineering
-			challenges. First, the ability to handle a wide variety of systems must be addressed. Since different systems have
-			radically different architec- tural styles, properties of interest, and mechanisms supporting dynamic modification, it is
-			critical that the architectural control model and modification strategies be tailored to the specific system. Second,
-			the need to reduce costs in adding external control to a system must be addressed. Creating the monitoring, modeling,
-			and problem-detection mecha
-			
-			nisms from scratch for each new system would render the approach prohibitively expensive. Our Rainbow framework attempts
-			to address both problems. By adopting an architecture-based approach, it provides reusable infrastructure together with
-			mechanisms for specializing that infrastructure to the needs of specific systems. These specialization mechanisms let the
-			developer of self-adaptation capa- bilities choose what aspects of the system to model and monitor, what conditions
-			should trigger adap- tation, and how to adapt the system.
-			
-			THE RAINBOW FRAMEWORK
-			Figure 2 shows the Rainbow framework's control loop for self-adaptation. Rainbow uses an abstract architectural model to
-			monitor an execut- ing system's runtime properties, evaluates the model for constraint violation, and-if a problem
-			occurs-performs global- and module-level adaptations on the running system.
-			
-			Reusable Rainbow units
-			
-			To fulfill Rainbow's objectives, its various components must be reusable from system to system. To identify what parts of
-			the framework are reusable, and under what circumstances, we divide the framework into an adaptation infrastructure and
-			the system-specific adaptation knowledge. The adaptation infrastructure, divided into system, architecture, and
-			translation layers, provides common functionalities across self-adapting systems and is therefore reusable across all
-			systems, while the adaptation knowledge itself is typically system-specific (Figure 2).
-			System-layer infrastructure. At this layer, we have defined the system access interface and built an infrastructure that
-			implements it. A system mea- surement mechanism, realized as probes, observes and measures various system states. This
-			low-level system information can be published by or queried from the probes. Additionally, a resource discovery
-			mechanism can be queried for new resources based on resource type and other criteria. Finally, an effector mechanism
-			carries out the actual sys- tem modification.
-			Architecture-layer infrastructure. At this layer, gauges aggregate information from the probes and update the
-			appropriate properties in the architec- tural model. A model manager handles and provides access to the system's
-			architectural model. A con- straint evaluator checks the model periodically and triggers adaptation if a constraint
-			violation occurs. An adaptation engine then determines the course of action and carries out the necessary adaptation.
-			Translation infrastructure. This infrastructure helps mediate the mapping of information across the
-			abstraction gap from the system to the model and vice versa. A translation repository within the infrastructure
-			maintains various mappings that the translator components share, for example, to trans- late an architectural-level
-			element identifier into an IP address or an architectural-level change opera- tor into system-level operations.
-			System-specific adaptation knowledge. Adding self-adaptation to a system using the functionalities that the adaptation
-			infrastructure provides requires using the system-specific adaptation knowledge to tailor that infrastructure. This
-			knowledge includes the target system's operational model, which defines parameters such as component types and
-			properties, behavioral constraints, and adaptation strategies.
+			La herramienta Rainbow, también dentro del marco del proyecto ABLE, tiene como finalidad permitir reducir el costo e
+			incrementar la confiabilidad al realizar cambios en sistemas complejos de software, para esto Rainbow automatiza la
+			adaptación de sistemas de software a traves de sus modelos de arquitectura, tal cual fue descrito en la sección
+			\ref{sec:ARSBMA}.
 
+			Sin bien en principio el enfoque de auto adaptación basado en arquitecturas es atractivo, el mismo supone un número
+			significativo de desafíos en el campo de la investigación así también como en el de la ingeniería:
 
-
-			La herramienta Rainbow, desarrollada también dentro del marco del proyecto ABLE, tiene como finalidad permitir
-			reducir el costo e incrementar la confiabilidad al realizar cambios en sistemas complejos de software, para esto
-			Rainbow automatiza la adaptación de sistemas de software a traves del modelo de su arquitectura, utilizando
-			representaciones explícitas de las tareas del usuario, y estimaciones orientadas a la performance en tiempo de
-			ejecución.
-
-			La tecnología en la cual se apoya Rainbow esta basada en innovaciones en tres áreas críticas:
-			\begin{enumerate}
-				\item Detección: la habilidad de determinar dinámicamente (i.e. en \emph{runtime}) propiedades de sistemas
-				complejos y distribuidos.
-				\item Resolución: la habilidad de determinar cuando las propiedades observadas del sistema violan los supuestos
-				críticos de diseño del sistema.
-				\item Adaptación: la habilidad de automatizar la adaptación del sistema en respuesta a las violaciones de los
-				supuestos de diseño del sistema.
-			\end{enumerate}
-
-			Éstas habilidades proveerán:
 			\begin{itemize}
-				\item La posibilidad de manipular los cambios en el sistema con respecto a estimaciones soportadas por Rainbow.
-				\item Un framework extensible para manipular estimaciones y estrategias de adaptación creadas por terceros.
-			\end{itemize}
-
-			Tomando todo esto en conjunto, el objetivo de Rainbow es reducir drásticamente la necesidad de intervención humana en
-			la adaptación de sistemas ante cambios en el ambiente para alcanzar los objetivos de calidad requeridos.
-
-			\todo{hablar sobre closed-loop: In contrast to these internal mechanisms, recent work uses external models and
-			mechanisms in a closed-loop control fashion to achieve various goals by monitoring and adapting system behavior at
-			runtime}
-
-			 En resumen, Rainbow es un \emph{framework} desarrollado en Java cuya finalidad es proveer un mecanismo de adaptación
-			 basado en arquitecturas para sistemas de software. Rainbow utiliza un modelo abstracto para monitorear las
-			 propiedades de un sistema en tiempo de ejecución, evalúa el modelo detectando violaciones en las restricciones y al
-			 encontrar una, ejecuta adaptaciones sobre el sistema en ejecución. A continuación describiremos con más detalle los
-			 modulos constitutivos de Rainbow.
-
-			\begin{figure}[H]
-				\centering
-					\includegraphics{images/Rainbow_Framework.png}
-				\caption{Arquitectura de Rainbow}
-				\label{fig:Rainbow_Framework}
-			\end{figure}
-	
-			\begin{itemize}
-				\item \textbf{Monitor (o \emph{Probe})}: es el módulo que se encarga de obtener la información sobre el
-				funcionamiento del sistema en tiempo de ejecución.
-				\item \textbf{Evaluador de Restricciones}: es el que determina si el valor de alguna de las variables que se están
-				monitoreando violó alguna de las restricciones planteadas (por ejemplo, que la \emph{performance} de un proceso dejó
-				de ser aceptable).
-				\item \textbf{Modelo de Arquitectura}: es el módulo que contiene una representación en el lenguaje \textbf{Acme} de
-				la arquitectura del sistema que se quiere adaptar.
-				\item \textbf{Manejador de Reparaciones}: es el módulo que se ocupa de determinar la forma en la que se va a reparar
-				o adaptar el sistema en función de los problemas detectados.
-				\item \textbf{Intérprete}: es el módulo que interpreta los cambios ocurridos en tiempo de ejecución y los
-				``traduce'' a cambios en el modelo de arquitectura.
-				\item \textbf{Administrador de Runtime}: es el módulo que implementa en tiempo de ejecución el cambio en el
-				comportamiento de la aplicación.
+				\item En primer lugar, uno de los aspectos claves que Rainbow intenta cubrir es la habilidad de manejar una amplia
+				variedad de sistemas con arquitecturas, propiedades de interés y mecanismos que soporten modificaciones dinámicas
+				completamente diferentes.
+								
+				\item Por otro lado, Rainbow intenta ser una solución que permita reducir el costo de agregar control externo al
+				sistema a reparar, puesto que crear los me\-ca\-nis\-mos de monitoreo y detección de
+				problemas desde cero para un sistema nuevo sería prohibitivamente costoso. El enfocar la auto reparación de un
+				sistema en su arquitectura permite disponer de una infraestructura reutilizable junto con mecanismos para adaptar
+				dicha infraestructura a las necesidades específicas de cada sistema.
 			\end{itemize}
 	
-			Todos estos mecanismos funcionan de manera externa a la aplicación. Este enfoque tiene varias ventajas, siendo la
-			principal el hecho de contar con un \emph{framework} reusable que pueda ser conectado a distintos tipos de
-			aplicaciones para que implementen mecanismos de adaptación, minimizando el impacto en la aplicación.
+			Cabe mencionar que el caracter externo y no intrusivo de Rainbow representa una ventaja también cuando se
+			desea implementar auto reparación en sistemas cuyo código fuente no está disponible o no es plausible de ser
+			modificado.
 	
-			El caracter externo y no intrusivo de Rainbow representa una ventaja también cuando se desea implementar
-			auto-reparación en sistemas cuyo código fuente no está disponible o no es plausible de ser modificado.
+				
+			\subsubsection{Arquitectura de Rainbow}
+		
+				La Figura \ref{fig:Rainbow_Framework} muestra el ciclo de control cerrado de Rainbow para implementar auto
+				adaptación. Rainbow usa un modelo arquitectural abstracto para monitorear las propiedades en \emph{runtime} del
+				sistema que está siendo ejecutado, evalúa el modelo para detectar violaciones en restricciones impuestas sobre el
+				mismo y, si un problema ocurre, lleva a cabo adaptaciones en el sistema que se está ejecutando.
 	
-			A pesar de intentar implementar un mecanismo genérico de auto-reparación, Rainbow tiene varios componentes con
-			conocimiento fijo\footnote{Más conocido comúnmente como ``hardcodeado'' o ``cableado''.} sobre las reparaciones. Por
-			ejemplo, cuáles son las tácticas para la reparación que se deben implementar cuando una determinada restricción es
-			violada.
+				\begin{figure}[H]
+					\centering
+						\includegraphics{images/Rainbow_Framework.png}
+					\caption{Arquitectura de Rainbow}
+					\label{fig:Rainbow_Framework}
+				\end{figure}
+
+			
+				Rainbow está dividido básicamente en dos grandes partes:
+				\begin{itemize}
+					\item la \textbf{infraestructura de adaptación} la cual se divide a su vez en capas de \textbf{sistema},
+					\textbf{arquitectura} y \textbf{traducción}, las cuales proveen funcionalidades comunes a distintos sistemas auto
+					adaptables logrando por lo tanto el objetivo de disponer de componentes reutilizables.
+					\item el \textbf{conocimiento específico sobre adaptación}:  típicamente no es reutilizable entre distintos
+					sistemas.
+				\end{itemize}
+
+			\todo{mover las siguientes 4 secciones al itemizado anterior y traducir todo}
+	
+			\subsubsection{Capa de Sistema}
+				
+				En esta capa se define e implementa una interfaz de acceso al sistema que está siendo ejecutado. Se define un
+				mcanismo para medir variables de interés en el sistema, materializado en \emph{probes}: componentes que observan y
+				miden diversos estados del sistema, para luego publicarlos.
+				
+				Additionally, a resource discovery mechanism can be queried for new resources based on resource type and other
+				criteria. Finally, an effector mechanism carries out the actual system modification.
+				
+			\subsubsection{Capa de Arquitectura}
+				
+				At this layer, gauges aggregate information from the probes and update the appropriate properties in the
+				architectural model. A model manager handles and provides access to the system's architectural model. A constraint
+				evaluator checks the model periodically and triggers adaptation if a constraint violation occurs. An adaptation
+				engine then determines the course of action and carries out the necessary adaptation.
+				
+			\subsubsection{Capa de Traducción}
+				
+				This infrastructure helps mediate the mapping of information across the abstraction gap from the system to the model
+				and vice versa. A translation repository within the infrastructure maintains various mappings that the translator
+				components share, for example, to translate an architectural-level element identifier into an IP address or an
+				architectural-level change operator into system-level operations.
+				
+			\subsubsection{Conocimiento específico del sistema sobre adaptación}
+				
+				Adding self-adaptation to a system using the functionalities that the adaptation infrastructure provides requires
+				using the system-specific adaptation knowledge to tailor that infrastructure. This knowledge includes the target
+				system's operational model, which defines parameters such as component types and properties, behavioral constraints,
+				and adaptation strategies.
+
+			\todo{mencionar que está hecho en Java y como obtener el código}
+			desarrollada en el lenguaje de programación Java\textsuperscript{\texttrademark}
 
 		\subsubsection{Tácticas y Estrategias}
 		
