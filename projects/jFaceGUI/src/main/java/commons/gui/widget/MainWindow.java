@@ -70,7 +70,7 @@ public abstract class MainWindow extends ApplicationWindow {
 		super(null);
 		PageHelper.setMainWindow(this);
 		setShellStyle(SWT.MIN | SWT.MAX | SWT.RESIZE | SWT.CLOSE);
-		setDefaultImages(getImages());
+		setDefaultImages(getIcons());
 		setUpExceptionHandlers();
 		this.enumPropertyDirectory = new EnumPropertyDirectory();
 		doLogin();
@@ -265,7 +265,13 @@ public abstract class MainWindow extends ApplicationWindow {
 		}
 	}
 
-	protected Image[] getImages() {
+	/**
+	 * Gets the array of images to be used when this window is opened. It is expected that the array will contain the
+	 * same icon rendered at different resolutions.
+	 * 
+	 * @see org.eclipse.swt.widgets.Decorations#setImages(org.eclipse.swt.graphics.Image[])
+	 */
+	protected Image[] getIcons() {
 		return new Image[] { ImageDescriptor.createFromFile(MainWindow.class, "/images/16x16.png").createImage(),
 				ImageDescriptor.createFromFile(MainWindow.class, "/images/32x32.png").createImage(),
 				ImageDescriptor.createFromFile(MainWindow.class, "/images/48x48.png").createImage() };
