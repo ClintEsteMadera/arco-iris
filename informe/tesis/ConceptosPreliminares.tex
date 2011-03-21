@@ -206,47 +206,55 @@
 			
 				Rainbow está dividido básicamente en dos grandes partes:
 				\begin{itemize}
-					\item la \textbf{infraestructura de adaptación} la cual se divide a su vez en capas de \textbf{sistema},
-					\textbf{arquitectura} y \textbf{traducción}, las cuales proveen funcionalidades comunes a distintos sistemas auto
-					adaptables logrando por lo tanto el objetivo de disponer de componentes reutilizables.
-					\item el \textbf{conocimiento específico sobre adaptación}:  típicamente no es reutilizable entre distintos
-					sistemas.
+					\item \textbf{infraestructura de adaptación} la cual se divide a su vez en capas que proveen funcionalidades
+					comunes a distintos sistemas auto adaptables logrando por lo tanto el objetivo de disponer de componentes
+					reutilizables, a saber:
+					\begin{enumerate}
+						\item \textbf{Capa de Sistema}:\\
+						En esta capa se define e implementa una interfaz de acceso al sistema que está siendo ejecutado. Se define un
+						mcanismo para medir variables de interés en el sistema, materializado en \emph{Probes}: componentes que observan y
+						miden diversos estados del sistema, para luego publicarlos.
+						
+						Adicionalmente, existe un mecanismo para descubrir recursos que puede ser utilizado especificando el tipo de
+						recurso, entre otros criterios. Finalmente, un mecanismo denominado \emph{Effector} lleva a cabo la modificación
+						propiamente dicha del sistema.
+						\item \textbf{Capa de Arquitectura}:\\
+						En esta capa, los denominados \emph{Gauges} agregan información provenientes de los \emph{Probes} y actualizan
+						las propiedades correspondientes en el modelo arquitectural del sistema, el cual es manejado y accedido mediante
+						un componente denominado \emph{Model Manager}. El \emph{Constraint Evaluator} chequea el modelo periódicamente y
+						dispara la adaptación en el caso que ocurra una violacin en alguna restricción impuesta sobre el modelo. En ese
+						caso, el motor de adaptación (\emph{Adaptation Engine}) determina el curso de acción y lleva a cabo la adaptación
+						necesaria.
+						\item \textbf{Capa de Traducción}:\\
+						Esta capa es la encargada de cubrir la brecha de abstracción existente entre el sistema en ejecución y el modelo
+						de su arquitectura (en ambos sentidos). En esta infraestructura, un repositorio de traducción mantiene diversos
+						mapeos que distintos componentes dentro de esta capa comparten, por ejemplo, información necesaria para traducir
+						un elemento arquitectónico en una dirección IP o una operación a nivel modelo de la arquitectura en su
+						correspondiente operación de \emph{runtime}. Por ejemplo:
+
+						\begin{Verbatim}[gobble=7]
+							       Componente de Log::desactivar       <==>       Logger.disableLog()
+						\end{Verbatim}
+					\end{enumerate}
+					
+					\item \textbf{conocimiento específico del sistema sobre adaptación}:\\
+					Agregar auto adaptación a un sistema de software utilizando la funcionalidad que la infraestructura provista por la
+					infraestructura de adaptación requiere agregar conocimiento específico de la aplicación para poder ajustar dicha
+					infraestructura a las necesidades puntuales de cada sistema. Este conocimiento incluye el modelo operacional del
+					sistema, que define parámetros como tipos de componentes y propiedades, restricciones de comportamiento,
+					estrategias de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como
+					para hacer efectivas las estrategias de reparación, etc.
+					
+					Típicamente este conocimiento no es reutilizable entre distintos sistemas.
 				\end{itemize}
+				
 
-			\todo{mover las siguientes 4 secciones al itemizado anterior y traducir todo}
-	
-			\subsubsection{Capa de Sistema}
-				
-				En esta capa se define e implementa una interfaz de acceso al sistema que está siendo ejecutado. Se define un
-				mcanismo para medir variables de interés en el sistema, materializado en \emph{probes}: componentes que observan y
-				miden diversos estados del sistema, para luego publicarlos.
-				
-				Additionally, a resource discovery mechanism can be queried for new resources based on resource type and other
-				criteria. Finally, an effector mechanism carries out the actual system modification.
-				
-			\subsubsection{Capa de Arquitectura}
-				
-				At this layer, gauges aggregate information from the probes and update the appropriate properties in the
-				architectural model. A model manager handles and provides access to the system's architectural model. A constraint
-				evaluator checks the model periodically and triggers adaptation if a constraint violation occurs. An adaptation
-				engine then determines the course of action and carries out the necessary adaptation.
-				
-			\subsubsection{Capa de Traducción}
-				
-				This infrastructure helps mediate the mapping of information across the abstraction gap from the system to the model
-				and vice versa. A translation repository within the infrastructure maintains various mappings that the translator
-				components share, for example, to translate an architectural-level element identifier into an IP address or an
-				architectural-level change operator into system-level operations.
-				
-			\subsubsection{Conocimiento específico del sistema sobre adaptación}
-				
-				Adding self-adaptation to a system using the functionalities that the adaptation infrastructure provides requires
-				using the system-specific adaptation knowledge to tailor that infrastructure. This knowledge includes the target
-				system's operational model, which defines parameters such as component types and properties, behavioral constraints,
-				and adaptation strategies.
-
-			\todo{mencionar que está hecho en Java y como obtener el código}
-			desarrollada en el lenguaje de programación Java\textsuperscript{\texttrademark}
+			Rainbow es un \emph{framework} desarrollado en el lenguaje de programación Java\textsuperscript{\texttrademark} y
+			todos los derechos sobre el código fuente pertenecen al grupo ABLE de la Universidad de Carnegie Mellon. Los autores
+			de este trabajo solicitaron permiso a este grupo para poder acceder al código fuente de Rainbow para poder realizar
+			la extensión objeto de este trabajo. En la wiki oficial de Rainbow pueden encontrarse instrucciones para
+			instalar versiones ya compiladas del \emph{framework}. Para más información, visitar
+			\url{http://rainbow.self-adapt.org/RainbowInstall}.
 
 		\subsubsection{Tácticas y Estrategias}
 		
