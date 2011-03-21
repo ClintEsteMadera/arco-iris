@@ -258,8 +258,6 @@
 
 		\subsubsection{Tácticas y Estrategias}
 		
-			\todo{agregar ejemplo de estrategia, tomarlo de algun newssiteStrategies.s}
-
 			El objetivo de la auto reparación será alcanzar determinados atributos de calidad, pero ¿Cómo haremos para alcanzar
 			dichos atributos? En el libro \textbf{Software Arquitectura in Practice} \cite{BassClementz}, Bass, Clements y Kazman
 			presentan dos conceptos que nos permiten alcanzar los objetivos del sistema y que han sido ampliamente adoptados en
@@ -300,6 +298,33 @@
 			estrategia podría ser: agregar servidores mientras haya disponible, o hasta que el tiempo de respuesta haya alcanzado
 			un	determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica
 			levantar-servidor la responsable de ejecutar la acción propiamente dicha, a la cual se la llama \textbf{operador}.
+
+			A continuación, observamos un ejemplo de estrategia:
+
+			\begin{Verbatim}[gobble=4]
+				/*
+				 * Adaptation script for the News Site example.
+				 */
+				
+				module newssite.strategies;
+				
+				import lib "newssiteT.s";
+				
+				strategy improveClientLatency (int i) {
+					boolean c0 = exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+					// or c1 could be captured as !c0
+					boolean c1 = forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
+				
+					t0: (#[prob{t0}] c0 @[2/*sec*/]) -> enlargeServerPool(1) {
+						t1: (#[prob{t1}] success @[1/*sec*/]) -> done;  
+						t2: (#[prob{t0}] c0 @[2/*sec*/]) -> switchToTextualContent(i, j) {
+							t2a: (#[prob{t2a}] success @[1/*sec*/]) -> done;  
+						}
+					}
+				}
+			\end{Verbatim}
+
+			\todo{explicar este ejemplo de estrategia!}
 
 			\todo{TASK: Explicar Stitch con más detalle}
 
