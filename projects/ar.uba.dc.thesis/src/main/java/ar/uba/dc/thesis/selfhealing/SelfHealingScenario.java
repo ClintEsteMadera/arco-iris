@@ -96,7 +96,7 @@ public class SelfHealingScenario extends AtamScenario {
 	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
 	 * es protected.
 	 */
-	protected boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
+	public boolean isBroken(final RainbowModelWithScenarios rainbowModelWithScenarios) {
 		if (this.anyEnvironmentApplies(rainbowModelWithScenarios)) {
 			Constraint constraint = getResponseMeasure().getConstraint();
 			boolean isBroken = false;
@@ -127,7 +127,7 @@ public class SelfHealingScenario extends AtamScenario {
 		return holds;
 	}
 
-	protected boolean isBrokenAfterStrategy(final RainbowModelWithScenarios rainbowModelWithScenarios,
+	public boolean isBrokenAfterStrategy(final RainbowModelWithScenarios rainbowModelWithScenarios,
 			Map<String, Double> strategyAggregateAttributes) {
 		// It is not necessary to check the environment at this point because this scenario was already selected for
 		// being repaired
