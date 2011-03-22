@@ -816,13 +816,13 @@
 			de utilidad correspondiente, la cual se encuentra definida para cada \emph{concern} en el archivo de configuración de
 			Rainbow llamado \emph{utilities.yml}. Ejemplo de función de utilidad correspondiente al tiempo de respuesta tomada de
 			Znn:
-			
+
 				\begin{Verbatim}[gobble=4]
 				utilities:
 				  uR:
 				    label: Average Response Time
 				    mapping: "[EAvg]ClientT.experRespTime"
-				    description: "Client experienced response time in milliseconds, R, defined as 
+				    description: "Client experienced response time in milliseconds, R, defined as
 				    				a float property 'ClientT.experRespTime' in the architecture"
 				    utility:
 				      0: 1.00
@@ -834,7 +834,7 @@
 				      2000: 0.25
 				      4000: 0.00
 				\end{Verbatim}
-			
+
 			Por último, Rainbow realizará la suma de estos valores ponderados por el peso de cada \emph{concern}, el resultado de			esta suma recibirá el nombre de \emph{Utilidad del Sistema}. Pseudocódigo del cálculo de la utilidad del sistema en			Rainbow:
 
 			\begin{Verbatim}[gobble=4]
@@ -905,9 +905,9 @@
 				\item el \emph{concern} asociado al escenario, y
 				\item las prioridades relativas entre los escenarios.
 			\end{itemize}
-			
+
 			Es importante mencionar que para calcular la utilidad del sistema Arco Iris solo considerará los escenarios			habilitados.
-			
+
 			Para calcular la utilidad del sistema, Arco Iris asignará un determinado puntaje a cada escenario habilitado que se
 			satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada escenario
 			habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de no aplicar el
@@ -915,19 +915,19 @@
 			al entorno actual, Arco Iris evaluará si las condiciones del escenario se satisfacen y sólo en caso afirmativo sumarán a
 			la utilidad del sistema.			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
 			asignará un puntaje a cada uno.
-			
+
 			A continuación se puede ver plasmado en pseudocódigo el cálculo del puntaje de un escenario y como es utilizado para
 			calcular el puntaje de la estrategia y a su vez como Arco Iris seleccionará la estrategia de mayor puntaje para
 			reparar el sistema:
-			
+
 			\begin{Verbatim}[gobble=4]
 				scoreMaximo = utilidad del sistema
-				
+
 				Por cada estrategia
 					scoreStrategia = 0
-					estimacionPorConcern = simular la aplicación de la estrategia y 
+					estimacionPorConcern = simular la aplicación de la estrategia y
 							obtener el valor resultante para los concerns
-					
+
 					Por cada escenario habilitado
 						Si se satisface
 							prioridadRelativa = calcular prioridad relativa del escenario
@@ -936,13 +936,13 @@
 							uf = funcion de utilidad para el concern del escenario
 							utilidad = uf(estimacionPorConcern(scenarioConcern))
 							puntajeEscenario = utilidad * prioridadRelativa * pesoConcern
-							scoreStrategia = scoreStrategia + puntajeEscenario 
+							scoreStrategia = scoreStrategia + puntajeEscenario
 						Fin
 					Fin
-					
+
 					Si scoreStrategia > scoreMaximo
 						estrategiaSeleccionada = estrategia actual
-					Fin			
+					Fin
 				Fin
 			\end{Verbatim}
 
@@ -951,57 +951,71 @@
 			no efectuará ninguna acción de autoreparación. Luego, por cada estrategia, Arco Iris simulará su aplicación
 			reutilizando para este punto la implementación de Rainbow. Lo importante de la simulación es obtener los valores
 			estimados para cada \emph{concern}.
-	
+
 			Una vez obtenidos los valores estimados, Arco Iris iterará por los escenarios habilitados y por cada escenario que se
 			satisfaga primero se deberá calcular la prioridad relativa del escenario, recordemos que cada escenario tiene una
 			prioridad asignada, pero esa prioridad no puede ser tomada directamente para calcular la Utilidad del Sistema ya que los
 			escenarios cuyas prioridades son valores menores representan una mayor importacia para los \emph{stakeholders}. Para
 			calcular la prioridad relativa y permitir extender y/o modificar su lógica se ha definido la interface
 			\verb@ScenarioRelativePriorityAssigner@, la cual define el siguiente método:
-			
+
 			\begin{Verbatim}[gobble=4]
 				public abstract int relativePriority(SelfHealingScenario scenario);
 			\end{Verbatim}
-			 
+
 			Por defecto se provee la implementación \verb@DefaultScenarioRelativePriorityAssigner@, que calcula la prioridad
 			relativa pesando los valores absolutos de las prioridades de los escenarios contra el escenario de menor prioridad,
 			esto es, el escenario cuya prioridad tiene el máximo valor asignado de entre todos los escenarios:
 
 			\begin{Verbatim}[gobble=4]
-				public class DefaultScenarioRelativePriorityAssigner 
+				public class DefaultScenarioRelativePriorityAssigner
 						implements ScenarioRelativePriorityAssigner {
 
 					@Override
 					public int relativePriority(SelfHealingScenario scenario) {
 						return (maxPriority - scenario.getPriority()) / maxPriority;
 					}
-	
+
 					public DefaultScenarioRelativePriorityAssigner(int maxScenarioPriority) {
 						this.maxPriority = maxScenarioPriority + 1;
 					}
-				
+
 					private int maxPriority;
 
 			}
 			\end{Verbatim}
-			
+
 			Vale aclarar que se toma como prioridad máxima la del escenario menos prioritario más uno, para evitar que la
 			prioridad relativa de dicho escenario sea cero y que sea ignorado en el cálculo de la Utilidad del Sistema.
 
 			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
 			asigna al \emph{concern} del escenario en cuestión. Por ejemplo, si el entorno actual es de alta carga, es lógico que
 			los escenarios de performance tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
-			su \emph{concern} y el entorno en el que se encuentra el sistema.			
+			su \emph{concern} y el entorno en el que se encuentra el sistema.
 			Luego, al igual que Rainbow, Arco Iris calculará la utilidad de los \emph{concerns} mediante la función de utilidad
-			en base al valor estimado por la simulación para el \emph{concern} del escenario, pero además de pesar luego la 		
+			en base al valor estimado por la simulación para el \emph{concern} del escenario, pero además de pesar luego la
 			utilidad por el peso del \emph{concern} (que en Rainbow es estático mientras que en Arco Iris dependerá del entorno
 			actual del sistema), Arco Iris lo pesará con la prioridad relativa del escenario. Una vez obtenido este valor, será
 			acumulado al puntaje de la estrategia, escogiendo finalmente la estrategia de mayor puntaje para reparar el sistema.
-			
+
 	\subsection{Modelo de Arco Iris}
 
 		\todo{La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene sentido
 		ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
+
+
+		\todo{Quitar Heuristic del modelo}
+		\todo{Donde hablamos del Artifact, actualizar: solo tiene name y systemName, quitar holds y
+		getFullyQualifiedPropertyName}
+		\todo{Corregir: un AtamScenario tiene muchos Environments}
+		\todo{Agregar a SelfHealingScenario: applyFor, isBroken, isBrokenAfterStrategy}
+		\todo{Quitar metodos de las subclases de RepairStrategies}
+		\todo{Quitar SelfHealingConfiguration? Se menciona en algun lado? Se menciona SelfHealingConfigurationManager en
+		actualizacion dinamica}
+
+		\todo{Hacer otro modelo con: ScenarioScoreAssigner,	BaseScenarioScoreAssigner,
+		ScenarioScoreAssigner4CurrentSystemState, ScenarioScoreAssigner4StrategyScoring, ScenarioBrokenDetector,
+		ScenarioRelativePriorityAssigner, DefaultScenarioRelativePriorityAssigner, etc?}
 
 		\afterpage{\clearpage
 		\begin{figure}[H]
