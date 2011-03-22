@@ -10,11 +10,11 @@
 		poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos de atributos de
 		calidad, así también como los errores en el sistema. De forma genérica, a los sistemas de software que cumplen con
 		estas características, se los denomina \textbf{Sistemas Autónomos}.
-		
+
 		Hilando más fino en la caracterización de sistemas autónomos, encontramos términos en inglés como \emph{Self
 		Configuring} o \emph{Self Adapting} para referirse a sistemas autónomos que tienen la capacidad de auto configurarse
 		(o auto adaptarse) a condiciones cambiantes en el entorno de ejecución del sistema.
-		
+
 		Por otro lado, cuando la adaptación dinámica del sistema responde a errores o situaciones excepcionales del
 		mismo, el término más utilizado actualmente es \emph{Self Healing} o, en castellano, Auto Reparación.
 
@@ -42,20 +42,20 @@
 		Based Languages and Environments''}) de la Universidad de Carnegie Mellon lleva a cabo investigaciones que conducen a
 		una base de ingeniería para la arquitectura de software. Para más información, visitar
 		\url{http://www.cs.cmu.edu/~able}}
-		
+
 		El presente trabajo toma como base el trabajo generado por el proyecto ABLE de Carnegie Mellon, el cual implementa
 		el concepto de ``Auto Reparación de Sistemas Basada en Modelos de Arquitectura'', el cual se describirá en detalle a
 		continuación.
 
 	\subsubsection{Auto Reparación de Sistemas Basada en Modelos de Arquitectura}
 	\label{sec:ARSBMA}
-		
+
 		En contraste con los mecanismos tradicionales para detección y recuperación de errores que se implementan como parte
 		del código específico de la aplicación, con mecanismos localizados y poco escalables entre distintos sistemas; el
 		enfoque propuesto por el Dr. David Garlan, usa \textbf{el modelo de la arquitectura} del sistema que se desea adaptar
 		como instrumento para razonar sobre sus propiedades (e.g. tiempo de respuesta de un servidor) y sus correlatos
 		con la dinámica del sistema en tiempo de ejecución.
-		
+
 		Diversos investigadores han propuesto usar modelos arquitecturales \cite{ArchBasedApproach} que representan al
 		sistema como una mera composición de componentes, sus interconexiones (conectores) y sus propiedades de
 		interés. Este modelo es conocido comunmente como \textbf{C\&C} (componentes y conectores)\cite{C&C}. Tal propuesta
@@ -176,26 +176,26 @@
 				\item En primer lugar, uno de los aspectos claves que Rainbow intenta cubrir es la habilidad de manejar una amplia
 				variedad de sistemas con arquitecturas, propiedades de interés y mecanismos que soporten modificaciones dinámicas
 				completamente diferentes.
-								
+
 				\item Por otro lado, Rainbow intenta ser una solución que permita reducir el costo de agregar control externo al
 				sistema a reparar, puesto que crear los me\-ca\-nis\-mos de monitoreo y detección de
 				problemas desde cero para un sistema nuevo sería prohibitivamente costoso. El enfocar la auto reparación de un
 				sistema en su arquitectura permite disponer de una infraestructura reutilizable junto con mecanismos para adaptar
 				dicha infraestructura a las necesidades específicas de cada sistema.
 			\end{itemize}
-	
+
 			Cabe mencionar que el caracter externo y no intrusivo de Rainbow representa una ventaja también cuando se
 			desea implementar auto reparación en sistemas cuyo código fuente no está disponible o no es plausible de ser
 			modificado.
-	
-				
+
+
 			\subsubsection{Arquitectura de Rainbow}
-		
+
 				La Figura \ref{fig:Rainbow_Framework} muestra el ciclo de control cerrado de Rainbow para implementar auto
 				adaptación. Rainbow usa un modelo arquitectural abstracto para monitorear las propiedades en \emph{runtime} del
 				sistema que está siendo ejecutado, evalúa el modelo para detectar violaciones en restricciones impuestas sobre el
 				mismo y, si un problema ocurre, lleva a cabo adaptaciones en el sistema que se está ejecutando.
-	
+
 				\begin{figure}[H]
 					\centering
 						\includegraphics{images/Rainbow_Framework.png}
@@ -203,7 +203,7 @@
 					\label{fig:Rainbow_Framework}
 				\end{figure}
 
-			
+
 				Rainbow está dividido básicamente en dos grandes partes:
 				\begin{itemize}
 					\item \textbf{infraestructura de adaptación} la cual se divide a su vez en capas que proveen funcionalidades
@@ -214,7 +214,7 @@
 						En esta capa se define e implementa una interfaz de acceso al sistema que está siendo ejecutado. Se define un
 						mcanismo para medir variables de interés en el sistema, materializado en \emph{Probes}: componentes que observan y
 						miden diversos estados del sistema, para luego publicarlos.
-						
+
 						Adicionalmente, existe un mecanismo para descubrir recursos que puede ser utilizado especificando el tipo de
 						recurso, entre otros criterios. Finalmente, un mecanismo denominado \emph{Effector} lleva a cabo la modificación
 						propiamente dicha del sistema.
@@ -236,7 +236,7 @@
 							       Componente de Log::desactivar       <==>       Logger.disableLog()
 						\end{Verbatim}
 					\end{enumerate}
-					
+
 					\item \textbf{conocimiento específico del sistema sobre adaptación}:\\
 					Agregar auto adaptación a un sistema de software utilizando la funcionalidad que la infraestructura provista por la
 					infraestructura de adaptación requiere agregar conocimiento específico de la aplicación para poder ajustar dicha
@@ -244,10 +244,10 @@
 					sistema, que define parámetros como tipos de componentes y propiedades, restricciones de comportamiento,
 					estrategias de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como
 					para hacer efectivas las estrategias de reparación, etc.
-					
+
 					Típicamente este conocimiento no es reutilizable entre distintos sistemas.
 				\end{itemize}
-				
+
 
 			Rainbow es un \emph{framework} desarrollado en el lenguaje de programación Java\textsuperscript{\texttrademark} y
 			todos los derechos sobre el código fuente pertenecen al grupo ABLE de la Universidad de Carnegie Mellon. Los autores
@@ -257,16 +257,21 @@
 			\url{http://rainbow.self-adapt.org/RainbowInstall}.
 
 		\subsubsection{Tácticas y Estrategias}
-		
-			El objetivo de la auto reparación será alcanzar determinados atributos de calidad, pero ¿Cómo haremos para alcanzar
-			dichos atributos? En el libro \textbf{Software Arquitectura in Practice} \cite{BassClementz}, Bass, Clements y Kazman
-			presentan dos conceptos que nos permiten alcanzar los objetivos del sistema y que han sido ampliamente adoptados en
-			la industria, estos conceptos son: tácticas y estrategias.
 
-			Allí se definen las tácticas como una decisión de diseño que influye sobre la respuesta de un atributo de
-			calidad, mientras que definen a una estrategia como una colección de tácticas. La figura
-			\ref{fig:tactics_control_to_response} muestra gráficamente la visión de las tácticas presentada por los autores.
+			Hemos mencionado anteriormente que el objetivo de la auto reparación es el alcanzar determinados atributos de
+			calidad definidos para un determinado sistema, ajustando su comportamiento, de ser necesario, de acuerdo a
+			las condiciones de ejecución del mismo. En el libro \textbf{Software Arquitecture in Practice} \cite{BassClementz},
+			Bass, Clements y Kazman caracterizan y formalizan dos herramientas que vienen siendo ampliamente utilizadas desde
+			hace tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las
+			\textbf{estrategias}.
 
+			\todo{TURCO: REALMENTE ESTA ES LA DEFINICION? Necesitamos algo un poco mejor\ldots}
+			Allí se definen las tácticas como una decisión de diseño que influye sobre la respuesta \todo{???? que es la
+			respuesta de un QA?} de un atributo de calidad, mientras que definen a una estrategia como una colección de tácticas.
+			La figura \ref{fig:tactics_control_to_response} muestra gráficamente la visión de las tácticas presentada por los
+			autores.
+
+			\todo{este gráfico queda colgadísimo así como está explicado hasta el momento el tema}
 			\begin{figure}[h]
 				\centering
 					\includegraphics{images/tactics_control_to_response.png}
@@ -274,20 +279,29 @@
 				\label{fig:tactics_control_to_response}
 			\end{figure}
 
-			Las tácticas son herramientas que los arquitectos de software han utilizado durante años, en el libro mencionado
-			simplemente se las aisla y se las describe, no pretende proclamar la invención de las tácticas sino más bien darle un
-			nombre y organizar los patrones comunes utilizados en cuanto a decisiones de arquitectura y clasificarlos. Cada
-			táctica	es una opción de diseño para el arquitecto, por ejemplo, introducir redundancia para incrementar la
-			disponibilidad del	sistema. En resumen, en el libro se plantea que las estrategias afectan los atributos de calidad
-			del sistema, y que	estos proveen a los \emph{stakeholders} de cierto beneficio, al cual llaman utilidad. Cada
-			estrategia provee un nivel	específico de utilidad, pero en contrapartida presentan un costo en tiempo y en dinero.
-			Por estos motivos se aconseja hacer participar a los \emph{stakeholders} a la hora de decidir qué estrategias se
-			emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el retorno de la
-			inversión (el ratio entre el beneficio y el costo) de aplicar cada estrategia para elegir la más conveniente.
+			\todo{El hablar continuamente del libro no es del nivel de una tesis. Se menciona una vez la bibliografía y luego se
+			hace al texto propio.}
+
+			Cada táctica es una opción de diseño para el arquitecto, un ejemplo concreto podría ser el introducir redundancia en
+			determinados componentes de la arquitectura (e.g. base de datos, servidores web replicados, etc.) para incrementar la
+			dis\-po\-ni\-bi\-li\-dad del sistema.
+
+			En el ejemplo anterior se puede observar una característica esencial de las estrategias: las mismas afectan
+			(positiva y/o negativamente) a los atributos de calidad establecidos para un sistema y cuando una estrategia se
+			diseña para mejorar un atributo de calidad en particular, se puede decir que los \emph{stakeholders} que definen
+			dichos atributos de calidad obtienen cierto ``beneficio'' de las estrategias, el cual se suele denominar
+			\emph{utilidad}.
+
+			Cada estrategia provee un nivel específico de utilidad, pero en contrapartida presenta un costo en tiempo y, sobre
+			todo, en dinero. Es por este motivo que los \emph{stakeholders} deben participar en el proceso de decisión de cúales
+			estrategias se emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el
+			retorno de la inversión (la relación costo-beneficio) de aplicar cada estrategia para elegir la más conveniente.
 
 			La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al
 			verse la performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a
 			un nivel adecuado.
+
+			\todo{corregir esto: se mezclan conceptos de Atributo de Calidad y Concern.}
 
 			Las estrategias son desarrolladas para un \emph{concern} específico. Un \emph{concern} de un sistema abarca un
 			subconjunto de propiedades del sistema, como por ejemplo performance, costo o confiabilidad. En una arquitectura
@@ -299,40 +313,44 @@
 			un	determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica
 			levantar-servidor la responsable de ejecutar la acción propiamente dicha, a la cual se la llama \textbf{operador}.
 
+		\subsubsection{Stitch}
+			A fin de disponer de una forma suficientemente expresiva de expresar tácticas y estrategias, Rainbow incluye
+			un lenguaje de propósito particular llamado \textbf{Stitch}, el cual permite plasmar el conocimiento rutinario de
+			las personas sobre adaptación de sistemas de software. Tanto las tácticas como las estrategias serán descriptas
+			utilizando Stitch. Ofrece modularidad con respecto a las dimensiones de los atributos de calidad y al dominio,
+			permite especificar estrategias de múltiples pasos con condiciones de aplicabilidad y efectos deseados y provee	un
+			mecanismo para extender las políticas de adaptación a dominios específicos de sistemas.
+
+			\todo{Completar esto con el contenido de doc/rainbow/CompArch 6-09.pdf}
+
+		\subsubsection{Ejemplo de una Estrategia en Rainbow}
+
 			A continuación, observamos un ejemplo de estrategia:
+
+			\todo{mejorar introduccion y explicar BREVEMENTE este ejemplo de estrategia!}
 
 			\begin{Verbatim}[gobble=4]
 				/*
 				 * Adaptation script for the News Site example.
 				 */
-				
+
 				module newssite.strategies;
-				
+
 				import lib "newssiteT.s";
-				
+
 				strategy improveClientLatency (int i) {
 					boolean c0 = exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
 					// or c1 could be captured as !c0
 					boolean c1 = forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
-				
+
 					t0: (#[prob{t0}] c0 @[2/*sec*/]) -> enlargeServerPool(1) {
-						t1: (#[prob{t1}] success @[1/*sec*/]) -> done;  
+						t1: (#[prob{t1}] success @[1/*sec*/]) -> done;
 						t2: (#[prob{t0}] c0 @[2/*sec*/]) -> switchToTextualContent(i, j) {
-							t2a: (#[prob{t2a}] success @[1/*sec*/]) -> done;  
+							t2a: (#[prob{t2a}] success @[1/*sec*/]) -> done;
 						}
 					}
 				}
 			\end{Verbatim}
-
-			\todo{explicar este ejemplo de estrategia!}
-
-			\todo{TASK: Explicar Stitch con más detalle}
-
-			Rainbow provee un lenguaje de scripting llamado \textbf{Stitch}, pensado para permitir plasmar el conocimiento
-			rutinario de las personas sobre adaptación de sistemas de software. Tanto las tácticas como las estrategias serán
-			descriptas utilizando Stitch. Ofrece modularidad con respecto a las dimensiones de los atributos de calidad y al
-			dominio, permite especificar estrategias de múltiples pasos con condiciones de aplicabilidad y efectos deseados y
-			provee	un mecanismo para extender las políticas de adaptación a dominios específicos de sistemas.
 
 		\subsubsection{EMA: Suavizando el Comportamiento}
 		\label{sec:exponentialAverage}
