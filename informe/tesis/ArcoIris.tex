@@ -229,6 +229,19 @@
 			\item Cuantificación de la Respuesta
 		\end{itemize}
 
+		En la Figura \ref{fig:ATAM_Model} se puede ver el modelo diseñado para representar los escenarios de ATAM en Arco
+		Iris. Este modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco
+		Iris para llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear
+		los escenarios.
+		
+		\afterpage{\clearpage
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=1.00\textwidth]{images/ATAM_Model.png}
+			\caption{Modelo de ATAM}
+			\label{fig:ATAM_Model}
+		\end{figure}}		
+		
 		Supongamos que tenemos el siguiente escenario:
 
 		\begin{quote}
@@ -1003,15 +1016,8 @@
 		\todo{La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene sentido
 		ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
 
-
-		\todo{Quitar Heuristic del modelo}
-		\todo{Donde hablamos del Artifact, actualizar: solo tiene name y systemName, quitar holds y
-		getFullyQualifiedPropertyName}
-		\todo{Corregir: un AtamScenario tiene muchos Environments}
-		\todo{Agregar a SelfHealingScenario: applyFor, isBroken, isBrokenAfterStrategy}
-		\todo{Quitar metodos de las subclases de RepairStrategies}
-		\todo{Quitar SelfHealingConfiguration? Se menciona en algun lado? Se menciona SelfHealingConfigurationManager en
-		actualizacion dinamica}
+		\todo{Agregar subseccion para explicar detalladamente SelfHealingConfiguration y SelfHealingConfiguration. Se menciona
+		en actualizacion dinamica solamente}
 
 		\todo{Hacer otro modelo con: ScenarioScoreAssigner,	BaseScenarioScoreAssigner,
 		ScenarioScoreAssigner4CurrentSystemState, ScenarioScoreAssigner4StrategyScoring, ScenarioBrokenDetector,
