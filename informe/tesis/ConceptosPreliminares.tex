@@ -1,5 +1,17 @@
 \section{Conceptos Preliminares}
 
+	\subsection{Atributos de Calidad}
+	
+		Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente
+		especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable'').
+
+		\todo{Corregir el siguiente parrafo}
+		Un \emph{concern} abarca un subconjunto de propiedades del sistema, como por ejemplo \emph{performance},
+		costo o confiabilidad. En una arquitectura cliente-servidor, el \emph{concern} performance abarcaría las propiedades
+		ancho de banda y carga del sistema, mientras que el \emph{concern} costo se encargaría del costo de los servidores.
+			
+		\todo{Extender explicacion de QA y agregar definicion de Concern}
+
 	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
 
  		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
@@ -169,7 +181,7 @@
 			adaptación de sistemas de software a traves de sus modelos de arquitectura, tal cual fue descrito en la sección
 			\ref{sec:ARSBMA}.
 
-			Sin bien en principio el enfoque de auto adaptación basado en arquitecturas es atractivo, el mismo supone un número
+			Si bien en principio el enfoque de auto adaptación basado en arquitecturas es atractivo, el mismo supone un número
 			significativo de desafíos en el campo de la investigación así también como en el de la ingeniería:
 
 			\begin{itemize}
@@ -191,10 +203,10 @@
 
 			\subsubsection{Arquitectura de Rainbow}
 
-				La Figura \ref{fig:Rainbow_Framework} muestra el ciclo de control cerrado de Rainbow para implementar auto
-				adaptación. Rainbow usa un modelo arquitectural abstracto para monitorear las propiedades en \emph{runtime} del
-				sistema que está siendo ejecutado, evalúa el modelo para detectar violaciones en restricciones impuestas sobre el
-				mismo y, si un problema ocurre, lleva a cabo adaptaciones en el sistema que se está ejecutando.
+				La Figura \ref{fig:Rainbow_Framework} muestra la arquitectura de Rainbow. En resumidas palabras, el \emph{framework}
+				utiliza un modelo arquitectural abstracto para monitorear las propiedades en \emph{runtime} del sistema que está
+				siendo ejecutado, evalúa el modelo para detectar violaciones a restricciones impuestas sobre el mismo y lleva a cabo
+				adaptaciones en el sistema tendientes a eliminar tales violaciones.
 
 				\begin{figure}[H]
 					\centering
@@ -203,58 +215,51 @@
 					\label{fig:Rainbow_Framework}
 				\end{figure}
 
+				La infraestructura de adaptación de Rainbow se divide en capas que proveen funcionalidades comunes a distintos
+				sistemas auto adaptables logrando por lo tanto el objetivo de disponer de componentes reutilizables, a saber:
+				\begin{enumerate}
+					\item \textbf{Capa de Sistema}:\\
+					En esta capa se define e implementa una interfaz de acceso al sistema que está siendo ejecutado. Se define un
+					mecanismo para medir variables de interés, materializado en \emph{Probes}: componentes que observan
+					y miden diversos estados del sistema, para luego publicarlos.
 
-				Rainbow está dividido básicamente en dos grandes partes:
-				\begin{itemize}
-					\item \textbf{infraestructura de adaptación} la cual se divide a su vez en capas que proveen funcionalidades
-					comunes a distintos sistemas auto adaptables logrando por lo tanto el objetivo de disponer de componentes
-					reutilizables, a saber:
-					\begin{enumerate}
-						\item \textbf{Capa de Sistema}:\\
-						En esta capa se define e implementa una interfaz de acceso al sistema que está siendo ejecutado. Se define un
-						mcanismo para medir variables de interés en el sistema, materializado en \emph{Probes}: componentes que observan y
-						miden diversos estados del sistema, para luego publicarlos.
+					Adicionalmente, existe un mecanismo para descubrir recursos que puede ser utilizado especificando el tipo de
+					recurso, entre otros criterios. Finalmente, los denominados \emph{Effectors} llevan a cabo las modificaciones
+					propiamente dichas sobre el sistema.
+					\item \textbf{Capa de Arquitectura}:\\
+					En esta capa, los denominados \emph{Gauges} agregan información provenientes de los \emph{Probes} y actualizan
+					las propiedades correspondientes en el modelo arquitectural del sistema, el cual es manejado y accedido mediante
+					un componente denominado \emph{Model Manager}. El \emph{Constraint Evaluator} chequea el modelo periódicamente y
+					dispara la adaptación en el caso que ocurra una violación en alguna restricción impuesta sobre el modelo. En ese
+					caso, el motor de adaptación (\emph{Adaptation Engine}) determina el curso de acción y lleva a cabo la adaptación
+					necesaria.
+					\item \textbf{Capa de Traducción}:\\
+					Esta capa es la encargada de cubrir la brecha de abstracción existente entre el sistema en ejecución y el modelo
+					de su arquitectura (en ambos sentidos). En esta infraestructura, un repositorio de traducción mantiene diversos
+					mapeos compartidos por distintos componentes dentro de esta capa, por ejemplo, una operación a nivel modelo de la
+					arquitectura en su correspondiente operación de \emph{runtime}:
 
-						Adicionalmente, existe un mecanismo para descubrir recursos que puede ser utilizado especificando el tipo de
-						recurso, entre otros criterios. Finalmente, un mecanismo denominado \emph{Effector} lleva a cabo la modificación
-						propiamente dicha del sistema.
-						\item \textbf{Capa de Arquitectura}:\\
-						En esta capa, los denominados \emph{Gauges} agregan información provenientes de los \emph{Probes} y actualizan
-						las propiedades correspondientes en el modelo arquitectural del sistema, el cual es manejado y accedido mediante
-						un componente denominado \emph{Model Manager}. El \emph{Constraint Evaluator} chequea el modelo periódicamente y
-						dispara la adaptación en el caso que ocurra una violacin en alguna restricción impuesta sobre el modelo. En ese
-						caso, el motor de adaptación (\emph{Adaptation Engine}) determina el curso de acción y lleva a cabo la adaptación
-						necesaria.
-						\item \textbf{Capa de Traducción}:\\
-						Esta capa es la encargada de cubrir la brecha de abstracción existente entre el sistema en ejecución y el modelo
-						de su arquitectura (en ambos sentidos). En esta infraestructura, un repositorio de traducción mantiene diversos
-						mapeos que distintos componentes dentro de esta capa comparten, por ejemplo, información necesaria para traducir
-						un elemento arquitectónico en una dirección IP o una operación a nivel modelo de la arquitectura en su
-						correspondiente operación de \emph{runtime}. Por ejemplo:
+					\begin{Verbatim}[gobble=7]
+						       Componente de Log::desactivar       <==>       Logger.disableLog()
+					\end{Verbatim}
+				\end{enumerate}
 
-						\begin{Verbatim}[gobble=7]
-							       Componente de Log::desactivar       <==>       Logger.disableLog()
-						\end{Verbatim}
-					\end{enumerate}
+				Rainbow es un \emph{framework} desarrollado en el lenguaje de programación Java\textsuperscript{\texttrademark} y
+				todos los derechos sobre el código fuente pertenecen al grupo ABLE de la Universidad de Carnegie Mellon. Los autores
+				de este trabajo solicitaron permiso a este grupo para poder acceder al código fuente de Rainbow para poder realizar
+				la extensión objeto de este trabajo. En la wiki oficial de Rainbow pueden encontrarse instrucciones para
+				instalar versiones ya compiladas del \emph{framework}. Para más información, visitar
+				\url{http://rainbow.self-adapt.org/RainbowInstall}.
 
-					\item \textbf{conocimiento específico del sistema sobre adaptación}:\\
-					Agregar auto adaptación a un sistema de software utilizando la funcionalidad que la infraestructura provista por la
-					infraestructura de adaptación requiere agregar conocimiento específico de la aplicación para poder ajustar dicha
-					infraestructura a las necesidades puntuales de cada sistema. Este conocimiento incluye el modelo operacional del
-					sistema, que define parámetros como tipos de componentes y propiedades, restricciones de comportamiento,
-					estrategias de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como
-					para hacer efectivas las estrategias de reparación, etc.
-
-					Típicamente este conocimiento no es reutilizable entre distintos sistemas.
-				\end{itemize}
-
-
-			Rainbow es un \emph{framework} desarrollado en el lenguaje de programación Java\textsuperscript{\texttrademark} y
-			todos los derechos sobre el código fuente pertenecen al grupo ABLE de la Universidad de Carnegie Mellon. Los autores
-			de este trabajo solicitaron permiso a este grupo para poder acceder al código fuente de Rainbow para poder realizar
-			la extensión objeto de este trabajo. En la wiki oficial de Rainbow pueden encontrarse instrucciones para
-			instalar versiones ya compiladas del \emph{framework}. Para más información, visitar
-			\url{http://rainbow.self-adapt.org/RainbowInstall}.
+		\subsubsection{Conocimiento específico del sistema}
+		
+			En la sección anterior hemos descrito la infraestructura básica provista por Rainbow. Es de notar que la misma no es
+			suficiente para satisfacer las necesidades puntuales de auto adaptación de un sistema en particular. Para
+			lograr esto, es necesario extender dicha infraestructura, agregando conocimiento específico del sistema que se desea
+			adaptar. Este conocimiento (típicamente no reutilizable entre distintos sistemas) incluye el modelo operacional
+			del sistema, que define parámetros como tipos de componentes y propiedades, restricciones de comportamiento,
+			estrategias de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como
+			para hacer efectivas las estrategias de reparación, etc.
 
 		\subsubsection{Tácticas y Estrategias}
 
@@ -265,13 +270,10 @@
 			hace tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las
 			\textbf{estrategias}.
 
-			\todo{TURCO: REALMENTE ESTA ES LA DEFINICION? Necesitamos algo un poco mejor\ldots}
-			Allí se definen las tácticas como una decisión de diseño que influye sobre la respuesta \todo{???? que es la
-			respuesta de un QA?} de un atributo de calidad, mientras que definen a una estrategia como una colección de tácticas.
-			La figura \ref{fig:tactics_control_to_response} muestra gráficamente la visión de las tácticas presentada por los
-			autores.
+			Las \textbf{tácticas} se definen como decisiones de diseño tendientes a controlar la respuestas del sistema a
+			determinados estímulos, a fin de satisfacer uno o más atributos de calidad requeridos. La figura
+			\ref{fig:tactics_control_to_response} muestra gráficamente el concepto de táctica arquitectural.
 
-			\todo{este gráfico queda colgadísimo así como está explicado hasta el momento el tema}
 			\begin{figure}[h]
 				\centering
 					\includegraphics{images/tactics_control_to_response.png}
@@ -279,12 +281,14 @@
 				\label{fig:tactics_control_to_response}
 			\end{figure}
 
-			\todo{El hablar continuamente del libro no es del nivel de una tesis. Se menciona una vez la bibliografía y luego se
-			hace al texto propio.}
-
 			Cada táctica es una opción de diseño para el arquitecto, un ejemplo concreto podría ser el introducir redundancia en
 			determinados componentes de la arquitectura (e.g. base de datos, servidores web replicados, etc.) para incrementar la
 			dis\-po\-ni\-bi\-li\-dad del sistema.
+
+			Por otro lado, una \textbf{estrategia} se define simplemente como una colección de tácticas. La estrategia es la
+			herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al verse la
+			performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a un nivel
+			adecuado.
 
 			En el ejemplo anterior se puede observar una característica esencial de las estrategias: las mismas afectan
 			(positiva y/o negativamente) a los atributos de calidad establecidos para un sistema y cuando una estrategia se
@@ -297,21 +301,16 @@
 			estrategias se emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el
 			retorno de la inversión (la relación costo-beneficio) de aplicar cada estrategia para elegir la más conveniente.
 
-			La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al
-			verse la performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a
-			un nivel adecuado.
+			Las estrategias son desarrolladas para asegurar el cumplimiento de un determinado requerimento sobre un
+			\emph{concern} específico. 
 
-			\todo{corregir esto: se mezclan conceptos de Atributo de Calidad y Concern.}
+			\todo{Explicar que la estrategia es una suerte de controlador. Tomar de doc/rainbow/CompArch 6-09.pdf}
 
-			Las estrategias son desarrolladas para un \emph{concern} específico. Un \emph{concern} de un sistema abarca un
-			subconjunto de propiedades del sistema, como por ejemplo performance, costo o confiabilidad. En una arquitectura
-			cliente-servidor, el \emph{concern} performance abarcaría las propiedades ancho de banda y carga del sistema,
-			mientras que el \emph{concern} costo se encargaría del costo de los servidores.
-
-			Las estrategias se componen de tácticas, las cuales realizan la modificación en el sistema. Por ejemplo, una
-			estrategia podría ser: agregar servidores mientras haya disponible, o hasta que el tiempo de respuesta haya alcanzado
-			un	determinado valor. Esta lógica sería descripta en la estrategia, mientras que va a ser la táctica
-			levantar-servidor la responsable de ejecutar la acción propiamente dicha, a la cual se la llama \textbf{operador}.
+			Como ya hemos mencionado, las estrategias se componen de tácticas, las cuales son, en último término, las
+			responsables de llevar a cabo las modificaciones sobre sistema. Por ejemplo, en una arquitectura cliente-servidor,
+			una estrategia podría definir agregar servidores mientras existan disponibles o, hasta que el tiempo de respuesta
+			haya descendido  por debajo de un umbral determinado. Esta lógica sería descrita en la estrategia, mientras que será
+			la táctica \verb@levantar-servidor@ la responsable de ejecutar la acción propiamente dicha.
 
 		\subsubsection{Stitch}
 			A fin de disponer de una forma suficientemente expresiva de expresar tácticas y estrategias, Rainbow incluye
@@ -323,11 +322,16 @@
 
 			\todo{Completar esto con el contenido de doc/rainbow/CompArch 6-09.pdf}
 
+		\subsubsection{Ejemplo de una Táctica en Rainbow}
+
+			\todo{Tomar info y ejemplo Táctica de doc/rainbow/CompArch 6-09.pdf}
+
 		\subsubsection{Ejemplo de una Estrategia en Rainbow}
 
 			A continuación, observamos un ejemplo de estrategia:
 
 			\todo{mejorar introduccion y explicar BREVEMENTE este ejemplo de estrategia!}
+			\todo{Tomar info y ejemplo Estrategia de doc/rainbow/CompArch 6-09.pdf}
 
 			\begin{Verbatim}[gobble=4]
 				/*
@@ -410,9 +414,6 @@
 		\label{sec:QAS}
 
 		\todo{TASK: Extender definición de Escenarios de Atributos de Calidad (poco, está casi OK así)}
-
-		Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente
-		especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable'').
 
 		Los atributos de calidad pueden ser representados mediante escenarios. Los escenarios están compuestos por:
 
