@@ -161,17 +161,21 @@
 			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
 			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
 
-			El mecanismo se ejecuta periódicamente cada $X$ milisegundos dónde $X$ es configurable utilizando el archivo de
-			configuración estándar de Rainbow (inicialmente, $X = 5000$, es decir, el mecanismo se ejecuta cada 5 segundos).
+			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
+			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
+			de \verb@customize.scenarios.reloadInterval@, cuyo valor inicial por defecto será $5000$, es decir, el mecanismo de
+			actualización se ejecutará cada 5 segundos.
 
 			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca del patrón Observer, visitar
 			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
-			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente más interesado en
-			conocer cuando un cambio en la configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
-			\todo{SelfHealingConfigurationManager no se habìa mencionado nunca hasta aquí} el cual, en ese caso, recalcula una
-			variada cantidad de información guardada en memoria para que pueda ser usada instantáneamente por el componente
-			\textbf{RainbowModelWithScenarios}.
-
+			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente (\emph{observer}
+			siguiendo la nomenclatura utilizada comúnmente en el patrón) más interesado en conocer cuando un cambio en la
+			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
+			\todo{SelfHealingConfigurationManager no se había mencionado nunca hasta aquí} el cual, en ese caso, descarta toda la
+			configuración de los escenarios cargada en memoria, tomando luego la nueva configuración del archivo recientemente
+			actualizado. A partir de este momento Arco Iris continuará trabajando con la nueva configuración de escenarios sin
+			detener en ningún momento su ejecución.
+			
 			El mecanismo descrito en este apartado se encuentra implementado en la clase\\
 			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
 
@@ -203,6 +207,17 @@
 					Timer timer = new Timer();
 					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
 				}
+				
+				public void register(SelfHealingConfigurationChangeListener listener) {
+					this.listeners.add(listener);
+				}
+				
+				protected void notifyListeners() {
+					for (SelfHealingConfigurationChangeListener listener : this.listeners) {
+						listener.selfHealingConfigurationHasChanged();
+					}
+				}
+								
 				(...)
 			\end{Verbatim}
 
@@ -584,7 +599,7 @@
 
 		Esto es lo que veremos, entre otras cosas, en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow.
 		Aquí, como vemos, existe más de una configuracion del escenario, luego se deberá seleccionar una de estas opciones en
-		el archivo de configuración \emph{rainbow.properties}. Estos valores serán luego utilizados por Rainbow a la hora de
+		el archivo de configuración \verb@rainbow.properties@. Estos valores serán luego utilizados por Rainbow a la hora de
 		seleccionar una estrategia, veremos en detalle su utilización en la sección \ref{sec:strategySelection}.
 
 		Presentado ya el concepto de escenario utilizado por Rainbow, pasaremos estas ideas a su contrapartida en Arco Iris.
