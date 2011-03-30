@@ -23,7 +23,7 @@
 				\end{itemize}
 			\item Proponer los cambios en el \emph{Manejador de Reparaciones} y el \emph{Evaluador de Restricciones} de Rainbow,
 			e implementar algunos casos prácticos que permitan mostrar cómo esta estrategia puede funcionar y llevar a un
-			framework de adaptación más flexible y poderoso.
+			\emph{framework} de adaptación más flexible y poderoso.
 			\item Evaluar la factibilidad de que esta nueva versión extendida de Rainbow sea compatible con la original, es decir
 			que idealmente cualquier usuario que ya posea Rainbow funcionando en su sistema podría incorporar estas extensiones
 			sin tener que modificar la configuración actual.
@@ -75,13 +75,13 @@
 			Como se ha mencionado anteriormente, Arco Iris (es decir, Rainbow con las extensiones realizadas en este trabajo)
 			trabaja utilizando:
 			\begin{itemize}
-				\item por un lado, una configuración de \emph{self healing} en formato XML, producida ya sea por la herramientas
-				``Scenarios UI'' o bien manualmente; la cual incluye: escenarios de QAW, entornos de ejecución y \emph{artifacts}.
+				\item por un lado, una configuración de \emph{Self Healing} en formato XML, producida ya sea por la herramientas
+				Scenarios UI o bien manualmente; la cual incluye: escenarios de QAW, entornos de ejecución y \emph{artifacts}.
 				\item por otro, una batería de archivos de configuración heredados de Rainbow, en distintos formatos: stitch, ACME,
 				\emph{properties files}, etc.
 			\end{itemize}
 			Una de las mejoras que agrega este trabajo a Rainbow es el de proveer un mecanismo dinámico de actualización de la
-			configuración de \emph{self healing} mediante el cual cualquier modificación en el archivo XML de configuración
+			configuración de \emph{Self Healing} mediante el cual cualquier modificación en el archivo XML de configuración
 			cargada al iniciar Arco Iris, conlleva un ``refresco'' de la configuración que está siendo usada en tiempo de
 			ejecución por el \emph{framework}, sin necesidad de intervención alguna de un operador.
 			
@@ -89,8 +89,8 @@
 			ventajas, a saber:
 			\begin{itemize}
 				\item ya no es necesario reiniciar el \emph{framework} de auto reparación para modificar cualquier característica
-				relacionada con los escenarios, entornos de ejecución y artifacts utilizados en el sistema. Esto evita tiempos de
-				no-servicio, recursos involucrados en la reconfiguración y reinicio del sistema, etc. 
+				relacionada con los escenarios, entornos de ejecución y \emph{artifacts} utilizados en el sistema. Esto evita
+				tiempos de no-servicio, recursos involucrados en la reconfiguración y reinicio del sistema, etc. 
 				\item se agrega flexibilidad al uso de la herramienta: se podrían agregar nuevos escenarios, nuevos entornos de
 				ejecución que (re)definan situaciones de ejecución concretas, cambiar pesos de concerns y/o prioridades relativas
 				entre escenarios de acuerdo a necesidades puntuales del negocio e infinidad de otros cambios de configuración

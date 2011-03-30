@@ -99,7 +99,7 @@
 		(o auto adaptarse) a condiciones cambiantes en el entorno de ejecución del sistema.
 
 		Por otro lado, cuando la adaptación dinámica del sistema responde a errores o situaciones excepcionales del
-		mismo, el término más utilizado actualmente es \emph{Self Healing} o, en castellano, Auto Reparación.
+		mismo, el término más utilizado actualmente es \emph{Self Healing} o, en castellano, \textbf{Auto Reparación}.
 
 		Si bien ya existen mecanismos para mitigar los mencionados problemas, ellos normalmente están intrínsecamente ligados
 		al lenguaje de programación utilizado para construír la aplicación, tales como tratamiento de excepciones, protocolos de
@@ -158,7 +158,7 @@
 			\label{fig:selfhealing-closed-loop}
 		\end{figure}
 
-		Otro sub-proyecto del proyecto ABLE, denominado \textbf{Rainbow} (sobre el cual profundizaremos más adelante) utiliza
+		Otro sub proyecto del proyecto ABLE, denominado \textbf{Rainbow} (sobre el cual profundizaremos más adelante) utiliza
 		esta técnica de \emph{closed-loop} para monitorear y reparar sistemas.
 
 	\subsection{Lenguajes de Descripción de Arquitecturas}
@@ -525,9 +525,9 @@
 			\item \textbf{Medición de la respuesta}: sin caídas (downtime)
 		\end{itemize}
 
-		Los escenarios permiten obtener el punto de vista de un grupo diverso de stakeholders (arquitectos, desarrolladores,
-		usuarios, sponsors, etc). Estos escenarios pueden luego ser utilizados para analizar la arquitectura del sistema e
-		identificar concerns y posibles estrategias para atacar problemas.
+		Los escenarios permiten obtener el punto de vista de un grupo diverso de \emph{stakeholders} (arquitectos,
+		desarrolladores, usuarios, sponsors, etc). Estos escenarios pueden luego ser utilizados para analizar la arquitectura
+		del sistema e identificar concerns y posibles estrategias para atacar problemas.
 
 		\todo{fuente de lo que sigue: http://www.sei.cmu.edu/architecture/tools/qaw/index.cfm}
 
@@ -538,14 +538,14 @@
 		fue desarrollado en base a reclamos de los clientes que necesitaban un método para identificar los atributos de
 		calidad importantes, y aclarar requerimientos del sistema antes de que su arquitectura esté definida.
 
-		En los QAW se organizan reuniones con todos los stakeholders del sistema, en las que se definen los escenarios que en
-		definitiva representarán los requerimientos de atributos de calidad que el sistema idealmente deberá satisfacer. Un
-		vez definidos todos los escenarios, el siguiente paso del QAW consiste en priorizar y refinar los escenarios, por
-		ejemplo agregando detalles adicionales tales como los participantes involucrados, la secuencia de actividades, y
-		preguntas sobre el requerimiento que representa cada escenario. El proceso de refinar los escenarios permite a los
-		stakeholders comunicarse entre ellos, exponiendo supuestos que pueden no ser tan claros para el resto del grupo. Dicho
-		refinamiento también proporciona una visión de cómo interactúan los atributos de calidad entre sí, sirviendo de base
-		para definir tradeoffs entre estos atributos.
+		En los QAW se organizan reuniones con todos los \emph{stakeholders} del sistema, en las que se definen los escenarios
+		que en definitiva representarán los requerimientos de atributos de calidad que el sistema idealmente deberá
+		satisfacer. Un vez definidos todos los escenarios, el siguiente paso del QAW consiste en priorizar y refinar los
+		escenarios, por ejemplo agregando detalles adicionales tales como los participantes involucrados, la secuencia de
+		actividades, y preguntas sobre el requerimiento que representa cada escenario. El proceso de refinar los escenarios
+		permite a los \emph{stakeholders} comunicarse entre ellos, exponiendo supuestos que pueden no ser tan claros para el
+		resto del grupo. Dicho refinamiento también proporciona una visión de cómo interactúan los atributos de calidad entre
+		sí, sirviendo de base para definir tradeoffs entre estos atributos.
 
 		El proceso QAW termina con la lista de escenarios refinados y priorizados. Los mismos pueden servir para definir casos
 		de pruebas, o como semillas para el proceso ATAM.
@@ -575,7 +575,7 @@
 		ATAM es un método estructurado y repetible, ayudando así a que las preguntas correctas sobre la arquitectura sean
 		planteadas de manera temprana en el proyecto, durante las etapas de análisis de requerimentos y de diseño, en las
 		cuales los problemas detectados pueden ser corregidos sin mayores costos. ATAM guía a los usuarios del método
-		(stakeholders) para que busquen conflictos en la arquitectura y soluciones a dichos conflictos.
+		(\emph{stakeholders}) para que busquen conflictos en la arquitectura y soluciones a dichos conflictos.
 
 		Cabe aclarar que los QAW han surgido como consecuencia del uso de ATAM, ya que usuarios de éste último solicitaban una
 		herramienta o método que les permitiera identificar los requerimientos y los atributos de calidad más importantes del

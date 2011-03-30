@@ -6,15 +6,15 @@
 		\subsubsection{Motivaciones para una ``GUI''}
 
 			Aún considerando las mejoras provistas por la extensión a Rainbow propuesta en el presente trabajo, uno de los
-			escollos más notorios para poder utilizar de manera amena, ágil y productiva a ``Arco Iris'' es, sin dudas, la
+			escollos más notorios para poder utilizar de manera amena, ágil y productiva a Arco Iris es, sin dudas, la
 			ausencia de una interfaz visual para que los \emph{stakeholders} y arquitectos de la aplicación puedan crear, editar
-			y eliminar escenarios, entornos, artifacts y otros conceptos introducidos en ``Arco Iris''; así también como otros
-			conceptos ya existentes en ``Rainbow''.
+			y eliminar escenarios, entornos, \emph{artifacts} y otros conceptos introducidos en Arco Iris; así también como otros
+			conceptos ya existentes en Rainbow.
 			
 			A fin de superar esta dificultad, se propone el desarrollo de una interfaz de usuario gráfica (GUI, de sus siglas en
 			inglés: \emph{Graphical User Interface}) para que los distintos \emph{stakeholders}, incluyendo usuarios y
 			arquitectos, puedan expresar los requerimientos no funcionales (o ``illities'') del sistema en formato de escenarios
-			de QAW, que luego serán importados y utilizados por ``Arco Iris''.
+			de QAW, que luego serán importados y utilizados por Arco Iris.
 			
 			En el presente apartado nos dedicaremos a repasar los aspectos más importantes de la aplicación, bautizada
 			``Scenarios UI''.
@@ -32,11 +32,10 @@
 			también la facilidad de aplicación de parches y actualizaciones a la misma. Estos argumentos son sencillamente
 			irrefutables.
 			
-			Entonces bien, ¿por qué hemos elegido construír ``Scenarios UI'' basado en una interfaz gráfica de usuario de
-			escritorio?
+			Entonces bien, ¿por qué hemos elegido construír Scenarios UI basado en una interfaz gráfica de usuario de escritorio?
 			
 			\begin{itemize}
-				\item porque consideramos que para el caso concreto de ``Arco Iris'', dónde se pretende que los \emph{stakeholders}
+				\item porque consideramos que para el caso concreto de Arco Iris, dónde se pretende que los \emph{stakeholders}
 				de la aplicación junto a el o los arquitectos de la misma \textbf{colaboren} para llevar a cabo una especificación
 				de sus requerimientos de auto reparación para el sistema; es más importante la agilidad de uso y la rapidez de
 				respuesta de la aplicación.
@@ -59,15 +58,15 @@
 			
 		\subsubsection{Idioma por defecto: inglés}
 
-			Dado que Rainbow es una aplicación originalmente creada en Estados Unidos, y previendo que tanto ``Arco Iris'' como
-			``Scenarios UI'' puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, decidimos que lo más
-			razonable es que estas aplicaciones estén codificadas en el idioma inglés. En el caso de ``Scenarios UI'', todos los
+			Dado que Rainbow es una aplicación originalmente creada en Estados Unidos, y previendo que tanto Arco Iris como
+			Scenarios UI puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, decidimos que lo más
+			razonable es que estas aplicaciones estén codificadas en el idioma inglés. En el caso de Scenarios UI, todos los
 			textos mostrados en pantalla también están escritos en inglés, aunque todas las etiquetas están externalizadas a
 			archivos de configuración 
 			
 		\subsubsection{Multi plataforma}
 
-			``Scenarios UI'' es, como la gran mayoría de las aplicaciones Java, ejecutable desde los sistemas operativos
+			Scenarios UI es, como la gran mayoría de las aplicaciones Java, ejecutable desde los sistemas operativos
 			más importantes, como por ejemplo Windows, Unix, MAC OS o Solaris. Debido a la utilización de las librerías SWT-JFace
 			para la creación de la herramienta, las cuales poseen dependencias nativas del sistema operativo (i.e. el encargado
 			de dibujar y refrescar los componentes visuales no es la máquina virtual de Java sino el sistema operativo) es
@@ -79,24 +78,24 @@
 
 		\subsubsection{Formato de salida: XML}
 
-			La configuración de \emph{self healing} que ``Scenarios UI'' debe generar debe ser guardada en un archivo, en un
+			La configuración de \emph{Self Healing} que Scenarios UI debe generar debe ser guardada en un archivo, en un
 			determinado formato. Consideramos que el mejor formato para dicho archivo es el formato XML porque es un formato
 			entendible no sólo por la computadora sino también por seres humanos. Dentro de este tipo de lenguajes (dónde se
 			encuentran otros como JSON o YAML\footnote{Para más información sobre estos lenguajes de intercambio de
 			datos, visitar \url{http://www.json.org/} o \url{http://www.yaml.org/}}) elegimos el formato XML por ser el más
 			ampliamente conocido.
 			
-			La mecánica de serialización de una configuración de ``Self Healing'' creada en Java utilizando ``Scenarios UI'' a
-			XML y la importación de dicho XML en Arco Iris es llevada a cabo utilizando el reconocido parser
-			``XStream''\footnote{Para más información, visitar \url{http://xstream.codehaus.org/}}, el cual permite fácilmente
-			convertir objetos Java en XML y viceversa.
+			La mecánica de serialización de una configuración de \emph{Self Healing} creada en Java utilizando Scenarios UI a
+			XML y la importación de dicho XML en Arco Iris es llevada a cabo utilizando el reconocido parser ``XStream''
+			\footnote{Para más información, visitar \url{http://xstream.codehaus.org/}}, el cual permite fácilmente convertir
+			objetos Java en XML y viceversa.
 			
-			En el apéndice \ref{sec:SelfHealingConfigXML}, podemos observar un ejemplo de un archivo de configuración de self
-			healing generado por ``Scenarios UI''.
+			En el apéndice \ref{sec:SelfHealingConfigXML}, podemos observar un ejemplo de un archivo de configuración de
+			\emph{Self Healing} generado por Scenarios UI.
 	
-		\subsubsection{Una configuración de ``Self Healing'' subyacente}
+		\subsubsection{Una configuración de \emph{Self Healing} subyacente}
 
-			La idea básica de uso de ``Scenarios UI'' es que, en todo momento, exista una configuración de ``Self Healing''
+			La idea básica de uso de Scenarios UI es que, en todo momento, exista una configuración de \emph{Self Healing}
 			subyacente. Bien sea que el usuario la haya creado ``desde cero'' o bien, que el usuario haya abierto una
 			configuración preexistente desde un archivo.
 
@@ -106,29 +105,29 @@
 				\caption{Diálogo de creación o apertura de archivo}
 			\end{figure}
 
-			Ante cualquier acción del usuario de ``Scenarios UI'' dónde se guarden cambios hechos en la configuración activa, la
+			Ante cualquier acción del usuario de Scenarios UI dónde se guarden cambios hechos en la configuración activa, la
 			aplicación \textbf{guardará automáticamente dichos cambios en el archivo subyacente}, garantizando así la
 			persistencia de los cambios hechos por el usuario en casos especiales de pérdida de energía o fallas inesperadas en
-			la computadora que se encuentra corriendo ``Scenarios UI''. Recordemos que, de estar el usuario editando el archivo
+			la computadora que se encuentra corriendo Scenarios UI. Recordemos que, de estar el usuario editando el archivo
 			de configuración que Arco Iris está utilizando en \emph{runtime}, cualquier cambio automáticamente guardado por
-			``Scenarios UI'' será automáticamente detectado por ``Arco Iris'', lo cual dinamiza el comportamiento original
+			Scenarios UI será automáticamente detectado por Arco Iris, lo cual dinamiza el comportamiento original
 			presente en \emph{Rainbow}.
 			
 		\subsubsection{Auto refresco de tablas}
 
-			Como veremos más adelante en detalle, en ``Scenarios UI'' se visualizan los componentes (i.e. escenarios, entornos,
-			artifacts, etc.) existentes en el sistema con una tabla que sumariza sus propiedades más relevantes. En general,
+			Como veremos más adelante en detalle, en Scenarios UI se visualizan los componentes (i.e. escenarios, entornos,
+			\emph{artifacts}, etc.) existentes en el sistema con una tabla que sumariza sus propiedades más relevantes. En general,
 			estas tablas se refrescarán automáticamente de acuerdo a los cambios hechos en los objetos subyacentes que componen
-			la configuración de \emph{self healing}.
+			la configuración de \emph{Self Healing}.
 
 		\subsubsection{Ids ``inteligentes''}
-			El identificador único de los objetos que componen un escenario de auto reparación (e.g. artifacts, entornos, etc.)
+			El identificador único de los objetos que componen un escenario de auto reparación (e.g. \emph{artifacts}, entornos, etc.)
 			es encarado en todos los casos de una única manera, tomemos el \emph{artifact} a modo de ejemplo: la aplicación
-			considera los id's de los artifacts existentes en el sistema y al momento de crear un artifact nuevo, sugiere
-			automáticamente un id no utilizado, de modo de garantizar la unicidad de dicho objeto cuando sea usado en ``Arco
+			considera los id's de los \emph{artifacts} existentes en el sistema y al momento de crear un \emph{artifact} nuevo,
+			sugiere automáticamente un id no utilizado, de modo de garantizar la unicidad de dicho objeto cuando sea usado en ``Arco
 			Iris''.
 		
-		\subsubsection{Constraints}
+		\subsubsection{\emph{Constraints}}
 		\label{sec:scenariosUI_constraints}
 
 			Tanto en el contexto de creación/edición de un entorno (al imponer restricciones sobre su ocurrencia) como al crear o
@@ -147,11 +146,11 @@
 				\label{fig:numericBinaryRelationalConstraint}
 			\end{figure}
 
-	\subsection{Administración de Artifacts}
+	\subsection{Administración de \emph{Artifacts}}
 		Uno de los componentes relevantes a un escenario de auto reparación es el llamado \emph{Artifact}, el cual representa
 		al componente de arquitectura que está involucrado en el escenario en cuestión.
 		
-		``Scenarios UI'' provee la funcionalidad de alta, baja y modificación (ABM) básica para administrar \emph{artifacts}
+		Scenarios UI provee la funcionalidad de alta, baja y modificación (ABM) básica para administrar \emph{artifacts}
 		junto con una solapa dentro de la pantalla principal de la aplicación para poder visualizar las propiedades más
 		importantes de dichos objetos.
 
@@ -166,7 +165,7 @@
 		El ``Entorno'' es uno de los componentes más relevantes dentro de un escenario de auto reparación: representa la
 		situación concreta (en tiempo de ejecución) dónde el escenario en cuestión va a aplicar.
 		
-		Al igual que para los \emph{artifacts}, ``Scenarios UI'' provee la funcionalidad de ABM para administrar escenarios
+		Al igual que para los \emph{artifacts}, Scenarios UI provee la funcionalidad de ABM para administrar escenarios
 		junto con una solapa para visualizar sus propiedades más relevantes.
 
 		\begin{figure}[ht]
@@ -209,7 +208,7 @@
 			\item El combo box de \emph{Concerns} se llena con los Concerns existentes en el sistema al momento de cargarse el
 			cuadro de diálogo.
 			\item Se permite especificar que el estímulo correspondiente al escenario es ``cualquiera''.
-			\item Se permite elegir artifacts, considerando los existentes en el sistema o creando ad-hoc uno nuevo.
+			\item Se permite elegir \emph{artifacts}, considerando los existentes en el sistema o creando ad-hoc uno nuevo.
 			\item En el componente ``Response Measure'' se reutiliza el componente mencionado anteriormente en la sección
 			\ref{sec:scenariosUI_constraints} para crear y editar constraints.
 		\end{itemize}
@@ -234,7 +233,7 @@
 		\subsubsection{Selección de Estrategias de Reparación}
 		\label{sec:strategySelectionUI}
 
-			Una funcionalidad interesante de ``Scenarios UI'' es su capacidad para, en el contexto de la creación o edición de un
+			Una funcionalidad interesante de Scenarios UI es su capacidad para, en el contexto de la creación o edición de un
 			escenario, poder elegir una estrategia de reparación directamente desde el archivo \emph{stitch}\todo{referencia?} en
 			el cual se encuentra definida la misma. Primeramente, se elige el archivo que contiene las estrategias, para luego
 			seleccionar la estrategia deseada, visualizando el código (en el lenguaje de scripting \emph{stitch}) de la misma.
@@ -259,9 +258,9 @@
 
 			``Considerar \textbf{todas} las estrategias de reparación disponibles en Arco Iris al momento de la ejecución''
 			
-			Lo anterior significa ni más ni menos que el usuario que configura ``Arco Iris'' vía ``Scenarios UI'', no impone un
+			Lo anterior significa ni más ni menos que el usuario que configura Arco Iris vía Scenarios UI, no impone un
 			conjunto específico de estrategias de reparación a ser utilizadas sino que por lo contrario, permite que cualquier
-			estrategia disponible sea considerada por ``Arco Iris'' para la reparación del escenario subyacente.
+			estrategia disponible sea considerada por Arco Iris para la reparación del escenario subyacente.
 
 			\begin{figure}[ht]
 				\centering
@@ -277,11 +276,10 @@
 
 	\subsection{Puntos de extensión}
 	
-		A continuación, enunciaremos algunos de los posibles puntos de extensión para únicamente para la
-		herramienta ``Scenarios UI'' (para ver puntos de extensión para ``Arco Iris'', remitirse a la sección
-		\ref{sec:puntos_extension}):
+		A continuación, enunciaremos algunos de los posibles puntos de extensión para únicamente para la herramienta
+		Scenarios UI (para ver puntos de extensión para Arco Iris, remitirse a la sección \ref{sec:puntos_extension}):
 		\begin{itemize}
-			\item Los artifacts podrían seleccionarse del archivo .acme que contiene la descripción de la arquitectura del
+			\item Los \emph{artifacts} podrían seleccionarse del archivo .acme que contiene la descripción de la arquitectura del
 			sistema a adaptar, en lugar de tener que escribir el usuario el `system name'' y ``property name'' del componente en
 			cuestión.
 			\item lo mismo podría hacerse con los estímulos, ya que ellos serán normalmente la etiqueta de un puerto, en el
