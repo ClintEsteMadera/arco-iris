@@ -1,17 +1,88 @@
 \section{Conceptos Preliminares}
 
-	\subsection{Atributos de Calidad}
-	
-		Los atributos de calidad representan los requerimientos no funcionales de un sistema, y suelen estar pobremente
-		especificados, o directamente no especificados (``un requerimiento que no es testeable no es implementable'').
+	\subsection{No todo es funcionalidad\ldots}
 
-		\todo{Corregir el siguiente parrafo}
-		Un \emph{concern} abarca un subconjunto de propiedades del sistema, como por ejemplo \emph{performance},
-		costo o confiabilidad. En una arquitectura cliente-servidor, el \emph{concern} performance abarcaría las propiedades
-		ancho de banda y carga del sistema, mientras que el \emph{concern} costo se encargaría del costo de los servidores.
+		\subsubsection{Restricciones}
+
+			En el desarrollo de sistemas críticos, no es suficiente el satisfacer sólamente \textbf{requerimientos funcionales}
+			(i.e. ``aquello que el software deber hacer''). Este tipo de sistemas generalmente deben satisfacer otro tipo de
+			\textbf{requerimientos no funcionales}, también llamados \textbf{Restricciones}, los cuales especifican criterios a
+			ser usados para juzgar la operación de un sistema en lugar de describir funcionalidad específica para el mismo.
 			
-		\todo{Extender explicacion de QA y agregar definicion de Concern}
+			Algunos ejemplos de restricciones sobre un sistema de software son los siguientes:
+	
+			\begin{enumerate}
+				\item el código de la aplicación debe ser desarrollado en Java.
+				\item la base de datos debe ser SQL Server.
+				\item sólo se utilizarán productos de código abierto (\emph{open-source}).
+				\item el sistema debe ser escalable con respecto a la cantidad de usuarios que lo utilizan concurrentemente.
+				\item el sistema debe implementar políticas de tolerancia a fallos.
+				\item el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.
+			\end{enumerate}
+	
+			Observamos que 1, 2 y 3 establecen meras restricciones a tener en cuenta en el análisis, diseño o desarrollo de la
+			aplicación; mientras que 4, 5 y 6 se refieren a características específicas de \textbf{calidad} deseadas para el
+			sistema. Estos últimos se denominan \textbf{Atributos de Calidad} y es imprescindible conocerlos para poder diseñar
+			la arquitectura de un sistema. Notemos que, en el ejemplo anterior, las restricciones correspondientes a atributos de
+			calidad (4, 5 y 6), están especificados de manera vaga e imprecisa. Esto es lo que suele ocurrir en la mayoría de
+			los casos en la industria de desarrollo de \emph{software}. Notar también que los requerimientos 4 y 6 pueden
+			llegar a afectarse mutuamente: esto también es muy común y para lograr un buen \emph{tradeoff} entre atributos
+			de calidad los arquitectos suelen tener que tomar un conjunto de decisiones arquitectónicas llamadas
+			\textbf{estrategias}, sobre las cuales profundizaremos en la sección \ref{sec:tacticasEstrategias}.
 
+		\subsubsection{Atributos de Calidad y \emph{Concerns}}
+		
+			El estándar 1061-1998 de la IEEE \footnote{Para más información, visitar
+			\url{http://standards.ieee.org/findstds/standard/1061-1998.html}} que establece una metodología para la definición de
+			métricas con respecto a la calidad del \emph{software}, reza:
+			
+			\begin{quote}
+				La calidad del \emph{software} es el nivel que posee de una combinación deseada de atributos (e.g. confiabilidad,
+				interoperabilidad, \emph{performance}, etc.)
+			\end{quote}
+			
+			Algunos ejemplos de atributos de calidad definidos en los estándares IEEE 1061 / ISO 9126
+			\footnote{Para más información, visitar \url{http://es.wikipedia.org/wiki/ISO/IEC_9126}} son:
+			\begin{itemize}
+				\item Eficiencia
+				\item Funcionalidad
+				\item Mantenibilidad
+				\item Portabilidad
+				\item Confiabilidad
+				\item Usabilidad
+			\end{itemize}
+			
+			Imaginemos que un \emph{sponsor} de un sistema a ser desarrollado establece que el sistema debe ser ``eficiente''.
+			¿Qué significa esto exactamente? La pregunta es difícil de contestar si no se dispone de más información.
+			Evidentemente, los atributos de calidad son categorizaciones de alto nivel que, si no se dispone de más
+			información, no parecen servir de mucho para tomar decisiones arquitectónicas en pos de alcanzar un
+			nivel aceptable de dichos atributos de calidad. Al rescate de tal carencia aparecen las denominadas
+			\textbf{Incumbencias} o, del inglés y tales como las llamaremos a lo largo de este trabajo, \textbf{Concerns}.
+			
+			Los \textbf{Concerns} son parámetros mediante los cuales los atributos de un sistema son juzgados, especificados y
+			medidos. Usualmente, los requerimientos de atributos de calidad son expresados en términos de \emph{concerns}.
+			\cite{QA}.
+			
+			A continuación, enumeraremos algunos ejemplos de concerns, junto con el atributo de calidad al que pertenecen:
+			
+			\begin{center}
+				\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+				\begin{tabular}{|c|c|}
+				\textbf{Atributo de Calidad} & \textbf{\emph{Concerns}}\\
+				Eficiencia & Comportamiento Temporal, Utilización de Recursos\\
+				Funcionalidad & Interoperabilidad, Seguridad\\
+				Mantenibilidad & Cambiabilidad, Facilidad de Prueba\\
+				Portabilidad & Adaptabilidad, Coexistencia\\
+				Usabilidad & Compresibilidad, Atractivo			
+				\end{tabular}
+			\end{center}
+
+			Los \emph{concerns} pueden usualmente relacionarse con propiedades de la arquitectura de un sistema, por ejemplo,
+			en una arquitectura cliente-servidor, el atributo de calidad \emph{performance} posee varios \emph{concerns}
+			asociados, por ejemplo, el \textbf{tiempo de respuesta} el cuál está relacionado directamente con algunas
+			propiedades de la arquitectura como el ancho de banda de los servidores, la carga del sistema, la cantidad de
+			servidores, etc.
+			
 	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
 
  		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
@@ -262,10 +333,11 @@
 			para hacer efectivas las estrategias de reparación, etc.
 
 		\subsubsection{Tácticas y Estrategias}
+		\label{sec:tacticasEstrategias}
 
 			Hemos mencionado anteriormente que el objetivo de la auto reparación es el alcanzar determinados atributos de
 			calidad definidos para un determinado sistema, ajustando su comportamiento, de ser necesario, de acuerdo a
-			las condiciones de ejecución del mismo. En el libro \textbf{Software Arquitecture in Practice} \cite{BassClementz},
+			las condiciones de ejecución del mismo. En el libro \textbf{Software Architecture in Practice} \cite{BassClementz},
 			Bass, Clements y Kazman caracterizan y formalizan dos herramientas que vienen siendo ampliamente utilizadas desde
 			hace tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las
 			\textbf{estrategias}.
@@ -414,6 +486,9 @@
 		\label{sec:QAS}
 
 		\todo{TASK: Extender definición de Escenarios de Atributos de Calidad (poco, está casi OK así)}
+
+		\todo{tomar info de acá que está muy bueno y conciso:
+		\url{http://etutorials.org/Programming/Software+architecture+in+practice,+second+edition/Part+Two+Creating+an+Architecture/Chapter+4.+Understanding+Quality+Attributes/4.3+System+Quality+Attributes/}}
 
 		Los atributos de calidad pueden ser representados mediante escenarios. Los escenarios están compuestos por:
 
