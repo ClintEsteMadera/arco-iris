@@ -90,17 +90,17 @@
 
 		\subsubsection{Compatibilidad hacia atrás}
 
-			Uno de los objetivos de diseño más importantes planteados al momento de pensar ``Arco Iris'' fue sin
-			duda el intentar que la presente extensión fuera ``compatible hacia atrás'' con \emph{Rainbow}, es decir, es
-			altamente deseable que la extensión se inserte en el \emph{framework} (conceptualmente hablando) de manera similar a
-			cómo un \emph{plug-in} trabaja en cualquier otro sistema de software; pudiendo en este caso el usuario de manera
-			relativamente simple poder elegir entre utilizar los mecanismos de auto reparación provistos por ``Arco Iris'' solos,
-			conjuntamente con los de Rainbow, o usar unicamente Rainbow original sin extensión alguna.  La implementación de
-			``Arco Iris'' cumple con dicho requerimiento ya que en la misma se extienden (en el sentido estricto de la palabra)
-			componentes, sin cambiar su lógica original. Es importante notar que para que la extensión sea fácilmente adicionable
-			y/o removible se necesitaría que los creadores de Rainbow hagan mínimos cambios a la visibilidad de algunos
-			componentes del \emph{framework} (i.e. clases Java), ya que su implementación está hecha de tal manera que impide la
-			extensión, ya sea vía herencia o composición de clases.
+			Uno de los objetivos de diseño más importantes planteados al momento de pensar Arco Iris fue sin duda el intentar que
+			la presente extensión fuera ``compatible hacia atrás'' con \emph{Rainbow}, es decir, es altamente deseable que la
+			extensión se inserte en el \emph{framework} (conceptualmente hablando) de manera similar a cómo un \emph{plug-in}
+			trabaja en cualquier otro sistema de software; pudiendo en este caso el usuario de manera relativamente simple poder
+			elegir entre utilizar los mecanismos de auto reparación provistos por Arco Iris solos, conjuntamente con los de
+			Rainbow, o usar unicamente Rainbow original sin extensión alguna.  La implementación de Arco Iris cumple con dicho
+			requerimiento ya que en la misma se extienden (en el sentido estricto de la palabra) componentes, sin cambiar su
+			lógica original. Es importante notar que para que la extensión sea fácilmente adicionable y/o removible se
+			necesitaría que los creadores de Rainbow hagan mínimos cambios a la visibilidad de algunos componentes del
+			\emph{framework} (i.e. clases Java), ya que su implementación está hecha de tal manera que impide la extensión, ya
+			sea vía herencia o composición de clases.
 
 		\subsubsection{Arquitectura de Arco Iris}
 
@@ -121,10 +121,10 @@
 			distintos roles que normalmente se engloban en la palabra \emph{stakeholders} (e.g. analistas funcionales, usuarios
 			del sistema, líderes y sponsors del proyecto, clientes, etc.)
 
-			En Rainbow original (i.e. sin extensiones) el framework deja al usuario final la responsabilidad por codificar los
-			\emph{probes} y \emph{gauges} que recolectarán información del sistema a adaptar y traducirán esa información a
-			cambios en los valores de las propiedades del sistema. Esto sigue siendo igual en Rainbow con las extensiones
-			provistas por Arco Iris, es decir, el usuario final sigue siendo el encargado de crear los componentes
+			En la versión original de Rainbow (i.e. sin extensiones) el \emph{framework} deja al usuario final la responsabilidad
+			por codificar los \emph{probes} y \emph{gauges} que recolectarán información del sistema a adaptar y traducirán esa
+			información a cambios en los valores de las propiedades del sistema. Esto sigue siendo igual en Rainbow con las
+			extensiones provistas por Arco Iris, es decir, el usuario final sigue siendo el encargado de crear los componentes
 			que en tiempo de ejecución encuestan al sistema periódicamente para obtener información relevante.
 
 			Así, en el anterior diagrama podemos observar que tanto el \emph{probe} como el \emph{gauge} normalmente tendrán que
@@ -453,20 +453,20 @@
 			diferencia vital del concepto de restricción utilizado en Rainbow con el de Arco Iris.
 
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
-			simplemente implementando la interface \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al enumerado
-			ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}. En cuanto al mapa presente en la estructura del
-			entorno, este deberá contener todos los \emph{concerns} definidos para el sistema, y obviamente la suma de los pesos
-			debe ser igual a uno, ya que la utilidad del mapa es determinar la preponderencia relativa entre los \emph{concerns}. Se
-			detallará cómo se utilizarán estos pesos para calcular el valor de un escenario al escoger una estrategia en la sección
-			\ref{sec:arcoIrisStrategyScoring}. A la hora de decidir en que entorno se encuentra el sistema, no sería suficiente
-			chequear las condiciones definidas para el entorno tomando los datos actuales del sistema, ya que deberíamos eliminar el
-			ruido provocados por los \emph{outlier}, pues para que el sistema se encuentre en un determinado estado es lógico
-			esperar que dicho estado se mantenga por un tiempo mínimo. Entonces, para definir el valor más real para las propiedades
-			del sistema tomamos los valores nuevos con un determinado peso, configurable, que nos permite ir adecuando los valores
-			del sistema de manera paulatina evitando el impacto de los valores que puedan darse por alguna ocasión excepcional, como
-			por ejemplo algún cliente que experimenta un tiempo de respuesta excesivo por algún problema es su conexión o en
-			estación de trabajo. Para mitigar estos casos, utilizaremos el mismo mecanismo utilizado por Rainbow explicado ya en la
-			sección \ref{sec:exponentialAverage}.
+			simplemente implementando la interfaz \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
+			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}. En cuanto al mapa presente en la
+			estructura del entorno, este deberá contener todos los \emph{concerns} definidos para el sistema, y obviamente la
+			suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la preponderencia relativa entre
+			los \emph{concerns}. Se detallará cómo se utilizarán estos pesos para calcular el valor de un escenario al escoger
+			una estrategia en la sección \ref{sec:arcoIrisStrategyScoring}. A la hora de decidir en que entorno se encuentra el
+			sistema, no sería suficiente chequear las condiciones definidas para el entorno tomando los datos actuales del
+			sistema, ya que deberíamos eliminar el ruido provocados por los \emph{outlier}, pues para que el sistema se encuentre
+			en un determinado estado es lógico esperar que dicho estado se mantenga por un tiempo mínimo. Entonces, para definir
+			el valor más real para las propiedades del sistema tomamos los valores nuevos con un determinado peso, configurable,
+			que nos permite ir adecuando los valores del sistema de manera paulatina evitando el impacto de los valores que
+			puedan darse por alguna ocasión excepcional, como por ejemplo algún cliente que experimenta un tiempo de respuesta
+			excesivo por algún problema es su conexión o en estación de trabajo. Para mitigar estos casos, utilizaremos el mismo
+			mecanismo utilizado por Rainbow explicado ya en la sección \ref{sec:exponentialAverage}.
 			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en las
 			de Arco Iris es 0.3. Si se configura un valor muy pequeño, Arco Iris tardará en adaptarse a los cambios en el entorno
 			del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la adaptación
@@ -539,9 +539,9 @@
 			arquitectura, la acción que tomará consistirá en verificar los escenarios, pero no cualquier escenario, solamente los
 			que coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo de la arquitectura, optimizando
 			así de manera determinante la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
-			Dado al cambio en el manejo de restricciones, en Arco Iris se implementó el concepto de Constraint como una
-			interface, dando así la posibilidad de extender el \emph{framework} con el tipo de Constraint que el usuario
-			considere necesario. La interface planteada presentada es la siguiente:
+			Dado al cambio en el manejo de restricciones, en Arco Iris se implementó el concepto de \emph{Constraint} como una
+			interfaz, dando así la posibilidad de extender el \emph{framework} con el tipo de \emph{Constraint} que el usuario
+			considere necesario. La interfaz planteada presentada es la siguiente:
 
 			\begin{Verbatim}[gobble=4]
                 public interface Constraint {
@@ -552,7 +552,7 @@
                 }
 			\end{Verbatim}
 
-			Donde el método \emph{holds} será el encargado de determinar si la Constraint se cumple o no, recibiendo como
+			Donde el método \emph{holds} será el encargado de determinar si la \emph{Constraint} se cumple o no, recibiendo como
 			parámetro el valor de la propiedad a evaluar, mientras que el método \emph{getFullyQualifiedPropertyName} retornará
 			el nombre completo cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que
 			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}.
@@ -616,7 +616,7 @@
 		cumplirse dichas condiciones, cuales serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
 
 		Dicho esto podemos introducirnos directamente en la relación de prioriades entre escenarios, sin confundir los
-		conceptos manejados en ambos frameworks.
+		conceptos manejados en ambos \emph{frameworks}.
 
 		En resumen, Rainbow permite priorizar básicamente por \emph{concerns}, y de manera estática, mientras que Arco Iris
 		permite priorizar escenarios asignandoles prioridades relativas, de modo tal que al momento de escoger una estrategia
@@ -659,11 +659,11 @@
 		comportamiento brindado por Rainbow, esto se logra simplemente indicando la opción que representa a todas las
 		estrategias existentes (para más detalle ver \ref{sec:strategySelectionUI}) cuando se configura el escenario.
 		Una ventaja derivada del agregado del concepto de \emph{Escenario} es que ahora los problemas y sus posibles
-		soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y stakeholders de la aplicación. Como
-		ya sucedía en Rainbow, las estrategias poseen la información necesaria para permitir simular su aplicación y estimar
-		en que condiciones quedaría el sistema luego de haber sido aplicadas (esta información será utilizada para la
-		estimación de la nueva ``utilidad del sistema\footnote{Para más detalle acerca del concepto Utilidad del Sistema ver
-		sección \ref{sec:systemUtility}}'').
+		soluciones (i.e. estrategias de reparación), pueden ser visibles a los usuarios y \emph{stakeholders} de la
+		aplicación. Como ya sucedía en Rainbow, las estrategias poseen la información necesaria para permitir simular su
+		aplicación y estimar en que condiciones quedaría el sistema luego de haber sido aplicadas (esta información será
+		utilizada para la estimación de la nueva ``utilidad del sistema\footnote{Para más detalle acerca del concepto Utilidad
+		del Sistema ver sección \ref{sec:systemUtility}}'').
 
 		En Arco Iris, para poder escribir estrategias que involucren varias tácticas, el usuario contará con un mecanismo que
 		le permitirá verificar si los escenarios de un determinado \emph{concern} y que han sido marcados para reparar, aún
@@ -769,22 +769,22 @@
 		poder permitir incluir toda la información necesaria en los escenarios y que la misma pueda ser visualizada y editada
 		por todos los \emph{stakeholders} involucrados, hemos desarrollado nuestra propia implementación de las restricciones,
 		la cual permiten expresar las mismas \emph{constraints} definidas en ACME, y en caso de ser necesario agregar un nuevo
-		tipo de restricción permite fácilmente incorporar una nueva implementación implementando una \emph{interface} muy
-		sencilla (ver el apéndice \ref{sec:numericBinaryRelationalConstraintCode}). Estas \emph{constraints} serán de vital
-		importancia a la hora de activar el mecanismo de auto reparación. Al iniciar, Arco Iris leerá todos los escenarios
-		definidos, y armará un mapa que le permitirá optimizar las verificaciones recurrentes de los escenarios ante la llegada
-		de cada estímulo. El mapa almacena todos los escenarios correspondientes a cada estímulo, así, ante la invocación de un
+		tipo de restricción permite fácilmente incorporar una nueva implementación implementando una interfaz muy sencilla
+		(ver el apéndice \ref{sec:numericBinaryRelationalConstraintCode}). Estas \emph{constraints} serán de vital importancia
+		a la hora de activar el mecanismo de auto reparación. Al iniciar, Arco Iris leerá todos los escenarios definidos, y
+		armará un mapa que le permitirá optimizar las verificaciones recurrentes de los escenarios ante la llegada de cada
+		estímulo. El mapa almacena todos los escenarios correspondientes a cada estímulo, así, ante la invocación de un
 		estímulo en el sistema, Arco Iris solo deberá verificar que se cumplan los escenarios relacionados con dicho estímulo,
 		acotando así de manera sustancial la cantidad de chequeos a realizar. Recordar que en Rainbow, ante cualquier
-		modificación en el estado de la arquitectura, es necesario verificar todas las restricciones definidas para la auto
-		reparación.
+		modificación en el estado de la arquitectura, es necesario verificar todas las restricciones definidas para la auto		reparación.
 		Paso a paso el proceso de activación de la auto reparación en Arco Iris consiste en lo siguiente:
 		\begin{enumerate}
 			\item El sistema en ejecución recibe la invocación de un estímulo.
 			\item Se modifican las propiedades del Modelo de la Arquitectura del sistema como consecuencia del estímulo.
 			\item Se buscan los escenarios que pueden verse afectados ante dicho estímulo.
 			\item Una vez identificados los escenarios potencialmente afectados, se verifica que se cumplan sus restricciones,
-			siempre y cuando el entorno del escenario coincida con el actual, de lo contrario el escenario se considera verificado automáticamente.
+			siempre y cuando el entorno del escenario coincida con el actual, de lo contrario el escenario se considera
+			verificado automáticamente.
 			\item En el caso de detectar que uno o más escenarios dejaron de cumplirse, se lanzará la auto reparación del
 			sistema, para lo cual la primer tarea a realizar será decidir cual será la estrategia más conveniente a aplicar, o
 			sea, cual estrategia maximiza la \emph{Utilidad del Sistema} en entorno de operación actual.
@@ -994,7 +994,7 @@
 			satisfaga primero se deberá calcular la prioridad relativa del escenario, recordemos que cada escenario tiene una
 			prioridad asignada, pero esa prioridad no puede ser tomada directamente para calcular la Utilidad del Sistema ya que los
 			escenarios cuyas prioridades son valores menores representan una mayor importacia para los \emph{stakeholders}. Para
-			calcular la prioridad relativa y permitir extender y/o modificar su lógica se ha definido la interface
+			calcular la prioridad relativa y permitir extender y/o modificar su lógica se ha definido la interfaz
 			\verb@ScenarioRelativePriorityAssigner@, la cual define el siguiente método:
 
 			\begin{Verbatim}[gobble=4]
