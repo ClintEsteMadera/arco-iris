@@ -79,9 +79,12 @@
 
 			Los \emph{concerns} pueden usualmente relacionarse con propiedades de la arquitectura de un sistema, por ejemplo,
 			en una arquitectura cliente-servidor, el atributo de calidad \emph{performance} posee varios \emph{concerns}
-			asociados, por ejemplo, el \textbf{tiempo de respuesta} el cuál está relacionado directamente con algunas
+			asociados, por ejemplo, el \textbf{tiempo de respuesta}, el cuál está relacionado directamente con algunas
 			propiedades de la arquitectura como el ancho de banda de los servidores, la carga del sistema, la cantidad de
 			servidores, etc.
+			
+			Tanto los atributos de calidad como los \emph{concerns} son conceptos fundamentales en el presente trabajo, no solo
+			desde un punto de vista teórico sino que también serán utilizados en la práctica.
 			
 	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
 
@@ -243,6 +246,54 @@
 		descripción completa en Acme de la arquitectura del sistema que utilizaremos para mostrar los resultados de la extensión
 		implementada en el presente trabajo.
 
+		\subsubsection{Tácticas y Estrategias}
+		\label{sec:tacticasEstrategias}
+
+			Hemos mencionado anteriormente que el objetivo de la auto reparación es el alcanzar determinados atributos de
+			calidad definidos para un determinado sistema, ajustando su comportamiento, de ser necesario, de acuerdo a
+			las condiciones de ejecución del mismo. En el libro \textbf{Software Architecture in Practice} \cite{BassClementz},
+			Bass, Clements y Kazman caracterizan y formalizan dos herramientas que vienen siendo ampliamente utilizadas desde
+			hace tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las
+			\textbf{estrategias}.
+
+			Las \textbf{tácticas} se definen como decisiones de diseño tendientes a controlar las respuestas del sistema a
+			determinados estímulos, a fin de satisfacer uno o más atributos de calidad requeridos. La figura
+			\ref{fig:tactics_control_to_response} muestra gráficamente el concepto de táctica arquitectural.
+
+			\begin{figure}[h]
+				\centering
+					\includegraphics{images/tactics_control_to_response.png}
+				\caption{Visión gráfica del concepto de táctica}
+				\label{fig:tactics_control_to_response}
+			\end{figure}
+
+			Cada táctica es una opción de diseño para el arquitecto, un ejemplo concreto podría ser el introducir redundancia en
+			determinados componentes de la arquitectura (e.g. base de datos, servidores web replicados, etc.) para incrementar la
+			dis\-po\-ni\-bi\-li\-dad del sistema.
+
+			\todo{corroborar la siguiente definicion con el libro de bazz y clementz capitulo 12}
+
+			Por otro lado, una \textbf{estrategia} puede ser entendida como una función encargada de reparar un sistema haciendo
+			uso de una o más tácticas. Cada táctica es ejecutada únicamente cuando el estado del sistema satisface las
+			condiciones impuestas por la estrategia para dicha ejecución. Por ejemplo, en una arquitectura cliente-servidor y al
+			verse el tiempo de respuesta comprometido,	una estrategia podría intentar agregar servidores mientras existan
+			disponibles o, hasta que el tiempo de respuesta haya descendido por debajo de un determinado umbral. Esta lógica
+			sería descrita en la estrategia, mientras que será la táctica \verb@levantar-servidor@ la responsable de ejecutar la
+			acción propiamente dicha. Notar que si bien esta estrategia está diseñada para mejorar el tiempo de respuesta,
+			también afecta negativamente al \emph{concern} ``cantidad de servidores'' (correspondiente al atributo de calidad
+			``costo'') puesto que usualmente el utilizar mayor cantidad de servidores suele tener un costo económico no
+			despreciable.
+			
+			Cuando una estrategia se diseña para mejorar un atributo de calidad en particular, se puede decir que los
+			\emph{stakeholders} que definen dichos atributos de calidad obtienen cierto ``beneficio'' de las estrategias. Cada
+			estrategia provee un nivel específico de dicho beneficio, pero en contrapartida presenta un costo en tiempo y, sobre
+			todo, en dinero. Es por este motivo que los \emph{stakeholders} deben participar en el proceso de decisión de cúales
+			estrategias se emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el
+			retorno de la inversión (la relación costo-beneficio) de aplicar cada estrategia para elegir la más conveniente.
+
+
+			La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado no deseado.
+
 	\subsection{Rainbow}
 
 		\subsubsection{Introducción a Rainbow}
@@ -271,7 +322,6 @@
 			desea implementar auto reparación en sistemas cuyo código fuente no está disponible o no es plausible de ser
 			modificado.
 
-
 			\subsubsection{Arquitectura de Rainbow}
 
 				La Figura \ref{fig:Rainbow_Framework} muestra la arquitectura de Rainbow. En resumidas palabras, el \emph{framework}
@@ -298,12 +348,12 @@
 					recurso, entre otros criterios. Finalmente, los denominados \emph{Effectors} llevan a cabo las modificaciones
 					propiamente dichas sobre el sistema.
 					\item \textbf{Capa de Arquitectura}:\\
-					En esta capa, los denominados \emph{Gauges} agregan información provenientes de los \emph{Probes} y actualizan
-					las propiedades correspondientes en el modelo arquitectural del sistema, el cual es manejado y accedido mediante
-					un componente denominado \emph{Model Manager}. El \emph{Constraint Evaluator} chequea el modelo periódicamente y
-					dispara la adaptación en el caso que ocurra una violación en alguna restricción impuesta sobre el modelo. En ese
-					caso, el motor de adaptación (\emph{Adaptation Engine}) determina el curso de acción y lleva a cabo la adaptación
-					necesaria.
+					En esta capa, los denominados \emph{Gauges} agregan información provenientes de los \emph{Probes} y
+					mantienen constantemente actualizadas las propiedades correspondientes en el modelo arquitectural del sistema
+					(descrito en ACME), el cual es manejado y accedido mediante un componente denominado \emph{Model Manager}. El
+					\emph{Constraint Evaluator} chequea el modelo periódicamente y dispara la adaptación en el caso que ocurra una
+					violación en alguna restricción impuesta sobre el modelo. En ese caso, el motor de adaptación (\emph{Adaptation
+					Engine}) determina el curso de acción y lleva a cabo la adaptación necesaria.
 					\item \textbf{Capa de Traducción}:\\
 					Esta capa es la encargada de cubrir la brecha de abstracción existente entre el sistema en ejecución y el modelo
 					de su arquitectura (en ambos sentidos). En esta infraestructura, un repositorio de traducción mantiene diversos
@@ -332,71 +382,37 @@
 			estrategias de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como
 			para hacer efectivas las estrategias de reparación, etc.
 
-		\subsubsection{Tácticas y Estrategias}
-		\label{sec:tacticasEstrategias}
-
-			Hemos mencionado anteriormente que el objetivo de la auto reparación es el alcanzar determinados atributos de
-			calidad definidos para un determinado sistema, ajustando su comportamiento, de ser necesario, de acuerdo a
-			las condiciones de ejecución del mismo. En el libro \textbf{Software Architecture in Practice} \cite{BassClementz},
-			Bass, Clements y Kazman caracterizan y formalizan dos herramientas que vienen siendo ampliamente utilizadas desde
-			hace tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las
-			\textbf{estrategias}.
-
-			Las \textbf{tácticas} se definen como decisiones de diseño tendientes a controlar la respuestas del sistema a
-			determinados estímulos, a fin de satisfacer uno o más atributos de calidad requeridos. La figura
-			\ref{fig:tactics_control_to_response} muestra gráficamente el concepto de táctica arquitectural.
-
-			\begin{figure}[h]
-				\centering
-					\includegraphics{images/tactics_control_to_response.png}
-				\caption{Visión gráfica del concepto de táctica}
-				\label{fig:tactics_control_to_response}
-			\end{figure}
-
-			Cada táctica es una opción de diseño para el arquitecto, un ejemplo concreto podría ser el introducir redundancia en
-			determinados componentes de la arquitectura (e.g. base de datos, servidores web replicados, etc.) para incrementar la
-			dis\-po\-ni\-bi\-li\-dad del sistema.
-
-			Por otro lado, una \textbf{estrategia} se define simplemente como una colección de tácticas. La estrategia es la
-			herramienta propuesta por Rainbow para quitar al sistema de un estado indeseable. Por ejemplo, al verse la
-			performance del sistema comprometida, una estrategia podría agregar servidores hasta llevar la performance a un nivel
-			adecuado.
-
-			En el ejemplo anterior se puede observar una característica esencial de las estrategias: las mismas afectan
-			(positiva y/o negativamente) a los atributos de calidad establecidos para un sistema y cuando una estrategia se
-			diseña para mejorar un atributo de calidad en particular, se puede decir que los \emph{stakeholders} que definen
-			dichos atributos de calidad obtienen cierto ``beneficio'' de las estrategias, el cual se suele denominar
-			\emph{utilidad}.
-
-			Cada estrategia provee un nivel específico de utilidad, pero en contrapartida presenta un costo en tiempo y, sobre
-			todo, en dinero. Es por este motivo que los \emph{stakeholders} deben participar en el proceso de decisión de cúales
-			estrategias se emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el
-			retorno de la inversión (la relación costo-beneficio) de aplicar cada estrategia para elegir la más conveniente.
-
-			Las estrategias son desarrolladas para asegurar el cumplimiento de un determinado requerimento sobre un
-			\emph{concern} específico. 
-
-			\todo{Explicar que la estrategia es una suerte de controlador. Tomar de doc/rainbow/CompArch 6-09.pdf}
-
-			Como ya hemos mencionado, las estrategias se componen de tácticas, las cuales son, en último término, las
-			responsables de llevar a cabo las modificaciones sobre sistema. Por ejemplo, en una arquitectura cliente-servidor,
-			una estrategia podría definir agregar servidores mientras existan disponibles o, hasta que el tiempo de respuesta
-			haya descendido  por debajo de un umbral determinado. Esta lógica sería descrita en la estrategia, mientras que será
-			la táctica \verb@levantar-servidor@ la responsable de ejecutar la acción propiamente dicha.
-
 		\subsubsection{Stitch}
-			A fin de disponer de una forma suficientemente expresiva de expresar tácticas y estrategias, Rainbow incluye
-			un lenguaje de propósito particular llamado \textbf{Stitch}, el cual permite plasmar el conocimiento rutinario de
-			las personas sobre adaptación de sistemas de software. Tanto las tácticas como las estrategias serán descriptas
-			utilizando Stitch. Ofrece modularidad con respecto a las dimensiones de los atributos de calidad y al dominio,
-			permite especificar estrategias de múltiples pasos con condiciones de aplicabilidad y efectos deseados y provee	un
-			mecanismo para extender las políticas de adaptación a dominios específicos de sistemas.
+			A fin de disponer de una forma suficientemente expresiva de definir tácticas y estrategias, Rainbow incluye
+			un lenguaje de \emph{scripting} de propósito específico llamado \textbf{Stitch}, el cual permite plasmar el
+			conocimiento rutinario de las personas sobre adaptación de sistemas de software.
 
-			\todo{Completar esto con el contenido de doc/rainbow/CompArch 6-09.pdf}
+			Algunas de las características innovadoras de Stitch:
+			\begin{itemize}
+				\item \textbf{Control del sistema}: La selección de la próxima acción a ejecutar en el contexto de una estrategia
+				depende de los efectos observados luego de la acción previa.
+				\item \textbf{Sensibilidad al contexto}: La selección de la mejor estrategia se realiza considerando el estado
+				actual del sistema, mediante la inspección de algunas de sus propiedades.
+				\item \textbf{Asincronismo}: Stitch permite especificar un tiempo de demora luego de la ejecución de una táctica
+				para que los efectos de la táctica se puedan ver reflejados en el sistema.
+			\end{itemize}
 
 		\subsubsection{Ejemplo de una Táctica en Rainbow}
 
-			\todo{Tomar info y ejemplo Táctica de doc/rainbow/CompArch 6-09.pdf}
+			%\ref{fig:TacticaExample}
+			En la figura \todo{definir referencia} se puede apreciar un ejemplo de una táctica definida en Stitch para ser
+			utilizada por Rainbow. Primeramente, se importa el modelo de la arquitectura del sistema en cuestión junto con la
+			implementación de un operador que permite impactar al sistema en ejecución (estos operadores suelen ser provistos por
+			el usuario de la aplicación).
+			
+			La táctica consiste en disminuir la fidelidad del contenido provisto por todos los servidores a modo texto cuando se
+			detecta que al menos un cliente experimenta un tiempo de respuesta superior a un determinado umbral. Para lograr
+			esto, Rainbow inspecciona el modelo de la arquitectura del sistema, el cúal se encuentra actualizado con respecto al
+			estado actual del sistema en ejecución.
+			
+			Por último, se especifica que el efecto esperado de ejecutar la táctica consiste en que todos los clientes
+			experimenten un tiempo de respuesta inferior al umbral y que, por otro lado, todos los servidores se encuentren
+			prestando servicio en modo texto.
 
 		\subsubsection{Ejemplo de una Estrategia en Rainbow}
 
