@@ -300,8 +300,8 @@
 			cantidad de estrategias a evaluar para intentar resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta
 			posibilidad), la única manera de limitar el uso de las estrategias es agregar restricciones en la misma estrategia,
 			siendo esto algo bastante técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del
-			sistema, por ejemplo, para que una estrategia que soluciona problemas de performance no sea tenida en cuenta al
-			reparar un escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una
+			sistema, por ejemplo, para que una estrategia que soluciona problemas de \emph{performance} no sea tenida en cuenta
+			al reparar un escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una
 			precondición como la siguiente en la estrategia:
 
 			\begin{Verbatim}[gobble=4]
@@ -320,8 +320,8 @@
 			\end{Verbatim}
 
 			Es importante remarcar que, en caso de que el problema que se está intentando reparar no esté relacionado con la
-			performance, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que en
-			Arco Iris existe la posibilidad de evitarlo al configurar correctamente los estímulos de cada escenario.
+			\emph{performance}, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que
+			en Arco Iris existe la posibilidad de evitarlo al configurar correctamente los estímulos de cada escenario.
 
 			Adentrándonos ya en la implementación, tengamos en cuenta que el estímulo era un concepto inexistente en Rainbow, por lo
 			cual en Arco Iris debimos modificar algunos de los componentes existentes para poder tomar conocimiento de qué estímulo
@@ -776,7 +776,7 @@
 		pudiendo editarlas sin la necesidad de poseer conocientos sobre las tecnologías utilizadas por el sistema o por el
 		\emph{framework} de auto reparación.
 		Para determinar si el sistema necesita auto repararse, Rainbow utilizará una funcionalidad ofrecida por ACME, que
-		permite evaluar las restricciones descriptas en el modelado de la arquitectura, para esto ACME provee una herramienta
+		permite evaluar las restricciones descritas en el modelado de la arquitectura, para esto ACME provee una herramienta
 		llamada \emph{Type Checker}. A continuación podemos observar cómo Rainbow se sirve de esta utilidad para decidir si
 		debe lanzar la auto reparación o no:
 
@@ -832,7 +832,7 @@
 		reduce ampliamente el universo de posibilidades reduciendo así el tiempo de la autoreparación. Recordemos que la
 		configuración de Arco Iris también ofrece la posibilidad de considerar todas las estrategias existentes, simulando
 		así el comportamiento ofrecido por Rainbow evitándose el usuario de realizar una configuración más rigurosa en
-		desmedro de la performance de la autoreparación.
+		desmedro de la \emph{performance} de la autoreparación.
 
 		Por su parte, Rainbow descartará las estrategias cuyas condiciones no se satisfagan, estás condiciones generalmente se
 		corresponden con la restricción que ha dejado de cumplirse, por lo cual su lógica se encuentra duplicada en el
@@ -933,7 +933,7 @@
 					uC: -1.00
 			\end{Verbatim}
 
-			Esto significa que una vez ejecutada esta táctica, aproximadamente la performance se verá degrada en 144
+			Esto significa que una vez ejecutada esta táctica, aproximadamente la \emph{performance} se verá degrada en 144
 			milisegundos y la fidelidad permanecerá intacta, mientras que el costo se reduce en 1.
 
 		\subsubsection{Puntuación de Estrategias según Rainbow}
@@ -1071,7 +1071,7 @@
 
 			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
 			asigna al \emph{concern} del escenario en cuestión. Por ejemplo, si el entorno actual es de alta carga, es lógico que
-			los escenarios de performance tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
+			los escenarios de \emph{performance} tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
 			su \emph{concern} y el entorno en el que se encuentra el sistema.
 
 			Luego, al igual que Rainbow, Arco Iris calculará la utilidad de los \emph{concerns} mediante la función de utilidad

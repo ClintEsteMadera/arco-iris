@@ -271,17 +271,16 @@
 			determinados componentes de la arquitectura (e.g. base de datos, servidores web replicados, etc.) para incrementar la
 			dis\-po\-ni\-bi\-li\-dad del sistema.
 
-			\todo{corroborar la siguiente definicion con el libro de bazz y clementz capitulo 12}
-
-			Por otro lado, una \textbf{estrategia} puede ser entendida como una función encargada de reparar un sistema haciendo
-			uso de una o más tácticas. Cada táctica es ejecutada únicamente cuando el estado del sistema satisface las
-			condiciones impuestas por la estrategia para dicha ejecución. Por ejemplo, en una arquitectura cliente-servidor y al
-			verse el tiempo de respuesta comprometido,	una estrategia podría intentar agregar servidores mientras existan
-			disponibles o, hasta que el tiempo de respuesta haya descendido por debajo de un determinado umbral. Esta lógica
-			sería descrita en la estrategia, mientras que será la táctica \verb@levantar-servidor@ la responsable de ejecutar la
-			acción propiamente dicha. Notar que si bien esta estrategia está diseñada para mejorar el tiempo de respuesta,
-			también afecta negativamente al \emph{concern} ``cantidad de servidores'' (correspondiente al atributo de calidad
-			``costo'') puesto que usualmente el utilizar mayor cantidad de servidores suele tener un costo económico no
+			Por otro lado, una \textbf{estrategia} puede ser entendida como un procedimiento delineado por los arquitectos de
+			\emph{software} para intentar llevar al sistema a un nivel dónde los atributos de calidad se cumplan en el nivel
+			deseado; haciendo uso de una o más tácticas. Cada táctica es ejecutada únicamente cuando el estado del sistema
+			satisface las condiciones impuestas por la estrategia para dicha ejecución. Por ejemplo, en una arquitectura
+			cliente-servidor y al verse el tiempo de respuesta comprometido, una estrategia podría intentar agregar servidores
+			mientras existan disponibles o, hasta que el tiempo de respuesta haya descendido por debajo de un determinado umbral.
+			Esta lógica sería descrita en la estrategia, mientras que será la táctica \verb@levantar-servidor@ la responsable de
+			ejecutar la acción propiamente dicha. Notar que si bien esta estrategia está diseñada para mejorar el tiempo de
+			respuesta, también afecta negativamente al \emph{concern} ``cantidad de servidores'' (correspondiente al atributo de
+			calidad ``costo'') puesto que usualmente el utilizar mayor cantidad de servidores suele tener un costo económico no
 			despreciable.
 			
 			Cuando una estrategia se diseña para mejorar un atributo de calidad en particular, se puede decir que los
@@ -290,7 +289,6 @@
 			todo, en dinero. Es por este motivo que los \emph{stakeholders} deben participar en el proceso de decisión de cúales
 			estrategias se emplearán para satisfacer los atributos de calidad definidos para el sistema. Ellos deberán evaluar el
 			retorno de la inversión (la relación costo-beneficio) de aplicar cada estrategia para elegir la más conveniente.
-
 
 			La estrategia es la herramienta propuesta por Rainbow para quitar al sistema de un estado no deseado.
 
@@ -491,8 +489,9 @@
 		Znn provee un entorno de simulación de una arquitectura cliente servidor ampliamente configurable que permite
 		representar situaciones y controlar las variables de simulación permitiendo modificarlas en cualquier punto de la
 		simulación. Por ejemplo, el sistema que se está simulando podría comenzar con solamente 2 clientes, mostrando allí una
-		performance aceptable, pero a partir de un momento dado, se agregan 10 clientes comprometiendo así la performance del
-		mismo. De esta manera permite simular como responderían las estrategias implementadas ante dicha situación.
+		\emph{performance} aceptable, pero a partir de un momento dado, se agregan 10 clientes comprometiendo así la
+		\emph{performance} del mismo. De esta manera permite simular como responderían las estrategias implementadas ante
+		dicha situación.
 
 		En el presente trabajo se utlizará el modo simulación para realizar los casos de prueba, tomando las estrategias y
 		tácticas de Znn. Éstas debieron ser adaptadas para que puedan continuar funcionando con los cambios propuestos en la
@@ -583,7 +582,7 @@
 		ATAM (Architecture Tradeoff Analysis Method) ha sido desarrollado por el SEI, al igual que QAW, y es una técnica que
 		permite analizar arquitecturas de software. Las arquitecturas son complejas, e involucran muchos tradeoffs de diseño.
 		Sin un proceso de análisis formal, no se puede estar seguro de que las decisiones de arquitectura tomadas - en
-		particular aquellas que afectan el cumplimiento de requerimientos de calidad como performance, disponibilidad,
+		particular aquellas que afectan el cumplimiento de requerimientos de calidad como \emph{performance}, disponibilidad,
 		seguridad y modificabilidad - son adecuadas para mitigar los riesgos.
 
 		El nombre ATAM proviene no solo del hecho de que refleja cuán bien una arquitectura satisface objetivos de calidad
