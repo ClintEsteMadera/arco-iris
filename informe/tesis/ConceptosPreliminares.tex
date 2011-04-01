@@ -498,7 +498,7 @@
 		tácticas de Znn. Éstas debieron ser adaptadas para que puedan continuar funcionando con los cambios propuestos en la
 		tesis.
 
-	\subsection{Escenarios de Atributos de Calidad y QAW}
+	\subsection{Escenarios de Atributos de Calidad}
 		\label{sec:QAS}
 
 		\todo{TASK: Extender definición de Escenarios de Atributos de Calidad (poco, está casi OK así)}
@@ -520,7 +520,7 @@
 		\begin{figure}[h]
 			\centering
 				\includegraphics{images/scenario.png}
-			\caption{Visión gráfica de un escenario de QAW}
+			\caption{Visión gráfica de un escenario}
 			\label{fig:scenario}
 		\end{figure}
 
@@ -545,26 +545,33 @@
 		desarrolladores, usuarios, sponsors, etc). Estos escenarios pueden luego ser utilizados para analizar la arquitectura
 		del sistema e identificar concerns y posibles estrategias para atacar problemas.
 
+
+		\subsubsection{QAW}
 		\todo{fuente de lo que sigue: http://www.sei.cmu.edu/architecture/tools/qaw/index.cfm}
 
-		Existe una metodología definida por el Software Engineering Institute (SEI) conocida como Quality Attribute Workshop
-		(QAW), cuya principal herramienta son los escenarios. Esta metodología provee un método para identificar los atributos
-		de calidad críticos de la arquitectura de un sistema, tales como disponibilidad, performance, seguridad, etc, que son
-		derivados de objetivos del negocio del sistema. QAW no asume la existencia de una arquitectura del software, sino que
-		fue desarrollado en base a reclamos de los clientes que necesitaban un método para identificar los atributos de
-		calidad importantes, y aclarar requerimientos del sistema antes de que su arquitectura esté definida.
+		Existe una metodología definida por el Software Engineering Institute (SEI) conocida como \textbf{Quality Attribute
+		Workshop (QAW)}, cuya principal herramienta son los escenarios. Esta metodología provee un método para identificar los
+		atributos de calidad críticos de la arquitectura de un sistema, tales como disponibilidad, \emph{performance},
+		seguridad, etc, que son derivados de objetivos del negocio del sistema. QAW no asume la existencia de una arquitectura
+		del software, sino que fue desarrollado como consecuencia de la necesidad de \emph{stakeholders} y arquitectos de un
+		método que permita identificar los atributos de calidad importantes para el correcto funcionamiento del sistema antes de
+		que su arquitectura estuviese definida.
 
-		En los QAW se organizan reuniones con todos los \emph{stakeholders} del sistema, en las que se definen los escenarios
-		que en definitiva representarán los requerimientos de atributos de calidad que el sistema idealmente deberá
-		satisfacer. Un vez definidos todos los escenarios, el siguiente paso del QAW consiste en priorizar y refinar los
+		QAW consiste en reuniones en las que participan todos los \emph{stakeholders} del sistema, en las que se definen los
+		escenarios que en definitiva representarán los requerimientos de atributos de calidad que el sistema idealmente deberá
+		satisfacer. Una vez definidos todos los escenarios, el siguiente paso del QAW consiste en priorizar y refinar los
 		escenarios, por ejemplo agregando detalles adicionales tales como los participantes involucrados, la secuencia de
 		actividades, y preguntas sobre el requerimiento que representa cada escenario. El proceso de refinar los escenarios
 		permite a los \emph{stakeholders} comunicarse entre ellos, exponiendo supuestos que pueden no ser tan claros para el
-		resto del grupo. Dicho refinamiento también proporciona una visión de cómo interactúan los atributos de calidad entre
-		sí, sirviendo de base para definir tradeoffs entre estos atributos.
+		resto de los participantes. Dicho refinamiento también proporciona una visión de cómo interactúan los atributos
+		de calidad entre sí, sirviendo de base para definir \emph{tradeoffs} entre estos atributos.
 
 		El proceso QAW termina con la lista de escenarios refinados y priorizados. Los mismos pueden servir para definir casos
 		de pruebas, o como semillas para el proceso ATAM.
+		
+		Si bien no es requisito excluyente utilizar la metodología QAW para poder emplear Arco Iris, su uso es recomendado ya
+		que hará uso intensivo de los escenarios de atributos de calidad, y de su correcta definición dependerá el nivel de 
+		optimización y flexibilización que Arco Iris puede alcanzar al auto reparar un sistema.
 
 	\subsection{ATAM}
 	\label{sec:atam}
