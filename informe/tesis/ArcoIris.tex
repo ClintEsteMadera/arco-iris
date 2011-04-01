@@ -232,27 +232,16 @@
 		\emph{stakeholders} del sistema en tiempo de ejecución. Se permite, por ejemplo, poder describir la importancia relativa
 		de la \emph{performance}, la usabilidad, la disponibilidad, etc.; definiendo así una serie de \emph{tradeoffs} entre
 		distintos atributos de calidad requeridos por el sistema. El enfoque propuesto para lograr esto consiste en especificar
-		\textbf{Escenarios de Atributos de Calidad} \cite{Scenarios} (de ahora en más, simplemente ``Escenarios''), tal cual
-		fueron descriptos anteriormente, aunque con algunos agregados de información orientados a la auto reparación.
-
-		Como ya vimos anteriormente, un Escenario modela una situación concreta y real de uso del sistema ante la cual debe
-		comportarse de una manera esperada. Los escenarios contienen la siguiente información:
-
-		\todo{Ceria: Esto ya estaba explicado antes. Tenemos que "sincronizar bien" las dos secciones.}
-
-		\begin{itemize}
-			\item Fuente del Estímulo
-			\item Estímulo
-			\item Artefacto
-			\item Entorno
-			\item Respuesta
-			\item Cuantificación de la Respuesta
-		\end{itemize}
+		\textbf{Escenarios de Atributos de Calidad} (de ahora en más, simplemente ``Escenarios''), tal cual
+		fueron descritos en la sección \ref{sec:QAS}, extendiendo el concepto con información orientada a flexibilizar la auto
+		reparación. Esta extensión es explicada en detalle en la sección \ref{sec:modeloExtensionATAM}
 
 		En la Figura \ref{fig:ATAM_Model} se puede ver el modelo diseñado para representar los escenarios de ATAM en Arco
 		Iris. Este modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco
 		Iris para llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear
 		los escenarios.
+
+		\todo{Quitar contenido de Environment en la figura}
 		
 		\afterpage{\clearpage
 		\begin{figure}[H]
@@ -262,7 +251,8 @@
 			\label{fig:ATAM_Model}
 		\end{figure}}		
 		
-		Supongamos que tenemos el siguiente escenario:
+		Supongamos que luego de una reunión QAW, el arquitecto de un sistema junto con los \emph{stakeholders} acuerdan el
+		siguiente escenario de atributo de calidad:
 
 		\begin{quote}
 			Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El
@@ -439,7 +429,8 @@
 			En definitiva, al establecer que el escenario aplica para cualquier entorno, Arco Iris estará interpretando que el
 			entorno carece de importancia, dejando así de lado los pesos de los \emph{concerns} y distribuyendo equitativamente   su
 			importancia relativa, lo cual es equivalente a que no exista el concepto de \emph{concern}. La estructura del entorno
-			estará formada de la siguiente manera:
+			estará formada de la siguiente manera:
+
 			\begin{itemize}
 				\item Un conjunto de condiciones, y
 				\item Un mapa $<$Concern, Peso$>$
@@ -466,14 +457,17 @@
 			que nos permite ir adecuando los valores del sistema de manera paulatina evitando el impacto de los valores que
 			puedan darse por alguna ocasión excepcional, como por ejemplo algún cliente que experimenta un tiempo de respuesta
 			excesivo por algún problema es su conexión o en estación de trabajo. Para mitigar estos casos, utilizaremos el mismo
-			mecanismo utilizado por Rainbow explicado ya en la sección \ref{sec:exponentialAverage}.
+			mecanismo utilizado por Rainbow explicado ya en la sección \ref{sec:exponentialAverage}.
+
+
 			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en las
 			de Arco Iris es 0.3. Si se configura un valor muy pequeño, Arco Iris tardará en adaptarse a los cambios en el entorno
 			del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la adaptación
 			pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es   probable que el
 			sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como   normal, aunque
 			de no ser costoso lanzar una adaptación o volverla atrás, podría llegarse a lograr un rendimiento   aceptable del
-			sistema.
+			sistema.
+
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
 
@@ -566,6 +560,40 @@
 			La implementación mencionada recibe el nombre de \emph{NumericBinaryRelationalConstraint} y puede verse su código
 			en el apéndice \ref{sec:numericBinaryRelationalConstraintCode}.
 
+
+	\subsection{Modelo Extendido de ATAM}
+	\label{sec:modeloExtensionATAM}
+
+		Hasta aquí se ha detallado el uso que Arco Iris hará del modelo básico de ATAM, pero como se mencionó anteriormente,
+		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
+		
+		En la figura \ref{fig:Arco_Iris_ATAM_Model} se puede observar cómo se modela el \textbf{escenario de auto reparación}
+		(\verb@SelfHealinScenario@), el cual además de ser un escenario de ATAM tiene todo la información y la lógica
+		necesaria para que Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación. 
+
+		\todo{Cambiar List por Set en conditions de environment}
+
+		\afterpage{\clearpage
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_ATAM_Model.png}
+			\caption{Modelo de Arco Iris}
+			\label{fig:Arco_Iris_ATAM_Model}
+		\end{figure}}
+
+		Los escenarios de auto reparación podrán deshabilitarse, considerando Arco Iris solamente los escenarios habilitados
+		al momento de reparar el sistema. Cada escenario tendrá su prioridad (ver sección \ref{sec:priority}) y sabrá
+		determinar si él mismo aplica para el entorno actual, si se satisface actualmente y si seguirá satisfaciendo luego
+		de la potencial aplicación de una estrategia.
+		
+		Cada escenario tendrá también conocimiento de las estrategias que el arquitecto del sistema y los
+		\emph{stakeholders} consideran son capaces de reparar el escenario en caso de que este haya dejado de satisfacerse en
+		el entorno actual de ejecución del sistema. En la sección \ref{sec:strategies} puede verse en detalle cómo Arco Iris
+		explota esta información.
+		
+		Por último, es importante notar que se ha extendido el concepto de \textbf{entorno} utilizado por ATAM, el cual pasa a
+		contar, además de con su nombre, con un conjunto de condiciones que serán utilizadas para saber si un determinado
+		escenario aplica para este entorno, y además determinará la importancia de cada \emph{concern} para el caso en el que		sistema en ejecución se encuentre en este entorno.
 	\subsection{Configuración de Arco Iris}
 	
 		\todo{Explicar SelfHealingConfiguration y su archivo de configuracion. No profundizar en los temas, solo poner
@@ -573,7 +601,8 @@
 
 
 	\subsection{Prioridades entre Escenarios}
-
+	\label{sec:priority}
+	
 		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
 		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo
 		configurable pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el
@@ -581,7 +610,8 @@
 		utilizados por Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a
 		iniciar Rainbow, intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo
 		cual configurará la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha
-		configuración en Rainbow\label{rainbowScenario}:
+		configuración en Rainbow\label{rainbowScenario}:
+
 		\begin{Verbatim}[gobble=4]
 				weights:
 					scenario 1:
@@ -638,6 +668,7 @@
 		como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAS}.
 
 	\subsection{Estrategias y su Relación con los Escenarios}
+	\label{sec:strategies}
 
 		Antes de sumergirnos en cómo Arco iris utiliza las estrategias implementadas para reparar escenarios, recordemos
 		brevemente su utilización en Rainbow.
@@ -712,7 +743,7 @@
 				}
 		\end{Verbatim}
 
-	\subsection{Detección: cuando activar el mecanismo de auto reparación}
+	\subsection{Activación del Mecanismo de Auto Reparación}
 
 		Con el nuevo enfoque presentado en este trabajo, dónde el \emph{Escenario} es el concepto central, es necesario
 		establecer cambios en la lógica aplicada por el \emph{framework} a la hora de decidir en qué momento es necesario
@@ -776,7 +807,9 @@
 		estímulo. El mapa almacena todos los escenarios correspondientes a cada estímulo, así, ante la invocación de un
 		estímulo en el sistema, Arco Iris solo deberá verificar que se cumplan los escenarios relacionados con dicho estímulo,
 		acotando así de manera sustancial la cantidad de chequeos a realizar. Recordar que en Rainbow, ante cualquier
-		modificación en el estado de la arquitectura, es necesario verificar todas las restricciones definidas para la auto		reparación.
+		modificación en el estado de la arquitectura, es necesario verificar todas las restricciones definidas para la auto
+		reparación.
+
 		Paso a paso el proceso de activación de la auto reparación en Arco Iris consiste en lo siguiente:
 		\begin{enumerate}
 			\item El sistema en ejecución recibe la invocación de un estímulo.
@@ -790,7 +823,7 @@
 			sea, cual estrategia maximiza la \emph{Utilidad del Sistema} en entorno de operación actual.
 		\end{enumerate}
 
-	\subsection{Selección de estrategia a aplicar}
+	\subsection{Selección de Estrategia}
 	\label{sec:strategySelection}
 
 		Arco Iris selecciona la estrategia a aplicar para reparar el sistema de un manera sustancialmente diferente con
@@ -873,7 +906,9 @@
 				      4000: 0.00
 				\end{Verbatim}
 
-			Por último, Rainbow realizará la suma de estos valores ponderados por el peso de cada \emph{concern}, el resultado de			esta suma recibirá el nombre de \emph{Utilidad del Sistema}. Pseudocódigo del cálculo de la utilidad del sistema en			Rainbow:
+			Por último, Rainbow realizará la suma de estos valores ponderados por el peso de cada \emph{concern}, el resultado de
+			esta suma recibirá el nombre de \emph{Utilidad del Sistema}. Pseudocódigo del cálculo de la utilidad del sistema en
+			Rainbow:
 
 			\begin{Verbatim}[gobble=4]
 				puntaje = 0
@@ -889,7 +924,8 @@
 			En el caso de Rainbow esta medida permitirá tener una noción de como impactará una determinada estrategia sobre el
 			sistema, para lo cual cada táctica deberá explicitar los \emph{concerns} sobre los cuales impacta y en qué medida lo
 			hace. Por ejemplo, en el caso de bajar un servidor en Znn se especifica la siguiente metainformación asociada a la
-			táctica, representando el impacto estimado sobre el sistema:
+			táctica, representando el impacto estimado sobre el sistema:
+
 			\begin{Verbatim}[gobble=4]
 				dischargeServers:
 					uR: +144
@@ -900,7 +936,7 @@
 			Esto significa que una vez ejecutada esta táctica, aproximadamente la performance se verá degrada en 144
 			milisegundos y la fidelidad permanecerá intacta, mientras que el costo se reduce en 1.
 
-		\subsubsection{Puntuación de estrategias según Rainbow}
+		\subsubsection{Puntuación de Estrategias según Rainbow}
 
 			Una vez obtenido el subconjunto de estrategias aplicables, Rainbow procederá a asignarle un puntaje a cada
 			una, el cual será un valor entre $0$ y $100$, y luego aplicará la estrategia de mayor puntaje.
@@ -908,13 +944,16 @@
 			Para calcular el puntaje, lo primero que hará Rainbow será obtener los pesos asignados a cada \emph{concern}(e.g. costo,
 			fidelidad, etc) según el escenario seleccionado (recordemos que el escenario ha sido configurado previo inicio de
 			Rainbow), con los cuales pesará los valores estimados para cada \emph{concern} luego de la potencial aplicación de la
-			estrategia y aplicados a la función de utilidad del respectivo \emph{concern}.
+			estrategia y aplicados a la función de utilidad del respectivo \emph{concern}.
+
 			La heurística aplicada por Rainbow para estimar el valor de cada \emph{concern} una vez aplicada la estrategia resulta
 			de considerar la probabilidad que tiene cada rama de la estrategia de ser ejecutada y los atributos de las tácticas
 			presentes en cada rama, esto es, el impacto que cada táctica representa sobre los \emph{concerns} del sistema, concepto
 			explicado previamente en la sección \ref{sec:systemUtility}. Estos valores luego serán ponderados por el peso de cada
 			\emph{concern} para el escenario seleccionado para obtener finalmente el puntaje de la estrategia. A continuación se
-			muestra en pseudocódigo el cálculo de puntuación de una estrategia llevado a cabo por Rainbow:			\begin{Verbatim}[gobble=4]
+			muestra en pseudocódigo el cálculo de puntuación de una estrategia llevado a cabo por Rainbow:
+
+			\begin{Verbatim}[gobble=4]
 				puntaje = 0
 				estimacionPorConcern = Estimar los valores para cada concern luego de aplicar la estrategia
 				Por cada concern
@@ -925,7 +964,7 @@
 					puntaje = puntaje + valorPonderado
 			\end{Verbatim}
 
-		\subsubsection{Puntuación de estrategias según Arco Iris}
+		\subsubsection{Puntuación de Estrategias según Arco Iris}
 		\label{sec:arcoIrisStrategyScoring}
 
 			En el caso de Arco Iris el primer paso será calcular la utilidad del sistema antes de iniciar la autoreparación,
@@ -944,14 +983,17 @@
 				\item las prioridades relativas entre los escenarios.
 			\end{itemize}
 
-			Es importante mencionar que para calcular la utilidad del sistema Arco Iris solo considerará los escenarios			habilitados.
+			Es importante mencionar que para calcular la utilidad del sistema Arco Iris solo considerará los escenarios
+			habilitados.
 
 			Para calcular la utilidad del sistema, Arco Iris asignará un determinado puntaje a cada escenario habilitado que se
 			satisfaga, el resto de los escenarios serán ignorados, o lo que es equivalente, tendrán puntaje cero. Por cada escenario
 			habilitado Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de no aplicar el
 			escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios que sí apliquen
 			al entorno actual, Arco Iris evaluará si las condiciones del escenario se satisfacen y sólo en caso afirmativo sumarán a
-			la utilidad del sistema.			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
+			la utilidad del sistema.
+
+			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
 			asignará un puntaje a cada uno.
 
 			A continuación se puede ver plasmado en pseudocódigo el cálculo del puntaje de un escenario y como es utilizado para
@@ -995,7 +1037,8 @@
 			prioridad asignada, pero esa prioridad no puede ser tomada directamente para calcular la Utilidad del Sistema ya que los
 			escenarios cuyas prioridades son valores menores representan una mayor importacia para los \emph{stakeholders}. Para
 			calcular la prioridad relativa y permitir extender y/o modificar su lógica se ha definido la interfaz
-			\verb@ScenarioRelativePriorityAssigner@, la cual define el siguiente método:
+			\verb@ScenarioRelativePriorityAssigner@, la cual define el siguiente método:
+
 
 			\begin{Verbatim}[gobble=4]
 				public abstract int relativePriority(SelfHealingScenario scenario);
@@ -1029,7 +1072,8 @@
 			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
 			asigna al \emph{concern} del escenario en cuestión. Por ejemplo, si el entorno actual es de alta carga, es lógico que
 			los escenarios de performance tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
-			su \emph{concern} y el entorno en el que se encuentra el sistema.
+			su \emph{concern} y el entorno en el que se encuentra el sistema.
+
 			Luego, al igual que Rainbow, Arco Iris calculará la utilidad de los \emph{concerns} mediante la función de utilidad
 			en base al valor estimado por la simulación para el \emph{concern} del escenario, pero además de pesar luego la
 			utilidad por el peso del \emph{concern} (que en Rainbow es estático mientras que en Arco Iris dependerá del entorno
@@ -1041,19 +1085,6 @@
 		\todo{La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene sentido
 		ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
 
-		\todo{Agregar subseccion para explicar detalladamente SelfHealingConfiguration y SelfHealingConfiguration. Se menciona
-		en actualizacion dinamica solamente}
-
 		\todo{Hacer otro modelo con: ScenarioScoreAssigner,	BaseScenarioScoreAssigner,
 		ScenarioScoreAssigner4CurrentSystemState, ScenarioScoreAssigner4StrategyScoring, ScenarioBrokenDetector,
 		ScenarioRelativePriorityAssigner, DefaultScenarioRelativePriorityAssigner, etc?}
-
-		\afterpage{\clearpage
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Model.png}
-			\caption{Modelo de Arco Iris}
-			\label{fig:Arco_Iris_Model}
-		\end{figure}}
-
-		\todo{Explicar un poco sobre el diagrama anterior.}
