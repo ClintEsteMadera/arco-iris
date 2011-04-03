@@ -25,21 +25,27 @@
 %\definecolor{gray97}{gray}{.97}
 %\usepackage{url}                          % permite el uso de urls
 \usepackage[top=2.75cm, bottom=2.75cm, left=2.75cm, right=2.75cm]{geometry} % márgenes
-\usepackage[pdfcreator={LaTeX2e},
+
+\usepackage{hyperref}                     % Permite jugar con algunas cosas que aparecerán en el PDF final
+\hypersetup{
+			pdfcreator={LaTeX2e},
 			pdfauthor={Jonathan Chiocchio, Gabriel Tursi},
-			pdftitle={Hacia un modelo m'as flexible para la implementaci'on de la auto reparaci'on de sistemas de software basada en Arquitectura},
-			pdfsubject={Hacia un modelo m'as flexible para la implementaci'on de la auto reparaci'on de sistemas de software basada en Arquitectura},
+			pdftitle={Hacia un modelo más flexible para la implementación de la auto reparación de sistemas de software basada
+en Arquitectura},
+			pdfsubject={Hacia un modelo más flexible para la implementación de la auto reparación de sistemas de software
+basada en Arquitectura},
 			pdfkeywords={arquitecture design, self-healing, atam, rainbow, ACME},
 			pdfstartview=FitH,            % Fits the width of the page to the window
 			bookmarksnumbered,            % los bookmarks numerados se ven mejor...
 			colorlinks,                   % links con bellos colores
-			linkcolor=blue]               % permite cambiar el color de los links
-			{hyperref}                    % Permite jugar con algunas cosas que aparecerán en el PDF final
+			linkcolor=blue                % permite cambiar el color de los links
+}
+
 %\usepackage{listings}
 %\lstset{
 %%	language=XML,                         % choose the language of the code
 % 	basicstyle=\scriptsize\tt,      % the size of the fonts that are used for the code
-%	keywordstyle=\scriptsize\tt,    % NOTE that \ttfamily does NOT have a BOLD version     
+%	keywordstyle=\scriptsize\tt,    % NOTE that \ttfamily does NOT have a BOLD version
 %	commentstyle=\scriptsize\tt,
 %	stringstyle=\scriptsize\tt,
 %	identifierstyle=\scriptsize\tt,
@@ -70,7 +76,7 @@
 %%	framexrightmargin=0pt,                % defines 'how far' we move the right margin to the right
 %%	captionpos=b,                         % sets the caption-position to bottom
 % 	breaklines=true,                      % sets automatic line breaking
-%	breakautoindent=true,                 % activates or deactivates automatic indention of broken lines
+%	  breakautoindent=true,                 % activates or deactivates automatic indention of broken lines
 %%	breakatwhitespace=false,              % sets if automatic breaks should only happen at whitespace
 %%	morecomment=[l]{//}                   % displays comments in italics (language dependent)
 %%	escapeinside={\%}{)}                  % if you want to add a comment within your code
@@ -92,7 +98,7 @@
 %\addtolength{\textwidth}{4cm}
 %\addtolength{\textheight}{2cm}
 
-\restylefloat{figure}                     % Esto permite usar ``H'' como parametro de posicion para figuras flotantes 
+\restylefloat{figure}                     % Esto permite usar ``H'' como parametro de posicion para figuras flotantes
 
 \def\todo#1{\textcolor{red}{#1}}          % macro 'todo' para To-Do's
 
@@ -105,57 +111,57 @@
 	\integrante{Chiocchio, Jonathan}{849/02}{jchiocchio@gmail.com}
 	\integrante{Tursi, Germán Gabriel}{699/02}{gabrieltursi@gmail.com}
 	\director{Santiago Ceria}
-	
+
 	\maketitle
-	
+
 	\newpage
-	
+
 	\input{Abstract}
-	
+
 	\newpage
-	
+
 	\tableofcontents
 
 	\newpage
 
 	\listoffigures
-	
+
 	\newpage
-	
+
 	\pagestyle{headings}                  % poniendo esto acá evitamos que se encabece la caratula, el abstract y el indice
 
 	\input{Introduccion}
-	
+
 	\newpage
-	
+
 	\input{ConceptosPreliminares}
-	
+
 	\newpage
-	
+
 	\input{ArcoIris}
-	
+
 	\newpage
-	
+
 	\input{ScenariosUI}
-	
+
 	\newpage
-	
+
 	\input{CasosPracticos}
-	
+
 	\newpage
-	
+
 	\input{TrabajoFuturo}
-	
+
 	\newpage
-	
+
 	\input{Conclusiones}
-	
+
 	\newpage
-	
+
 	\input{Apendice}
-	
+
 	\newpage
-	
+
 	\input{Bibliografia}
 
 \end{document}
