@@ -395,107 +395,127 @@
 				para que los efectos de la táctica se puedan ver reflejados en el sistema.
 			\end{itemize}
 
-		\subsubsection{Ejemplo de una Táctica en Rainbow}
+		\subsubsection{Ejemplo de una Táctica en Stitch}
 
-			%\ref{fig:TacticaExample}
-			En la figura \todo{definir referencia} se puede apreciar un ejemplo de una táctica definida en Stitch para ser
+			En la figura \ref{fig:tactics_example} se puede apreciar un ejemplo de una táctica definida en Stitch para ser
 			utilizada por Rainbow. Primeramente, se importa el modelo de la arquitectura del sistema en cuestión junto con la
 			implementación de un operador que permite impactar al sistema en ejecución (estos operadores suelen ser provistos por
 			el usuario de la aplicación).
 			
-			La táctica consiste en disminuir la fidelidad del contenido provisto por todos los servidores a modo texto cuando se
-			detecta que al menos un cliente experimenta un tiempo de respuesta superior a un determinado umbral. Para lograr
-			esto, Rainbow inspecciona el modelo de la arquitectura del sistema, el cúal se encuentra actualizado con respecto al
-			estado actual del sistema en ejecución.
+			\begin{figure}[h]
+				\centering
+					\includegraphics[width=0.98\textwidth]{images/tactics_example.png}
+				\caption{Ejemplo de una táctica en Stitch}
+				\label{fig:tactics_example}
+			\end{figure}
+			
+			La táctica consiste en disminuir la fidelidad (a modo sólo texto) del contenido provisto por todos los servidores
+			cuando se detecta que al menos un cliente experimenta un tiempo de respuesta superior a un determinado umbral. Para lograr
+			esto, Rainbow inspecciona las propiedades del modelo de la arquitectura del sistema, definido en ACME, el cúal se
+			supone constantemente actualizado por Rainbow con respecto al estado actual del sistema en ejecución.
 			
 			Por último, se especifica que el efecto esperado de ejecutar la táctica consiste en que todos los clientes
 			experimenten un tiempo de respuesta inferior al umbral y que, por otro lado, todos los servidores se encuentren
-			prestando servicio en modo texto.
+			prestando servicio en modo sólo texto.
 
-		\subsubsection{Ejemplo de una Estrategia en Rainbow}
+		\subsubsection{Ejemplo de una Estrategia en Stitch}
 
-			A continuación, observamos un ejemplo de estrategia:
+			En la figura \ref{fig:strategies_example} podemos ver un ejemplo de una estrategia definida en Stitch para ser
+			utilizada por Rainbow.
 
-			\todo{mejorar introduccion y explicar BREVEMENTE este ejemplo de estrategia!}
-			\todo{Tomar info y ejemplo Estrategia de doc/rainbow/CompArch 6-09.pdf}
+			\begin{figure}[h]
+				\centering
+					\includegraphics[width=0.98\textwidth]{images/strategies_example.png}
+				\caption{Ejemplo de una estrategia en Stitch}
+				\label{fig:strategies_example}
+			\end{figure}
 
-			\begin{Verbatim}[gobble=4]
-				/*
-				 * Adaptation script for the News Site example.
-				 */
-
-				module newssite.strategies;
-
-				import lib "newssiteT.s";
-
-				strategy improveClientLatency (int i) {
-					boolean c0 = exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
-					// or c1 could be captured as !c0
-					boolean c1 = forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
-
-					t0: (#[prob{t0}] c0 @[2/*sec*/]) -> enlargeServerPool(1) {
-						t1: (#[prob{t1}] success @[1/*sec*/]) -> done;
-						t2: (#[prob{t0}] c0 @[2/*sec*/]) -> switchToTextualContent(i, j) {
-							t2a: (#[prob{t2a}] success @[1/*sec*/]) -> done;
-						}
-					}
-				}
-			\end{Verbatim}
+			La estrategia representa un algoritmo simple para disminuír el tiempo de respuesta experimentado por el usuario de un
+			sistema cliente-servidor. Se definen algunos predicados de primer orden que predican sobre propiedades del modelo de
+			la arquitectura del sistema, el cual se asume constantemente actualizado por Rainbow con respecto al sistema en
+			ejecución. En el caso que haya en la arquitectura un conector que muestre alta latencia, se invoca la táctica
+			definida en la Figura \ref{fig:tactics_example} (la cual cambia la fidelidad de todos los servidores a modo sólo
+			texto) y se espera 1 segundo antes de determinar el éxito o no de la ejecución de la táctica.
+			
+			En el caso en el que no se detecte alta latencia o que la anterior táctica haya fallado, y siempre chequeando que se
+			detecte alta carga en el sistema; se intenta ejecutar otra táctica que consiste en agregar un servidor más en pos de
+			mejorar el \emph{concern} tiempo de respuesta. Si luego de esperar 2 segundos para que los efectos de la táctica
+			puedan verse reflejados en el sistema, no hay más alta carga, la estrategia se considera exitosa, caso contrario, la
+			misma se considera fallida.
 
 		\subsubsection{EMA: Suavizando el Comportamiento}
 		\label{sec:exponentialAverage}
 
-			El proceso de adaptar un sistema de manera dinámica puede llegar a ser muy costoso, por ejemplo podría requerir
-			asignar más servidores a atender las peticiones de los usuarios, con el respectivo coste monetario que esto podría
-			llegar a implicar, también podría significar una merma en la calidad del servicio ofrecido, por ejemplo eliminando
-			temporalmente la posibilidad de que los usuarios pueden visualizar los videos de un sitio de noticias. Esto hace que
-			lanzar la auto reparación de un sistema deba ser una decisión tomada con cierta cautela y en base a datos confiables
-			y sostenidos en el tiempo. Rainbow implementa un mecanismo que permite evitar accionamientos prematuros de la auto
-			reparación por la presencia de \emph{outliers}, dicho mecanismo utiliza Exponential Moving Average (EMA), que permite
-			ponderar los valores históricos versus el actual basándose en la siguiente fórmula:
-
-			\todo{Ceria: Esto queda medio descolgado acá. Falta bastante detalle de rainbow... el típico grafiquito de su
-			arquitectura por ejemplo}
+			El proceso de adaptar un sistema de manera dinámica puede llegar a ser muy costoso, por ejemplo, en un sistema
+			cliente-servidor, el asignar más servidores para atender las peticiones de los usuarios implica normalmente un coste
+			monetario no despreciable. Otro ejemplo podría ser el suspender temporalmente la reproducción de videos en un sitio
+			de noticias. Si bien esta decisión puede servir para disminuír el tiempo de respuesta experimentado por los usuarios
+			en un contexto de alta carga, también provoca una clara disminución en la calidad del servicio ofrecido. Estos
+			ejemplos concretos sirven para inferir que el disparar un mecanismo de auto reparación en un sistema debe ser una
+			decisión tomada con cierta cautela y en base a datos confiables y sostenidos en el tiempo.
+			
+			Hemos visto anteriormente, de manera somera, de que manera Rainbow (mediante estrategias y tácticas definidas en el
+			lenguaje Stitch) utiliza datos sobre el sistema en ejecución para decidir el mejor camino a tomar para adaptar el
+			sistema a los requerimientos de atributos de calidad correspondientes. Consideremos un escenario dónde una estrategia
+			debe decidir si el último paso ejecutado fue exitoso o no. Para eso, deberá consultar una o más propiedades del
+			sistema en ejecución, los cuáles, podrían llegar a no ser representativos del entorno \emph{real} en que el sistema
+			se encuentra ejecutando; debido a la presencia de algunos pocos valores considerablemente distintos del resto de los
+			datos recientes \emph{históricos} que se usan para tomar decisiones (\emph{outliers}).
+			
+			Rainbow implementa un mecanismo que permite evitar accionamientos prematuros de la auto reparación debido a la
+			presencia de \emph{outliers}. El mentado mecanismo utiliza \emph{Exponential Moving Average} (EMA)\footnote{Para
+			más información, visitar\\
+			\url{http://en.wikipedia.org/wiki/Exponential_moving_average\#Exponential_moving_average}}, que permite ponderar los
+			valores históricos de la(s) propiedad(es) del sistema que se consultan para tomar decisiones. La función de suavizado
+			que implementa esta heurística se define inductivamente de la siguiente manera:
 
 			\begin{equation}
-				S_{0} = Y_{0}
+				S_0 = Y_0
 			\end{equation}
 			\begin{equation}
-				S_{t} = \alpha \times Y_{t} + (1-\alpha) \times S_{t-1}
+				S_t = \alpha \times Y_t + (1-\alpha) \times S_{t-1}
 			\end{equation}
 
-			donde $\alpha$ es el factor de suavizado, siendo $0 < \alpha < 1$. En otras palabras, el valor suavizado \smash{$S_{t}$}
-			es un simple promedio ponderado de la última observación \smash{$Y_{t}$} y el valor suavizado previo \smash{$S_{t-1}$}.
-			El nombre factor de suavizado no es un nombre especialmente adecuado ya que en realidad a mayor $\alpha$ menor
-			será el suavizado del promedio, mientras que valores cercanos a cero harán que el promedio se vea menos afectado por
-			el nuevo valor observado. No existe un procedimiento formal para determinar el valor de $\alpha$, en el caso de
-			Rainbow el valor escogido para las pruebas realizadas ha sido 0.3.
+			donde $\alpha$ se denomina \textbf{factor de suavizado} y $0 < \alpha < 1$.
+			
+			El valor suavizado $S_t$ no es ni más ni menos que un promedio ponderado de la última observación $Y_t$ y el valor
+			suavizado previo $S_{t-1}$.
+			
+			Notar que con valores \emph{altos} de $\alpha$, el último valor observado tendrá más preponderancia que el valor
+			histórico (suavizado) anterior. Por el contrario, con un $\alpha$ tendiendo a cero, la última observación de una
+			propiedad de la arquitectura no tendrá mucha relevancia en el valor promedio $S_t$. No existe un procedimiento formal
+			para determinar el valor de $\alpha$, en el caso particular de las pruebas realizadas en este trabajo, se ha elegido
+			$\alpha = 0.3$, es decir que, se ponderará con un 30\% al último valor observado mientras que el valor histórico
+			tendrá un peso del 70\%; con esto nos aseguramos que los valores de las propiedades del sistema que son relevantes
+			para la auto adaptación no fluctúen bruscamente debido a unos pocos \emph{outliers}.
 
 	\subsubsection{Znn: Evaluando la Efectividad de Rainbow}
 
-		Znn es un sistema que simula un sitio web de noticias, el cual nació como proyecto de tesis de doctorado
-		\cite{TesisOwen} de un investigadora de Carnegie Mellon, Shang-Wen Cheng. Sus objetivos fueron evaluar la efectividad
-		de Rainbow en los siguientes aspectos:
+		Znn es un sistema que simula un sitio web de noticias, el cual nació en el contexto de la tesis de doctorado
+		\cite{TesisOwen} de un investigador de la universidad de Carnegie Mellon, Shang-Wen Cheng. En dicha tesis, se
+		evalúa a Rainbow en los siguientes aspectos:
 		\begin{itemize}
-			\item su efectividad para mantener los atributos de calidad al enfrentar condiciones cambiantes
-			\item el \emph{overhead} de procesamiento que implica la auto reparación
-			\item el esfuerzo que implica agregar auto reparación mediante Rainbow a Znn
+			\item su efectividad para mantener los atributos de calidad ante condiciones cambiantes.
+			\item la sobrecarga de procesamiento que implica la auto reparación.
+			\item el esfuerzo que implica agregar auto reparación mediante Rainbow a Znn.
 		\end{itemize}
 
-		Si bien Znn nació como herramienta para evaluar Rainbow, Znn y las herramientas asociadas utilizadas para evaluar
-		Rainbow han sido abiertas a la comunidad para que puedan ser utilizadas para tomar métricas y poder comparar distintos
-		sistemas de auto reparación.
+		Si bien Znn y sus herramientas asociadas (\emph{probes}, \emph{gauges}, tácticas, estrategias, etc.) nacieron con
+		el único objetivo de evaluar la efectividad de Rainbow, las mismas han sido abiertas a la comunidad para que puedan
+		ser utilizadas para tomar métricas y poder comparar distintos sistemas de auto reparación.
 
 		Znn provee un entorno de simulación de una arquitectura cliente servidor ampliamente configurable que permite
-		representar situaciones y controlar las variables de simulación permitiendo modificarlas en cualquier punto de la
-		simulación. Por ejemplo, el sistema que se está simulando podría comenzar con solamente 2 clientes, mostrando allí una
-		\emph{performance} aceptable, pero a partir de un momento dado, se agregan 10 clientes comprometiendo así la
-		\emph{performance} del mismo. De esta manera permite simular como responderían las estrategias implementadas ante
-		dicha situación.
+		representar situaciones y controlar las variables de simulación permitiendo modificarlas en cualquier punto de ésta
+		última.
+		
+		Por ejemplo, es posible configurar a Znn para que inicie con solamente 2 clientes, mostrando allí un desempeño
+		aceptable y que luego se agreguen 10 clientes, comprometiendo así la \emph{performance} del mismo. De esta manera, Znn
+		permite simular como responderían las estrategias implementadas ante dicha situación.
 
-		En el presente trabajo se utlizará el modo simulación para realizar los casos de prueba, tomando las estrategias y
-		tácticas de Znn. Éstas debieron ser adaptadas para que puedan continuar funcionando con los cambios propuestos en la
-		tesis.
+		Rainbow soporta dos modos de ejecución: el normal, con un sistema real conectado al mismo ó un modo de simulación, el
+		cuál permite utilizar, por ejemplo, las herramientas provistas por Znn. En el presente trabajo se utilizará el modo
+		simulación para los casos de prueba, tomando las estrategias y tácticas provistas por Znn. Éstas debieron ser
+		adaptadas para que puedan seguir funcionando con los cambios propuestos en el presente trabajo.
 
 	\subsection{Escenarios de Atributos de Calidad}
 		\label{sec:QAS}
