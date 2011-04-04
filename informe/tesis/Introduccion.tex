@@ -18,18 +18,20 @@
 		comportamiento a partir de fallas o necesidades cambiantes de sus usuarios y/o el entorno en el que operan. De esta
 		forma, un sistema puede repararse u optimizarse sin intervención humana. Una de las formas de implementar estos
 		mecanismos es la llamada ``Adaptación Basada en Modelos	de Arquitecturas''.
-		\cite{ModelBasedAdaptation4SelfHealingSystems} En este tipo de soluciones, existe un módulo que conoce e interpreta el
-		modelo de la arquitectura del sistema a adaptar y, sobre la base de este conocimiento y el problema detectado, toma
+		\cite{ModelBasedAdaptation4SelfHealingSystems} En este tipo de soluciones, existe un módulo que conoce e interpreta
+		el modelo de la arquitectura del sistema a adaptar y, sobre la base de este conocimiento y el problema detectado, toma
 		una decisión sobre cómo reparar al sistema en cuestión.
 
-		Si bien ya existen soluciones de este tipo, en ninguna se considera la participación de los \emph{stakeholders} en el
-		proceso de detección y corrección automática de errores. Esto motivó el presente trabajo, donde se intenta ofrecer una
-		forma de incluir a los \emph{stakeholders} en el proceso, siempre considerando que su participación debe contribuir
-		principalmente en la definición de los potenciales problemas y sus posibles soluciones. Para esto, se consideró el uso
-		de los denominados ``Escenarios de Atributos de Calidad'' (QAS, de sus siglas en inglés, \emph{Quality Attribute
-		Scenarios})\cite{BassClementz}; los cuales permiten definir cómo debería responder el sistema, entre otras cosas, ante
-		determinados estímulos y en ciertos entornos de ejecución. Se profundizará sobre el concepto de QAS en la sección
-		\ref{sec:QAS}.
+		Si bien ya existen soluciones de este tipo, en ninguna se considera la participación de los
+		\emph{stakeholders}\footnote{Típicamente: representantes del cliente, el equipo de arquitectura, representantes
+		de los usuarios finales, operadores y administradores del sistema, \emph{managers}, \emph{testers}, \emph{sponsors},
+		etc.} en el proceso de detección y corrección automática de errores. Esto motivó el presente trabajo, donde se intenta
+		ofrecer una forma de incluir a los \emph{stakeholders} en el proceso, siempre considerando que su participación debe
+		contribuir principalmente en la definición de los potenciales problemas y sus posibles soluciones. Para esto, se
+		consideró el uso de los denominados ``Escenarios de Atributos de Calidad'' (QAS, de sus siglas en inglés,
+		\emph{Quality Attribute Scenarios})\cite{BassClementz}; los cuales permiten definir cómo debería responder el sistema,
+		entre otras cosas, ante determinados estímulos y en ciertos entornos de ejecución. Se profundizará sobre el concepto
+		de QAS en la sección \ref{sec:QAS}.
 
 		Una vez definidos los escenarios por los \emph{stakeholders}, el paso siguiente consiste en utilizar toda esa
 		información en tiempo de ejecución para que el sistema sea capaz de auto repararse. Allí nos servimos de un
