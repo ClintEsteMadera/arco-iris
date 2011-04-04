@@ -652,42 +652,43 @@
 
 			A continuación se describen los pasos del método ATAM:
 	
-			\noindent \emph{Presentación}
+			\noindent \underline{\emph{Presentación}}
 
 			\begin{enumerate}
-				\item[1.] \textbf{Presentar ATAM.} El método es descrito a los \emph{stakeholders}.
-				\item[2.] \textbf{Presentar las metas del negocio.} El \emph{project manager} describe los objetivos del
+				\item \textbf{Presentar ATAM.} El método es descrito a los \emph{stakeholders}.
+				\item \textbf{Presentar las metas del negocio.} El \emph{project manager} describe los objetivos del
 				negocio que motivan el desarrollo.
-				\item[3.] \textbf{Presentar la arquitectura.} El equipo de arquitectos presenta la arquitectura propuesta,
+				\item \textbf{Presentar la arquitectura.} El equipo de arquitectos presenta la arquitectura propuesta,
 				haciendo foco en cómo la misma satisface las metas del negocio.
-			\end{enumerate}
+			\suspend{enumerate}
 			
-			\noindent \emph{Investigación y Análisis}
+			\noindent \underline{\emph{Investigación y Análisis}}
 			
-			\begin{enumerate}
-				\item[4.] \textbf{Identificar enfoques arquitectónicos.} Los enfoques arquitectónicos son identificados
+			\resume{enumerate}
+				\item \textbf{Identificar enfoques arquitectónicos.} Los enfoques arquitectónicos son identificados
 				por el equipo de arquitectura, pero no analizados.
-				\item[5.] \textbf{Generar el árbol de utilidad.} Se recaban los atributos de calidad que agregan utilidad al
-				sistema y se los especifica en forma de escenarios priorizados.
-				\item[6.] \textbf{Analizar enfoques arquitectónicos.} Se delinean enfoques arquitectónicos para los escenarios de
-				mayor prioridad recabados en 5. Durante este paso, se identifican riesgos arquitectónicos, puntos sensibles y puntos
-				de \emph{tradeoff}.
-			\end{enumerate}
+				\item \label{arbolUtilidad} \textbf{Generar el árbol de utilidad.} Se recaban los atributos de calidad que agregan
+				utilidad al sistema y se los especifica en forma de escenarios priorizados.
+				\item \label{enfoques} \textbf{Analizar enfoques arquitectónicos.} Se delinean enfoques arquitectónicos para los
+				escenarios de mayor prioridad recabados en \ref{arbolUtilidad}. Durante este paso, se identifican riesgos
+				arquitectónicos, puntos sensibles y puntos de \emph{tradeoff}.
+			\suspend{enumerate}
 
-			\noindent \emph{\emph{Testing}}
+			\noindent \underline{\emph{Testing}}
 
-			\begin{enumerate}
-				\item[7.] \textbf{\emph{Brainstorming} y priorización de escenarios.} Basado en los escenarios del árbol de
-				utilidad, se genera un conjunto mayor de escenarios más específicos. Estos nuevos escenarios son priorizados vía un
-				proceso de votación.
-				\item[8.] \textbf{Analizar enfoques arquitectónicos.} Se reitera el paso 6 pero con los escenarios más
-				prioritarios encontrados en el paso 7, con el objetivo de encontrar nuevos riesgos, puntos sensibles y tradeoffs.
-			\end{enumerate}
+			\resume{enumerate}
+				\item \label{brainstorming} \textbf{\emph{Brainstorming} y priorización de escenarios.} Basado en los escenarios del
+				árbol de utilidad, se genera un conjunto mayor de escenarios más específicos. Estos nuevos escenarios son
+				priorizados vía un proceso de votación.
+				\item \textbf{Analizar enfoques arquitectónicos.} Se reitera el paso \ref{enfoques} pero con los escenarios más
+				prioritarios encontrados en el paso \ref{brainstorming}, con el objetivo de encontrar nuevos riesgos, puntos
+				sensibles y \emph{tradeoffs}.
+			\suspend{enumerate}
 
-			\noindent \emph{\emph{Reporting}}
+			\noindent \underline{\emph{Reporting}}
 
-			\begin{enumerate}
-				\item[9.] \textbf{Presentar resultados.} Basado en toda la información recolectada durante el proceso (escenarios,
+			\resume{enumerate}
+				\item \textbf{Presentar resultados.} Basado en toda la información recolectada durante el proceso (escenarios,
 				el árbol de utilidad, riesgos, puntos sensibles y puntos de \emph{tradeoff}), el equipo de ATAM escribe un reporte
 				detallando esta información y las estrategias de mitigación propuestas.
 			\end{enumerate}
