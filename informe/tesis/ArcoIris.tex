@@ -9,13 +9,8 @@
 		calidad requeridos. La solución intenta involucrarlos también en la definición de prioridades de los escenarios
 		y/o estrategias a considerar en la auto reparación del sistema cuando un escenario deja de cumplirse.
 
-		\todo{Jony: eliminamos los 2 parrafos siguientes?}
-		A fin de lograr lo antedicho, se consideró necesario extender el \emph{framework} Rainbow, cuyo código se encuentra
-		escrito mayormente en el lenguaje de programación Java.
-
-		Los integrantes del proyecto ABLE, que son quienes poseen propiedad intelectual sobre el \emph{framework}, no
-		sólo decidieron proveer el código fuente completo para poder realizar esta extensión, sino que estuvieron dispuestos
-		en todo momento a colaborar, responder dudas e inquietudes, hacer sugerencias, etc.
+		A fin de lograr lo antedicho, se propone extender el \emph{framework} Rainbow, con la anuencia y apoyo de los
+		integrantes del proyecto ABLE, quienes poseen propiedad intelectual sobre el \emph{framework}.
 
 	\subsection{Rainbow ``out of the box''}
 
@@ -93,8 +88,8 @@
 			Uno de los objetivos de diseño más importantes planteados al momento de pensar Arco Iris fue sin duda el intentar que
 			la presente extensión fuera ``compatible hacia atrás'' con \emph{Rainbow}, es decir, es altamente deseable que la
 			extensión se inserte en el \emph{framework} (conceptualmente hablando) de manera similar a cómo un \emph{plug-in}
-			trabaja en cualquier otro sistema de software; pudiendo en este caso el usuario de manera relativamente simple poder
-			elegir entre utilizar los mecanismos de auto reparación provistos por Arco Iris solos, conjuntamente con los de
+			trabaja en cualquier otro sistema de \emph{software}; pudiendo en este caso el usuario de manera relativamente simple
+			poder elegir entre utilizar los mecanismos de auto reparación provistos por Arco Iris solos, conjuntamente con los de
 			Rainbow, o usar unicamente Rainbow original sin extensión alguna.  La implementación de Arco Iris cumple con dicho
 			requerimiento ya que en la misma se extienden (en el sentido estricto de la palabra) componentes, sin cambiar su
 			lógica original. Es importante notar que para que la extensión sea fácilmente adicionable y/o removible se
@@ -232,9 +227,9 @@
 		\emph{stakeholders} del sistema en tiempo de ejecución. Se permite, por ejemplo, poder describir la importancia relativa
 		de la \emph{performance}, la usabilidad, la disponibilidad, etc.; definiendo así una serie de \emph{tradeoffs} entre
 		distintos atributos de calidad requeridos por el sistema. El enfoque propuesto para lograr esto consiste en especificar
-		\textbf{Escenarios de Atributos de Calidad} (de ahora en más, simplemente ``Escenarios''), tal cual
-		fueron descritos en la sección \ref{sec:QAS}, extendiendo el concepto con información orientada a flexibilizar la auto
-		reparación. Esta extensión es explicada en detalle en la sección \ref{sec:modeloExtensionATAM}
+		\textbf{Escenarios de Atributos de Calidad}, tal cual fueron descritos en la sección \ref{sec:QAS}, extendiendo el
+		concepto con información orientada a flexibilizar la auto reparación. Esta extensión es explicada en detalle en la
+		sección \ref{sec:modeloExtensionATAM}
 
 		En la Figura \ref{fig:ATAM_Model} se puede ver el modelo diseñado para representar los escenarios de ATAM en Arco
 		Iris. Este modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco
@@ -349,7 +344,7 @@
 			ejecución de la auto reparación.
 
 			En modo real, o sea sin simulación, para notificar el estímulo desencadente fue necesario extender los
-			\emph{probes}, que son los componentes encargados de testear una determinada funcionalidad del sistema,
+			\emph{probes}, que son los componentes encargados de \emph{testear} una determinada funcionalidad del sistema,
 			siendo el responsable también de medir la respuesta y de reportar dicha información a un bus, del cual
 			luego la consumirán los \emph{gauges}, quienes interpretarán los datos transformándolos en cambios en el
 			modelo de la arquitectura. Obviamente también fue necesario extender la funcionalidad de los \emph{gauges}
@@ -606,11 +601,12 @@
 		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
 		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo
 		configurable pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el
-		arquitecto deberá configurar el escenario\footnote{Recordar que aquí``escenario'' no se refiere a los Escenarios de QAW
-		utilizados por Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a
-		iniciar Rainbow, intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo
-		cual configurará la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha
-		configuración en Rainbow\label{rainbowScenario}:
+		arquitecto deberá configurar el escenario\todo{el siguiente footnote no es redundante? ya se aclaró esto dos
+		oraciones más atrás\ldots} \footnote{Recordar que aquí``escenario'' no se refiere a los Escenarios de QAW utilizados por
+		Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a iniciar Rainbow,
+		intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
+		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha configuración
+		en Rainbow\label{rainbowScenario}:
 
 		\begin{Verbatim}[gobble=4]
 				weights:
