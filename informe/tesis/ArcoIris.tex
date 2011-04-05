@@ -147,75 +147,6 @@
 			original de Rainbow, como así también invocaciones con un conjunto de escenarios detectados como ``rotos'' a los
 			cuales debe intentar reparar considerando diversas variables como por ejemplo sus prioridades relativas.
 
-		\subsubsection{Actualización dinámica de cambios de configuración}
-
-			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del
-			\emph{framework} sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación,
-			proponemos un simple mecanismo de detección de cambios en el archivo de configuración de Arco Iris \todo{poner una
-			referencia a la parte del doc donde se explica en detalle este archivo}, el cual, al detectar cualquier cambio en
-			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
-			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
-
-			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
-			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
-			de \verb@customize.scenarios.reloadInterval@, cuyo valor inicial por defecto será $5000$, es decir, el mecanismo de
-			actualización se ejecutará cada 5 segundos.
-
-			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca del patrón Observer, visitar
-			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
-			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente (\emph{observer}
-			siguiendo la nomenclatura utilizada comúnmente en el patrón) más interesado en conocer cuando un cambio en la
-			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
-			\todo{SelfHealingConfigurationManager no se había mencionado nunca hasta aquí} el cual, en ese caso, descarta toda la
-			configuración de los escenarios cargada en memoria, tomando luego la nueva configuración del archivo recientemente
-			actualizado. A partir de este momento Arco Iris continuará trabajando con la nueva configuración de escenarios sin
-			detener en ningún momento su ejecución.
-			
-			El mecanismo descrito en este apartado se encuentra implementado en la clase\\
-			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
-
-			\begin{Verbatim}[gobble=4]
-				private static final long CONFIG_RELOAD_INTERVAL_MS =
-					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
-
-				private static final String SELF_HEALING_CONFIG_FILE_NAME =
-					Rainbow.property("customize.scenarios.path");
-
-				private static final File SELF_HEALING_CONFIG_FILE =
-					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
-				(...)
-				public FileSelfHealingConfigurationDao() {
-					super();
-					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
-					this.loadSelfHealingConfigurationFromFile();
-
-					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
-						@Override
-						protected void onChange(File file) {
-							logger.info(SELF_HEALING_CONFIG_FILE_NAME +
-								" has just changed, reloading Self Healing Configuration!");
-							loadSelfHealingConfigurationFromFile();
-							notifyListeners();
-						}
-					};
-
-					Timer timer = new Timer();
-					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
-				}
-				
-				public void register(SelfHealingConfigurationChangeListener listener) {
-					this.listeners.add(listener);
-				}
-				
-				protected void notifyListeners() {
-					for (SelfHealingConfigurationChangeListener listener : this.listeners) {
-						listener.selfHealingConfigurationHasChanged();
-					}
-				}
-								
-				(...)
-			\end{Verbatim}
-
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
 
 		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante un modelo de su arquitectura
@@ -236,7 +167,8 @@
 		Iris para llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear
 		los escenarios.
 
-		\todo{Quitar contenido de Environment en la figura}
+		\todo{Turco: Quitar contenido de Environment en la figura}\\
+		\todo{Jony: por?}
 		
 		\afterpage{\clearpage
 		\begin{figure}[H]
@@ -399,6 +331,7 @@
 
 
 		\subsubsection{El Entorno en la Auto Reparación}
+			\todo{en la seccion 4 explicamos el entorno especial ``ANY''. Probablemente eso sea mejor explicarlo acá\ldots}
 
 			Dentro de la definición de escenario, el \textbf{Entorno} se refiere al estado en el que el sistema se encuentra cuando
 			se recibe el estímulo que desencadena el escenario, por ejemplo, al recibir una solicitud de creación de una cuenta
@@ -563,10 +496,11 @@
 		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
 		
 		En la figura \ref{fig:Arco_Iris_ATAM_Model} se puede observar cómo se modela el \textbf{escenario de auto reparación}
-		(\verb@SelfHealinScenario@), el cual además de ser un escenario de ATAM tiene todo la información y la lógica
+		(\verb@SelfHealingScenario@), el cual además de ser un escenario de ATAM tiene todo la información y la lógica
 		necesaria para que Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación. 
 
-		\todo{Cambiar List por Set en conditions de environment}
+		\todo{Turco: Cambiar List por Set en conditions de environment}\\
+		\todo{Jony: Por? en el código es List\ldots no queremos evaluarlas en orden?}
 
 		\afterpage{\clearpage
 		\begin{figure}[H]
@@ -594,6 +528,73 @@
 		\todo{Explicar SelfHealingConfiguration y su archivo de configuracion. No profundizar en los temas, solo poner
 		referencias a las secciones(tal vez haya que agregar mas secciones)}
 
+		\subsubsection{Actualización dinámica de cambios de configuración}
+
+			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del
+			\emph{framework} sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación,
+			proponemos un simple mecanismo de detección de cambios en el archivo de configuración de Arco Iris el cual, al
+			detectar cualquier cambio en dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada
+			en memoria por la nueva configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
+
+			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
+			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
+			de \verb@customize.scenarios.reloadInterval@, cuyo valor inicial por defecto será $5000$, es decir, el mecanismo de
+			actualización se ejecutará cada 5 segundos.
+
+			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca del patrón Observer, visitar
+			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
+			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente (\emph{observer}
+			siguiendo la nomenclatura utilizada comúnmente en el patrón) más interesado en conocer cuando un cambio en la
+			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
+			\todo{A esta altura deberiamos haber ya mencionado SelfHealingConfigurationManager} el cual, en ese caso, descarta
+			toda la configuración de los escenarios cargada en memoria, tomando luego la nueva configuración del archivo
+			recientemente actualizado. A partir de este momento Arco Iris continuará trabajando con la nueva configuración de
+			escenarios sin detener en ningún momento su ejecución.
+			
+			El mecanismo descrito en este apartado se encuentra implementado en la clase\\
+			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
+
+			\begin{Verbatim}[gobble=4]
+				private static final long CONFIG_RELOAD_INTERVAL_MS =
+					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
+
+				private static final String SELF_HEALING_CONFIG_FILE_NAME =
+					Rainbow.property("customize.scenarios.path");
+
+				private static final File SELF_HEALING_CONFIG_FILE =
+					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
+				(...)
+				public FileSelfHealingConfigurationDao() {
+					super();
+					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
+					this.loadSelfHealingConfigurationFromFile();
+
+					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
+						@Override
+						protected void onChange(File file) {
+							logger.info(SELF_HEALING_CONFIG_FILE_NAME +
+								" has just changed, reloading Self Healing Configuration!");
+							loadSelfHealingConfigurationFromFile();
+							notifyListeners();
+						}
+					};
+
+					Timer timer = new Timer();
+					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
+				}
+				
+				public void register(SelfHealingConfigurationChangeListener listener) {
+					this.listeners.add(listener);
+				}
+				
+				protected void notifyListeners() {
+					for (SelfHealingConfigurationChangeListener listener : this.listeners) {
+						listener.selfHealingConfigurationHasChanged();
+					}
+				}
+								
+				(...)
+			\end{Verbatim}
 
 	\subsection{Prioridades entre Escenarios}
 	\label{sec:priority}
@@ -601,12 +602,12 @@
 		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
 		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo
 		configurable pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el
-		arquitecto deberá configurar el escenario\todo{el siguiente footnote no es redundante? ya se aclaró esto dos
-		oraciones más atrás\ldots} \footnote{Recordar que aquí``escenario'' no se refiere a los Escenarios de QAW utilizados por
-		Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de Rainbow.} previo a iniciar Rainbow,
-		intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá responder, para lo cual configurará
-		la importancia de cada uno de los concerns del sistema. A continuación se muestra cómo se realiza dicha configuración
-		en Rainbow\label{rainbowScenario}:
+		arquitecto deberá configurar el escenario\todo{Turco: el siguiente footnote no es redundante? ya se aclaró esto dos
+		oraciones más atrás\ldots si lo es, please borralo nomas} \footnote{Recordar que aquí``escenario'' no se refiere a los
+		Escenarios de QAW utilizados por Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de
+		Rainbow.} previo a iniciar Rainbow, intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá
+		responder, para lo cual configurará la importancia de cada uno de los \emph{concerns} del sistema. A continuación se
+		muestra cómo se realiza dicha configuración en Rainbow\label{rainbowScenario}:
 
 		\begin{Verbatim}[gobble=4]
 				weights:
@@ -626,7 +627,7 @@
 
 		Cada una de las líneas representa el valor que se le asigna a cada \emph{concern}, en donde uR representa al Tiempo de
 		Respuesta, uF a la Fidelidad de la información y uC al Costo. Notar que la sumatoria de los pesos de los distintos
-		concern debe ser igual a 1 dentro de cada escenario, al igual que sucede en el \emph{Entorno} al configurar Arco Iris.
+		\emph{concern} debe ser igual a 1 dentro de cada escenario, al igual que sucede en el \emph{Entorno} al configurar Arco Iris.
 
 		Esto es lo que veremos, entre otras cosas, en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow.
 		Aquí, como vemos, existe más de una configuracion del escenario, luego se deberá seleccionar una de estas opciones en
@@ -1078,8 +1079,10 @@
 
 	\subsection{Modelo de Arco Iris}
 
-		\todo{La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene sentido
-		ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
+		\todo{Turco: La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene
+		sentido ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
+		
+		\todo{Jony: estoy de acuerdo pero tampoco esta bueno contar todo el cuentito sin graficos que ilustren, veamoslo\ldots}
 
 		\todo{Hacer otro modelo con: ScenarioScoreAssigner,	BaseScenarioScoreAssigner,
 		ScenarioScoreAssigner4CurrentSystemState, ScenarioScoreAssigner4StrategyScoring, ScenarioBrokenDetector,

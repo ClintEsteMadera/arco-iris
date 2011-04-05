@@ -1,6 +1,10 @@
 \section{Interfaz Gráfica: Scenarios UI}
 	\label{sec:scenariosUI}
 
+	\todo{TASK: (workaround temporal) Reemplazar los unicos 2 screenshots en Windows 7 por XP asi podemos presentar el
+	informe más rapido}\\
+	\todo{TASK: (solucion definitiva) Pasar todos los screenshots a Windows 7 así la app luce más moderna}
+
 	\subsection{Introducción}
 
 		\subsubsection{Motivaciones para una ``GUI''}
@@ -181,7 +185,7 @@
 		\begin{equation}
 			P = \frac{1}{K}
 		\end{equation}
-		dónde $K$ es la cantidad de concerns existentes en el sistema.
+		dónde $K$ es la cantidad de \emph{concerns} existentes en el sistema.
 		
 		Se observa también la funcionalidad de ABM para las condiciones que se deben cumplir para que el entorno se cumpla en
 		\emph{runtime}. Aquí se reutiliza un componente genérico para restricciones, también utilizado en el diálogo de
@@ -205,7 +209,7 @@
 		\begin{itemize}
 			\item Existe la posibilidad de marcar un escenario como habilitado o deshabilitado. Recordemos que Arco Iris
 			únicamente considera escenarios habilitados.
-			\item El combo box de \emph{Concerns} se llena con los Concerns existentes en el sistema al momento de cargarse el
+			\item El combo box de \emph{Concerns} se llena con los \emph{concerns} existentes en el sistema al momento de cargarse el
 			cuadro de diálogo.
 			\item Se permite especificar que el estímulo correspondiente al escenario es ``cualquiera''.
 			\item Se permite elegir \emph{artifacts}, considerando los existentes en el sistema o creando ad-hoc uno nuevo.
@@ -234,7 +238,8 @@
 		\label{sec:strategySelectionUI}
 
 			Una funcionalidad interesante de Scenarios UI es su capacidad para, en el contexto de la creación o edición de un
-			escenario, poder elegir una estrategia de reparación directamente desde el archivo \emph{stitch}\todo{referencia?} en
+			escenario, poder elegir una estrategia de reparación directamente desde el archivo \emph{stitch}\todo{referencia a
+			la sección dónde mencionamos que las estrategias estan en stitch con detalle? (no en la seccion 2, sino en la 3)} en
 			el cual se encuentra definida la misma. Primeramente, se elige el archivo que contiene las estrategias, para luego
 			seleccionar la estrategia deseada, visualizando el código (en el lenguaje de scripting \emph{stitch}) de la misma.
 
