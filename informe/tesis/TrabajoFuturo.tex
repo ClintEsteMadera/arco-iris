@@ -36,8 +36,8 @@
 		Si bien lo menciona en el último párrafo se encuentra implementado, consideramos que la implementación es bastante
 		básica y poco flexible. Por ejemplo sería útil que antes de llegado a ese punto, se notifique, a modo de alarma, al
 		responsable de la auto reparación de que una estrategia a estado fallando. Podrían existir sucesivas alarmas antes de
-		desactivar la estrategia. También debería permitirse modificar dinámicamente tanto la lógica de la estrategia como las
-		condiciones esperadas en el escenario.
+		desactivar la estrategia. También debería permitirse modificar dinámicamente tanto la lógica de la estrategia
+		\todo{lo siguiente ya está hecho!} como las condiciones esperadas en el escenario.
 
 		También sería útil proveer una herramienta que permita analizar que estrategias se fueron ejecutando, y cómo se llegó
 		a decidir que cada estrategia era la adecuada para reparar el sistema en cada momento. Otra vista que sería útil para
@@ -45,12 +45,10 @@
 		presente el porcentaje de éxito de cada una así como la cantidad de veces que se ejecutó, como quedó el \emph{Utility
 		Function} en promedio luego de ejecutar la estrategia, etc.
 
-		\todo{JONY: se te ocurre algo mas sobre el aprendizaje sobre el resultado de las reparaciones anteriores???}
-
 	\subsection{Configuración Dinámica}
 
-		Cuando se desarrolla un sistema se hacen presunciones y supuestos, asumiendo determinados comportamiento que
-		indefectiblemente variarán cuando el sistema se esté ejecutando: errores del sistema, cambios en el entorno (variación
+		Cuando se desarrolla un sistema se hacen supuestos, se presupone un determinado comportamiento que casi
+		indefectiblemente variará cuando el sistema se esté ejecutando: errores del sistema, cambios en el entorno (variación
 		de recursos), cambios en las preferencias del usuario, etc. El reconocimiento de dichas presunciones es clave, ya que
 		esto acercará al sistema al ``mundo real''. El conocimiento de estos supuestos será muy importantes a la hora de
 		reparar el sistema, más aún si se desea implementar un mecanismo de auto reparación flexible y dinámico.
@@ -87,7 +85,7 @@
 			\item No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas
 			por fuera). Por ejemplo: usamos la tablita de las utility functions o tenemos las reparaciones en .stitch.
 			\item{Ni Rainbow bi Arco Iris permiten cambair en runtime la configuracion}
-			\item{Permitir agregar concerns nuevos}
+			\item{Permitir agregar \emph{concerns} nuevos}
 			\item{leer los \emph{artifacts} y sus properties desde el .ACME}
 			\item{agregar mas tipos de \emph{constraints}}
 		\end{itemize}
