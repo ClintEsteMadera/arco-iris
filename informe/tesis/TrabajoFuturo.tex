@@ -1,59 +1,59 @@
 \section{Trabajo Futuro}
 \label{sec:trabajoFuturo}
 
-	\todo{
-	- La idea original de Santiago de usar para algo los \emph{artifacts} vinculados al escenario\\
-	- Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar e.g.
-	alta carga y super alta carga (a.k.a. hasta las tetas) ).\\
-	- No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas por
-	fuera)
-	- Permitir agregar \emph{concerns} nuevos
-	- leer los \emph{artifacts} y sus properties desde el .ACME
-	- agregar mas tipos de \emph{constraints}
-	}
+	Si bien con la introducción de las extensiones presentes en Arco Iris se han presentado considerables mejoras con
+	respecto al uso básico de Rainbow, también se han suscitado numerosos puntos de extensión posibles que si bien no
+	pudieron formar parte del presente trabajo, es importante que los mismos sean detallados en pos de incentivar la
+	investigación futura sobre los mismos. A continuación, citaremos los puntos de extensión posibles a Arco Iris y/o
+	Rainbow.
 
-	\todo{¿agregar arcoIrisSolutionWeight y rainbowSolutionWeight?}
-
-	Desde ya se entiende que el presente trabajo deja abiertas muchas posibilidades de mejoras que serán necesarias al
-	momento de implementar este \emph{framework} como una herramienta de uso generalizado en la industria, a continuación
-	citaremos las más importantes desde nuestro punto de vista.
+	\todo{La idea original de Santiago de usar para algo los \emph{artifacts} vinculados al escenario}
 
 	\subsection{Análisis y Aprendizaje de la Auto Reparación}
 
-		Supongamos que los \emph{stakeholders} ya han definido todos los escenarios que se utilizarán en la reparación via
-		Arco Iris. Ahora bien, imaginemos que existe un escenario cuya prioridad es muy alta y a su vez las condiciones
-		necesarias para que no se cumpla se dan con mucha frecuencia. Esto resultará en la auto reparación repetida del
-		mencionado escenario. Pero ¿qué sucedería si la única que estrategia que repara dicho escenario rompe constantemente
-		otros, digamos 3 escenarios de menor prioridad? A priori pareciera que este es el comportamiento esperado, pero
-		¿podrían los \emph{stakeholders} convalidar este comportamiento? Claramente se necesitan una serie de estadísticas que
-		nos permitan analizar lo que se está reparando, y el impacto sobre los escenarios perjudicados, y también sería
-		necesaria una vista sobre el impacto en cada uno de los \emph{concerns} del sistema.
+		\subsubsection{Herramientas de análisis y visualización}
 
-		Por otro lado, supongamos que bajo la misma situación, la única estrategia que aplica para reparar el escenario falla
-		en un 95\% de los casos, ¿tiene sentido continuar ejecutando dicha estrategia teniendo en cuenta cómo afecta la
-		\emph{performance} del sistema y de la auto reparación? Una solución sencilla sería permitirle definir al usuario un
-		umbral de	fallos, por ejemplo definiendo que si una estrategia falla el 90\% de los intentos o más, la misma queda
-		eliminada de las estrategias candidatas.
+			Supongamos que los \emph{stakeholders} ya han definido todos los escenarios que se utilizarán en la reparación via
+			Arco Iris. Ahora bien, imaginemos que existe un escenario cuya prioridad es muy alta y a su vez las condiciones
+			necesarias para que no se cumpla se dan con mucha frecuencia. Esto resultará en la auto reparación repetida del
+			mencionado escenario. Pero ¿qué sucedería si la única que estrategia que repara dicho escenario rompe constantemente
+			otros, digamos 3 escenarios de menor prioridad? A priori pareciera que este es el comportamiento esperado, pero
+			¿podrían los \emph{stakeholders} convalidar este comportamiento? Claramente se necesitan una serie de estadísticas que
+			nos permitan analizar lo que se está reparando, y el impacto sobre los escenarios perjudicados, y también sería
+			necesaria una vista sobre el impacto en cada uno de los \emph{concerns} del sistema.
+			
+			También sería útil proveer una herramienta que permita analizar que estrategias se fueron ejecutando, y cómo se llegó
+			a decidir que cada estrategia era la adecuada para reparar el sistema en cada momento. Otra vista que sería útil para
+			analizar la configuración de la auto reparación del sistema podría ser un \emph{ranking} de estrategias, en el que	se
+			presente el porcentaje de éxito de cada una así como la cantidad de veces que se ejecutó, como quedó el \emph{Utility
+			Function} en promedio luego de ejecutar la estrategia, etc.
 
-		Si bien lo menciona en el último párrafo se encuentra implementado, consideramos que la implementación es bastante
-		básica y poco flexible. Por ejemplo sería útil que antes de llegado a ese punto, se notifique, a modo de alarma, al
-		responsable de la auto reparación de que una estrategia a estado fallando. Podrían existir sucesivas alarmas antes de
-		desactivar la estrategia. También debería permitirse modificar dinámicamente tanto la lógica de la estrategia
-		\todo{lo siguiente ya está hecho!} como las condiciones esperadas en el escenario.
+		\subsubsection{Mecanismo Inteligente de Detención de Estrategias Fallidas}
 
-		También sería útil proveer una herramienta que permita analizar que estrategias se fueron ejecutando, y cómo se llegó
-		a decidir que cada estrategia era la adecuada para reparar el sistema en cada momento. Otra vista que sería útil para
-		analizar la configuración de la auto reparación del sistema podría ser un \emph{ranking} de estrategias, en el que	se
-		presente el porcentaje de éxito de cada una así como la cantidad de veces que se ejecutó, como quedó el \emph{Utility
-		Function} en promedio luego de ejecutar la estrategia, etc.
+			\todo{Acá habría que explicar que hay hoy en Rainbow y pq es insuficiente o poco flexible. La idea de las alarmas no
+			me gusta: esto es para que los admines tengan que laburar menos\ldots}
+
+			Por otro lado, supongamos que bajo la misma situación, la única estrategia que aplica para reparar el escenario falla
+			en un 95\% de los casos, ¿tiene sentido continuar ejecutando dicha estrategia teniendo en cuenta cómo afecta la
+			\emph{performance} del sistema y de la auto reparación? Una solución sencilla sería permitirle definir al usuario un
+			umbral de	fallos, por ejemplo definiendo que si una estrategia falla el 90\% de los intentos o más, la misma queda
+			eliminada de las estrategias candidatas. Si bien lo mencionado en el último párrafo ya se encuentra implementado en
+			Rainbow, consideramos que la implementación es bastante básica y poco flexible. Por ejemplo sería útil que antes de
+			llegado a ese punto, se notifique, a modo de alarma, al responsable de la auto reparación de que una estrategia ha
+			estado fallando. Podrían existir sucesivas alarmas antes de desactivar la estrategia.
 
 	\subsection{Configuración Dinámica}
 
+		\todo{No alcanza con la UI (y su XML asociado) para configurar 100\% nuestra solución (hace falta configurar cosas por
+		fuera)}
+		
 		Cuando se desarrolla un sistema se hacen supuestos, se presupone un determinado comportamiento que casi
 		indefectiblemente variará cuando el sistema se esté ejecutando: errores del sistema, cambios en el entorno (variación
 		de recursos), cambios en las preferencias del usuario, etc. El reconocimiento de dichas presunciones es clave, ya que
 		esto acercará al sistema al ``mundo real''. El conocimiento de estos supuestos será muy importantes a la hora de
 		reparar el sistema, más aún si se desea implementar un mecanismo de auto reparación flexible y dinámico.
+
+		\todo{La siguiente propuesta debe ser refinada ya que algo hicimos con respecto a esto\ldots}
 
 		Dicho esto, se propone como trabajo a futuro dinamizar la configuración de auto reparación de Arco Iris, permitiendo
 		que los \emph{stakeholders} modifiquen los escenarios en caliente, es decir, sin necesidad de detener el \emph{framework}.
@@ -61,12 +61,23 @@
 		auto reparación que utilice sea detenido para reconfigurarlo, sino que debe adaptarse a las nuevas condiciones
 		prácticamente sin \emph{impasse}.
 
+	\subsection{Ampliación de la Configuración Existente}
+
+		\todo{Permitir agregar \emph{concerns} nuevos}\\
+		\todo{leer los \emph{artifacts} y sus properties desde el .ACME}\\
+		\todo{agregar mas tipos de \emph{constraints}}\\
+	
+	\subsection{Flexibilización del Entorno}
+
+		\todo{Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar
+		e.g. alta carga y super alta carga (a.k.a. hasta las tetas) ).}
+
 	\subsection{Configuración de Escenarios en AcmeStudio}
 
-		Actualmente existe una herramienta de creación y edición de arquitecturas modeladas en Acme, llamado AcmeStudio
-		\footnote{Para más información acerca de AcmeStudio, visitar \url{http://www.cs.cmu.edu/~acme/AcmeStudio}} la cual se
-		encuentra integrada en la popular herramienta de desarrollo Eclipse\footnote{Para más información acerca de Eclipse,
-		visitar \url{http://www.eclipse.org}} como un \emph{plug-in}.
+		Actualmente existe una herramienta de creación y edición de arquitecturas modeladas en Acme, llamada
+		\textbf{AcmeStudio} \footnote{Para más información acerca de AcmeStudio, visitar
+		\url{http://www.cs.cmu.edu/~acme/AcmeStudio}} la cual se encuentra integrada en la popular herramienta de desarrollo
+		Eclipse\footnote{Para más información acerca de Eclipse, visitar \url{http://www.eclipse.org}} como un \emph{plug-in}.
 
 		Se propone como trabajo a futuro extender la herramienta AcmeStudio para que dé soporte a las extensiones propuestas
 		en el presente trabajo, permitiendo así la integración del modelado de la arquitectura con el modelado de los
@@ -75,3 +86,7 @@
 	\subsection{Optimización en la Selección de la Estrategia}
 
 		\todo{Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function'' es limitado)}
+
+	\subsection{Rainbow y Arco Iris ``Trabajando en Conjunto''}
+	
+		\todo{hablar sobre arcoIrisSolutionWeight y rainbowSolutionWeight}
