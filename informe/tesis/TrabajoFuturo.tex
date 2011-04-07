@@ -9,6 +9,27 @@
 
 	\todo{La idea original de Santiago de usar para algo los \emph{artifacts} vinculados al escenario}
 
+	\subsection{Compatibilidad hacia atrás}
+
+			\todo{Al final no es ni compatible hacia atras ni plugin, explicar}
+
+			Uno de los objetivos de diseño más importantes planteados al momento de pensar Arco Iris fue sin duda el intentar que
+			la presente extensión fuera ``compatible hacia atrás'' con \emph{Rainbow}, pudiendo en este caso el usuario, de
+			manera relativamente simple, poder elegir entre utilizar los mecanismos de auto reparación provistos por Arco Iris de
+			manera aislada, conjuntamente con los de Rainbow, o usar únicamente Rainbow. La implementación de Arco Iris cumple con dicho
+			requerimiento ya que extiende (en el sentido estricto de la palabra) y/o modifica componentes , sin cambiar su lógica
+			original.
+			
+
+			es decir, es altamente deseable que la
+			extensión se inserte en el \emph{framework} (conceptualmente hablando) de manera similar a cómo un \emph{plug-in}
+			trabaja en cualquier otro sistema de \emph{software}
+			
+			Es importante notar que para que la extensión sea fácilmente adicionable y/o removible se necesitaría hacer mínimos
+			cambios a la visibilidad de algunos componentes de Rainbow (i.e. clases Java), ya que su
+			implementación está hecha de tal manera que impide la extensión, ya sea vía herencia o composición de clases.
+
+
 	\subsection{Análisis y Aprendizaje de la Auto Reparación}
 
 		\subsubsection{Herramientas de análisis y visualización}
@@ -28,10 +49,12 @@
 			presente el porcentaje de éxito de cada una así como la cantidad de veces que se ejecutó, como quedó el \emph{Utility
 			Function} en promedio luego de ejecutar la estrategia, etc.
 
-		\subsubsection{Mecanismo Inteligente de Detención de Estrategias Fallidas}
+		\subsubsection{Mecanismo Inteligente de Detección de Estrategias Fallidas}
 
-			\todo{Acá habría que explicar que hay hoy en Rainbow y pq es insuficiente o poco flexible. La idea de las alarmas no
-			me gusta: esto es para que los admines tengan que laburar menos\ldots}
+			\todo{Acá habría que explicar qué hay hoy en Rainbow y pq es insuficiente o poco flexible. Asegurarse que Rainbow
+			no vuelve a usar las estrategias fallidas. La idea de las alarmas no me gusta: esto es para que los admines tengan
+			que laburar menos\ldots }
+			
 
 			Por otro lado, supongamos que bajo la misma situación, la única estrategia que aplica para reparar el escenario falla
 			en un 95\% de los casos, ¿tiene sentido continuar ejecutando dicha estrategia teniendo en cuenta cómo afecta la
@@ -60,6 +83,8 @@
 		Esto es importante ya que de requerir un sistema alta disponibilidad, no podrá darse el lujo de que el mecanismo de
 		auto reparación que utilice sea detenido para reconfigurarlo, sino que debe adaptarse a las nuevas condiciones
 		prácticamente sin \emph{impasse}.
+		
+		\todo{Externalizar MIN_UTILITY_THRESHOLD y FAILURE_RATE_THRESHOLD (Ver AdaptationManager.java)}
 
 	\subsection{Ampliación de la Configuración Existente}
 
@@ -70,7 +95,7 @@
 	\subsection{Flexibilización del Entorno}
 
 		\todo{Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar
-		e.g. alta carga y super alta carga (a.k.a. hasta las tetas) ).}
+		e.g. alta carga y super alta carga).}
 
 	\subsection{Configuración de Escenarios en AcmeStudio}
 
