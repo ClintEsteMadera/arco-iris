@@ -2,22 +2,17 @@
 
 	\subsection{Introducción}
 
-		Como ya se ha comentado anteriormente, la idea de este trabajo es extender el \emph{framework} ``Rainbow'' para poder
-		lograr un mecanismo de auto reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor
-		visibilidad a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiéndoles así involucrarse en la
-		definición de escenarios de uso real del sistema, incluyendo la relación de estos últimos con los atributos de
-		calidad requeridos. La solución intenta involucrarlos también en la definición de prioridades de los escenarios
-		y/o estrategias a considerar en la auto reparación del sistema cuando un escenario deja de cumplirse.
-
+		Como ya se ha comentado anteriormente, la idea de este trabajo es extender el \emph{framework} Rainbow para poder lograr
+		un mecanismo de auto reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor
+		visibilidad a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiéndoles involucrarse en la definición
+		de escenarios de atributos de calidad del sistema, de sus prioridades relativas y de las estrategias a considerar en la
+		auto reparación del sistema cuando un escenario deja de cumplirse.
 		A fin de lograr lo antedicho, se propone extender el \emph{framework} Rainbow, con la anuencia y apoyo de los
-		integrantes del proyecto ABLE, quienes poseen propiedad intelectual sobre el \emph{framework}.
+		integrantes del proyecto ABLE, quienes poseen su propiedad intelectual.
 
-	\subsection{Rainbow ``out of the box''}
+	\subsection{Rainbow \emph{out of the box}}
 
-		El primer paso fue inspeccionar el código del \emph{framework} y leer su documentación. Esto nos permitió conocer en
-		detalle el funcionamiento de Rainbow y sus componentes principales de arquitectura, los cuales se pueden observar en
-		el diagrama de colaboración de objetos, en la figura \ref{fig:Rainbow_Architecture}.
-
+		En el diagrama de colaboración de objetos que se muestra en la Figura \ref{fig:Rainbow_Architecture} se pueden 		observar los principales componentes de la arquitectura de Rainbow.
 		\afterpage{\clearpage
 		\begin{figure}[H]
 			\centering
@@ -25,77 +20,60 @@
 			\caption{Arquitectura de Rainbow}
 			\label{fig:Rainbow_Architecture}
 		\end{figure}}
+		
+		\todo{Traducir al castellano los labels en los diagramas del EA}
 
 		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar el 
 		\emph{framework} utilizando, básicamente, dos vías:
 		\begin{enumerate}
-			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow va a adaptar. Dicho modelo se
+			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow se va a adaptar. Dicho modelo se
 			especifica utilizando el estilo de componentes y conectores (C\&C) y el lenguaje de descripción de arquitecturas
-			ACME (ver sección \ref{sec:acme} para más información). En dicho lenguaje, los componentes y conectores poseen
+			ACME (ver sección \ref{sec:acme}). En dicho lenguaje, los componentes y conectores poseen
 			propiedades (con valores asociados), restricciones y también ofrece la posibilidad de especificar invariantes a
-			nivel de sistema o sub sistema. Dichos invariantes serán evaluados periódicamente por Rainbow para verificar que el
-			sistema funcione dentro de los límites determinados como normales.
+			nivel de sistema o sub sistema. Dichos invariantes y restricciones serán evaluados periódicamente por Rainbow para
+			verificar que el sistema funcione dentro de los límites determinados como normales.
 			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con
 			la definición del sistema a auto reparar, como por ejemplo: ubicación física del archivo ACME que describe la
-			arquitectura del sistema, archivos de tácticas y estrategias de reparación (escritos en un lenguaje de
-			\emph{scripting} de propósito específico llamado ``stitch''), datos para la configuración de la conexión de Rainbow
-			con el sistema en \emph{runtime}, etc.
+			arquitectura del sistema, archivos de tácticas y estrategias de reparación (escritos en \emph{Stitch}), datos para
+			la configuración de la conexión de Rainbow con el sistema en \emph{runtime}, etc.
 		\end{enumerate}
 
-		Podemos ver también en el gráfico anterior, como los denominados \emph{Probes} son los componentes designados en
+		Podemos ver también en el gráfico anterior que los denominados \emph{Probes} son los componentes designados en
 		Rainbow para interactuar directamente con el sistema a adaptar (el \emph{Target System}), obteniendo así información
 		relevante a los fines de su auto reparación. Dicha información no es interpretada dentro de los probes sino que ellos
-		delegan dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de entender la información
-		provista por los \emph{probes} y traducirla a pares $<$Propiedad,Valor$>$ dónde la \emph{Propiedad} refiere al nombre
-		de una propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del sistema a
-		adaptar; y \emph{Valor} es ni más ni menos que el nuevo valor que posee dicha propiedad.
+		delegan dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de interpretar la
+		información provista por los \emph{probes} y traducirla a pares $<Propiedad,Valor>$ donde $Propiedad$ refiere al
+		nombre de una propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del
+		sistema a adaptar; y $Valor$ es el nuevo valor que posee dicha propiedad.
 
-		Normalmente, existe un par $<$Gauge, Probe$>$ distinto (que a nivel implementativo son clases Java) por cada tipo
-		relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución. Un ejemplo de \emph{concern} podría
+		Normalmente, por cada tipo relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución existe un
+		par $<Gauge,Probe>$ asociado (que a nivel implementativo son meras clases Java). Un ejemplo de \emph{concern} podría
 		ser: ``tiempo de respuesta experimentado por el usuario'', el cual es un \emph{concern} relacionado al atributo de
 		calidad \emph{performance}.
 
-		Asociado al tipo de componente \emph{Gauge}, se encuentra el \emph{Gauge Coordinator}, el cual, tal como su nombre lo
-		sugiere, coordina la información provista por todos los \emph{gauges} y se encarga de notificarla al componente
-		\emph{Rainbow Model}, quien ofrece la operación \verb@update property@ para recibir notificaciones sobre cambios en
-		el sistema en \emph{runtime}.
-
+		El \emph{Gauge Coordinator}, tal como su nombre lo sugiere, coordina la información provista por todos los
+		\emph{gauges} y se encarga de notificar los cambios en el sistema en ejecución al componente \emph{Rainbow Model}.
+	
 		\emph{Rainbow Model}, componente clave en la arquitectura del \emph{framework}, tiene, entre otras cosas, la
 		responsabilidad de hacer efectiva la actualización de los valores de la propiedades de los componentes, conectores,
-		sub-sistemas o sistemas del modelo de arquitectura de la aplicación a adaptar. También verifica periódicamente si se
-		ha violado alguna de las \emph{constraints} presentes en el modelo de arquitectura con el cual el \emph{framework} ha
-		sido inicializado.
+		sub sistemas o sistemas del modelo de arquitectura de la aplicación a adaptar. También es quien tiene el
+		conocimiento necesario para detectar violaciones a las restricciones e invariantes presentes en el modelo de
+		arquitectura con el cual el \emph{framework} ha sido configurado.
 
 		Por otra parte, existe otro componente llamado \emph{Architecture Evaluator}, el cual consulta periódicamente a
-		\emph{Rainbow Model} para tomar conocimiento de violaciones a restricciones definidas en el modelo de la arquitectura
-		en base a las actualizaciones que han sido notificadas. En el caso de existir alguna violación, el \emph{Architecture
-		Evaluator} dispara el mecanismo de adaptación invocando al \emph{Adaptation Manager} (este último, junto con
-		\emph{Rainbow Model}, son los componentes más importantes de Rainbow).
+		\emph{Rainbow Model} para tomar conocimiento de violaciones a restricciones definidas en el modelo de la arquitectura.
+		En el caso de existir alguna violación, el \emph{Architecture Evaluator} dispara el mecanismo de adaptación invocando
+		al \emph{Adaptation Manager}.
 
-		El \emph{Adaptation Manager} sigue una lógica un tanto compleja (explicada en detalle en la sección
-		\ref{sec:strategySelection}) para determinar la mejor estrategia de reparación a ejecutar y luego, mediante
-		\emph{Effectors} (no mostrados en el gráfico anterior por claridad), la lógica embebida en las estrategias de
-		reparación impactan en el sistema a ser adaptado, siempre intentando acercar el estado del sistema a sus invariantes
-		pre-establecidos.
+		El \emph{Adaptation Manager}, uno de los componentes más importantes de Rainbow, sigue una lógica un tanto compleja
+		(explicada en detalle en la sección \ref{sec:strategySelection}) para determinar la mejor estrategia de reparación a
+		ejecutar, la cual luego será ejecutada mediante \emph{Effectors} (no mostrados en el gráfico anterior por claridad)
+		siempre intentando acercar el estado del sistema a sus invariantes preestablecidos.
 
 	\subsection{Rainbow + Escenarios = ``Arco Iris''}
 
-			En el presente apartado repasaremos someramente las características principales de la arquitectura de Rainbow
+			En el presente apartado se presenta someramente las características principales de la arquitectura de Rainbow
 			luego de incorporar las extensiones planteadas en el presente trabajo, a las cuales denominamos ``Arco Iris''.
-
-		\subsubsection{Compatibilidad hacia atrás}
-
-			Uno de los objetivos de diseño más importantes planteados al momento de pensar Arco Iris fue sin duda el intentar que
-			la presente extensión fuera ``compatible hacia atrás'' con \emph{Rainbow}, es decir, es altamente deseable que la
-			extensión se inserte en el \emph{framework} (conceptualmente hablando) de manera similar a cómo un \emph{plug-in}
-			trabaja en cualquier otro sistema de \emph{software}; pudiendo en este caso el usuario de manera relativamente simple
-			poder elegir entre utilizar los mecanismos de auto reparación provistos por Arco Iris solos, conjuntamente con los de
-			Rainbow, o usar unicamente Rainbow original sin extensión alguna.  La implementación de Arco Iris cumple con dicho
-			requerimiento ya que en la misma se extienden (en el sentido estricto de la palabra) componentes, sin cambiar su
-			lógica original. Es importante notar que para que la extensión sea fácilmente adicionable y/o removible se
-			necesitaría que los creadores de Rainbow hagan mínimos cambios a la visibilidad de algunos componentes del
-			\emph{framework} (i.e. clases Java), ya que su implementación está hecha de tal manera que impide la extensión, ya
-			sea vía herencia o composición de clases.
 
 		\subsubsection{Arquitectura de Arco Iris}
 
@@ -167,8 +145,7 @@
 		Iris para llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear
 		los escenarios.
 
-		\todo{Turco: Quitar contenido de Environment en la figura}\\
-		\todo{Jony: por?}
+		\todo{Turco: Quitar weights de Environment y isAny() de Stimulus en la figura}
 		
 		\afterpage{\clearpage
 		\begin{figure}[H]
