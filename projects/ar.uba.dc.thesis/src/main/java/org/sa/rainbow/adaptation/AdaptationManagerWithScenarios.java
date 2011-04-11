@@ -360,15 +360,14 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 			}
 
 			for (Strategy currentStrategy : stitch.script.strategies) {
-				// TODO FailureRate por el momento no funciona ya que hay que agregar una property a rainbow.properties:
-				// customize.utility.trackStrategy
+				// TODO FailureRate is not working for us, since we need to configure first the property
+				// "customize.utility.trackStrategy" in rainbow.properties
 				boolean isNotCandidate = !candidateStrategies.contains(currentStrategy.getName());
 				if (isNotCandidate || (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = isNotCandidate ? "not selected in broken scenarios"
 							: "failure rate threshold reached";
 					doLog(Level.INFO, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
 					continue; // don't consider this Strategy
-					// TODO Ver si esto no es muy fuerte (dilapidar una estrategia para siempre!!!)
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
 
@@ -395,6 +394,11 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 				double weightedScore = strategyScore4ArcoIris * arcoIrisSolutionWeight + strategyScore4Rainbow
 						+ rainbowSolutionWeight;
 
+				if (rainbowSolutionWeight > 0 && arcoIrisSolutionWeight > 0) {
+					doLog(Level.INFO, "Combined (Rainbow + Arco Iris) score for strategy " + currentStrategy.getName()
+							+ ": " + strategyScore4Rainbow);
+				}
+
 				if (weightedScore > maxScore4Strategy) {
 					maxScore4Strategy = weightedScore;
 					selectedStrategy = currentStrategy;
@@ -403,9 +407,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 						selectedStrategy = currentStrategy;
 					}
 				}
-
 			}
-
 		}
 
 		if (_stopWatchForTesting != null)
@@ -473,7 +475,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	/**
-	 * Rainbow's algorithm for calculate the score of a strategy
+	 * Rainbow's algorithm for calculating the score of a strategy
 	 * 
 	 * @return the score of the strategy calculated by Rainbow
 	 */
@@ -595,6 +597,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		int[] stat = m_historyCnt.get(s.getName());
 		if (stat != null) {
 			Beacon timer = m_failTimer.get(s.getName());
+			// as time passes, historical failures in strategy become less severe
 			double factor = 1.0;
 			long failTimeDelta = timer.elapsedTime() - FAILURE_EFFECTIVE_WINDOW;
 			if (failTimeDelta > 0) {
