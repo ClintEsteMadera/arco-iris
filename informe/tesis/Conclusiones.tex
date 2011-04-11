@@ -146,3 +146,32 @@
 			Lo antedicho, agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de
 			reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación
 			del sistema en tiempo de ejecución.
+
+		\subsection{Compatibilidad hacia atrás: una empresa sin sentido}
+	
+			Uno de los objetivos de diseño más deseables en una extensión a un \emph{framework} ya existente como Rainbow, es sin
+			dudas que la extensión sea ``compatible hacia atrás'' con \emph{Rainbow}, entendiendose ésto como la capacidad de
+			Arco Iris de agregar nuevas características manteniendo al 100\% la funcionalidad original. 
+			
+			En principio, si se considera únicamente el diseño de alto nivel de Rainbow, la idea de una extensión \emph{backwards
+			compatible} parece factible. Pero, lamentablemente, si se consideran las diferencias conceptuales de ambos modelos,
+			no es difícil notar que el intento de mantener a ambos conviviendo no sólo no es una tarea sencilla sino que también
+			carece de sentido, ya que, en algunos puntos claves, son enfoques diametralmente opuestos. Veamos algunos de los
+			motivos que apoyan esta idea:
+			
+			\begin{itemize}
+				\item \textbf{Cómo se dispara la auto reparación:} El enfoque de Arco Iris hace centro en el concepto de Escenario
+				como medio para expresar requerimientos de atributos de calidad para un sistema. Con lo cual, el inicio de todo el
+				proceso de auto reparación se da de una manera sincrónica con respecto al Estímulo de algún escenario(s) ocurrido en
+				el sistema en ejecución. Esto se contrapone con el enfoque de Rainbow, en el cual, periódicamente se verifican todas
+				las restricciones e invariantes de la arquitectura. Observamos que si quisieramos mantener esta última
+				característica de Rainbow, ya el foco absoluto de la auto reparación no estaría puesto en los Escenarios de
+				atributos de calidad sino que paralelamente existirían dos flujos distintos de auto reparación disputando entre sí.
+				Esto llevaría a un comportamiento poco predecible y bastante poco deseable del sistema de auto reparación.
+				\item \textbf{Cómo se decide cuándo adaptar:} Arco Iris sólo intenta efectuar adaptaciones acotadas al escenario o
+				los escenarios que se dejan de cumplir en un determinado momento, mientras que Rainbow contempla todo el abanico de
+				estrategias disponibles en el caso de que detecte que una violación a una restricción o invariante ha tenido lugar.
+				Evidentemente, los enfoques son distintos, sin mencionar que los algoritmos de \emph{scoring} de estrategias de
+				ambos \emph{frameworks} difieren considerablemente, agregando el algoritmo de Arco Iris nuevas variables a la
+				fórmula, tal como se explica en la sección \ref{sec:arcoIrisStrategyScoring}.
+			\end{itemize}
