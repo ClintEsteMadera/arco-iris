@@ -2,11 +2,10 @@
 
 	\subsection{Introducción}
 
-		Como ya se ha comentado anteriormente, la idea de este trabajo es extender el \emph{framework} Rainbow para poder lograr
-		un mecanismo de auto reparación más flexible y con mayor capacidad expresiva, con el objetivo de proveer mayor
-		visibilidad a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiéndoles involucrarse en la definición
-		de escenarios de atributos de calidad del sistema, de sus prioridades relativas y de las estrategias a considerar en la
-		auto reparación del sistema cuando un escenario deja de cumplirse.
+		Como ya se ha comentado anteriormente, la idea de este trabajo es extender el \emph{framework} Rainbow para poder
+		lograr un mecanismo de auto reparación más flexible y con mayor capacidad expresiva, y con el objetivo de proveer visibilidad
+		a los \emph{stakeholders} de la aplicación sobre dicho proceso, permitiéndoles involucrarse en la definición de
+		escenarios de atributos de calidad del sistema, de sus prioridades relativas y de las estrategias a considerar en la		auto reparación del sistema cuando un escenario deja de cumplirse.
 		A fin de lograr lo antedicho, se propone extender el \emph{framework} Rainbow, con la anuencia y apoyo de los
 		integrantes del proyecto ABLE, quienes poseen su propiedad intelectual.
 
@@ -22,6 +21,8 @@
 		\end{figure}}
 		
 		\todo{Traducir al castellano los labels en los diagramas del EA}
+		\todo{Agregar en ambos graficos: AdaptagionManager escoge y lanza Strategy (opcional)}
+		\todo{Agregar en ambos graficos: Effector invocado desde el Strategy o el Adaptation Manager}
 
 		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar el 
 		\emph{framework} utilizando, básicamente, dos vías:
@@ -89,42 +90,49 @@
 			\end{figure}}
 
 			El arquitecto sigue realizando las mismas tareas que realizaba en Rainbow (i.e. ``alimentar'' a Rainbow con un
-			modelo de la arquitectura del sistema a adaptar y con archivos de configuración) pero ahora se le suma una tarea más:
-			el configurar los escenarios de atributos de calidad; tarea que realiza en conjunto con una o más personas que asumen
-			distintos roles que normalmente se engloban en la palabra \emph{stakeholders} (e.g. analistas funcionales, usuarios
-			del sistema, líderes y sponsors del proyecto, clientes, etc.)
+			modelo de la arquitectura del sistema a adaptar y con archivos de configuración requeridos por Rainbow) pero ahora se
+			le suma una tarea más: configurar los escenarios de atributos de calidad, tarea que realiza en conjunto con una o
+			más personas que asumen distintos roles que normalmente se engloban en la palabra \emph{stakeholders} (e.g. analistas
+			funcionales, usuarios del sistema, líderes y sponsors del proyecto, clientes, etc.)
 
-			En la versión original de Rainbow (i.e. sin extensiones) el \emph{framework} deja al usuario final la responsabilidad
-			por codificar los \emph{probes} y \emph{gauges} que recolectarán información del sistema a adaptar y traducirán esa
-			información a cambios en los valores de las propiedades del sistema. Esto sigue siendo igual en Rainbow con las
-			extensiones provistas por Arco Iris, es decir, el usuario final sigue siendo el encargado de crear los componentes
-			que en tiempo de ejecución encuestan al sistema periódicamente para obtener información relevante.
+			En la versión original de Rainbow (i.e. sin extensiones) el \emph{framework} deja al usuario (e.g. el arquitecto) la
+			responsabilidad de codificar los \emph{probes} y \emph{gauges} que recolectarán información del sistema a adaptar y
+			traducirán esa información a cambios en los valores de las propiedades del sistema. Esto sigue siendo igual en
+			Rainbow con las extensiones provistas por Arco Iris, es decir, el usuario sigue siendo el encargado de crear los
+			componentes que en tiempo de ejecución encuestan al sistema periódicamente para obtener información relevante y
+			mantener actualizado el modelo de la arquitectura subyacente.
 
-			Así, en el anterior diagrama podemos observar que tanto el \emph{probe} como el \emph{gauge} normalmente tendrán que
-			tener conocimiento del concepto de ``estímulo'' (tal cual es descrito en los escenarios de atributos de	calidad de
-			ATAM). A diferencia de los \emph{gauges} utilizados en Rainbow, los utilizados en Arco Iris deberán informar los
-			cambios sucedidos en el sistema en \emph{runtime} con el siguiente formato: $<$Propiedad,Valor,Estímulo$>$ 
+			En el anterior diagrama se puede observar que tanto los \emph{probes} como los \emph{gauges} han de  tomar
+			conocimiento del concepto de ``estímulo'' (tal cual es descrito en los escenarios de atributos de calidad de ATAM).
+			A diferencia de los empleados en Rainbow, los  \emph{probes} implementados para trabajar con Arco Iris deberán
+			indicar el estímulo al cual representan, mientras que los \emph{gauges} deberán interpretar esta información y
+			notificar la actualización sobre el modelo indicando el estímulo desencadenador. Las novedades sobre los cambios
+			sucedidos en el sistema en \emph{runtime} serán informados con el siguiente formato: $<Propiedad,Valor,Estímulo>$
 
-			Puesto que en la presente extensión el componente \emph{Gauge} ahora provee información sobre los estímulos que
-			desencadenaron un cambio de propiedades en el sistema ejecutándose, el componente \emph{Gauge Coordinator} ha sido
-			extendido (ahora llamado \emph{Gauge Coordinator With Scenarios}) para soportar dicho agregado de información, sin
-			perder el comportamiento original provisto por Rainbow. Esto hace que este componente siga pudiendo coordinar información
-			proveniente de \emph{gauges} de Rainbow y \emph{gauges} con conocimiento sobre el estímulo invocado en el sistema en
-			ejecución.
-
+			Puesto que en la presente extensión el componente \emph{Gauge} provee información sobre los estímulos que desencadenaron
+			un cambio de propiedades en el sistema en ejecución, el componente \emph{Gauge Coordinator} ha sido extendido (i.e.
+			\emph{Gauge Coordinator With Scenarios}) para soportar dicho agregado de información, sin perder el comportamiento
+			original provisto por Rainbow. Esto hace que \emph{Gauge Coordinator With Scenarios} pueda coordinar información
+			proveniente de \emph{gauges} de Rainbow y/o \emph{gauges} de Arco Iris con su correspondiente conocimiento sobre el
+			estímulo originario de la modificación.
 			De la misma manera, el componente \emph{Rainbow Model With Scenarios} ha sido extendido para manejar
 			información de estímulos proveniente del \emph{Gauge Coordinator With Scenarios} sin perder el soporte original
-			provisto por \emph{Rainbow Model}. También, \emph{Rainbow Model With Scenarios} es el componente responsable de
-			cargar los escenarios de atributos de calidad creados por los \emph{stakeholders} y arquitecto(s).
+			provisto por \emph{Rainbow Model}.
 
 			En el caso de que \emph{Rainbow Model With Scenarios} detecte que un estímulo ha sido invocado en el sistema en
 			ejecución, procederá a recabar el subconjunto de escenarios habilitados que poseen dicho estímulo y que a su vez han
-			dejado de cumplirse\footnote{De ahora en más, diremos que el escenario en esta situación se encuentra
+			dejado de cumplirse\footnote{De ahora en más, diremos equivalentemente que el escenario en esta situación se encuentra
 			``roto''.}. Luego de obtener este subconjunto de escenarios, procederá a invocar al \emph{Adaptation Manager With
-			Scenarios}, extensión del componente original que soporta tanto invocaciones desde el \emph{Architecture Evaluator}
-			original de Rainbow, como así también invocaciones con un conjunto de escenarios detectados como ``rotos'' a los
-			cuales debe intentar reparar considerando diversas variables como por ejemplo sus prioridades relativas.
-
+			Scenarios}, extensión del componente original \emph{Adaptation Manager} que soporta tanto invocaciones desde el
+			\emph{Architecture Evaluator} original de Rainbow, como así también invocaciones con un conjunto de escenarios
+			detectados como ``rotos'' a los cuales debe intentar reparar considerando diversas variables como por ejemplo sus
+			prioridades relativas.
+			
+			También será responsabilidad de \emph{Rainbow Model With Scenarios} cargar los escenarios de atributos de calidad   
+			creados por los \emph{stakeholders} y arquitecto(s), así como también detectar los escenarios rotos, para lo cual   
+			contará con un componente colaborador llamado \emph{Self Healing Configuration Manager} , el cual cumple la función   
+			de abstraer toda la información referente a auto reparación agregada por Arco Iris.			
+			\todo{Agregar Self Healing Configuration Manager en el grafico como un colaborador de Rainbow Model With Scenarios}
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
 
 		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante un modelo de su arquitectura
@@ -188,29 +196,26 @@
 			supongamos que en un sistema de administración de cuentas bancarias un cliente intenta hacer una transferencia, en
 			este caso la fuente del estímulo sería el cliente y el estímulo en sí mismo sería realizar transferencia.
 
-			Saber cual es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido determinado
-			estímulo, Arco Iris podrá detectar cuales son los potenciales escenarios que pueden verse afectados y trabajará
+			Saber cuál es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido
+			determinado estímulo, Arco Iris podrá detectar cuales son los potenciales escenarios que pueden verse afectados y trabajará
 			verificando dicho subconjunto, evitando así chequeos innecesarios.
 
-			Cabe destacar que también se ofrece la posibilidad de que el estímulo sea ``cualquiera'', es decir, que el escenario
-			aplique siempre, independientemente del estímulo que haya impactado al sistema. Esto puede ser útil para casos más
-			genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el usuario nunca sobrepase
-			determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De no configurar ningún
-			estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada iteración. Esta es
-			la manera en que trabaja Rainbow.
-
+			Cabe destacar que también se ofrece la posibilidad de no especificar el estímulo al configurar un escenario, es decir,
+			se permite la opción de que el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema.
+			Esto puede ser útil para casos genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el
+			usuario nunca sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De
+			no configurar ningún estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada
+			iteración, tal cual lo hace Rainbow hoy en día.
 			Entonces, a diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por
 			medio del estímulo que ocasionó el problema, reduciendo así la cantidad de escenarios a verificar y sobre todo la
 			cantidad de estrategias a evaluar para intentar resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta
 			posibilidad), la única manera de limitar el uso de las estrategias es agregar restricciones en la misma estrategia,
-			siendo esto algo bastante técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del
-			sistema, por ejemplo, para que una estrategia que soluciona problemas de \emph{performance} no sea tenida en cuenta
-			al reparar un escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una
-			precondición como la siguiente en la estrategia:
-
-			\begin{Verbatim}[gobble=4]
+			siendo esto de nivel técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del sistema. Por
+			ejemplo, para que una estrategia que soluciona problemas de \emph{performance} no sea tenida en cuenta al reparar un
+			escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una precondición como
+			la siguiente en la estrategia:			\begin{Verbatim}[gobble=4]
 				strategy SimpleReduceResponseTime
-				  [ styleApplies && responseTimeConstraintViolation ] {
+				  [ responseTimeConstraintViolation ] {
 				  ...
 				}
 			\end{Verbatim}
@@ -227,19 +232,14 @@
 			\emph{performance}, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que
 			en Arco Iris existe la posibilidad de evitarlo al configurar correctamente los estímulos de cada escenario.
 
-			Adentrándonos ya en la implementación, tengamos en cuenta que el estímulo era un concepto inexistente en Rainbow, por lo
-			cual en Arco Iris debimos modificar algunos de los componentes existentes para poder tomar conocimiento de qué estímulo
-			desencadenaba una determinada acción, así como también para interpretar luego dicha información.
 			Dado a que Rainbow permite trabajar en modo simulación, fue necesario implementar dos soluciones para poder utilizar el
-			concepto de estímulo en ambos escenarios.
+			concepto de estímulo en ambos modos.
 
 			Al trabajar en el modo de simulación, dado que no participan ni los \emph{probes} ni los \emph{gauges}, fue necesario
-			implementar un mecanismo ad hoc, que consistió en barrer todos los escenarios al iniciar Arco Iris, recogiendo en un
+			implementar un mecanismo ad hoc, que consistió en ``barrer'' todos los escenarios al iniciar Arco Iris, recogiendo en un
 			mapa la información de qué estímulos eran los posibles responsables de las modificaciones causadas sobre cada una de las
-			propiedades de los artefactos configurados en los escenarios. A continuación mostramos el concepto de dicha
-			implementación en pseudocódigo:
-
-			\begin{Verbatim}[gobble=4]
+			propiedades de los artefactos configurados en los escenarios. A continuación se muestra en pseudocódigo el concepto de
+			dicha implementación:			\begin{Verbatim}[gobble=4]
 				por cada escenario habilitado
 				  por cada constraint del escenario
 				    por cada propiedad involucrada en el constraint
@@ -247,23 +247,21 @@
 				      estimulosPorPropiedades.agregar(propiedad, escenario.estimulo)
 			\end{Verbatim}
 
-			El modo simulación funciona notificando los cambios en las propiedades de interés, las cuales son
-			determinadas a la hora de implementar la simulación. Entonces, al contar los estímulos relacionados con cada
-			propiedad y los escenarios por cada estímulo, podemos acotar la cantidad de escenarios a verificar en cada
-			ejecución de la auto reparación.
-
-			En modo real, o sea sin simulación, para notificar el estímulo desencadente fue necesario extender los
-			\emph{probes}, que son los componentes encargados de \emph{testear} una determinada funcionalidad del sistema,
-			siendo el responsable también de medir la respuesta y de reportar dicha información a un bus, del cual
-			luego la consumirán los \emph{gauges}, quienes interpretarán los datos transformándolos en cambios en el
-			modelo de la arquitectura. Obviamente también fue necesario extender la funcionalidad de los \emph{gauges}
-			para poder intrepretar la información de estímulo agregada en cada uno de los \emph{probes}. En ambos
-			casos, y gracias al mecanismo empleado por Rainbow, no fue necesario modificar las interfaces ni de los
-			\emph{probes} ni de los \emph{gauges}, ya que éstos se comunican mediante cadenas de texto, justamente
-			para ofrecer una amplia libertad a la hora de implementarlos ya que pueden existir diversas maneras de probar y tomar
-			métricas de las distintas funcionalidades de los sistemas. Luego, una vez obtenido el estímulo correspondiente, no
-			resta más que recurrir al mapa de escenarios por estímulos (utilizado también en el modo simulación) para acotar la
-			cantidad de escenarios a comprobar.
+			El modo simulación funciona notificando los cambios en las propiedades de interés, las cuales son determinadas a la hora
+			de implementar la simulación. Entonces, al contar con los estímulos relacionados con cada propiedad y los escenarios por
+			cada estímulo, es posible acotar la cantidad de escenarios a verificar en cada ejecución de la auto reparación.
+			En modo real, o sea sin simulación, para notificar el estímulo desencadente fue necesario extender los \emph{probes},
+			que son los componentes encargados de \emph{testear} una determinada funcionalidad del sistema, siendo el responsable
+			también de medir la respuesta y de reportar dicha información a un bus, del cual luego la consumirán los \emph{gauges},
+			quienes interpretarán los datos transformándolos en cambios en el modelo de la arquitectura. Como ya se mencionó
+			anteriormente, fue necesario extender la funcionalidad de los \emph{gauges} para poder intrepretar la información de
+			estímulo agregada en cada uno de los \emph{probes}. En ambos casos, y gracias al mecanismo empleado por Rainbow, no fue
+			necesario modificar las interfaces de los \emph{probes} ni de los \emph{gauges}, ya que éstos se comunican mediante
+			cadenas de texto, justamente para ofrecer una amplia libertad a la hora de implementarlos ya que pueden existir diversas
+			maneras de probar y tomar métricas de las distintas funcionalidades de los sistemas. Luego, una vez obtenido el estímulo
+			correspondiente, no resta más que recurrir al mapa de escenarios por estímulos (utilizado también en el modo simulación)
+			para acotar la cantidad de escenarios a comprobar.
+			\todo{Continuar revisando desde aca}
 
 			\todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos}
 
