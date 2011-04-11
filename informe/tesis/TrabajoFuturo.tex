@@ -79,26 +79,27 @@
 				rectificación o ratificación de la configuración de \emph{self healing} que está siendo utilizada.
 			\end{itemize}
 
-	\subsection{Configuración Dinámica y Ampliación de la Configuración Existente}
+	\subsection{Configuración Dinámica: Ampliación de la Configuración Existente}
 
 		En la sección \ref{sec:actualizacionDinamicaConfig} se explicó el trabajo hecho en Arco Iris en materia de recarga
-		automática de la configuración. Recordemos que se implementó un mecanismo de recarga automática de la configuración
-		relativa a Escenarios, Entornos, Artifacts y las referencias a las estrategias asociadas a cada escenario. Si bien tal
-		mecanismo representa una mejora sustancial con respecto a Rainbow (el cual recordemos que no provee ningún tipo de
-		recarga ``en caliente'' de la configuración) entendemos que se puede dar un paso más en la materia, a fin de hacerla
-		más útil en un ambiente dinámico como el de la industria del \emph{software}: es altamente deseable \textbf{recargar
-		dinámicamente el 100\% de la configuración de Rainbow/Arco Iris}.
-		
-		Se propone como trabajo a futuro el ampliar el archivo de configuración de \emph{self healing} para que contemple la,
-		hoy estática, configuración de Rainbow; así también como los nuevos conceptos presentados en Arco Iris pero que no son
-		configurables externamente, como por ejemplo:
+		automática de la configuración. Recordemos que se implementó un mecanismo que refresca la configuración relativa a
+		Escenarios, Entornos, Artifacts y las referencias a las estrategias asociadas a cada escenario. Si bien tal mecanismo
+		representa una mejora sustancial con respecto a Rainbow (el cual recordemos que no provee ningún tipo de recarga ``en
+		caliente'' de la configuración) entendemos que se puede dar un paso más en la materia, a fin de hacerla más útil en un
+		ambiente dinámico como el de la industria del \emph{software}: es altamente deseable \textbf{recargar dinámicamente el
+		100\% de la configuración de Rainbow/Arco Iris}.
+	
+		Dividiremos los agregados/cambios a realizar de acuerdo a \emph{dónde} deben hacerse:
+	
+		\subsubsection{Agregados al archivo de configuración de Arco Iris}
 
-		\todo{mejorar lo de arriba y enumerar las cosas de Rainbow que pondríamos y las de Arco Iris, en dos enumerate
-		distintos}
+		\subsubsection{Cambios en la carga de configuración de Rainbow}
+		
+		\subsubsection{Mejoras en Scenarios UI}
 
 		\todo{Strategies y Tácticas, concerns, quality attributes, utilities.yml?}		 
 		\todo{Externalizar MIN\_UTILITY\_THRESHOLD y FAILURE\_RATE\_THRESHOLD (Ver AdaptationManager.java)}
-		\todo{Permitir agregar \emph{concerns} nuevos}\\
+		\todo{Permitir agregar \emph{concerns} nuevos --> explicar el desafío que esto implica, no feasible por ahora}\\
 		\todo{leer los \emph{artifacts} y sus properties desde el .ACME}\\
 		\todo{agregar mas tipos de \emph{constraints}}\\
 	
