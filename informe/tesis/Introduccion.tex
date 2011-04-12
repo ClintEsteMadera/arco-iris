@@ -23,15 +23,15 @@
 		una decisión sobre cómo reparar al sistema en cuestión.
 
 		Si bien ya existen soluciones de este tipo, en ninguna se considera la participación de los
-		\emph{stakeholders}\footnote{Típicamente: representantes del cliente, el equipo de arquitectura, representantes
-		de los usuarios finales, operadores y administradores del sistema, \emph{managers}, \emph{testers}, \emph{sponsors},
-		etc.} en el proceso de detección y corrección automática de errores. Esto motivó el presente trabajo, donde se intenta
-		ofrecer una forma de incluir a los \emph{stakeholders} en el proceso, siempre considerando que su participación debe
-		contribuir principalmente en la definición de los potenciales problemas y sus posibles soluciones. Para esto, se
-		consideró el uso de los denominados ``Escenarios de Atributos de Calidad'' (QAS, de sus siglas en inglés,
-		\emph{Quality Attribute Scenarios})\cite{BassClementz}; los cuales permiten definir cómo debería responder el sistema,
-		entre otras cosas, ante determinados estímulos y en ciertos entornos de ejecución. Se profundizará sobre el concepto
-		de QAS en la sección \ref{sec:QAS}.
+		\emph{stakeholders}\footnote{Típicamente: representantes del cliente, el equipo de arquitectura, representantes de los
+		usuarios finales, operadores y administradores del sistema, \emph{managers}, \emph{testers}, el \emph{sponsor} del
+		proyecto, etc.} en el proceso de detección y corrección automática de errores. Esto motivó el presente trabajo, donde
+		se intenta ofrecer una forma de incluir a los \emph{stakeholders} en el proceso, siempre considerando que su
+		participación debe contribuir principalmente en la definición de los potenciales problemas y sus posibles soluciones.
+		Para esto, se consideró el uso de los denominados ``Escenarios de Atributos de Calidad'' (QAS, de sus siglas en
+		inglés, \emph{Quality Attribute Scenarios})\cite{BassClementz}; los cuales permiten definir cómo debería responder el
+		sistema, entre otras cosas, ante determinados estímulos y en ciertos entornos de ejecución. Se profundizará sobre el
+		concepto de QAS en la sección \ref{sec:QAS}.
 
 		Una vez definidos los escenarios por los \emph{stakeholders}, el paso siguiente consiste en utilizar toda esa
 		información en tiempo de ejecución para que el sistema sea capaz de auto repararse. Allí nos servimos de un
@@ -40,12 +40,10 @@
 		propone una manera estática y poco amigable de configurar la información necesaria para tomar decisiones de auto
 		reparación en tiempo de ejecución. Así, el objetivo planteado es superar algunas de dichas limitaciones mediante el
 		agregado del concepto central de este trabajo: los ``Escenarios de Atributos de Calidad'' como forma fundamental de
-		expresar el conocimiento de los \emph{stakeholders}. El objetivo final que se persigue es involucrar a dichos actores
-		en el proceso de Auto Reparación y proveerles una mayor visibilidad de las posibles consecuencias que dicho proceso
-		conlleva en el desempeño del sistema. El objeto del presente trabajo, al cual denominaremos ``Arco Iris'', es		el extender el comportamiento original de Rainbow modificando ciertos componentes del \emph{framework} para que		admitan nuevos conceptos que se explicarán más adelante.
+		expresar el conocimiento de los \emph{stakeholders} referido a requerimientos que deben ser contemplados por la
+		arquitectura. El objetivo final que se persigue es involucrar a dichos actores en el proceso de Auto Reparación y
+		proveerles una mayor visibilidad de las posibles consecuencias que dicho proceso conlleva en el desempeño del sistema.		El objeto del presente trabajo, al cual denominaremos ``Arco Iris'', es el extender el comportamiento original de		Rainbow modificando ciertos componentes del \emph{framework} para que admitan nuevos conceptos que se explicarán más		adelante.
 	\subsection{Organización del presente trabajo}
-
-		\todo{Ir mejorando esta sección a medida que se agregan cosas nuevas a las secciones}
 
 		El presente trabajo consta de cinco partes principales, a saber:
 		\begin{enumerate}
