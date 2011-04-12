@@ -44,7 +44,7 @@
 		relevante a los fines de su auto reparación. Dicha información no es interpretada dentro de los probes sino que ellos
 		delegan dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de interpretar la
 		información provista por los \emph{probes} y traducirla a pares $<Propiedad,Valor>$ donde $Propiedad$ refiere al
-		nombre de una propiedad correspondiente a un componente (o conector o subsistema, etc\ldots) de la arquitectura del
+		nombre de una propiedad correspondiente a un componente (o conector o sub sistema, etc\ldots) de la arquitectura del
 		sistema a adaptar; y $Valor$ es el nuevo valor que posee dicha propiedad.
 
 		Normalmente, por cada tipo relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución existe un
@@ -190,7 +190,7 @@
 
 		\subsubsection{El Estímulo en la Auto Reparación}
 
-			El \textbf{Estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
+			El \textbf{estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
 			alguno de sus usuarios. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
 			inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión. Por ejemplo,
 			supongamos que en un sistema de administración de cuentas bancarias un cliente intenta hacer una transferencia, en
@@ -198,7 +198,7 @@
 
 			Saber cuál es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido
 			determinado estímulo, Arco Iris podrá detectar cuales son los potenciales escenarios que pueden verse afectados y trabajará
-			verificando dicho subconjunto, evitando así chequeos innecesarios.
+			verificando dicho subconjunto, minimizando así el tiempo de la auto reparación.
 
 			Cabe destacar que también se ofrece la posibilidad de no especificar el estímulo al configurar un escenario, es decir,
 			se permite la opción de que el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema.
@@ -255,30 +255,30 @@
 			En modo real, o sea sin simulación, para notificar el estímulo desencadente fue necesario extender los \emph{probes},
 			que son los componentes encargados de \emph{testear} una determinada funcionalidad del sistema, siendo el responsable
 			también de medir la respuesta y de reportar dicha información a un bus, del cual luego la consumirán los \emph{gauges},
-			quienes interpretarán los datos transformándolos en cambios en el modelo de la arquitectura. Como ya se mencionó
-			anteriormente, fue necesario extender la funcionalidad de los \emph{gauges} para poder intrepretar la información de
-			estímulo agregada en cada uno de los \emph{probes}. En ambos casos, y gracias al mecanismo empleado por Rainbow, no fue
-			necesario modificar las interfaces de los \emph{probes} ni de los \emph{gauges}, ya que éstos se comunican mediante
-			cadenas de texto, justamente para ofrecer una amplia libertad a la hora de implementarlos ya que pueden existir diversas
-			maneras de probar y tomar métricas de las distintas funcionalidades de los sistemas. Luego, una vez obtenido el estímulo
-			correspondiente, no resta más que recurrir al mapa de escenarios por estímulos (utilizado también en el modo simulación)
-			para acotar la cantidad de escenarios a comprobar.
-			\todo{Continuar revisando desde aca}
-
-			\todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos}
+			quienes interpretarán los datos transformándolos en cambios en el modelo de la arquitectura. 
+			
+			Como ya se mencionó anteriormente, fue necesario extender la funcionalidad de los \emph{gauges} para poder intrepretar
+			la información de estímulo agregada en cada uno de los \emph{probes}. En ambos casos, y gracias al mecanismo empleado
+			por Rainbow, no fue necesario modificar las interfaces de los \emph{probes} ni de los \emph{gauges}, ya que éstos se
+			comunican mediante cadenas de texto, justamente para ofrecer una amplia libertad a la hora de implementarlos ya que
+			pueden existir diversas maneras de probar y tomar métricas de las distintas funcionalidades de los sistemas. Luego, una
+			vez obtenido el estímulo correspondiente, no resta más que recurrir al mapa de escenarios por estímulos (utilizado
+			también en el modo simulación) para acotar la cantidad de escenarios a comprobar.
+			\todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos (no lo encontré!!)}
 
 		\subsubsection{El Artefacto en la Auto Reparación}
 
-			El \textbf{Artefacto} se refiere al componente, subsistema o parte del sistema afectada por el escenario. Dado que
+			El \textbf{artefacto} se refiere al componente, sub sistema o parte del sistema afectada por el escenario. Dado que
 			Rainbow trabaja con el modelo de la arquitectura del sistema descripto en el lenguaje Acme, contaremos con la
 			especificación de las propiedades de los componentes y los conectores del sistema, entonces en el escenario de Arco Iris
 			podremos contar con una vinculación directa con los componentes afectados. Al seleccionar un artefacto, el usuario de
-			Arco Iris no estará más que eligiendo un componente o conector de la arquitectura del sistema, esto lo aprovecharemos
-			para acotar las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la Respuesta}.
+			Arco Iris no estará más que eligiendo un componente o conector de la arquitectura del sistema, esto será utilizado
+			para acotar las propiedades sobre las cuales podrá predicar la \textbf{Cuantificación de la Respuesta}
+			(ver \ref{sec:responseMeasure}).
 
-			Para ejemplificar el concepto de artefacto utilizaremos la arquitectura presentada en Znn, recordemos que es una
-			arquitectura cliente-servidor, de la cual en este caso tomaremos la especificación del componente cliente definido como
-			\emph{ClientT}, a saber:
+			La arquitectura presentada en Znn servirá para ejemplificar el concepto de artefacto, cabe recordar que se trata de
+			una arquitectura cliente-servidor, de la cual en este caso importa la especificación del componente cliente
+			definido como \emph{ClientT}, a saber:
 
 			\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
@@ -287,11 +287,11 @@
 
 				  Property experRespTime : float <<  default : float = 100.0; >> ;
 
-				  Property reqRate : float <<  default : float = 0.0; >> ;
+				  Property requestRate : float <<  default : float = 0.0; >> ;
 				}
 			\end{Verbatim}
 
-			Y supongamos que se define el siguiente escenario:
+			Suponiendo que se define el siguiente escenario:
 
 			\label{escenarioPerformance}
 			\begin{quote}
@@ -299,32 +299,43 @@
 				entorno de operación normal.
 			\end{quote}
 
-			Claramente en este ejemplo \emph{ClientT} será el artefacto sobre el cual predicará la verificación de validez de
-			este escenario, más adelante veremos cómo se configurará dicha restricción.
+			Claramente en este ejemplo \emph{ClientT} es el artefacto sobre el cual ha de predicar la verificación de validez de
+			este escenario, más adelante, en la sección \ref{sec:responseMeasure} se podrá observar cómo se configura dicha
+			restricción.
 
-			En la sección \ref{sec:scenariosUI} se explicará en más detalle cómo se podrá emplear esta información para mejorar
-			la experiencia de los \emph{stakeholders} a la hora de especificar escenarios mediante la herramienta visual
-			presentada junto a Arco Iris: \textbf{scenarios UI}
+			La sección \ref{sec:scenariosUI} explica en detalle cómo se podrá emplear esta información para mejorar la
+			experiencia de los \emph{stakeholders} a la hora de especificar escenarios mediante la herramienta visual presentada
+			junto a Arco Iris: \textbf{scenarios UI}
 
 
 		\subsubsection{El Entorno en la Auto Reparación}
+
 			\todo{en la seccion 4 explicamos el entorno especial ``ANY''. Probablemente eso sea mejor explicarlo acá\ldots}
 
-			Dentro de la definición de escenario, el \textbf{Entorno} se refiere al estado en el que el sistema se encuentra cuando
-			se recibe el estímulo que desencadena el escenario, por ejemplo, al recibir una solicitud de creación de una cuenta
-			bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. El entorno condiciona la validez del
-			escenario en cuestión a que el sistema se encuentre en un determinado estado. Una respuesta aceptable o fácil de cumplir
-			bajo un entorno puede ser inaceptable o muy costosa de cumplir en otro entorno. En el escenario planteado
-			anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un entorno de ``alta carga'' el
-			escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema debería encontrarse en un			entorno de ``operación normal''.
+			Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
+			cuando recibe el estímulo que desencadena el escenario; por ejemplo, al recibir una solicitud de creación de una
+			cuenta bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. El entorno condiciona la
+			validez del escenario en cuestión a que el sistema se encuentre en un determinado estado. Una respuesta esperada
+			aceptable o fácil de cumplir bajo un entorno puede ser inaceptable o muy costosa de cumplir en otro entorno. 
+			
+			En el escenario planteado anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un
+			entorno de ``alta carga'' el escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema
+			debería encontrarse en un entorno de ``operación normal''. 
+			
 			Por otro lado, el entorno del escenario permite a Arco Iris optimizar la búsqueda de escenarios que no se satisfagan ya
 			que se ignorarán los escenarios cuyo entorno posea condiciones que no se cumplan en el estado del sistema en el instante
-			en que se recibe el estímulo. Es importante mencionar que si bien según la definición de ATAM, cada escenario posee			un único entorno, en Arco Iris hemos decidido, por razones de flexibilidad, permitir configurar varios escenarios,			siendo obligatorio indicar al menos uno.
-			Arco Iris también provee la posibilidad de especificar que un determinado escenario aplica bajo cualquier entorno,
-			esto sería equivalente a que el entorno del escenario tenga como única condición subyacente \verb@true@. Esto puede
-			ser útil para simplificar la configuración del escenario, pero se debe tener en cuenta que esto acota la posibilidad
-			de obtener un rendimiento más óptimo del sistema, ya que al configurar un entorno se puede ser más específico sobre
-			las prioridades relativas de los \emph{concerns} según el escenario y el estado del sistema.
+			en que se recibe el estímulo. 
+
+			Es importante mencionar que si bien según la definición de ATAM, cada escenario posee un único entorno, en Arco Iris se
+			ha tomado la decisión de diseño, por razones de flexibilidad, de permitir configurar varios entornos por escenario,
+			siendo obligatorio indicar al menos uno.\todo{Explicar un poco mas esta decision ya que no es trivial}
+			Arco Iris también provee la posibilidad de especificar si un determinado escenario aplica bajo cualquier entorno, esto
+			sería equivalente a que el entorno del escenario tenga como única condición subyacente \verb@true@. Esto puede ser útil
+			para simplificar la configuración del escenario, pero es importante tener en cuenta que esto acota la posibilidad de
+			obtener un rendimiento más óptimo de la auto reparación para con el sistema, ya que configurar un entorno específico
+			permite mayor precisión al configurar las prioridades relativas de los \emph{concerns} según el escenario    y el estado
+			del sistema.
+			\todo{Continuar revisando desde aca}
 
 			Supongamos que el sistema se encuentra bajo una carga excesiva, y los \emph{stakeholders} consideran que bajo tales
 			circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular, en tal caso, de no
