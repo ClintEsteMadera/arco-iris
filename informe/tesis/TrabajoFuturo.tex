@@ -79,29 +79,66 @@
 				rectificación o ratificación de la configuración de \emph{self healing} que está siendo utilizada.
 			\end{itemize}
 
-	\subsection{Configuración Dinámica: Ampliación de la Configuración Existente}
+	\subsection{Ampliación de la Recarga Dinámica de Configuración}
 
 		En la sección \ref{sec:actualizacionDinamicaConfig} se explicó el trabajo hecho en Arco Iris en materia de recarga
 		automática de la configuración. Recordemos que se implementó un mecanismo que refresca la configuración relativa a
 		Escenarios, Entornos, Artifacts y las referencias a las estrategias asociadas a cada escenario. Si bien tal mecanismo
 		representa una mejora sustancial con respecto a Rainbow (el cual recordemos que no provee ningún tipo de recarga ``en
 		caliente'' de la configuración) entendemos que se puede dar un paso más en la materia, a fin de hacerla más útil en un
-		ambiente dinámico como el de la industria del \emph{software}: es altamente deseable \textbf{recargar dinámicamente el
-		100\% de la configuración de Rainbow/Arco Iris}.
-	
-		Dividiremos los agregados/cambios a realizar de acuerdo a \emph{dónde} deben hacerse:
-	
-		\subsubsection{Agregados al archivo de configuración de Arco Iris}
+		ambiente dinámico como el de la industria del \emph{software} dónde el tener que reiniciar la aplicación para aplicar
+		un cambio en la configuración resulta muchas veces sencillamente inaceptable. Por lo tanto, es altamente deseable
+		tender a \textbf{recargar dinámicamente el 100\% de la configuración de Rainbow/Arco Iris}. La recarga automática
+		posee distintas características de acuerdo a si la misma ocurre en Rainbow o en Arco Iris. En los siguientes apartados
+		daremos cuenta de ellas.
 
-		\subsubsection{Cambios en la carga de configuración de Rainbow}
+		\subsubsection{Implementación de la Recarga Dinámica de Configuración en Rainbow}
+
+			\noindent \textbf{Qué se necesita hacer}\\
+			\indent Como ya se ha dicho anteriormente en el presente documento, Rainbow no provee ningún tipo de refresco
+			automático de configuración, es decir que para ver reflejados los cambios de configuración es necesario reiniciar el
+			\emph{framework}.
+			
+			Rainbow actualmente maneja (a grandes rasgos) los siguientes puntos de configuración:
+			\begin{itemize}
+				\item el archivo \verb@rainbow.properties@, un típico archivo \verb@.properties@ leído por Java y que sirve para
+				externalizar propiedades tales como el nivel de log deseado para la aplicación, el \emph{path} en dónde buscar
+				estrategias y tácticas, el archivo .ACME con el modelo de la arquitectura del sistema a adaptar, etc.
+				\item archivos con extensión \verb@.s@ (Stitch) de tácticas y estrategias.
+				\item \verb@utilities.yml@, dónde se configuran las curvas de utilidad para el sistema.
+			\end{itemize}
+			
+			\noindent \textbf{Cómo hacerlo / Posibles Problemas}\\
+			\indent 
+
+		\subsubsection{Ampliación de la Recarga Dinámica de Configuración en Arco Iris}
+
+			\noindent \textbf{Qué se necesita hacer}\\
+			\indent
+			
+			\noindent \textbf{Cómo hacerlo / Posibles Problemas}\\
+			\indent
+
+	\subsection{Ampliación de la Configuración Existente}
+
+		Dividiremos los agregados/cambios a realizar de acuerdo a \emph{dónde} deben hacerse: en Rainbow, en Arco Iris o en
+		Scenarios UI.
+
+		\subsubsection{Agregados a Arco Iris}
 		
-		\subsubsection{Mejoras en Scenarios UI}
-
-		\todo{Strategies y Tácticas, concerns, quality attributes, utilities.yml?}		 
-		\todo{Externalizar MIN\_UTILITY\_THRESHOLD y FAILURE\_RATE\_THRESHOLD (Ver AdaptationManager.java)}
-		\todo{Permitir agregar \emph{concerns} nuevos --> explicar el desafío que esto implica, no feasible por ahora}\\
-		\todo{leer los \emph{artifacts} y sus properties desde el .ACME}\\
-		\todo{agregar mas tipos de \emph{constraints}}\\
+			\todo{Permitir agregar \emph{concerns} nuevos --> explicar el desafío que esto implica, no feasible por ahora}
+		
+			\todo{agregar mas tipos de \emph{constraints}}
+		
+		\subsubsection{Agregados a Rainbow}
+		
+			\todo{Strategies y Tácticas, utilities.yml?}
+		
+			\todo{Externalizar MIN\_UTILITY\_THRESHOLD y FAILURE\_RATE\_THRESHOLD (Ver AdaptationManager.java)}
+		
+		\subsubsection{Agregados a Scenarios UI}
+		
+			\todo{leer los \emph{artifacts} y sus properties desde el .ACME}	
 	
 	\subsection{Flexibilización del Entorno}
 
@@ -121,11 +158,9 @@
 
 	\subsection{Optimización en la Selección de la Estrategia}
 
-		\todo{Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function'' es limitado)}
+		\todo{A completar por TURCO: Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function''
+		es limitado)}
 
 	\subsection{Scoring de Estrategias: Rainbow y Arco Iris ``en conjunto''}
 	
-		\todo{hablar sobre arcoIrisSolutionWeight y rainbowSolutionWeight}
-
-		\todo{Turco: explicame cual es la gracia de usar todo nuestro mecanismo para luego scorear las estrategias con
-		Rainbow. No le veo sentido.}
+		\todo{A completar por TURCO: hablar sobre arcoIrisSolutionWeight y rainbowSolutionWeight}
