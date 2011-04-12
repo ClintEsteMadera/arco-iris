@@ -1,13 +1,21 @@
 \section{Conceptos Preliminares}
 
-	\subsection{Requerimientos No Funcionales}
+	\subsection{Ingeniería de Requerimientos}
 
-		\subsubsection{Restricciones}
+		\subsubsection{Requerimientos No Funcionales o ``Restricciones''}
 
 			En el desarrollo de sistemas críticos, no es suficiente el satisfacer sólamente \textbf{requerimientos funcionales}
-			(i.e. ``aquello que el software deber hacer''). Este tipo de sistemas generalmente deben satisfacer otro tipo de
-			\textbf{requerimientos no funcionales}, también llamados \textbf{Restricciones}, los cuales especifican criterios a
-			ser usados para juzgar la operación de un sistema en lugar de describir funcionalidad específica para el mismo.
+			(i.e. aquello que el software deber hacer desde el punto de vista del negocio al que da soporte). Este tipo de
+			sistemas generalmente deben satisfacer otro tipo de \textbf{requerimientos no funcionales}, también llamados
+			\textbf{Restricciones}, los cuales especifican criterios a ser usados para juzgar la operación de un sistema en lugar
+			de describir funcionalidad específica para el mismo.
+
+			\begin{figure}[h]
+				\centering
+					\includegraphics[width=0.5\textwidth]{images/requerimientos.png}
+				\caption{Ubicación de los Atributos de Calidad en los requerimientos}
+				\label{fig:requerimientos}
+			\end{figure}
 			
 			Algunos ejemplos de restricciones sobre un sistema de software son los siguientes:
 	
@@ -34,7 +42,7 @@
 		
 			El estándar 1061-1998 de la IEEE \footnote{Para más información, visitar
 			\url{http://standards.ieee.org/findstds/standard/1061-1998.html}} que establece una metodología para la definición de
-			métricas con respecto a la calidad del \emph{software}, reza:
+			métricas con respecto a la calidad del \emph{software}, dice:
 			
 			\begin{quote}
 				La calidad del \emph{software} es el nivel que posee de una combinación deseada de atributos (e.g. confiabilidad,
@@ -52,7 +60,7 @@
 				\item Usabilidad
 			\end{itemize}
 			
-			Imaginemos que un \emph{sponsor} de un sistema a ser desarrollado establece que el sistema debe ser ``eficiente''.
+			Imaginemos que el \emph{sponsor} de un sistema a ser desarrollado establece que el sistema debe ser ``eficiente''.
 			¿Qué significa esto exactamente? La pregunta es difícil de contestar si no se dispone de más información.
 			Evidentemente, los atributos de calidad son categorizaciones de alto nivel que, si no se dispone de más
 			información, no parecen servir de mucho para tomar decisiones arquitectónicas en pos de alcanzar un
@@ -83,7 +91,7 @@
 			propiedades de la arquitectura como el ancho de banda de los servidores, la carga del sistema, la cantidad de
 			servidores, etc.
 			
-			Tanto los atributos de calidad como los \emph{concerns} son conceptos fundamentales en el presente trabajo, no solo
+			Tanto los atributos de calidad como los \emph{concerns} son conceptos fundamentales en el presente trabajo, no sólo
 			desde un punto de vista teórico sino que también serán utilizados en la práctica.
 			
 	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
@@ -105,10 +113,10 @@
 		mismo, el término más utilizado actualmente es \emph{Self Healing} o, en castellano, \textbf{Auto Reparación}.
 
 		Si bien ya existen mecanismos para mitigar los mencionados problemas, ellos normalmente están intrínsecamente ligados
-		al lenguaje de programación utilizado para construír la aplicación, tales como tratamiento de excepciones, protocolos de
-		tolerancia a fallos, etc. Además, estos mecanismos generalmente dependen del código de la aplicación que se intenta
-		adaptar y consecuentemente, no son fácilmente reutilizables entre distintos sistemas. En resúmen: hoy en día, la
-		adaptación de sistemas de software es costosa de construir, dificil de modificar, poco reusable y generalmente solo
+		al lenguaje de programación utilizado para construir la aplicación, tales como tratamiento de excepciones, protocolos
+		de tolerancia a fallos, etc. Además, estos mecanismos generalmente dependen del código de la aplicación que se intenta
+		adaptar y consecuentemente, no son fácilmente reutilizables entre distintos sistemas. En resumen: hoy en día, la
+		adaptación de sistemas de software es costosa de construir, difícil de modificar, poco reutilizable y generalmente sólo
 		provee soluciones a fallos de manera puntual.
 
 		En cuanto al estado del arte en materia de sistemas autónomos existen diversos enfoques tanto en el ámbito académico
@@ -137,7 +145,7 @@
 	\label{sec:ARSBMA}
 
 		En contraste con los mecanismos tradicionales para detección y recuperación de errores que se implementan como parte
-		del código específico de la aplicación, con mecanismos localizados y poco escalables entre distintos sistemas; el
+		del código específico de la aplicación, con mecanismos localizados y poco reutilizables entre distintos sistemas; el
 		enfoque propuesto por el Dr. David Garlan, usa \textbf{el modelo de la arquitectura} del sistema que se desea adaptar
 		como instrumento para razonar sobre sus propiedades (e.g. tiempo de respuesta de un servidor) y sus correlatos
 		con la dinámica del sistema en tiempo de ejecución.
@@ -176,9 +184,9 @@
 		manera temprana decisiones arquitectónicas, reduciendo así el tiempo de implementación y evitando utilizar
 		ineficientemente recursos en el desarrollo del sistema.
 
-		Una forma de describir dichas arquitecturas es mediante el modelado de objetos mediante UML, si bien este método ha
-		sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes, el más importante e
-		invalidante es que no provee un soporte directo para describir propiedades no funcionales, esto hace dificultoso
+		Una forma de describir dichas arquitecturas es mediante el modelado de objetos con UML, si bien este método ha
+		sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes: el más importante e
+		invalidante es que no provee un soporte directo para describir propiedades no funcionales. Ésto hace dificultoso
 		razonar sobre propiedades críticas del sistema, como por ejemplo la \emph{performance} o la confiabilidad. Ésta es la
 		razón principal que ha motivado el avance de los ADLs (\emph{Architecture Description Languages}). Para más
 		información sobre la discusión ADL's vs. UML, remitirse a \cite{ADLsVsUML}.
@@ -451,7 +459,7 @@
 			El proceso de adaptar un sistema de manera dinámica puede llegar a ser muy costoso, por ejemplo, en un sistema
 			cliente-servidor, el asignar más servidores para atender las peticiones de los usuarios implica normalmente un coste
 			monetario no despreciable. Otro ejemplo podría ser el suspender temporalmente la reproducción de videos en un sitio
-			de noticias. Si bien esta decisión puede servir para disminuír el tiempo de respuesta experimentado por los usuarios
+			de noticias. Si bien esta decisión puede servir para disminuir el tiempo de respuesta experimentado por los usuarios
 			en un contexto de alta carga, también provoca una clara disminución en la calidad del servicio ofrecido. Estos
 			ejemplos concretos sirven para inferir que el disparar un mecanismo de auto reparación en un sistema debe ser una
 			decisión tomada con cierta cautela y en base a datos confiables y sostenidos en el tiempo.
@@ -573,8 +581,8 @@
 		\end{itemize}
 
 		Los escenarios permiten obtener el punto de vista de un grupo diverso de \emph{stakeholders} (arquitectos,
-		desarrolladores, usuarios, \emph{sponsors}, etc). Estos escenarios pueden luego ser utilizados para analizar y definir
-		la arquitectura del sistema e identificar \emph{concerns} y posibles estrategias para atacar problemas.
+		desarrolladores, usuarios, el \emph{sponsor}, etc). Estos escenarios pueden luego ser utilizados para analizar y
+		definir la arquitectura del sistema e identificar \emph{concerns} y posibles estrategias para atacar problemas.
 
 		\subsubsection{QAW}
 			Existe una metodología definida por el Software Engineering Institute (SEI) conocida como \textbf{Quality Attribute
@@ -612,14 +620,15 @@
 			\begin{itemize}
 				\item \textbf{Riesgo}: decisión arquitectónica potencialmente problemática.
 				\item \textbf{Punto sensible}: propiedad de uno o más componentes (y/o relaciones entre componentes) que es crítica
-				para poder alcanzar un atributo de calidad determinado.
-				\item \textbf{Punto de \emph{tradeoff}}: propiedad que afecta y es un punto sensible para más de un atributo de
-				calidad.
+				para poder alcanzar un atributo de calidad determinado. Por ejemplo, un módulo de cifrado es un punto sensible para
+				el atributo de calidad ``seguridad''.
+				\item \textbf{Punto de \emph{tradeoff}}: se trata de un componente de la arquitectura donde se afecta más
+				de un atributo de calidad (y por ende, también es un punto sensible para dichos atributos de calidad). Por ejemplo,
+				el módulo de cifrado mencionado anteriormente sería un punto de \emph{tradeoff} de haber requerimientos de
+				\emph{performance}, ya que afecta positivamente la seguridad y negativamente la \emph{performance} del sistema. 
 				\item \textbf{\emph{Non risks}} son buenas decisiones de arquitectura que normalmente están implícitas en la
 				arquitectura.
 			\end{itemize}
-
-			\todo{SANTIAGO: Nos darías algún ejemplo concreto de sensitivity point y tradeoff?}
 
 		\subsubsection{Analizando arquitecturas con ATAM}
 
@@ -645,11 +654,11 @@
 	
 			Cabe mencionar que los QAW han surgido como consecuencia del uso de ATAM, puesto que era requerida una herramienta o
 			método que permitiera identificar los requerimientos de atributos de calidad más importantes del sistema,
-			\textbf{antes de que existiese la arquitectura} sobre la cual ATAM trabajaría.
+			\textbf{antes de que existiese la arquitectura} sobre la cual ATAM trabajaría. Luego de observar los pasos del
+			método ATAM que detallaremos a continuación, no será difícil para el lector inferir que en realidad ATAM incluye a
+			QAW.
 	
 		\subsubsection{Pasos del método ATAM}
-
-			\todo{SANTIAGO: Observamos que ATAM es casi igual a QAW (lo incluye)\ldots vale la pena mencionar QAW entonces?}
 
 			A continuación se describen los pasos del método ATAM:
 	
