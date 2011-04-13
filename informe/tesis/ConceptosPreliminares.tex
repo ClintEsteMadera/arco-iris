@@ -1,42 +1,44 @@
 \section{Conceptos Preliminares}
 
-	\subsection{Ingeniería de Requerimientos}
+	\subsection{Atributos de Calidad y Restricciones}
+	 
+		Desde hace unos años en la bibliografía de la Ingeniería de Software y más específicamente de la Ingeniería de
+		Requerimientos se busca imponer el término \textbf{Atributos de Calidad} a las categorías de requerimientos que un
+		sistema debe cumplir. Tradicionalmente los requerimientos eran divididos en \textbf{Requerimientos Funcionales} para
+		referirse a la ``funcionalidad del negocio'' y \textbf{Requerimientos No Funcionales} para referirse a otros
+		requerimientos como seguridad, \emph{performance}, usabilidad, escalabilidad, etc. Sin embargo, esta división resulta
+		poco apropiada, dado que algunos de los llamados \textbf{Requerimientos No Funcionales} usualmente se terminan
+		implementando con funcionalidad, como puede ser un módulo de autenticación para lograr seguridad. El término
+		\textbf{Atributos de Calidad} aparece entonces como más general, y permite una clasificación más clara entre la
+		funcionalidad y otros atributos. Algunos ejemplos de Atributos de Calidad son los siguientes:
 
-		\subsubsection{Requerimientos No Funcionales o ``Restricciones''}
+		\begin{enumerate}
+			\item \label{ejAtributoCalidad1} el sistema debe ser escalable con respecto a la cantidad de usuarios que lo utilizan
+			concurrentemente.
+			\item \label{ejAtributoCalidad2} el sistema debe implementar políticas de tolerancia a fallos.
+			\item \label{ejAtributoCalidad3} el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el
+			tiempo de respuesta.
+		\suspend{enumerate}
 
-			En el desarrollo de sistemas críticos, no es suficiente el satisfacer sólamente \textbf{requerimientos funcionales}
-			(i.e. aquello que el software deber hacer desde el punto de vista del negocio al que da soporte). Este tipo de
-			sistemas generalmente deben satisfacer otro tipo de \textbf{requerimientos no funcionales}, también llamados
-			\textbf{Restricciones}, los cuales especifican criterios a ser usados para juzgar la operación de un sistema en lugar
-			de describir funcionalidad específica para el mismo.
+		Por otro lado, debemos tener en cuenta que al momento de diseñar una aplicación, el ingeniero de \emph{software} muchas
+		veces está limitado en sus decisiones por distintos factores, a los cuales, en la terminología de la Ingeniería de
+		Requerimientos, se los llama \textbf{Restricciones}. Algunos ejemplos de restricciones sobre un sistema de
+		\emph{software} son los siguientes:
 
-			\begin{figure}[h]
-				\centering
-					\includegraphics[width=0.5\textwidth]{images/requerimientos.png}
-				\caption{Ubicación de los Atributos de Calidad en los requerimientos}
-				\label{fig:requerimientos}
-			\end{figure}
-			
-			Algunos ejemplos de restricciones sobre un sistema de software son los siguientes:
-	
-			\begin{enumerate}
-				\item el código de la aplicación debe ser desarrollado en Java.
-				\item la base de datos debe ser SQL Server.
-				\item sólo se utilizarán productos de código abierto (\emph{open-source}).
-				\item el sistema debe ser escalable con respecto a la cantidad de usuarios que lo utilizan concurrentemente.
-				\item el sistema debe implementar políticas de tolerancia a fallos.
-				\item el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.
-			\end{enumerate}
-	
-			Observamos que 1, 2 y 3 establecen meras restricciones a tener en cuenta en el análisis, diseño o desarrollo de la
-			aplicación; mientras que 4, 5 y 6 se refieren a características específicas de \textbf{calidad} deseadas para el
-			sistema. Estos últimos se denominan \textbf{Atributos de Calidad} y es imprescindible conocerlos para poder diseñar
-			la arquitectura de un sistema. Notemos que, en el ejemplo anterior, las restricciones correspondientes a atributos de
-			calidad (4, 5 y 6), están especificados de manera vaga e imprecisa. Esto es lo que suele ocurrir en la mayoría de
-			los casos en la industria de desarrollo de \emph{software}. Notar también que los requerimientos 4 y 6 pueden
-			llegar a afectarse mutuamente: esto también es muy común y para lograr un buen \emph{tradeoff} entre atributos
-			de calidad los arquitectos suelen tener que tomar un conjunto de decisiones arquitectónicas llamadas
-			\textbf{estrategias}, sobre las cuales profundizaremos en la sección \ref{sec:tacticasEstrategias}.
+		\resume{enumerate}
+			\item el código de la aplicación debe ser desarrollado en Java.
+			\item la base de datos debe ser SQL Server.
+			\item sólo se utilizarán productos de código abierto (\emph{open-source}).
+		\end{enumerate}
+
+		Es imprescindible conocer los Atributos de Calidad requeridos para un sistema a fin de poder diseñar la arquitectura
+		del mismo. Notemos que, en los ejemplos de atributos de calidad (\ref{ejAtributoCalidad1}, \ref{ejAtributoCalidad2} y
+		\ref{ejAtributoCalidad3}), los mismos se encuentran especificados de manera vaga e imprecisa. Esto es lo que suele
+		ocurrir en la mayoría de los casos en la industria de desarrollo de \emph{software}. Notar también que los
+		requerimientos \ref{ejAtributoCalidad1} y \ref{ejAtributoCalidad3} pueden llegar a afectarse mutuamente: esto también
+		es muy común y para lograr un buen \emph{tradeoff} entre atributos de calidad los arquitectos suelen tener que tomar
+		un conjunto de decisiones arquitectónicas llamadas \textbf{estrategias}, sobre las cuales profundizaremos en la
+		sección \ref{sec:tacticasEstrategias}.
 
 		\subsubsection{Atributos de Calidad y \emph{Concerns}}
 		
@@ -655,8 +657,8 @@
 			Cabe mencionar que los QAW han surgido como consecuencia del uso de ATAM, puesto que era requerida una herramienta o
 			método que permitiera identificar los requerimientos de atributos de calidad más importantes del sistema,
 			\textbf{antes de que existiese la arquitectura} sobre la cual ATAM trabajaría. Luego de observar los pasos del
-			método ATAM que detallaremos a continuación, no será difícil para el lector inferir que en realidad ATAM incluye a
-			QAW.
+			método ATAM que detallaremos a continuación, no será difícil para el lector inferir que en realidad ATAM incluye una
+			versión simplificada de QAW.
 	
 		\subsubsection{Pasos del método ATAM}
 
