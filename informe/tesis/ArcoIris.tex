@@ -21,16 +21,18 @@
 		\end{figure}}
 		
 		\todo{Traducir al castellano los labels en los diagramas del EA}
-		\todo{Agregar en ambos graficos: AdaptagionManager escoge y lanza Strategy (opcional)}
-		\todo{Agregar en ambos graficos: Effector invocado desde el Strategy o el Adaptation Manager}
+
+		\todo{Agregar en ambos graficos: AdaptationManager escoge y lanza Strategy (opcional)}
+
+		\todo{Agregar en ambos graficos: Effector invocado desde el Strategy}
 
 		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar el 
 		\emph{framework} utilizando, básicamente, dos vías:
 		\begin{enumerate}
-			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow se va a adaptar. Dicho modelo se
+			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow va a adaptar. Dicho modelo se
 			especifica utilizando el estilo de componentes y conectores (C\&C) y el lenguaje de descripción de arquitecturas
 			ACME (ver sección \ref{sec:acme}). En dicho lenguaje, los componentes y conectores poseen
-			propiedades (con valores asociados), restricciones y también ofrece la posibilidad de especificar invariantes a
+			propiedades (con valores asociados), restricciones y también se ofrece la posibilidad de especificar invariantes a
 			nivel de sistema o sub sistema. Dichos invariantes y restricciones serán evaluados periódicamente por Rainbow para
 			verificar que el sistema funcione dentro de los límites determinados como normales.
 			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con
@@ -39,27 +41,26 @@
 			la configuración de la conexión de Rainbow con el sistema en \emph{runtime}, etc.
 		\end{enumerate}
 
-		Podemos ver también en el gráfico anterior que los denominados \emph{Probes} son los componentes designados en
-		Rainbow para interactuar directamente con el sistema a adaptar (el \emph{Target System}), obteniendo así información
-		relevante a los fines de su auto reparación. Dicha información no es interpretada dentro de los probes sino que ellos
-		delegan dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de interpretar la
-		información provista por los \emph{probes} y traducirla a pares $<Propiedad,Valor>$ donde $Propiedad$ refiere al
-		nombre de una propiedad correspondiente a un componente (o conector o sub sistema, etc\ldots) de la arquitectura del
-		sistema a adaptar; y $Valor$ es el nuevo valor que posee dicha propiedad.
+		Podemos ver también en el gráfico anterior que los denominados \emph{Probes} son los componentes designados para
+		interactuar directamente con el sistema a adaptar (el \emph{Target System}), obteniendo así información relevante a los
+		fines de su auto reparación. Dicha información no es interpretada dentro de los \emph{probes}, sino que ellos delegan
+		dicha tarea a los denominados \emph{Gauges}. Estos componentes son los encargados de interpretar la información provista por
+		los \emph{probes} y traducirla a pares \verb@<Propiedad,Valor>@ donde \verb@Propiedad@ refiere al nombre de una
+		propiedad correspondiente a un componente o conector de la arquitectura del sistema a adaptar, mientras que
+		\verb@Valor@ es el nuevo valor que poseerá dicha propiedad.
 
 		Normalmente, por cada tipo relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución existe un
-		par $<Gauge,Probe>$ asociado (que a nivel implementativo son meras clases Java). Un ejemplo de \emph{concern} podría
-		ser: ``tiempo de respuesta experimentado por el usuario'', el cual es un \emph{concern} relacionado al atributo de
-		calidad \emph{performance}.
+		par \verb@<Gauge,Probe>@ asociado. Un ejemplo de \emph{concern} podría ser: ``tiempo de respuesta experimentado por el
+		usuario'', el cual es un \emph{concern} relacionado al atributo de calidad \emph{performance}.
 
 		El \emph{Gauge Coordinator}, tal como su nombre lo sugiere, coordina la información provista por todos los
 		\emph{gauges} y se encarga de notificar los cambios en el sistema en ejecución al componente \emph{Rainbow Model}.
 	
-		\emph{Rainbow Model}, componente clave en la arquitectura del \emph{framework}, tiene, entre otras cosas, la
-		responsabilidad de hacer efectiva la actualización de los valores de la propiedades de los componentes, conectores,
-		sub sistemas o sistemas del modelo de arquitectura de la aplicación a adaptar. También es quien tiene el
-		conocimiento necesario para detectar violaciones a las restricciones e invariantes presentes en el modelo de
-		arquitectura con el cual el \emph{framework} ha sido configurado.
+		\emph{Rainbow Model}, componente clave en la arquitectura del \emph{framework}, tiene como principal responsabilidad
+		hacer efectiva la actualización de los valores de la propiedades de los componentes, conectores, sub sistemas o
+		sistemas del modelo de arquitectura de la aplicación a adaptar. También es quien tiene el conocimiento necesario para
+		detectar violaciones a las restricciones e invariantes presentes en el modelo de arquitectura con el cual el
+		\emph{framework} ha sido configurado.
 
 		Por otra parte, existe otro componente llamado \emph{Architecture Evaluator}, el cual consulta periódicamente a
 		\emph{Rainbow Model} para tomar conocimiento de violaciones a restricciones definidas en el modelo de la arquitectura.
@@ -67,9 +68,13 @@
 		al \emph{Adaptation Manager}.
 
 		El \emph{Adaptation Manager}, uno de los componentes más importantes de Rainbow, sigue una lógica un tanto compleja
-		(explicada en detalle en la sección \ref{sec:strategySelection}) para determinar la mejor estrategia de reparación a
-		ejecutar, la cual luego será ejecutada mediante \emph{Effectors} (no mostrados en el gráfico anterior por claridad)
-		siempre intentando acercar el estado del sistema a sus invariantes preestablecidos.
+		(explicada en detalle en la sección \ref{sec:strategySelection}) para determinar la estrategia de reparación que deja
+		al sistema en el mejor estado posible, para luego ejecutarla.
+		
+		La \emph{Estrategia} contiene la lógica necesaria para reparar el sistema en ejecución mediante el uso de
+		\emph{Tácticas}, que a su vez, utilizan a los denominados \emph{Effectors}, los cuales son componentes que realizan
+		acciones simples y concretas sobre el sistema en ejecución, como por ejemplo ``aumentar el nivel de logging de un
+		componente determinado''.
 
 	\subsection{Rainbow + Escenarios = ``Arco Iris''}
 
@@ -89,11 +94,11 @@
 				\label{fig:Rainbow_Architecture_With_Scenarios}
 			\end{figure}}
 
-			El arquitecto sigue realizando las mismas tareas que realizaba en Rainbow (i.e. ``alimentar'' a Rainbow con un
-			modelo de la arquitectura del sistema a adaptar y con archivos de configuración requeridos por Rainbow) pero ahora se le suma una tarea más:
-			el configurar los escenarios de atributos de calidad; tarea que realiza en conjunto con una o más personas que asumen
-			distintos roles que normalmente se engloban en la palabra \emph{stakeholders} (e.g. analistas funcionales, usuarios
-			del sistema, líderes, clientes, el \emph{sponsor} del proyecto, etc.)
+			El arquitecto sigue realizando las mismas tareas que realizaba en Rainbow (i.e. ``alimentarlo'' con el
+			modelo de la arquitectura del sistema a adaptar y con archivos de configuración requeridos por Rainbow) pero ahora se
+			le suma una tarea más: el configurar los escenarios de atributos de calidad; tarea que realiza en conjunto con una o
+			más personas que asumen distintos roles que normalmente se engloban en la palabra \emph{stakeholders} (e.g. analistas
+			funcionales, usuarios del sistema, líderes, clientes, el \emph{sponsor} del proyecto, etc.)
 
 			En la versión original de Rainbow (i.e. sin extensiones) el \emph{framework} deja al usuario (e.g. el arquitecto) la
 			responsabilidad de codificar los \emph{probes} y \emph{gauges} que recolectarán información del sistema a adaptar y
@@ -102,12 +107,12 @@
 			componentes que en tiempo de ejecución encuestan al sistema periódicamente para obtener información relevante y
 			mantener actualizado el modelo de la arquitectura subyacente.
 
-			En el anterior diagrama se puede observar que tanto los \emph{probes} como los \emph{gauges} han de  tomar
-			conocimiento del concepto de ``estímulo'' (tal cual es descrito en los escenarios de atributos de calidad de ATAM).
-			A diferencia de los empleados en Rainbow, los  \emph{probes} implementados para trabajar con Arco Iris deberán
-			indicar el estímulo al cual representan, mientras que los \emph{gauges} deberán interpretar esta información y
-			notificar la actualización sobre el modelo indicando el estímulo desencadenador. Las novedades sobre los cambios
-			sucedidos en el sistema en \emph{runtime} serán informados con el siguiente formato: $<Propiedad,Valor,Estimulo>$
+			En el diagrama se puede observar que, en Arco Iris, tanto los \emph{probes} como los \emph{gauges} ahora poseen
+			conocimiento del concepto de \textbf{estímulo} (tal cual es descrito en los escenarios de atributos de calidad de ATAM).
+			A diferencia de los utilizados en Rainbow, los \emph{probes} implementados para trabajar con Arco Iris deberán
+			indicar el estímulo al cual están asociados, mientras que los \emph{gauges} deberán interpretar esta información y
+			notificar la actualización sobre el modelo indicando el estímulo desencadenante. Las novedades sobre los cambios			ocurridos en el sistema en \emph{runtime} serán informados con el siguiente formato:			\verb@<Propiedad,Valor,Estímulo>@
+			\todo{TURCO Y JONY: Seguir revisando desde acá!!!}
 
 			Puesto que en la presente extensión el componente \emph{Gauge} provee información sobre los estímulos que desencadenaron
 			un cambio de propiedades en el sistema en ejecución, el componente \emph{Gauge Coordinator} ha sido extendido (i.e.
@@ -189,6 +194,10 @@
 
 
 		\subsubsection{El Estímulo en la Auto Reparación}
+
+			\todo{TURCO: Aclarar bien como es el tema de los probes en Arco Iris: que deben ``interceptar'' los estímulos y
+			presentamos dos \emph{posibles} formas: interceptores (si se puede tocar el sistema) u otro mecanismo como analizar
+			logs, etc\ldots}
 
 			El \textbf{estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
 			alguno de sus usuarios. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
@@ -349,7 +358,7 @@
 
 			\begin{itemize}
 				\item Un conjunto de condiciones, y
-				\item Un mapa $<$Concern, Peso$>$
+				\item Un mapa \verb@<$Concern, Peso$>@
 			\end{itemize}
 
 			Estas condiciones fueron implementadas en base a un concepto de restricción presente en Rainbow, que permite definir
