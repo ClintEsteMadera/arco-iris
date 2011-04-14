@@ -85,70 +85,64 @@
 		automática de la configuración. Recordemos que se implementó un mecanismo que refresca la configuración relativa a
 		Escenarios, Entornos, \emph{Artifacts} y las referencias a las estrategias asociadas a cada escenario. Si bien tal
 		mecanismo representa una mejora sustancial con respecto a Rainbow (el cual recordemos que no provee ningún tipo de
-		recarga ``en caliente'' de la configuración) entendemos que se puede dar un paso más en la materia, a fin de hacerla
-		más útil en un ambiente dinámico como el de la industria del \emph{software} dónde el tener que reiniciar la
-		aplicación para aplicar un cambio en la configuración resulta muchas veces sencillamente inaceptable. Por lo tanto, es
-		altamente deseable tender a \textbf{recargar dinámicamente el 100\% de la configuración relacionada con auto
-		reparación}. La recarga automática posee distintas características de acuerdo a si la misma ocurre en Rainbow o en
-		Arco Iris. En los siguientes apartados daremos cuenta de ellas.
-
-		\subsubsection{Implementación}
-
-			Como ya se ha dicho anteriormente en el presente documento, Rainbow no provee ningún tipo de refresco automático de
-			configuración, es decir que para ver reflejados los cambios de configuración es necesario reiniciar el \emph{framework}.
-			
-			Rainbow actualmente maneja (a grandes rasgos) los siguientes puntos de configuración:
-			\begin{itemize}
-				\item el archivo \verb@rainbow.properties@, un típico archivo \verb@.properties@ leído una única vez al
-				inicializarse el \emph{framework} (en el constructor de la clase \verb@Rainbow)@ y que sirve para externalizar
-				propiedades tales como el nivel de log deseado para la aplicación, el \emph{path} en dónde buscar estrategias y
-				tácticas, el archivo .ACME con el modelo de la arquitectura del sistema a adaptar, etc. Sería relativamente
-				sencillo implementar un mecanismo de recarga dinámica idéntico al explicado en detalle en la sección
-				\ref{sec:actualizacionDinamicaConfig} para recargar la configuración de Arco Iris. 
-				\item \verb@utilities.yml@, dónde se configuran las curvas de utilidad para el sistema. Al igual que en el
-				caso anterior, estas propiedades se leen en el constructor de la clase \verb@Rainbow@ utilizando una clase
-				``helper'' llamada \verb@YamlUtil@. Utilizando el mismo mecanismo descrito anteriormente se podría dinamizar también
-				la recarga dinámica de este archivo.
-				\item archivos con extensión \verb@.s@ (Stitch) de tácticas y estrategias. La lógica de lectura de tácticas
-				y estrategias está ubicada en el \verb@AdaptationManager@. Puesto que en Arco Iris se necesitó extender esta clase,
-				se aprovechó la oportunidad para abstraer esta lógica de lectura desde un archivo Stitch a una clase específica
-				llamada \verb@StitchLoader@, la cual tiene la responsabilidad no solo de cargar los datos desde un archivo sino de
-				proveer también acceso a los mismos. Sería una buena idea el incorporar esta clase al código base de Rainbow puesto
-				que dicha abstracción provee la posibilidad de incorporar rápidamente el mecanismo de refresco mencionado ya
-				reiteradas veces. Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un
-				trabajo difícil sino con la intención de cerrar el alcance del presente trabajo.
-			\end{itemize}
-			
-			Como podemos observar, el mecanismo explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} es
-			fácilmente reutilizable y también observamos posibilidades de mejora del mismo para simplificar aún más su uso
-			extendido en todo el \emph{framework}.
-			
-		\subsubsection{Ampliación de la Recarga Dinámica de Configuración en Arco Iris}
-
-			%Qué se necesita hacer
-			
-			% Cómo hacerlo / Posibles Problemas
+		recarga ``en caliente'' de la configuración) entendemos que se puede dar un paso más en la materia, a fin de que el
+		\emph{framework} resulte más útil para su uso en un ambiente tan dinámico como el de la industria del \emph{software};
+		dónde el reiniciar la aplicación para aplicar un cambio en la configuración resulta muchas veces sencillamente
+		inaceptable. En consecuencia, es altamente deseable tender a \textbf{recargar dinámicamente el 100\% de la
+		configuración relacionada con auto reparación}. Los cambios necesarios para lograr ésto deben llevarse a cabo
+		principalmente en Rainbow, dónde reside el grueso de la configuración estáticamente cargada.
+		
+		Rainbow actualmente maneja (a grandes rasgos) los siguientes puntos de configuración:
+		\begin{itemize}
+			\item el archivo \verb@rainbow.properties@, un típico archivo \verb@.properties@ de Java, el cual es leído una única
+			vez al inicializarse el \emph{framework} y que sirve para externalizar propiedades tales como el nivel de \emph{log}
+			deseado para la aplicación, el \emph{path} en dónde buscar estrategias y tácticas, el archivo .ACME con el modelo de
+			la arquitectura del sistema a adaptar, etc. En este caso, sería relativamente sencillo implementar un mecanismo de
+			recarga dinámica idéntico al explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} para recargar
+			la configuración de Arco Iris. El mismo tendría que ser realizado en el constructor de la clase \verb@Rainbow)@.
+			\item \verb@utilities.yml@, dónde se configuran las curvas de utilidad para el sistema. Al igual que en el
+			caso anterior, estas propiedades se leen en el constructor de la clase \verb@Rainbow@ utilizando una clase
+			\emph{helper} llamada \verb@YamlUtil@. Utilizando el mismo mecanismo descrito anteriormente se podría dinamizar
+			también la recarga dinámica de este archivo.
+			\item archivos Stitch (con extensión \verb@.s@) de tácticas y estrategias. La lógica de lectura de tácticas
+			y estrategias está ubicada en el \verb@AdaptationManager@. Puesto que en Arco Iris se necesitó extender esta clase,
+			se aprovechó la oportunidad para abstraer esta lógica de lectura desde un archivo, a una clase específica llamada
+			\verb@StitchLoader@, la cual tiene la responsabilidad no sólo de cargar los datos desde un archivo sino de proveer
+			también acceso a los mismos. Sería una buena idea el incorporar esta clase al código base de Rainbow puesto que
+			dicha abstracción provee la posibilidad de incorporar rápidamente el mecanismo de refresco mencionado ya reiteradas
+			veces. Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un trabajo difícil sino
+			debido a que dicha tarea se encuentra afuera del alcance del presente trabajo.
+		\end{itemize}
+		
+		Como podemos observar, el mecanismo explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} es
+		fácilmente reutilizable y también observamos posibilidades de mejora del mismo para simplificar aún más su uso
+		extendido en todo el \emph{framework}.
 
 	\subsection{Ampliación de la Configuración Existente}
 
-		Dividiremos los agregados/cambios a realizar de acuerdo a \emph{dónde} deben hacerse: en Rainbow, en Arco Iris o en
-		Scenarios UI.
+		A lo largo del desarrollo del presente trabajo, hemos notado que existen numerosas posibilidades de ampliar la
+		configuración existente tanto en Rainbow, en Arco Iris, como así también en Scenarios UI. Dividiremos los
+		agregados/cambios a realizar de acuerdo a la aplicación en la cual deben hacerse.
 
-		\subsubsection{Agregados a Arco Iris}
-		
-			\todo{Permitir agregar \emph{concerns} nuevos --> explicar el desafío que esto implica, no feasible por ahora}
-		
-			\todo{agregar mas tipos de \emph{constraints}}
-		
 		\subsubsection{Agregados a Rainbow}
 		
-			\todo{Strategies y Tácticas, utilities.yml?}
-		
 			\todo{Externalizar MIN\_UTILITY\_THRESHOLD y FAILURE\_RATE\_THRESHOLD (Ver AdaptationManager.java)}
+		
+		\subsubsection{Agregados a Arco Iris}
+		
+			\begin{itemize}
+				\item \todo{toda la config en un solo archivo? (estrategias, tácticas, .ACME --> embebidas en el XML)}
+				\item \todo{agregar mas tipos de \emph{constraints}}
+				\item \todo{Permitir agregar \emph{concerns} nuevos --> explicar el desafío que esto implica, no feasible por ahora}
+			\end{itemize}
 		
 		\subsubsection{Agregados a Scenarios UI}
 		
 			\todo{leer los \emph{artifacts} y sus properties desde el .ACME}	
+			
+			\todo{tomar los estímulos referenciando al .acme?}
+			
+			\todo{editor de tácticas y estrategias?}
 	
 	\subsection{Flexibilización del Entorno}
 
