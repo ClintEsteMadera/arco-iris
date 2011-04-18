@@ -195,10 +195,6 @@
 
 		\subsubsection{El Estímulo en la Auto Reparación}
 
-			\todo{TURCO: Aclarar bien como es el tema de los probes en Arco Iris: que deben ``interceptar'' los estímulos y
-			presentamos dos \emph{posibles} formas: interceptores (si se puede tocar el sistema) u otro mecanismo como analizar
-			logs, etc\ldots}
-
 			El \textbf{estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
 			alguno de sus usuarios. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
 			inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión. Por ejemplo,
@@ -214,9 +210,10 @@
 			Esto puede ser útil para casos genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el
 			usuario nunca sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De
 			no configurar ningún estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada
-			iteración, tal cual lo hace Rainbow hoy en día.
-			Entonces, a diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por
-			medio del estímulo que ocasionó el problema, reduciendo así la cantidad de escenarios a verificar y sobre todo la
+			iteración cada vez que un estímulo perteneciente a cualquier escenario impacte sobre el sistema.
+			\todo{JONY Y TURCO: no seria correcto decir ``cada estimulo que recibe el sistema'', ya que la auto reparacion se activa
+			cuando llega un estimulo conocido (i.e: perteneciente a otro escenario), pensar si tiene sentido el anyStimulus, no			confunde?}			Entonces, a diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por
+			efecto del estímulo que ocasionó el problema, reduciendo así la cantidad de escenarios a verificar y sobre todo la
 			cantidad de estrategias a evaluar para intentar resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta
 			posibilidad), la única manera de limitar el uso de las estrategias es agregar restricciones en la misma estrategia,
 			siendo esto de nivel técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del sistema. Por
@@ -238,7 +235,7 @@
 					exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
 			\end{Verbatim}
 
-			Es importante remarcar que, en caso de que el problema que se está intentando reparar no esté relacionado con la
+			Es importante remarcar que, en caso de que el problema que se está intentando reparar no tenga relación con la
 			\emph{performance}, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que
 			en Arco Iris existe la posibilidad de evitarlo al configurar correctamente los estímulos de cada escenario.
 
@@ -261,19 +258,76 @@
 			El modo simulación funciona notificando los cambios en las propiedades de interés, las cuales son determinadas a la hora
 			de implementar la simulación. Entonces, al contar con los estímulos relacionados con cada propiedad y los escenarios por
 			cada estímulo, es posible acotar la cantidad de escenarios a verificar en cada ejecución de la auto reparación.
-			En modo real, o sea sin simulación, para notificar el estímulo desencadente fue necesario extender los \emph{probes},
-			que son los componentes encargados de \emph{testear} una determinada funcionalidad del sistema, siendo el responsable
-			también de medir la respuesta y de reportar dicha información a un bus, del cual luego la consumirán los \emph{gauges},
-			quienes interpretarán los datos transformándolos en cambios en el modelo de la arquitectura. 
+			En modo real, o sea, sin simulación, para notificar el estímulo desencadente fue necesario extender los \emph{probes},
+			que, como ya mencionamos anteriormente, son los componentes encargados de \emph{testear} una determinada funcionalidad
+			del sistema, siendo el responsable también de medir la respuesta y de reportar dicha información a un bus, del cual
+			luego será consumida por los \emph{gauges}, quienes interpretan los datos transformándolos en cambios en el modelo de
+			la arquitectura.			
+			El extender los \emph{probes} implicó la necesidad de extender la funcionalidad de los \emph{gauges} para poder
+			intrepretar la información de estímulo agregada en cada uno de los \emph{probes}. En ambos casos, y gracias al
+			mecanismo empleado por Rainbow, no fue necesario modificar las interfaces de los \emph{probes} ni de los
+			\emph{gauges}, ya que éstos se comunican mediante cadenas de texto, justamente para ofrecer una amplia libertad a la
+			hora de implementarlos ya que pueden existir diversas maneras de probar y tomar métricas de las distintas
+			funcionalidades de los sistemas. Luego, una vez obtenido el estímulo correspondiente, no resta más que recurrir al
+			mapa de escenarios por estímulos (utilizado también en el modo simulación) para acotar la cantidad de escenarios a			comprobar.
+			Para graficar la diferencia en la implementación que genera el agregar el estímulo en la auto reparación, se
+			ejemplificará una extensión a un \emph{probe} utilizado por Znn. El \emph{probe} escogido para extender y así poder
+			ser utilizado en Arco Iris consiste simplemente en invocar un servicio, esperar su respuesta y medir el tiempo
+			transcurrido entre la invocación y la respuesta; ésta será la información que el \emph{probe} reportará para luego
+			ser interpretada por su \emph{gauge} correlativo, el cual finalmente será responsable de impactar la actualización
+			sobre el modelo de la arquitectura.
 			
-			Como ya se mencionó anteriormente, fue necesario extender la funcionalidad de los \emph{gauges} para poder intrepretar
-			la información de estímulo agregada en cada uno de los \emph{probes}. En ambos casos, y gracias al mecanismo empleado
-			por Rainbow, no fue necesario modificar las interfaces de los \emph{probes} ni de los \emph{gauges}, ya que éstos se
-			comunican mediante cadenas de texto, justamente para ofrecer una amplia libertad a la hora de implementarlos ya que
-			pueden existir diversas maneras de probar y tomar métricas de las distintas funcionalidades de los sistemas. Luego, una
-			vez obtenido el estímulo correspondiente, no resta más que recurrir al mapa de escenarios por estímulos (utilizado
-			también en el modo simulación) para acotar la cantidad de escenarios a comprobar.
-			\todo{agregar comparación de info reportada por los Probes con estimulos y sin estimulos (no lo encontré!!)}
+			A continuación se puede observar la configuración original utilizada en Znn para instanciar un \emph{probe} del tipo
+			ClientProxyProbe, esta configuración se puede encontrar en el archivo \verb@probes.yml@, donde se declaran todos los
+			\emph{probes} que serán instancias al iniciar Rainbow:
+
+			\begin{Verbatim}[gobble=4]
+				probes: 
+				ClientProxyProbe0: 
+					alias: clientproxy 
+					location: "localhost"
+					type: java 
+					javaInfo:
+						class: org.sa.rainbow.translator.znews.probes.ClientProxyProbe
+						period: 2000
+						args.length: 1
+						args.0: "http://delegate.oracle/"
+			\end{Verbatim}
+
+			Un ejemplo de la información que reporta un \verb@ClientProxyProbe@ con la configuración presentada
+			anteriormente podría ser:
+			
+			\begin{Verbatim}[gobble=4]
+				[lun abr 18 00:42:43 2011]<clientproxy> localhost: 1532 ms
+			\end{Verbatim}
+			
+			Tanto la configuración como la implementación de \verb@ClientProxy@ son muy similares a las de su contraparte de Arco
+			Iris, \verb@ClientProxyWithStimulus@; en la sección \ref{sec:probesCode} se pueden observar ambas implementaciones,
+			mientras que la configuración de una instancia de \verb@ClientProxyWithStimulus@ se puede observar a continuación:
+
+			\begin{Verbatim}[gobble=4]
+				ClientProxyProbeWithStimulus0:
+					alias: clientproxyWithStimulus
+					location: "localhost" 
+					type: java 
+					javaInfo:
+						class: ar.uba.dc.thesis.znn.probes.ClientProxyProbeWithStimulus
+						period: 2000
+						args.length: 2
+						args.0: "http://delegate.oracle/"
+						args.1: "delegateStimulus"
+			\end{Verbatim}
+
+			Por último, se muestra la información reportada por una instancia de\\
+			\verb@ClientProxyWithStimulus@ con la configuración que se acaba de presentar:
+			
+			\begin{Verbatim}[gobble=3]
+			[lun abr 18 00:42:43 2011]<clientproxyWithStimulus> localhost<stimulus:delegateStimulus>: 1532 ms
+			\end{Verbatim}
+
+			\todo{TURCO: (NO ACLARES QUE OSCURECE) Aclarar bien como es el tema de los probes en Arco Iris: que deben
+			``interceptar'' los estímulos y presentamos dos \emph{posibles} formas: interceptores (si se puede tocar el sistema) u otro mecanismo como analizar
+			logs, etc\ldots}
 
 		\subsubsection{El Artefacto en la Auto Reparación}
 
