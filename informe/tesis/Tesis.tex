@@ -26,6 +26,7 @@
 %\usepackage{url}                          % permite el uso de urls
 \usepackage[top=2.75cm, bottom=2.75cm, left=2.75cm, right=2.75cm]{geometry} % márgenes
 \usepackage{mdwlist}                      % Permite suspender enumerates, itemizes, etc. para poner cosas en el 1/2
+\usepackage{yhmath}                       % Permite usar, entre otras cosas, períodos para números decimales periódicos.
 \usepackage{hyperref}                     % Permite jugar con algunas cosas que aparecerán en el PDF final
 \hypersetup{
 			pdfcreator={LaTeX2e},
@@ -38,6 +39,7 @@ basada en Arquitectura},
 			pdfstartview=FitH,            % Fits the width of the page to the window
 			bookmarksnumbered,            % los bookmarks numerados se ven mejor...
 			colorlinks,                   % links con bellos colores
+			breaklinks=true,               % Le dice a hyperref que corte los links que rompen el justificado del texto
 			linkcolor=blue                % permite cambiar el color de los links
 }
 

@@ -8,21 +8,21 @@
 	Rainbow.
 
 	\subsection{Arco Iris: un \emph{plug-in} de Rainbow}
-	
+
 			Una característica deseable para Arco Iris es, sin duda, que la extensión se inserte en el \emph{framework}
 			(conceptualmente hablando) de manera similar a cómo un \emph{plug-in} trabaja en cualquier otro sistema de
 			\emph{software}, pudiendo el usuario, de manera relativamente simple, elegir entre utilizar los mecanismos de auto
 			reparación provistos por Arco Iris o los de Rainbow.
-			
+
 			Para que esto sea posible, es necesario que Rainbow provea una arquitectura abierta a la extensión de sus componentes
 			claves, como ser el \verb@AdaptationManager@, el \verb@RainbowModel@ y \verb@GaugeCoordinator@, entre otros.
-			
+
 			A continuación, se enumeran alguno de los motivos por los cuales Rainbow, en la actualidad, no permite extensiones de
 			tipo \emph{plug-in}:
 			\begin{enumerate}
-				\item Rainbow no trabaja orientado a interfaces, tal como se Erich Gamma explica en \ref{DesignPatterns},
-				observando así un alto acoplamiento entre las clases que conforman su diseño y la consecuente imposibilidad de
-				cambiar las implementaciones por defecto por otras nuevas.
+				\item Rainbow no trabaja orientado a interfaces, tal como Erich Gamma explica en \cite{DesignPatterns}, observando
+				así un alto acoplamiento entre las clases que conforman su diseño y la consecuente imposibilidad de cambiar las
+				implementaciones por defecto por otras nuevas.
 				\item El mecanismo utilizado por los componentes de Rainbow para obtener referencias a otros componentes con los que
 				desean interactuar, implementado en una clase Java denominada \verb@Oracle@), es insuficiente para permitir la
 				inyección de diferentes implementaciones del mismo componente. Esto es un error de diseño íntimamente relacionado
@@ -30,7 +30,7 @@
 				\item Muchos de los componentes básicos de Rainbow, los cuales se modelan como clases Java, impiden explícitamente
 				su extensión (i.e. herencia) mediante modificadores de acceso restrictivos.
 			\end{enumerate}
-			
+
 			A modo de conclusión, sería muy positivo una reestructuración de Rainbow para permitir extensiones o agregados al
 			mismo de una manera más prolija y ordenada que la que tuvo que utilizarse para la creación de Arco Iris.
 
@@ -47,7 +47,7 @@
 			implementación actual de Arco Iris carece de una serie de \textbf{estadísticas y vistas} que permitan analizar lo que
 			está siendo reparado, así también como el impacto sobre los escenarios perjudicados y sobre cada uno de los
 			\emph{concerns} del sistema.
-			
+
 			También sería útil proveer una herramienta que permita analizar qué estrategias se fueron ejecutando históricamente,
 			y de qué manera se llegó a decidir que cada una de ellas era la adecuada para reparar el sistema en cada momento.
 
@@ -58,7 +58,7 @@
 			en un 95\% o más de las veces que fueron ejecutadas, no sean consideradas por el \verb@AdaptationManager@. El
 			framework permite especificar al usuario si desea habilitar este mecanismo o no y, de estar habilitado, lleva un
 			registro por estrategia de la historia de sus ejecuciones.
-			
+
 			El mecanismo contempla el paso del tiempo como un factor importante al momento de determinar el porcentaje de fallos:
 			el cociente \[\frac{cantidad\_de\_fallos}{cantidad\_de\_ejecuciones}\]es sopesado con el tiempo que ha pasado desde
 			la última ejecución de la estrategia, permitiendo así que la misma vuelva potencialmente a ser considerada en futuras
@@ -91,7 +91,7 @@
 		inaceptable. En consecuencia, es altamente deseable tender a \textbf{recargar dinámicamente el 100\% de la
 		configuración relacionada con auto reparación}. Los cambios necesarios para lograr ésto deben llevarse a cabo
 		principalmente en Rainbow, dónde reside el grueso de la configuración estáticamente cargada.
-		
+
 		Rainbow actualmente maneja (a grandes rasgos) los siguientes puntos de configuración:
 		\begin{itemize}
 			\item el archivo \verb@rainbow.properties@, un típico archivo \verb@.properties@ de Java, el cual es leído una única
@@ -113,7 +113,7 @@
 			veces. Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un trabajo difícil sino
 			debido a que dicha tarea se encuentra afuera del alcance del presente trabajo.
 		\end{itemize}
-		
+
 		Como podemos observar, el mecanismo explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} es
 		fácilmente reutilizable y también observamos posibilidades de mejora del mismo para simplificar aún más su uso
 		extendido en todo el \emph{framework}.
@@ -125,15 +125,15 @@
 		configuración existente en Arco Iris. A continuación, mencionaremos algunos de ellos.
 
 		\subsubsection{Toda la configuración en un solo archivo}
-					
+
 			A fin de simplificar el uso del \emph{framework} para el usuario final, es altamente deseable poder reducir la cantidad
 			de archivos de configuración que deben ser creados, modificados y/o mantenidos para que el tándem Rainbow / Arco Iris
 			funcione. Sería deseable realizar modificaciones en ambos \emph{frameworks} para que la configuración se encuentre
 			centralizada en uno (idealmente) o dos archivos de configuración; conglomerando allí información referente a tácticas,
 			estrategias, el modelo de la arquitectura y todo el modelo existente de Arco Iris, actualmente configurable via XML.
-		
+
 		\subsubsection{Mas tipos de restricciones por defecto}
-		
+
 			En Arco Iris los tipos de restricciones - debido a su inherentemente compleja lógica - están codificados en clases Java
 			que, en conjunto, configuran el abanico de restricciones soportadas por el \emph{framework}. Actualmente se provee
 			soporte para un tipo solo de restricción: aquella que modela una restricción sobre el valor de una propiedad de un
@@ -141,24 +141,126 @@
 			$=$.\\ Si bien este tipo de restricciones son altamente representativas del tipo de cosas sobre las que un usuario
 			promedio normalmente desea predicar, es de notar que el poder expresivo está claramente acotado. Se propone para un
 			trabajo futuro extender el esquema de restricciones modelado en Arco Iris, mediante nuevas implementaciones de la
-			interfaz \verb@Constraint@.
+			interfaz \verb@Constraint@.
+
 	\subsection{Atributos de Calidad y \emph{Concerns} configurables por el usuario}
 
-		\todo{Completar de acuerdo a lo escrito en el e-mail del 19/4 y de acuerdo a lo decidido}
+		Actualmente Arco Iris maneja un conjuntos fijo de Atributos de Calidad y \emph{Concerns}, los cuales se encuentran
+		embebidos en clases Java a las cuales el usuario final no puede acceder. En otras palabras, el usuario no puede
+		agregar o eliminar libremente Atributos de Calidad o \emph{Concerns}. Claramente, esta rigidez restringe la usabilidad
+		del \emph{framework} y debe ser superada.
 
-		Actualmente Arco Iris maneja un conjuntos fijo de Atributos de Calidad y \emph{Concerns}, el cual se encuentra
-		embebido en clases Java a las cuales el usuario final no puede acceder. En otras palabras, el usuario no puede agregar
-		libremente nuevos \emph{Concerns}. Claramente, esta rigidez restringe la usabilidad del \emph{framework} y debe ser superada.
-		
-		La manera más sencilla de compensar la falencia antes mencionada, es agregando una variada y amplia gama de Atributos
-		de Calidad y \emph{Concerns} en el código fuente de Arco Iris.
+		Puesto que en Arco Iris los \emph{concerns} juegan un papel más preponderante que los Atributos de Calidad, en este
+		apartado nos referiremos únicamente al problema de permitir que el usuario final de Arco Iris pueda agregar o eliminar
+		\emph{Concerns} a una configuración de \emph{Self Healing}.
 
-		La solución definitiva actualmente es un poco más complicada.
-	
+		Existen básicamente dos formas de compensar la falencia antes mencionada: una es sencilla de implementar pero
+		incompleta y la otra es difícil de implementar aunque definitiva.
+
+		\subsubsection{Implementación sencilla e incompleta}
+
+			El agregado de una amplia y variada gama de \emph{Concerns} en el código fuente de Arco Iris representa una buena
+			solución de compromiso entre máxima flexibilidad para el usuario y facilidad de implementación, ya que sólo se trata
+			de recabar una lista de los \emph{Concerns} más conocidos y usualmente utilizados y agregarlos a la clase enumerada
+			que modela los tipos posibles de \emph{Concerns} reconocidos por Arco Iris.
+
+		\subsubsection{Implementación difícil y definitiva}
+
+			El problema de permitir el libre agregado y eliminación de \emph{Concerns} por parte del usuario posee varios
+			aristas, algunas de las cuáles no son fáciles de resolver, a saber:
+
+			\begin{itemize}
+				\item \textbf{Actualización del mapa $<$Concern,Weight$>$ en todos los Entornos}
+
+					Al agregar un concern al sistema, se suscita la duda sobre qué hacer con el mapa\\
+					\verb@<Concern,Weight>@ de cada uno de los Entornos ya existentes en el sistema.
+
+					Una posible opción sería cambiar la semántica actual de dicho mapa y que el mismo pase a almacenar únicamente
+					aquellos pesos que son distintos de cero, en otras palabras, al no encontrarse en el mapa un valor para un
+					determinado \emph{Concern}, se sobreentiende que su peso relativo es 0 (cero).
+
+					Existe otra opción que no cambia la semántica de los mapas (i.e. todos los \emph{Concerns} seguirían siendo
+					enumerados por extensión) y para eso se vale de la herramienta Scenarios UI. Básicamente, al agregar un nuevo
+					\emph{Concern}, Scenarios UI automáticamente lo agregaría también en los mapas de todos los Entornos existentes en
+					el sistema, pero\ldots ¿con qué peso? ¿con peso cero? ¿con un peso por defecto configurable al crear el concern? ¿se
+					obligaría al usuario a configurar el peso en todos los Entornos? En el caso de eliminación, ¿qué ocurre con el peso
+					del \emph{Concern} eliminado? ¿se reparte entre los restantes \emph{concerns}? Pensemos además en lo engorroso que
+					serían todo este tipo de reajustes en la configuración para un usuario que no utiliza Scenarios UI\ldots
+
+					Éstas y otras preguntas son las que alguien encargado de flexibilizar la configuración de \emph{Concerns} debería
+					responder y, por ese motivo, preferimos sólamente plantearlas y dejar su resolución abierta.
+
+				\item \textbf{Actualización del \emph{Concern} de Escenarios}
+
+					En el caso de dar de baja un \emph{Concern} lo más razonable sería que Scenarios UI lo elimine automáticamente de
+					todos los Entornos, aunque cabe preguntarse: ¿qué ocurre con los escenarios que estaban relacionados con este
+					\emph{Concern}? ¿deben darse de baja? ¿debe forzarse su actualización? Nuevamente, si el usuario no usara Scenarios
+					UI, el mantenimiento de la configuración podría tornarse dificultoso.
+
+				\item \textbf{Asignación equidistribuída de pesos para un Entorno nuevo}
+
+					En Arco Iris, al construír una instancia de \verb@Environment@, se invoca a una función llamada
+					\verb@createMapWithEquallyDistributedWeights@ que inicializa el mapa de pesos del Entorno de manera equidistribuída
+					entre todos los entornos (e.g. si hay 3 \emph{Concerns} en el sistema, asigna $0.\wideparen{33}$ a cada uno).
+
+					En el supuesto de que los \emph{Concerns} sean configurables por el usuario final, la función
+					\verb@createMapWithEquallyDistributedWeights@ debería reubicarse en una clase del tipo \emph{helper} que tenga
+					acceso de alguna manera al \verb@SelfHealingConfigurationManager@ que es el objeto que tendría acceso a la
+					información presente en el archivo de configuración de \emph{self healing}.
+
+				\item \textbf{Acceso del \emph{AdaptationManagerWithScenarios} a los \emph{Concerns}}
+
+					Una situación similar a la anterior (el acceso al universo de \emph{Concerns} definidos en el sistema) ocurre
+					también en el \verb@AdaptationManagerWithScenarios@:
+
+					\begin{Verbatim}[gobble=5]
+						public static boolean isConcernStillBroken(String concernString) {
+						try {
+							Concern concern = Concern.valueOf(concernString);
+							...
+					\end{Verbatim}
+
+					El \verb@AdaptationManagerWithScenarios@ actualmente posee como colaborador interno a
+					\verb@RainbowModelWithScenarios@ , el cuál accede al \verb@SelfHealingConfigurationManager@, quién es el que puede
+					proveer el acceso deseado a todos los \emph{Concerns} definidos en el sistema en un momento dado.
+			\end{itemize}
+
 	\subsection{Flexibilización del Entorno}
 
-		\todo{Expandir la idea del ``system environment'' (tenemos una implementación muy restrictiva, no se pueden solapar
-		e.g. alta carga y super alta carga).}
+		Actualmente, el algoritmo que decide en qué entorno de ejecución se encuentra el sistema a adaptar en un
+		determinado instante, presupone que las restricciones de todos los Entornos del sistema son mutualmente excluyentes
+		entre sí. Esto tiene como principal consecuencia el hecho de que, al momento, no se pueden configurar Entornos que
+		posean algún tipo de intersección en sus condiciones de aplicabilidad. En particular y a modo de ejemplo, el
+		usuario querría poder especificar un escenario de ``Alta Carga'' y otro de ``Extrema Alta Carga'', cuyas condiciones
+		de aplicabilidad parecen tener algún tipo de intersección no nula pues probablemente las condiciones necesarias para
+		que el entorno de ``Alta Carga'' se cumpla están incluídas en las condiciones el entorno de ``Extrema Alta Carga''.
+
+		Es deseable que en el caso de Entornos con intersección no nula en sus condiciones de aplicabilidad, Arco Iris
+		seleccione a aquél que sea más general, en el ejemplo anterior, ``Extrema Alta Carga'' sería el elegido para
+		representar más fielmente el estado actual del sistema. Esto sin duda posee una relevancia muy importante puesto que
+		los pesos configurados en cada uno de los escenarios pueden determinar el curso de la auto reparación ya que afectan
+		directamente al algoritmo de selección de estrategias.
+
+		Una posible solución para este problema podría ser el explicitar relaciones de intersección (o de inclusión) entre
+		restricciones y reconfigurar el algoritmo de detección del Entorno actual de ejecución existente en el
+		\verb@AdaptationManagerWithScenarios@ para que el mismo elija aquel Entorno con condiciones más generales. A
+		continuación, un pseudo-código del posible algoritmo que contempla \textbf{inclusión entre Entornos}:
+
+		\begin{Verbatim}[gobble=3]
+			función detectCurrentSystemEnvironment
+				candidate = null;
+				para cada ent en todos los entornos
+					si ent aplica en las actuales condiciones de ejecución entonces
+						si candidate == null entonces
+							candidate = ent;
+							goto siguiente iteración;
+						fin si
+				        si ent está incluido en candidate entonces
+				        	candidate = ent;
+				        fin si
+				    is
+				done
+		\end{Verbatim}
 
 	\subsection{Configuración de Escenarios en AcmeStudio}
 
@@ -169,7 +271,12 @@
 
 		Se propone como trabajo a futuro extender la herramienta AcmeStudio para que dé soporte a las extensiones propuestas
 		en el presente trabajo, permitiendo así la integración del modelado de la arquitectura con el modelado de los
-		escenarios que la complementan, utilizando la misma herramienta.
+		escenarios y demás conceptos introducidos en Arco Iris, utilizando la misma herramienta.
+
+		Dependiendo del grado de profundidad en el que se avance en la integración de Arco Iris con Acme Studio, se podría
+		incluso especular con un reemplazo completo de la herramienta Scenarios UI. Esta tarea no fue realizada en el
+		contexto del presente trabajo debido a que el encarar el desarrollo de un \emph{plug-in} de Eclipse con estas
+		características era una tarea de alta complejidad, que se encuentra afuera del alcance de este trabajo.
 
 	\subsection{Optimización en la Selección de la Estrategia}
 
@@ -177,5 +284,5 @@
 		es limitado)}
 
 	\subsection{Scoring de Estrategias: Rainbow y Arco Iris ``en conjunto''}
-	
+
 		\todo{A completar por TURCO: hablar sobre arcoIrisSolutionWeight y rainbowSolutionWeight}
