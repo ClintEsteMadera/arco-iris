@@ -116,7 +116,8 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 		scenarioScoreAssigner4CurrentSystemState = Oracle.instance().scenarioScoreAssigner4CurrentSystemState();
 		currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
-		scenarioRelativePriorityAssigner = new DefaultScenarioRelativePriorityAssigner(this.selfHealingConfigurationManager);
+		scenarioRelativePriorityAssigner = new DefaultScenarioRelativePriorityAssigner(
+				this.selfHealingConfigurationManager);
 		this.m_model = (RainbowModelWithScenarios) Oracle.instance().rainbowModel();
 		this.m_utils = new TreeMap<String, UtilityFunction>();
 		this.m_pendingStrategies = new ArrayList<Strategy>();
@@ -338,7 +339,7 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 
 		Environment currentSystemEnvironment = detectCurrentSystemEnvironment(this.m_model);
 
-		// We don't want the "simulated" system utility to be less than the current real one.
+		// We don't want the "simulated" system utility to be worse than the current real one.
 		doLog(Level.INFO, "Computing Current System Utility...");
 		double maxScore4Strategy = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
 				scenarioScoreAssigner4CurrentSystemState);
@@ -436,10 +437,10 @@ public class AdaptationManagerWithScenarios extends AbstractRainbowRunnable {
 	}
 
 	/**
-	 * Detect the current system environment taking into account all the non-default ones. The first environment that
-	 * holds is returned, or the default environment if no one holds.
+	 * Detect the current system environment considering all the environments available in the system. The first
+	 * environment that holds is returned, or the wildcard "ANY" is returned in the event that none of the above held.
 	 * <p>
-	 * <b>NOTE: We assume the environments are mutually exclusive.</b>
+	 * <b>NOTE: We assume that the environments' conditions are mutually exclusive among each other.</b>
 	 * 
 	 * @return the current system enviroment
 	 */
