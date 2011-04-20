@@ -119,30 +119,41 @@
 		extendido en todo el \emph{framework}.
 
 	\subsection{Ampliación de la Configuración Existente}
+	\label{sec:ampliacionConfiguracionExistente}
 
-		A lo largo del desarrollo del presente trabajo, hemos notado que existen numerosas posibilidades de ampliar la
-		configuración existente tanto en Rainbow, en Arco Iris, como así también en Scenarios UI. Dividiremos los
-		agregados/cambios a realizar de acuerdo a la aplicación en la cual deben hacerse.
+		A lo largo del desarrollo del presente trabajo, hemos notado que existen algunas posibilidades de ampliar la
+		configuración existente en Arco Iris. A continuación, mencionaremos algunos de ellos.
 
-		\subsubsection{Agregados a Rainbow}
+		\subsubsection{Toda la configuración en un solo archivo}
+					
+			A fin de simplificar el uso del \emph{framework} para el usuario final, es altamente deseable poder reducir la cantidad
+			de archivos de configuración que deben ser creados, modificados y/o mantenidos para que el tándem Rainbow / Arco Iris
+			funcione. Sería deseable realizar modificaciones en ambos \emph{frameworks} para que la configuración se encuentre
+			centralizada en uno (idealmente) o dos archivos de configuración; conglomerando allí información referente a tácticas,
+			estrategias, el modelo de la arquitectura y todo el modelo existente de Arco Iris, actualmente configurable via XML.
 		
-			\todo{Externalizar MIN\_UTILITY\_THRESHOLD y FAILURE\_RATE\_THRESHOLD (Ver AdaptationManager.java)}
+		\subsubsection{Mas tipos de restricciones por defecto}
 		
-		\subsubsection{Agregados a Arco Iris}
+			En Arco Iris los tipos de restricciones - debido a su inherentemente compleja lógica - están codificados en clases Java
+			que, en conjunto, configuran el abanico de restricciones soportadas por el \emph{framework}. Actualmente se provee
+			soporte para un tipo solo de restricción: aquella que modela una restricción sobre el valor de una propiedad de un
+			artefacto, con respecto a una función binaria numérica como por ejemplo los operadores $<$, $\le$, $>$, $\ge$ y
+			$=$.\\ Si bien este tipo de restricciones son altamente representativas del tipo de cosas sobre las que un usuario
+			promedio normalmente desea predicar, es de notar que el poder expresivo está claramente acotado. Se propone para un
+			trabajo futuro extender el esquema de restricciones modelado en Arco Iris, mediante nuevas implementaciones de la
+			interfaz \verb@Constraint@.
+	\subsection{Atributos de Calidad y \emph{Concerns} configurables por el usuario}
+
+		\todo{Completar de acuerdo a lo escrito en el e-mail del 19/4 y de acuerdo a lo decidido}
+
+		Actualmente Arco Iris maneja un conjuntos fijo de Atributos de Calidad y \emph{Concerns}, el cual se encuentra
+		embebido en clases Java a las cuales el usuario final no puede acceder. En otras palabras, el usuario no puede agregar
+		libremente nuevos \emph{Concerns}. Claramente, esta rigidez restringe la usabilidad del \emph{framework} y debe ser superada.
 		
-			\begin{itemize}
-				\item \todo{toda la config en un solo archivo? (estrategias, tácticas, .ACME --> embebidas en el XML)}
-				\item \todo{agregar mas tipos de \emph{constraints}}
-				\item \todo{Permitir agregar \emph{concerns} nuevos --> explicar el desafío que esto implica, no feasible por ahora}
-			\end{itemize}
-		
-		\subsubsection{Agregados a Scenarios UI}
-		
-			\todo{leer los \emph{artifacts} y sus properties desde el .ACME}	
-			
-			\todo{tomar los estímulos referenciando al .acme?}
-			
-			\todo{editor de tácticas y estrategias?}
+		La manera más sencilla de compensar la falencia antes mencionada, es agregando una variada y amplia gama de Atributos
+		de Calidad y \emph{Concerns} en el código fuente de Arco Iris.
+
+		La solución definitiva actualmente es un poco más complicada.
 	
 	\subsection{Flexibilización del Entorno}
 
