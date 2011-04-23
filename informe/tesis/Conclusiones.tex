@@ -1,34 +1,32 @@
 \section{Conclusiones}
 
-	\todo{Alcances de los resultados obtenidos, ventajas y desventajas, futuros trabajos, etc.}
-	\todo{Disertar sobre los roles que una metodología como la presentada puede jugar en el desarrollo de sistemas y sobre
-	los beneficios que supone su uso.}
+	\subsection{Resumen del trabajo realizado}
 
-	\subsection{Resumen}
-	
-		\todo{copy paste de la propuesta, REVISAR!}
-
-		En resumidas palabras, este trabajo añade las siguientes características a Rainbow, todas ellas tendientes a disponer
-		de una herramienta genérica de auto reparación más poderosa y al mismo tiempo, a involucrar a los actores funcionales
-		del sistema, puesto que este tipo de actores son los que saben (junto obviamente a arquitectos, diseñadores, etc.)
-		como se debe comportar el sistema ante determinadas situaciones de operación (normal o no):
+		En resumidas palabras, el presente trabajo añade una serie de características a Rainbow, todas ellas tendientes a
+		disponer de una herramienta genérica de auto reparación más poderosa y flexible y que, al mismo tiempo, los actores
+		funcionales del sistema se vean involucrados en el proceso de definición de requerimientos de atributos de calidad,
+		puesto que este tipo de actores son los encargados de determinar (junto a arquitectos, diseñadores, etc.) cómo se debe
+		comportar el sistema ante determinadas situaciones de operación. Las características añadidas en este trabajo son
+		básicamente las siguientes:
 		\begin{itemize}
-			\item Definir las siguientes extensiones:
-				\begin{itemize}
-						\item Posibilidad de modelar escenarios de atributos de calidad siguiendo los principios de ATAM y QAW.
-						\item Posibilidad de relacionar escenarios con componentes de la arquitectura.
-						\item Posibilidad de especificar prioridades relativas entre escenarios, a ser utilizadas en la elección de la
-						estrategia de reparación a ejecutar.
-						\item Posibilidad de modelar estrategias de reparación y asociarlas a escenarios.
-						\item Posibilidad de definir Entornos de ejecución para el sistema, los cuales tengan un papel clave en el
-						algoritmo de elección de estrategias de reparación.
-				\end{itemize}
-			\item Proponer los cambios en el \emph{Manejador de Reparaciones} y el \emph{Evaluador de Restricciones} de Rainbow,
-			e implementar algunos casos prácticos que permitan mostrar cómo esta estrategia puede funcionar y llevar a un
-			\emph{framework} de adaptación más flexible y poderoso.
-			\item Evaluar la factibilidad de que esta nueva versión extendida de Rainbow sea compatible con la original, es decir
-			que idealmente cualquier usuario que ya posea Rainbow funcionando en su sistema podría incorporar estas extensiones
-			sin tener que modificar la configuración actual.
+			\item Posibilidad de modelar escenarios de atributos de calidad siguiendo los principios de ATAM y QAW.
+			\item Posibilidad de relacionar escenarios con componentes de la arquitectura.
+			\item Posibilidad de especificar prioridades relativas entre escenarios, a ser utilizadas en la elección de la
+			estrategia de reparación a ejecutar.
+			\item Definición de entornos de ejecución para el sistema, con ponderaciones particulares para cada uno
+			de los \emph{concerns} existentes, los cuales juegan un papel determinante en el algoritmo de elección de
+			estrategias de reparación.
+			\item Posibilidad de asociar estrategias de reparación a escenarios.
+			\item Modelado de un nuevo algoritmo de elección de la mejor estrategia, utilizando todos los conceptos
+			introducidos en Arco Iris.
+			\item Implementación de cambios en diversos módulos de Rainbow (como por ejemplo, el \emph{RainbowModel} y el
+			\emph{AdaptationManager} e implementación de algunos casos prácticos que permitan mostrar cómo esta estrategia
+			puede funcionar y llevar a un \emph{framework} de adaptación más flexible y poderoso.
+			\item Implementación de un mecanismo de recarga dinámica de la configuración de Arco Iris, la cuál en un futuro
+			podría ser fácilmente integrada a Rainbow en pos de dinamizar el uso del \emph{framework}, minimizando su
+			\emph{downtime} debido a cambios en la configuración.
+			\item Implementación de una herramienta visual de escritorio que permita al usuario de Arco Iris, configurar el
+			\emph{framework} de una manera sencilla, amena y eficiente.
 		\end{itemize}
 
 		Todo lo antedicho tiene como consecuencia que los usuarios tendrán más herramientas para influir sobre lo que el
@@ -149,31 +147,63 @@
 			reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación
 			del sistema en tiempo de ejecución.
 
-		\subsection{Compatibilidad hacia atrás: una empresa sin sentido}
-	
-			Uno de los objetivos de diseño más deseables en una extensión a un \emph{framework} ya existente como Rainbow, es sin
-			dudas que la extensión sea ``compatible hacia atrás'' con \emph{Rainbow}, entendiendose ésto como la capacidad de
-			Arco Iris de agregar nuevas características manteniendo al 100\% la funcionalidad original. 
-			
-			En principio, si se considera únicamente el diseño de alto nivel de Rainbow, la idea de una extensión \emph{backwards
-			compatible} parece factible. Pero, lamentablemente, si se consideran las diferencias conceptuales de ambos modelos,
-			no es difícil notar que el intento de mantener a ambos conviviendo no sólo no es una tarea sencilla sino que también
-			carece de sentido, ya que, en algunos puntos claves, son enfoques diametralmente opuestos. Veamos algunos de los
-			motivos que apoyan esta idea:
-			
-			\begin{itemize}
-				\item \textbf{Cómo se dispara la auto reparación:} El enfoque de Arco Iris hace centro en el concepto de Escenario
-				como medio para expresar requerimientos de atributos de calidad para un sistema. Con lo cual, el inicio de todo el
-				proceso de auto reparación se da de una manera sincrónica con respecto al Estímulo de algún escenario(s) ocurrido en
-				el sistema en ejecución. Esto se contrapone con el enfoque de Rainbow, en el cual, periódicamente se verifican todas
-				las restricciones e invariantes de la arquitectura. Observamos que si quisieramos mantener esta última
-				característica de Rainbow, ya el foco absoluto de la auto reparación no estaría puesto en los Escenarios de
-				atributos de calidad sino que paralelamente existirían dos flujos distintos de auto reparación disputando entre sí.
-				Esto llevaría a un comportamiento poco predecible y bastante poco deseable del sistema de auto reparación.
-				\item \textbf{Cómo se decide cuándo adaptar:} Arco Iris sólo intenta efectuar adaptaciones acotadas al escenario o
-				los escenarios que se dejan de cumplir en un determinado momento, mientras que Rainbow contempla todo el abanico de
-				estrategias disponibles en el caso de que detecte que una violación a una restricción o invariante ha tenido lugar.
-				Evidentemente, los enfoques son distintos, sin mencionar que los algoritmos de \emph{scoring} de estrategias de
-				ambos \emph{frameworks} difieren considerablemente, agregando el algoritmo de Arco Iris nuevas variables a la
-				fórmula, tal como se explica en la sección \ref{sec:arcoIrisStrategyScoring}.
-			\end{itemize}
+	\subsection{Compatibilidad hacia atrás: una empresa sin sentido}
+
+		Uno de los objetivos de diseño más deseables en una extensión a un \emph{framework} ya existente como Rainbow, es sin
+		dudas que la extensión sea ``compatible hacia atrás'' con \emph{Rainbow}, entendiendose ésto como la capacidad de
+		Arco Iris de agregar nuevas características manteniendo al 100\% la funcionalidad original. 
+		
+		En principio, si se considera únicamente el diseño de alto nivel de Rainbow, la idea de una extensión \emph{backwards
+		compatible} parece factible. Pero, lamentablemente, si se consideran las diferencias conceptuales de ambos modelos,
+		no es difícil notar que el intento de mantener a ambos conviviendo no sólo no es una tarea sencilla sino que también
+		carece de sentido, ya que, en algunos puntos claves, son enfoques diametralmente opuestos. Veamos algunos de los
+		motivos que apoyan esta idea:
+		
+		\begin{itemize}
+			\item \textbf{Cómo se dispara la auto reparación:} El enfoque de Arco Iris hace centro en el concepto de Escenario
+			como medio para expresar requerimientos de atributos de calidad para un sistema. Con lo cual, el inicio de todo el
+			proceso de auto reparación se da de una manera sincrónica con respecto al Estímulo de algún escenario(s) ocurrido en
+			el sistema en ejecución. Esto se contrapone con el enfoque de Rainbow, en el cual, periódicamente se verifican todas
+			las restricciones e invariantes de la arquitectura. Observamos que si quisieramos mantener esta última
+			característica de Rainbow, ya el foco absoluto de la auto reparación no estaría puesto en los Escenarios de
+			atributos de calidad sino que paralelamente existirían dos flujos distintos de auto reparación disputando entre sí.
+			Esto llevaría a un comportamiento poco predecible y bastante poco deseable del sistema de auto reparación.
+			\item \textbf{Cómo se decide cuándo adaptar:} Arco Iris sólo intenta efectuar adaptaciones acotadas al escenario o
+			los escenarios que se dejan de cumplir en un determinado momento, mientras que Rainbow contempla todo el abanico de
+			estrategias disponibles en el caso de que detecte que una violación a una restricción o invariante ha tenido lugar.
+			Evidentemente, los enfoques son distintos, sin mencionar que los algoritmos de \emph{scoring} de estrategias de
+			ambos \emph{frameworks} difieren considerablemente, agregando el algoritmo de Arco Iris nuevas variables a la
+			fórmula, tal como se explica en la sección \ref{sec:arcoIrisStrategyScoring}.
+		\end{itemize}
+
+	\subsection{Aplicabilidad en sistemas reales}
+
+		Luego de haber repasado las características principales de Arco Iris y de haber entendido su mecánica, es muy probable
+		que al lector se le suscite la siguiente pregunta: ¿Qué aplicabilidad tiene esta extensión de Rainbow en un	sistema real?
+		
+		Consideramos que Arco Iris se encuentra un paso más cerca de ser utilizado en un sistema de \emph{software} real (i.e.
+		en un ámbito no académico) que lo que su antecesor, Rainbow, se encontraba. Esta consideración se basa en el hecho de
+		que Arco Iris hace foco en la accesibilidad del usuario final para configurar el \emph{framework} de una manera amena
+		y más flexible que la provista originalmente por Rainbow, incluyendo una interfaz de usuario visual que facilita dicha
+		tarea así también como el mantenimiento y evolución de configuración existente.
+		
+		Habiendo dicho lo anterior, también reconocemos que Arco Iris todavía puede no ser la herramienta más sólida y madura
+		que los sistemas de \emph{software} de la industria necesitan para confiar la compleja y crucial tarea de agregar auto
+		reparación a un sistema. Esto tiene como causas diversos motivos, algunos de los más importantes son:
+		
+		\begin{itemize}
+			\item Actualmente, no todas las organizaciones que desarrollan \emph{software} poseen un modelo formal de la
+			arquitectura, tal como es requerido por Rainbow o Arco Iris. Esto forma parte de una tendencia por parte de La
+			industria del \emph{software} a desarrollar sistemas, a veces de envergadura y de misión crítica, de una manera
+			todavía artesanal. Esta realidad complica la adopción de \emph{frameworks} que centren la auto reparación de un
+			sistema en el modelo de su arquitectura.
+			\item El trabajo de creación de \emph{Gauges} y \emph{Probes} (los cuales usualmente no son reutilizables entre
+			distintas aplicaciones) sigue siendo una tarea de complejidad no trivial a cargo del usuario del \emph{framework}.
+			\item La información necesaria para que el \emph{framework} funcione, no obstante las mejoras introducidas en Arco
+			Iris descritas en la sección \ref{sec:actualizacionDinamicaConfig}, sigue estando dispersa en diversos archivos de
+			configuración, en archivos separados de estrategias y tácticas, en el modelo de la arquitectura, etc. Esto, sumado a
+			una incompleta documentación de Rainbow, configura una curva de aprendizaje del \emph{framework} un tanto pronunciada
+			para un usuario nuevo. Es necesario seguir trabajando en la centralización de la configuración (tal cual fue descrito
+			en la sección \ref{sec:todaLaConfigEnUnSoloArchivo}) y también en el incremento de la documentación para facilitar el
+			uso, tanto de Rainbow como de Arco Iris.
+		\end{itemize}
