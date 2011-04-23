@@ -84,6 +84,7 @@ basada en Arquitectura},
 %%	escapeinside={\%}{)}                  % if you want to add a comment within your code
 %}
 \usepackage{fancyvrb}                     % Fancy Verbatim
+\usepackage{appendix}                     % Para poder refinar el comportamiento del apéndice
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
 
 \selectlanguage{spanish}
@@ -103,6 +104,10 @@ basada en Arquitectura},
 \restylefloat{figure}                     % Esto permite usar ``H'' como parametro de posicion para figuras flotantes
 
 \def\todo#1{\textcolor{red}{#1}}          % macro 'todo' para To-Do's
+
+\renewcommand{\appendixname}{Apéndices}
+\renewcommand{\appendixtocname}{Apéndices}
+\renewcommand{\appendixpagename}{Apéndices}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIN DEL PREAMBULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -160,10 +165,10 @@ basada en Arquitectura},
 
 	\newpage
 
-	\input{Apendice}
+	\input{Bibliografia}
 
 	\newpage
 
-	\input{Bibliografia}
+	\input{Apendice}
 
 \end{document}
