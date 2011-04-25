@@ -369,7 +369,6 @@
 			experiencia de los \emph{stakeholders} a la hora de especificar escenarios mediante la herramienta visual presentada
 			junto a Arco Iris: \textbf{scenarios UI}
 
-
 		\subsubsection{El Entorno en la Auto Reparación}
 
 			Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
@@ -461,10 +460,8 @@
 				``Modificar el sistema para incorporar un nuevo generador de eventos discretos''
 			\end{quote}
 
-			\todo{Continuar revisando desde aca}
-
 			Esta premisa no es suficiente para medir el éxito de la incorporación de la nueva funcionalidad solicitada, ya que
-			con suficiente tiempo y dinero, cualquier modificación es posible. Este escenario requiere una métrica, como por
+			con suficiente tiempo y recursos, cualquier modificación es posible. Este escenario requiere una métrica, como por
 			ejemplo: ``Utilizando 160 horas hombre''. Esto fuerza al arquitecto a asegurar que el sistema sea modificable
 			basándose en un criterio bien definido y con una métrica aplicable.
 
@@ -472,11 +469,11 @@
 			por Rainbow, sitúandolas en el contexto de un escenario de atributo de calidad, proveyendo así mayor visibilidad a
 			los \emph{stakeholders} sobre estas restricciones, anteriormente sólo conocidas por los arquitectos y/o técnicos
 			responsables de configurar Rainbow, ya que en Rainbow eran implementadas en el modelo de la arquitectura descrito en
-			Acme. 
-			
-			El siguiente ejemplo ha sido extraído de la arquitectura de Znn (expresada utilizando Acme), allí se puede observar
-			cómo se implementan las restricciones en Rainbow, las que pasan a formar parte de la cuantificación de la respuesta del
-			escenario al utilizar Arco iris:
+			Acme.
+
+			El siguiente ejemplo ha sido extraído de la arquitectura de Znn (también expresada utilizando Acme), allí se puede
+			observar cómo se implementan las restricciones al utilizar Rainbow, las que pasan a formar parte de la cuantificación
+			de la respuesta del escenario al utilizar Arco Iris:
 			
 			\begin{Verbatim}[gobble=4] 
 				Component Type ClientT {
@@ -485,9 +482,10 @@
 				}
 			\end{Verbatim}
 
-			Es importante recordar que en Rainbow, una vez que se detectó que la auto reparación debe ser lanzada, se volverán
-			a ejecutar todas las restricciones dictadas en las precondiciones de las estrategias para saber si aplican en el
-			estado actual del sistema, el siguiente ha sido extraído de Znn:
+			Es importante recordar que en Rainbow, una vez que se detectó que la auto reparación debe ser lanzada debido a una
+			restricción que dejó de cumplirse, se volverán a ejecutar todas las restricciones definidas en las precondiciones de
+			las estrategias para verificar si aplican o no dependiendo del estado actual del sistema. A continuación se muestra
+			un ejemplo extraído de Znn de una estrategia y su precondición:
 
 			\begin{Verbatim}[gobble=4]
                 define boolean cViolation =
@@ -503,26 +501,25 @@
 
 			Como se puede observar, tanto la restricción del modelo que desencadenó la auto reparación como la precondición de la
 			estrategia son equivalentes, por lo que se duplica la lógica aumentando el costo de procesamiento, haciendo que la
-			reparación sea más costosa.
+			reparación sea más costosa y menos escalable.
 
 			En Arco Iris no será necesario contar con las precondiciones de las estrategias, ya que el conocimiento de cuáles
-			estrategias son capaces de reparar una determinada condición ya se encuentra plasmado en cada escenario. En
-			definitiva, al utilizar Arco Iris el usuario no tendrá más que configurar la cuantificación de la respuesta de cada
-			escenario, tarea que se ve sumamente facilitada al utilizar Scenarios UI (ver sección~\ref{sec:scenariosUI} en la
-			página~\pageref{sec:scenariosUI}).
-
-			Otra diferencia vital ante el uso de las mencionadas restricciones entre la visión de Rainbow y de Arco Iris consiste en
-			el momento en que se aplican. Rainbow posee un componente llamado \emph{``Architecture Evaluator''}, cuya
-			responsabilidad consiste en chequear la arquitectura del modelo de a intervalos y de manera asincrónica, siempre y
+			estrategias son capaces de reparar una determinada condición se encuentra plasmado en cada escenario. En definitiva, al
+			utilizar Arco Iris el usuario no tendrá más que configurar la cuantificación de la respuesta de cada escenario, tarea
+			que se ve sumamente facilitada al utilizar Scenarios UI (ver sección~\ref{sec:scenariosUI} en la
+			página~\pageref{sec:scenariosUI}).
+			Otra diferencia vital con respecto al uso de las mencionadas restricciones entre la visión de Rainbow y de Arco Iris
+			consiste en el momento en que se aplican. Rainbow posee un componente llamado \emph{``Architecture Evaluator''}, cuya
+			responsabilidad consiste en verificar la arquitectura del modelo de a intervalos y de manera asincrónica, siempre y
 			cuando este haya sido modificado y la auto reparación no se encuentre ya en ejecución, esto implica verificar
-			absolutamente todas las restricciones. Mientras que Arco Iris, al descubrir un cambio en el modelo de la arquitectura,
-			la acción que tomará consistirá en verificar los escenarios, pero no todos los escenarios, sino solamente los que
-			coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de manera determinante
-			la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
-									Dado al cambio en el manejo de restricciones, en Arco Iris se implementó el concepto de \emph{Constraint} como una
-			interfaz, dando así la posibilidad de extender el \emph{framework} con el tipo de \emph{Constraint} que el usuario
-			considere necesario. La interfaz presentada es la siguiente:
+			absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir un cambio en el modelo,
+			verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente los que coincidan en su
+			estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de manera drástica la cantidad
+			de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
 
+			Dado al cambio en el manejo de restricciones, Arco Iris implementa el concepto de \emph{Constraint} como una interfaz,
+			dando así la posibilidad de extender el \emph{framework} con el tipo de \emph{Constraint} que el usuario considere
+			necesario. La interfaz presentada es la siguiente:
 			\begin{Verbatim}[gobble=4]
                 public interface Constraint {
 
@@ -533,22 +530,25 @@
 			\end{Verbatim}
 
 			Donde el método \emph{holds} será el encargado de determinar si la \emph{Constraint} se cumple o no, recibiendo como
-			parámetro el valor de la propiedad a evaluar, mientras que el método \emph{getFullyQualifiedPropertyName} retornará
-			el nombre completo cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que
-			pertenece, un ejemplo tomado de Znn sería: \emph{ZNewsSys.ClientT.experRespTime}.
+			parámetro el valor actual de la propiedad del modelo de la arquitectura sobre el cual predica la cuantificación de
+			la respuesta, por ejemplo; mientras que el método \emph{getFullyQualifiedPropertyName} retornará el nombre completo
+			cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que pertenece,
+			\emph{ZNewsSys.ClientT.experRespTime} es un ejemplo extraido de Znn.
 
-			Para el presente trabajo se utilizó	una única implementación, que consiste en una relación binaria de orden (igual,
-			mayor, mayor o igual, menor, menor o igual) entre una propiedad de la arquitectura (e.g. \verb@server1.responseTime@)
-			y un valor fijo (puede ser entero o flotante) preestablecido al configurar la cuantificación de la respuesta del
-			escenario. Esta restricción será configurada mediante un cuantificador, el cual provee dos opciones: sumatoria y
-			promedio, los que especifican si la condición debe cumplirse para la suma de todas las instancias en \emph{runtime}
-			de dicha propiedad o si la condición debe darse ``en promedio'' para todas las instancias; respectivamente.
-			La implementación mencionada recibe el nombre de \emph{NumericBinaryRelationalConstraint} y puede verse su código
-			en el apéndice \ref{sec:numericBinaryRelationalConstraintCode}.
-
+			Para el presente trabajo se utilizó	una única implementación de la interfaz \emph{Constraint}, consistente en una
+			relación binaria de orden (igual, mayor, mayor o igual, menor o menor o igual) entre una propiedad de la arquitectura
+			(e.g. \verb@server1.responseTime@) y un valor fijo (puede ser entero o flotante) preestablecido al configurar la
+			cuantificación de la respuesta del escenario. Esta restricción será configurada mediante un cuantificador, el cual
+			provee actualmente dos opciones: sumatoria y promedio, las que especifican respectivamente si la condición debe
+			cumplirse para la suma de todas las instancias en \emph{runtime} de dicha propiedad o si la condición debe darse ``en
+			promedio'' para todas las instancias. La implementación mencionada recibe el nombre de
+			\emph{NumericBinaryRelationalConstraint} y puede verse su código en el apéndice
+			\ref{sec:numericBinaryRelationalConstraintCode}.
 
 	\subsection{Modelo Extendido de ATAM}
 	\label{sec:modeloExtensionATAM}
+
+		\todo{Continuar revisando desde aca}
 
 		Hasta aquí se ha detallado el uso que Arco Iris hará del modelo básico de ATAM, pero como se mencionó anteriormente,
 		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
