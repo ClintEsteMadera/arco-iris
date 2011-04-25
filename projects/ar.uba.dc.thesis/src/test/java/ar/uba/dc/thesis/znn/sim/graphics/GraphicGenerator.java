@@ -1,5 +1,6 @@
 package ar.uba.dc.thesis.znn.sim.graphics;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -28,6 +29,22 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 	private RainbowModelWithScenarios rainbowModelWithScenarios;
 
 	private SimGraphicConfiguration simGraphicConfiguration;
+
+	private final VelocityContext context;
+
+	private final Map<String, StringBuffer> pointsPerProperty = new HashMap<String, StringBuffer>();
+
+	private final Map<String, Integer> countPerProperty = new HashMap<String, Integer>();
+
+	private final Map<String, Number> thresholdPerProperty = new HashMap<String, Number>();
+
+	private static VelocityEngine engine;
+
+	private static final String GRAPHICS_OUTPUT_DIR = "graphics_output";
+
+	private final static String OUTPUT = GRAPHICS_OUTPUT_DIR + "/graphic.html";
+
+	private final static String STATIC_OUTPUT = GRAPHICS_OUTPUT_DIR + "/graphic_static.html";
 
 	public GraphicGenerator(RainbowModelWithScenarios rainbowModel) {
 		super("Simulation Graphic Generator");
@@ -138,6 +155,8 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 	}
 
 	private void writeToFile() throws IOException, Exception {
+		// so that FileWriter doesn't fail if the output dir doesn't exist
+		new File(GRAPHICS_OUTPUT_DIR).mkdir();
 		Writer writer = new FileWriter(OUTPUT);
 		getVelocityEngine().mergeTemplate("graphic.vm", "UTF-8", context, writer);
 		writer.close();
@@ -168,17 +187,4 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 			context.put(entry.getKey(), entry.getValue());
 		}
 	}
-
-	private final VelocityContext context;
-
-	private final Map<String, StringBuffer> pointsPerProperty = new HashMap<String, StringBuffer>();
-	private final Map<String, Integer> countPerProperty = new HashMap<String, Integer>();
-	private final Map<String, Number> thresholdPerProperty = new HashMap<String, Number>();
-
-	private static VelocityEngine engine;
-
-	private final static String OUTPUT = "graphics_output/graphic.html";
-
-	private final static String STATIC_OUTPUT = "graphics_output/graphic_static.html";
-
 }
