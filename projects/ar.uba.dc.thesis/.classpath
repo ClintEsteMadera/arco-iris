@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="configs"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar" sourcepath="lib/commons-lang-2.4-sources.jar"/>
@@ -15,10 +14,12 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar" sourcepath="lib/commons-logging-1.1.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar" sourcepath="lib/log4j-src.zip"/>
 	<classpathentry kind="lib" path="lib/velocity-1.6.4-dep.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.common"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.deploy"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.lang"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.sa.rainbow.communication"/>
+	<classpathentry kind="lib" path="lib/org.sa.rainbow.common.jar"/>
+	<classpathentry kind="lib" path="lib/org.sa.rainbow.core.jar"/>
+	<classpathentry kind="lib" path="lib/org.sa.rainbow.lang.jar"/>
+	<classpathentry kind="lib" path="lib/org.sa.rainbow.communication.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/jyaml-lib-1.0-beta-3.jar"/>
+	<classpathentry kind="lib" path="lib/org.acmestudio.standalone-20081209.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
