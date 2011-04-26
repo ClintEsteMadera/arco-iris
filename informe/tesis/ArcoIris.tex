@@ -370,7 +370,8 @@
 			junto a Arco Iris: \textbf{scenarios UI}
 
 		\subsubsection{El Entorno en la Auto Reparación}
-
+		\label{sec:environment}
+		
 			Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
 			cuando recibe el estímulo que desencadena el escenario; por ejemplo, al recibir una solicitud de creación de una
 			cuenta bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. El entorno condiciona la
@@ -548,8 +549,6 @@
 	\subsection{Modelo Extendido de ATAM}
 	\label{sec:modeloExtensionATAM}
 
-		\todo{Continuar revisando desde aca}
-
 		Hasta aquí se ha detallado el uso que Arco Iris hará del modelo básico de ATAM, pero como se mencionó anteriormente,
 		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
 		
@@ -558,8 +557,9 @@
 		necesaria para que Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación. 
 
 		\todo{Turco: Cambiar List por Set en conditions de environment}\\
-		\todo{Jony: Por? en el código es List\ldots no queremos evaluarlas en orden?}
-
+		\todo{Jony: Por? en el código es List\ldots no queremos evaluarlas en orden?}\\
+		\todo{El orden no deberia importar}
+		
 		\afterpage{\clearpage
 		\begin{figure}[H]
 			\centering
@@ -568,33 +568,38 @@
 			\label{fig:Arco_Iris_ATAM_Model}
 		\end{figure}}
 
-		Los escenarios de auto reparación podrán deshabilitarse, considerando Arco Iris solamente los escenarios habilitados
-		al momento de reparar el sistema. Cada escenario tendrá su prioridad (ver sección \ref{sec:priority}) y sabrá
-		determinar si él mismo aplica para el entorno actual, si se satisface actualmente y si seguirá satisfaciendo luego
-		de la potencial aplicación de una estrategia.
+		Los escenarios de auto reparación pueden ser deshabilitados, considerando Arco Iris solamente los escenarios
+		habilitados al momento de reparar el sistema. 
 		
-		Cada escenario tendrá también conocimiento de las estrategias que el arquitecto del sistema y los
-		\emph{stakeholders} consideran son capaces de reparar el escenario en caso de que este haya dejado de satisfacerse en
-		el entorno actual de ejecución del sistema. En la sección \ref{sec:strategies} puede verse en detalle cómo Arco Iris
-		explota esta información.
-		
-		Por último, es importante notar que se ha extendido el concepto de \textbf{entorno} utilizado por ATAM, el cual pasa a
-		contar, además de con su nombre, con un conjunto de condiciones que serán utilizadas para saber si un determinado
-		escenario aplica para este entorno, y además determinará la importancia de cada \emph{concern} para el caso en el que		sistema en ejecución se encuentre en este entorno.
+		Otra propiedad utilizada por Arco Iris y que no forma parte de la definición original brindada por ATAM, es la
+		prioridad. Cada \verb@SelfHealingScenario@ tiene preestablecida su prioridad (ver sección \ref{sec:priority} para más
+		detalle). Un escenario de Arco Iris también tiene el conocimiento necesario para determinar si él mismo se satisface		según las condiciones actuales del sistema, y si se seguirá satisfaciendo luego de una potencial aplicación de una		estrategia.		
+		Otra extensión a los escenarios utilizada por Arco Iris para optimizar la auto reparación consiste en que cada
+		escenario conozca las estrategias que el arquitecto del sistema y los \emph{stakeholders} consideran son capaces de
+		reparar el escenario en caso de que este haya dejado de satisfacerse en el entorno actual de ejecución del sistema. En
+		la sección \ref{sec:strategies} puede verse en detalle cómo Arco Iris explota esta información.
+		Por último, es importante mencionar que se ha extendido el concepto de \textbf{entorno} utilizado por ATAM, el cual
+		pasa a contar, además de con su nombre, con un conjunto de condiciones que serán utilizadas para saber si un determinado
+		escenario aplica, dado su entorno, para las condiciones actuales del sistema, y además será capaz de determinar la		importancia de cada \emph{concern} para el caso en el que el sistema en ejecución se encuentre en este entorno. Esta		extensión ya fue explicada en detalle en la sección \ref{sec:environment}.
 	\subsection{Configuración de Arco Iris}
 	
 		\todo{Explicar SelfHealingConfiguration y su archivo de configuracion. No profundizar en los temas, sólo poner
 		referencias a las secciones(tal vez haya que agregar mas secciones)}
+		
+		\todo{Esta subseccion no es mejor dejarla para el final de la seccion? Algo del estilo ``Para configurar todo lo
+		visto en esta seccion utilizaremos Scenarios UI''. De hecho es Scenarios UI tiene una subseccion llamada
+		``Formato de salida: XML''}
+		
+		\todo{Mencionar que dicha configuración es administrada por SelfHealingConfigurationManager}
 
-		\subsubsection{Actualización dinámica de cambios de configuración}
+		\subsubsection{Actualización Dinámica de Configuración}
 		\label{sec:actualizacionDinamicaConfig}
 
-			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del
-			\emph{framework} sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación,
-			proponemos un simple mecanismo de detección de cambios en el archivo de configuración de Arco Iris el cual, al
-			detectar cualquier cambio en dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada
-			en memoria por la nueva configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
-
+			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del \emph{framework}
+			sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación, proponemos un simple
+			mecanismo de detección de cambios en el archivo de configuración de Arco Iris, el cual, al detectar cualquier cambio en
+			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
+			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
 			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
 			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
 			de \verb@customize.scenarios.reloadInterval@, cuyo valor inicial por defecto será $5000$, es decir, el mecanismo de
@@ -602,10 +607,9 @@
 
 			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca del patrón Observer, visitar
 			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
-			llevar alguna acción a cabo como consecuencia de un cambio en la configuración. El componente (\emph{observer}
+			llevar a cabo alguna acción como consecuencia de un cambio en la configuración. El componente (\emph{observer}
 			siguiendo la nomenclatura utilizada comúnmente en el patrón) más interesado en conocer cuando un cambio en la
-			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager},
-			\todo{A esta altura deberiamos haber ya mencionado SelfHealingConfigurationManager} el cual, en ese caso, descarta
+			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager}, el cual, en ese caso, descarta
 			toda la configuración de los escenarios cargada en memoria, tomando luego la nueva configuración del archivo
 			recientemente actualizado. A partir de este momento Arco Iris continuará trabajando con la nueva configuración de
 			escenarios sin detener en ningún momento su ejecución.
@@ -658,6 +662,8 @@
 	\subsection{Prioridades entre Escenarios}
 	\label{sec:priority}
 	
+		\todo{Continuar revisando desde aca}
+
 		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
 		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo
 		configurable pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el
