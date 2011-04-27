@@ -19,7 +19,6 @@ import org.sa.rainbow.event.RainbowEventAdapter;
 import org.sa.rainbow.gui.RainbowGUI;
 import org.sa.rainbow.health.IRainbowHealthProtocol;
 import org.sa.rainbow.model.Model;
-import org.sa.rainbow.model.evaluator.ArchEvaluatorWithScenarios;
 import org.sa.rainbow.model.manager.ModelManagerWithScenarios;
 import org.sa.rainbow.monitor.SystemDelegate;
 import org.sa.rainbow.monitor.TargetSystem;
@@ -63,8 +62,6 @@ public class Oracle implements IDisposable {
 	private TargetSystem m_system = null;
 
 	private IRainbowRunnable m_modelmgr = null;
-
-	private IRainbowRunnable m_evaluator = null;
 
 	private IRainbowRunnable m_executor = null;
 
@@ -175,7 +172,6 @@ public class Oracle implements IDisposable {
 		m_system = null;
 		m_model = null;
 		m_modelmgr = null;
-		m_evaluator = null;
 		m_adaptmgr = null;
 		m_executor = null;
 		m_instance = null;
@@ -226,13 +222,6 @@ public class Oracle implements IDisposable {
 		return m_modelmgr;
 	}
 
-	public IRainbowRunnable archEvaluator() {
-		if ((m_evaluator == null || m_evaluator.isDisposed()) && !Rainbow.shouldTerminate()) {
-			m_evaluator = new ArchEvaluatorWithScenarios();
-		}
-		return m_evaluator;
-	}
-
 	public IRainbowRunnable adaptationManager() {
 		if ((m_adaptmgr == null || m_adaptmgr.isDisposed()) && !Rainbow.shouldTerminate()) {
 			m_adaptmgr = new AdaptationManagerWithScenarios(selfHealingConfigurationManager());
@@ -276,16 +265,16 @@ public class Oracle implements IDisposable {
 
 	public ScenarioScoreAssigner4CurrentSystemState scenarioScoreAssigner4CurrentSystemState() {
 		if (this.scenarioBrokenDetector4CurrentSystemState == null) {
-			this.scenarioBrokenDetector4CurrentSystemState = new ScenarioScoreAssigner4CurrentSystemState((RainbowModelWithScenarios) this
-					.rainbowModel());
+			this.scenarioBrokenDetector4CurrentSystemState = new ScenarioScoreAssigner4CurrentSystemState(
+					(RainbowModelWithScenarios) this.rainbowModel());
 		}
 		return this.scenarioBrokenDetector4CurrentSystemState;
 	}
 
 	public StitchLoader stitchLoader() {
 		if (this.stitchLoader == null) {
-			File stitchPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
-					.property(Rainbow.PROPKEY_SCRIPT_PATH));
+			File stitchPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
+					Rainbow.property(Rainbow.PROPKEY_SCRIPT_PATH));
 
 			this.stitchLoader = new StitchLoader(stitchPath, true);
 		}
@@ -296,9 +285,8 @@ public class Oracle implements IDisposable {
 	 * Check to make sure all threads are terminated. Used to determine whether to contineu next trial run.
 	 */
 	public boolean allTerminated() {
-		return targetSystem().isTerminated() && modelManager().isTerminated() && archEvaluator().isTerminated()
-				&& adaptationManager().isTerminated()
-				// && ((IRainbowRunnable )learner()).isTerminated()
+		return targetSystem().isTerminated() && modelManager().isTerminated() && adaptationManager().isTerminated()
+		// && ((IRainbowRunnable )learner()).isTerminated()
 				&& strategyExecutor().isTerminated();
 	}
 
@@ -408,11 +396,10 @@ public class Oracle implements IDisposable {
 		if (sys instanceof SimulationRunner) {
 			((SimulationRunner) sys).setSimFile(Rainbow.property(Rainbow.PROPKEY_SIM_PATH));
 		}
-		// - start the executor, adaptation manager, model manager, evaluator
+		// - start the executor, adaptation manager, model manager
 		strategyExecutor().start();
 		adaptationManager().start();
 		modelManager().start();
-		archEvaluator().start();
 		new GraphicGenerator((RainbowModelWithScenarios) this.rainbowModel()).start();
 
 		// ((IRainbowRunnable )learner()).start();

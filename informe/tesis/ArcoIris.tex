@@ -111,33 +111,28 @@
 			conocimiento del concepto de \textbf{estímulo} (tal cual es descrito en los escenarios de atributos de calidad de ATAM).
 			A diferencia de los utilizados en Rainbow, los \emph{probes} implementados para trabajar con Arco Iris deberán
 			indicar el estímulo al cual están asociados, mientras que los \emph{gauges} deberán interpretar esta información y
-			notificar la actualización sobre el modelo indicando el estímulo desencadenante. Las novedades sobre los cambios			ocurridos en el sistema en \emph{runtime} serán informados con el siguiente formato:			\verb@<Propiedad,Valor,Estímulo>@
-			\todo{TURCO Y JONY: Seguir revisando desde acá!!!}
+			notificar al \emph{Rainbow Model With Scenarios} de la actualización sobre el modelo indicando el estímulo			desencadenante. Las novedades sobre los cambios ocurridos en el sistema en \emph{runtime} serán informados con el			siguiente formato: \verb@<Propiedad,Valor,Estímulo>@
+			En función de las modificaciones al modelo original de Rainbow descritas en el párrafo anterior, el componente
+			\emph{Gauge Coordinator} ha sido extendido (i.e. \emph{Gauge Coordinator With Scenarios}) conservando el
+			comportamiento original provisto por Rainbow. De esta manera, Arco Iris puede coordinar información proveniente de			\emph{gauges} de Rainbow y/o de Arco Iris con su correspondiente conocimiento sobre el estímulo originario de la			modificación.
+			De la misma manera, el componente \emph{Rainbow Model With Scenarios} es una extensión de \emph{Rainbow Model}
+			que permite manipular información de estímulos proveniente del \emph{Gauge Coordinator With Scenarios} sin perder
+			el soporte original provisto por \emph{Rainbow Model}.
 
-			Puesto que en la presente extensión el componente \emph{Gauge} provee información sobre los estímulos que desencadenaron
-			un cambio de propiedades en el sistema en ejecución, el componente \emph{Gauge Coordinator} ha sido extendido (i.e.
-			\emph{Gauge Coordinator With Scenarios}) para soportar dicho agregado de información, sin perder el comportamiento
-			original provisto por Rainbow. Esto hace que \emph{Gauge Coordinator With Scenarios} pueda coordinar información
-			proveniente de \emph{gauges} de Rainbow y/o \emph{gauges} de Arco Iris con su correspondiente conocimiento sobre el
-			estímulo originario de la modificación.
-			De la misma manera, el componente \emph{Rainbow Model With Scenarios} ha sido extendido para manejar
-			información de estímulos proveniente del \emph{Gauge Coordinator With Scenarios} sin perder el soporte original
-			provisto por \emph{Rainbow Model}.
-
-			En el caso de que \emph{Rainbow Model With Scenarios} detecte que un estímulo ha sido invocado en el sistema en
-			ejecución, procederá a recabar el subconjunto de escenarios habilitados que poseen dicho estímulo y que a su vez han
-			dejado de cumplirse\footnote{De ahora en más, diremos equivalentemente que el escenario en esta situación se encuentra
-			``roto''.}. Luego de obtener este subconjunto de escenarios, procederá a invocar al \emph{Adaptation Manager With
-			Scenarios}, extensión del componente original \emph{Adaptation Manager} que soporta tanto invocaciones desde el
-			\emph{Architecture Evaluator} original de Rainbow, como así también invocaciones con un conjunto de escenarios
-			detectados como ``rotos'' a los cuales debe intentar reparar considerando diversas variables como por ejemplo sus
-			prioridades relativas.
+			Cuando \emph{Rainbow Model With Scenarios} es notificado de que un estímulo ha sido invocado en el sistema solicita
+			al \emph{Self Healing Configuration Manager} el subconjunto de escenarios habilitados que poseen dicho estímulo y que
+			a su vez han dejado de cumplirse\footnote{De ahora en más, diremos equivalentemente que el escenario en esta
+			situación se encuentra ``roto''.}. Luego de obtener este subconjunto de escenarios, invocará al \emph{Adaptation
+			Manager With Scenarios}, extensión del componente original \emph{Adaptation Manager}, indicando el conjunto de
+			escenarios detectados como ``rotos'' a los cuales debe intentar reparar considerando diversas variables como por
+			ejemplo sus prioridades relativas.
 			
-			También será responsabilidad de \emph{Rainbow Model With Scenarios} cargar los escenarios de atributos de calidad   
-			creados por los \emph{stakeholders} y arquitecto(s), así como también detectar los escenarios rotos, para lo cual   
-			contará con un componente colaborador llamado \emph{Self Healing Configuration Manager} , el cual cumple la función   
-			de abstraer toda la información referente a auto reparación agregada por Arco Iris.			
-			\todo{Agregar Self Healing Configuration Manager en el grafico como un colaborador de Rainbow Model With Scenarios}
+			Además de detectar los escenarios rotos para un determinado estímulo, el componente \emph{Self Healing Configuration
+			Manager} carga la denominada \emph{Self Healing Configuration}, una abstracción de la mayor parte de la información
+			referente a auto reparación utilizada por Arco Iris. Esto incluye, por supuesto, los escenarios creados por los			\emph{stakeholders} y arquitectos.			
+			\todo{Agregar Self Healing Configuration Manager en el grafico como un colaborador de Rainbow Model With Scenarios}
+			
+			\todo{Sacar los gauges, probes y el ArchEvaluator usuales de Rainbow}
 	\subsection{ATAM para Flexibilizar la Auto Reparación}
 
 		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante un modelo de su arquitectura
@@ -807,6 +802,9 @@
 
 	\subsection{Activación del Mecanismo de Auto Reparación}
 
+		\todo{Explicar que cuando se lanza la adaptacion no se reciben mas actualizaciones al modelo hasta una vez finalizada
+		la adaptacion comenzada}
+
 		Con el nuevo enfoque presentado en este trabajo, dónde el \emph{Escenario} es el concepto central, es necesario
 		establecer cambios en la lógica aplicada por el \emph{framework} a la hora de decidir en qué momento es necesario
 		intentar auto reparar el sistema (i.e. evaluar sus restricciones o invariantes).
@@ -835,7 +833,7 @@
 		\emph{stakeholders} puedan acceder de manera sencilla a las restricciones a las cuales debe acatarse el sistema,
 		pudiendo editarlas sin la necesidad de poseer conocientos sobre las tecnologías utilizadas por el sistema o por el
 		\emph{framework} de auto reparación.
-		Para determinar si el sistema necesita auto repararse, Rainbow utilizará una funcionalidad ofrecida por ACME, que
+		Para determinar si el sistema necesita auto repararse, Rainbow utiliza una funcionalidad ofrecida por ACME, que
 		permite evaluar las restricciones descritas en el modelado de la arquitectura, para esto ACME provee una herramienta
 		llamada \emph{Type Checker}. A continuación podemos observar cómo Rainbow se sirve de esta utilidad para decidir si
 		debe lanzar la auto reparación o no:
