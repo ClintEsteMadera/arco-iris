@@ -80,8 +80,8 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 		m_acmeEnv.useTypeChecker(TypeCheckerType.SYNCHRONOUS);
 
 		try { // load Acme model
-			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), Rainbow
-					.property(Rainbow.PROPKEY_MODEL_PATH));
+			File modelDir = Util.getRelativeToPath(Rainbow.instance().getTargetPath(),
+					Rainbow.property(Rainbow.PROPKEY_MODEL_PATH));
 			// set the family search path to the directory containing model file
 			m_acmeEnv.setProperty(StandaloneResourceProvider.FAMILY_SEARCH_PATH, modelDir.getParent());
 			String modelPath = modelDir.toString();
@@ -133,30 +133,34 @@ public class RainbowModelWithScenarios implements Model, ModelRepository {
 	/**
 	 * Updates one property as a result of a stimulus invocation.
 	 * 
-	 * @param type
+	 * @param property
 	 *            the name of the property to update.
 	 * @param value
 	 *            the value to put on the property.
 	 * @param stimulus
 	 *            the stimulus who caused the update.
 	 */
-	public void updateProperty(String type, Object value, Stimulus stimulus) {
-		this.updateProperty(type, value);
-		StringBuffer msg = new StringBuffer("Updated property because of stimulus: ");
-		msg.append(stimulus == null ? "NO STIMULUS!" : stimulus);
-		log(Level.DEBUG, msg.toString());
+	public synchronized void updateProperty(String property, Object value, Stimulus stimulus) {
 		AdaptationManagerWithScenarios adaptationManager = (AdaptationManagerWithScenarios) Oracle.instance()
 				.adaptationManager();
-		List<SelfHealingScenario> brokenScenarios;
-		// done this way in order to avoid the same else block twice
-		if (!adaptationManager.adaptationInProgress() && stimulus != null
-				&& !(brokenScenarios = this.selfHealingConfigurationManager.findBrokenScenarios(stimulus)).isEmpty()) {
-			adaptationManager.triggerAdaptation(brokenScenarios);
+		if (!adaptationManager.adaptationInProgress()) {
+			this.updateProperty(property, value);
+			StringBuffer msg = new StringBuffer("Updated property because of stimulus: ");
+			msg.append(stimulus == null ? "NO STIMULUS!" : stimulus);
+			log(Level.DEBUG, msg.toString());
+			List<SelfHealingScenario> brokenScenarios;
+			// done this way in order to avoid the same else block twice
+			if (stimulus != null
+					&& !(brokenScenarios = this.selfHealingConfigurationManager.findBrokenScenarios(stimulus))
+							.isEmpty()) {
+				adaptationManager.triggerAdaptation(brokenScenarios);
+			}
 		}
 	}
 
 	/**
-	 * Overrides superclass' behavior in order to avoid subsequent properties updates when a stimulus has been invoked.
+	 * Overrides superclass' behavior in order to avoid Rainbow's mechanism to interfere with Arco Iris' self adaptation
+	 * mechanism.
 	 */
 	public synchronized void updateProperty(String property, Object value) {
 		if (m_acme == null)
