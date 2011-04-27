@@ -8,15 +8,15 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Image;
 
-import scenariosui.context.ScenariosUIApplicationContext;
 import scenariosui.gui.action.ScenariosUIActions;
 import scenariosui.gui.menu.SelfHealingConfigurationMenuCreator;
 import scenariosui.gui.thread.ScenariosUIUncaughtExceptionHandler;
 import scenariosui.properties.ScenariosUILabels;
 import scenariosui.properties.UniqueTableIdentifier;
+import scenariosui.service.ScenariosUISystemConfiguration;
 
 import commons.auth.AuthorizationManager;
-import commons.context.BaseApplicationContext;
+import commons.core.BaseSystemConfiguration;
 import commons.gui.widget.MainWindow;
 import commons.gui.widget.composite.QueryComposite;
 
@@ -53,8 +53,8 @@ public class ScenariosUIWindow extends MainWindow {
 	}
 
 	@Override
-	public BaseApplicationContext getApplicationContext() {
-		return ScenariosUIApplicationContext.getInstance();
+	public BaseSystemConfiguration getSystemConfiguration() {
+		return ScenariosUISystemConfiguration.getInstance();
 	}
 
 	@Override
