@@ -15,6 +15,16 @@ public class ScenariosUISystemConfiguration extends BaseSystemConfiguration {
 	 */
 	private static final String BACKEND_DESCRIPTORS = "BACKEND_DESCRIPTORS";
 
+	private static ScenariosUISystemConfiguration instance = new ScenariosUISystemConfiguration();
+
+	public static ScenariosUISystemConfiguration getInstance() {
+		return instance;
+	}
+
+	private ScenariosUISystemConfiguration() {
+		super();
+	}
+
 	public List<String> getServicesDescriptorNames() {
 		List<String> result = new ArrayList<String>();
 

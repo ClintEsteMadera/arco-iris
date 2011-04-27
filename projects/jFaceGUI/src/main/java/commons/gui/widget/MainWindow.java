@@ -32,7 +32,6 @@ import commons.auth.AuthenticationManager;
 import commons.auth.AuthorizationManager;
 import commons.auth.DummyAuthenticationManager;
 import commons.auth.DummyAuthorizationManager;
-import commons.context.BaseApplicationContext;
 import commons.core.BaseSystemConfiguration;
 import commons.gui.action.AboutAction;
 import commons.gui.action.ChangePwdAction;
@@ -285,21 +284,17 @@ public abstract class MainWindow extends ApplicationWindow {
 		return AUTHORIZATION_HELPER;
 	}
 
-	public BaseSystemConfiguration getSystemConfiguration() {
-		return this.getApplicationContext().getSystemConfiguration();
-	}
-
 	public EnumPropertyDirectory getEnumPropertyDirectory() {
 		return enumPropertyDirectory;
 	}
 
 	/**
-	 * Aquí se provee una instancia concreta del ApplicationContext particular de la aplicación.
+	 * Get an instance of the system configuration.
 	 */
-	public abstract BaseApplicationContext getApplicationContext();
+	public abstract BaseSystemConfiguration getSystemConfiguration();
 
 	/**
-	 * En este punto se debería inicializarse todo lo que sea posible/necesario.
+	 * At this point, the users can initialize anything they need.
 	 */
 	protected abstract void initialize();
 }
