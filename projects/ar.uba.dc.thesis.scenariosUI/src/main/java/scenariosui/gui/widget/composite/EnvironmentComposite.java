@@ -65,6 +65,7 @@ public class EnvironmentComposite extends SimpleComposite {
 				conditionsGroup.getSwtGroup(), UniqueTableIdentifier.ENVIRONMENT_CONSTRAINTS, itemClass,
 				new BindingInfo(underlyingEnvironment, "conditions"), this.readOnly);
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		CrudTableComposite crudTableComposite = new CrudTableComposite(tableMetaInfo, ConstraintDialog.class);
 		crudTableComposite.getTable().setVisibleRows(VISIBLE_ROWS);
 
