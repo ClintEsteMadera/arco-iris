@@ -1,4 +1,4 @@
-package ar.uba.dc.thesis.znn.sim.graphics;
+package ar.uba.dc.thesis.util.sim.graphics;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -132,7 +132,7 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 				props.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
 				props.setProperty("resource.loader", "class");
 				props.setProperty("class.resource.loader.class",
-						"ar.uba.dc.thesis.znn.sim.graphics.ClassResourceLoader");
+						"ar.uba.dc.thesis.util.sim.graphics.ClassResourceLoader");
 
 				engine = new VelocityEngine();
 				engine.init(props);

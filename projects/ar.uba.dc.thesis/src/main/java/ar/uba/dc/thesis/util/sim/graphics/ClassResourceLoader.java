@@ -1,4 +1,4 @@
-package ar.uba.dc.thesis.znn.sim.graphics;
+package ar.uba.dc.thesis.util.sim.graphics;
 
 import java.io.InputStream;
 
