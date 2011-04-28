@@ -37,7 +37,7 @@ import ar.uba.dc.thesis.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.thesis.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.thesis.selfhealing.ScenarioScoreAssigner4CurrentSystemState;
 import ar.uba.dc.thesis.selfhealing.StitchLoader;
-import ar.uba.dc.thesis.znn.sim.graphics.GraphicGenerator;
+import ar.uba.dc.thesis.util.sim.graphics.GraphicGenerator;
 
 /**
  * The Oracle class is a singleton class that coordinates the active components of Rainbow and provides a control GUI.
