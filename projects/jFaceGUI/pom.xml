@@ -2,6 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ar.uba.dc.arcoiris</groupId>
+		<artifactId>arco-iris-master-pom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
 	<groupId>jFaceGUI</groupId>
 	<artifactId>jFaceGUI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -10,20 +17,99 @@
 	</description>
 
 	<dependencies>
-		<!-- BEGIN manually added dependencies -->
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>1.2.7</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+			<version>1.0.2</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security-tiger</artifactId>
+			<version>1.0.2</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+			<version>1.1.4c</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.3.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- This dependency has to be always declared *before* org.eclipse/swt, 
+			otherwise, you will have a runtime error -->
+		<dependency>
+			<groupId>${swt.native.groupId}</groupId>
+			<artifactId>${swt.native.artifactId}</artifactId>
+			<version>${swt.native.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>forms</artifactId>
+			<version>3.2.0.v20060602</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vafada</groupId>
+			<artifactId>swtcalendar</artifactId>
+			<version>0.5</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Manually added dependencies -->
 
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>swt</artifactId>
 			<version>6.6.6</version>
 			<!--version>3.3.0-v3346</version -->
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>${swt.native.groupId}</groupId>
-			<artifactId>${swt.native.artifactId}</artifactId>
-			<version>${swt.native.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -57,173 +143,5 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.eclipse.ui</groupId>
-			<artifactId>forms</artifactId>
-			<version>3.2.0.v20060602</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.vafada</groupId>
-			<artifactId>swtcalendar</artifactId>
-			<version>0.5</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- END manually added dependencies -->
-
-		<dependency>
-			<groupId>org.acegisecurity</groupId>
-			<artifactId>acegi-security</artifactId>
-			<version>1.0.2</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.acegisecurity</groupId>
-			<artifactId>acegi-security-tiger</artifactId>
-			<version>1.0.2</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.5</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>1.2.7</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3_min</artifactId>
-			<version>1.1.4c</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.3.1</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<properties>
-		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-	</properties>
-
-	<profiles>
-		<profile>
-			<id>win32</id>
-			<activation>
-				<os>
-					<family>Windows</family>
-					<arch>x86</arch>
-				</os>
-			</activation>
-			<properties>
-				<swt.native.groupId>org.eclipse.swt.win32.win32</swt.native.groupId>
-				<swt.native.artifactId>x86</swt.native.artifactId>
-				<!-- swt.native.version>3.2.1-v3235</swt.native.version -->
-				<swt.native.version>6.6.6</swt.native.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>win64</id>
-			<activation>
-				<os>
-					<family>Windows</family>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<properties>
-				<swt.native.groupId>org.eclipse.swt.win32.win32</swt.native.groupId>
-				<swt.native.artifactId>x86_64</swt.native.artifactId>
-				<!-- swt.native.version>3.6.1.v3655c</swt.native.version -->
-				<swt.native.version>6.6.6</swt.native.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>linux32</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>x86</arch>
-				</os>
-			</activation>
-			<properties>
-				<swt.native.groupId>org.eclipse.swt.gtk.linux</swt.native.groupId>
-				<swt.native.artifactId>x86</swt.native.artifactId>
-				<!-- swt.native.version>3.3.0-v3346</swt.native.version -->
-				<swt.native.version>6.6.6</swt.native.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>linux64</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<properties>
-				<swt.native.groupId>org.eclipse.swt.gtk.linux</swt.native.groupId>
-				<swt.native.artifactId>x86_64</swt.native.artifactId>
-				<!-- swt.native.version>3.3.0-v3346</swt.native.version -->
-				<swt.native.version>6.6.6</swt.native.version>
-			</properties>
-		</profile>
-	</profiles>
 </project>
