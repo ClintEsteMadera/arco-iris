@@ -23,7 +23,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="compiles the source files">
-		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" target="1.6" encoding="iso-8859-1">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar" />
@@ -41,7 +41,7 @@
 
 		<jar jarfile="${dist.dir}/${jar.file}" basedir="${build.dir}">
 			<fileset dir="${src.dir}" />
-			<fileset dir="${resources.dir}" excludes="log4j.xml" />
+			<fileset dir="${resources.dir}"/>
 			<fileset dir="${lib.dir}" />
 
 			<manifest>

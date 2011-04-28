@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/swt_jface/swt.jar"/>
-	<classpathentry kind="lib" path="lib/swt_jface/swt-64.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/native-lib-win32.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/native-lib-linux64.jar"/>
 	<classpathentry kind="lib" path="lib/swt_jface/native-lib-win64.jar"/>
