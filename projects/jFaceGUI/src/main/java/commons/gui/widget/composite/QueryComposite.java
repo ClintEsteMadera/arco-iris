@@ -57,7 +57,7 @@ import commons.gui.widget.group.query.FilterButtonsGroup;
 import commons.properties.CommonLabels;
 import commons.properties.CommonMessages;
 import commons.properties.EnumProperty;
-import commons.query.BaseSearchCriteria;
+import commons.query.SearchCriteria;
 import commons.utils.ClassUtils;
 import commons.utils.DateUtils;
 
@@ -89,7 +89,7 @@ public abstract class QueryComposite<T> extends Composite {
 
 	private Button closeButton;
 
-	private BeanModel<BaseSearchCriteria<T>> criteriaBeanModel;
+	private BeanModel<SearchCriteria<T>> criteriaBeanModel;
 
 	private GenericTable<T> table;
 
@@ -100,11 +100,11 @@ public abstract class QueryComposite<T> extends Composite {
 	private static final Log log = LogFactory.getLog(QueryComposite.class);
 
 	public QueryComposite(Composite parent, EnumProperty tableName, Class<T> tableElementsClassName,
-			BaseSearchCriteria<T> searchCriteria) {
+			SearchCriteria<T> searchCriteria) {
 		super(parent, SWT.NONE);
 		this.tableName = tableName;
 		this.tableContentClass = tableElementsClassName;
-		this.criteriaBeanModel = new BeanModel<BaseSearchCriteria<T>>(searchCriteria);
+		this.criteriaBeanModel = new BeanModel<SearchCriteria<T>>(searchCriteria);
 		this.informationText = new ValueHolder<String>("");
 		this.init();
 		this.reset();
@@ -149,11 +149,11 @@ public abstract class QueryComposite<T> extends Composite {
 		}
 	}
 
-	public BaseSearchCriteria<T> getCriteria() {
+	public SearchCriteria<T> getCriteria() {
 		return this.criteriaBeanModel.getValue();
 	}
 
-	public BeanModel<BaseSearchCriteria<T>> getCriteriaBeanModel() {
+	public BeanModel<SearchCriteria<T>> getCriteriaBeanModel() {
 		return this.criteriaBeanModel;
 	}
 
