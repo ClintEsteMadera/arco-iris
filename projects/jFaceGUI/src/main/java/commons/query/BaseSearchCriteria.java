@@ -1,12 +1,9 @@
 package commons.query;
 
-import java.io.Serializable;
-
 /**
- * Basic Search Criteria where all search criteria must inherit from.
+ * Basic Search Criteria containing only an opaque identifier of type Long.
  */
-
-public abstract class BaseSearchCriteria<T> implements Serializable {
+public class BaseSearchCriteria<T> implements SearchCriteria<T> {
 
 	private static final long serialVersionUID = 1L;
 
