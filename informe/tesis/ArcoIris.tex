@@ -111,26 +111,25 @@
 			conocimiento del concepto de \textbf{estímulo} (tal cual es descrito en los escenarios de atributos de calidad de ATAM).
 			A diferencia de los utilizados en Rainbow, los \emph{probes} implementados para trabajar con Arco Iris deberán
 			indicar el estímulo al cual están asociados, mientras que los \emph{gauges} deberán interpretar esta información y
-			notificar al \emph{Rainbow Model With Scenarios} de la actualización sobre el modelo indicando el estímulo			desencadenante. Las novedades sobre los cambios ocurridos en el sistema en \emph{runtime} serán informados con el			siguiente formato: \verb@<Propiedad,Valor,Estímulo>@
+			notificar al \emph{Arco Iris Model} de la actualización sobre el modelo indicando el estímulo desencadenante. Las			novedades sobre los cambios ocurridos en el sistema en \emph{runtime} serán informados con el siguiente formato:			\verb@<Propiedad,Valor,Estímulo>@
 			En función de las modificaciones al modelo original de Rainbow descritas en el párrafo anterior, el componente
-			\emph{Gauge Coordinator} ha sido extendido (i.e. \emph{Gauge Coordinator With Scenarios}) conservando el
-			comportamiento original provisto por Rainbow. De esta manera, Arco Iris puede coordinar información proveniente de			\emph{gauges} de Rainbow y/o de Arco Iris con su correspondiente conocimiento sobre el estímulo originario de la			modificación.
-			De la misma manera, el componente \emph{Rainbow Model With Scenarios} es una extensión de \emph{Rainbow Model}
-			que permite manipular información de estímulos proveniente del \emph{Gauge Coordinator With Scenarios} sin perder
-			el soporte original provisto por \emph{Rainbow Model}.
+			\emph{Gauge Coordinator} ha sido extendido (i.e. \emph{Arco Iris Gauge Coordinator}) conservando el comportamiento			original provisto por Rainbow. De esta manera, Arco Iris puede coordinar información proveniente de \emph{gauges} de			Rainbow y/o de Arco Iris con su correspondiente conocimiento sobre el estímulo originario de la modificación.
+			De la misma manera, el componente \emph{Arco Iris Model} es una extensión de \emph{Rainbow Model}
+			que permite manipular información de estímulos proveniente del \emph{Arco Iris Gauge Coordinator} sin perder el
+			soporte original provisto por \emph{Rainbow Model}.
 
-			Cuando \emph{Rainbow Model With Scenarios} es notificado de que un estímulo ha sido invocado en el sistema solicita
+			Cuando \emph{Arco Iris Model} es notificado de que un estímulo ha sido invocado en el sistema solicita
 			al \emph{Self Healing Configuration Manager} el subconjunto de escenarios habilitados que poseen dicho estímulo y que
 			a su vez han dejado de cumplirse\footnote{De ahora en más, diremos equivalentemente que el escenario en esta
-			situación se encuentra ``roto''.}. Luego de obtener este subconjunto de escenarios, invocará al \emph{Adaptation
-			Manager With Scenarios}, extensión del componente original \emph{Adaptation Manager}, indicando el conjunto de
-			escenarios detectados como ``rotos'' a los cuales debe intentar reparar considerando diversas variables como por
-			ejemplo sus prioridades relativas.
+			situación se encuentra ``roto''.}. Luego de obtener este subconjunto de escenarios, invocará al \emph{Arco Iris
+			Adaptation Manager}, extensión del componente original \emph{Adaptation Manager}, indicando el conjunto de escenarios
+			detectados como ``rotos'' a los cuales debe intentar reparar considerando diversas variables como por ejemplo sus
+			prioridades relativas.
 			
 			Además de detectar los escenarios rotos para un determinado estímulo, el componente \emph{Self Healing Configuration
 			Manager} carga la denominada \emph{Self Healing Configuration}, una abstracción de la mayor parte de la información
 			referente a auto reparación utilizada por Arco Iris. Esto incluye, por supuesto, los escenarios creados por los			\emph{stakeholders} y arquitectos.			
-			\todo{Agregar Self Healing Configuration Manager en el grafico como un colaborador de Rainbow Model With Scenarios}
+			\todo{Agregar Self Healing Configuration Manager en el grafico como un colaborador de Arco Iris Model}
 			
 			\todo{Sacar los gauges, probes y el ArchEvaluator usuales de Rainbow Y ACTUALIZAR EL DOCUMENTO EN TODOS LADOS PARA			QUE NO QUEDE HUELLA DEL ARCH EVALUATOR!}
 			
@@ -308,7 +307,7 @@
 					location: "localhost" 
 					type: java 
 					javaInfo:
-						class: ar.uba.dc.thesis.znn.probes.ClientProxyProbeWithStimulus
+						class: ar.uba.dc.arcoiris.znn.probes.ClientProxyProbeWithStimulus
 						period: 2000
 						args.length: 2
 						args.0: "http://delegate.oracle/"
@@ -362,9 +361,9 @@
 			este escenario, más adelante, en la sección \ref{sec:responseMeasure} se podrá observar cómo se configura dicha
 			restricción.
 
-			La sección \ref{sec:scenariosUI} explica en detalle cómo se podrá emplear esta información para mejorar la
+			La sección \ref{sec:arcoIrisUI} explica en detalle cómo se podrá emplear esta información para mejorar la
 			experiencia de los \emph{stakeholders} a la hora de especificar escenarios mediante la herramienta visual presentada
-			junto a Arco Iris: \textbf{scenarios UI}
+			junto a Arco Iris: \textbf{Arco Iris UI}
 
 		\subsubsection{El Entorno en la Auto Reparación}
 		\label{sec:environment}
@@ -421,7 +420,7 @@
 			vital del concepto de restricción utilizado en Rainbow con el de Arco Iris. \todo{verificar si se explica esta			diferencia}
 			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
 			simplemente implementando la interfaz \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
-			enumerado ConstraintType en Scenarios UI para que la UI reconozca el nuevo tipo}. 
+			enumerado ConstraintType en Arco Iris UI para que la UI reconozca el nuevo tipo}. 
 			
 			En cuanto al mapa presente en la estructura del entorno, este deberá contener todos los \emph{concerns} definidos para
 			el sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la
@@ -504,8 +503,7 @@
 			En Arco Iris no será necesario contar con las precondiciones de las estrategias, ya que el conocimiento de cuáles
 			estrategias son capaces de reparar una determinada condición se encuentra plasmado en cada escenario. En definitiva, al
 			utilizar Arco Iris el usuario no tendrá más que configurar la cuantificación de la respuesta de cada escenario, tarea
-			que se ve sumamente facilitada al utilizar Scenarios UI (ver sección~\ref{sec:scenariosUI} en la
-			página~\pageref{sec:scenariosUI}).
+			que se ve sumamente facilitada al utilizar Arco Iris UI (ver sección \ref{sec:arcoIrisUI} en la			página \pageref{sec:arcoIrisUI}).
 			Otra diferencia vital con respecto al uso de las mencionadas restricciones entre la visión de Rainbow y de Arco Iris
 			consiste en el momento en que se aplican. Rainbow posee un componente llamado \emph{``Architecture Evaluator''}, cuya
 			responsabilidad consiste en verificar la arquitectura del modelo de a intervalos y de manera asincrónica, siempre y
@@ -584,7 +582,7 @@
 		referencias a las secciones(tal vez haya que agregar mas secciones)}
 		
 		\todo{Esta subseccion no es mejor dejarla para el final de la seccion? Algo del estilo ``Para configurar todo lo
-		visto en esta seccion utilizaremos Scenarios UI''. De hecho es Scenarios UI tiene una subseccion llamada
+		visto en esta seccion utilizaremos Arco Iris UI''. De hecho es Arco Iris UI tiene una subseccion llamada
 		``Formato de salida: XML''}
 		
 		\todo{Mencionar que dicha configuración es administrada por SelfHealingConfigurationManager}
@@ -762,7 +760,7 @@
 
 		\begin{Verbatim}[gobble=4]
 				define boolean RESP_TIME_STILL_BROKEN =
-						AdaptationManagerWithScenarios.isConcernStillBroken("RESPONSE_TIME");
+						ArcoIrisAdaptationManager.isConcernStillBroken("RESPONSE_TIME");
 
 				/*
 				 * This Strategy will drop fidelity once, observe, then drop again if necessary.
@@ -780,7 +778,7 @@
 			\end{Verbatim}
 
 		Cómo se puede observar en el código, para que esto funcione es necesario tener definida la función
-		\emph{isConcernStillBroken} en la clase \emph{AdaptationManagerWithScenarios}, a continuación vemos la implementación,
+		\emph{isConcernStillBroken} en la clase \emph{ArcoIrisAdaptationManager}, a continuación vemos la implementación,
 		notar que el usuario solamente deberá indicar cual es el \emph{concern} de su interés:
 
 		\begin{Verbatim}[gobble=4]
@@ -830,8 +828,8 @@
 		del sistema de la definición de condiciones a evaluar para lanzar la auto reparación. Ahora las restricciones estarán
 		presentes en la \emph{Cuantificación de la Respuesta}(\ref{sec:responseMeasure}) de cada escenario. Al cambiar el modo
 		de definir las \emph{constraints} se intenta además dar mayor visibilidad a los \emph{stakeholders} del sistema, para
-		esto Arco Iris añade la posibilidad de definir las restricciones de manera visual utilizando Scenarios UI
-		(\ref{sec:scenariosUI}), para más detalle ver la sección \ref{sec:scenariosUI_constraints}. Todo esto hace que los
+		esto Arco Iris añade la posibilidad de definir las restricciones de manera visual utilizando Arco Iris UI
+		(\ref{sec:arcoIrisUI}), para más detalle ver la sección \ref{sec:arcoIrisUI_constraints}. Todo esto hace que los
 		\emph{stakeholders} puedan acceder de manera sencilla a las restricciones a las cuales debe acatarse el sistema,
 		pudiendo editarlas sin la necesidad de poseer conocientos sobre las tecnologías utilizadas por el sistema o por el
 		\emph{framework} de auto reparación.
