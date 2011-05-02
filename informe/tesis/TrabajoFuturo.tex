@@ -181,19 +181,19 @@
 					determinado \emph{Concern}, se sobreentiende que su peso relativo es 0 (cero).
 
 					Existe otra opción que no cambia la semántica de los mapas (i.e. todos los \emph{Concerns} seguirían siendo
-					enumerados por extensión) y para eso se vale de la herramienta Scenarios UI. Básicamente, al agregar un nuevo
-					\emph{Concern}, Scenarios UI automáticamente lo agregaría también en los mapas de todos los Entornos existentes en
+					enumerados por extensión) y para eso se vale de la herramienta Arco Iris UI. Básicamente, al agregar un nuevo
+					\emph{Concern}, Arco Iris UI automáticamente lo agregaría también en los mapas de todos los Entornos existentes en
 					el sistema, pero\ldots ¿con qué peso? ¿con peso cero? ¿con un peso por defecto configurable al crear el concern? ¿se
 					obligaría al usuario a configurar el peso en todos los Entornos? En el caso de eliminación, ¿qué ocurre con el peso
 					del \emph{Concern} eliminado? ¿se reparte entre los restantes \emph{concerns}? Pensemos además en lo engorroso que
-					serían todo este tipo de reajustes en la configuración para un usuario que no utiliza Scenarios UI\ldots
+					serían todo este tipo de reajustes en la configuración para un usuario que no utiliza Arco Iris UI\ldots
 
 					Éstas y otras preguntas son las que alguien encargado de flexibilizar la configuración de \emph{Concerns} debería
 					responder y, por ese motivo, preferimos sólamente plantearlas y dejar su resolución abierta.
 
 				\item \textbf{Actualización del \emph{Concern} de Escenarios}
 
-					En el caso de dar de baja un \emph{Concern} lo más razonable sería que Scenarios UI lo elimine automáticamente de
+					En el caso de dar de baja un \emph{Concern} lo más razonable sería que Arco Iris UI lo elimine automáticamente de
 					todos los Entornos, aunque cabe preguntarse: ¿qué ocurre con los escenarios que estaban relacionados con este
 					\emph{Concern}? ¿deben darse de baja? ¿debe forzarse su actualización? Nuevamente, si el usuario no usara Scenarios
 					UI, el mantenimiento de la configuración podría tornarse dificultoso.
@@ -209,10 +209,10 @@
 					acceso de alguna manera al \verb@SelfHealingConfigurationManager@ que es el objeto que tendría acceso a la
 					información presente en el archivo de configuración de \emph{self healing}.
 
-				\item \textbf{Acceso del \emph{AdaptationManagerWithScenarios} a los \emph{Concerns}}
+				\item \textbf{Acceso del \emph{ArcoIrisAdaptationManager} a los \emph{Concerns}}
 
 					Una situación similar a la anterior (el acceso al universo de \emph{Concerns} definidos en el sistema) ocurre
-					también en el \verb@AdaptationManagerWithScenarios@:
+					también en el \verb@ArcoIrisAdaptationManager@:
 
 					\begin{Verbatim}[gobble=5]
 						public static boolean isConcernStillBroken(String concernString) {
@@ -221,7 +221,7 @@
 							...
 					\end{Verbatim}
 
-					El \verb@AdaptationManagerWithScenarios@ actualmente posee como colaborador interno a
+					El \verb@ArcoIrisAdaptationManager@ actualmente posee como colaborador interno a
 					\verb@RainbowModelWithScenarios@ , el cuál accede al \verb@SelfHealingConfigurationManager@, quién es el que puede
 					proveer el acceso deseado a todos los \emph{Concerns} definidos en el sistema en un momento dado.
 			\end{itemize}
@@ -244,7 +244,7 @@
 
 		Una posible solución para este problema podría ser el explicitar relaciones de intersección (o de inclusión) entre
 		restricciones y reconfigurar el algoritmo de detección del Entorno actual de ejecución existente en el
-		\verb@AdaptationManagerWithScenarios@ para que el mismo elija aquel Entorno con condiciones más generales. A
+		\verb@ArcoIrisAdaptationManager@ para que el mismo elija aquel Entorno con condiciones más generales. A
 		continuación, un pseudo-código del posible algoritmo que contempla \textbf{inclusión entre Entornos}:
 
 		\begin{Verbatim}[gobble=3]
@@ -275,7 +275,7 @@
 		escenarios y demás conceptos introducidos en Arco Iris, utilizando la misma herramienta.
 
 		Dependiendo del grado de profundidad en el que se avance en la integración de Arco Iris con Acme Studio, se podría
-		incluso especular con un reemplazo completo de la herramienta Scenarios UI. Esta tarea no fue realizada en el
+		incluso especular con un reemplazo completo de la herramienta Arco Iris UI. Esta tarea no fue realizada en el
 		contexto del presente trabajo debido a que el encarar el desarrollo de un \emph{plug-in} de Eclipse con estas
 		características era una tarea de alta complejidad, que se encuentra afuera del alcance de este trabajo.
 
