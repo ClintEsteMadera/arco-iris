@@ -3,6 +3,8 @@
  */
 package org.sa.rainbow.monitor.sim;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -224,9 +226,9 @@ public class SimulationRunner extends AbstractRainbowRunnable implements TargetS
 	public boolean changeProperty(String iden, Object value) {
 		if (m_props.containsKey(iden)) {
 			try {
-				Double newV = Double.valueOf(value.toString());
-				Double oldV = Double.valueOf((String) m_props.get(iden));
-				Double diff = Math.abs(newV - oldV) / oldV;
+				//Double newV = Double.valueOf(value.toString());
+				//Double oldV = Double.valueOf((String) m_props.get(iden));
+				//Double diff = Math.abs(newV - oldV) / oldV;
 				// if (diff > 0.005) { // report only if delta greater than 0.5%
 				log(Tool.TAB + Tool.TAB + "Change prop: " + iden + " = " + value);
 				// }
@@ -377,14 +379,18 @@ public class SimulationRunner extends AbstractRainbowRunnable implements TargetS
 
 	public void setSimFile(String filename) {
 		try {
+			File simulationFileFullPath = Util.getRelativeToPath(Rainbow.instance().getTargetPath(), filename);
+			
+			m_logger.info("Loading simulation file from " + simulationFileFullPath.getCanonicalPath());
+			
 			// store for later reloading, if needed
-			m_props.load(this.getClass().getResourceAsStream(filename));
+			m_props.load(new FileInputStream(simulationFileFullPath));
 			String incFile = m_props.getProperty("sim.include");
 			if (incFile != null) {
 				// let's grab the include file and then reload props
-				m_props.load(this.getClass().getResourceAsStream(incFile));
-				// then reload the original property file to supercede values
-				m_props.load(this.getClass().getResourceAsStream(filename));
+				m_props.load(new FileInputStream(Util.getRelativeToPath(Rainbow.instance().getTargetPath(), incFile)));
+				// then reload the original property file to supersede values
+				m_props.load(new FileInputStream(simulationFileFullPath));
 			}
 		} catch (FileNotFoundException e) {
 			m_logger.error("Sim property loading failed!", e);
