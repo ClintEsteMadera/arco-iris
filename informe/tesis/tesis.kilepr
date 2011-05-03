@@ -3,12 +3,12 @@ def_graphic_ext=png
 img_extIsRegExp=false
 img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
 kileprversion=2
-kileversion=2.1 beta1
-lastDocument=Introduccion.tex
+kileversion=2.0.85
+lastDocument=Tesis.tex
 masterDocument=
 name=tesis
 pkg_extIsRegExp=false
-pkg_extensions=.cls .sty
+pkg_extensions=.cls .sty .bbx .cbx .lbx
 src_extIsRegExp=false
 src_extensions=.tex .ltx .latex .dtx .ins
 
@@ -16,12 +16,37 @@ src_extensions=.tex .ltx .latex .dtx .ins
 MakeIndex=
 QuickBuild=
 
+[document-settings,item:Tesis.tex]
+Bookmarks=
+Encoding=ISO-8859-15
+Highlighting=LaTeX
+Indentation Mode=
+Mode=LaTeX
+ReadWrite=true
+
+[document-settings,item:TrabajoFuturo.tex]
+Bookmarks=
+Encoding=ISO-8859-15
+Highlighting=LaTeX
+Indentation Mode=
+Mode=LaTeX
+ReadWrite=true
+
+[document-settings,item:caratula.sty]
+Bookmarks=
+Encoding=UTF-8
+Highlighting=LaTeX
+Indentation Mode=
+Mode=LaTeX
+ReadWrite=true
+
 [item:Abstract.tex]
 archive=true
 column=0
 encoding=System
 highlight=LaTeX
 line=0
+mode=
 open=false
 order=-1
 
@@ -31,6 +56,7 @@ column=9
 encoding=System
 highlight=LaTeX
 line=0
+mode=
 open=false
 order=-1
 
@@ -40,6 +66,17 @@ column=1730055904
 encoding=
 highlight=
 line=0
+mode=
+open=false
+order=-1
+
+[item:ArcoIrisUI.tex]
+archive=true
+column=7602222
+encoding=
+highlight=
+line=0
+mode=
 open=false
 order=-1
 
@@ -49,6 +86,7 @@ column=1730055904
 encoding=
 highlight=
 line=0
+mode=
 open=false
 order=-1
 
@@ -58,6 +96,7 @@ column=5
 encoding=System
 highlight=LaTeX
 line=0
+mode=
 open=false
 order=-1
 
@@ -67,6 +106,7 @@ column=0
 encoding=System
 highlight=LaTeX
 line=16
+mode=
 open=false
 order=-1
 
@@ -76,6 +116,7 @@ column=15
 encoding=System
 highlight=LaTeX
 line=0
+mode=
 open=false
 order=-1
 
@@ -85,44 +126,39 @@ column=0
 encoding=System
 highlight=LaTeX
 line=2
+mode=
 open=false
 order=0
 
-[item:ArcoIrisUI.tex]
-archive=true
-column=7602222
-encoding=
-highlight=
-line=0
-open=false
-order=-1
-
 [item:Tesis.tex]
 archive=true
-column=0
-encoding=System
+column=22
+encoding=ISO-8859-15
 highlight=LaTeX
-line=0
+line=13
+mode=LaTeX
 open=false
-order=1
+order=0
 
 [item:TrabajoFuturo.tex]
 archive=true
-column=146862704
-encoding=
-highlight=
-line=0
+column=72
+encoding=ISO-8859-15
+highlight=LaTeX
+line=233
+mode=LaTeX
 open=false
-order=-1
+order=1
 
 [item:caratula.sty]
 archive=true
-column=1730055904
-encoding=
-highlight=
-line=0
+column=58
+encoding=UTF-8
+highlight=LaTeX
+line=86
+mode=LaTeX
 open=false
-order=-1
+order=1
 
 [item:tesis.kilepr]
 archive=true
@@ -130,5 +166,18 @@ column=4
 encoding=
 highlight=
 line=0
+mode=
 open=false
 order=-1
+
+[view-settings,view=0,item:Tesis.tex]
+CursorColumn=22
+CursorLine=13
+
+[view-settings,view=0,item:TrabajoFuturo.tex]
+CursorColumn=72
+CursorLine=233
+
+[view-settings,view=0,item:caratula.sty]
+CursorColumn=58
+CursorLine=86
