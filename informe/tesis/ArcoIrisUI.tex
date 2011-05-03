@@ -17,56 +17,33 @@
 			
 			A fin de superar esta dificultad, se propone el desarrollo de una interfaz de usuario gráfica (GUI, de sus siglas en
 			inglés: \emph{Graphical User Interface}) para que los distintos \emph{stakeholders}, incluyendo usuarios y
-			arquitectos, puedan expresar los requerimientos no funcionales (o ``illities'') del sistema en formato de escenarios
-			de QAW, que luego serán importados y utilizados por Arco Iris.
+			arquitectos, puedan expresar los atributos de calidad (o ``ilities'') del sistema en formato de escenarios de QAW,
+			que luego serán importados y utilizados por Arco Iris.
 			
 			En el presente apartado nos dedicaremos a repasar los aspectos más importantes de la aplicación, bautizada
 			``Arco Iris UI''.
 
 		\subsubsection{Herramienta de escritorio}
 
-			Hoy en día, con el apogeo de cientos de lenguajes, herramientas, \emph{frameworks}, etc. para desarrollar
-			aplicaciones, al momento de definir cuestiones arquitecturales de una interfaz gráfica, pocos desarrolladores
-			se cuestionan si tiene sentido o no que la misma sea web: la abundancia de herramientas que facilitan el
-			enriquecimiento de una interfaz web (que naturalmente es pobre en usabilidad y tiempo de respuesta, entre otras
-			cosas) terminan ganando la batalla frente a las aplicaciones conocidas como ``de escritorio''.
+			Arco Iris UI es una aplicación de escritorio, hecha en Java y utilizando la librería \emph{JFace-SWT}\footnote{JFace fue
+			desarrollado por IBM para facilitar la construcción del entorno de desarrollo Eclipse, pero su uso no está limitado a
+			éste. JFace proporciona una serie de construcciones muy frecuentes a la hora de desarrollar interfaces gráficas de
+			usuario, tales como cuadros de diálogo, evitando al programador la tediosa tarea de lidiar manualmente con los
+			widgets de SWT. Fuente: \url{http://es.wikipedia.org/wiki/JFace}}, la cual provee un conjunto de \emph{widgets} para
+			construír interfaces gráficas de usuario construido sobre SWT.
 			
-			Por otro lado, dentro de los argumentos más esgrimidos por los defensores de las interfaces web, se encuentran el
-			hecho de su accesibilidad desde cualquier computadora o dispositivo que cuente con un navegador e internet; así como
-			también la facilidad de aplicación de parches y actualizaciones a la misma. Estos argumentos son sencillamente
-			irrefutables.
-			
-			Entonces bien, ¿por qué hemos elegido construir Arco Iris UI basado en una interfaz gráfica de usuario de escritorio?
-			
-			\begin{itemize}
-				\item porque consideramos que para el caso concreto de Arco Iris, dónde se pretende que los \emph{stakeholders}
-				de la aplicación junto a el o los arquitectos de la misma \textbf{colaboren} para llevar a cabo una especificación
-				de sus requerimientos de auto reparación para el sistema; es más importante la agilidad de uso y la rapidez de
-				respuesta de la aplicación.
-				\item porque, gracias a Java Web Start\footnote{\emph{Java Web Start} es una herramienta de Oracle (originalmente
-				de Sun) que permite que aplicaciones Java \emph{standalone} sean desplegadas con un sólo click a traves de
-				la red, asegurando también que la versión correcta de la máquina virtual de Java (JRE) esté instalada. Más
-				información en \url{http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136112.html}}, la aplicación de
-				parches o actualizaciones sobre la aplicación es sencillamene automática, conservando así uno de los más grandes
-				beneficios de una aplicación web ordinaria.
-				\item porque los \emph{widgets} disponibles en la librería \emph{JFace-SWT}\footnote{JFace es un conjunto de widgets
-				para realizar interfaces de usuario construido sobre SWT. Fue desarrollado por IBM para facilitar la construcción
-				del entorno de desarrollo Eclipse, pero su uso no está limitado a éste. JFace proporciona una serie de
-				construcciones muy frecuentes a la hora de desarrollar interfaces gráficas de usuario, tales como cuadros de
-				diálogo, evitando al programador la tediosa tarea de lidiar manualmente con los widgets de SWT. Fuente:
-				\url{http://es.wikipedia.org/wiki/JFace}} resultan adecuados para modelar los diferentes controles visuales de la
-				aplicación.
-			\end{itemize}
-			
-			\todo{Implementar realmente con Java Web Start o sacar este chamuyo!}
+			Se prefirió una herramienta de escritorio por sobre una aplicación web principalmente porque las aplicaciones del
+			primer tipo suelen proveer interfaces de usuario más ricas, intuitivas, ágiles y fáciles de usar que las
+			aplicaciones web; todas estas, características deseables para que Arco Iris UI sea útil para los usuarios finales.
 			
 		\subsubsection{Idioma por defecto: inglés}
 
 			Dado que Rainbow es una aplicación originalmente creada en Estados Unidos, y previendo que tanto Arco Iris como
 			Arco Iris UI puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, decidimos que lo más
 			razonable es que estas aplicaciones estén codificadas en el idioma inglés. En el caso de Arco Iris UI, todos los
-			textos mostrados en pantalla también están escritos en inglés, aunque todas las etiquetas están externalizadas a
-			archivos de configuración 
+			textos mostrados en pantalla también están escritos en inglés, aunque todas las etiquetas se encuentran
+			externalizadas a archivos de configuración, simplificando así la traducción a otros idiomas, en caso de que en un
+			futuro fuera necesario.
 			
 		\subsubsection{Multi plataforma}
 
@@ -84,10 +61,11 @@
 
 			La configuración de \emph{Self Healing} que Arco Iris UI debe generar debe ser guardada en un archivo, en un
 			determinado formato. Consideramos que el mejor formato para dicho archivo es el formato XML porque es un formato
-			entendible no sólo por la computadora sino también por seres humanos. Dentro de este tipo de lenguajes (dónde se
-			encuentran otros como JSON o YAML\footnote{Para más información sobre estos lenguajes de intercambio de
-			datos, visitar \url{http://www.json.org/} o \url{http://www.yaml.org/}}) elegimos el formato XML por ser el más
-			ampliamente conocido.
+			entendible no sólo por la computadora sino también por seres humanos. Esto es particularmente útil en el caso
+			en que el usuario desee efectuar retoques mínimos sobre la configuración y no desee o no pueda por algún motivo
+			correr Arco Iris UI. Dentro de este tipo de lenguajes (dónde se encuentran otros como JSON o YAML\footnote{Para más
+			información sobre estos lenguajes de intercambio de datos, visitar \url{http://www.json.org/} o
+			\url{http://www.yaml.org/}}) elegimos el formato XML por ser el más ampliamente conocido.
 			
 			La mecánica de serialización de una configuración de \emph{Self Healing} creada en Java utilizando Arco Iris UI a
 			XML y la importación de dicho XML en Arco Iris es llevada a cabo utilizando el reconocido parser ``XStream''
@@ -110,12 +88,17 @@
 			\end{figure}
 
 			Ante cualquier acción del usuario de Arco Iris UI dónde se guarden cambios hechos en la configuración activa, la
-			aplicación \textbf{guardará automáticamente dichos cambios en el archivo subyacente}, garantizando así la
-			persistencia de los cambios hechos por el usuario en casos especiales de pérdida de energía o fallas inesperadas en
-			la computadora que se encuentra corriendo Arco Iris UI. Recordemos que, de estar el usuario editando el archivo
-			de configuración que Arco Iris está utilizando en \emph{runtime}, cualquier cambio automáticamente guardado por
-			Arco Iris UI será automáticamente detectado por Arco Iris, lo cual dinamiza el comportamiento original
-			presente en \emph{Rainbow}.
+			aplicación \textbf{guardará automáticamente dichos cambios en el archivo subyacente}. Esto es particularmente útil
+			en el caso en que el usuario se encuentre editando el archivo de configuración que Arco Iris está utilizando en
+			\emph{runtime}. En ese caso, cualquier cambio automáticamente guardado por Arco Iris UI será detectado al instante
+			por Arco Iris, el cuál, tal como se explica en la sección \ref{sec:actualizacionDinamicaConfig}, recargará la
+			configuración, dinamizando considerablemente el comportamiento original presente en \emph{Rainbow}.
+
+			\begin{figure}[h]
+				\centering
+					\includegraphics[scale=0.60]{images/arcoIrisUI_conceptualFlow.png}
+				\caption{Flujo conceptual entre Arco Iris UI y Arco Iris}
+			\end{figure}
 			
 		\subsubsection{Auto refresco de tablas}
 
@@ -124,13 +107,6 @@
 			estas tablas se refrescarán automáticamente de acuerdo a los cambios hechos en los objetos subyacentes que componen
 			la configuración de \emph{Self Healing}.
 
-		\subsubsection{Ids ``inteligentes''}
-			El identificador único de los objetos que componen un escenario de auto reparación (e.g. \emph{artifacts}, entornos, etc.)
-			es encarado en todos los casos de una única manera, tomemos el \emph{artifact} a modo de ejemplo: la aplicación
-			considera los id's de los \emph{artifacts} existentes en el sistema y al momento de crear un \emph{artifact} nuevo,
-			sugiere automáticamente un id no utilizado, de modo de garantizar la unicidad de dicho objeto cuando sea usado en ``Arco
-			Iris''.
-		
 		\subsubsection{\emph{Constraints}}
 		\label{sec:arcoIrisUI_constraints}
 

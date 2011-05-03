@@ -387,12 +387,11 @@
 			``ANY'', que un determinado escenario aplica bajo cualquier entorno, esto sería equivalente a que el entorno del
 			escenario no posea ninguna condición, es decir, que el escenario aplica siempre, trivialmente, sin importar las
 			condiciones actuales del sistema en ejecución. Esto puede resultar útil ya que simplifica la configuración del
-			escenario, pero es importante tener en cuenta que reducirá el rendimiento de la auto reparación ya    que configurar un
+			escenario, pero es importante tener en cuenta que reducirá el rendimiento de la auto reparación ya que configurar un
 			entorno específico por escenario otorga mayor precisión al permitir establecer las prioridades relativas de los
 			\emph{concerns} según el estado en el que el sistema se encuentre.			El entorno ``ANY'' será asignado automáticamente al escenario si el usuario no escoge ningún entorno o, en su defecto,
 			si decide explícitamente que el escenario aplique \textbf{en cualquier entorno de ejecución}. Para este entorno todos
-			los \emph{concerns} poseerán el mismo peso,  evitando así ``inclinar la balanza'' hacia algún \emph{concern} en
-			particular.
+			los \emph{concerns} poseerán el mismo peso, evitando así ``inclinar la balanza'' hacia algún \emph{concern} en			particular.
 			\todo{JONY: no estoy de acuerdo en que los pesos sean equidistribuidos, debería poder configurarlo el usuario. Por
 			ejemplo: un sistema financiero siempre va a dar mas prioridad a la performance, mientras que un e-commerce dará, por
 			defecto, mas importancia a la seguridad. Al menos dejémoslo como trabajo a futuro.}

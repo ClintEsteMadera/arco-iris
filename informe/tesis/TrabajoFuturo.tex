@@ -3,9 +3,8 @@
 
 	Si bien con la introducción de las extensiones presentes en Arco Iris se han presentado considerables mejoras con
 	respecto al uso básico de Rainbow, también se han suscitado numerosos puntos de extensión posibles que si bien no
-	pudieron formar parte del presente trabajo, es importante que los mismos sean detallados en pos de incentivar la
-	investigación futura sobre los mismos. A continuación, citaremos los puntos de extensión posibles a Arco Iris y/o
-	Rainbow.
+	pudieron formar parte del presente trabajo, es importante que sean detallados en pos de incentivar la investigación
+	futura. A continuación, citaremos los puntos de extensión posibles a Arco Iris y/o Rainbow.
 
 	\subsection{Arco Iris: un \emph{plug-in} de Rainbow}
 
@@ -17,8 +16,8 @@
 			Para que esto sea posible, es necesario que Rainbow provea una arquitectura abierta a la extensión de sus componentes
 			claves, como ser el \verb@AdaptationManager@, el \verb@RainbowModel@ y \verb@GaugeCoordinator@, entre otros.
 
-			A continuación, se enumeran alguno de los motivos por los cuales Rainbow, en la actualidad, no permite extensiones de
-			tipo \emph{plug-in}:
+			A continuación, se enumeran algunos de los motivos por los cuales Rainbow, en la actualidad, no permite extensiones
+			de tipo \emph{plug-in}:
 			\begin{enumerate}
 				\item Rainbow no trabaja orientado a interfaces, tal como Erich Gamma explica en \cite{DesignPatterns}, observando
 				así un alto acoplamiento entre las clases que conforman su diseño y la consecuente imposibilidad de cambiar las
@@ -31,19 +30,19 @@
 				su extensión (i.e. herencia) mediante modificadores de acceso restrictivos.
 			\end{enumerate}
 
-			A modo de conclusión, sería muy positivo una reestructuración de Rainbow para permitir extensiones o agregados al
+			A modo de conclusión, sería muy positiva una reestructuración de Rainbow para permitir extensiones o agregados al
 			mismo de una manera más prolija y ordenada que la que tuvo que utilizarse para la creación de Arco Iris.
 
 	\subsection{Análisis y Aprendizaje de la Auto Reparación}
 
 		\subsubsection{Herramientas de análisis y visualización}
 
-			Supongamos que los \emph{stakeholders} ya han definido todos los escenarios que se utilizará Arco Iris para gestionar
-			la auto adaptación de un sistema dado. Ahora bien, imaginemos que existe un escenario de muy alta prioridad y a su
-			vez las condiciones necesarias para que no se cumpla se dan con mucha frecuencia. Esto posiblemente resulte en la
-			auto reparación repetida del mencionado escenario. Pero, ¿qué sucedería si la única estrategia que repara dicho
-			escenario ``rompe'' constantemente otros, digamos tres, escenarios de menor prioridad? A priori pareciera que este es
-			el comportamiento esperado, pero\ldots ¿podrían los \emph{stakeholders} convalidar este comportamiento? Claramente la
+			Supongamos que los \emph{stakeholders} ya han definido todos los escenarios que utilizará Arco Iris para gestionar la
+			auto adaptación de un sistema dado. Ahora bien, imaginemos que existe un escenario de muy alta prioridad y a su vez
+			las condiciones necesarias para que no se cumpla se dan con mucha frecuencia. Esto posiblemente resulte en la auto
+			reparación repetida del mencionado escenario. Pero, ¿qué sucedería si la única estrategia que repara dicho escenario
+			``rompe'' constantemente otros, digamos tres, escenarios de menor prioridad? A priori pareciera que este es el
+			comportamiento esperado, pero\ldots ¿podrían los \emph{stakeholders} convalidar este comportamiento? Claramente la
 			implementación actual de Arco Iris carece de una serie de \textbf{estadísticas y vistas} que permitan analizar lo que
 			está siendo reparado, así también como el impacto sobre los escenarios perjudicados y sobre cada uno de los
 			\emph{concerns} del sistema.
@@ -68,7 +67,10 @@
 			\begin{itemize}
 				\item El porcentaje de fallas máximo permitido para que una estrategia pueda ser considerada debe ser configurado
 				por el usuario final. La forma más simple de hacer esto es sencillamente externalizando este valor al archivo de
-				configuración de la aplicación ya existente (\verb@rainbow.properties@).
+				configuración de la aplicación ya existente (\verb@rainbow.properties@). Este trabajo no se ha encarado en el
+				presente trabajo, puesto que implica la modificación (en contraposición a una extensión) de una clase
+				específica de Rainbow. Es conveniente que las modificaciones al núcleo de Rainbow sean realizadas por el grupo de
+				gente a cargo de su mantenimiento evolutivo.
 				\item Este mecanismo provee poca visibilidad al usuario final. Una posible idea para analizar la
 				configuración de la auto reparación del sistema podría ser un \textbf{\emph{ranking} de estrategias}, en el que se
 				presente el porcentaje de éxito y fallas de cada una así como la cantidad de veces que se ejecutó, cómo quedó el
@@ -200,7 +202,7 @@
 
 				\item \textbf{Asignación equidistribuída de pesos para un Entorno nuevo}
 
-					En Arco Iris, al construír una instancia de \verb@Environment@, se invoca a una función llamada
+					En Arco Iris, al construir una instancia de \verb@Environment@, se invoca a una función llamada
 					\verb@createMapWithEquallyDistributedWeights@ que inicializa el mapa de pesos del Entorno de manera equidistribuída
 					entre todos los entornos (e.g. si hay 3 \emph{Concerns} en el sistema, asigna $0.\wideparen{33}$ a cada uno).
 
@@ -221,9 +223,9 @@
 							...
 					\end{Verbatim}
 
-					El \verb@ArcoIrisAdaptationManager@ actualmente posee como colaborador interno a
-					\verb@RainbowModelWithScenarios@ , el cuál accede al \verb@SelfHealingConfigurationManager@, quién es el que puede
-					proveer el acceso deseado a todos los \emph{Concerns} definidos en el sistema en un momento dado.
+					El \verb@ArcoIrisAdaptationManager@ actualmente posee como colaborador interno a\\
+					\verb@RainbowModelWithScenarios@, el cuál accede al \verb@SelfHealingConfigurationManager@, quién es el que
+					puede proveer el acceso deseado a todos los \emph{Concerns} definidos en el sistema en un momento dado.
 			\end{itemize}
 
 	\subsection{Flexibilización del Entorno}
@@ -254,7 +256,7 @@
 					si ent aplica en las actuales condiciones de ejecución entonces
 						si candidate == null entonces
 							candidate = ent;
-							goto siguiente iteración;
+							siguiente iteración;
 						fin si
 				        si ent está incluido en candidate entonces
 				        	candidate = ent;
@@ -283,7 +285,14 @@
 
 		\todo{A completar por TURCO: Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function''
 		es limitado)}
-
+		
+		\todo{Ceria dijo:\\
+		El 6.8 es muy importante. Recuerden que Garlan habló de esto como una tesis de doctorado. Me parece que dentro de
+		trabajo futuro hablan de muchas ``cosas chicas''. Mencionen también las grandes líneas que se deben seguir explorando para
+		hacer realidad esto de los sistemas ``autoreparables''. Cómo armar una arquitectura de un sistema existente en ACME (lo de
+		Discotect, pero que todavía es limitado), cómo ``enchufarse'' con un sistema sobre el que se tiene poco control, cómo
+		poder alterar más radicalmente el comportamiento de un sistema, etc. Pueden poner estos temas en general, pero me
+		gustaría que muestren que es muy importante seguir avanzando en sistemas que se ``manejan solos''.}
 	\subsection{Scoring de Estrategias: Rainbow y Arco Iris ``en conjunto''}
 
 		\todo{A completar por TURCO: hablar sobre arcoIrisSolutionWeight y rainbowSolutionWeight}
