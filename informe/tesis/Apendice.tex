@@ -3,8 +3,75 @@
 \addappheadtotoc
 \appendixpage
 
+\section{Instalación y Ejecución de Arco Iris y Arco Iris UI}
+\label{sec:instalacionYEjecucionArcoIris}
+
+	\subsection{Aclaración importante}
+
+		En el DVD que acompaña al presente trabajo, se incluye la totalidad de las herramientas necesarias para visualizar el
+		código fuente de Rainbow, Arco Iris y Arco Iris UI; así también como los sendos códigos fuentes de las tres
+		aplicaciones. De cualquier manera, describiremos brevemente los requisitos y pasos necesarios para que cualquier
+		persona interesada pueda instalar y ejecutar las aplicaciones objeto de este trabajo.
+
+	\subsection{Prerrequisitos}
+
+		\subsubsection{Sólo para Ejecución}
+			\noindent \textbf{Java 6.0 o superior}
+
+			Tanto Rainbow como Arco Iris y Arco Iris UI son aplicaciones Java que necesitan de una máquina virtual Java instalada
+			en la computadora dónde se desee ejecutar estas aplicaciones. La misma se encuentra disponible para la gran
+			mayoría de las plataformas utilizadas comúnmente (Windows, Unix, Solaris, MAC OS, etc.) y puede ser descargada
+			gratuitamente desde \url{http://www.oracle.com/technetwork/java/javase/downloads/index.html}.
+			
+		\subsubsection{Para Inspección y Edición del Código Fuente}
+
+			\noindent \textbf{Eclipse 3.6 o superior}
+			En el caso en que se desee inspeccionar o editar el código fuente de Rainbow, Arco Iris y/o Arco Iris UI, una
+			herramienta no imprescindible aunque muy recomendada es \textbf{Eclipse}. Eclipse es un entorno de desarrollo
+			integrado que permite visualizar, editar, compilar y ejecutar (entre otras muchas cosas) aplicaciones Java. Se
+			descarga gratuitamente desde \url{http://www.eclipse.org/downloads/} y la versión ``for Java Developers'' es
+			suficiente a los fines de trabajar con las aplicaciones que conciernen a este trabajo.
+			
+			El código fuente incluído incluye metadata de Eclipse, con lo cual, si se utilizan los correspondientes
+			\emph{plugins} detallados a configuración, debería ser relativamente sencillo poder disponer rápidamente de todos
+			los proyectos que conforman el tandem Rainbow-Arco Iris. los plugins de Eclipse requeridos son:
+
+			\begin{itemize}
+				\item \textbf{Maven plugin}: El plugin para Eclipse de Maven. El mismo puede ser obtenido utilizando el
+				\emph{Marketplace} de Eclipse o utilizando la siguiente URI \url{http://m2eclipse.sonatype.org/sites/m2e}.
+				\item \textbf{Subclipse}: Se trata del plugin para Eclipse que provee soporte para interactuar con repositorios
+				Subversion\footnote{Para más información sobre Subversion, visitar \url{http://subversion.tigris.org/}}. Tanto
+				el código de Rainbow como el de Arco Iris se encuentran alojados en servidores Subversion (SVN).
+			\end{itemize} 
+
+			\noindent \textbf{Maven 2 o superior}
+			A fin de compilar y empaquetar el código fuente de la aplicación mediante la línea de comandos del sistema operativo,
+			es necesario utilizar Maven, la popular herramienta de construcción de aplicaciones Java. Maven es una
+			herramienta multi plataforma con una abundante cantidad de documentación de calidad, la cual puede ser consultada
+			visitando su página web: \url{http://maven.apache.org/}, desde la cual se puede descargar también la aplicación.
+
+	\subsection{Obtención del código fuente de Rainbow, Arco Iris y Arco Iris UI}
+	
+		El grupo ABLE posee un repositorio SVN privado, el cuál es sólo accesible mediante el otorgamiento de un usuario
+		(normalmente de sólo lectura) y contraseña; a pedido explícito del interesado. A fin de obtener dichas credenciales de
+		acceso, es necesario redactar un e-mail a David Garlan $<$\url{garlan@cs.cmu.edu}$>$.
+		
+		El código fuente de Arco Iris y Arco Iris UI (junto con algunas pequeñas modificaciones realizadas al código de
+		Rainbow) se encuentra alojado en Google Code, en la siguiente URI: \url{http://code.google.com/p/arco-iris}. Ambas
+		aplicaciones creadas a instancias del presente trabajo, son de código abierto (\emph{open source}), esto significa que
+		cualquier persona puede acceder libremente al código fuente y examinarlo.
+
+	\subsection{Compilación de Arco Iris y Arco Iris UI}
+	
+		\todo{Explicar que hay un reactor pom, que incluye a JFaceGUI (mencionar brevemente qué es), que el proyecto
+		arco-iris-core tiene las dependencias de rainbow cocinadas, explicar la detección del SO que hace JFaceGUI, etc\ldots}
+
+	\subsection{Ejecución de las aplicaciones}
+
+		\todo{Explicar ejemplos de como se ejecutan ambas aplicaciones}
+
 \section{Arquitectura de Znn modelada con Acme}
-	\label{sec:arquitecturaZNN}
+\label{sec:arquitecturaZNN}
 
 	\begin{Verbatim}
 		import TargetEnvType.acme;
@@ -399,7 +466,7 @@
 \newpage
 
 \section{Tácticas de Znn}
-	\label{sec:tacticasZNN}
+\label{sec:tacticasZNN}
 
 	\begin{Verbatim}
 		module newssite.tactics;
@@ -622,7 +689,7 @@
 			\end{Verbatim}
 
 \section{Representación en XML del Escenario de Tiempo de Res\-pues\-ta}
-	\label{sec:scenarioExpRespTimeXML}
+\label{sec:scenarioExpRespTimeXML}
 
 	\begin{Verbatim}
 		<selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true"
@@ -653,7 +720,7 @@
 \newpage
 
 \section{Representación en XML del Escenario de Costo}
-	\label{sec:scenarioCostXML}
+\label{sec:scenarioCostXML}
 
 	\begin{Verbatim}
 		<selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
@@ -682,7 +749,7 @@
 \newpage
 
 \section{Implementación de Probe y extensión de Arco Iris}
-	\label{sec:probesCode}
+\label{sec:probesCode}
 
 	\begin{Verbatim}[gobble=4]
 				public class ClientProxyProbe {
@@ -761,7 +828,7 @@
 
 
 \section{Implementación de NumericBinaryRelationalConstraint}
-	\label{sec:numericBinaryRelationalConstraintCode}
+\label{sec:numericBinaryRelationalConstraintCode}
 
 	\begin{Verbatim}[gobble=4]
 				@XStreamAlias("numericBinaryRelationalConstraint")
