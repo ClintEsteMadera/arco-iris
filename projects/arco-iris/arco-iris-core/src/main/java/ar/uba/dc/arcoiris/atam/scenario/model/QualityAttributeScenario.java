@@ -11,7 +11,7 @@ import ar.uba.dc.arcoiris.util.Collections;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-public abstract class AtamScenario extends IdentifiableArcoIrisDomainObject {
+public abstract class QualityAttributeScenario extends IdentifiableArcoIrisDomainObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,14 +46,14 @@ public abstract class AtamScenario extends IdentifiableArcoIrisDomainObject {
 
 	private ResponseMeasure responseMeasure;
 
-	public AtamScenario() {
+	public QualityAttributeScenario() {
 		super();
 		this.responseMeasure = new ResponseMeasure();
 		this.stimulus = Stimulus.ANY;
 		this.environments = Collections.createList(AnyEnvironment.getInstance());
 	}
 
-	public AtamScenario(Long id, String name, Concern concern, Stimulus stimulus,
+	public QualityAttributeScenario(Long id, String name, Concern concern, Stimulus stimulus,
 			List<? extends Environment> environments, Artifact artifact, String response,
 			ResponseMeasure responseMeasure) {
 		super(id);
