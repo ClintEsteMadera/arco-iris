@@ -134,25 +134,59 @@
 			\todo{Sacar los gauges, probes y el ArchEvaluator usuales de Rainbow Y ACTUALIZAR EL DOCUMENTO EN TODOS LADOS PARA			QUE NO QUEDE HUELLA DEL ARCH EVALUATOR!}
 			
 			\todo{Revisar secciones 1 y 2 (y lo que va de la 3) para asegurarnos que no decimos que hay compatibilidad hacia			atrás!!!}
-	\subsection{ATAM para Flexibilizar la Auto Reparación}
+	\subsection{Flexibilización de la Auto Reparación con QAS}
 
-		Actualmente Rainbow posee conocimiento sobre la arquitectura del sistema a adaptar mediante un modelo de su arquitectura
-		expresado en el lenguaje de descripción de arquitecturas Acme. Uno de los objetivos de Arco Iris es extender el
-		conocimiento que el \emph{framework} tiene sobre el sistema en general. Este nuevo conocimiento será utilizado por Arco
-		Iris en tiempo de ejecución para refinar y optimizar la auto reparación.
+		Actualmente Rainbow posee conocimiento sobre el sistema a adaptar mediante el modelo de su arquitectura expresado en
+		el lenguaje de descripción de arquitecturas Acme. En dicho modelo también se encuentran definidos invariantes y
+		restricciones sobre el comportamiento esperado del sistema, información que luego es utilizada por Rainbow para
+		detectar cuándo el sistema se encuentra en un estado no deseado. Existen algunos problemas con respecto a cómo Rainbow
+		lleva a cabo esta tarea:
+		\begin{itemize}
+			\item Rainbow verifica que se satisfagan \textbf{todos} los invariantes y restricciones del modelo. En caso de
+			detectar que alguna de estas condiciones no se satisfacen, no existe un correlato directo entre la restricción o
+			invariante que deja de cumplirse con la o las estrategias de reparación que solucionan dicho problema. 
+			\item Como consecuencia del punto anterior, Rainbow debe considerar todas las estrategias definidas para el sistema
+			al momento de determinar la mejor estrategia de reparación a ejecutar.
+			\item A fin de establecer un correlato indirecto entre aquello que causó el funcionamiento no esperado del sistema y
+			las estrategias de reparación candidatas, se \textbf{replican} las restricciones o invariantes ya definidas en el
+			modelo como precondiciones en las estrategias.
+		\end{itemize}
+		
+		Se observa que este esquema es poco flexible ya que ante cualquier modificación en los requerimientos de auto
+		reparación definidos para el sistema, el usuario deberá modificar tanto el modelo de la arquitectura como las
+		estrategias de reparación asociadas. Esta redundancia, además de significar un trabajo de configuración innecesario
+		para el usuario, puede llevar a inconsistencias que provocarían un comportamiento indeseado en la auto reparación del
+		sistema.
 
-		Esencialmente, se incluye información sobre los atributos de calidad del sistema que son relevantes para los
-		\emph{stakeholders} del sistema en tiempo de ejecución. Se permite, por ejemplo, poder describir la importancia relativa
-		de la \emph{performance}, la usabilidad, la disponibilidad, etc.; definiendo así una serie de \emph{tradeoffs} entre
-		distintos atributos de calidad requeridos por el sistema. El enfoque propuesto para lograr esto consiste en especificar
-		\textbf{Escenarios de Atributos de Calidad}, tal cual fueron descritos en la sección \ref{sec:QAS}, extendiendo el
-		concepto con información orientada a flexibilizar la auto reparación. Esta extensión es explicada en detalle en la
-		sección \ref{sec:modeloExtensionATAM}
+		Por otro lado, el modificar el comportamiento de la auto reparación en Rainbow requiere un conocimiento técnico no
+		trivial, por lo que el cambio debería ser realizado por el arquitecto del sistema, esto hace a Rainbow menos flexible
+		ante cambios en los requerimientos de los usuarios no técnicos, ya que éstos no podrían llevar a cabo la modificación
+		de requerimientos sin la asistencia activa de un usuario técnico.
 
-		En la Figura \ref{fig:ATAM_Model} se puede ver el modelo diseñado para representar los escenarios de ATAM en Arco
-		Iris. Este modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco
-		Iris para llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear
-		los escenarios.
+ 		Con el objetivo de subsanar las falencias anteriormente comentadas, Arco Iris extiende el conocimiento que
+ 		Rainbow posee sobre el sistema y lo organiza de una manera más adecuada. Esencialmente, se incluye información sobre
+		los atributos de calidad del sistema que son relevantes para los \emph{stakeholders}. Se permite, por ejemplo, poder
+		describir la importancia relativa de la \emph{performance}, la disponibilidad, etc.; definiendo así una serie de
+		\emph{tradeoffs} entre distintos atributos de calidad requeridos para el sistema. El enfoque propuesto para lograr
+		esto consiste en especificar \textbf{Escenarios de Atributos de Calidad}, tal cual fueron descritos en la sección
+		\ref{sec:QAS}, extendiendo el concepto con información orientada a flexibilizar la auto reparación. Esta extensión es		explicada en detalle en la sección \ref{sec:modeloExtensionATAM}.
+		
+		A continuación se detallan las soluciones introducidas por Arco Iris para solucionar los problemas que
+		posee Rainbow mencionados anteriormente:
+		\begin{itemize}
+			\item Gracias al uso de QAS, el invariante o restricción que en Rainbow se encontraba descrito en el modelo de la
+			arquitectura, pasa a formar parte del \emph{response measure}. Luego, para solucionar la falta de correlato entre la
+			detección del problema y su reparación, Arco Iris extiende el concepto de escenario, agregándole el conocimiento de
+			cuáles son las estrategias de reparación candidatas para reparar el sistema.
+			\item  Conforme a lo explicado en el punto anterior, se evita la necesidad de considerar todas las estrategias como
+			candidatas, tal cual era el comportamiento original de Rainbow.
+			\item Al contar con el correlato explícito entre el problema y sus posibles soluciones, ya no es necesario especificar
+			precondiciones a las estrategias de reparación, flexibilizando y simplificando de esta manera el uso del
+			\emph{framework} así como también eliminando la existencia de posibles inconsistencias en su configuración.		\end{itemize}
+
+		En la Figura \ref{fig:ATAM_Model} se puede observar el modelo diseñado para representar los QAS en Arco Iris. Este
+		modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco Iris para
+		llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear los escenarios.
 
 		\todo{Turco: Quitar weights de Environment y isAny() de Stimulus en la figura}
 		
@@ -164,30 +198,12 @@
 			\label{fig:ATAM_Model}
 		\end{figure}}		
 		
-		Supongamos que luego de una reunión QAW, el arquitecto de un sistema junto con los \emph{stakeholders} acuerdan el
-		siguiente escenario de atributo de calidad:
-
-		\begin{quote}
-			Un proceso del sistema recibe un mensaje externo no anticipado durante un modo de operación normal. El
-			proceso informa al operador y continúa su operación sin caídas.
-		\end{quote}
-
-		Veamos cómo se desgloza la información de este escenario según la descomposición antes mencionada:
-
-		\begin{itemize}
-			\item Fuente: Sistema externo
-			\item Estímulo: Mensaje no anticipado
-			\item Entorno: Operación normal
-			\item Artefacto: Proceso interno
-			\item Respuesta: Informar al operador y seguir operando
-			\item Medición de la respuesta: sin caídas (downtime)
-		\end{itemize}
-
-		\indent De todos estos atributos, el \textbf{Estímulo}, el \textbf{Artefacto}, el \textbf{Entorno} y la
+		De todos los atributos que posee un QAS, el \textbf{Estímulo}, el \textbf{Artefacto}, el \textbf{Entorno} y la
 		\textbf{Cuantificación de la Respuesta} son particularmente relevantes a los fines de establecer información útil para
-		el mecanismo de auto reparación. A lo largo de las próximas subsecciones mostraremos cómo Arco Iris hace uso de esta
-		información para modificar, optimizar y refinar la auto reparación realizada por Rainbow.
+		el mecanismo de auto reparación. A lo largo de las próximas secciones se detalla el uso que hace Arco Iris de esta
+		información para modificar, optimizar y flexibilizar la auto reparación llevada a cabo por Rainbow.
 
+		\todo{TURCO Y JONY: continuar revisando desde aca}
 
 		\subsubsection{El Estímulo en la Auto Reparación}
 
@@ -542,6 +558,8 @@
 
 	\subsection{Modelo Extendido de ATAM}
 	\label{sec:modeloExtensionATAM}
+	
+		\todo{Cambiar ATAM por QAS?}
 
 		Hasta aquí se ha detallado el uso que Arco Iris hará del modelo básico de ATAM, pero como se mencionó anteriormente,
 		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
