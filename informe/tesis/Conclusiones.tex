@@ -146,6 +146,17 @@
 			Lo antedicho, agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de
 			reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación
 			del sistema en tiempo de ejecución.
+			
+			Si bien en Rainbow el concepto de ``entorno de ejecución'' no existe como tal, uno podría encontrarlo indirectamente
+			dentro de ciertas condiciones de aplicabilidad embebidas dentro del código de las estrategias de reparación.
+			
+			Ahora bien, observemos que Rainbow no tiene forma de determinar a priori si alguna de las estrategias configuradas
+			por el usuario van a aplicar en el contexto actual de ejecución: dada alguna \emph{constraint} violada, necesita
+			inspeccionar la totalidad de las estrategias para verificar si son aplicables en la situación actual de
+			\emph{runtime}. Esto último es una notable diferencia a favor de Arco Iris, ya que en este caso, al estar las
+			estrategias de reparación candidatas embebidas en el escenario, aquellos escenarios cuyo entorno no se corresponda
+			con el entorno actual de ejecución, no se considerarán ``rotos'', evitando cómputos innecesarios y refinando
+			así el método original provisto por Rainbow.
 
 	\subsection{Compatibilidad hacia atrás: una empresa sin sentido}
 
