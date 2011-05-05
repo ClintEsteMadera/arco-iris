@@ -11,7 +11,7 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.arcoiris.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.arcoiris.atam.scenario.model.Artifact;
-import ar.uba.dc.arcoiris.atam.scenario.model.AtamScenario;
+import ar.uba.dc.arcoiris.atam.scenario.model.QualityAttributeScenario;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
 import ar.uba.dc.arcoiris.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.arcoiris.atam.scenario.model.Stimulus;
@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("selfHealingScenario")
-public class SelfHealingScenario extends AtamScenario {
+public class SelfHealingScenario extends QualityAttributeScenario {
 
 	private static final long serialVersionUID = 1L;
 
