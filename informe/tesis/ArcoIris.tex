@@ -20,12 +20,6 @@
 			\label{fig:Rainbow_Architecture}
 		\end{figure}}
 		
-		\todo{Traducir al castellano los labels en los diagramas del EA}
-
-		\todo{Agregar en ambos graficos: AdaptationManager escoge y lanza Strategy (opcional)}
-
-		\todo{Agregar en ambos graficos: Effector invocado desde el Strategy}
-
 		Observamos que, en Rainbow, una persona con rol de arquitecto (o similar) es el encargado de configurar el 
 		\emph{framework} utilizando, básicamente, dos vías:
 		\begin{enumerate}
@@ -129,9 +123,7 @@
 			Además de detectar los escenarios rotos para un determinado estímulo, el componente \emph{Self Healing Configuration
 			Manager} carga la denominada \emph{Self Healing Configuration}, una abstracción de la mayor parte de la información
 			referente a auto reparación utilizada por Arco Iris. Esto incluye, por supuesto, los escenarios creados por los			\emph{stakeholders} y arquitectos.			
-			\todo{Agregar Self Healing Configuration Manager en el grafico como un colaborador de Arco Iris Model}
-			
-			\todo{Sacar los gauges, probes y el ArchEvaluator usuales de Rainbow Y ACTUALIZAR EL DOCUMENTO EN TODOS LADOS PARA			QUE NO QUEDE HUELLA DEL ARCH EVALUATOR!}
+			\todo{ACTUALIZAR EL DOCUMENTO EN TODOS LADOS PARA QUE NO QUEDE HUELLA DEL ARCH EVALUATOR EN ARCO IRIS!}
 			
 			\todo{Revisar secciones 1 y 2 (y lo que va de la 3) para asegurarnos que no decimos que hay compatibilidad hacia			atrás!!!}
 	\subsection{Flexibilización de la Auto Reparación con QAS}
@@ -184,18 +176,16 @@
 			precondiciones a las estrategias de reparación, flexibilizando y simplificando de esta manera el uso del
 			\emph{framework} así como también eliminando la existencia de posibles inconsistencias en su configuración.		\end{itemize}
 
-		En la Figura \ref{fig:ATAM_Model} se puede observar el modelo diseñado para representar los QAS en Arco Iris. Este
+		En la Figura \ref{fig:QAS_Model} se puede observar el modelo diseñado para representar los QAS en Arco Iris. Este
 		modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco Iris para
 		llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear los escenarios.
 
-		\todo{Turco: Quitar weights de Environment y isAny() de Stimulus en la figura}
-		
 		\afterpage{\clearpage
 		\begin{figure}[H]
 			\centering
-				\includegraphics[width=1.00\textwidth]{images/ATAM_Model.png}
-			\caption{Modelo de ATAM}
-			\label{fig:ATAM_Model}
+				\includegraphics[width=1.00\textwidth]{images/QAS_Model.png}
+			\caption{Modelo de QAS}
+			\label{fig:QAS_Model}
 		\end{figure}}		
 		
 		De todos los atributos que posee un QAS, el \textbf{Estímulo}, el \textbf{Artefacto}, el \textbf{Entorno} y la
@@ -564,20 +554,16 @@
 		Hasta aquí se ha detallado el uso que Arco Iris hará del modelo básico de ATAM, pero como se mencionó anteriormente,
 		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
 		
-		En la figura \ref{fig:Arco_Iris_ATAM_Model} se puede observar cómo se modela el \textbf{escenario de auto reparación}
+		En la figura \ref{fig:Arco_Iris_QAS_Model} se puede observar cómo se modela el \textbf{escenario de auto reparación}
 		(\verb@SelfHealingScenario@), el cual además de ser un escenario de ATAM tiene todo la información y la lógica
 		necesaria para que Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación. 
 
-		\todo{Turco: Cambiar List por Set en conditions de environment}\\
-		\todo{Jony: Por? en el código es List\ldots no queremos evaluarlas en orden?}\\
-		\todo{El orden no deberia importar}
-		
 		\afterpage{\clearpage
 		\begin{figure}[H]
 			\centering
-				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_ATAM_Model.png}
+				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_QAS_Model.png}
 			\caption{Modelo de Arco Iris}
-			\label{fig:Arco_Iris_ATAM_Model}
+			\label{fig:Arco_Iris_QAS_Model}
 		\end{figure}}
 
 		Los escenarios de auto reparación pueden ser deshabilitados, considerando Arco Iris solamente los escenarios
