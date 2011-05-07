@@ -11,7 +11,7 @@ public enum Quantifier {
 			return RainbowModel.EXP_AVG_KEY;
 		}
 	},
-	SUM("Σ") {
+	SUM("Sum") {
 		@Override
 		public String getExpPropertyPrefix() {
 			return ArcoIrisModel.EXP_SUM_KEY;
