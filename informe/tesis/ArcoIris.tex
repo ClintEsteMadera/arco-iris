@@ -123,9 +123,6 @@
 			Además de detectar los escenarios rotos para un determinado estímulo, el componente \emph{Self Healing Configuration
 			Manager} carga la denominada \emph{Self Healing Configuration}, una abstracción de la mayor parte de la información
 			referente a auto reparación utilizada por Arco Iris. Esto incluye, por supuesto, los escenarios creados por los			\emph{stakeholders} y arquitectos.			
-			\todo{ACTUALIZAR EL DOCUMENTO EN TODOS LADOS PARA QUE NO QUEDE HUELLA DEL ARCH EVALUATOR EN ARCO IRIS!}
-			
-			\todo{Revisar secciones 1 y 2 (y lo que va de la 3) para asegurarnos que no decimos que hay compatibilidad hacia			atrás!!!}
 	\subsection{Flexibilización de la Auto Reparación con QAS}
 
 		Actualmente Rainbow posee conocimiento sobre el sistema a adaptar mediante el modelo de su arquitectura expresado en
@@ -510,13 +507,13 @@
 			utilizar Arco Iris el usuario no tendrá más que configurar la cuantificación de la respuesta de cada escenario, tarea
 			que se ve sumamente facilitada al utilizar Arco Iris UI (ver sección \ref{sec:arcoIrisUI} en la			página \pageref{sec:arcoIrisUI}).
 			Otra diferencia vital con respecto al uso de las mencionadas restricciones entre la visión de Rainbow y de Arco Iris
-			consiste en el momento en que se aplican. Rainbow posee un componente llamado \emph{``Architecture Evaluator''}, cuya
-			responsabilidad consiste en verificar la arquitectura del modelo de a intervalos y de manera asincrónica, siempre y
-			cuando este haya sido modificado y la auto reparación no se encuentre ya en ejecución, esto implica verificar
-			absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir un cambio en el modelo,
-			verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente los que coincidan en su
-			estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de manera drástica la cantidad
-			de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
+			consiste en el momento en que se aplican. Hemos visto anteriormente que Rainbow posee un componente llamado
+			\emph{``Architecture Evaluator''}, cuya responsabilidad consiste en verificar la arquitectura del modelo de a
+			intervalos y de manera asincrónica, siempre y cuando este haya sido modificado y la auto reparación no se encuentre
+			ya en ejecución, esto implica verificar absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al
+			descubrir un cambio en el modelo, verifica que los escenarios se satisfagan, pero no todos los escenarios, sino
+			solamente los que coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de
+			manera drástica la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
 
 			Dado al cambio en el manejo de restricciones, Arco Iris implementa el concepto de \emph{Constraint} como una interfaz,
 			dando así la posibilidad de extender el \emph{framework} con el tipo de \emph{Constraint} que el usuario considere
