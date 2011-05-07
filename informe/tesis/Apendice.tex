@@ -8,14 +8,15 @@
 
 	\subsection{Aclaración importante}
 
-		En el DVD que acompaña al presente trabajo, se incluye la totalidad de las herramientas necesarias para visualizar el
-		código fuente de Rainbow, Arco Iris y Arco Iris UI; así también como los sendos códigos fuentes de las tres
-		aplicaciones. De cualquier manera, describiremos brevemente los requisitos y pasos necesarios para que cualquier
-		persona interesada pueda instalar y ejecutar las aplicaciones objeto de este trabajo.
+		En el DVD que acompaña al presente trabajo, se incluye el código fuente de Rainbow, Arco Iris y Arco Iris UI, así
+		también como la totalidad de las herramientas necesarias para visualizar, compilar y ejecutar dichas aplicaciones. De
+		cualquier manera, describiremos brevemente los requisitos y pasos necesarios para que cualquier persona interesada
+		pueda instalar y ejecutar las aplicaciones producto  de este trabajo.
 
 	\subsection{Prerrequisitos}
+	\label{sec:prerrequisitos}
 
-		\subsubsection{Sólo para Ejecución}
+		\subsubsection{Requisitos para la Ejecución de las Aplicaciones}
 			\noindent \textbf{Java 6.0 o superior}
 
 			Tanto Rainbow como Arco Iris y Arco Iris UI son aplicaciones Java que necesitan de una máquina virtual Java instalada
@@ -23,52 +24,284 @@
 			mayoría de las plataformas utilizadas comúnmente (Windows, Unix, Solaris, MAC OS, etc.) y puede ser descargada
 			gratuitamente desde \url{http://www.oracle.com/technetwork/java/javase/downloads/index.html}.
 			
-		\subsubsection{Para Inspección y Edición del Código Fuente}
+			Luego de instalar la máquina virtual de Java, es necesario configurar la variable de entorno \verb@JAVA_HOME@ para
+			que apunte al directorio de instalación. Ejemplos:
+			
+			\noindent En Windows:
+			\begin{Verbatim}[gobble=4]			
+				JAVA_HOME = %ProgramFiles%\Java\jdk1.6.0_23
+			\end{Verbatim}
+
+			\noindent En Linux:
+			\begin{Verbatim}[gobble=4]			
+				JAVA_HOME = /usr/lib/jvm/java-6-sun
+			\end{Verbatim}
+
+			Luego, es necesario que el ejecutable de Java se encuentre en el \emph{path} del sistema operativo. Para lograr esto,
+			es necesario hacer lo siguiente:
+
+			\noindent En Windows:
+			\begin{Verbatim}[gobble=4]			
+				PATH = %PATH%;%JAVA_HOME%\bin
+			\end{Verbatim}
+			
+			\noindent En Linux:
+			\begin{Verbatim}[gobble=4]			
+				PATH = $PATH:$JAVA_HOME/bin
+			\end{Verbatim}
+			
+			Para verificar que el ejecutable de Java va a poder ser utilizado normalmente, ejecutar el siguiente comando:
+			
+			\begin{Verbatim}[gobble=4]			
+				> java -version
+			\end{Verbatim} 
+			
+			\noindent Se debería obtener una respuesta de este tipo:
+
+			\begin{Verbatim}[gobble=4]			
+				java version "1.6.0_21"
+				Java(TM) SE Runtime Environment (build 1.6.0_21-b06)
+				Java HotSpot(TM) 64-Bit Server VM (build 17.0-b16, mixed mode)
+			\end{Verbatim}
+			
+		\subsubsection{Requisitos para la Inspección y Edición del Código Fuente}
 
 			\noindent \textbf{Eclipse 3.6 o superior}
+
 			En el caso en que se desee inspeccionar o editar el código fuente de Rainbow, Arco Iris y/o Arco Iris UI, una
 			herramienta no imprescindible aunque muy recomendada es \textbf{Eclipse}. Eclipse es un entorno de desarrollo
-			integrado que permite visualizar, editar, compilar y ejecutar (entre otras muchas cosas) aplicaciones Java. Se
-			descarga gratuitamente desde \url{http://www.eclipse.org/downloads/} y la versión ``for Java Developers'' es
+			integrado que permite visualizar, editar, compilar y ejecutar aplicaciones Java (entre muchas otras cosas). Se
+			descarga gratuitamente desde \url{http://www.eclipse.org/downloads} y la versión ``for Java Developers'' es
 			suficiente a los fines de trabajar con las aplicaciones que conciernen a este trabajo.
 			
-			El código fuente incluído incluye metadata de Eclipse, con lo cual, si se utilizan los correspondientes
-			\emph{plugins} detallados a configuración, debería ser relativamente sencillo poder disponer rápidamente de todos
-			los proyectos que conforman el tandem Rainbow-Arco Iris. los plugins de Eclipse requeridos son:
+			El código fuente incluído incluye metadatos de Eclipse, con lo cual, si se utilizan los correspondientes
+			\emph{plugins} detallados a continuación, debería ser relativamente sencillo poder disponer rápidamente de todos
+			los proyectos que conforman el tandem Rainbow-Arco Iris. los \emph{plugins} de Eclipse requeridos son:
 
 			\begin{itemize}
 				\item \textbf{Maven plugin}: El plugin para Eclipse de Maven. El mismo puede ser obtenido utilizando el
-				\emph{Marketplace} de Eclipse o utilizando la siguiente URI \url{http://m2eclipse.sonatype.org/sites/m2e}.
+				\emph{Marketplace} de Eclipse o utilizando la siguiente URI
+				\url{http://m2eclipse.sonatype.org/sites/m2e}.\footnote{Se presupone que el lector está familiarizado con el
+				mecanismo de instalación de un \emph{plugin} de Eclipse, caso contrario, ver una explicación en la siguiente página
+				web: \url{http://wiki.eclipse.org/FAQ_How_do_I_install_new_plug-ins\%3F}}
 				\item \textbf{Subclipse}: Se trata del plugin para Eclipse que provee soporte para interactuar con repositorios
 				Subversion\footnote{Para más información sobre Subversion, visitar \url{http://subversion.tigris.org/}}. Tanto
 				el código de Rainbow como el de Arco Iris se encuentran alojados en servidores Subversion (SVN).
-			\end{itemize} 
+			\end{itemize}
 
 			\noindent \textbf{Maven 2 o superior}
+
 			A fin de compilar y empaquetar el código fuente de la aplicación mediante la línea de comandos del sistema operativo,
 			es necesario utilizar Maven, la popular herramienta de construcción de aplicaciones Java. Maven es una
-			herramienta multi plataforma con una abundante cantidad de documentación de calidad, la cual puede ser consultada
-			visitando su página web: \url{http://maven.apache.org/}, desde la cual se puede descargar también la aplicación.
+			aplicación multi plataforma con una abundante cantidad de documentación de calidad, la cual puede ser consultada
+			visitando su página web: \url{http://maven.apache.org/}, desde la cual se pueden descargar también los binarios
+			de dicha aplicación.
+			
+			Para instalar Maven, basta con descomprimir el archivo \verb@.zip@ (o \verb@.tar.gz@) en un directorio a elección y
+			luego configurar la variables \verb@M2_HOME@ para que apunte a dicho directorio:
+
+			\begin{Verbatim}[gobble=4]			
+				M2_HOME = ~/apache-maven-3.0.3
+			\end{Verbatim}
+
+			Luego, es necesario que el ejecutable de Maven se encuentre en el \emph{path} del sistema operativo. Para ello, es
+			necesario hacer lo siguiente:
+
+			\begin{Verbatim}[gobble=4]			
+				PATH = $PATH:$M2_HOME/bin
+			\end{Verbatim}
+
+			Para chequear si Maven va a poder ser utilizado normalmente, ejecutar el siguiente comando:
+			
+			\begin{Verbatim}[gobble=4]			
+				> mvn --version
+			\end{Verbatim} 
+			
+			\noindent Se debería obtener una respuesta de este tipo:
+
+			\begin{Verbatim}[gobble=4]
+				Apache Maven 3.0.3 (r1075438; 2011-02-28 14:31:09-0300)
+				Maven home: ~/apache-maven-3.0.3
+				Java version: 1.6.0_21, vendor: Sun Microsystems Inc.
+				Java home: /usr/lib/jvm/java-6-sun-1.6.0.21/jre
+				Default locale: en_US, platform encoding: UTF-8
+				OS name: "linux", version: "2.6.38-8-generic", arch: "amd64", family: "unix"
+			\end{Verbatim}
 
 	\subsection{Obtención del código fuente de Rainbow, Arco Iris y Arco Iris UI}
 	
 		El grupo ABLE posee un repositorio SVN privado, el cuál es sólo accesible mediante el otorgamiento de un usuario
-		(normalmente de sólo lectura) y contraseña; a pedido explícito del interesado. A fin de obtener dichas credenciales de
-		acceso, es necesario redactar un e-mail a David Garlan $<$\url{garlan@cs.cmu.edu}$>$.
+		(normalmente de sólo lectura) con contraseña, a pedido explícito del interesado. A fin de obtener dichas credenciales
+		de acceso, es necesario redactar un e-mail a David Garlan $<$\url{garlan@cs.cmu.edu}$>$. Sin embargo, no es necesario
+		obtener estas credenciales puesto que en el repositorio SVN de Arco Iris (\url{http://code.google.com/p/arco-iris}) se
+		puede encontrar todo el código necesario a los fines del presente trabajo.
+
+		Tanto Arco Iris como Arco Iris UI son de código abierto (\emph{open source}), esto significa que cualquier persona
+		puede acceder libremente al código fuente y examinarlo.
+
+	\subsection{Estructura de Directorios del Presente Trabajo}
+
+		A continuación, se observa la estructura de directorios del código fuente de las aplicaciones creadas/modificadas en
+		el presente trabajo.
 		
-		El código fuente de Arco Iris y Arco Iris UI (junto con algunas pequeñas modificaciones realizadas al código de
-		Rainbow) se encuentra alojado en Google Code, en la siguiente URI: \url{http://code.google.com/p/arco-iris}. Ambas
-		aplicaciones creadas a instancias del presente trabajo, son de código abierto (\emph{open source}), esto significa que
-		cualquier persona puede acceder libremente al código fuente y examinarlo.
+		\begin{figure}[h]
+			\centering
+				\includegraphics{images/directory_structure_root.png}
+			\caption{Estructura de directorios de este trabajo}
+		\end{figure}
+
+ 		\begin{center}
+ 			\begin{tabularx}{\textwidth}{p{3cm}X}
+	  			\textbf{doc} & Aquí se incluye un subconjunto de la bibliografía utilizada para la realización del presente
+	  			trabajo, a modo de referencia rápida en caso de estar leyendo el presente informe en forma digital.
+	  		\end{tabularx}
+	  		\begin{tabularx}{\textwidth}{p{3cm}X}
+	  			\textbf{informe} & Incluye la propuesta de tesis y este documento en formato PDF.
+	  		\end{tabularx}
+	  		\begin{tabularx}{\textwidth}{p{3cm}X}
+	  			\textbf{projects} & Aquí se encuentra la totalidad del código fuente correspondiente a las aplicaciones objeto de
+	  			este trabajo: Arco Iris, Arco Iris UI, JFaceGUI (a continuación, veremos de qué se trata este proyecto) y algunos
+	  			módulos de Rainbow que fueron ligeramente modificados. 
+	  		\end{tabularx}
+			\begin{tabularx}{\textwidth}{p{3cm}X}
+				\textbf{software} & Aquí se incluyen los prerequisitos para compilar y ejecutar las aplicaciones. (ver apéndice
+				\ref{sec:prerrequisitos})
+ 			\end{tabularx}
+ 		\end{center}
+
+		Hilando más fino en el directorio más importante de los anteriormente mencionados, observamos los proyectos contenidos
+		en el directorio \verb@projects@:
+		
+		\begin{figure}[h]
+			\centering
+				\includegraphics{images/directory_structure_projects.png}
+				\caption{Estructura de directorios del directorio ``projects''}
+		\end{figure}
+		
+		 \begin{center}
+	  		\begin{tabularx}{\textwidth}{p{3cm}X}
+	  			\textbf{arco-iris} & La totalidad del código nuevo desarrollado para este trabajo, dividido en
+	  			\verb@arco-iris-core@, Arco Iris propiamente dicho; y \verb@arco-iris-ui@.
+	  		\end{tabularx}
+			\begin{tabularx}{\textwidth}{p{3cm}X}
+	  			\textbf{jFaceGUI} & En el desarrollo de una interfaz gráfica para Arco Iris, se observó la oportunidad de aislar
+	  			un \emph{framework} genérico de desarrollo de interfaces ricas de usuario basada en JFace-SWT. Este proyecto aúna
+	  			todas aquellas características genéricas y se compila y construye de manera 100\% independiente a Arco Iris UI.
+	  			Más aún, Arco Iris UI tiene como dependencia al artefacto generado en el proceso de construcción de JFaceGUI.
+	  		\end{tabularx}
+			\begin{tabularx}{\textwidth}{p{3cm}X}
+				\textbf{master-pom} & Este POM\footnote{Para más información sobre los \textbf{P}roject \textbf{O}bject
+				\textbf{M}odel de Maven, referirse a \url{http://maven.apache.org/pom.html}} de Maven contiene descripciones de
+				características comunes a los tres proyectos relacionados con Arco Iris: \verb@arco-iris-core@,
+				\verb@arco-iris-ui@ y \verb@JFaceGUI@. Este último, si bien es independiente de los primeros dos, a los fines de
+				este trabajo y por simplicidad, utiliza el \verb@master-pom@ al igual que los otros dos proyectos.
+	  		\end{tabularx}
+			\begin{tabularx}{\textwidth}{p{3cm}X}
+				\textbf{org.sa.rainbow.*} & Aquellos proyectos Java cuyo nombre comienza con el prefijo \verb@org.sa.rainbow@ son
+				básicamente \textbf{copias} de submódulos de Rainbow que fueron modificados ligeramente a fines de mejorar
+				características como el \emph{logging} de la aplicación, etc. \todo{Revisar bien qué cambios hicimos acá y explicar
+				mejor!}
+	  		\end{tabularx}
+ 		\end{center}
 
 	\subsection{Compilación de Arco Iris y Arco Iris UI}
-	
-		\todo{Explicar que hay un reactor pom, que incluye a JFaceGUI (mencionar brevemente qué es), que el proyecto
-		arco-iris-core tiene las dependencias de rainbow cocinadas, explicar la detección del SO que hace JFaceGUI, etc\ldots}
+
+		A fines de compilar y construír los artefactos \verb@.jar@ que luego serán utilizados para ejecutar Arco Iris y Arco
+		Iris UI, es necesario:
+		\begin{itemize}
+			\item construír el \verb@master-pom@, el cual luego será utilizado tanto por Arco Iris como por Arco Iris UI.
+			\item instalar las dependencias de \verb@arco-iris-core@ en el repositorio local de Maven.
+			\item construír JFaceGUI, \verb@arco-iris-core@ y \verb@arco-iris-ui@ de una sola vez, utilizando el
+			\emph{reactor-pom} ubicado dentro del directorio \verb@arco-iris@.
+		\end{itemize}
+
+		En los próximos apartados se describirán en detalle estos 3 simples pasos.
+
+		\subsubsection{Construcción del pom maestro}
+
+			El primer paso es muy simple: simplemente es necesario posicionarse en el directorio \verb@master-pom@ e instalar el
+			pom que allí se encuentra ubicado:
+
+			\begin{Verbatim}[gobble=4]
+				cd master-pom
+				mvn clean install
+			\end{Verbatim}
+
+			Esto instalará el pom en el repositorio local de Maven. Este pom será utilizado por el resto de los módulos a
+			compilar.
+
+		\subsubsection{Instalación Manual de Dependencias del Core de Arco Iris}
+
+			Maven es un sistema de construcción de aplicaciones Java que se basa en el supuesto de que todas las dependencias de
+			una aplicación deben ser encontrables en un repositorio de artefactos Maven (ya sea en Internet, o en un repositorio
+			\emph{cache} local en la computadora del usuario). La gran mayoría de las dependencias de Arco Iris cumplen con esta
+			condición y se pueden encontrar en el repositorio oficial de Maven (\url{http://repo1.maven.org/maven2/}).
+			Lamentablemente, las dependencias de Arco Iris relacionadas con Rainbow no se encuentran alojadas en ningún
+			repositorio Maven público, y mucho menos aquellos proyectos que se han modificado ligeramente en el curso de este
+			trabajo. Es por eso que es necesario, \textbf{instalar manualmente} tales dependencias (archivos \verb@.jar@) a fin
+			de que, durante el proceso de construcción, sean encontradas por Maven.
+			
+			Los comandos a ejecutar están especificados en el archivo de texto\\
+			\verb@projects/arco-iris/arco-iris-core/lib/install_missing_artifacts.txt@. Es necesario abrir una consola (Inicio
+			$\rightarrow$ Ejecutar $\rightarrow$ \verb@cmd.exe@, en Windows o ALT+F2 $\rightarrow$ \verb@Terminal@ o
+			\verb@Konsole@, en Linux) y correr los comandos contenidos en dicho archivo de texto utilizando la técnica de copiar
+			y pegar (por alguna razón, ejecutar dicho archivo como \emph{script} no funciona correctamente \todo{ver si esto se
+			puede arreglar, es un bardo sino\ldots}). Esto instalará los poms de todas aquellas dependencias a instalar
+			manualmente. Luego de realizar lo antedicho, es necesario repetir el mismo proceso una vez más para ahora instalar
+			los archivos \verb@.jar@ en el repositorio Maven local. Esto, más una conexión a Internet, debería ser suficiente
+			para disponer de todas las dependencias de los proyectos relacionados con Arco Iris.
+
+		\subsubsection{Construcción de los Proyectos con Maven}
+		
+			Generar los binarios de las tres aplicaciones anteriormente mencionadas, es tan simple como ejecutar los siguientes
+			dos comandos:
+			
+			\begin{Verbatim}[gobble=4]
+				cd arco-iris
+				mvn clean install
+			\end{Verbatim}
+
+			Esto debería generar:
+			\begin{enumerate}
+				\item el archivo \verb@jFaceGUI-0.0.1-SNAPSHOT.jar@ con los binarios de \textbf{JFaceGUI}, compilados utilizando las
+				librerías nativas del sistema operativo subyacente (Windows y Linux están actualmente soportados, para sus versiones
+				de 32 y 64 bits)
+				\item el archivo \verb@arco-iris-ui-0.0.1-SNAPSHOT-distribution.zip@ que contiene el \verb@.jar@ de \textbf{Arco
+				Iris UI} junto con un directorio \verb@lib@ que posee todas las dependencias de dicha aplicación.
+				\item un archivo \verb@arco-iris-core-0.0.1-SNAPSHOT-distribution.zip@ que contiene el \verb@.jar@ del \emph{core}
+				de \textbf{Arco Iris} junto con un directorio \verb@lib@ que posee todas sus dependencias y un directorio
+				\verb@configs@ el cual contiene los casos de prueba realizados en el presente trabajo y detallados en la sección
+				\ref{sec:casosPracticos}.
+			\end{enumerate}
 
 	\subsection{Ejecución de las aplicaciones}
 
-		\todo{Explicar ejemplos de como se ejecutan ambas aplicaciones}
+		\subsubsection{Arco Iris}
+
+			Arco Iris (al igual que Rainbow) toma como parámetros de entrada la ubicación de archivos de configuración que le
+			indican a la aplicación la ubicación del sistema al cual adaptar (o datos sobre la simulación de tal sistema),
+			ubicación del modelo de la arquitectura de dicho sistema, etc\ldots
+			
+			Supongamos que se desea invocar a Arco Iris utilizando el caso de prueba denominado como ``znewsWithScenarios4''. La
+			forma de llevar a cabo ésto es la siguiente:
+			
+			\begin{Verbatim}[gobble=4]
+				cd arco-iris/arco-iris-core/target
+				unzip arco-iris-core-0.0.1-SNAPSHOT-distribution.zip
+				java -Drainbow.config=configs
+				     -Drainbow.target=znewsWithScenarios4
+				     -jar arco-iris-core-0.0.1-SNAPSHOT.jar
+			\end{Verbatim}
+
+		\subsubsection{Arco Iris UI}
+
+			Ejecutar Arco Iris UI es similar a ejecutar Arco Iris, sólo que la aplicación recibe no recibe parámetros:
+
+			\begin{Verbatim}[gobble=4]
+				cd arco-iris/arco-iris-ui/target
+				unzip arco-iris-ui-0.0.1-SNAPSHOT-distribution.zip
+				java -jar arco-iris-ui-0.0.1-SNAPSHOT.jar
+			\end{Verbatim}
 
 \section{Arquitectura de Znn modelada con Acme}
 \label{sec:arquitecturaZNN}
