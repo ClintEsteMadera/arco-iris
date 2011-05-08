@@ -13,7 +13,6 @@ NICE TO HAVES:
 - parsear el ACME (o levantar el model con java) y ofrecer la posibilidad de elegir que artefacto usar.
 
 - cuando uno decide abandonar los cambios hechos en un dialogo, los cambios quedan pegados
-en el modelo ya que (a diferencia de caja) nosotros en la GUI tocamos los objetos posta
-y no una version "traida del servidor"
+en el modelo ya que en la GUI tocamos los objetos posta y no una version "traida del servidor"
 
 - Ver por qué en campos numericos no se puede poner negativos
