@@ -198,87 +198,48 @@
 			alguno de sus usuarios. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
 			inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión. Por ejemplo,
 			supongamos que en un sistema de administración de cuentas bancarias un cliente intenta hacer una transferencia, en
-			este caso la fuente del estímulo sería el cliente y el estímulo en sí mismo sería realizar transferencia.
+			este caso la fuente del estímulo sería el cliente y el estímulo en sí mismo sería \emph{realizar transferencia}.
+			En términos de auto reparación, generalmente el estímulo se encuentra asociado a una operación provista por el
+			artefacto del sistema, el cual puede ser un componente, un conector o un sub sistema.
 
 			Saber cuál es el estímulo de cada escenario permite optimizar la auto reparación, ya que habiendo ocurrido
-			determinado estímulo, Arco Iris podrá detectar cuales son los potenciales escenarios que pueden verse afectados y trabajará
-			verificando dicho subconjunto, minimizando así el tiempo de la auto reparación.
+			determinado estímulo, Arco Iris podrá detectar cuáles son los potenciales escenarios que pueden verse afectados y
+			trabajará verificando dicho subconjunto, acotando así la cantidad de restricciones a verificar y, consecuentemente,
+			optimizando el tiempo de la auto reparación.
 
 			Cabe destacar que también se ofrece la posibilidad de no especificar el estímulo al configurar un escenario, es decir,
 			se permite la opción de que el escenario aplique siempre, independientemente del estímulo que haya impactado al sistema.
 			Esto puede ser útil para casos genéricos, por ejemplo, si se requiere que el tiempo de respuesta experimentado por el
-			usuario nunca sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando. De
-			no configurar ningún estímulo en ningún escenario, Arco Iris verificará que se satisfagan todos los escenarios en cada
-			iteración cada vez que un estímulo perteneciente a cualquier escenario impacte sobre el sistema.
-			\todo{JONY Y TURCO: no seria correcto decir ``cada estimulo que recibe el sistema'', ya que la auto reparacion se activa
-			cuando llega un estimulo conocido (i.e: perteneciente a otro escenario), pensar si tiene sentido el anyStimulus, no			confunde?}			Entonces, a diferencia de Rainbow, Arco Iris permite refinar el conjunto de escenarios que pudieron verse afectados por
-			efecto del estímulo que ocasionó el problema, reduciendo así la cantidad de escenarios a verificar y sobre todo la
-			cantidad de estrategias a evaluar para intentar resolverlo, mientras que en Rainbow (en Arco Iris se mantiene esta
-			posibilidad), la única manera de limitar el uso de las estrategias es agregar restricciones en la misma estrategia,
-			siendo esto de nivel técnico y quedando fuera del alcance de la mayor parte de los \emph{stakeholders} del sistema. Por
-			ejemplo, para que una estrategia que soluciona problemas de \emph{performance} no sea tenida en cuenta al reparar un
-			escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una precondición como
-			la siguiente en la estrategia:
-			\begin{Verbatim}[gobble=4]
-				strategy SimpleReduceResponseTime
-				  [ responseTimeConstraintViolation ] {
-				  ...
-				}
-			\end{Verbatim}
+			usuario nunca sobrepase determinado umbral sin importar la funcionalidad del sistema que el usuario esté utilizando.
+			En particular, se podría no configurar ningún estímulo en ningún escenario, y en ese caso, Arco Iris verificará que
+			se satisfagan todos los escenarios en cada iteración de la auto reparación cada vez que un estímulo perteneciente a
+			cualquier escenario impacte sobre el sistema. Como puede se observar, es recomendable configurar el estímulo
+			específico para cada escenario a fin de conseguir un funcionamiento más preciso del \emph{framework}.			Entonces, a diferencia de Rainbow, quien debe verificar todas las restricciones en todo momento, Arco Iris permite
+			refinar el conjunto de escenarios que pueden verse afectados por efecto del estímulo que ocasiona el problema,
+			reduciendo así la cantidad de restricciones e invariantes a verificar 
 
-			Donde \emph{responseTimeConstraintViolation} es un predicado que permite determinar si existe algún cliente cuyo tiempo
-			de respuesta haya sobrepasado el máximo tiempo de respuesta permitido:
-
-			\begin{Verbatim}[gobble=4]
-				define boolean responseTimeConstraintViolation =
-					exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
-			\end{Verbatim}
-
-			Es importante remarcar que, en caso de que el problema que se está intentando reparar no tenga relación con la
-			\emph{performance}, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que
-			en Arco Iris existe la posibilidad de evitarlo al configurar correctamente los estímulos de cada escenario.
-
-			Dado a que Rainbow permite trabajar en modo simulación, fue necesario implementar dos soluciones para poder utilizar el
-			concepto de estímulo en ambos modos.
-
-			Al trabajar en el modo de simulación, dado que no participan ni los \emph{probes} ni los \emph{gauges}, fue necesario
-			implementar un mecanismo ad hoc, que consistió en ``barrer'' todos los escenarios al iniciar Arco Iris, recogiendo en un
-			mapa la información de qué estímulos eran los posibles responsables de las modificaciones causadas sobre cada una de las
-			propiedades de los artefactos configurados en los escenarios. A continuación se muestra en pseudocódigo el concepto de
-			dicha implementación:
-			\begin{Verbatim}[gobble=4]
-				por cada escenario habilitado
-				  por cada constraint del escenario
-				    por cada propiedad involucrada en el constraint
-				      escenariosPorEstimulo.agregar(escenario.estimulo, escenario)
-				      estimulosPorPropiedades.agregar(propiedad, escenario.estimulo)
-			\end{Verbatim}
-
-			El modo simulación funciona notificando los cambios en las propiedades de interés, las cuales son determinadas a la hora
-			de implementar la simulación. Entonces, al contar con los estímulos relacionados con cada propiedad y los escenarios por
-			cada estímulo, es posible acotar la cantidad de escenarios a verificar en cada ejecución de la auto reparación.
-			En modo real, o sea, sin simulación, para notificar el estímulo desencadente fue necesario extender los \emph{probes},
-			que, como ya mencionamos anteriormente, son los componentes encargados de \emph{testear} una determinada funcionalidad
-			del sistema, siendo el responsable también de medir la respuesta y de reportar dicha información a un bus, del cual
-			luego será consumida por los \emph{gauges}, quienes interpretan los datos transformándolos en cambios en el modelo de
-			la arquitectura.			
-			El extender los \emph{probes} implicó la necesidad de extender la funcionalidad de los \emph{gauges} para poder
-			intrepretar la información de estímulo agregada en cada uno de los \emph{probes}. En ambos casos, y gracias al
-			mecanismo empleado por Rainbow, no fue necesario modificar las interfaces de los \emph{probes} ni de los
-			\emph{gauges}, ya que éstos se comunican mediante cadenas de texto, justamente para ofrecer una amplia libertad a la
-			hora de implementarlos ya que pueden existir diversas maneras de probar y tomar métricas de las distintas
-			funcionalidades de los sistemas. Luego, una vez obtenido el estímulo correspondiente, no resta más que recurrir al
-			mapa de escenarios por estímulos (utilizado también en el modo simulación) para acotar la cantidad de escenarios a			comprobar.
-			Para graficar la diferencia en la implementación que genera el agregar el estímulo en la auto reparación, se
+			\todo{TURCO: implementar el agregar estimulo en los simulation points}
+			
+			Para notificar sobre el estímulo desencadente fue necesario extender los \emph{probes}, que, como ya mencionamos
+			anteriormente, son los componentes encargados de extraer del sistema información referente a un
+			determinado \emph{concern}, siendo los responsables también de volcar dicha información en un \emph{bus} compartido
+			con otros \emph{probes}. De este bus, los \emph{gauges} consumirán la información para luego interpretarla y
+			transformarla en cambios en los valores de propiedades del modelo de la arquitectura.
+			
+			La extensión de los \emph{probes} implicó la necesidad de extender los \emph{gauges} de manera tal que puedan
+			interpretar la nueva información sobre estímulos agregada en cada uno de los mensajes creados por los \emph{probes}.
+			
+			Debido a que en el diseño original de Rainbow, los mensajes que los \emph{probes} envían a los \emph{gauges} son
+			meras cadenas de texto, las extensiones realizadas a ambos componentes no presentaron mayores inconvenientes.
+						Para graficar la diferencia en la implementación que genera el agregar el estímulo en la auto reparación, se
 			ejemplificará una extensión a un \emph{probe} utilizado por Znn. El \emph{probe} escogido para extender y así poder
 			ser utilizado en Arco Iris consiste simplemente en invocar un servicio, esperar su respuesta y medir el tiempo
-			transcurrido entre la invocación y la respuesta; ésta será la información que el \emph{probe} reportará para luego
-			ser interpretada por su \emph{gauge} correlativo, el cual finalmente será responsable de impactar la actualización
-			sobre el modelo de la arquitectura.
+			transcurrido entre la invocación y la respuesta; ésta será la información que el \emph{probe} reportará en el
+			\emph{bus} que luego consultará e interpretará el \emph{gauge} correspondiente.
 			
 			A continuación se puede observar la configuración original utilizada en Znn para instanciar un \emph{probe} del tipo
 			ClientProxyProbe, esta configuración se puede encontrar en el archivo \verb@probes.yml@, donde se declaran todos los
-			\emph{probes} que serán instancias al iniciar Rainbow:
+			\emph{probes} que serán instanciados al iniciar Rainbow:
 
 			\begin{Verbatim}[gobble=4]
 				probes: 
@@ -297,11 +258,11 @@
 			anteriormente podría ser:
 			
 			\begin{Verbatim}[gobble=4]
-				[lun abr 18 00:42:43 2011]<clientproxy> localhost: 1532 ms
+				[fri may 13 22:15:04 2011]<clientproxy> localhost: 1532 ms
 			\end{Verbatim}
 			
 			Tanto la configuración como la implementación de \verb@ClientProxy@ son muy similares a las de su contraparte de Arco
-			Iris, \verb@ClientProxyWithStimulus@; en la sección \ref{sec:probesCode} se pueden observar ambas implementaciones,
+			Iris, \verb@ClientProxyWithStimulus@. En el apéndice \ref{sec:probesCode} se pueden observar ambas implementaciones,
 			mientras que la configuración de una instancia de \verb@ClientProxyWithStimulus@ se puede observar a continuación:
 
 			\begin{Verbatim}[gobble=4]
@@ -321,25 +282,28 @@
 			\verb@ClientProxyWithStimulus@ con la configuración que se acaba de presentar:
 			
 			\begin{Verbatim}[gobble=3]
-			[lun abr 18 00:42:43 2011]<clientproxyWithStimulus> localhost<stimulus:delegateStimulus>: 1532 ms
+			[fri may 13 22:15:04 2011]<clientproxyWithStimulus> localhost<stimulus:delegateStimulus>: 1532 ms
 			\end{Verbatim}
 
-			\todo{TURCO Y JONY: (NO ACLARES QUE OSCURECE) Aclarar bien como es el tema de los probes en Arco Iris: que deben
-			``interceptar'' los estímulos y presentamos dos \emph{posibles} formas: interceptores (si se puede tocar el sistema) u
-			otro mecanismo como analizar logs, etc\ldots}
+			Algunas formas posibles de implementar \emph{probes} son:
+			\begin{itemize}
+			  \item Parseo e interpretación de información existente en archivos de logs del sistema o en el servidor en el cual
+			  se ejecuta.
+			  \item Invocaciones idempotentes a servicios provistos por el sistema, con el fin de obtener métricas sobre las
+			  respuestas.
+			  \item El sistema a adaptar puede ofrecer servicios específicos que provean información relevante para su auto
+			  reparación.
+			\end{itemize}
 		\subsubsection{El Artefacto en la Auto Reparación}
 
-			El \textbf{artefacto} se refiere al componente, sub sistema o parte del sistema afectada por el escenario. Dado que
-			Rainbow trabaja con el modelo de la arquitectura del sistema descripto en el lenguaje Acme, contaremos con la
-			especificación de las propiedades de los componentes y los conectores del sistema, entonces en el escenario de Arco Iris
-			podremos contar con una vinculación directa con los componentes afectados. Al seleccionar un artefacto, el usuario de
-			Arco Iris no estará más que eligiendo un componente o conector de la arquitectura del sistema, esto será utilizado
-			para acotar las propiedades sobre las cuales podrá predicar la \textbf{cuantificación de la respuesta}
-			(ver \ref{sec:responseMeasure}).
+			El \textbf{artefacto} se refiere al componente, conector o sub sistema afectado por el escenario, los cuales se
+			encuentran descritos en el modelo de la arquitectura.
+
+			La asociación de un artefacto en particular a un escenario permite acotar las propiedades sobre las cuales podrá
+			predicar la \textbf{cuantificación de la respuesta} (ver \ref{sec:responseMeasure}).
 
 			La arquitectura presentada en Znn servirá para ejemplificar el concepto de artefacto, cabe recordar que se trata de
-			una arquitectura cliente-servidor, de la cual en este caso importa la especificación del componente cliente
-			definido como \emph{ClientT}, a saber:
+			una arquitectura cliente-servidor, donde el componente de tipo \emph{ClientT} se define de la siguiente manera:  
 
 			\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
@@ -356,8 +320,8 @@
 
 			\label{escenarioPerformance}
 			\begin{quote}
-				Znn news debe servir el contenido de las noticias a los clientes en un tiempo de respuesta menor a 3 segundos en un
-				entorno de operación normal.
+				``Znn news debe servir el contenido de las noticias a los clientes en un tiempo de respuesta menor a 3 segundos en un
+				entorno de operación normal.''
 			\end{quote}
 
 			Claramente en este ejemplo \emph{ClientT} es el artefacto sobre el cual ha de predicar la verificación de validez de
@@ -373,19 +337,23 @@
 		
 			Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
 			cuando recibe el estímulo que desencadena el escenario; por ejemplo, al recibir una solicitud de creación de una
-			cuenta bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. El entorno condiciona la
-			validez del escenario en cuestión a que el sistema se encuentre en un determinado estado. Una respuesta esperada
-			aceptable o fácil de cumplir bajo un entorno puede ser inaceptable o muy costosa de cumplir en otro entorno. 
+			cuenta bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. 
 			
+			El entorno condiciona la validez del escenario en cuestión a que el sistema se encuentre en un determinado estado, ya
+			que, por ejemplo, una respuesta esperada aceptable o fácil de cumplir bajo un entorno puede ser inaceptable o muy
+			costosa de cumplir en otro entorno.
 			En el escenario planteado anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un
-			entorno de ``alta carga'' el escenario automáticamente se cumple, ya que para considerar dicho escenario el sistema
-			debería encontrarse en un entorno de ``operación normal''. 
+			entorno de ``alta carga'' el escenario automáticamente se satisface, ya que para considerar dicho escenario el
+			sistema debería encontrarse en un entorno de ``operación normal''. 
 			
 			Por otro lado, el entorno del escenario permite a Arco Iris optimizar la búsqueda de escenarios que no se satisfagan ya
 			que se ignorarán los escenarios cuyo entorno posea condiciones que no se cumplan en el estado del sistema en el instante
 			en que se recibe el estímulo. Más adelante se profundizará sobre dichas condiciones.
 
-			\todo{JONY: decidí dejar un env por escenario: se corresponde a la definición de ATAM, solo nos quedaría como trabajo			a futuro validar que las condiciones de los environments sean excluyentes. Necesitamos una constraint del tipo			Between}
+			\todo{explicar y justificar porque un QAS tiene varios escenarios}\\
+			\todo{Ejemplo de mail: con un solo entorno por escenario, si quisieramos que un escenario se cumpla en varios			entornos, deberiamos crear un escenario por cada entorno, cada uno de los cuales solo difiere en el entorno}\\			\todo{Interseccion de los entornos? El sistema en un momento puede estar en mas de un entorno?}
+			\todo{Ver consistencia con ``Flexibilizacion del entorno'' en Trabajo Futuro}
+
 			Arco Iris también provee la posibilidad de especificar, mediante la selección de un entorno preexistente denominado
 			``ANY'', que un determinado escenario aplica bajo cualquier entorno, esto sería equivalente a que el entorno del
 			escenario no posea ninguna condición, es decir, que el escenario aplica siempre, trivialmente, sin importar las
@@ -507,13 +475,13 @@
 			utilizar Arco Iris el usuario no tendrá más que configurar la cuantificación de la respuesta de cada escenario, tarea
 			que se ve sumamente facilitada al utilizar Arco Iris UI (ver sección \ref{sec:arcoIrisUI} en la			página \pageref{sec:arcoIrisUI}).
 			Otra diferencia vital con respecto al uso de las mencionadas restricciones entre la visión de Rainbow y de Arco Iris
-			consiste en el momento en que se aplican. Hemos visto anteriormente que Rainbow posee un componente llamado
-			\emph{``Architecture Evaluator''}, cuya responsabilidad consiste en verificar la arquitectura del modelo de a
-			intervalos y de manera asincrónica, siempre y cuando este haya sido modificado y la auto reparación no se encuentre
-			ya en ejecución, esto implica verificar absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al
-			descubrir un cambio en el modelo, verifica que los escenarios se satisfagan, pero no todos los escenarios, sino
-			solamente los que coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de
-			manera drástica la cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
+			consiste en el momento en que se aplican. Hemos visto anteriormente que Rainbow posee un componente llamado \emph{``Architecture Evaluator''}, cuya
+			responsabilidad consiste en verificar la arquitectura del modelo de a intervalos y de manera asincrónica, siempre y
+			cuando este haya sido modificado y la auto reparación no se encuentre ya en ejecución, esto implica verificar
+			absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir un cambio en el modelo,
+			verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente los que coincidan en su
+			estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de manera drástica la cantidad
+			de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
 
 			Dado al cambio en el manejo de restricciones, Arco Iris implementa el concepto de \emph{Constraint} como una interfaz,
 			dando así la posibilidad de extender el \emph{framework} con el tipo de \emph{Constraint} que el usuario considere
@@ -736,7 +704,32 @@
 		actuales, o sea que Rainbow no tiene manera de determinar a priori la utilidad de una estrategia en un momento dado.
 		Por otro lado, la solución está atada a la detección del problema, entonces, al no poder modularizar en detección del
 		problema y solución, se deben repetir las precondiciones por cada solución (estrategia) implementada.
+		
+		\todo{Este ejemplo lo trajimos de la seccion ``El estimulo en la auto reparacion. Revisar!}
 
+		Por ejemplo, para que una estrategia que soluciona problemas de \emph{performance} no sea tenida en cuenta al reparar un
+		escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una precondición como
+		la siguiente en la estrategia:
+
+		\begin{Verbatim}[gobble=4]
+			strategy SimpleReduceResponseTime
+			  [ responseTimeConstraintViolation ] {
+			  ...
+			}
+		\end{Verbatim}
+
+		Donde \emph{responseTimeConstraintViolation} es un predicado que permite determinar si existe algún cliente cuyo tiempo
+		de respuesta haya sobrepasado el máximo tiempo de respuesta permitido:
+
+		\begin{Verbatim}[gobble=4]
+			define boolean responseTimeConstraintViolation =
+				exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+		\end{Verbatim}
+
+		Es importante remarcar que, en caso de que el problema que se está intentando reparar no tenga relación con la
+		\emph{performance}, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los clientes, mientras que
+		en Arco Iris existe la posibilidad de evitarlo al configurar correctamente las estrategias asociadas a cada escenario.
+	
 		En Arco Iris se propone desacoplar la detección del problema de la solución, y para lograr esto utilizaremos los
 		escenarios. Allí se definirán las condiciones de detección del problema, y se referenciarán las posibles estrategias
 		de reparación a ser consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido,
