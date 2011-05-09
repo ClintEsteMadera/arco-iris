@@ -525,10 +525,31 @@
 		aceptable y que luego se agreguen 10 clientes, comprometiendo así la \emph{performance} del sistema. De esta
 		manera, Znn permite simular cómo responderían las estrategias implementadas ante dicha situación.
 
+	\subsubsection{Modos de Ejecución}
+	\label{sec:modosEjecucion}
+	
 		Rainbow soporta dos modos de ejecución: el \textbf{modo normal}, donde el \emph{framework} se conecta con un sistema
 		real, y un \textbf{modo simulación}, el cual permite probar las herramientas de auto reparación implementadas por los
 		usuarios sin necesidad de conectar a Rainbow con un sistema real en ejecución.
 		
+		En modo simulación, el usuario debe configurar mediante un archivo de texto (de extensión \verb@.sim@) consistente en
+		pares clave-valor, los valores iniciales de las propiedades de los componentes del sistema, más los cambios de valores
+		en las propiedades de interés del modelo de la arquitectura siguiendo el siguiente esquema:
+		
+		\begin{Verbatim}[gobble=3]
+			sim.<numero_simulacion> = <instante_tiempo>:<propiedad>:<valor>
+		\end{Verbatim}
+		
+		Ejemplos de puntos de simulación:
+		
+		\begin{Verbatim}[gobble=3]
+			sim.1 = 30001:ZNewsSys.c1.perf.service.time:100,30001:ZNewsSys.c2.perf.service.time:100
+			sim.2 = 40001:ZNewsSys.c1.perf.arrival.rate:4
+		\end{Verbatim}
+		
+		Cabe remarcar, que en este modo los \emph{probes} y los \emph{gauges} no tienen participación, ya que no existe un
+		sistema real en ejecución con el cual interactuar.
+	
 		En el presente trabajo se utilizará el modo simulación para los casos de prueba, tomando las estrategias y tácticas
 		provistas por Znn. Éstas debieron ser adaptadas para que puedan seguir funcionando con los cambios propuestos en el
 		presente trabajo.
