@@ -281,18 +281,49 @@
 		contexto del presente trabajo debido a que el encarar el desarrollo de un \emph{plug-in} de Eclipse con estas
 		características era una tarea de alta complejidad, que se encuentra afuera del alcance de este trabajo.
 
-	\subsection{Optimización en la Selección de la Estrategia}
-
-		\todo{A completar por TURCO: Se deja para el final: cómo seleccionar la mejor estrategia (Lo del ``utility function''
-		es limitado)}
-		
-		\ceria{
-		El 6.8 es muy importante. Recuerden que Garlan habló de esto como una tesis de doctorado. Me parece que dentro de
-		trabajo futuro hablan de muchas ``cosas chicas''. Mencionen también las grandes líneas que se deben seguir explorando para
-		hacer realidad esto de los sistemas ``autoreparables''. Cómo armar una arquitectura de un sistema existente en ACME (lo de
-		Discotect, pero que todavía es limitado), cómo ``enchufarse'' con un sistema sobre el que se tiene poco control, cómo
-		poder alterar más radicalmente el comportamiento de un sistema, etc. Pueden poner estos temas en general, pero me
-		gustaría que muestren que es muy importante seguir avanzando en sistemas que se ``manejan solos''.}
 	\subsection{Scoring de Estrategias: Rainbow y Arco Iris ``en conjunto''}
 
 		\todo{A completar por TURCO: hablar sobre arcoIrisSolutionWeight y rainbowSolutionWeight}
+
+	\subsection{Optimización en la Selección de la Estrategia}
+
+		En la sección \ref{sec:strategySelection} se describe en detalle el mecanismo de selección de la mejor estrategia para
+		resolver una situación anómala en el sistema que se está adaptando. Claramente, este problema tiene una dimensión tal,
+		que tratarlo en su justa medida requeriría un extenso trabajo de investigación, el cual excede al alcance del presente
+		trabajo. A futuro, es necesario avanzar en este tema clave para el progreso y desarrollo de nuevas y mejores técnicas
+		de auto reparación.
+		
+		La elección de la mejor estrategia posible para reparar un problema en el sistema ejecutandose, se puede complejizar
+		tanto como uno desee, agregando heurísticas de distintos grados de complejidad y más inteligencia en general.
+		
+		La solución propuesta en el presente trabajo, el \emph{utility function}, si bien es útil para reducir la dimensión
+		del problema y poder avanzar en otros aspectos, es claramente una solución limitada, debido a que para el cálculo del
+		mismo, se realizan muchos supuestos y simplificaciones sobre el contexto de ejecución del sistema y su correlato con
+		el modelo de su arquitectura; los cuales llevan a un grado de precisión definitivamente mejorable.
+
+		\todo{TURCO: Fijate si podés aportar algo más a esta sección!}
+
+	\subsection{Ausencia u Obsolescencia del Modelo de la Arquitectura}
+	\label{sec:ausenciaObsolescenciaModeloArquitectura}
+
+			Tanto Rainbow como Arco Iris hacen foco en disponer de un modelo (actualizado) de la arquitectura del sistema a
+			adaptar pero en realidad, no siempre es posible disponer del mismo: puede no haber existido nunca o bien haber
+			quedado desactualizado. Existen líneas de investigación que intentan derivar el modelo de la arquitectura a partir de
+			un sistema, obteniendo información del mismo en \emph{runtime}. Uno de los proyectos tiene lugar en el contexto del
+			grupo de investigación ABLE, el responsable de Rainbow y se llama \textbf{DiscoTect}. Para más información sobre
+			dicho proyecto, visitar \url{http://www.cs.cmu.edu/~able/research/discotect.html}.
+
+	\subsection{Adaptación de un Sistema Sobre el Cual se Tiene Poco Control}
+
+		\todo{completar!}
+
+	\subsection{Alterar más radicalmente el comportamiento de un sistema}
+
+		\todo{completar!}
+
+		\ceria{
+		Mencionen también las grandes líneas que se deben seguir explorando para hacer realidad esto de los sistemas
+		``autoreparables''. Cómo armar una arquitectura de un sistema existente en ACME (lo de Discotect, pero que todavía es
+		limitado), cómo ``enchufarse'' con un sistema sobre el que se tiene poco control, cómo poder alterar más radicalmente
+		el comportamiento de un sistema, etc. Pueden poner estos temas en general, pero me gustaría que muestren que es muy
+		importante seguir avanzando en sistemas que se ``manejan solos''.}
