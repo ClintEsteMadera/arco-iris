@@ -190,8 +190,6 @@
 		el mecanismo de auto reparación. A lo largo de las próximas secciones se detalla el uso que hace Arco Iris de esta
 		información para modificar, optimizar y flexibilizar la auto reparación llevada a cabo por Rainbow.
 
-		\todo{TURCO Y JONY: continuar revisando desde aca}
-
 		\subsubsection{El Estímulo en la Auto Reparación}
 
 			El \textbf{estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
@@ -216,7 +214,7 @@
 			cualquier escenario impacte sobre el sistema. Como puede se observar, es recomendable configurar el estímulo
 			específico para cada escenario a fin de conseguir un funcionamiento más preciso del \emph{framework}.			Entonces, a diferencia de Rainbow, quien debe verificar todas las restricciones en todo momento, Arco Iris permite
 			refinar el conjunto de escenarios que pueden verse afectados por efecto del estímulo que ocasiona el problema,
-			reduciendo así la cantidad de restricciones e invariantes a verificar 
+			reduciendo así la cantidad de restricciones e invariantes a verificar.
 
 			\todo{TURCO: implementar el agregar estimulo en los simulation points}
 			
@@ -294,16 +292,20 @@
 			  \item El sistema a adaptar puede ofrecer servicios específicos que provean información relevante para su auto
 			  reparación.
 			\end{itemize}
+
+		\todo{TURCO Y JONY: continuar revisando desde aca}
+
 		\subsubsection{El Artefacto en la Auto Reparación}
 
-			El \textbf{artefacto} se refiere al componente, conector o sub sistema afectado por el escenario, los cuales se
-			encuentran descritos en el modelo de la arquitectura.
+			El \textbf{artefacto} se refiere al componente, conector o sub sistema afectado por el escenario, cualesquiera de
+			ellos se encuentran descritos en el modelo de la arquitectura.
 
-			La asociación de un artefacto en particular a un escenario permite acotar las propiedades sobre las cuales podrá
-			predicar la \textbf{cuantificación de la respuesta} (ver \ref{sec:responseMeasure}).
+			La asociación de un artefacto particular a un escenario permite acotar las propiedades sobre las cuales podrá
+			predicar la \textbf{cuantificación de la respuesta} (ver sección \ref{sec:responseMeasure}).
 
-			La arquitectura presentada en Znn servirá para ejemplificar el concepto de artefacto, cabe recordar que se trata de
-			una arquitectura cliente-servidor, donde el componente de tipo \emph{ClientT} se define de la siguiente manera:  
+			La arquitectura presentada en Znn servirá para ejemplificar el concepto de artefacto. Cabe recordar que se trata
+			de una arquitectura de estilo cliente-servidor, donde el componente de tipo \emph{ClientT} se define de la siguiente
+			manera:
 
 			\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
@@ -318,15 +320,16 @@
 
 			Suponiendo que se define el siguiente escenario:
 
-			\label{escenarioPerformance}
-			\begin{quote}
+			\begin{Quote}
 				``Znn news debe servir el contenido de las noticias a los clientes en un tiempo de respuesta menor a 3 segundos en un
 				entorno de operación normal.''
-			\end{quote}
+			\end{Quote}
 
-			Claramente en este ejemplo \emph{ClientT} es el artefacto sobre el cual ha de predicar la verificación de validez de
-			este escenario, más adelante, en la sección \ref{sec:responseMeasure} se podrá observar cómo se configura dicha
-			restricción.
+			Dado que en la arquitectura de Znn se modela a los clientes como componentes de la arquitectura, con una
+			propiedad específica \verb@experRespTime@ que representa el tiempo de respuesta experimentado por el usuario,
+			claramente se observa que en este ejemplo \emph{ClientT} es el artefacto sobre el cual ha de predicar la verificación
+			de validez del escenario anteriormente detallado. Más adelante, en la sección \ref{sec:responseMeasure}, se podrá
+			observar cómo se configura dicha restricción en un escenario de atributos de calidad.
 
 			La sección \ref{sec:arcoIrisUI} explica en detalle cómo se podrá emplear esta información para mejorar la
 			experiencia de los \emph{stakeholders} a la hora de especificar escenarios mediante la herramienta visual presentada
@@ -335,81 +338,117 @@
 		\subsubsection{El Entorno en la Auto Reparación}
 		\label{sec:environment}
 		
-			Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
-			cuando recibe el estímulo que desencadena el escenario; por ejemplo, al recibir una solicitud de creación de una
-			cuenta bancaria el sistema puede encontrarse en ``operatoria normal'' o en ``alta carga''. 
-			
-			El entorno condiciona la validez del escenario en cuestión a que el sistema se encuentre en un determinado estado, ya
-			que, por ejemplo, una respuesta esperada aceptable o fácil de cumplir bajo un entorno puede ser inaceptable o muy
-			costosa de cumplir en otro entorno.
-			En el escenario planteado anteriormente en la sección \ref{escenarioPerformance}, si el sistema se encuentra en un
-			entorno de ``alta carga'' el escenario automáticamente se satisface, ya que para considerar dicho escenario el
-			sistema debería encontrarse en un entorno de ``operación normal''. 
-			
-			Por otro lado, el entorno del escenario permite a Arco Iris optimizar la búsqueda de escenarios que no se satisfagan ya
-			que se ignorarán los escenarios cuyo entorno posea condiciones que no se cumplan en el estado del sistema en el instante
-			en que se recibe el estímulo. Más adelante se profundizará sobre dichas condiciones.
+			\subsubsubsection{El Entorno y su Importancia para la Auto Reparación}
 
-			\todo{explicar y justificar porque un QAS tiene varios escenarios}\\
-			\todo{Ejemplo de mail: con un solo entorno por escenario, si quisieramos que un escenario se cumpla en varios			entornos, deberiamos crear un escenario por cada entorno, cada uno de los cuales solo difiere en el entorno}\\			\todo{Interseccion de los entornos? El sistema en un momento puede estar en mas de un entorno?}
-			\todo{Ver consistencia con ``Flexibilizacion del entorno'' en Trabajo Futuro}
-
-			Arco Iris también provee la posibilidad de especificar, mediante la selección de un entorno preexistente denominado
-			``ANY'', que un determinado escenario aplica bajo cualquier entorno, esto sería equivalente a que el entorno del
-			escenario no posea ninguna condición, es decir, que el escenario aplica siempre, trivialmente, sin importar las
-			condiciones actuales del sistema en ejecución. Esto puede resultar útil ya que simplifica la configuración del
-			escenario, pero es importante tener en cuenta que reducirá el rendimiento de la auto reparación ya que configurar un
-			entorno específico por escenario otorga mayor precisión al permitir establecer las prioridades relativas de los
-			\emph{concerns} según el estado en el que el sistema se encuentre.			El entorno ``ANY'' será asignado automáticamente al escenario si el usuario no escoge ningún entorno o, en su defecto,
-			si decide explícitamente que el escenario aplique \textbf{en cualquier entorno de ejecución}. Para este entorno todos
-			los \emph{concerns} poseerán el mismo peso, evitando así ``inclinar la balanza'' hacia algún \emph{concern} en			particular.
-			\todo{JONY: no estoy de acuerdo en que los pesos sean equidistribuidos, debería poder configurarlo el usuario. Por
-			ejemplo: un sistema financiero siempre va a dar mas prioridad a la performance, mientras que un e-commerce dará, por
-			defecto, mas importancia a la seguridad. Al menos dejémoslo como trabajo a futuro.}
+				Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
+				cuando recibe el estímulo que desencadena el escenario. A modo de ejemplo: al recibir una solicitud de creación de
+				una cuenta bancaria el sistema puede encontrarse en ``operatoria normal'', en ``alta carga'' o quizás tal vez se
+				encuentre ``fuera de operación''.
+				
+				Como se observa, el entorno condiciona la validez del escenario en cuestión a que el sistema se encuentre en un
+				determinado estado, ya que, por ejemplo, una respuesta esperada aceptable o fácil de cumplir bajo un entorno puede ser
+				inaceptable o muy costosa en otro.
+	
+				En el escenario planteado en la sección anterior, si el sistema se encuentra en un entorno de ``alta carga'' el
+				escenario se satisface trivialmente, ya que para considerar dicho escenario el sistema debería encontrarse en un
+				entorno de ``operación normal''.
+				
+				De esta manera, el entorno del escenario es un elemento que permite a Arco Iris optimizar la búsqueda de escenarios
+				que no se satisfacen en un determinado instante ante la recepción de un estímulo, ya que se ignorarán aquellos
+				escenarios cuyo entorno posea condiciones que no se cumplen en dicho instante. Más adelante se profundizará sobre
+				dichas condiciones.
 
-			Para ejemplificar la importancia de configurar un entorno correctamente y no abusar del entorno ``ANY'', considerar,
-			por ejemplo, un sistema el cual se encuentra bajo excesiva carga, y los \emph{stakeholders} consideran que bajo tales
-			circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular, en tal caso, de no
-			especificar el entorno no podremos darle mayor peso a la \emph{performance} por sobre otros \emph{concerns}, quedando
-			únicamente la opción de aumentar la prioridad del escenario tergiverzando así dicha información, ya que en realidad lo
-			óptimo sería asignarle más peso al \emph{concern performance} en el entorno de ``Alta Carga''. En definitiva, al
-			establecer que el escenario aplica bajo cualquier entorno, Arco Iris interpretará que el entorno carece de importancia,
-			dejando de lado los pesos de los \emph{concerns} y distribuyendo equitativamente su importancia relativa, lo cual es
-			equivalente a que no exista el concepto de \emph{concern}.
-			La estructura del entorno consiste en:
+			\subsubsubsection{Escenarios modelados con varios entornos}
 
-			\begin{itemize}
-				\item Un conjunto de condiciones, y
-				\item Un mapa \verb@<$Concern, Peso$>@
-			\end{itemize}
-			Las condiciones fueron implementadas en base a un concepto de restricción presente en Rainbow, que permite definir
-			precondiciones de aplicabilidad de las estrategias. En Arco Iris utilizaremos el mismo concepto para dos fines, ninguno
-			de los cuales se corresponde exactamente con la concepción original de Rainbiow. Por una lado, lo utilizaremos para
-			conocer el entorno en que se encuentra el sistema, y por otro, será utilizado en la cuantificación de la respuesta (ver
-			\ref{sec:responseMeasure}) para decidir si el escenario se satisface o no. En dicha sección se explica la diferencia
-			vital del concepto de restricción utilizado en Rainbow con el de Arco Iris. \todo{verificar si se explica esta			diferencia}
-			El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de restricciones
-			simplemente implementando la interfaz \verb@Constraint@ \footnote{Dicha implementación deberá ser agregada al
-			enumerado ConstraintType en Arco Iris UI para que la UI reconozca el nuevo tipo}. 
-			
-			En cuanto al mapa presente en la estructura del entorno, este deberá contener todos los \emph{concerns} definidos para
-			el sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la utilidad del mapa es determinar la
-			preponderencia relativa entre todos los \emph{concerns} de interés para el sistema. Se detallará cómo se utilizarán
-			estos pesos para calcular el valor de un escenario al escoger una estrategia en la sección
-			\ref{sec:arcoIrisStrategyScoring}.
-			
-			Todo lo visto hasta ahora carecería de sentido si no fuese posible determinar en qué entorno se encuentra el sistema
-			en un instante dado. Ahora bien, para esto no sería suficiente chequear las condiciones definidas para el entorno
-			tomando los datos actuales del sistema, ya que esta información es muy sensible al ``ruido'' provocado por posibles
-			\emph{outliers}, pues para que el sistema se encuentre en un determinado estado es lógico esperar que dicho estado se
-			mantenga por un tiempo mínimo. Entonces, para definir un valor más cercano a la realidad para las propiedades del			sistema tomamos los valores nuevos con un determinado peso, configurable, que nos permite ir adecuando los valores			del sistema de manera paulatina evitando el impacto excesivo de los nevos valores que puedan darse por alguna ocasión			excepcional, como por ejemplo algún cliente que experimenta un tiempo de respuesta elevado por algún problema es su			conexión o en su estación de trabajo. Para mitigar estos casos utilizaremos el mismo mecanismo utilizado por Rainbow			explicado en detalle en la sección \ref{sec:exponentialAverage}.
-			Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en las
-			de Arco Iris es 0.3. Si se configura un valor demasiado bajo, Arco Iris tardará en adaptarse a los cambios en el entorno
-			del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la adaptación
-			pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es probable que el
-			sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como normal, aunque de
-			no ser costoso lanzar una adaptación o volverla atrás, podría lograrse un rendimiento aceptable del sistema de manera
-			prácticamente inmediata.
+				Si bien el concepto de escenario de atributo calidad, tal cual fue definido en la sección \ref{sec:QAS}, incluye
+				únicamente un sólo escenario, en Arco Iris se ha decidido modelar al escenario con una \textbf{colección de
+				entornos}. A fin de justificar esta decisión de diseño, supongamos que un \emph{stakeholder} desea que un
+				determinado escenario sea válido en varios entornos. En ese caso, siguiendo la definición estricta de QAS dónde un
+				escenario sólo posee un entorno, el \emph{stakeholder} debería crear varios escenarios idénticos, todos ellos
+				difiriendo únicamente en su entorno. Esto es claramente inconveniente, más aún considerando que la cantidad de
+				entornos configurables por el usuario no está acotada, lo cual podría llevar a una explosión innecesaria de
+				escenarios cuasi idénticos.
+				
+				Ahora bien, habiendo dicho lo anterior, también puede ocurrir la situación dónde, de acuerdo al entorno de
+				ejecución, se desea tener en cuenta subconjuntos distintos de estrategias de reparación. En este caso, no existe
+				otra opción más que configurar distintos escenarios.
+				
+				Cabe destacar que, a fines de simplificar el problema y acotar así el alcance de este trabajo, en el modelo de
+				Arco Iris se establece una restricción no poco importante: se presupone que el usuario de Arco Iris no cargará en el
+				sistema dos o más entornos cuyas condiciones de aplicabilidad tengan intersección no nula. Esta simplificación, si
+				bien no configura mayor problema a los fines de este trabajo, si restringe futuras extensiones del mismo. Tal
+				restricción es abordada en detalle en la sección \ref{sec:flexibilizacionEntorno}.
+
+			\subsubsubsection{Estructura y Características del Entorno}
+				La estructura del entorno consiste en:
+	
+				\begin{itemize}
+					\item Un nombre,
+					\item Un conjunto de condiciones, y
+					\item Un mapa \verb@<Concern, Peso>@
+				\end{itemize}
+	
+				El \textbf{nombre} es simplemente una cadena de texto que sirve para rápidamente identificarlo.
+					La implementación de las \textbf{condiciones} fue inspirada  en el concepto de \textbf{restricción} ya presente en
+				Rainbow, el cual permite definir precondiciones de aplicabilidad para las tácticas y las estrategias.
+				
+				En Arco Iris se utilizará el mismo concepto de condición en dos contextos distintos, ninguno de los cuales se
+				corresponde exactamente con la concepción original de Rainbow. Por un lado, se utilizarán las condiciones				para conocer el entorno en que se encuentra el sistema, y por otro, la cuantificación de la respuesta (ver sección				\ref{sec:responseMeasure}) estará conformada por varias condiciones que determinarán aquellas restricciones				necesarias para que el escenario se satisfaga. En la mentada sección se explica la diferencia conceptual del				concepto de restricción utilizado en Rainbow con el de Arco Iris. \todo{verificar si se explica esta diferencia}	
+				\todo{Jony: continuar revisando desde acá}
+	
+				El concepto de condición (o restricción) presentado en Arco Iris permite agregar nuevos tipos de
+				restricciones simplemente implementando la interfaz \verb@Constraint@ \footnote{Dicha implementación deberá ser
+				agregada al enumerado ConstraintType en Arco Iris UI para que la UI reconozca el nuevo tipo}. 
+				
+				En cuanto al \textbf{mapa de pesos} presente en la estructura del entorno, este deberá contener todos los
+				\emph{concerns} definidos para el sistema, y obviamente la suma de los pesos debe ser igual a uno, ya que la
+				utilidad del mapa es determinar la preponderencia relativa entre todos los \emph{concerns} de interés para el
+				sistema. Se detallará cómo se utilizarán estos pesos para calcular el valor de un escenario al escoger una
+				estrategia en la sección \ref{sec:arcoIrisStrategyScoring}.
+							
+				Todo lo visto hasta ahora carecería de sentido si no fuese posible determinar en qué entorno se encuentra el sistema
+				en un instante dado. Ahora bien, para esto no sería suficiente chequear las condiciones definidas para el entorno
+				tomando los datos actuales del sistema, ya que esta información es muy sensible al ``ruido'' provocado por posibles
+				\emph{outliers}, pues para que el sistema se encuentre en un determinado estado es lógico esperar que dicho estado se
+				mantenga por un tiempo mínimo. Entonces, para definir un valor más cercano a la realidad para las propiedades del				sistema tomamos los valores nuevos con un determinado peso, configurable, que nos permite ir adecuando los valores				del sistema de manera paulatina evitando el impacto excesivo de los nevos valores que puedan darse por alguna ocasión				excepcional, como por ejemplo algún cliente que experimenta un tiempo de respuesta elevado por algún problema es su				conexión o en su estación de trabajo. Para mitigar estos casos utilizaremos el mismo mecanismo utilizado por Rainbow				explicado en detalle en la sección \ref{sec:exponentialAverage}.	
+				Un valor recomendable para el factor de suavizado (\emph{alpha}) utilizado tanto en las pruebas de Rainbow como en las
+				de Arco Iris es 0.3. Si se configura un valor demasiado bajo, Arco Iris tardará en adaptarse a los cambios en el entorno
+				del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de dinamismo o en los cuales la adaptación
+				pueda resultar muy costosa. Por el contrario, al configurar un valor elevado para \emph{alpha}, es probable que el
+				sistema se vea afectado por unos pocos valores que se encuentran por fuera del rango considerado como normal, aunque de
+				no ser costoso lanzar una adaptación o volverla atrás, podría lograrse un rendimiento aceptable del sistema de manera
+				prácticamente inmediata.
+			\subsubsubsection{El Entorno ``ANY''}
+
+				Arco Iris también provee la posibilidad de especificar, mediante la selección de un entorno \emph{virtual}
+				preexistente denominado ``ANY'', que un determinado escenario aplica bajo cualquier entorno. Esto es equivalente a
+				que el entorno del escenario no posea condición alguna, es decir, que el escenario aplica siempre, trivialmente, sin
+				importar las condiciones actuales del sistema en ejecución. Esto puede resultar útil en algunos casos ya que
+				simplifica la configuración del escenario, pero es importante tener en cuenta que, por otro lado, reducirá el
+				rendimiento de la auto reparación ya que el configurar un entorno específico por escenario otorga mayor precisión al
+				permitir establecer las prioridades relativas de los \emph{concerns} según el estado en el que el sistema se
+				encuentre.
+	
+				El entorno ``ANY'' será asignado automáticamente al escenario si el usuario no escoge ningún entorno o, si por el
+				contrario, decide explícitamente que el escenario aplique \textbf{en cualquier entorno de ejecución}. En
+				cualquiera de los dos casos, todos los \emph{concerns} poseerán el mismo peso, evitando así otorgarle más
+				importancia a algún \emph{concern} en particular. Esta decisión de equidistribuír los pesos relativos por
+				\emph{concern}
+	
+				\todo{JONY: no estoy de acuerdo en que los pesos sean equidistribuidos, debería poder configurarlo el usuario. Por
+				ejemplo: un sistema financiero siempre va a dar mas prioridad a la performance, mientras que un e-commerce dará, por
+				defecto, mas importancia a la seguridad. Al menos dejémoslo como trabajo a futuro.}
+	
+				Para ejemplificar la importancia de configurar un entorno correctamente y no abusar del entorno ``ANY'', considerar,
+				por ejemplo, un sistema el cual se encuentra bajo excesiva carga, y los \emph{stakeholders} consideran que bajo tales
+				circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular, en tal caso, de no
+				especificar el entorno no podremos darle mayor peso a la \emph{performance} por sobre otros \emph{concerns}, quedando
+				únicamente la opción de aumentar la prioridad del escenario tergiverzando así dicha información, ya que en realidad lo
+				óptimo sería asignarle más peso al \emph{concern performance} en el entorno de ``Alta Carga''. En definitiva, al
+				establecer que el escenario aplica bajo cualquier entorno, Arco Iris interpretará que el entorno carece de importancia,
+				dejando de lado los pesos de los \emph{concerns} y distribuyendo equitativamente su importancia relativa, lo cual es
+				equivalente a que no exista el concepto de \emph{concern}.
+
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
 
@@ -423,9 +462,9 @@
 			Para graficar la importancia de contar con una cuantificación de la respuesta precisa, supongamos que contamos con la
 			siguiente definición:
 
-			\begin{quote}
+			\begin{Quote}
 				``Modificar el sistema para incorporar un nuevo generador de eventos discretos''
-			\end{quote}
+			\end{Quote}
 
 			Esta premisa no es suficiente para medir el éxito de la incorporación de la nueva funcionalidad solicitada, ya que
 			con suficiente tiempo y recursos, cualquier modificación es posible. Este escenario requiere una métrica, como por
