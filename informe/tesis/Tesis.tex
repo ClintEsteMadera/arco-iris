@@ -103,8 +103,15 @@ basada en Arquitectura},
 
 \restylefloat{figure}                     % Esto permite usar ``H'' como parametro de posicion para figuras flotantes
 
-\def\todo#1{\noindent \textcolor{red}{#1}}          % macro para To-Do's
+%\newcounter{todoCounter}
+%\setcounter{todoCounter}{-1}
+%\newcommand{\todo}[1]{\noindent \textcolor{red}{To-Do \arabic{todoCounter}: #1}\stepcounter{todoCounter}}
+
+\def\subsubsubsection#1{\noindent {\small \textbf{#1}}}         % Forma unívoca de escribir sub^3 secciones
+\def\todo#1{\noindent \textcolor{red}{#1}}                     % macro para To-Do's
 \def\ceria#1{\noindent \textcolor{violet}{Santiago dijo:\\#1}} % macro para los comentarios de revisión hechos por Ceria
+
+\newenvironment{Quote}{\begin{quote}\itshape}{\end{quote}}     % los quotes con itálicas (como deben ser)
 
 \renewcommand{\appendixname}{Apéndices}
 \renewcommand{\appendixtocname}{Apéndices}

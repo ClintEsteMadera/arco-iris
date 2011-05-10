@@ -229,20 +229,21 @@
 			\end{itemize}
 
 	\subsection{Flexibilización del Entorno}
+	\label{sec:flexibilizacionEntorno}
 
 		Actualmente, el algoritmo que decide en qué entorno de ejecución se encuentra el sistema a adaptar en un
 		determinado instante, presupone que las restricciones de todos los Entornos del sistema son mutualmente excluyentes
 		entre sí. Esto tiene como principal consecuencia el hecho de que, al momento, no se pueden configurar Entornos que
 		posean algún tipo de intersección en sus condiciones de aplicabilidad. En particular y a modo de ejemplo, el
 		usuario querría poder especificar un escenario de ``Alta Carga'' y otro de ``Extrema Alta Carga'', cuyas condiciones
-		de aplicabilidad parecen tener algún tipo de intersección no nula pues probablemente las condiciones necesarias para
+		de aplicabilidad podrían tener una intersección no nula pues probablemente las condiciones necesarias para
 		que el entorno de ``Alta Carga'' se cumpla están incluídas en las condiciones el entorno de ``Extrema Alta Carga''.
 
-		Es deseable que en el caso de Entornos con intersección no nula en sus condiciones de aplicabilidad, Arco Iris
-		seleccione a aquél que sea más general, en el ejemplo anterior, ``Extrema Alta Carga'' sería el elegido para
-		representar más fielmente el estado actual del sistema. Esto sin duda posee una relevancia muy importante puesto que
-		los pesos configurados en cada uno de los escenarios pueden determinar el curso de la auto reparación ya que afectan
-		directamente al algoritmo de selección de estrategias.
+		Es deseable que en el caso de entornos con intersección no nula en sus condiciones de aplicabilidad, Arco Iris
+		seleccione a aquél que sea más adecuado, de acuerdo al caso en particular. En el ejemplo anterior, ``Extrema Alta
+		Carga'' sería el elegido para representar más fielmente el estado actual del sistema. Esto sin duda es altamente
+		relevante ya que los pesos configurados en cada uno de los escenarios pueden determinar el curso de la auto reparación
+		puesto que afectan directamente al algoritmo de selección de estrategias.
 
 		Una posible solución para este problema podría ser el explicitar relaciones de intersección (o de inclusión) entre
 		restricciones y reconfigurar el algoritmo de detección del Entorno actual de ejecución existente en el
