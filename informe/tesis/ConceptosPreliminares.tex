@@ -493,14 +493,20 @@
 			suavizado previo $S_{t-1}$.
 			
 			Notar que con valores \emph{altos} de $\alpha$, el último valor observado tendrá más preponderancia que el valor
-			histórico (suavizado) anterior. Por el contrario, con un $\alpha$ tendiendo a cero, la última observación de una
-			propiedad de la arquitectura prácticamente no tendrá relevancia sobre el valor promedio $S_t$.
+			histórico (suavizado) anterior. En este caso, es probable que el sistema se vea afectado por unos pocos valores que se
+			encuentran por fuera del rango considerado como normal, aunque de no ser costoso lanzar una adaptación o revertirla,
+			podría lograrse un rendimiento aceptable del sistema de manera prácticamente inmediata.
 			
-			No existe un procedimiento formal para determinar el valor de $\alpha$, en el caso particular de las pruebas
-			realizadas en este trabajo, se ha elegido $\alpha = 0.3$, es decir que, se ponderará con un 30\% al último valor
-			observado mientras que el valor histórico tendrá un peso del 70\%; con esto nos aseguramos que los valores de las
-			propiedades del sistema que son relevantes para la auto adaptación no fluctúen bruscamente debido a unos pocos
-			\emph{outliers}.
+			Por el contrario, con un $\alpha$ tendiendo a cero, la última observación de una propiedad de la arquitectura
+			prácticamente no tendrá relevancia sobre el valor promedio $S_t$. Esto implicaría que a Arco Iris le tomará más tiempo
+			adaptarse a los cambios en el entorno del sistema. Ésto podría ser útil, por ejemplo, en sistemas con bajo grado de
+			dinamismo o en los cuales la adaptación pueda resultar muy costosa.
+			
+			No existe un procedimiento formal para determinar el valor de $\alpha$, en el caso particular de las pruebas realizadas
+			en este trabajo, y al igual que las pruebas realizadas en Znn, se ha elegido $\alpha = 0.3$, es decir que, se ponderará
+			con un 30\% al último valor observado mientras que el valor histórico tendrá un peso del 70\%; con esto nos aseguramos
+			que los valores de las propiedades del sistema que son relevantes para la auto adaptación no fluctúen bruscamente debido
+			a unos pocos \emph{outliers}.
 
 	\subsubsection{Znn}
 

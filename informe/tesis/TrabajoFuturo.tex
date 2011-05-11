@@ -200,17 +200,23 @@
 					\emph{Concern}? ¿deben darse de baja? ¿debe forzarse su actualización? Nuevamente, si el usuario no usara Scenarios
 					UI, el mantenimiento de la configuración podría tornarse dificultoso.
 
-				\item \textbf{Asignación equidistribuída de pesos para un Entorno nuevo}
+				\item \label{asignacionEquidistribuidaPesos} \textbf{Asignación equidistribuída de pesos para un Entorno nuevo}
 
 					En Arco Iris, al construir una instancia de \verb@Environment@, se invoca a una función llamada
 					\verb@createMapWithEquallyDistributedWeights@ que inicializa el mapa de pesos del Entorno de manera equidistribuída
 					entre todos los entornos (e.g. si hay 3 \emph{Concerns} en el sistema, asigna $0.\wideparen{33}$ a cada uno).
 
+					Esta decisión de diseño si bien es razonable, es también mejorable: esto podría ser configurable por el usuario del
+					\emph{framework} para poder adaptar mejor la configuración por defecto a los intereses particulares de cada
+					sistema. Por ejemplo: es probable que un sistema financiero le otorgue más prioridad a los \emph{concerns}
+					relacionados con la \emph{performance}, mientras que una aplicación de \emph{e-commerce} es probable que le de más
+					importancia a la seguridad.
+
 					En el supuesto de que los \emph{Concerns} sean configurables por el usuario final, la función
 					\verb@createMapWithEquallyDistributedWeights@ debería reubicarse en una clase del tipo \emph{helper} que tenga
 					acceso de alguna manera al \verb@SelfHealingConfigurationManager@ que es el objeto que tendría acceso a la
 					información presente en el archivo de configuración de \emph{self healing}.
-
+					
 				\item \textbf{Acceso del \emph{ArcoIrisAdaptationManager} a los \emph{Concerns}}
 
 					Una situación similar a la anterior (el acceso al universo de \emph{Concerns} definidos en el sistema) ocurre
