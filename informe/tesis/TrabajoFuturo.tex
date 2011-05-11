@@ -322,15 +322,34 @@
 
 	\subsection{Adaptación de un Sistema Sobre el Cual se Tiene Poco Control}
 
-		\todo{completar!}
+		Otro de los tópicos sobre los cuales es necesario también avanzar, es en desarrollar técnicas y herramientas que
+		permitan poder alterar el comportamiento de un sistema sobre el cuál se posee muy poco control. Tal es el caso, por
+		ejemplo, de sistemas desarrollados por terceras partes, de los cuales no se posee ni siquiera el código fuente. Otro
+		ejemplo podría ser el de sistemas pobremente modularizados o codificados con un lenguaje de programación antiguo sobre
+		los cuáles parece poco probable que se puedan establecer puntos de comunicación con un \emph{framework} de auto
+		adaptación como Arco Iris o Rainbow.
+		
+		Este tema es crítico para el desarrollo de la auto adaptación de sistemas de \emph{software} considerando que existen
+		en el mundo numerosas aplicaciones que se encuentran en las condiciones descritas anteriormente. 
 
-	\subsection{Alterar más radicalmente el comportamiento de un sistema}
+	\subsection{Mecanismo de Reparación ``declarativo''}
 
-		\todo{completar!}
-
-		\ceria{
-		Mencionen también las grandes líneas que se deben seguir explorando para hacer realidad esto de los sistemas
-		``autoreparables''. Cómo armar una arquitectura de un sistema existente en ACME (lo de Discotect, pero que todavía es
-		limitado), cómo ``enchufarse'' con un sistema sobre el que se tiene poco control, cómo poder alterar más radicalmente
-		el comportamiento de un sistema, etc. Pueden poner estos temas en general, pero me gustaría que muestren que es muy
-		importante seguir avanzando en sistemas que se ``manejan solos''.}
+		Hasta el momento, en Rainbow y en Arco Iris, las estrategias de reparación se encuentran configuradas de una manera		imperativa, es decir, el arquitecto o una persona con ese rol, configura el \emph{framework} especificando una serie
+		de estrategias de reparación, que no son más que algoritmos que intentan resolver o paliar una anomalía en el sistema
+		basandose en observaciones sobre las propiedades del mismo en \emph{runtime} y en un conjunto de tácticas (e.g.
+		levantar un servidor extra, disminuír el nivel de \emph{logging}, apagar la encripción, etc\ldots) también provistas
+		por el usuario del \emph{framework}.
+		
+		Otra posibilidad menos programática y más declarativa podría consistir en que el usuario únicamente especifique, en el
+		contexto del escenario, las tácticas que podrían ejecutarse en el caso en que el escenario no se cumpla; dejando al
+		\emph{framework} la tarea de combinar ``inteligentemente'' dichas tácticas de la mejor manera posible. Considerando
+		que la rama de las Ciencias de la Computación conocida como \textbf{Inteligencia Artificial} se encuentra en un
+		estadío de poca maduración, la mentada ``inteligencia'' en realidad alude a que el \emph{framework} sea capaz de
+		manejar heurísticamente los recursos que posee para interactuar con el sistema en \emph{runtime}, de una manera
+		similar a cómo se opera actualmente con estrategias estáticamente configuradas por el usuario.
+		
+		Lo antedicho agregaría flexibilidad puesto que el \emph{framework} no estaría acotado a un conjunto fijo de
+		estrategias pre configuradas sino que podría intentar otras opciones dinámicamente, considerando la historia de sus
+		ejecuciones pasadas, entre otros tantos aspectos posibles. Por otro lado, siempre que se agrega flexibilidad,
+		normalmente se pierde en predictibilidad, ya que las acciones del \emph{framework} serían más difíciles de
+		seguir y predecir.
