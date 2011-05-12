@@ -27,5 +27,9 @@
 			<outputDirectory>configs</outputDirectory>
 			<directory>configs</directory>
 		</fileSet>
+		<fileSet>
+			<outputDirectory>flot</outputDirectory>
+			<directory>src/main/resources/flot</directory>
+		</fileSet>
 	</fileSets>
 </assembly>
