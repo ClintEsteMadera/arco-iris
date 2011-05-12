@@ -25,10 +25,10 @@
 		\begin{enumerate}
 			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow va a adaptar. Dicho modelo se
 			especifica utilizando el estilo de componentes y conectores (C\&C) y el lenguaje de descripción de arquitecturas
-			ACME (ver sección \ref{sec:acme}). En dicho lenguaje, los componentes y conectores poseen
-			propiedades (con valores asociados), restricciones y también se ofrece la posibilidad de especificar invariantes a
-			nivel de sistema o sub sistema. Dichos invariantes y restricciones serán evaluados periódicamente por Rainbow para
-			verificar que el sistema funcione dentro de los límites determinados como normales.
+			ACME (ver sección \ref{sec:acme}). En dicho lenguaje, los componentes y conectores poseen propiedades (con valores
+			asociados), restricciones y también se ofrece la posibilidad de especificar invariantes a nivel de sistema o sub
+			sistema. Dichos invariantes y restricciones serán evaluados periódicamente por Rainbow para verificar que el sistema
+			funcione dentro de los límites determinados como normales.
 			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con
 			la definición del sistema a auto reparar, como por ejemplo: ubicación física del archivo ACME que describe la
 			arquitectura del sistema, archivos de tácticas y estrategias de reparación (escritos en \emph{Stitch}), datos para
@@ -126,9 +126,6 @@
 		\subsubsection{Modelo de Restricciones en Arco Iris}
 		\label{sec:modeloRestriccionesArcoIris}
 
-			\todo{Jony: sacar el término 'invariante' de todos lados y hablaremos de restricciones en todos lados menos en el
-			environment donde tiene más sentido hablar de condiciones}
-
 			Tanto Rainbow como Arco Iris, hacen uso del concepto de \textbf{restricción}, que si bien se utiliza en distintos
 			contextos debido a que ambos \emph{frameworks} enfocan la auto reparación desde distintos ángulos, ambos responden a
 			la misma finalidad.
@@ -158,16 +155,83 @@
 			el modelo de Acme, aunque desacoplado de cualquier otra lógica externa. Así, el concepto de restricción presentado en
 			Arco Iris permite agregar nuevos tipos de restricciones simplemente implementando la interfaz \verb@Constraint@
 			\footnote{Dicha implementación deberá ser agregada al enumerado ConstraintType en Arco Iris UI para que la UI reconozca
-			el nuevo tipo}.
-			A los fines del presente trabajo, se implementó el único tipo de restricción necesario para mostrar el funcionamiento
-			de la extensión a Rainbow: una restricción que modela relaciones binarias numéricas entre una propiedad del modelo y
-			una constante, e.g. \verb@client1.experResponseTime < 500@.
+			el nuevo tipo}. La interfaz definida es la siguiente:
 
+			\begin{Verbatim}[gobble=4]
+                public interface Constraint {
+
+                    boolean holds(Number value);
+
+                    String getFullyQualifiedPropertyName();
+                }
+			\end{Verbatim}
+
+			Mediante el método \verb@holds@, se define como responsabilidad de la misma \verb@Constraint@ el determinar si se
+			cumple o no, recibiendo como parámetro el valor actual de la propiedad del modelo de la arquitectura sobre el cual
+			predica la cuantificación de la respuesta. Es de notar que en el futuro esta interfaz podría ser modificada para
+			soportar propiedades cuyos valores no sean numéricos.
+			
+			El método \verb@getFullyQualifiedPropertyName@ retornará el nombre completo calificado de la propiedad sobre la
+			que predica, incluyendo el sistema y el componente al que pertenece, por ejemplo, \verb@ZNewsSys.ClientT.experRespTime@
+			alude a la propiedad \verb@experRespTime@ de todos los componentes del sistema \verb@ZNewsSys@ que sean de tipo
+			\verb@ClientT@. De la misma manera, se pueden referenciar propiedades de \textbf{instancias} particulares como por
+			ejemplo: \verb@ZNewsSys.Server2.cost@.
+			
+			Para el presente trabajo se utilizó	una única implementación de esta interfaz, consistente en una
+			relación binaria de orden ($=$, $>$, $>=$, $<$ o $<=$ ) entre una propiedad de un componente, conector, etc. de la
+			arquitectura (e.g. \verb@server1.responseTime@) y una constante numérica. La implementación mencionada recibe el
+			nombre de \emph{NumericBinaryRelationalConstraint} y su código puede verse en el apéndice
+			\ref{sec:numericBinaryRelationalConstraintCode}.
+			
 			Dado que, como hemos mencionado anteriormente, las restricciones predican sobre propiedades del sistema en ejecución,
 			cuyos valores son sensibles al ``ruido'' producido por la presencia de posibles \emph{outliers}, Arco Iris utiliza,
 			al igual que Rainbow, el concepto de \emph{Exponential Moving Average} (presentado en la sección
 			\ref{sec:exponentialAverage}) para evitar este efecto negativo que afecta tanto a la detección del entorno actual
 			como a la verificación de los escenarios.
+			
+			\subsubsubsection{Cuantificación de las Restricciones}
+
+				Rainbow utiliza las reglas e invariantes provistas en el lenguaje Acme para definir restricciones sobre el modelo de
+				la arquitectura del sistema a reparar. Estas reglas e invariantes, se limitan a predicar únicamente sobre una
+				instancia específica o bien sobre todas las instancias de un determinado tipo de componente.
+				
+				Ahora bien, en Rainbow, cuando la restricción aplica a un \textbf{tipo} de componente de la arquitectura, pueden
+				darse dos casos: que se predique sobre el \textbf{valor promedio} de todas las instancias de dicho tipo de
+				componente o bien sobre la \textbf{sumatoria}. Para implementar estos casos, Rainbow opta por interpretar las
+				restricciones impuestas sobre el modelo en Acme como si predicaran implícitamente sobre el \emph{promedio} de todos
+				los valores; y por otro lado, ofrece como mecanismo para expresar restricciones sobre la \emph{sumatoria} de
+				todos los valores, la definición de precondiciones dentro de las estrategias de reparación definidas en en lenguaje
+				\emph{Stitch}. El siguiente, es un ejemplo de cómo Znn impone restricciones sobre la sumatoria del costo de los
+				servidores del sistema:
+				
+				\begin{Verbatim}[gobble=5]
+					import op "org.sa.rainbow.stitch.lib.Model";
+					...
+					define float totalCost = Model.sumOverProperty("cost", servers);
+					define boolean hiCost = totalCost >= M.THRESHOLD_COST;
+					...
+					/* This Strategy is triggered by the total server costs rising above acceptable
+					 * threshold; this Strategy reduces the number of active servers
+					 */
+					strategy ReduceOverallCost
+					[ hiCost ] {
+					  t0: (hiCost) -> dischargeServers(1) @[2000 /*ms*/] {
+					    t1: (!hiCost) -> done;
+					    t2: (lowRespTime && hiCost) -> do[2] t0;
+					    t3: (default) -> TNULL;
+					  }
+					}
+					...
+				\end{Verbatim}
+
+				Se observa la utilización de una clase Java (\verb@Model.sumOverProperty("cost", servers)@) para obtener la
+				sumatoria de los costos de los servidores. Esta forma de establecer restricciones (el ``qué'') se encuentra
+				claramente acoplada con la forma de reparar el sistema (``el cómo'') y además, no existe una forma única de definir
+				restricciones sobre el modelo, lo cual puede conducir a confusiones y potenciales inconsistencias; así como también
+				redunda en poca flexibilidad para el usuario que define restricciones sobre el modelo, ya que esta manera de hacerlo
+				requiere conocimiento técnico no trivial.
+
+				Para subsanar esta falencia de diseño, Arco Iris agrega a las restricciones numéricas el concepto de				\textbf{Cuantificador}. El cual es extensible y actualmente soporta dos opciones: \textbf{sumatoria} o				\textbf{promedio}, los que especifican respectivamente si la condición predica sobre la sumatoria o el promedio de				los valores de una determinada propiedad, para todas las instancias en \emph{runtime} de un determinado componente.
 
 	\subsection{Flexibilización de la Auto Reparación con QAS}
 
@@ -204,7 +268,7 @@
 		describir la importancia relativa de la \emph{performance}, la disponibilidad, etc.; definiendo así una serie de
 		\emph{tradeoffs} entre distintos atributos de calidad requeridos para el sistema. El enfoque propuesto para lograr
 		esto consiste en especificar \textbf{Escenarios de Atributos de Calidad}, tal cual fueron descritos en la sección
-		\ref{sec:QAS}, extendiendo el concepto con información orientada a flexibilizar la auto reparación. Esta extensión es		explicada en detalle en la sección \ref{sec:modeloExtensionATAM}.
+		\ref{sec:QAS}, extendiendo el concepto con información orientada a flexibilizar la auto reparación. Esta extensión es		explicada en detalle en la sección \ref{sec:modeloExtensionQAS}.
 		
 		A continuación se detallan las soluciones introducidas por Arco Iris para solucionar los problemas que
 		posee Rainbow mencionados anteriormente:
@@ -376,12 +440,54 @@
 		\subsubsection{El Entorno en la Auto Reparación}
 		\label{sec:environment}
 		
-			\subsubsubsection{El Entorno y su Importancia para la Auto Reparación}
+			\subsubsubsection{El Concepto de Entorno en Rainbow}
+			
+				Si bien Rainbow utiliza el concepto de entorno y, para contribuir a la confusión del lector, lo llama
+				\emph{scenario}, el mismo es configurable aunque estático, es decir, no se adapta dinámicamente a los cambios
+				que experimenta el sistema en tiempo de ejecución.
+				Rainbow implementa el entorno como una distribución específica de pesos relativos entre los distintos
+				\emph{concerns} del sistema. A continuación se muestra un ejemplo de un entorno (\emph{scenario}) de Rainbow
+				utilizado por Znn:
+		
+				\begin{Verbatim}[gobble=3]
+					weights:
+						scenario 1:
+							uR: 0.35
+							uF: 0.4
+							uC: 0.25
+						scenario 2:
+							uR: 0.5
+							uF: 0.3
+							uC: 0.2
+						scenario 2b:
+							uR: 0.5
+							uF: 0.2
+							uC: 0.3
+				\end{Verbatim}
+				
+				Observar que cada entorno asigna un valor a cada \emph{concern} del sistema, en donde, en este caso, \verb@uR@
+				representa al Tiempo de Respuesta, \verb@uF@ a la Fidelidad de la información y \verb@uC@ al Costo. Notar que la
+				sumatoria de los pesos de los distintos \emph{concerns} para cada entorno debe ser igual a 1.
 
-				Dentro de la definición de escenario, el \textbf{entorno} se refiere al estado en el que el sistema se encuentra
-				cuando recibe el estímulo que desencadena el escenario. A modo de ejemplo: al recibir una solicitud de creación de
-				una cuenta bancaria el sistema puede encontrarse en ``operatoria normal'', en ``alta carga'' o quizás tal vez se
-				encuentre ``fuera de operación''.
+				Esta información debe ser configurada en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow. Aquí,
+				como se puede observar, se definen más de un entorno, uno de los cuales luego deberá ser seleccionado por el
+				arquitecto en el archivo de configuración \verb@rainbow.properties@ previo a la inicialización, intentando
+				predecir cuáles serán las condiciones en las que el sistema deberá responder. Este entorno es utilizado por
+				Rainbow al momento de seleccionar una estrategia para reparar el sistema. En la sección \ref{sec:strategySelection}
+				se explica en detalle su utilización.
+
+			\subsubsubsection{El Entorno en Arco Iris y su Importancia para la Auto Reparación}
+
+				El concepto de \emph{scenario} de Rainbow es similar al concepto de Entorno planteada por QAS, el cual, a su vez
+				ha sido extendido por Arco Iris. La diferencia fundamental radica en que, mientras en Rainbow el usuario debe
+				predecir en qué entorno operará el sistema, Arco Iris lo detectará automáticamente. Más adelante en esta sección, se
+				explicará en detalle cómo se lleva a cabo esta tarea.
+
+				Concentrándonos ahora únicamente en Arco Iris, y de acuerdo a la definición de QAS, se define al \textbf{Entorno de
+				Ejecución}, o simplemente, \textbf{Entorno} como el estado en el que el sistema se encuentra cuando recibe el
+				estímulo que desencadena el escenario. A modo de ejemplo: al recibir una solicitud de creación de una cuenta
+				bancaria el sistema puede encontrarse en ``operatoria normal'', en ``alta carga'' o quizás tal vez se encuentre
+				``fuera de operación''.
 				
 				El entorno condiciona la validez del escenario en cuestión a que el sistema se encuentre en un determinado estado,
 				ya que, por ejemplo, una respuesta esperada aceptable o fácil de cumplir bajo un entorno puede ser inaceptable o muy
@@ -441,66 +547,67 @@
 							
 			\subsubsubsection{El Entorno ``ANY''}
 
-				Una característica particular de Arco Iris es la de permitir expresar, mediante la selección de un entorno
-				\emph{virtual} preexistente denominado ``ANY'', la idea de que un determinado escenario aplica bajo cualquier
-				entorno. Esto es equivalente a que el entorno del escenario no posea condición alguna, es decir, que el escenario
-				aplica siempre, trivialmente, sin importar las condiciones actuales del sistema en ejecución. Esto puede resultar
-				útil en algunos casos ya que simplifica la configuración del escenario, pero es importante tener en cuenta que, por
-				otro lado, reducirá el rendimiento de la auto reparación ya que el configurar uno o más entornos específicos por
-				escenario otorga mayor precisión al permitir establecer las prioridades o pesos relativos de los \emph{concerns}
-				según el estado en el que el sistema se encuentre.
-	
+				Una característica particular de Arco Iris es la de permitir expresar, mediante la selección de un pseudo-entorno
+				preexistente denominado ``ANY'', que un determinado escenario aplica bajo cualquier entorno. Esto es equivalente a que
+				el entorno del escenario no posea condición alguna, es decir, que el escenario aplica siempre, trivialmente, sin
+				importar las condiciones actuales del sistema en ejecución. Esto puede resultar útil en algunos casos ya que simplifica
+				la configuración del escenario, pero es importante tener en cuenta que, por otro lado, el rendimiento de la auto
+				reparación se verá reducido puesto que el configurar uno o más entornos específicos por escenario otorga mayor precisión
+				al permitir establecer la importancia (peso relativo) de cada \emph{concern} según el estado en el que el sistema se				encuentre.	
 				El entorno ``ANY'' será asignado automáticamente al escenario si el usuario no especifica ningún entorno o, si por
 				el contrario, decide explícitamente que el escenario aplique \textbf{en cualquier entorno de ejecución}. En
 				cualquiera de los dos casos, Arco Iris asignará a todos los \emph{concerns} el mismo peso, con la intención de
 				evitar otorgarle más importancia a algún \emph{concern} en particular. Esta decisión de equidistribuír los pesos
-				relativos por \emph{concern}, es desde ya, arbitraria y se reconoce una posibilidad de mejora en vistas de un
+				relativos por \emph{concern} es, desde ya, arbitraria y se reconoce una posibilidad de mejora en vistas de un
 				trabajo futuro. Para más información, ver \ref{asignacionEquidistribuidaPesos}.
 	
 				Para ejemplificar la importancia de configurar un entorno correctamente y no hacer abuso del pseudo-entorno ``ANY'',
 				considerar, por ejemplo, un sistema el cual se encuentra bajo excesiva carga, y los \emph{stakeholders} consideran
-				que bajo tales circunstancias lo más prioritario es optimizar la \emph{performance} de un servicio en particular.
-				En ese caso, de no especificar el entorno no será posible  otorgarle mayor peso a la \emph{performance} por sobre
-				otros \emph{concerns}, quedando únicamente la opción de aumentar la prioridad de todos los escenarios
-				relacionados con dicho \emph{concern}, tergiversando así dicha información, ya que en realidad lo óptimo sería
-				asignarle más peso al \emph{concern performance} en el entorno de ``Alta Carga''. Puesto de otra manera, el
-				establecer que un escenario aplica en cualquier entorno, tiene como consecuencia que Arco Iris interprete que el
-				entorno carece de importancia, dejando de lado los pesos de los \emph{concerns} y distribuyendo equitativamente su
-				importancia relativa, lo cual es equivalente a que el concepto de \emph{concern} no exista.
-
-		\todo{TURCO Y JONY: continuar revisando desde aca}
+				que bajo tales circunstancias lo más prioritario es optimizar la \emph{performance} del sistema. En ese caso, de no
+				especificar el entorno no será posible otorgarle mayor peso a la \emph{performance} por sobre otros \emph{concerns},
+				quedando únicamente la opción de aumentar la prioridad\footnote{se profundizará sobre este tema en la sección
+				\ref{sec:priority}} de todos los escenarios relacionados con dicho \emph{concern}, tergiversando así dicha
+				información, ya que en realidad lo óptimo sería asignarle más peso al \emph{concern performance} en el entorno de
+				``Alta Carga''. Puesto de otra manera, el establecer que un escenario aplica en cualquier entorno, tiene como
+				consecuencia que Arco Iris interprete que el entorno carece de importancia, dejando de lado los pesos de los
+				\emph{concerns} y distribuyendo equitativamente su importancia relativa, lo cual es equivalente a que el concepto de
+				\emph{concern} no exista.
 
 		\subsubsection{La Cuantificación de la Respuesta en la Auto Reparación}
 			\label{sec:responseMeasure}
 
-			La \textbf{cuantificación de la respuesta} es quizás la propiedad más importante de un escenario: de ella surgen las
-			restricciones que deben ser evaluadas para que, en caso de no cumplirse, se lance la auto reparación. De hecho, para
-			que un escenario se considere bien formado debe quedar claro cual es la métrica o manifestación observable de su
-			respuesta que se debe satisfacer. Latencia y \emph{throughput} son ejemplos de las manifestaciones sobre las cuales
-			puede predicar la cuantificación de la respuesta. En pocas palabras, la cuantificación será la métrica según la cual
-			se decida la aceptación de una respuesta del sistema ante un determinado estímulo.
+			La \textbf{cuantificación de la respuesta} (o, en inglés, \emph{Response Measure}) es quizás la propiedad más
+			importante de un escenario, de ella surgen las restricciones que deben ser evaluadas para que, en caso de no
+			cumplirse, se lance la auto reparación. En pocas palabras, la cuantificación de la respuesta se define como la
+			métrica según la cual se decide si la respuesta del sistema ante un determinado estímulo es aceptable o no.
+			
+			Para que un escenario se considere bien formado debe quedar claro cuál es la métrica o manifestación observable de su
+			respuesta que se debe satisfacer. Latencia y \emph{throughput} son ejemplos de manifestaciones sobre las cuales puede
+			predicar la cuantificación de la respuesta.
 
 			Para graficar la importancia de contar con una cuantificación de la respuesta precisa, supongamos que contamos con la
 			siguiente definición:
 
 			\begin{Quote}
-				``Modificar el sistema para incorporar un nuevo generador de eventos discretos''
+				``El sistema debe ser modificable para poder incorporar un nuevo generador de eventos discretos''
 			\end{Quote}
 
 			Esta premisa no es suficiente para medir el éxito de la incorporación de la nueva funcionalidad solicitada, ya que
-			con suficiente tiempo y recursos, cualquier modificación es posible. Este escenario requiere una métrica, como por
-			ejemplo: ``Utilizando 160 horas hombre''. Esto fuerza al arquitecto a asegurar que el sistema sea modificable
-			basándose en un criterio bien definido y con una métrica aplicable.
+			con suficiente tiempo y recursos, casi cualquier modificación es posible. Este escenario requiere una métrica, como
+			por ejemplo: \emph{``Utilizando 160 horas/hombre''}. Esto fuerza al arquitecto a asegurar que el sistema sea
+			modificable basándose en un criterio bien definido y con una métrica aplicable.
 
-			Con respecto a la implementación, cabe mencionar que Arco Iris reutiliza las restricciones genéricas brindadas
-			por Rainbow, sitúandolas en el contexto de un escenario de atributo de calidad, proveyendo así mayor visibilidad a
-			los \emph{stakeholders} sobre estas restricciones, anteriormente sólo conocidas por los arquitectos y/o técnicos
-			responsables de configurar Rainbow, ya que en Rainbow eran implementadas en el modelo de la arquitectura descrito en
-			Acme.
+			Con respecto a la implementación, el componente más importante de la cuantificación de la respuesta es la
+			restricción, cuyo modelo en Arco Iris fue anteriormente explicado en la sección
+			\ref{sec:modeloRestriccionesArcoIris}.
+			
+			En Arco Iris las restricciones se sitúan en el contexto de un escenario de atributo de calidad, proveyendo así mayor
+			visibilidad a los \emph{stakeholders}, las cuales antes se encontraban implementadas en el modelo de la arquitectura
+			utilizando el lenguaje Acme, y consecuentemente, eran sólo conocidas y modificadas por los arquitectos y/o técnicos
+			responsables de configurar el \emph{framework}.
 
-			El siguiente ejemplo ha sido extraído de la arquitectura de Znn (también expresada utilizando Acme), allí se puede
-			observar cómo se implementan las restricciones al utilizar Rainbow, las que pasan a formar parte de la cuantificación
-			de la respuesta del escenario al utilizar Arco Iris:
+			El siguiente ejemplo ha sido extraído de la arquitectura de Znn. Aquí se puede observar de qué manera se implementan
+			las restricciones al utilizar Rainbow:
 			
 			\begin{Verbatim}[gobble=4] 
 				Component Type ClientT {
@@ -510,77 +617,44 @@
 			\end{Verbatim}
 
 			Es importante recordar que en Rainbow, una vez que se detectó que la auto reparación debe ser lanzada debido a una
-			restricción que dejó de cumplirse, se volverán a ejecutar todas las restricciones definidas en las precondiciones de
-			las estrategias para verificar si aplican o no dependiendo del estado actual del sistema. A continuación se muestra
-			un ejemplo extraído de Znn de una estrategia y su precondición:
+			restricción que dejó de cumplirse, se volverán a evaluar todas las restricciones definidas en las precondiciones de
+			\textbf{todas las estrategias} para verificar si aplican o no dependiendo del estado actual del sistema. A
+			continuación se muestra un ejemplo extraído de Znn de una estrategia y su precondición:
 
 			\begin{Verbatim}[gobble=4]
-                define boolean cViolation =
-                    exists c : T.ClientT in M.components | c.experRespTime > 1000;
-
-                strategy BruteReduceResponseTime
-                [ cViolation ] {
-  					...
-  					do some tactic
-  					...
-                }
+				import model "ZNewsSys.acme" { ZNewsSys as M};
+				...
+				define boolean cViolation =
+				    exists c : ClientT in M.components | c.experRespTime > 1000;
+				...
+				strategy BruteReduceResponseTime
+				[ cViolation ] {
+					...
+					execute some tactic...
+					...
+				}
 			\end{Verbatim}
 
-			Como se puede observar, tanto la restricción del modelo que desencadenó la auto reparación como la precondición de la
-			estrategia son equivalentes, por lo que se duplica la lógica aumentando el costo de procesamiento, haciendo que la
-			reparación sea más costosa y menos escalable.
+			Como se puede observar, tanto la restricción en el modelo que desencadenó la auto reparación como la precondición de
+			la estrategia son equivalentes, por lo que se duplica la lógica aumentando el costo de procesamiento, haciendo que la
+			reparación sea más costosa y menos escalable. Además al duplicar la configuración, el costo de mantener el
+			\emph{framework} es mayor.
 
 			En Arco Iris no será necesario contar con las precondiciones de las estrategias, ya que el conocimiento de cuáles
 			estrategias son capaces de reparar una determinada condición se encuentra plasmado en cada escenario. En definitiva, al
-			utilizar Arco Iris el usuario no tendrá más que configurar la cuantificación de la respuesta de cada escenario, tarea
-			que se ve sumamente facilitada al utilizar Arco Iris UI (ver sección \ref{sec:arcoIrisUI}).
-			Otra diferencia vital con respecto al uso de las mencionadas restricciones entre la visión de Rainbow y de Arco Iris
-			consiste en el momento en que se aplican. Hemos visto anteriormente que Rainbow posee un componente llamado
-			\emph{``Architecture Evaluator''}, cuya responsabilidad consiste en verificar la arquitectura del modelo de a intervalos
-			y de manera asincrónica, siempre y cuando este haya sido modificado y la auto reparación no se encuentre ya en
-			ejecución, esto implica verificar absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir
-			un cambio en el modelo, verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente los que
-			coincidan en su estímulo con el estímulo que desencadenó el cambio en el modelo, optimizando así de manera drástica la
-			cantidad de restricciones a verificar, lo que hace mucho más escalable la auto reparación.
-			Dado al cambio en el manejo de restricciones, Arco Iris implementa el concepto de \emph{Constraint} como una interfaz,
-			dando así la posibilidad de extender el \emph{framework} con el tipo de \emph{Constraint} que el usuario considere
-			necesario. La interfaz presentada es la siguiente:
-			\begin{Verbatim}[gobble=4]
-                public interface Constraint {
-
-                    boolean holds(Number value);
-
-                    String getFullyQualifiedPropertyName();
-                }
-			\end{Verbatim}
-
-			Donde el método \emph{holds} será el encargado de determinar si la \emph{Constraint} se cumple o no, recibiendo como
-			parámetro el valor actual de la propiedad del modelo de la arquitectura sobre el cual predica la cuantificación de
-			la respuesta, por ejemplo; mientras que el método \emph{getFullyQualifiedPropertyName} retornará el nombre completo
-			cualificado de la propiedad sobre la que predica, incluyendo el sistema y el componente al que pertenece,
-			\emph{ZNewsSys.ClientT.experRespTime} es un ejemplo extraido de Znn.
-
-			Para el presente trabajo se utilizó	una única implementación de la interfaz \emph{Constraint}, consistente en una
-			relación binaria de orden (igual, mayor, mayor o igual, menor o menor o igual) entre una propiedad de la arquitectura
-			(e.g. \verb@server1.responseTime@) y un valor fijo (puede ser entero o flotante) preestablecido al configurar la
-			cuantificación de la respuesta del escenario. Esta restricción será configurada mediante un cuantificador, el cual
-			provee actualmente dos opciones: sumatoria y promedio, las que especifican respectivamente si la condición debe
-			cumplirse para la suma de todas las instancias en \emph{runtime} de dicha propiedad o si la condición debe darse ``en
-			promedio'' para todas las instancias. La implementación mencionada recibe el nombre de
-			\emph{NumericBinaryRelationalConstraint} y puede verse su código en el apéndice
-			\ref{sec:numericBinaryRelationalConstraintCode}.
-
-	\subsection{Modelo Extendido de ATAM}
-	\label{sec:modeloExtensionATAM}
+			utilizar Arco Iris el usuario accede a la posibilidad de configurar el comportamiento esperado del sistema mediante			la cuantificación de la respuesta de cada escenario, tarea que se ve sumamente facilitada al utilizar Arco Iris UI			(ver sección \ref{sec:arcoIrisUI}).
+			Otra diferencia esencial con respecto al uso que Rainbow y Arco Iris hacen de las restricciones, es el momento en
+			el que se aplican. Hemos visto anteriormente que Rainbow posee un componente llamado \emph{``Architecture
+			Evaluator''}, cuya responsabilidad consiste en verificar de a intervalos la arquitectura del modelo, siempre y			cuando éste haya sufrido algunas modificación y no se esté ya ejecutando un proceso de auto reparación, esto implica			verificar absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir un cambio en el			modelo, verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente aquellos cuyo			estímulo coincida con el que desencadenó la actualización del modelo, optimizando así de manera drástica la cantidad			de restricciones a verificar, lo que hace más escalable la auto reparación.
+	\subsection{Modelo Extendido de QAS}
+	\label{sec:modeloExtensionQAS}
 	
-		\todo{Cambiar ATAM por QAS?}
-
-		Hasta aquí se ha detallado el uso que Arco Iris hará del modelo básico de ATAM, pero como se mencionó anteriormente,
-		es necesario extender este modelo para agregar información de auto reparación propiamente dicha. 
+		Hasta aquí se ha detallado el uso que Arco Iris hace del modelo básico de QAS, pero como se mencionó anteriormente,
+		es necesario extender este modelo para agregar información de auto reparación propiamente dicha.
 		
-		En la figura \ref{fig:Arco_Iris_QAS_Model} se puede observar cómo se modela el \textbf{escenario de auto reparación}
-		(\verb@SelfHealingScenario@), el cual además de ser un escenario de ATAM tiene todo la información y la lógica
-		necesaria para que Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación. 
+		En la figura \ref{fig:Arco_Iris_QAS_Model} se puede observar el modelo del \textbf{escenario de auto reparación}\\
+		(\verb@SelfHealingScenario@), el cual, además de ser un QAS tiene toda la información y la lógica necesaria para que
+		Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación.
 
 		\afterpage{\clearpage
 		\begin{figure}[H]
@@ -590,167 +664,44 @@
 			\label{fig:Arco_Iris_QAS_Model}
 		\end{figure}}
 
-		Los escenarios de auto reparación pueden ser deshabilitados, considerando Arco Iris solamente los escenarios
-		habilitados al momento de reparar el sistema. 
-		
-		Otra propiedad utilizada por Arco Iris y que no forma parte de la definición original brindada por ATAM, es la
-		prioridad. Cada \verb@SelfHealingScenario@ tiene preestablecida su prioridad (ver sección \ref{sec:priority} para más
-		detalle). Un escenario de Arco Iris también tiene el conocimiento necesario para determinar si él mismo se satisface		según las condiciones actuales del sistema, y si se seguirá satisfaciendo luego de una potencial aplicación de una		estrategia.		
-		Otra extensión a los escenarios utilizada por Arco Iris para optimizar la auto reparación consiste en que cada
-		escenario conozca las estrategias que el arquitecto del sistema y los \emph{stakeholders} consideran son capaces de
-		reparar el escenario en caso de que este haya dejado de satisfacerse en el entorno actual de ejecución del sistema. En
-		la sección \ref{sec:strategies} puede verse en detalle cómo Arco Iris explota esta información.
-		Por último, es importante mencionar que se ha extendido el concepto de \textbf{entorno} utilizado por ATAM, el cual
+		Los escenarios de auto reparación pueden ser deshabilitados, considerando Arco Iris solamente aquellos escenarios
+		habilitados al momento de reparar el sistema.
+
+		Otra propiedad utilizada por Arco Iris y que no forma parte de la definición original de un QAS, es la prioridad. Cada
+		\verb@SelfHealingScenario@ tiene preestablecida su prioridad (ver sección \ref{sec:priority} para más detalle). Un		escenario de Arco Iris también tiene el conocimiento necesario para determinar si se satisface según las condiciones		actuales del sistema, y también para predecir si seguirá satisfaciendose luego de una potencial aplicación de una		estrategia en particular.
+		Otra extensión a QAS implementada por Arco Iris para optimizar la auto reparación consiste en que cada escenario
+		conozca las estrategias que el arquitecto del sistema y los \emph{stakeholders} consideran son capaces de reparar el
+		escenario en caso de que este haya dejado de satisfacerse. En la sección \ref{sec:strategies} puede verse en detalle		cómo Arco Iris explota esta información.
+		Por último, es importante recordar que se ha extendido el concepto de \textbf{entorno} utilizado por QAS, el cual
 		pasa a contar, además de con su nombre, con un conjunto de condiciones que serán utilizadas para saber si un determinado
 		escenario aplica, dado su entorno, para las condiciones actuales del sistema, y además será capaz de determinar la		importancia de cada \emph{concern} para el caso en el que el sistema en ejecución se encuentre en este entorno. Esta		extensión ya fue explicada en detalle en la sección \ref{sec:environment}.	
 
-	\subsection{Configuración de Arco Iris}
-	
-		\todo{Explicar SelfHealingConfiguration y su archivo de configuracion. No profundizar en los temas, sólo poner
-		referencias a las secciones(tal vez haya que agregar mas secciones)}
-		
-		\todo{Esta subseccion no es mejor dejarla para el final de la seccion? Algo del estilo ``Para configurar todo lo
-		visto en esta seccion utilizaremos Arco Iris UI''. De hecho es Arco Iris UI tiene una subseccion llamada
-		``Formato de salida: XML''}
-		
-		\todo{Mencionar que dicha configuración es administrada por SelfHealingConfigurationManager}
-
-		\subsubsection{Actualización Dinámica de Configuración}
-		\label{sec:actualizacionDinamicaConfig}
-
-			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del \emph{framework}
-			sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación, proponemos un simple
-			mecanismo de detección de cambios en el archivo de configuración de Arco Iris, el cual, al detectar cualquier cambio en
-			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
-			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
-			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
-			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
-			de \verb@customize.scenarios.reloadInterval@, cuyo valor inicial por defecto será $5000$, es decir, el mecanismo de
-			actualización se ejecutará cada 5 segundos.
-
-			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca del patrón Observer, visitar
-			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
-			llevar a cabo alguna acción como consecuencia de un cambio en la configuración. El componente (\emph{observer}
-			siguiendo la nomenclatura utilizada comúnmente en el patrón) más interesado en conocer cuando un cambio en la
-			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager}, el cual, en ese caso, descarta
-			toda la configuración de los escenarios cargada en memoria, tomando luego la nueva configuración del archivo
-			recientemente actualizado. A partir de este momento Arco Iris continuará trabajando con la nueva configuración de
-			escenarios sin detener en ningún momento su ejecución.
-			
-			El mecanismo descrito en este apartado se encuentra implementado en la clase\\
-			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
-
-			\begin{Verbatim}[gobble=4]
-				private static final long CONFIG_RELOAD_INTERVAL_MS =
-					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
-
-				private static final String SELF_HEALING_CONFIG_FILE_NAME =
-					Rainbow.property("customize.scenarios.path");
-
-				private static final File SELF_HEALING_CONFIG_FILE =
-					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
-				(...)
-				public FileSelfHealingConfigurationDao() {
-					super();
-					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
-					this.loadSelfHealingConfigurationFromFile();
-
-					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
-						@Override
-						protected void onChange(File file) {
-							logger.info(SELF_HEALING_CONFIG_FILE_NAME +
-								" has just changed, reloading Self Healing Configuration!");
-							loadSelfHealingConfigurationFromFile();
-							notifyListeners();
-						}
-					};
-
-					Timer timer = new Timer();
-					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
-				}
-				
-				public void register(SelfHealingConfigurationChangeListener listener) {
-					this.listeners.add(listener);
-				}
-				
-				protected void notifyListeners() {
-					for (SelfHealingConfigurationChangeListener listener : this.listeners) {
-						listener.selfHealingConfigurationHasChanged();
-					}
-				}
-								
-				(...)
-			\end{Verbatim}
 
 	\subsection{Prioridades entre Escenarios}
 	\label{sec:priority}
 	
-		\todo{Continuar revisando desde aca}
+		\todo{TURCO Y JONY: continuar revisando desde aca}
 
-		Rainbow también maneja el concepto de escenario, aunque no es equivalente al manejado por Arco Iris, el cual toma el
-		concepto de Escenario de QAW de la definición de ATAM. Desde la perspectiva de Rainbow, el escenario es algo
-		configurable pero estático, es decir, no ofrece la posibilidad de adaptarse a los cambios del entorno, por lo que el
-		arquitecto deberá configurar el escenario\todo{Turco: el siguiente footnote no es redundante? ya se aclaró esto dos
-		oraciones más atrás\ldots si lo es, please borralo nomas} \footnote{Recordar que aquí``escenario'' no se refiere a los
-		Escenarios de QAW utilizados por Arco Iris, tan sólo se reutiliza con la finalidad de explicar el funcionamiento de
-		Rainbow.} previo a iniciar Rainbow, intentando vislumbrar cuales serán las condiciones en las que la aplicación deberá
-		responder, para lo cual configurará la importancia de cada uno de los \emph{concerns} del sistema. A continuación se
-		muestra cómo se realiza dicha configuración en Rainbow\label{rainbowScenario}:
+		Una característica distintiva de Arco Iris, la cual no posee contraparte alguna en Rainbow, es la de ofrecer la
+		posibilidad de \textbf{priorizar escenarios} asignándoles prioridades relativas, de modo tal que al momento de escoger
+		una estrategia de auto reparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación
+		considerada más importante según la visión de los \emph{stakeholders}.
 
-		\begin{Verbatim}[gobble=4]
-				weights:
-					scenario 1:
-						uR: 0.35
-						uF: 0.4
-						uC: 0.25
-					scenario 2:
-						uR: 0.5
-						uF: 0.3
-						uC: 0.2
-					scenario 2b:
-						uR: 0.5
-						uF: 0.2
-						uC: 0.3
-		\end{Verbatim}
-
-		Cada una de las líneas representa el valor que se le asigna a cada \emph{concern}, en donde uR representa al Tiempo de
-		Respuesta, uF a la Fidelidad de la información y uC al Costo. Notar que la sumatoria de los pesos de los distintos
-		\emph{concern} debe ser igual a 1 dentro de cada escenario, al igual que sucede en el \emph{Entorno} al configurar Arco Iris.
-
-		Esto es lo que veremos, entre otras cosas, en el archivo de configuración \emph{utilities.yml} utilizado por Rainbow.
-		Aquí, como vemos, existe más de una configuracion del escenario, luego se deberá seleccionar una de estas opciones en
-		el archivo de configuración \verb@rainbow.properties@. Estos valores serán luego utilizados por Rainbow a la hora de
-		seleccionar una estrategia, veremos en detalle su utilización en la sección \ref{sec:strategySelection}.
-
-		Presentado ya el concepto de escenario utilizado por Rainbow, pasaremos estas ideas a su contrapartida en Arco Iris.
-		Como hemos visto anteriormente, en Arco Iris existen los conceptos de \emph{Entorno} y \emph{Escenario}, los cuales
-		respetan al pie de la letra los conceptos introducidos por ATAM (ver sección \ref{sec:atam}). El concepto de escenario
-		utilizado por Rainbow se asemeja mucho más al concepto de \emph{Entorno} de ATAM que al de \emph{Escenario}. La
-		diferencia fundamental radica en que en Arco Iris no se requiere que el usuario configure en qué entorno se encuentra
-		el sistema, sino que el usuario debe detallar cuales son las condiciones que definen al entorno, y, en caso de
-		cumplirse dichas condiciones, cuales serán los pesos que tomarán cada uno de los \emph{concerns} del sistema.
-
-		Dicho esto podemos introducirnos directamente en la relación de prioriades entre escenarios, sin confundir los
-		conceptos manejados en ambos \emph{frameworks}.
-
-		En resumen, Rainbow permite priorizar básicamente por \emph{concerns}, y de manera estática, mientras que Arco Iris
-		permite priorizar escenarios asignandoles prioridades relativas, de modo tal que al momento de escoger una estrategia
-		de autoreparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación considerada
-		más importante según la visión de los \emph{stakeholders}.
-
-		Para lograr esto, cada escenario tendrá asignada una prioridad, la cual estará dada por un entero mayor a cero
-		cuyo valor es inversamente proporcional a la prioridad que se desea asignar a un escenario. Por ejemplo, un escenario
-		con prioridad 2 es considerado más prioritario que otro con prioridad 6. Si bien se ofrece esta posibilidad al
-		usuario, la misma debe manejarse con sumo cuidado ya que es probable que, al configurar escenarios con prioridades
-		muy grandes, éstos no tengan prácticamente ningún peso a la hora de seleccionar la estrategia de autoreparación a
-		aplicar, por lo cual dichos escenarios nunca serán reparados, careciendo de sentido así su existencia.
+		Para lograr lo antedicho, a cada escenario se le asigna una prioridad, representada por un valor numérico entero
+		positivo que es inversamente proporcional a la importancia que se desea asignarle al escenario. Por ejemplo, un
+		escenario con prioridad 2 es considerado más prioritario que otro con prioridad 6.
+		
+		Si bien esta nueva funcionalidad abre nuevas posibilidades al usuario, por otro lado, la misma debe manejarse con sumo
+		cuidado ya que es probable que, al configurar escenarios con prioridades \emph{muy grandes}, éstos no tengan
+		prácticamente ningún peso al momento de seleccionar la estrategia de auto reparación a aplicar, con lo cual dichos
+		escenarios nunca serán reparados, careciendo de sentido así su existencia.
 
 		La prioridad del escenario es una propiedad fundamental para el correcto funcionamiento de Arco Iris, veremos su
-		importancia al detallar cómo Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la sección
-		\ref{sec:strategySelection}. Por esta razón será de extrema importancia el configurar a conciencia cuales serán los
-		escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el sistema
-		según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad de cada escenario
-		como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAS}.
+		importancia al detallar de qué manera Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la
+		sección \ref{sec:strategySelection}. Por esta razón será de extrema importancia la correcta configuración de cuáles
+		serán los escenarios prioritarios: éstos deberán reflejar la importancia fundamental de los servicios ofrecidos por el
+		sistema según las expectativas de los usuarios finales. Se recomienda realizar la asignación de la prioridad de cada
+		escenario como un paso más del Quality Attribute Workshop (QAW), para más detalle ver la sección \ref{sec:QAW}.
 
 	\subsection{Estrategias y su Relación con los Escenarios}
 	\label{sec:strategies}
@@ -864,9 +815,9 @@
 
 		En Rainbow, las restricciones del sistema se encuentran embebidas en la descripción arquitectónica de sus componentes,
 		más precisamente en el modelo de la arquitectura, el cual se describe utilizando el lenguaje de descripción de
-		arquitectura ACME (\ref{sec:acme}). Por ejemplo, para determinar que el tiempo de respuesta no debe exceder un
-		umbral determinado es necesario definir un invariante en el componente que posee dicha propiedad, como se puede
-		observar en el siguiente ejemplo tomado de la arquitectura de Znn:
+		arquitectura ACME (\ref{sec:acme}). Por ejemplo, para determinar que el tiempo de respuesta no debe exceder un umbral
+		determinado es necesario definir una restricción en el componente que posee dicha propiedad, como se puede observar en
+		el siguiente ejemplo tomado de la arquitectura de Znn:
 
 		\begin{Verbatim}[gobble=4]
 				Component Type ClientT extends ArchElementT with {
@@ -950,31 +901,29 @@
 		modelado de la arquitectura y en la condición de la estrategia, consideremos la siguiente estrategia tomada de Znn a
 		modo de ejemplo:
 
-				\begin{Verbatim}[gobble=4]
-				define boolean cViolation = exists c : T.ClientT in M.components |
-						c.experRespTime > M.MAX_RESPTIME;
+		\begin{Verbatim}[gobble=3]
+			define boolean cViolation = exists c : T.ClientT in M.components |
+					c.experRespTime > M.MAX_RESPTIME;
+	
+			strategy QuickDirtyReduceResponseTime
+			[ cViolation ] {
+			  t0: (/*hiLoad*/ cViolation) -> lowerFidelity(2, 100) @[2000 /*ms*/] {
+			    t1: (!cViolation) -> done;
+			  }
+			}
+		\end{Verbatim}
 
-				strategy QuickDirtyReduceResponseTime
-				[ cViolation ] {
-				  t0: (/*hiLoad*/ cViolation) -> lowerFidelity(2, 100) @[2000 /*ms*/] {
-				    t1: (!cViolation) -> done;
-				  }
-				}
-				\end{Verbatim}
-
-		Donde \emph{cViolation} representa la misma lógica dispuesta en el invariante determinado al modelar la
-		arquitectura:
-				\begin{Verbatim}[gobble=4]
-				Component Type ClientT extends ArchElementT with {
-
-			        Property experRespTime : float <<  default : float = 100.0; >> ;
-					...
-			        rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
-			    }
-			    ...
-			    Property MIN_RESPTIME : float = 100.0;
-
-				\end{Verbatim}
+		Donde \emph{cViolation} representa la misma lógica dispuesta en el invariante determinado al modelar la arquitectura:
+		\begin{Verbatim}[gobble=3]
+			Component Type ClientT extends ArchElementT with {
+	
+		        Property experRespTime : float <<  default : float = 100.0; >> ;
+				...
+		        rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
+		    }
+		    ...
+		    Property MIN_RESPTIME : float = 100.0;
+		\end{Verbatim}
 
 		En Arco Iris, una vez que se ha detectado que un escenario ha dejado de satisfacerse, simplemente se toman como
 		estrategias candidatas las definidas en él, evitando así el \emph{overhead} de volver a verificar las condiciones.
@@ -994,7 +943,7 @@
 
 			La idea principal al utilizar la teoría de la utilidad en Rainbow es enumerar explícitamente los atributos de calidad
 			para las cuales se está evaluando la técnica de autoreparación; luego, indicar el peso dado a cada dimensión (ver
-			\ref{rainbowScenario}). Por otro lado, al valor de cada atributo de calidad en el sistema se le aplicará la función
+			\ref{sec:priority}). Por otro lado, al valor de cada atributo de calidad en el sistema se le aplicará la función
 			de utilidad correspondiente, la cual se encuentra definida para cada \emph{concern} en el archivo de configuración de
 			Rainbow llamado \emph{utilities.yml}. Ejemplo de función de utilidad correspondiente al tiempo de respuesta tomada de
 			Znn:
@@ -1193,11 +1142,86 @@
 
 	\subsection{Modelo de Arco Iris}
 
-		\todo{Turco: La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada. No tiene
-		sentido ponerlo al principio de la sección cuando muchos de los conceptos que se ven todavía no fueron explicados.}
+		\todo{Turco: La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada}
 		
-		\todo{Jony: estoy de acuerdo pero tampoco esta bueno contar todo el cuentito sin graficos que ilustren, veamoslo\ldots}
-
 		\todo{Hacer otro modelo con: ScenarioScoreAssigner,	BaseScenarioScoreAssigner,
 		ScenarioScoreAssigner4CurrentSystemState, ScenarioScoreAssigner4StrategyScoring, ScenarioBrokenDetector,
 		ScenarioRelativePriorityAssigner, DefaultScenarioRelativePriorityAssigner, etc?}
+
+	\subsection{Configuración de Arco Iris}
+	
+		\todo{Explicar SelfHealingConfiguration y su archivo de configuracion. No profundizar en los temas ya que se acaban de
+		explicar (Traer subseccion ``Formato de salida: XML'' de ArcoIrisUI)}
+		
+		\todo{Mencionar que dicha configuración es administrada por SelfHealingConfigurationManager}
+
+		\todo{Explicar: ``Para configurar todo lo visto en esta seccion de una manera mas amena el usuario podrá utilizar Arco
+		Iris UI''}
+
+		\subsubsection{Actualización Dinámica de Configuración}
+		\label{sec:actualizacionDinamicaConfig}
+
+			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del \emph{framework}
+			sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación, proponemos un simple
+			mecanismo de detección de cambios en el archivo de configuración de Arco Iris, el cual, al detectar cualquier cambio en
+			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
+			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
+
+			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
+			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
+			de \verb@customize.scenarios.reloadInterval@, cuyo valor inicial por defecto será $5000$, es decir, el mecanismo de
+			actualización se ejecutará cada 5 segundos.
+
+			Se utiliza el patrón \emph{Observer}\footnote{Para más información acerca del patrón Observer, visitar
+			\url{http://en.wikipedia.org/wiki/Observer_pattern}} como modo de notificar a todos aquellos objetos interesados en
+			llevar a cabo alguna acción como consecuencia de un cambio en la configuración. El componente (\emph{observer}
+			siguiendo la nomenclatura utilizada comúnmente en el patrón) más interesado en conocer cuando un cambio en la
+			configuración tiene lugar es el denominado \textbf{SelfHealingConfigurationManager}, el cual, en ese caso, descarta
+			toda la configuración de los escenarios cargada en memoria, tomando luego la nueva configuración del archivo
+			recientemente actualizado. A partir de este momento Arco Iris continuará trabajando con la nueva configuración de
+			escenarios sin detener en ningún momento su ejecución.
+			
+			El mecanismo descrito en este apartado se encuentra implementado en la clase\\
+			\mbox{\textbf{FileSelfHealingConfiguracionDao}} y podemos ver su código a continuación:
+
+			\begin{Verbatim}[gobble=4]
+				private static final long CONFIG_RELOAD_INTERVAL_MS =
+					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
+
+				private static final String SELF_HEALING_CONFIG_FILE_NAME =
+					Rainbow.property("customize.scenarios.path");
+
+				private static final File SELF_HEALING_CONFIG_FILE =
+					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
+				(...)
+				public FileSelfHealingConfigurationDao() {
+					super();
+					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
+					this.loadSelfHealingConfigurationFromFile();
+
+					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
+						@Override
+						protected void onChange(File file) {
+							logger.info(SELF_HEALING_CONFIG_FILE_NAME +
+								" has just changed, reloading Self Healing Configuration!");
+							loadSelfHealingConfigurationFromFile();
+							notifyListeners();
+						}
+					};
+
+					Timer timer = new Timer();
+					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
+				}
+				
+				public void register(SelfHealingConfigurationChangeListener listener) {
+					this.listeners.add(listener);
+				}
+				
+				protected void notifyListeners() {
+					for (SelfHealingConfigurationChangeListener listener : this.listeners) {
+						listener.selfHealingConfigurationHasChanged();
+					}
+				}
+								
+				(...)
+			\end{Verbatim}
