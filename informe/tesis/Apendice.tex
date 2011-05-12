@@ -985,113 +985,102 @@
 \section{Implementación de Probe y extensión de Arco Iris}
 \label{sec:probesCode}
 
-	\begin{Verbatim}[gobble=4]
-				public class ClientProxyProbe {
-					
-					...
-					
-					public void run() {
-						byte[] bytes = new byte[Util.MAX_BYTES];
-						URL url = new URL(urlStr);
-						HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
-						int cnter = 0;
-						long startTime = System.currentTimeMillis();
-						int length = httpConn.getContentLength();
-						BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
-						while (in.available() > 0 || cnter < length) {
-							int cnt = in.read(bytes);
-							baos.write(bytes, 0, cnt);
-							cnter += cnt;
-						}
-						long endTime = System.currentTimeMillis();
-						String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
-									url.getHost() + ":" + (endTime - startTime) + "ms";
-						reportData(rpt);
-						try {
-							Thread.sleep(sleepTime());
-						} catch (InterruptedException e) {
-							// intentional ignore
-						}
-					}
-			
-					...
+	\begin{Verbatim}
+		public class ClientProxyProbe {
+			...
+			public void run() {
+				byte[] bytes = new byte[Util.MAX_BYTES];
+				URL url = new URL(urlStr);
+				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				int cnter = 0;
+				long startTime = System.currentTimeMillis();
+				int length = httpConn.getContentLength();
+				BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
+				while (in.available() > 0 || cnter < length) {
+					int cnt = in.read(bytes);
+					baos.write(bytes, 0, cnt);
+					cnter += cnt;
 				}
-
+				long endTime = System.currentTimeMillis();
+				String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
+							url.getHost() + ":" + (endTime - startTime) + "ms";
+				reportData(rpt);
+				try {
+					Thread.sleep(sleepTime());
+				} catch (InterruptedException e) {
+					// intentional ignore
+				}
+			}
+			...
+		}
 	\end{Verbatim}
 
 \newpage
 
-	\begin{Verbatim}[gobble=4]
-				public class ClientProxyProbeWithStimulus {
-
-					...
-					
-					public void run() {
-						byte[] bytes = new byte[Util.MAX_BYTES];
-						URL url = new URL(urlStr);
-						HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
-						int cnter = 0;
-						long startTime = System.currentTimeMillis();
-						int length = httpConn.getContentLength();
-						BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
-						while (in.available() > 0 || cnter < length) {
-							int cnt = in.read(bytes);
-							baos.write(bytes, 0, cnt);
-							cnter += cnt;
-						}
-						long endTime = System.currentTimeMillis();
-						String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
-								url.getHost() + "<stimulus:" + stimulusName + ">:" 
-								+ (endTime - startTime) + "ms";
-						reportData(rpt);
-						httpConn.disconnect();
-						try {
-							Thread.sleep(sleepTime());
-						} catch (InterruptedException e) {
-							// intentional ignore
-						}
-					}
-
-					...
-
+	\begin{Verbatim}
+		public class ClientProxyProbeWithStimulus {
+			...
+			public void run() {
+				byte[] bytes = new byte[Util.MAX_BYTES];
+				URL url = new URL(urlStr);
+				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				int cnter = 0;
+				long startTime = System.currentTimeMillis();
+				int length = httpConn.getContentLength();
+				BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
+				while (in.available() > 0 || cnter < length) {
+					int cnt = in.read(bytes);
+					baos.write(bytes, 0, cnt);
+					cnter += cnt;
+				}
+				long endTime = System.currentTimeMillis();
+				String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
+						url.getHost() + "<stimulus:" + stimulusName + ">:" 
+						+ (endTime - startTime) + "ms";
+				reportData(rpt);
+				httpConn.disconnect();
+				try {
+					Thread.sleep(sleepTime());
+				} catch (InterruptedException e) {
+					// intentional ignore
+				}
+			}
+			...
 	\end{Verbatim}
 
 \newpage
-
 
 \section{Implementación de NumericBinaryRelationalConstraint}
 \label{sec:numericBinaryRelationalConstraintCode}
 
-	\begin{Verbatim}[gobble=4]
-				@XStreamAlias("numericBinaryRelationalConstraint")
-				public class NumericBinaryRelationalConstraint 
-						extends BaseSinglePropertyInvolvedConstraint {
-				
-					private NumericBinaryOperator binaryOperator;
-				
-					private Number constantToCompareThePropertyWith;
-				
-					@XStreamOmitField
-					private String exponentialPropertyName;
-				
-					public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, 
-							String property,NumericBinaryOperator binaryOperator, 
-							Number constantToCompareThePropertyWith) {
-						super(artifact, property);
-						this.quantifier = quantifier;
-						this.binaryOperator = binaryOperator;
-						this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
-					}			
-					
-					public boolean holds(Number expValue) {
-						boolean holds = this.binaryOperator.performOperation(expValue, 
-								this.constantToCompareThePropertyWith);
-						return holds;
-					}
-				
-					...
-				}	
-	
+	\begin{Verbatim}
+		@XStreamAlias("numericBinaryRelationalConstraint")
+		public class NumericBinaryRelationalConstraint 
+				extends BaseSinglePropertyInvolvedConstraint {
+		
+			private NumericBinaryOperator binaryOperator;
+		
+			private Number constantToCompareThePropertyWith;
+		
+			@XStreamOmitField
+			private String exponentialPropertyName;
+		
+			public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, 
+					String property,NumericBinaryOperator binaryOperator, 
+					Number constantToCompareThePropertyWith) {
+				super(artifact, property);
+				this.quantifier = quantifier;
+				this.binaryOperator = binaryOperator;
+				this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
+			}			
+			
+			public boolean holds(Number expValue) {
+				boolean holds = this.binaryOperator.performOperation(expValue, 
+						this.constantToCompareThePropertyWith);
+				return holds;
+			}
+			...
+		}	
 	\end{Verbatim}
