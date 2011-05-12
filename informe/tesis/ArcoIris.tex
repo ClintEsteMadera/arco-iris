@@ -1143,13 +1143,26 @@
 			actual del sistema), Arco Iris lo pesará con la prioridad relativa del escenario. Una vez obtenido este valor, será
 			acumulado al puntaje de la estrategia, escogiendo finalmente la estrategia de mayor puntaje para reparar el sistema.
 
-	\subsection{Modelo de Arco Iris}
+	\subsection{Modelo de Adaptación de Arco Iris}
 
+		
 		\todo{Turco: La idea de esta sección es la de mostrar el modelo de la extensión de una manera consolidada}
 		
-		\todo{Hacer otro modelo con: ScenarioScoreAssigner,	BaseScenarioScoreAssigner,
-		ScenarioScoreAssigner4CurrentSystemState, ScenarioScoreAssigner4StrategyScoring, ScenarioBrokenDetector,
-		ScenarioRelativePriorityAssigner, DefaultScenarioRelativePriorityAssigner, etc?}
+		\todo{Jony: no entiendo que se puede mostrar que no esté ya en Arco Iris QAS Model.png y en
+		Arco Iris Architecture.png, agregué un modelo de la adaptación realizada por Arco Iris. No mencioné que hay un Score
+		Assigner para el estado actual y otro para scorear la estrategia, cuando lleguemos acá vemos si ya se explicó.}
+		
+		En la figura \ref{fig:Arco_Iris_Adaptation_Model} se presenta el modelo conceptual de la adaptación
+		llevada a cabo por Arco Iris, el cual ha sido desarrollado en detalle hasta aquí.
+		
+		\afterpage{\clearpage
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Adaptation_Model.png}
+			\caption{Modelo de Adaptación de Arco Iris}
+			\label{fig:Arco_Iris_Adaptation_Model}
+		\end{figure}}
+
 
 	\subsection{Configuración de Arco Iris}
 	
