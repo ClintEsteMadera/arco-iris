@@ -6,7 +6,7 @@
 		Requerimientos se busca imponer el término \textbf{Atributos de Calidad} a las categorías de requerimientos que un
 		sistema debe cumplir. Tradicionalmente los requerimientos eran divididos en \textbf{Requerimientos Funcionales} para
 		referirse a la ``funcionalidad del negocio'' y \textbf{Requerimientos No Funcionales} para referirse a otros
-		requerimientos como seguridad, \emph{performance}, usabilidad, escalabilidad, etc. Sin embargo, esta división resulta
+		requerimientos como seguridad, eficiencia, usabilidad, escalabilidad, etc. Sin embargo, esta división resulta
 		poco apropiada, dado que algunos de los llamados \textbf{Requerimientos No Funcionales} usualmente se terminan
 		implementando con funcionalidad, como puede ser un módulo de autenticación para lograr seguridad. El término
 		\textbf{Atributos de Calidad} aparece entonces como más general, y permite una clasificación más clara entre la
@@ -48,7 +48,7 @@
 			
 			\begin{Quote}
 				La calidad del \emph{software} es el nivel que posee de una combinación deseada de atributos (e.g. confiabilidad,
-				interoperabilidad, \emph{performance}, etc.)
+				interoperabilidad, eficiencia, etc.)
 			\end{Quote}
 			
 			Algunos ejemplos de atributos de calidad definidos en los estándares IEEE 1061 / ISO 9126
@@ -66,7 +66,7 @@
 			¿Qué significa esto exactamente? La pregunta es difícil de contestar si no se dispone de más información.
 			Evidentemente, los atributos de calidad son categorizaciones de alto nivel que, si no se dispone de más
 			información, no parecen servir de mucho para tomar decisiones arquitectónicas en pos de alcanzar un
-			nivel aceptable de dichos atributos de calidad. Al rescate de tal carencia aparecen las denominadas
+			nivel aceptable de dichos atributos de calidad. Para superar esa carencia aparecen las denominadas
 			\textbf{Incumbencias} o, del inglés y tales como las llamaremos a lo largo de este trabajo, \textbf{Concerns}.
 			
 			Los \textbf{Concerns} son parámetros mediante los cuales los atributos de un sistema son juzgados, especificados y
@@ -88,7 +88,7 @@
 			\end{center}
 
 			Los \emph{concerns} pueden usualmente relacionarse con propiedades de la arquitectura de un sistema, por ejemplo,
-			en una arquitectura cliente-servidor, el atributo de calidad \emph{performance} posee varios \emph{concerns}
+			en una arquitectura cliente-servidor, el atributo de calidad eficiencia posee varios \emph{concerns}
 			asociados, por ejemplo, el \textbf{tiempo de respuesta}, el cuál está relacionado directamente con algunas
 			propiedades de la arquitectura como el ancho de banda de los servidores, la carga del sistema, la cantidad de
 			servidores, etc.
@@ -189,7 +189,7 @@
 		Una forma de describir dichas arquitecturas es mediante el modelado de objetos con UML, si bien este método ha
 		sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes: el más importante e
 		invalidante es que no provee un soporte directo para describir propiedades no funcionales. Ésto hace dificultoso
-		razonar sobre propiedades críticas del sistema, como por ejemplo la \emph{performance} o la confiabilidad. Ésta es la
+		razonar sobre propiedades críticas del sistema, como por ejemplo la eficiencia o la confiabilidad. Ésta es la
 		razón principal que ha motivado el avance de los ADLs (\emph{Architecture Description Languages}). Para más
 		información sobre la discusión ADL's vs. UML, remitirse a \cite{ADLsVsUML}.
 
@@ -529,7 +529,7 @@
 		cualquier punto.
 		
 		Por ejemplo, es posible configurar a Znn para que inicie con solamente 2 clientes, mostrando allí un desempeño
-		aceptable y que luego se agreguen 10 clientes, comprometiendo así la \emph{performance} del sistema. De esta
+		aceptable y que luego se agreguen 10 clientes, comprometiendo así la eficiencia del sistema. De esta
 		manera, Znn permite simular cómo responderían las estrategias implementadas ante dicha situación.
 
 	\subsubsection{Modos de Ejecución}
@@ -619,7 +619,7 @@
 		
 			Existe una metodología definida por el Software Engineering Institute (SEI) conocida como \textbf{Quality Attribute
 			Workshops (QAW)}, cuya principal herramienta son los escenarios. Los QAW proveen un método para identificar los
-			atributos de calidad críticos de la arquitectura de un sistema, tales como disponibilidad, \emph{performance},
+			atributos de calidad críticos de la arquitectura de un sistema, tales como disponibilidad, eficiencia,
 			seguridad, etc, que son derivados de objetivos del negocio. QAW no presupone la existencia de una arquitectura del
 			sistema, sino que fue desarrollado como consecuencia de la necesidad de \emph{stakeholders} y arquitectos de un
 			método que permita identificar los atributos de calidad importantes para el correcto funcionamiento del sistema
@@ -657,7 +657,7 @@
 				\item \textbf{Punto de \emph{tradeoff}}: se trata de un componente de la arquitectura donde se afecta más
 				de un atributo de calidad (y por ende, también es un punto sensible para dichos atributos de calidad). Por ejemplo,
 				el módulo de cifrado mencionado anteriormente sería un punto de \emph{tradeoff} de haber requerimientos de
-				\emph{performance}, ya que afecta positivamente la seguridad y negativamente la \emph{performance} del sistema. 
+				eficiencia, ya que afecta positivamente la seguridad y negativamente la eficiencia del sistema. 
 				\item \textbf{\emph{Non risks}} son buenas decisiones de arquitectura que normalmente están implícitas en la
 				arquitectura.
 			\end{itemize}
