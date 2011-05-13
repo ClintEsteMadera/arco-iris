@@ -329,10 +329,10 @@
 			reduciendo así la cantidad de restricciones e invariantes a verificar.
 
 			Para notificar sobre el estímulo desencadente fue necesario extender los \emph{probes}, que, como ya mencionamos
-			anteriormente, son los componentes encargados de extraer del sistema información referente a un
-			determinado \emph{concern}, siendo los responsables también de volcar dicha información en un \emph{bus} compartido
-			con otros \emph{probes}. De este \emph{bus}, los \emph{gauges} consumirán la información para luego interpretarla y
-			transformarla en cambios en los valores de propiedades del modelo de la arquitectura.
+			anteriormente, son los componentes encargados de extraer del sistema información referente a un determinado
+			\emph{concern}, así también como de volcar dicha información en una cola compartida con otros \emph{probes}. De este
+			\emph{bus}, los \emph{gauges} consumirán la información para luego interpretarla y transformarla en cambios en los
+			valores de propiedades del modelo de la arquitectura.
 			
 			La extensión de los \emph{probes} implicó la necesidad de extender los \emph{gauges} de manera tal que puedan
 			interpretar la nueva información sobre estímulos agregada en cada uno de los mensajes creados por los \emph{probes}.
@@ -395,11 +395,10 @@
 
 			Algunas formas posibles de implementar \emph{probes} son:
 			\begin{itemize}
-			  \item Parseo e interpretación de información existente en archivos de logs del sistema o en el servidor en el cual
-			  se ejecuta.
+			  \item \emph{Parsing} e interpretación de información existente en archivos de logs del sistema o en el servidor en
+			  el cual se ejecuta.
 			  \item Invocaciones idempotentes a servicios provistos por el sistema, con el fin de obtener métricas sobre las
-			  respuestas.
-			  \item El sistema a adaptar puede ofrecer servicios específicos que provean información relevante para su auto
+			  respuestas.			  \item El sistema a adaptar puede ofrecer servicios específicos que provean información relevante para su auto
 			  reparación.
 			\end{itemize}
 
@@ -681,6 +680,8 @@
 	\subsection{Prioridades entre Escenarios}
 	\label{sec:priority}
 	
+		\todo{TURCO Y JONY: continuar revisando desde aca}
+
 		Una característica distintiva de Arco Iris, la cual no posee contraparte alguna en Rainbow, es la de ofrecer la
 		posibilidad de \textbf{priorizar escenarios} asignándoles prioridades relativas, de modo tal que al momento de escoger
 		una estrategia de auto reparación la estrategia seleccionada no comprometa a alguna otra funcionalidad de la aplicación
@@ -887,18 +888,17 @@
 			así, ante la invocación de un estímulo en el sistema, Arco Iris sólo deberá verificar que se cumplan los escenarios
 			relacionados con aquel estímulo, acotando así de manera sustancial la cantidad de chequeos a realizar. Recordar			que en Rainbow, ante cualquier modificación en el estado de la arquitectura, es necesario verificar todas las			restricciones definidas para la auto reparación.
 	
-			\ceria{poner un grafico que ilustre este proceso mejor!}
-	
 			Paso a paso, el proceso de activación de la auto reparación en Arco Iris consiste en lo siguiente:
 			\begin{enumerate}
 				\item En el sistema en ejecución ocurre un evento, y uno o más \emph{probes} de Arco Iris lo detectan y publican
-				información sobre dicho evento en un \emph{bus} compartido (ya existente en Rainbow).
-				\item Un \emph{gauge} configurado para ``escuchar'' este tipo de eventos, toma el mensaje y lo traduce a un
-				mensaje que incluye una tripla \verb@<Propiedad,Valor,Estímulo>@, la cual a su vez será depositada en una cola.
-				\item El componente \emph{gauge coordinator} chequea periódicamente dicha cola en búsqueda de nuevas instrucciones
-				para actualizar el modelo arquitectural con los cambios ocurridos en \emph{runtime}. Al encontrar el mensaje dejado por
-				el \emph{gauge}, informará a \verb@ArcoIrisModel@ (una extensión del \verb@RainbowModel@) sobre dicho cambio de
-				propiedad y el estímulo que lo generó.
+				información sobre dicho evento en una cola compartida (ya existente en Rainbow).
+				\item Un \emph{gauge} configurado para ``escuchar'' este tipo de eventos, toma el mensaje de la cola y lo traduce a
+				un mensaje que incluye una tripla \verb@<Propiedad,Valor,Estímulo>@, la cual a su vez será depositada en otra cola
+				compartida entre todos los \emph{gauges}.
+				\item El componente \emph{gauge coordinator} chequea periódicamente esta última cola en búsqueda de nuevas
+				instrucciones para actualizar el modelo arquitectural con los cambios ocurridos en \emph{runtime}. Al encontrar el
+				mensaje dejado por el \emph{gauge},informará a \verb@ArcoIrisModel@ (una extensión de \verb@RainbowModel@) sobre
+				dicho cambio de propiedad y el estímulo que lo generó.
 				\item
 					\begin{enumerate}
 						\item Suponiendo que no existe un proceso de adaptación en progreso, \verb@ArcoIrisModel@ procede a actualizar el
@@ -925,6 +925,13 @@
 				entorno de operación actual. Tanto este proceso como el concepto de \emph{Utilidad del Sistema} serán cubiertos en
 				detalle en las siguientes dos secciones.
 			\end{enumerate}
+
+			\begin{figure}[H]
+				\centering
+					\includegraphics[width=0.90\textwidth]{images/SelfHealingActivation.png}
+				\caption{Activación de la estrategia de reparación en Arco Iris}
+				\label{fig:SelfHealingActivation}
+			\end{figure}
 
 	\subsection{Selección de la Estrategia}
 	\label{sec:strategySelection}
