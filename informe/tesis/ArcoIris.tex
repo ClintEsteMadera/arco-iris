@@ -1232,7 +1232,10 @@
 			\emph{concern} del escenario en cuestión, pero además de ponderar la dicha utilidad con el peso del \emph{concern}
 			(que en Rainbow es estático mientras que en Arco Iris dependerá del entorno actual del sistema), Arco Iris
 			considerará también la prioridad relativa del escenario. Finalmente, el valor obtenido será acumulado al puntaje de
-			la estrategia, escogiendo, finalmente, para reparar el sistema a aquella estrategia que posea el puntaje máximo.
+			la estrategia, escogiendo para reparar el sistema a aquella estrategia que posea el puntaje máximo.
+			
+			La estrategia elegida hace uso de \emph{Effectors}, que consisten en pequeñas piezas de software diseñadas
+			especialmente para interactuar de manera directa con el sistema en ejecución.
 
 	\subsection{Modelo de Adaptación de Arco Iris}
 
@@ -1254,8 +1257,13 @@
 	
 		La configuración de Arco Iris se encuentra modelada en \verb@SelfHealingConfiguration@, el cual que posee la siguiente
 		estructura:
-		
-		\todo{Hacer un diagrama de la clase SelfHealingConfiguration con UML}
+
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.50\textwidth]{images/SelfHealingConfiguration.png}
+			\caption{Estructura de la configuración de Self Healing utilizada por Arco Iris}
+			\label{fig:SelfHealingConfiguration}
+		\end{figure}		
 
 		A fin de simplificar y amenizar para el usuario la creación y edición de la configuración que Arco Iris utiliza, se
 		provee la herramienta Arco Iris UI, la cuál será explicada en detalle en la sección \ref{sec:arcoIrisUI}.
