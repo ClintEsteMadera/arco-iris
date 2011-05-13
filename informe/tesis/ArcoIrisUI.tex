@@ -53,23 +53,14 @@
 		
 	\subsection{Conceptos básicos de uso de la herramienta}
 
-		\subsubsection{Formato de salida: XML}
+		\subsubsection{Formato de entrada y salida: XML}
 
-			La configuración de \emph{Self Healing} que Arco Iris UI debe generar debe ser guardada en un archivo, en un
-			determinado formato. Consideramos que el mejor formato para dicho archivo es el formato XML porque es un formato
-			entendible no sólo por la computadora sino también por seres humanos. Esto es particularmente útil en el caso
-			en que el usuario desee efectuar retoques mínimos sobre la configuración y no desee o no pueda por algún motivo
-			correr Arco Iris UI. Dentro de este tipo de lenguajes (dónde se encuentran otros como JSON o YAML\footnote{Para más
-			información sobre estos lenguajes de intercambio de datos, visitar \url{http://www.json.org/} o
-			\url{http://www.yaml.org/}}) elegimos el formato XML por ser el más ampliamente conocido.
+			Arco Iris UI lee y graba la configuración que genera en un archivo XML, de acuerdo al formato explicado en detalle
+			en la sección \ref{sec:formatoArchivoConfiguracion}.
 			
-			La mecánica de serialización de una configuración de \emph{Self Healing} creada en Java utilizando Arco Iris UI a
-			XML y la importación de dicho XML en Arco Iris es llevada a cabo utilizando el reconocido parser ``XStream''
-			\footnote{Para más información, visitar \url{http://xstream.codehaus.org/}}, el cual permite fácilmente convertir
-			objetos Java en XML y viceversa.
-			
-			En el apéndice \ref{sec:SelfHealingConfigXML}, podemos observar un ejemplo de un archivo de configuración de
-			\emph{Self Healing} generado por Arco Iris UI.
+			El mecanismo utilizado para serializar una configuración de \emph{Self Healing} a un archivo XML es exactamente el
+			mismo que el mecanismo utilizado por Arco Iris para importar dicho archivo. El mismo se encuentra detallado en la
+			sección \ref{sec:lecturaConfiguracion}.
 	
 		\subsubsection{Una configuración de \emph{Self Healing} subyacente}
 
