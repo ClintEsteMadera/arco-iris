@@ -47,18 +47,12 @@ public class SelfHealingConfigurationManager implements SelfHealingConfiguration
 		this.selfHealingConfigurationRepository.register(this);
 	}
 
+	/**
+	 * This method is only useful when Arco Iris is "in simulation"
+	 */
 	public List<Stimulus> getStimuli(String qualifiedPropertyName) {
 		List<Stimulus> stimulusPerProperty = this.stimulusByPropertyMap.get(qualifiedPropertyName);
 		return stimulusPerProperty == null ? new ArrayList<Stimulus>(0) : stimulusPerProperty;
-	}
-
-	public List<SelfHealingScenario> getScenarios(Stimulus stimulus) {
-		List<SelfHealingScenario> result = new ArrayList<SelfHealingScenario>(this.scenariosMap.get(stimulus));
-		List<SelfHealingScenario> scenariosValidForAnyStimulus = this.scenariosMap.get(Stimulus.ANY);
-		if (scenariosValidForAnyStimulus != null) {
-			result.addAll(scenariosValidForAnyStimulus);
-		}
-		return result;
 	}
 
 	public List<SelfHealingScenario> findBrokenScenarios(Stimulus stimulus) {
@@ -78,6 +72,15 @@ public class SelfHealingConfigurationManager implements SelfHealingConfiguration
 		}
 		log(Level.INFO, "END Finding broken scenarios!");
 		return brokenScenarios;
+	}
+
+	public List<SelfHealingScenario> getScenarios(Stimulus stimulus) {
+		List<SelfHealingScenario> result = new ArrayList<SelfHealingScenario>(this.scenariosMap.get(stimulus));
+		List<SelfHealingScenario> scenariosValidForAnyStimulus = this.scenariosMap.get(Stimulus.ANY);
+		if (scenariosValidForAnyStimulus != null) {
+			result.addAll(scenariosValidForAnyStimulus);
+		}
+		return result;
 	}
 
 	public Collection<SelfHealingScenario> getEnabledScenarios() {

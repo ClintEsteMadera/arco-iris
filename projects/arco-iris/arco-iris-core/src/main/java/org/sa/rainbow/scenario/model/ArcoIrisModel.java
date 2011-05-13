@@ -190,6 +190,9 @@ public class ArcoIrisModel implements Model, ModelRepository {
 		}
 	}
 
+	/**
+	 * This method is only useful when Arco Iris is "in simulation"
+	 */
 	public List<Stimulus> getStimuli(String property) {
 		return this.selfHealingConfigurationManager.getStimuli(property);
 	}
