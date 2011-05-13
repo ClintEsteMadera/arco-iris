@@ -45,7 +45,7 @@
 
 		Normalmente, por cada tipo relevante de \emph{concern} que interese ser monitoreado en tiempo de ejecución existe un
 		par \verb@<Gauge,Probe>@ asociado. Un ejemplo de \emph{concern} podría ser: ``tiempo de respuesta experimentado por el
-		usuario'', el cual es un \emph{concern} relacionado al atributo de calidad \emph{performance}.
+		usuario'', el cual es un \emph{concern} relacionado al atributo de calidad eficiencia.
 
 		El \emph{Gauge Coordinator}, tal como su nombre lo sugiere, coordina la información provista por todos los
 		\emph{gauges} y se encarga de notificar los cambios en el sistema en ejecución al componente \emph{Rainbow Model}.
@@ -266,7 +266,7 @@
  		Con el objetivo de subsanar las falencias anteriormente comentadas, Arco Iris extiende el conocimiento que
  		Rainbow posee sobre el sistema y lo organiza de una manera más adecuada. Esencialmente, se incluye información sobre
 		los atributos de calidad del sistema que son relevantes para los \emph{stakeholders}. Se permite, por ejemplo, poder
-		describir la importancia relativa de la \emph{performance}, la disponibilidad, etc.; definiendo así una serie de
+		describir la importancia relativa de la eficiencia, la disponibilidad, etc.; definiendo así una serie de
 		\emph{tradeoffs} entre distintos atributos de calidad requeridos para el sistema. El enfoque propuesto para lograr
 		esto consiste en especificar \textbf{Escenarios de Atributos de Calidad}, tal cual fueron descritos en la sección
 		\ref{sec:QAS}, extendiendo el concepto con información orientada a flexibilizar la auto reparación. Esta extensión es		explicada en detalle en la sección \ref{sec:modeloExtensionQAS}.
@@ -277,7 +277,8 @@
 			\item Gracias al uso de QAS, el invariante o restricción que en Rainbow se encontraba descrito en el modelo de la
 			arquitectura, pasa a formar parte del \emph{response measure}. Luego, para solucionar la falta de correlato entre la
 			detección del problema y su reparación, Arco Iris extiende el concepto de escenario, agregándole el conocimiento de
-			cuáles son las estrategias de reparación candidatas para reparar el sistema.
+			cuáles son las estrategias de reparación candidatas para reparar el sistema, en caso de que dicho escenario no se
+			cumpla.
 			\item  Conforme a lo explicado en el punto anterior, se evita la necesidad de considerar todas las estrategias como
 			candidatas, tal cual era el comportamiento original de Rainbow.
 			\item Al contar con el correlato explícito entre el problema y sus posibles soluciones, ya no es necesario especificar
@@ -330,7 +331,7 @@
 			Para notificar sobre el estímulo desencadente fue necesario extender los \emph{probes}, que, como ya mencionamos
 			anteriormente, son los componentes encargados de extraer del sistema información referente a un
 			determinado \emph{concern}, siendo los responsables también de volcar dicha información en un \emph{bus} compartido
-			con otros \emph{probes}. De este bus, los \emph{gauges} consumirán la información para luego interpretarla y
+			con otros \emph{probes}. De este \emph{bus}, los \emph{gauges} consumirán la información para luego interpretarla y
 			transformarla en cambios en los valores de propiedades del modelo de la arquitectura.
 			
 			La extensión de los \emph{probes} implicó la necesidad de extender los \emph{gauges} de manera tal que puedan
@@ -564,8 +565,8 @@
 	
 				Para ejemplificar la importancia de configurar un entorno correctamente y no hacer abuso del pseudo-entorno ``ANY'',
 				considerar, por ejemplo, un sistema el cual se encuentra bajo excesiva carga, y los \emph{stakeholders} consideran
-				que bajo tales circunstancias lo más prioritario es optimizar la \emph{performance} del sistema. En ese caso, de no
-				especificar el entorno no será posible otorgarle mayor peso a la \emph{performance} por sobre otros \emph{concerns},
+				que bajo tales circunstancias lo más prioritario es optimizar la eficiencia del sistema. En ese caso, de no
+				especificar el entorno no será posible otorgarle mayor peso a la eficiencia por sobre otros \emph{concerns},
 				quedando únicamente la opción de aumentar la prioridad\footnote{se profundizará sobre este tema en la sección
 				\ref{sec:priority}} de todos los escenarios relacionados con dicho \emph{concern}, tergiversando así dicha
 				información, ya que en realidad lo óptimo sería asignarle más peso al \emph{concern performance} en el entorno de
@@ -715,7 +716,7 @@
 		actuales. En otras palabras, Rainbow no tiene forma de determinar \textbf{a priori} la utilidad de una estrategia en
 		el preciso momento en que una o más restricciones sobre el modelo de la arquitectura del sistema se dejan de cumplir.
 		
-		Por ejemplo, para que una estrategia que soluciona problemas de \emph{performance} no sea tenida en cuenta al reparar un
+		Por ejemplo, para que una estrategia que soluciona problemas de eficiencia no sea tenida en cuenta al reparar un
 		escenario relacionado a un atributo de calidad distinto, como por ejemplo el costo, debe agregarse una precondición como
 		la siguiente en la estrategia:
 
@@ -735,7 +736,7 @@
 		\end{Verbatim}
 
 		Con respecto al anterior ejemplo, es importante remarcar que, en caso de que el problema que se está intentando reparar
-		no tenga relación con la \emph{performance}, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los
+		no tenga relación con la eficiencia, Rainbow deberá de todos modos chequear el tiempo de respuesta de todos los
 		clientes, mientras que en Arco Iris existe la posibilidad de evitarlo al configurar correctamente las estrategias
 		asociadas a cada escenario.
 			
@@ -817,7 +818,7 @@
 
 	\subsection{Activación del Mecanismo de Auto Reparación}
 
-		\subsubsection{Resúmen}
+		\subsubsection{Introducción}
 
 			Con el nuevo enfoque presentado en este trabajo, dónde el \emph{Escenario} es el concepto central, es necesario
 			establecer cambios en la lógica aplicada por el \emph{framework} al momento de evaluar restricciones para determinar
@@ -887,6 +888,8 @@
 			así, ante la invocación de un estímulo en el sistema, Arco Iris sólo deberá verificar que se cumplan los escenarios
 			relacionados con aquel estímulo, acotando así de manera sustancial la cantidad de chequeos a realizar. Recordar			que en Rainbow, ante cualquier modificación en el estado de la arquitectura, es necesario verificar todas las			restricciones definidas para la auto reparación.
 	
+			\ceria{poner un grafico que ilustre este proceso mejor!}
+	
 			Paso a paso, el proceso de activación de la auto reparación en Arco Iris consiste en lo siguiente:
 			\begin{enumerate}
 				\item En el sistema en ejecución ocurre un evento, y uno o más \emph{probes} de Arco Iris lo detectan y publican
@@ -927,8 +930,8 @@
 	\subsection{Selección de la Estrategia}
 	\label{sec:strategySelection}
 	
-		\todo{Agregar diagramas de secuencia en toda la sección como para clarificar un poco las explicaciones más
-		complicadas?}
+		\todo{Agregar diagramas conceptuales en las partes que de la sección dónde necesite para clarificar un poco las
+		explicaciones más complicadas}
 
 		Arco Iris selecciona la estrategia a aplicar para reparar el sistema, de un manera sustancialmente diferente a cómo lo
 		hace Rainbow. Para comenzar, Rainbow considera todas las estrategias existentes mientras que Arco Iris se limita a
@@ -938,7 +941,7 @@
 		Como se menciona en la sección \ref{sec:strategies}, Arco Iris también ofrece la posibilidad de considerar todas las
 		estrategias existentes, sin enumerarlas explícitamente, logrando así que tal configuración sea escalable ante el
 		agregado de nuevas estrategias al sistema. Si bien esta decisión evita al usuario el tener que realizar una
-		configuración más rigurosa del \emph{framework}, al mismo tiempo va en desmedro de la \emph{performance} de la auto
+		configuración más rigurosa del \emph{framework}, al mismo tiempo va en desmedro de la eficiencia de la auto
 		reparación, por los motivos ya explicados en la sección \ref{sec:strategies}.
 
 		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarle un valor a cada
@@ -948,6 +951,11 @@
 
 		\subsubsection{Utilidad del Sistema}
 		\label{sec:systemUtility}
+
+			\ceria{No habría que explicarlo más conceptual? Algo así como ``un sistema brinda un 100\% de utilidad cuando cumple
+			todos sus requerimientos y no viola ninguna de las restricciones planteadas en sus escenarios''. En la medida en que
+			los escenarios no se cumplen, la utilidad del sistema baja. Si un conjunto de escenarios pueden estar rotos y el
+			Framework puede decidir cuáles la combinación, es lógico qeu busque maximizar la utilida. O ALGO ASI.}
 
 			Rainbow utiliza la \textbf{teoría de la utilidad}, concepto forjado en el estudio de la economía, que permite asignar
 			una medida relativa de satisfacción (i.e. \emph{utilidad}) sobre un sistema sobre el cual es necesario medir el
@@ -1043,7 +1051,7 @@
 					uC: -1.00
 			\end{Verbatim}
 
-			Esto significa que una vez ejecutada esta táctica, de manera aproximada, la \emph{performance} se verá degradada en
+			Esto significa que una vez ejecutada esta táctica, de manera aproximada, la eficiencia se verá degradada en
 			144 milisegundos y la fidelidad permanecerá intacta, mientras que el costo se reduce en 1.
 			
 			El concepto de \emph{Utilidad del Sistema} es clave para comprender los mecanismos utilizados por Rainbow y Arco Iris
@@ -1217,7 +1225,7 @@
 
 			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
 			asigna al \emph{concern} del escenario en cuestión. Por ejemplo, si el entorno actual es de alta carga, es lógico que
-			los escenarios de \emph{performance} tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
+			los escenarios de eficiencia tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
 			su \emph{concern} y el entorno en el que se encuentra el sistema.
 
 			Luego, al igual que Rainbow, Arco Iris aplicará la función de utilidad al valor estimado por la simulación para el
