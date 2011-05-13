@@ -1,11 +1,13 @@
-package ar.uba.dc.arcoiris.selfhealing;
+package ar.uba.dc.arcoiris.selfhealing.score;
 
 import org.sa.rainbow.scenario.model.ArcoIrisModel;
 import org.sa.rainbow.stitch.core.UtilityFunction;
 
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
+import ar.uba.dc.arcoiris.selfhealing.ScenarioBrokenDetector;
+import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
-public abstract class BaseScenarioScoreAssigner implements ScenarioScoreAssigner {
+public abstract class BaseScenarioScoreAssigner implements ScenarioScoreAssigner, ScenarioBrokenDetector {
 
 	public final double scenarioScore(SelfHealingScenario scenario, Environment currentSystemEnvironment,
 			double concernWeightedScenarioRelativePriority, ArcoIrisModel model, UtilityFunction uf) {
@@ -32,5 +34,4 @@ public abstract class BaseScenarioScoreAssigner implements ScenarioScoreAssigner
 	}
 
 	protected abstract double getConcernPropertyValue(double eavgPropValue, UtilityFunction uf);
-
 }

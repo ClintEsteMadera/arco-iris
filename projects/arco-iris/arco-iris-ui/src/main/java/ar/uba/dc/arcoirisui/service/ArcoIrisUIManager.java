@@ -7,12 +7,12 @@ import java.util.List;
 import ar.uba.dc.arcoirisui.gui.query.RepairStrategySearchCriteria;
 import ar.uba.dc.arcoiris.atam.scenario.model.Artifact;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfiguration;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfigurationPersister;
 import ar.uba.dc.arcoiris.common.Identifiable;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 import ar.uba.dc.arcoiris.selfhealing.StitchLoader;
 import ar.uba.dc.arcoiris.selfhealing.StrategyTO;
+import ar.uba.dc.arcoiris.selfhealing.config.SelfHealingConfiguration;
+import ar.uba.dc.arcoiris.selfhealing.config.persistence.SelfHealingConfigurationPersister;
 
 import commons.query.SearchCriteria;
 

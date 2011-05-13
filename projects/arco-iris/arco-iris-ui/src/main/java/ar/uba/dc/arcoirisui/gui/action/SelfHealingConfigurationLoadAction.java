@@ -4,7 +4,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.FileDialog;
 
 import ar.uba.dc.arcoirisui.service.ArcoIrisUIManager;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfiguration;
+import ar.uba.dc.arcoiris.selfhealing.config.SelfHealingConfiguration;
 
 public class SelfHealingConfigurationLoadAction extends SelfHealingConfigurationBaseFileAction {
 
