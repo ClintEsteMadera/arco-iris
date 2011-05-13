@@ -35,8 +35,8 @@ import ar.uba.dc.arcoiris.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.arcoiris.dao.FileSelfHealingConfigurationDao;
 import ar.uba.dc.arcoiris.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.arcoiris.repository.SelfHealingConfigurationRepository;
-import ar.uba.dc.arcoiris.selfhealing.ScenarioScoreAssigner4CurrentSystemState;
 import ar.uba.dc.arcoiris.selfhealing.StitchLoader;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner4CurrentSystemState;
 import ar.uba.dc.arcoiris.util.sim.graphics.GraphicGenerator;
 
 /**

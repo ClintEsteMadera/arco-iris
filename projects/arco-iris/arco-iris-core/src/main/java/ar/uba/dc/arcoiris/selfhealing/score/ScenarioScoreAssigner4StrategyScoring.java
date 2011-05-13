@@ -1,10 +1,12 @@
-package ar.uba.dc.arcoiris.selfhealing;
+package ar.uba.dc.arcoiris.selfhealing.score;
 
 import java.util.SortedMap;
 
 import org.sa.rainbow.scenario.model.ArcoIrisModel;
 import org.sa.rainbow.stitch.core.Strategy;
 import org.sa.rainbow.stitch.core.UtilityFunction;
+
+import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public class ScenarioScoreAssigner4StrategyScoring extends BaseScenarioScoreAssigner {
 

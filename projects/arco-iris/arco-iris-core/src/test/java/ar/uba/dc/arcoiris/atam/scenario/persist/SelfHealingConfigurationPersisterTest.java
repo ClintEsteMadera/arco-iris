@@ -1,10 +1,10 @@
 package ar.uba.dc.arcoiris.atam.scenario.persist;
 
 import junit.framework.TestCase;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfiguration;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfigurationPersister;
 import ar.uba.dc.arcoiris.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.arcoiris.dao.TestSelfHealingConfigurationDao;
+import ar.uba.dc.arcoiris.selfhealing.config.SelfHealingConfiguration;
+import ar.uba.dc.arcoiris.selfhealing.config.persistence.SelfHealingConfigurationPersister;
 
 public class SelfHealingConfigurationPersisterTest extends TestCase {
 

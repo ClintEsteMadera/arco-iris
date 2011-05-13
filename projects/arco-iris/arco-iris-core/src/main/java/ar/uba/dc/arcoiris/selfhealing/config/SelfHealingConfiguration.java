@@ -1,4 +1,4 @@
-package ar.uba.dc.arcoiris.atam.scenario.persist;
+package ar.uba.dc.arcoiris.selfhealing.config;
 
 import java.util.ArrayList;
 import java.util.List;

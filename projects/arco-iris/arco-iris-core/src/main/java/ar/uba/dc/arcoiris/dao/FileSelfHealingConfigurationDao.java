@@ -15,11 +15,11 @@ import org.sa.rainbow.util.Util;
 
 import ar.uba.dc.arcoiris.atam.scenario.model.Artifact;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfiguration;
-import ar.uba.dc.arcoiris.atam.scenario.persist.SelfHealingConfigurationPersister;
 import ar.uba.dc.arcoiris.common.FileChangeDetector;
 import ar.uba.dc.arcoiris.repository.SelfHealingConfigurationChangeListener;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
+import ar.uba.dc.arcoiris.selfhealing.config.SelfHealingConfiguration;
+import ar.uba.dc.arcoiris.selfhealing.config.persistence.SelfHealingConfigurationPersister;
 
 public class FileSelfHealingConfigurationDao implements SelfHealingConfigurationDao {
 

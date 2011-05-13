@@ -1,4 +1,4 @@
-package ar.uba.dc.arcoiris.atam.scenario.persist;
+package ar.uba.dc.arcoiris.selfhealing.config.persistence;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import ar.uba.dc.arcoiris.atam.scenario.model.Artifact;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
 import ar.uba.dc.arcoiris.rainbow.constraint.numerical.NumericBinaryRelationalConstraint;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
+import ar.uba.dc.arcoiris.selfhealing.config.SelfHealingConfiguration;
 import ar.uba.dc.arcoiris.selfhealing.repair.AllRepairStrategies;
 import ar.uba.dc.arcoiris.selfhealing.repair.SpecificRepairStrategies;
 

@@ -32,12 +32,12 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.arcoiris.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
 import ar.uba.dc.arcoiris.qa.Concern;
-import ar.uba.dc.arcoiris.selfhealing.DefaultScenarioRelativePriorityAssigner;
-import ar.uba.dc.arcoiris.selfhealing.ScenarioRelativePriorityAssigner;
-import ar.uba.dc.arcoiris.selfhealing.ScenarioScoreAssigner;
-import ar.uba.dc.arcoiris.selfhealing.ScenarioScoreAssigner4CurrentSystemState;
-import ar.uba.dc.arcoiris.selfhealing.ScenarioScoreAssigner4StrategyScoring;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
+import ar.uba.dc.arcoiris.selfhealing.priority.DefaultScenarioRelativePriorityAssigner;
+import ar.uba.dc.arcoiris.selfhealing.priority.ScenarioRelativePriorityAssigner;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner4CurrentSystemState;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner4StrategyScoring;
 
 /**
  * The Rainbow Adaptation Engine... <br>

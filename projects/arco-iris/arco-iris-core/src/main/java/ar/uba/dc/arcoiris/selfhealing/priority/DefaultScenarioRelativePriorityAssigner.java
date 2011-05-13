@@ -1,6 +1,7 @@
-package ar.uba.dc.arcoiris.selfhealing;
+package ar.uba.dc.arcoiris.selfhealing.priority;
 
 import ar.uba.dc.arcoiris.atam.scenario.SelfHealingConfigurationManager;
+import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public class DefaultScenarioRelativePriorityAssigner implements ScenarioRelativePriorityAssigner {
 

@@ -1,7 +1,9 @@
-package ar.uba.dc.arcoiris.selfhealing;
+package ar.uba.dc.arcoiris.selfhealing.score;
 
 import org.sa.rainbow.scenario.model.ArcoIrisModel;
 import org.sa.rainbow.stitch.core.UtilityFunction;
+
+import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public class ScenarioScoreAssigner4CurrentSystemState extends BaseScenarioScoreAssigner {
 
