@@ -940,8 +940,10 @@
 				\item Además de actualizar el valor de o de las propiedades en el modelo arquitectural, \verb@ArcoIrisModel@ busca
 				aquellos escenarios que puedan llegar a verse afectados por el estímulo que desencadenó el cambio de propiedad en el
 				modelo (recordemos que dicho estímulo está presente en la tripla que le llega a \verb@ArcoIrisModel@).
-				\item Una vez identificados los escenarios potencialmente afectados, se verifica que se satisfagan, de acuerdo al
-				algoritmo explicado en la sección \todo{PONER SECCION DONDE EXPLICAMOS ESTO!}.
+				\item Una vez identificados los escenarios potencialmente afectados, se verifica que se cumplan las restricciones
+				expresadas en la \textbf{cuantificación de la respuesta}, siempre y cuando el entorno del escenario coincida con el
+				entorno en el que se encuentra el sistema actualmente, de lo contrario, el escenario se considera verificado
+				automáticamente.
 				\item En caso de detectar que uno o más escenarios dejaron de cumplirse, el \verb@ArcoIrisModel@ notifica al
 				\verb@ArcoIrisAdaptationManager@ (una extensión del \verb@AdaptationManager@ de Rainbow) para que inicie la auto
 				reparación del sistema.
