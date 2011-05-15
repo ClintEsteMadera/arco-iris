@@ -113,8 +113,7 @@
 		definida en Stitch, será la siguiente:
 
 		\begin{Verbatim}[gobble=3]
-			strategy EnlistServerResponseTime
-			[ styleApplies ] {
+			strategy EnlistServerResponseTime {
 			  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
 			    t1: (!RESP_TIME_STILL_BROKEN) -> done;
 			    t2: (default) -> TNULL;
@@ -175,8 +174,7 @@
 		considere necesario repararlo:
 
 		\begin{Verbatim}[gobble=3]
-			strategy ReduceOverallCost
-			[ styleApplies ] {
+			strategy ReduceOverallCost {
 			  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
 			    t1: (!COST_STILL_BROKEN) -> done;
 			    t3: (default) -> TNULL;
