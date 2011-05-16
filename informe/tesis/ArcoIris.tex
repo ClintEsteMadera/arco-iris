@@ -1134,40 +1134,41 @@
 		\subsubsection{Puntuación de Estrategias según Arco Iris}
 		\label{sec:arcoIrisStrategyScoring}
 
-		\todo{TURCO y JONY: continuar revisando desde aca}
-
 			En el caso de Arco Iris el primer paso será calcular la utilidad del sistema antes de iniciar la auto reparación,
-			asegurándose así de que la estrategia a aplicar no perjudique el rendimiento actual de la aplicación, esto es, la
-			estrategia que resulte tener la puntuación máxima deberá mejorar la utilidad del sistema, de lo contrario Arco Iris
-			no procederá a ejecutarla.
+			asegurándose así de que la estrategia a aplicar no perjudique el rendimiento actual de la aplicación, es decir, la
+			estrategia que resulte tener la puntuación máxima deberá mejorar la utilidad actual del sistema, de lo contrario Arco
+			Iris no procederá a ejecutarla. El mecanismo utilizado para calcular la utilidad actual del sistema es idéntico al
+			algoritmo de puntuación de una estrategia explicado a continuación, salvo que los cálculos son realizados en base a
+			los valores actuales (reales) del sistema, dejando de lado las estimaciones heurísticas necesarias para predecir el
+			impacto de cada estrategia.
 
 			La heurística aplicada por Arco Iris para el cálculo de la puntuación de una estrategia utilizará el conocimiento
-			plasmado en los escenarios para determinar la mejor estrategia de reparación a aplicar, teniendo en cuenta
-			lo siguiente:
+			plasmado en los escenarios para determinar la mejor estrategia de reparación a aplicar, teniendo en cuenta lo
+			siguiente:
 			\begin{itemize}
 				\item el impacto estimado de la potencial ejecución de la estrategia sobre el sistema, calculado de la misma forma
 				que Rainbow (ver sección \ref{sec:rainbowStrategyScoring}),
-				\item el entorno de ejecución en el que se encuentra la aplicación y el peso que cada \emph{concern} tiene para
+				\item el entorno de ejecución en el que se encuentra la aplicación y el peso que cada \emph{concern} tiene según
 				dicho entorno,
 				\item el \emph{concern} asociado al escenario, y
 				\item las prioridades relativas entre los escenarios.
 			\end{itemize}
 
 			Es importante mencionar que para calcular la utilidad del sistema, Arco Iris sólo considerará aquellos escenarios que
-			se encuentren ``habilitados''(o \emph{enabled}, en el modelo de Arco Iris presentado en la figura
+			se encuentren ``habilitados''(\emph{enabled}, en el modelo de Arco Iris presentado en la figura
 			\ref{fig:Arco_Iris_QAS_Model}). En otras palabras, para calcular la utilidad del sistema, Arco Iris asignará un
 			determinado puntaje a cada escenario habilitado que se satisfaga, el resto de los escenarios serán ignorados, o lo
 			que es equivalente, tendrán puntaje cero.
 			
 			Por cada escenario habilitado, Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de
-			no aplicar el escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios
+			no aplicar, el escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios
 			que sí apliquen al entorno actual, Arco Iris evaluará si las restricciones establecidas en la cuantificación de la
 			respuesta del escenario se satisfacen y sólo en caso afirmativo sumarán a la utilidad del sistema.
 
 			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
 			asignará un puntaje (\emph{score}) a cada uno. A continuación se puede ver plasmado en pseudocódigo el cálculo del
-			puntaje de un escenario y como es utilizado para calcular el puntaje de la estrategia y a su vez como Arco Iris
-			seleccionará la estrategia de mayor puntaje para reparar el sistema:
+			puntaje de un escenario y cómo es utilizado para calcular el puntaje final de la estrategia, seleccionando Arco Iris 
+			aquella de mayor puntaje para ser ejecutada:
 
 			\begin{Verbatim}[gobble=4]
 				scoreMaximo = utilidad actual del sistema
@@ -1179,34 +1180,34 @@
 
 					Por cada escenario habilitado
 						Si (no aplica al entorno actual o
-						    aplica al entorno actual y la cuantificación de la respuesta se satisface)
+						    (aplica al entorno actual y la cuantificación de la respuesta se satisface))
 
 							prioridadRelativa = calcular prioridad relativa del escenario
-							pesoConcern = peso que el entorno actual asigna al concern del escenario
-							scenarioConcern = concern del escenario
-							uf = funcion de utilidad para el concern del escenario
-							utilidad = uf(estimacionPorConcern(scenarioConcern))
+							pesoConcern = peso que el entorno actual asigna a escenario.concern
+							uf = funcion de utilidad para escenario.concern
+							utilidad = uf(estimacionPorConcern(escenario.concern))
 							puntajeEscenario = utilidad * prioridadRelativa * pesoConcern
 							scoreStrategia = scoreStrategia + puntajeEscenario
 						Fin
 					Fin
 
 					Si scoreStrategia > scoreMaximo
-						estrategiaSeleccionada = estrategia actual
+						estrategiaSeleccionada = estrategia
+						scoreMaximo = scoreStrategia
 					Fin
 				Fin
 			\end{Verbatim}
-
+			
 			Como se dijo anteriormente, si la mejor estrategia no agrega más utilidad que la actual, Arco Iris no aplica
 			ninguna estrategia. Luego, por cada estrategia, Arco Iris simulará su aplicación reutilizando para este punto la
 			implementación de Rainbow. Lo importante de la simulación es obtener los valores estimados para cada \emph{concern},
 			los cuales se almacenan en un diccionario \verb@<Concern, Estimación>@.
 
 			Una vez obtenidos los valores estimados, Arco Iris iterará por los escenarios habilitados y por cada escenario que se
-			satisfaga\footnote{Aquí, que un escenario se ``satisfaga'' significa que o bien el entorno del escenario no coincide
-			con el actual, o bien, si coincide y la cuantificación de la respuesta del escenario se satisface} deberá
+			satisfaga\footnote{Recordar que, que un escenario se ``satisfaga'', significa que o bien el entorno del escenario no
+			coincide con el actual, o bien, si coincide y la cuantificación de la respuesta del escenario se satisface} deberá
 			calcular la \textbf{prioridad relativa} del escenario. Recordemos que cada escenario posee una prioridad asignada,
-			pero esa prioridad no puede ser tomada directamente para calcular la Utilidad del Sistema ya que aquellos escenarios
+			pero esa prioridad no puede ser tomada directamente para calcular la utilidad del sistema ya que aquellos escenarios
 			cuyas prioridades son numéricamente menores, poseen una mayor importancia para los \emph{stakeholders}. Para
 			calcular la prioridad relativa y permitir extender y/o modificar la lógica de su cálculo, se ha definido la interfaz
 			\verb@ScenarioRelativePriorityAssigner@, la cual define el siguiente método:
@@ -1215,8 +1216,8 @@
 				public abstract int relativePriority(SelfHealingScenario scenario);
 			\end{Verbatim}
 
-			Por defecto se provee la implementación \verb@DefaultScenarioRelativePriorityAssigner@, que calcula la prioridad
-			relativa pesando los valores absolutos de las prioridades de los escenarios contra el escenario de menor prioridad,
+			Por defecto, se provee la implementación \verb@DefaultScenarioRelativePriorityAssigner@, que calcula la prioridad
+			relativa ponderando los valores absolutos de las prioridades de los escenarios con el escenario de menor prioridad,
 			esto es, el escenario con máxima prioridad numérica entre todos los escenarios:
 
 			\begin{Verbatim}[gobble=4]
@@ -1243,39 +1244,29 @@
 				\item en la sección siguiente se entrará en detalle sobre el rol que cumple en Arco Iris el objeto
 				\verb@SelfHealingConfigurationManager@.
 				\item se toma como prioridad máxima la del escenario menos prioritario, más uno, para evitar que la prioridad
-				relativa de dicho escenario sea cero y que sea ignorado en el cálculo de la Utilidad del Sistema.
+				relativa de dicho escenario sea cero y que sea ignorado en el cálculo de la utilidad del sistema.
 			\end{itemize}
 
 			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
 			asigna al \emph{concern} del escenario en cuestión. Por ejemplo, si el entorno actual es de alta carga, es lógico que
-			los escenarios de eficiencia tengan un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
+			los escenarios de eficiencia posean un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
 			su \emph{concern} y el entorno en el que se encuentra el sistema.
 
 			Luego, al igual que Rainbow, Arco Iris aplicará la función de utilidad al valor estimado por la simulación para el
-			\emph{concern} del escenario en cuestión, pero además de ponderar la dicha utilidad con el peso del \emph{concern}
-			(que en Rainbow es estático mientras que en Arco Iris dependerá del entorno actual del sistema), Arco Iris
-			considerará también la prioridad relativa del escenario. Finalmente, el valor obtenido será acumulado al puntaje de
-			la estrategia, escogiendo para reparar el sistema a aquella estrategia que posea el puntaje máximo.
+			\emph{concern} del escenario, pero además de ponderar dicha utilidad con el peso del \emph{concern}
+			(que en Rainbow es estático mientras que en Arco Iris dependerá del entorno actual del sistema), Arco Iris considerará
+			también la prioridad relativa del escenario. Finalmente, el valor obtenido será acumulado al puntaje de la estrategia,
+			escogiendo para reparar el sistema a aquella estrategia que posea el puntaje máximo.
 			
-			La estrategia elegida hace uso de \emph{Effectors}, que consisten en pequeñas piezas de software diseñadas
-			especialmente para interactuar de manera directa con el sistema en ejecución.
-
-	\subsection{Modelo de Adaptación de Arco Iris}
-
-		\todo{No se mencionó que que hay un ScoreAssigner para el estado actual y otro para scorear la estrategia, cuando
-		lleguemos acá vemos si ya se explicó.}
+			En la figura \ref{fig:Arco_Iris_Adaptation_Model} se presenta el modelo conceptual utilizado por Arco Iris para
+			seleccionar la mejor estrategia de reparación.
 		
-		En la figura \ref{fig:Arco_Iris_Adaptation_Model} se presenta el modelo conceptual de la adaptación
-		llevada a cabo por Arco Iris, el cual ha sido desarrollado en detalle hasta aquí.
-		
-		\todo{Actualizar figura: en la imagen falta la invocacion de Arco Iris Model a Arco Iris Adaptation Manager}
-		
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Adaptation_Model.png}
-			\caption{Modelo de Adaptación de Arco Iris}
-			\label{fig:Arco_Iris_Adaptation_Model}
-		\end{figure}
+			\begin{figure}[H]
+				\centering
+					\includegraphics[width=1.00\textwidth]{images/Arco_Iris_Adaptation_Model.png}
+				\caption{Puntuación y selección de estrategias en Arco Iris}
+				\label{fig:Arco_Iris_Adaptation_Model}
+			\end{figure}
 
 	\subsection{Configuración de Arco Iris}
 	\label{sec:configuracionArcoIris}
@@ -1289,9 +1280,6 @@
 			\caption{Estructura de la configuración de Self Healing utilizada por Arco Iris}
 			\label{fig:SelfHealingConfiguration}
 		\end{figure}		
-
-		A fin de simplificar y amenizar para el usuario la creación y edición de la configuración que Arco Iris utiliza, se
-		provee la herramienta Arco Iris UI, la cuál será explicada en detalle en la sección \ref{sec:arcoIrisUI}.
 
 		Arco Iris obtiene todo lo que necesita de la configuración utilizando un objeto llamado
 		\verb@SelfHealingConfigurationManager@, el cual funciona como un intermediario entre el archivo de configuración y los
@@ -1310,19 +1298,17 @@
 			\ref{sec:arcoIrisStrategyScoring})
 		\end{itemize}
 
-		En el apéndice \ref{sec:SelfHealingConfigXML}, se puede observar un ejemplo de un archivo de configuración de
-		\emph{Self Healing}.
-
 		\subsubsection{Formato del Archivo de Configuración}
 		\label{sec:formatoArchivoConfiguracion}
 
-			El archivo de configuración de \emph{Self Healing} que Arco Iris acepta, debe tener un formato. Se ha
-			decidido que el mejor formato para dicho archivo es el formato XML porque es un formato entendible no sólo por
-			sistemas de \emph{software} sino también por personas. Esto es particularmente útil en el caso en que el usuario
-			desee efectuar retoques mínimos sobre la configuración y no desee o, por algún motivo, no pueda ejecutar la
-			herramienta Arco Iris UI. Dentro de este tipo de lenguajes de marcas (dónde se encuentran otros como JSON o
-			YAML\footnote{Para más información sobre estos lenguajes de intercambio de datos, visitar \url{http://www.json.org/}
-			o \url{http://www.yaml.org/}}) se elige el formato XML por ser el más ampliamente conocido.
+			En el apéndice \ref{sec:SelfHealingConfigXML}, se puede observar un ejemplo de un archivo de configuración de
+			\emph{Self Healing}.
+
+			El archivo de configuración de \emph{Self Healing} que Arco Iris acepta, debe poseer un formato determinado. Se ha
+			decidido que el mejor formato para dicho archivo es XML, ya que es comprensible no sólo por sistemas de
+			\emph{software} sino también por personas. Esto es particularmente útil en el caso en que el usuario desee efectuar
+			modificaciones mínimas sobre la configuración y no desee o, por algún motivo, no pueda ejecutar la herramienta Arco
+			Iris UI.
 
 		\subsubsection{Mecanismo de Lectura de la Configuración}
 		\label{sec:lecturaConfiguracion}
@@ -1336,10 +1322,10 @@
 		\label{sec:actualizacionDinamicaConfig}
 
 			Una de las principales limitaciones de Rainbow es la imposibilidad de actualizar la configuración del \emph{framework}
-			sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación, proponemos un simple
-			mecanismo de detección de cambios en el archivo de configuración de Arco Iris, el cual, al detectar cualquier cambio en
-			dicho archivo, \textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva
-			configuración}; todo esto sin necesidad de reiniciar el \emph{framework}.
+			sin tener que reiniciar su ejecución. A fin de superar (al menos parcialmente) tal limitación, se propone un simple
+			mecanismo de detección de cambios en el archivo de configuración de Arco Iris, el cual, al detectar cualquier cambio,
+			\textbf{reemplazará dinámicamente la configuración de Arco Iris cargada en memoria por la nueva configuración}, todo
+			esto sin necesidad de reiniciar el \emph{framework}.
 
 			El mecanismo se ejecuta periódicamente cada $X$ milisegundos, siendo $X$ configurable utilizando el archivo de
 			configuración estándar de Rainbow \verb@rainbow.properties@. La propiedad a configurar recibe el nombre
@@ -1399,3 +1385,8 @@
 								
 				...
 			\end{Verbatim}
+
+		A fin de simplificar y amenizar para el usuario la creación y edición de la configuración que Arco Iris utiliza, se
+		provee la herramienta Arco Iris UI, la cuál será explicada en detalle en la sección \ref{sec:arcoIrisUI}.
+			
+			
