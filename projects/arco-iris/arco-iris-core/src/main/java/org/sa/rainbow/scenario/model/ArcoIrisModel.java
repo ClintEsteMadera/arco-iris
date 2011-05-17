@@ -142,8 +142,8 @@ public class ArcoIrisModel implements Model, ModelRepository {
 	 */
 	public synchronized void updateProperty(String property, Object value, Stimulus stimulus) {
 		ArcoIrisAdaptationManager adaptationManager = (ArcoIrisAdaptationManager) Oracle.instance().adaptationManager();
+		this.updateProperty(property, value);
 		if (!adaptationManager.adaptationInProgress()) {
-			this.updateProperty(property, value);
 			StringBuffer msg = new StringBuffer("Updated property because of stimulus: ");
 			msg.append(stimulus == null ? "NO STIMULUS!" : stimulus);
 			log(Level.DEBUG, msg.toString());
