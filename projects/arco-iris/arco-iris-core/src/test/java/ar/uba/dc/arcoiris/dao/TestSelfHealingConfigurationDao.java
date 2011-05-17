@@ -4,7 +4,6 @@ import java.util.List;
 
 import ar.uba.dc.arcoiris.atam.scenario.model.Artifact;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
-import ar.uba.dc.arcoiris.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.arcoiris.repository.SelfHealingConfigurationChangeListener;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
