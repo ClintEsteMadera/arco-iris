@@ -36,7 +36,7 @@ import ar.uba.dc.arcoiris.dao.FileSelfHealingConfigurationDao;
 import ar.uba.dc.arcoiris.dao.SelfHealingConfigurationDao;
 import ar.uba.dc.arcoiris.repository.SelfHealingConfigurationRepository;
 import ar.uba.dc.arcoiris.selfhealing.StitchLoader;
-import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner4CurrentSystemState;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioBrokenDetector4CurrentSystemState;
 import ar.uba.dc.arcoiris.util.sim.graphics.GraphicGenerator;
 
 /**
@@ -74,7 +74,7 @@ public class Oracle implements IDisposable {
 
 	private SelfHealingConfigurationRepository selfHealingConfigurationRepository;
 
-	private ScenarioScoreAssigner4CurrentSystemState scenarioBrokenDetector4CurrentSystemState;
+	private ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState;
 
 	private StitchLoader stitchLoader;
 
@@ -264,9 +264,9 @@ public class Oracle implements IDisposable {
 		return this.selfHealingConfigurationDao;
 	}
 
-	public ScenarioScoreAssigner4CurrentSystemState scenarioScoreAssigner4CurrentSystemState() {
+	public ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState() {
 		if (this.scenarioBrokenDetector4CurrentSystemState == null) {
-			this.scenarioBrokenDetector4CurrentSystemState = new ScenarioScoreAssigner4CurrentSystemState(
+			this.scenarioBrokenDetector4CurrentSystemState = new ScenarioBrokenDetector4CurrentSystemState(
 					(ArcoIrisModel) this.rainbowModel());
 		}
 		return this.scenarioBrokenDetector4CurrentSystemState;
