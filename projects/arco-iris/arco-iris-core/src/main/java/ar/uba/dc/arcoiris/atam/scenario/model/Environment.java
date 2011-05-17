@@ -58,8 +58,7 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 	}
 
 	/**
-	 * This constructor has the same effect than invoking {@link #Environment(String, List, Map, Integer, Heuristic)}
-	 * with the latest two parameters set as <code>null</code>
+	 * Constructor
 	 * 
 	 * @param id
 	 *            environment's id
