@@ -19,6 +19,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("numericBinaryRelationalConstraint")
 public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolvedConstraint {
 
+	private static final String PROPERTY_MAPPING_FORMAT = "[%s]%s.%s";
+
 	private static final long serialVersionUID = 1L;
 
 	private static final String VALIDATION_MSG_QUANTIFIER = "The quantifier cannot be not empty";
@@ -44,6 +46,14 @@ public class NumericBinaryRelationalConstraint extends BaseSinglePropertyInvolve
 		super();
 		this.constantToCompareThePropertyWith = Double.valueOf(0.0);
 		this.quantifier = Quantifier.IN_AVERAGE;
+	}
+
+	/**
+	 * Returns the fully qualified property name prepending the System and Type name of it.
+	 */
+	public String getPropertyMapping() {
+		return String.format(PROPERTY_MAPPING_FORMAT, getQuantifier().getExpPropertyPrefix(), getArtifact().getName(),
+				getProperty());
 	}
 
 	public NumericBinaryRelationalConstraint(Artifact artifact, String property, NumericBinaryOperator binaryOperator,

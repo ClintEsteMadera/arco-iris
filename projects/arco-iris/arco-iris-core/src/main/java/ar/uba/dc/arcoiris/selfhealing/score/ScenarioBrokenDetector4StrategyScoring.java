@@ -4,11 +4,11 @@ import java.util.SortedMap;
 
 import org.sa.rainbow.scenario.model.ArcoIrisModel;
 import org.sa.rainbow.stitch.core.Strategy;
-import org.sa.rainbow.stitch.core.UtilityFunction;
 
+import ar.uba.dc.arcoiris.selfhealing.ScenarioBrokenDetector;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
-public class ScenarioScoreAssigner4StrategyScoring extends BaseScenarioScoreAssigner {
+public class ScenarioBrokenDetector4StrategyScoring implements ScenarioBrokenDetector {
 
 	private final ArcoIrisModel rainbowModelWithScenarios;
 
@@ -16,7 +16,7 @@ public class ScenarioScoreAssigner4StrategyScoring extends BaseScenarioScoreAssi
 
 	private final SortedMap<String, Double> aggregateAttributes;
 
-	public ScenarioScoreAssigner4StrategyScoring(ArcoIrisModel model, Strategy strategy) {
+	public ScenarioBrokenDetector4StrategyScoring(ArcoIrisModel model, Strategy strategy) {
 		super();
 		this.rainbowModelWithScenarios = model;
 		this.strategy = strategy;
@@ -28,12 +28,6 @@ public class ScenarioScoreAssigner4StrategyScoring extends BaseScenarioScoreAssi
 	public boolean isBroken(SelfHealingScenario scenario) {
 		// here, the "simulation" takes place...
 		return scenario.isBrokenAfterStrategy(this.rainbowModelWithScenarios, getAggregateAttributes());
-	}
-
-	@Override
-	protected double getConcernPropertyValue(double eavgPropValue, UtilityFunction uf) {
-		Double concernDiffAfterStrategy = getAggregateAttributes().get(uf.id());
-		return concernDiffAfterStrategy + eavgPropValue;
 	}
 
 	public SortedMap<String, Double> getAggregateAttributes() {

@@ -8,6 +8,8 @@ public interface Constraint extends Validatable {
 
 	String getFullyQualifiedPropertyName();
 
+	String getPropertyMapping();
+
 	/**
 	 * This method is intended to be used in clients using the Java Bean naming convention, where "toString()" cannot be
 	 * used as-is.

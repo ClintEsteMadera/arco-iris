@@ -11,8 +11,8 @@ import org.sa.rainbow.util.RainbowLoggerFactory;
 
 import ar.uba.dc.arcoiris.atam.scenario.model.AnyEnvironment;
 import ar.uba.dc.arcoiris.atam.scenario.model.Artifact;
-import ar.uba.dc.arcoiris.atam.scenario.model.QualityAttributeScenario;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
+import ar.uba.dc.arcoiris.atam.scenario.model.QualityAttributeScenario;
 import ar.uba.dc.arcoiris.atam.scenario.model.ResponseMeasure;
 import ar.uba.dc.arcoiris.atam.scenario.model.Stimulus;
 import ar.uba.dc.arcoiris.common.validation.Assert;
@@ -116,17 +116,6 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 		return false;
 	}
 
-	private boolean anyEnvironmentApplies(ArcoIrisModel rainbowModelWithScenarios) {
-		boolean holds = false;
-		for (Environment environment : this.getEnvironments()) {
-			if (environment.holds(rainbowModelWithScenarios)) {
-				holds = true;
-				break;
-			}
-		}
-		return holds;
-	}
-
 	public boolean isBrokenAfterStrategy(final ArcoIrisModel rainbowModelWithScenarios,
 			Map<String, Double> strategyAggregateAttributes) {
 		// It is not necessary to check the environment at this point because this scenario was already selected for
@@ -150,6 +139,39 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 	}
 
 	/**
+	 * Returns the full qualified property for being looked up into the model
+	 * 
+	 * @return
+	 */
+	public String getPropertyMapping() {
+		return getResponseMeasure().getConstraint().getPropertyMapping();
+	}
+
+	protected void log(Level level, String txt, Throwable... t) {
+		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
+	}
+
+	@Override
+	protected List<ValidationError> collectValidationErrors() {
+		List<ValidationError> validationErrors = super.collectValidationErrors();
+
+		Assert.notNullAndValid(this.repairStrategies, VALIDATION_MSG_REPAIR_STRATEGIES, validationErrors);
+
+		return validationErrors;
+	}
+
+	private boolean anyEnvironmentApplies(ArcoIrisModel rainbowModelWithScenarios) {
+		boolean holds = false;
+		for (Environment environment : this.getEnvironments()) {
+			if (environment.holds(rainbowModelWithScenarios)) {
+				holds = true;
+				break;
+			}
+		}
+		return holds;
+	}
+
+	/**
 	 * Obtains the exponential value (e.g. [EAvg], [ESum], etc...) from the constraint passed as parameter.
 	 * 
 	 * @param constraint
@@ -164,19 +186,6 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 					.getExpPropertyPrefix();
 		}
 		return exponentialQuantifierApplied;
-	}
-
-	protected void log(Level level, String txt, Throwable... t) {
-		Oracle.instance().writeEnginePanel(m_logger, level, txt, t);
-	}
-
-	@Override
-	protected List<ValidationError> collectValidationErrors() {
-		List<ValidationError> validationErrors = super.collectValidationErrors();
-
-		Assert.notNullAndValid(this.repairStrategies, VALIDATION_MSG_REPAIR_STRATEGIES, validationErrors);
-
-		return validationErrors;
 	}
 
 }

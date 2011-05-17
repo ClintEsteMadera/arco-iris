@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Level;
 import org.sa.rainbow.adaptation.executor.Executor;
 import org.sa.rainbow.core.AbstractRainbowRunnable;
@@ -32,12 +31,14 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.arcoiris.atam.scenario.SelfHealingConfigurationManager;
 import ar.uba.dc.arcoiris.atam.scenario.model.Environment;
 import ar.uba.dc.arcoiris.qa.Concern;
+import ar.uba.dc.arcoiris.selfhealing.ScenarioBrokenDetector;
 import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 import ar.uba.dc.arcoiris.selfhealing.priority.DefaultScenarioRelativePriorityAssigner;
 import ar.uba.dc.arcoiris.selfhealing.priority.ScenarioRelativePriorityAssigner;
+import ar.uba.dc.arcoiris.selfhealing.score.DefaultScenarioScoreAssigner;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioBrokenDetector4CurrentSystemState;
+import ar.uba.dc.arcoiris.selfhealing.score.ScenarioBrokenDetector4StrategyScoring;
 import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner;
-import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner4CurrentSystemState;
-import ar.uba.dc.arcoiris.selfhealing.score.ScenarioScoreAssigner4StrategyScoring;
 
 /**
  * The Rainbow Adaptation Engine... <br>
@@ -49,10 +50,6 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 	public enum Mode {
 		SERIAL, MULTI_PRONE
 	};
-
-	private static final int RAINBOW_SOLUTION_WEIGHT = NumberUtils.INTEGER_ZERO;
-
-	private static final int ARCO_IRIS_SOLUTION_WEIGHT = NumberUtils.INTEGER_ONE;
 
 	public static final String NAME = "Arco Iris Adaptation Manager";
 
@@ -80,7 +77,9 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 
 	private static List<SelfHealingScenario> currentBrokenScenarios;
 
-	private static ScenarioScoreAssigner4CurrentSystemState scenarioScoreAssigner4CurrentSystemState;
+	private static ScenarioBrokenDetector4CurrentSystemState scenarioBrokenDetector4CurrentSystemState;
+
+	private static ScenarioScoreAssigner scenarioScoreAssigner;
 
 	private final SelfHealingConfigurationManager selfHealingConfigurationManager;
 
@@ -113,7 +112,8 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 	public ArcoIrisAdaptationManager(SelfHealingConfigurationManager selfHealingConfigurationManager) {
 		super(NAME);
 		m_logger = RainbowLoggerFactory.logger(getClass());
-		scenarioScoreAssigner4CurrentSystemState = Oracle.instance().scenarioScoreAssigner4CurrentSystemState();
+		scenarioBrokenDetector4CurrentSystemState = Oracle.instance().scenarioBrokenDetector4CurrentSystemState();
+		scenarioScoreAssigner = new DefaultScenarioScoreAssigner();
 		currentBrokenScenarios = new ArrayList<SelfHealingScenario>();
 		this.selfHealingConfigurationManager = selfHealingConfigurationManager;
 		scenarioRelativePriorityAssigner = new DefaultScenarioRelativePriorityAssigner(
@@ -150,7 +150,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 			boolean result = false;
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
-						&& scenarioScoreAssigner4CurrentSystemState.isBroken(scenario)) {
+						&& scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
 					result = true;
 					break;
 				}
@@ -341,17 +341,13 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 
 		// We don't want the "simulated" system utility to be worse than the current real one.
 		doLog(Level.INFO, "Computing Current System Utility...");
-		double maxScore4Strategy = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
-				scenarioScoreAssigner4CurrentSystemState);
+		double maxStrategyScore = computeArcoIrisSystemUtility(currentSystemEnvironment,
+				scenarioBrokenDetector4CurrentSystemState);
 
-		doLog(Level.INFO, "Current System Utility: " + maxScore4Strategy);
+		doLog(Level.INFO, "Current System Utility: " + maxStrategyScore);
 
 		Strategy selectedStrategy = null;
-
-		// TODO (TRADUCIR) Idea: permitir al usuario pesar la solucion de Rainbow vs la nuestra
-		// de esta manera se pueden seguir aprovechando las Utility curves configuradas
-		double arcoIrisSolutionWeight = ARCO_IRIS_SOLUTION_WEIGHT;
-		double rainbowSolutionWeight = RAINBOW_SOLUTION_WEIGHT;
+		double selectedStrategyRainbowSystemUtility = 0;
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
@@ -372,39 +368,27 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
 
-				double strategyScore4ArcoIris = 0;
-				if (arcoIrisSolutionWeight > 0) {
-					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Arco Iris' approach...");
+				doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Arco Iris' approach...");
+				double strategyScore = computeArcoIrisSystemUtility(currentSystemEnvironment,
+						new ScenarioBrokenDetector4StrategyScoring(m_model, currentStrategy));
+				doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach) : "
+						+ strategyScore);
 
-					strategyScore4ArcoIris = scoreSystemUtilityUsingArcoIris(currentSystemEnvironment,
-							new ScenarioScoreAssigner4StrategyScoring(m_model, currentStrategy));
-					doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach) : "
-							+ strategyScore4ArcoIris);
-				}
+				Map<String, Double> weightsForRainbow = currentSystemEnvironment.getWeightsForRainbow();
 
-				double strategyScore4Rainbow = 0;
-				if (rainbowSolutionWeight > 0) {
-					doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Rainbow's approach...");
-					Map<String, Double> weights4Rainbow = currentSystemEnvironment.getWeightsForRainbow();
-					strategyScore4Rainbow = scoreStrategyUsingRainbow(currentStrategy, weights4Rainbow);
-
-					doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Rainbow approach) : "
-							+ strategyScore4Rainbow);
-				}
-
-				double weightedScore = strategyScore4ArcoIris * arcoIrisSolutionWeight + strategyScore4Rainbow
-						+ rainbowSolutionWeight;
-
-				if (rainbowSolutionWeight > 0 && arcoIrisSolutionWeight > 0) {
-					doLog(Level.INFO, "Combined (Rainbow + Arco Iris) score for strategy " + currentStrategy.getName()
-							+ ": " + strategyScore4Rainbow);
-				}
-
-				if (weightedScore > maxScore4Strategy) {
-					maxScore4Strategy = weightedScore;
+				if (strategyScore > maxStrategyScore) {
+					maxStrategyScore = strategyScore;
 					selectedStrategy = currentStrategy;
-				} else if (weightedScore == maxScore4Strategy) {
-					if (selectedStrategy != null && getFailureRate(currentStrategy) < getFailureRate(selectedStrategy)) {
+					selectedStrategyRainbowSystemUtility = computeRaibowSystemUtilityAfterStrategy(currentStrategy,
+							weightsForRainbow);
+				} else if (strategyScore == maxStrategyScore) {
+					double currentStrategyRaibowSystemUtility = computeRaibowSystemUtilityAfterStrategy(
+							currentStrategy, weightsForRainbow);
+					if (currentStrategyRaibowSystemUtility > selectedStrategyRainbowSystemUtility) {
+						selectedStrategy = currentStrategy;
+						selectedStrategyRainbowSystemUtility = currentStrategyRaibowSystemUtility;
+					} else if (selectedStrategy != null
+							&& getFailureRate(currentStrategy) < getFailureRate(selectedStrategy)) {
 						selectedStrategy = currentStrategy;
 					}
 				}
@@ -456,21 +440,15 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		return this.selfHealingConfigurationManager.getAnyEnvironment();
 	}
 
-	private Double scoreSystemUtilityUsingArcoIris(Environment currentSystemEnvironment,
-			ScenarioScoreAssigner scenarioScoreAssigner) {
+	private double computeArcoIrisSystemUtility(Environment currentSystemEnvironment,
+			ScenarioBrokenDetector scenarioBrokenDetector) {
 		double strategyScore = 0L;
 		Collection<SelfHealingScenario> scenarios = this.selfHealingConfigurationManager.getEnabledScenarios();
 		for (SelfHealingScenario scenario : scenarios) {
-			Double concernWeight4CurrentEnv = currentSystemEnvironment.getWeights().get(scenario.getConcern());
-			// no weight for the concern then its weight it is assumed to be zero hence the scenario's score is zero
-			if (concernWeight4CurrentEnv != null) {
-				double scenarioRelativePriority = scenarioRelativePriorityAssigner.relativePriority(scenario);
-				double concernWeightedScenarioRelativePriority = scenarioRelativePriority * concernWeight4CurrentEnv;
-				UtilityFunction concernUtilityFunction = m_utils.get(scenario.getConcern().getRainbowName());
-				double scenarioScore = scenarioScoreAssigner.scenarioScore(scenario, currentSystemEnvironment,
-						concernWeightedScenarioRelativePriority, m_model, concernUtilityFunction);
-				strategyScore = strategyScore + scenarioScore;
-			}
+			double scenarioRelativePriority = scenarioRelativePriorityAssigner.relativePriority(scenario);
+			double scenarioScore = scenarioScoreAssigner.scenarioScore(scenarioBrokenDetector, scenario,
+					currentSystemEnvironment, scenarioRelativePriority, m_model, scenario.getPropertyMapping());
+			strategyScore = strategyScore + scenarioScore;
 		}
 		return strategyScore;
 	}
@@ -480,7 +458,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 	 * 
 	 * @return the score of the strategy calculated by Rainbow
 	 */
-	private double scoreStrategyUsingRainbow(Strategy strategy, Map<String, Double> weights) {
+	private double computeRaibowSystemUtilityAfterStrategy(Strategy strategy, Map<String, Double> weights) {
 		double[] conds = null;
 		SortedMap<String, Double> aggAtt = strategy.computeAggregateAttributes();
 		// add the strategy failure history as another attribute
@@ -530,12 +508,6 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		doLog(Level.DEBUG, "aggAtt': " + s);
 		return score;
 	}
-
-	private static final int I_RUN = 0;
-	private static final int I_SUCCESS = 1;
-	private static final int I_FAIL = 2;
-	private static final int I_OTHER = 3;
-	private static final int CNT_I = 4;
 
 	private void tallyStrategyOutcome(Strategy s) {
 		if (m_historyTrackUtilName == null)
@@ -608,4 +580,10 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		}
 		return rv;
 	}
+
+	private static final int I_RUN = 0;
+	private static final int I_SUCCESS = 1;
+	private static final int I_FAIL = 2;
+	private static final int I_OTHER = 3;
+	private static final int CNT_I = 4;
 }
