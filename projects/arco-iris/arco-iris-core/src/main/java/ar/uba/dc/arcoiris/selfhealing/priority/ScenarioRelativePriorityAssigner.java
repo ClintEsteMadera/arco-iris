@@ -4,6 +4,6 @@ import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public interface ScenarioRelativePriorityAssigner {
 
-	public abstract int relativePriority(SelfHealingScenario scenario);
+	public abstract double relativePriority(SelfHealingScenario scenario);
 
 }
