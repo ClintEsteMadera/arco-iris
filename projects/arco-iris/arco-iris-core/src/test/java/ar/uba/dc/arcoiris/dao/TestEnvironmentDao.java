@@ -37,7 +37,6 @@ public class TestEnvironmentDao {
 		throw new RuntimeException("Environment " + name + " not defined.");
 	}
 
-	// TODO setear las condiciones de los environments(deben ser excluyentes)
 	private Environment createNormalEnvironment() {
 		SortedMap<Concern, Double> normalConcernMultiplierMap = new TreeMap<Concern, Double>();
 		normalConcernMultiplierMap.put(Concern.RESPONSE_TIME, 0.333D);
