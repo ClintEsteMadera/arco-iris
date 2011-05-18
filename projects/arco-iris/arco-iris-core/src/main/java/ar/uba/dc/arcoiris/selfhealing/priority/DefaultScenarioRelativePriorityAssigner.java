@@ -8,6 +8,8 @@ import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public class DefaultScenarioRelativePriorityAssigner implements ScenarioRelativePriorityAssigner {
 
+	private static RainbowLogger logger = RainbowLoggerFactory.logger(SelfHealingConfigurationManager.class);
+	
 	private SelfHealingConfigurationManager selfHealingConfigurationManager;
 
 	public DefaultScenarioRelativePriorityAssigner(SelfHealingConfigurationManager selfHealingConfigurationManager) {
@@ -22,7 +24,4 @@ public class DefaultScenarioRelativePriorityAssigner implements ScenarioRelative
 				scenario.getName(), scenario.getPriority(), (int) maxPriority, relativePriority));
 		return relativePriority;
 	}
-
-	private static RainbowLogger logger = RainbowLoggerFactory.logger(SelfHealingConfigurationManager.class);
-
 }

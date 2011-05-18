@@ -139,9 +139,7 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 	}
 
 	/**
-	 * Returns the full qualified property for being looked up into the model
-	 * 
-	 * @return
+	 * @return the fully-qualified property name for looking it up in the model.
 	 */
 	public String getPropertyMapping() {
 		return getResponseMeasure().getConstraint().getPropertyMapping();
