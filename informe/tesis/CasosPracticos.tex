@@ -1,57 +1,53 @@
 \section{Casos Prácticos}
 \label{sec:casosPracticos}
 
-	En este capítulo se presenta un ejemplo concreto de utilización de Arco Iris, para lo cual se reutilizará la simulación
-	presentada en Znn.
+	En este capítulo se presentan y analizan algunos casos de prueba concretos de uso de Arco Iris, a fin de evaluar su
+	comportamiento. Para dicho fin, se reutilizará la simulación presentada en Znn. \todo{linkear a donde explicamos la
+	simulacion!}
 
 	El sistema consiste en un sitio de noticias y la simulación nos permite manejar variables tales como la cantidad de
 	servidores y la fidelidad de la información que se provee, es decir, permite eliminar determinado tipo de contenido
-	(e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables nos
+	(e.g: videos) para mejorar el tiempo de respuesta experimentado por el usuario del sitio. Estas y otras variables
 	permiten, mediante la auto reparación, alterar el comportamiento del sistema para poder seguir brindando un servicio
-	óptimo según los requerimientos planteados.
+	óptimo según los requerimientos de auto reparación especificados mediante escenarios de atributos de calidad.
 
 	\subsection{Arquitectura del Sistema}
-		La arquitectura que tomaremos de Znn es muy sencilla: los componentes principales serán servidores y clientes. Éstos
-		no se conectan directamente entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de
-		los clientes, y es quien conoce todos los servidores disponibles y distribuye el trabajo entre ellos. A
-		continuación mostramos una imagen de la arquitectura del sistema tomada de la herramienta AcmeStudio:
+		Los componentes principales de la arquitectura de Znn son clientes y servidores. Éstos no se conectan directamente
+		entre sí, sino que lo hacen por medio de un proxy, al cual llegan todas las peticiones de los clientes, y es él quien
+		conoce todos los servidores disponibles y distribuye el trabajo entre ellos. A continuación se muestra un diagrama
+		de la arquitectura del sistema, extraída utilizando la herramienta AcmeStudio:
 
 		\todo{eliminar warnings de la arquitectura en AcmeStudio y agregar la imagen de la misma aqui}
 
-		Puede verse el código fuente de la arquitectura en el apéndice \ref{sec:arquitecturaZNN}.
+		En el apéndice \ref{sec:arquitecturaZNN} se puede observar el código fuente de la arquitectura de Znn.
 
-		Existen 3 \emph{concerns} en la arquitectura, a saber:
+		Existen tres \emph{concerns} en la arquitectura. A fin de simplificar las pruebas para el lector, se utilizarán sólo
+		dos, a saber:
 		\begin{itemize}
-			\item Tiempo de Respuesta
-			\item Fidelidad
-			\item Costo
+			\item Tiempo de Respuesta: tiempo de respuesta promedio experimentado por el usuario de Znn, y
+			\item Costo: refleja la cantidad de servidores prestando servicio con los que cuenta Znn en un determinado momento.
 		\end{itemize}
 
-		Las tácticas que nos permitirán modificar el comportamiento del sistema en ejecución serán:
+		Para las pruebas realizadas en este trabajo, sólo se utilizarán las siguientes tácticas, con el fin de modificar el
+		comportamiento del sistema en ejecución:
 		\begin{itemize}
 			\item Dar de alta un servidor
 			\item Dar de baja un servidor
-			\item Aumentar la fidelidad de la información
-			\item Reducir la fidelidad de la información
 		\end{itemize}
 
-		Para que todas estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, que serán
-	invocados desde las tácticas implementadas en Stitch, y serán los que efectuarán el cambio propiamente dicho sobre la
-	arquitectura del sistema. Puede verse las tácticas implementadas para Znn en el apéndice \ref{sec:tacticasZNN}.
-
-		Antes de comenzar, cabe aclarar que si bien deberíamos configurar los pesos de cada uno de los tres \emph{concerns}
-	mencionados anteriormente, a los efectos prácticos de este ejemplo los ignoraremos, pero lo que en realidad estará
-	sucediendo en la simulación es que todos los \emph{concerns} tienen el mismo peso. Esto nos permitirá poder
-	concentrarnos en las prioridades entre escenarios al momento de escoger la estrategia candidata a reparar el sistema,
-	simplificando así los cálculos, lo que nos permitirá comprender más fácilmente los resultados.
-
+		Para que estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, quienes serán
+		los responsables de efectuar los cambios propiamente dichos sobre el sistema en \emph{runtime}. Los \emph{effectors}
+		serán invocados desde las tácticas, cuyas implementaciones en Znn pueden verse en el apéndice \ref{sec:tacticasZNN}.
+	
+		Antes de comenzar, cabe aclarar que, salvo que se indique lo contrario, la configuración de pesos para cada uno de los
+		\emph{concerns} del sistema será equidistribuida. Esta decisión convierte a las prioridades entre escenarios en el único
+		factor influyente en la selección de una estrategia candidata para reparar el sistema (ver algoritmo de selección de
+		estrategias en la sección \ref{sec:arcoIrisStrategyScoring}), simplificando así los cálculos, así como   también la
+		comprensibilidad de los resultados presentados.
 	\subsection{Comportamiento del Sistema sin Auto Reparación}
-		Comenzaremos considerando cómo se comporta el sistema al no existir escenarios ni estrategias, esto nos permitirá
-		evaluar la variación de comportamiento al ir agregando escenarios y estrategias.
-
-		Para simplificar el ejemplo, los datos que nos interesarán serán el tiempo de respuesta experimentado por el usuario y
-		el costo de servidores del sistema, que en este caso reflejará simplemente la cantidad de servidores levantados con
-		que cuenta el sistema en cada momento.
+		
+		Para comenzar, se presenta el comportamiento del sistema de no existir escenarios ni estrategias, esto permitirá
+		evaluar la variación de comportamiento a medida que se vayan agregando escenarios y/o estrategias.
 
 		En las figuras \ref{fig:testcase1_1_expRespTime} y \ref{fig:testcase1_1_cost} se puede observar el comportamiento del
 		sistema sin escenarios, es decir, sin auto reparación.
@@ -69,21 +65,19 @@
 			\label{fig:testcase1_1_cost}
 		\end{figure}
 
-		Como podemos observar, el tiempo de respuesta crece hasta superar los 600ms, man\-te\-nién\-do\-se allí hasta los 30
-		segundos, para luego ir bajando paulatinamente hasta estacionarse cerca de los 400ms. Notar que el costo de  los
-		servidores se mantuvo inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabajó
-		siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a
-		ninguna acción propia de la auto reparación, sino a cambios en el ambiente externos al sistema, como por ejemplo el
-		ancho de banda de cada uno de sus clientes.
+		Como se puede observar, la simulación ha sido configurada explícitamente para que Znn se comporte de la siguiente
+		manera: el tiempo de respuesta crece hasta superar los 600 ms., man\-te\-nién\-do\-se allí hasta los 30 segundos, para
+		luego ir bajando paulatinamente hasta estacionarse cerca de los 400 ms. Notar que el costo de los servidores se mantiene
+		inmutable frente a los cambios en el tiempo de respuesta, es decir que el sistema trabaja siempre con un único servidor.
+		Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a ninguna acción propia de la auto
+		reparación, sino a cambios en el ambiente, externos al sistema, como por ejemplo el ancho de banda de la conexión de		cada uno de sus clientes.
+	\subsection{Comportamiento del Sistema con un Único Escenario}
 
-	\subsection{Comportamiento del Sistema con un único Escenario}
-		Ahora que ya vimos cómo se comportaría el sistema sin escenarios definidos, pasemos a definir nuestro primer
-		escenario. El mismo consistirá en determinar un umbral (\emph{threshold}) de 600 ms. para el tiempo de respuesta
-		experimentado por el usuario. Tengamos en cuenta que aún no hemos definido ninguna estrategia, por lo cual se
-		detectará que existe un escenario que no se está cumpliendo pero no se encontrará ninguna estrategia que lo pueda
-		reparar. En la figura \ref{fig:scenario_expRespTime} se muestra el detalle del escenario creado.
-
-		\todo{Refrescar todos los screenshots de la GUI (al final!)}
+		Habiendo presentado el comportamiento del sistema sin escenarios definidos, se procederá definir el primer escenario, el
+		cual consiste en determinar un umbral máximo aceptado de 600 ms. para el tiempo de respuesta experimentado por el
+		usuario. Tener en cuenta que aún no se ha definido ninguna estrategia, por lo cual Arco Iris detectará que existe un
+		escenario que no se satisface pero no encontrará ninguna estrategia capaz de repararlo. En la figura  
+		\ref{fig:scenario_expRespTime} se muestra el detalle del escenario creado.		\todo{Refrescar todos los screenshots de la GUI (al final!)}
 
 		\begin{figure}[ht]
 			\centering
@@ -93,6 +87,8 @@
 		\end{figure}
 
 		En el apéndice \ref{sec:scenarioExpRespTimeXML} podemos ver la representación de este escenario en XML.
+		
+		\todo{TURCO Y JONY: Continuar revisando desde aca}
 
 		Al no existir ninguna estrategia, el costo de servidores no se verá modificado, por lo cual el gráfico en la
 		figura \ref{fig:testcase1_1_expRespTime_threshold} será el mismo que el del caso anterior, salvo que permite observar
@@ -150,6 +146,10 @@
 		\end{enumerate}
 
 	\subsection{\emph{Tradeoff} entre Estrategias}
+	
+		\todo{Implementar el caso de 1 escenario con dos estrategias compitiendo entre si (el codigo ya esta hecho)}
+
+	\subsection{\emph{Tradeoff} entre Escenarios}
 		Ahora bien, si analizamos el comportamiento del tiempo de respuesta, vemos que a partir de un determinado momento las
 		condiciones del sistema cambian, lo cual hace que el tiempo de respuesta baje sin que la auto reparación tenga
 		incidencia alguna en este comportamiento.
@@ -222,3 +222,8 @@
 		
 		Esto nos muestra cómo pueden convivir varios escenarios, y cómo Arco Iris sabrá detectar cual será la estrategia que
 		le permitirá maximizar la utilidad del sistema gracias a la configuración de escenarios y sus respectivas prioridades.
+
+	\subsection{\emph{Tradeoff} entre \emph{Concerns}}
+
+		\todo{Implementar el caso en que las prioridades son iguales y el algoritmo decide por peso del concern de un
+		escenario en particular}

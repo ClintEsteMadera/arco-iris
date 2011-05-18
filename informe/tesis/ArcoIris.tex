@@ -991,7 +991,7 @@
 
 			En el archivo de configuración llamado \verb@utilities.yml@, Rainbow permite configurar:
 			\begin{itemize}
-				\item cúales son los \emph{concerns} que manejará el sistema y la propiedad del modelo de la arquitectur asociada a
+				\item cúales son los \emph{concerns} que manejará el sistema y la propiedad del modelo de la arquitectura asociada a
 				él.
 				\item como se vió anteriormente en la sección \ref{sec:environment}, se especifican distintos entornos de ejecución
 				estáticos, esto es, se configura el entorno predecido de ejecución antes de iniciar el \emph{framework} y
@@ -1146,14 +1146,12 @@
 			plasmado en los escenarios para determinar la mejor estrategia de reparación a aplicar, teniendo en cuenta lo
 			siguiente:
 			\begin{itemize}
-				\item el impacto estimado de la potencial ejecución de la estrategia sobre el sistema, calculado de la misma forma
-				que Rainbow (ver sección \ref{sec:rainbowStrategyScoring}),
 				\item el entorno de ejecución en el que se encuentra la aplicación y el peso que cada \emph{concern} tiene según
 				dicho entorno,
 				\item el \emph{concern} asociado al escenario, y
 				\item las prioridades relativas entre los escenarios.
 			\end{itemize}
-
+			
 			Es importante mencionar que para calcular la utilidad del sistema, Arco Iris sólo considerará aquellos escenarios que
 			se encuentren ``habilitados''(\emph{enabled}, en el modelo de Arco Iris presentado en la figura
 			\ref{fig:Arco_Iris_QAS_Model}). En otras palabras, para calcular la utilidad del sistema, Arco Iris asignará un
@@ -1184,9 +1182,7 @@
 
 							prioridadRelativa = calcular prioridad relativa del escenario
 							pesoConcern = peso que el entorno actual asigna a escenario.concern
-							uf = funcion de utilidad para escenario.concern
-							utilidad = uf(estimacionPorConcern(escenario.concern))
-							puntajeEscenario = utilidad * prioridadRelativa * pesoConcern
+							puntajeEscenario = prioridadRelativa * pesoConcern
 							scoreStrategia = scoreStrategia + puntajeEscenario
 						Fin
 					Fin
@@ -1194,6 +1190,17 @@
 					Si scoreStrategia > scoreMaximo
 						estrategiaSeleccionada = estrategia
 						scoreMaximo = scoreStrategia
+					Sino
+						Si scoreStrategia = scoreMaximo
+							utilityDiff = rainbowSystemUtility(estrategia) -
+							              rainbowSystemUtility(estrategiaSeleccionada)
+							Si utilityDiff > 0
+								estrategiaSeleccionada = estrategia
+							Sino Si utilityDiff = 0 y
+							     tasaDeFallos(estrategia) < tasaDeFallos(estrategiaSeleccionada)
+								estrategiaSeleccionada = estrategia
+							Fin
+						Fin
 					Fin
 				Fin
 			\end{Verbatim}
@@ -1232,8 +1239,8 @@
 
 					@Override
 					public int relativePriority(SelfHealingScenario scenario) {
-						int maxPriority = selfHealingConfigurationManager.getMaxPriority() + 1;
-						return (maxPriority - scenario.getPriority()) / maxPriority;
+						int maxPriority = selfHealingConfigurationManager.getMaxPriority();
+						return (maxPriority - scenario.getPriority() + 1) / maxPriority;
 					}
 				}
 			}
@@ -1243,8 +1250,10 @@
 			\begin{itemize}
 				\item en la sección siguiente se entrará en detalle sobre el rol que cumple en Arco Iris el objeto
 				\verb@SelfHealingConfigurationManager@.
-				\item se toma como prioridad máxima la del escenario menos prioritario, más uno, para evitar que la prioridad
-				relativa de dicho escenario sea cero y que sea ignorado en el cálculo de la utilidad del sistema.
+				\item se toma como prioridad máxima la del escenario menos prioritario., 
+				\item al calcular la prioridad relativa, se suma uno al dividendo para evitar que la prioridad relativa del escenario
+				menos prioritario sea cero y que sea ignorado en el cálculo de la utilidad del sistema. De esta manera también se logra
+				que la prioridad relativa de un escenario de prioridad uno (i.e: el escenario más importante) sea exactamente igual a uno.
 			\end{itemize}
 
 			Una vez calculada la prioridad relativa del escenario, el siguiente paso será obtener el peso que el entorno actual
@@ -1252,11 +1261,18 @@
 			los escenarios de eficiencia posean un mayor peso que los escenarios de costo, por esto se pesan los escenarios según
 			su \emph{concern} y el entorno en el que se encuentra el sistema.
 
-			Luego, al igual que Rainbow, Arco Iris aplicará la función de utilidad al valor estimado por la simulación para el
-			\emph{concern} del escenario, pero además de ponderar dicha utilidad con el peso del \emph{concern}
-			(que en Rainbow es estático mientras que en Arco Iris dependerá del entorno actual del sistema), Arco Iris considerará
-			también la prioridad relativa del escenario. Finalmente, el valor obtenido será acumulado al puntaje de la estrategia,
-			escogiendo para reparar el sistema a aquella estrategia que posea el puntaje máximo.
+			Luego, y en caso de que la estrategia actual posea el mismo puntaje que la estrategia seleccionada hasta el
+			momento, el algoritmo pasa a escoger para reparar el sistema a aquella que brinde mayor utilidad del sistema calculada
+			según el mecanismo provisto por Rainbow (ver sección \ref{sec:rainbowStrategyScoring}), i.e. aplicando las funciones de
+			utilidad de cada concern a los valores estimados por la simulación. Por ejemplo, si dos estrategias reparan exactamente
+			los mismos escenarios, su puntaje coincidirá, pero al analizar las estimaciones realizadas para cada estrategia se
+			detecta que una deja al tiempo de respuesta en un valor promedio de 1000 milisegundos, mientras que la otra brinda un
+			valor promedio de 2000 milisegundos. Gracias a la comparación de utilidades antes mencionada, la primer estrategia ha
+			de ser la seleccionada por Arco Iris para reparar el sistema.
+			
+			Por último, cuando ambas estrategias coincidan en el puntaje asignado por Arco Iris y en la utilidad del sistema
+			según Rainbow, el desempate estará dado por aquella estrategia que posea menor tasa de fallos (ver sección
+			\ref{sec:failureRate}).
 			
 			En la figura \ref{fig:Arco_Iris_Adaptation_Model} se presenta el modelo conceptual utilizado por Arco Iris para
 			seleccionar la mejor estrategia de reparación.
