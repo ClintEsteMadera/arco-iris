@@ -387,7 +387,8 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 					if (currentStrategyRaibowSystemUtility > selectedStrategyRainbowSystemUtility) {
 						selectedStrategy = currentStrategy;
 						selectedStrategyRainbowSystemUtility = currentStrategyRaibowSystemUtility;
-					} else if (selectedStrategy != null
+					} else if (currentStrategyRaibowSystemUtility == selectedStrategyRainbowSystemUtility
+							&& selectedStrategy != null
 							&& getFailureRate(currentStrategy) < getFailureRate(selectedStrategy)) {
 						selectedStrategy = currentStrategy;
 					}
