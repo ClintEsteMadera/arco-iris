@@ -347,7 +347,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		doLog(Level.INFO, "Current System Utility: " + maxStrategyScore);
 
 		Strategy selectedStrategy = null;
-		double selectedStrategyRainbowSystemUtility = 0;
+		double selectedStrategyRainbowSystemUtility = computeSystemInstantUtility();
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
@@ -379,7 +379,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				if (strategyScore > maxStrategyScore) {
 					maxStrategyScore = strategyScore;
 					selectedStrategy = currentStrategy;
-					selectedStrategyRainbowSystemUtility = computeRaibowSystemUtilityAfterStrategy(currentStrategy,
+					selectedStrategyRainbowSystemUtility = computeRaibowSystemUtilityAfterStrategy(selectedStrategy,
 							weightsForRainbow);
 				} else if (strategyScore == maxStrategyScore) {
 					double currentStrategyRaibowSystemUtility = computeRaibowSystemUtilityAfterStrategy(
