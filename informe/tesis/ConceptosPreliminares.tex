@@ -509,62 +509,71 @@
 			que los valores de las propiedades del sistema que son relevantes para la auto adaptación no fluctúen bruscamente debido
 			a unos pocos \emph{outliers}.
 
-	\subsubsection{Tasa de Fallos}
-	\label{sec:failureRate}
+		\subsubsection{Tasa de Fallos de una Estrategia}
+		\label{sec:failureRate}
+		
+			Rainbow provee un mecanismo que considera la historia de ejecución de las estrategias. El mismo es útil para que,
+			dado un umbral predeterminado y no configurable por el usuario, aquellas estrategias que han fallado porcentualmente
+			en un 95\% o más de las veces que fueron ejecutadas, no sean consideradas por el \verb@AdaptationManager@. El
+			\emph{framework} permite especificar al usuario si desea habilitar este mecanismo o no y, de estar habilitado, lleva
+			un registro por estrategia de la historia de sus ejecuciones.
 	
-		\todo{Completar!!!}
-
-	\subsubsection{Znn}
-
-		Znn es un sistema que simula un sitio web de noticias, el cual nació en el contexto de la tesis de doctorado
-		\cite{TesisOwen} de Shang-Wen Cheng, un investigador de la universidad de Carnegie Mellon. En dicha tesis, se evalúa a
-		Rainbow en los siguientes aspectos:
-		\begin{itemize}
-			\item su efectividad para mantener los atributos de calidad ante condiciones cambiantes.
-			\item la sobrecarga de procesamiento que implica la auto reparación.
-			\item el esfuerzo que implica agregar auto reparación a Znn mediante Rainbow.
-		\end{itemize}
-
-		Si bien Znn y sus herramientas asociadas (\emph{probes}, \emph{gauges}, tácticas, estrategias, etc.) nacieron con
-		el único objetivo de evaluar la efectividad de Rainbow, las mismas han sido abiertas a la comunidad para que puedan
-		ser utilizadas para tomar métricas y poder comparar distintos \emph{frameworks} de auto reparación.
-
-		Znn provee un entorno de simulación de una arquitectura cliente-servidor ampliamente configurable que permite
-		representar situaciones específicas de ejecución y controlar las variables de simulación permitiendo modificarlas en
-		cualquier punto.
-		
-		Por ejemplo, es posible configurar a Znn para que inicie con solamente 2 clientes, mostrando allí un desempeño
-		aceptable y que luego se agreguen 10 clientes, comprometiendo así la eficiencia del sistema. De esta
-		manera, Znn permite simular cómo responderían las estrategias implementadas ante dicha situación.
-
-	\subsubsection{Modos de Ejecución}
-	\label{sec:modosEjecucion}
+			El mecanismo contempla el paso del tiempo como un factor importante al momento de determinar el porcentaje de fallos:
+			el cociente \[\frac{cantidad\_de\_fallos}{cantidad\_de\_ejecuciones}\]es sopesado con el tiempo que ha pasado desde
+			la última ejecución de la estrategia, permitiendo así que la misma vuelva potencialmente a ser considerada en futuras
+			ejecuciones.
 	
-		Rainbow soporta dos modos de ejecución: el \textbf{modo normal}, donde el \emph{framework} se conecta con un sistema
-		real, y un \textbf{modo simulación}, el cual permite probar las herramientas de auto reparación implementadas por los
-		usuarios sin necesidad de conectar a Rainbow con un sistema real en ejecución.
-		
-		En modo simulación, el usuario debe configurar mediante un archivo de texto (de extensión \verb@.sim@) consistente en
-		pares clave-valor, los valores iniciales de las propiedades de los componentes del sistema, más los cambios de valores
-		en las propiedades de interés del modelo de la arquitectura siguiendo el siguiente esquema:
-		
-		\begin{Verbatim}[gobble=3]
-			sim.<numero_simulacion> = <instante_tiempo>:<propiedad>:<valor>
-		\end{Verbatim}
-		
-		Ejemplos de puntos de simulación:
-		
-		\begin{Verbatim}[gobble=3]
-			sim.1 = 30001:ZNewsSys.c1.perf.service.time:100,30001:ZNewsSys.c2.perf.service.time:100
-			sim.2 = 40001:ZNewsSys.c1.perf.arrival.rate:4
-		\end{Verbatim}
-		
-		Cabe remarcar, que en este modo los \emph{probes} y los \emph{gauges} no tienen participación, ya que no existe un
-		sistema real en ejecución con el cual interactuar.
+		\subsubsection{Znn}
 	
-		En el presente trabajo se utilizará el modo simulación para los casos de prueba, tomando las estrategias y tácticas
-		provistas por Znn. Éstas debieron ser adaptadas para que puedan seguir funcionando con los cambios propuestos en el
-		presente trabajo.
+			Znn es un sistema que simula un sitio web de noticias, el cual nació en el contexto de la tesis de doctorado
+			\cite{TesisOwen} de Shang-Wen Cheng, un investigador de la universidad de Carnegie Mellon. En dicha tesis, se evalúa a
+			Rainbow en los siguientes aspectos:
+			\begin{itemize}
+				\item su efectividad para mantener los atributos de calidad ante condiciones cambiantes.
+				\item la sobrecarga de procesamiento que implica la auto reparación.
+				\item el esfuerzo que implica agregar auto reparación a Znn mediante Rainbow.
+			\end{itemize}
+	
+			Si bien Znn y sus herramientas asociadas (\emph{probes}, \emph{gauges}, tácticas, estrategias, etc.) nacieron con
+			el único objetivo de evaluar la efectividad de Rainbow, las mismas han sido abiertas a la comunidad para que puedan
+			ser utilizadas para tomar métricas y poder comparar distintos \emph{frameworks} de auto reparación.
+	
+			Znn provee un entorno de simulación de una arquitectura cliente-servidor ampliamente configurable que permite
+			representar situaciones específicas de ejecución y controlar las variables de simulación permitiendo modificarlas en
+			cualquier punto.
+			
+			Por ejemplo, es posible configurar a Znn para que inicie con solamente 2 clientes, mostrando allí un desempeño
+			aceptable y que luego se agreguen 10 clientes, comprometiendo así la eficiencia del sistema. De esta
+			manera, Znn permite simular cómo responderían las estrategias implementadas ante dicha situación.
+	
+		\subsubsection{Modos de Ejecución}
+		\label{sec:modosEjecucion}
+		
+			Rainbow soporta dos modos de ejecución: el \textbf{modo normal}, donde el \emph{framework} se conecta con un sistema
+			real, y un \textbf{modo simulación}, el cual permite probar las herramientas de auto reparación implementadas por los
+			usuarios sin necesidad de conectar a Rainbow con un sistema real en ejecución.
+			
+			En modo simulación, el usuario debe configurar mediante un archivo de texto (de extensión \verb@.sim@) consistente en
+			pares clave-valor, los valores iniciales de las propiedades de los componentes del sistema, más los cambios de valores
+			en las propiedades de interés del modelo de la arquitectura siguiendo el siguiente esquema:
+			
+			\begin{Verbatim}[gobble=3]
+				sim.<numero_simulacion> = <instante_tiempo>:<propiedad>:<valor>
+			\end{Verbatim}
+			
+			Ejemplos de puntos de simulación:
+			
+			\begin{Verbatim}[gobble=3]
+				sim.1 = 30001:ZNewsSys.c1.perf.service.time:100,30001:ZNewsSys.c2.perf.service.time:100
+				sim.2 = 40001:ZNewsSys.c1.perf.arrival.rate:4
+			\end{Verbatim}
+			
+			Cabe remarcar, que en este modo los \emph{probes} y los \emph{gauges} no tienen participación, ya que no existe un
+			sistema real en ejecución con el cual interactuar.
+		
+			En el presente trabajo se utilizará el modo simulación para los casos de prueba, tomando las estrategias y tácticas
+			provistas por Znn. Éstas debieron ser adaptadas para que puedan seguir funcionando con los cambios propuestos en el
+			presente trabajo.
 
 	\subsection{Escenarios de Atributos de Calidad}
 	\label{sec:QAS}
