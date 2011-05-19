@@ -52,17 +52,10 @@
 
 		\subsubsection{Más Visibilidad Sobre Las Estrategias Fallidas}
 
-			Rainbow provee un mecanismo que considera la historia de ejecución de las estrategias. El mismo es útil para que,
-			dado un umbral predeterminado y no configurable por el usuario, aquellas estrategias que han fallado porcentualmente
-			en un 95\% o más de las veces que fueron ejecutadas, no sean consideradas por el \verb@AdaptationManager@. El
-			framework permite especificar al usuario si desea habilitar este mecanismo o no y, de estar habilitado, lleva un
-			registro por estrategia de la historia de sus ejecuciones.
-
-			El mecanismo contempla el paso del tiempo como un factor importante al momento de determinar el porcentaje de fallos:
-			el cociente \[\frac{cantidad\_de\_fallos}{cantidad\_de\_ejecuciones}\]es sopesado con el tiempo que ha pasado desde
-			la última ejecución de la estrategia, permitiendo así que la misma vuelva potencialmente a ser considerada en futuras
-			ejecuciones.
-
+			Tal como se comentó en la sección \ref{sec:failureRate}, Rainbow provee un mecanismo que considera la historia de
+			ejecución de las estrategias con el objetivo de evitar elegir aquellas con un alto porcentaje histórico de fallas,
+			esto es, estrategias que no resolvieron anteriormente las anomalías que se suponía debían resolver.
+			
 			Si bien este mecanismo es bastante aceptable, el mismo podría ser mejorado en el futuro en dos aspectos:
 			\begin{itemize}
 				\item El porcentaje de fallas máximo permitido para que una estrategia pueda ser considerada debe ser configurado
