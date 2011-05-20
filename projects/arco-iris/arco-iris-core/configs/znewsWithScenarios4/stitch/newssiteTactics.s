@@ -6,7 +6,7 @@ import op "org.sa.rainbow.stitch.lib.Set";
 import op "org.sa.rainbow.stitch.lib.Model";
 import op "org.sa.rainbow.adaptation.ArcoIrisAdaptationManager";
 
-define boolean CONCERN_STILL_BROKEN = ArcoIrisAdaptationManagerncernStillBroken("RESPONSE_TIME");
+define boolean CONCERN_STILL_BROKEN = ArcoIrisAdaptationManager.isConcernStillBroken("RESPONSE_TIME");
 
 /**
  * Enlist n free servers into service pool.
@@ -33,30 +33,6 @@ tactic enlistServers (int n) {
 }
 
 /**
- * Deactivate n servers from service pool into free pool.
- * Utility: [^] R; [v] C; [<>] F
- */
-tactic dischargeServers (int n) {
-	condition {
-		// there should be NO client with high response time
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
-		// there should be enough servers to discharge
-		Set.size({ select s : T.ServerT in M.components | s.load < M.MIN_UTIL }) >= n;
-	}
-	action {
-		set lowUtilSvrs = { select s : T.ServerT in M.components | s.load < M.MIN_UTIL };
-		set subLowUtilSvrs = Set.randomSubset(lowUtilSvrs, n);
-		for (T.ServerT s : subLowUtilSvrs) {
-			S.deactivateServer(s);
-		}
-	}
-	effect {
-		// still NO client with high response time
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
-	}
-}
-
-/**
  * Lowers fidelity by integral steps for percent of requests.
  * Utility: [v] R; [v] C; [v] F
  */
@@ -76,44 +52,3 @@ tactic lowerFidelity (int step, float fracReq) {
 		!CONCERN_STILL_BROKEN;
 	}
 }
-
-/**
- * Raises fidelity by integral steps for percent of requests.
- * Utility: [^] R; [^] C; [^] F
- */
-tactic raiseFidelity (int step, float fracReq) {
-	condition {
-		// there should be NO client with high response time
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
-		// there exists some client with below low-threshold response time
-		exists c : T.ClientT in M.components | c.experRespTime < M.MIN_RESPTIME;
-	}
-	action {
-		// first find the lowest fidelity set
-		set servers = { select s : T.ServerT in M.components | s.fidelity <= M.MAX_FIDELITY_LEVEL - step};
-/* smarter way of doing things...
-		int lowestFidelity = M.MAX_FIDELITY_LEVEL;
-		for (T.ServerT s : servers) {
-			if (s.fidelity < lowestFidelity) {
-				lowestFidelity = s.fidelity;
-			}
-		}
-		// find only servers with this lowest fidelity setting, and raise fidelity
-		servers = { select s : T.ServerT in M.components | s.fidelity <= lowestFidelity};
-*/
-		for (T.ServerT s : servers) {
-			S.setFidelity(s, java.lang.Math.min(s.fidelity + step, M.MAX_FIDELITY_LEVEL));
-		}
-	}
-	effect {
-		// still NO client with high response time
-		forall c : T.ClientT in M.components | c.experRespTime <= M.MAX_RESPTIME;
-	}
-}
-
-/*
-  T5) delayClients(set clients)
-    utility: [^] R; [v] C; [v] F
-  T6) blockClients(set clients)
-    utility: [^] R; [v] C; [v] F
-*/
