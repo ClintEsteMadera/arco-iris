@@ -71,13 +71,12 @@
         <constraint class="numericBinaryRelationalConstraint">
           <artifact reference="../../../../../artifacts/artifact[2]"/>
           <property>cost</property>
-          <quantifier>IN_AVERAGE</quantifier>
+          <quantifier>SUM</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
           <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
       <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>ReduceOverallCost</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>
     <selfHealingScenario id="1" name="Client Experienced Response Time Scenario" enabled="true" priority="2">
@@ -95,7 +94,7 @@
           <property>experRespTime</property>
           <quantifier>IN_AVERAGE</quantifier>
           <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
+          <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
       <repairStrategies class="specificRepairStrategies">
