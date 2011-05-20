@@ -148,6 +148,8 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 			doLog(Level.INFO, "Is Concern " + concern + " Still Broken?");
 
 			boolean result = false;
+			// FIXME NO HABRIA QUE MENCIONAR ESTO EN EL INFORME?
+			// FIXME NO PODEMOS PREDICAR SOBRE UN CONCERN QUE NO SE HAYA ROTO! e.g.fidelity
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
 						&& scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
