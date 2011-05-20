@@ -8,8 +8,8 @@ import lib "newssiteTactics.s";
 
 define boolean styleApplies = Model.hasType(M, "ClientT") && Model.hasType(M, "ServerT");
 
-define boolean RESP_TIME_STILL_BROKEN = ArcoIrisAdaptationManagerncernStillBroken("RESPONSE_TIME");
-define boolean COST_STILL_BROKEN = ArcoIArcoIrisAdaptationManagerStillBroken("SERVER_COST");
+define boolean RESP_TIME_STILL_BROKEN = ArcoIrisAdaptationManager.isConcernStillBroken("RESPONSE_TIME");
+define boolean COST_STILL_BROKEN = ArcoIrisAdaptationManager.isConcernStillBroken("SERVER_COST");
 
 /* This Strategy is simple in that, while it encounters any anomaly in
  * experienced response time, it enlists one new server.
