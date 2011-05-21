@@ -33,15 +33,15 @@ public enum TextFieldListenerType {
 	NUMBER_FIELD_LISTENER {
 		@Override
 		public void addListener(Text textBox) {
-			// TODO: implementar NUMBER_FIELD_LISTENER!
-			throw new RuntimeException("implementar NUMBER_FIELD_LISTENER!");
+			// TODO: implement NUMBER_FIELD_LISTENER!
+			throw new RuntimeException("implement NUMBER_FIELD_LISTENER!");
 		}
 	},
 	NOT_NUMBER_FIELD_LISTENER {
 		@Override
 		public void addListener(Text textBox) {
-			// TODO: implementar NOT_NUMBER_FIELD_LISTENER!
-			throw new RuntimeException("implementar NOT_NUMBER_FIELD_LISTENER!");
+			// TODO: implement NOT_NUMBER_FIELD_LISTENER!
+			throw new RuntimeException("implement NOT_NUMBER_FIELD_LISTENER!");
 		}
 	};
 

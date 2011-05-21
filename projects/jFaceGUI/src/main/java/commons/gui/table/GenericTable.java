@@ -316,10 +316,9 @@ public class GenericTable<T> extends TableViewer {
 				alignmentStyle = columnInfos[i].getAlignment().getSWTAlignmentStyle();
 			}
 
-			/*
-			 * TODO en swt la primera columna es siempre "left aligned" en este caso si la primera columna es
-			 * rigth-aligned podriamos crear un columna de ancho "0"
-			 */
+			// TODO In SWT, the first column is always left-aligned. In this case, if the first column must be
+			// right-aligned, we could create a zero-width column
+
 			int style = (i == 0) ? SWT.NULL : alignmentStyle;
 			final TableColumn column = new TableColumn(this.getTable(), style);
 			column.setAlignment(alignmentStyle);

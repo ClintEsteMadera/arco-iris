@@ -78,8 +78,7 @@ public class TextValueModel implements ValueModel, WidgetContainer {
 		try {
 			return format.parseObject(textControl.getText());
 		} catch (Exception e) {
-			// TODO hacer algo mejor en algunos casos si el texto es vacío
-			// debería retornarse null pero si es un error de formato, no.
+			// TODO do something better. if the text is empty (and it's not a formatting error), we should return null
 			return null;
 		}
 	}
