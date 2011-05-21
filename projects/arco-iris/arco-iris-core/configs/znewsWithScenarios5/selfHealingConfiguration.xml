@@ -18,11 +18,11 @@
         <no-comparator/>
         <entry>
           <concern>RESPONSE_TIME</concern>
-          <double>0.555</double>
+          <double>0.111</double>
         </entry>
         <entry>
           <concern>SERVER_COST</concern>
-          <double>0.111</double>
+          <double>0.555</double>
         </entry>
         <entry>
           <concern>CONTENT_FIDELITY</concern>
