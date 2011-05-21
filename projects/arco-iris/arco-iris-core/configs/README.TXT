@@ -3,13 +3,13 @@ TestCase0 (Comportamiento del Sistema sin Auto Reparación)
     
 	Este test case sirve para mostrar el comportamiento del sistema sin auto-reparacion y sin escenarios.
 
-TestCase1 (Comportamiento con un Único Escenario, sin estrategias)
+TestCase1 (Comportamiento con un Escenario, Sin Estrategias)
 
 	Este test case sirve para mostrar el comportamiento del sistema sin auto-reparacion.
 	Existe un escenario de response time solamente para poder graficar el threshold, sin embargo, al no existir estrategias, la autoreparacion
 	no se disparará.
 
-TestCase2 (Comportamiento con un Único Escenario y una Única Estrategia)
+TestCase2 (Comportamiento con un Escenario y una Estrategia)
 
     1 scenario response time - EnlistServerResponseTime
 

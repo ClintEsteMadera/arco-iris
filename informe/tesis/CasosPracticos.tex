@@ -22,7 +22,7 @@
 
 		\begin{figure}[H]
 			\centering
-				\includegraphics[width=0.9\textwidth]{images/znnArchitecture.png}
+				\includegraphics[width=0.82\textwidth]{images/znnArchitecture.png}
 			\caption{Arquitectura de Znn vista en Acme Studio}
 			\label{fig:znnArchitecture}
 		\end{figure}
@@ -57,20 +57,17 @@
 		evaluar la variación de comportamiento a medida que se vayan agregando escenarios y/o estrategias en los siguientes
 		casos de prueba.
 
-		En las figuras \ref{fig:testcase1_1_expRespTime} y \ref{fig:testcase1_1_cost} se puede observar el comportamiento del
-		sistema sin escenarios, es decir, sin auto reparación.
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime.png}
-			\caption{Comportamiento del sistema sin escenarios: tiempo de respuesta}
-			\label{fig:testcase1_1_expRespTime}
-		\end{figure}
+		En la figura \ref{fig:Caso0} se puede observar el comportamiento del sistema sin escenarios, es decir, sin
+		mecanismo de auto reparación alguno.
 
 		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_1_cost.png}
-			\caption{Comportamiento del sistema sin escenarios: costo de servidores}
-			\label{fig:testcase1_1_cost}
+			\begin{center}
+				\subfigure[Tiempo de Respuesta]{\includegraphics[width=\textwidth]{images/testcase0_expRespTime.png}}
+				\subfigure[Costo de
+				Servidores]{\label{fig:testcase0_cost}\includegraphics[width=\textwidth]{images/testcase0_cost.png}}
+			\end{center}
+			\caption{Comportamiento del sistema sin escenarios}
+			\label{fig:Caso0}
 		\end{figure}
 
 		Como se puede observar, la simulación ha sido configurada explícitamente para que Znn se comporte de la siguiente
@@ -79,7 +76,7 @@
 		que el costo de los servidores se mantiene inmutable frente a los cambios en el tiempo de respuesta, es decir que el
 		sistema, de no mediar un usuario administrador o un \emph{framework} de auto reparación como Arco Iris, trabaja
 		siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a		ninguna acción propia de la auto reparación, sino a cambios en el ambiente, externos al sistema, como por ejemplo el		ancho de banda de la conexión de cada uno de sus clientes.
-	\subsection{Caso 1: Comportamiento con un Único Escenario, sin estrategias}
+	\subsection{Caso 1: Comportamiento con un Escenario, Sin Estrategias}
 
 		Habiendo presentado el comportamiento del sistema sin escenarios definidos, se procederá a definir el primer
 		escenario, el cual consiste en determinar un umbral máximo aceptado de 600 ms. para el tiempo de respuesta
@@ -95,20 +92,20 @@
 		En el apéndice \ref{sec:scenarioExpRespTimeXML} podemos ver la representación de este escenario en XML.
 		
 		Dado que Arco Iris no ejecuta estrategia alguna, el costo de servidores no se verá modificado, manteniéndose constante
-		en 1, tal como se ha visto en la figura \ref{fig:testcase1_1_cost}.
+		en 1, tal como se ha visto en la figura \ref{fig:testcase0_cost}.
 		
-		Por otro lado, en la figura \ref{fig:testcase1_1_expRespTime_threshold} se puede observar que Arco Iris detecta que
+		Por otro lado, en la figura \ref{fig:testcase1_expRespTime} se puede observar que Arco Iris detecta que
 		a partir de cierto instante, el tiempo de respuesta alcanza y supera el umbral predefinido en la cuantificación de la
 		respuesta del único escenario del sistema.
 		
 		\begin{figure}[ht]
 			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_1_expRespTime_threshold.png}
+				\includegraphics[width=1.00\textwidth]{images/testcase1_expRespTime.png}
 			\caption{Umbral para el tiempo de respuesta superado}
-			\label{fig:testcase1_1_expRespTime_threshold}
+			\label{fig:testcase1_expRespTime}
 		\end{figure}
 
-	\subsection{Caso 2: Comportamiento con un Único Escenario y una Única Estrategia}
+	\subsection{Caso 2: Comportamiento con un Escenario y una Estrategia}
 
 		El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma
 		consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia,
@@ -123,24 +120,21 @@
 			}
 		\end{Verbatim}
 
-		Al agregar esta estrategia, observamos en la figura \ref{fig:testcase1_2_expRespTime} que el tiempo de respuesta
+		Al agregar esta estrategia, observamos en la figura \ref{fig:testcase2_expRespTime} que el tiempo de respuesta
 		experimentado por el usuario se corrige rápidamente.
 
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_2_expRespTime.png}
-			\caption{Mejora en el tiempo de respuesta debido a la ejecución de una estrategia}
-			\label{fig:testcase1_2_expRespTime}
-		\end{figure}
-
 		De manera simultánea a la mejora en el tiempo de respuesta, el costo de servidores aumenta a 2, producto de la
-		ejecución de la estrategia. Esto puede observarse en la figura \ref{fig:testcase1_2_cost}. 
+		ejecución de la estrategia. Esto puede observarse en la figura \ref{fig:testcase2_cost}. 
 
 		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_2_cost.png}
-			\caption{Impacto de la estrategia sobre el costo de servidores}
-			\label{fig:testcase1_2_cost}
+			\begin{center}
+				\subfigure[Mejora en el tiempo de respuesta debido a la ejecución de una
+				estrategia]{\label{fig:testcase2_expRespTime}\includegraphics[width=1.00\textwidth]{images/testcase2_expRespTime.png}}
+				\subfigure[Impacto de la estrategia sobre el costo de
+				servidores]{\label{fig:testcase2_cost}\includegraphics[width=1.00\textwidth]{images/testcase2_cost.png}}
+			\end{center}
+			\caption{Impacto del agregado de una estrategia}
+			\label{fig:Caso2}
 		\end{figure}
 
 		En resumen, hasta aquí sea ha visto el comportamiento del sistema en las siguientes circunstancias:
@@ -195,21 +189,18 @@
 		Para este caso de prueba en particular, es importante observar que el escenario de tiempo de respuesta es más
 		prioritario que el de costo.
 
-		En las figuras \ref{fig:testcase1_3_expRespTime} y \ref{fig:testcase1_3_cost} se puede observar el comportamiento
+		En las figuras \ref{fig:testcase3_expRespTime} y \ref{fig:testcase3_cost} se puede observar el comportamiento
 		del tiempo de respuesta y del costo, respectivamente, para la configuración actual.
 
 		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_3_expRespTime.png}
-			\caption{Uso de prioridades favoreciendo al escenario de eficiencia sobre el de costo}
-			\label{fig:testcase1_3_expRespTime}
-		\end{figure}
-
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.00\textwidth]{images/testcase1_3_cost.png}
-			\caption{Reducción del costo como consecuencia de un cambio en el entorno}
-			\label{fig:testcase1_3_cost}
+			\begin{center}
+				\subfigure[Uso de prioridades favoreciendo al escenario de eficiencia sobre el de
+				costo]{\label{fig:testcase3_expRespTime}\includegraphics[width=1.00\textwidth]{images/testcase3_expRespTime.png}}
+				\subfigure[Reducción del costo como consecuencia de un cambio en el
+				entorno]{\label{fig:testcase3_cost}\includegraphics[width=1.00\textwidth]{images/testcase3_cost.png}}
+			\end{center}
+			\caption{Comportamiento del sistema respetando prioridades entre escenarios}
+			\label{fig:Caso4}
 		\end{figure}
 
 		Recordemos que el escenario de tiempo de respuesta es el primero que deja de cumplirse, y que para que sea corregido
@@ -222,7 +213,7 @@
 		repararlo mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de repararlo. Esto
 		hará que recién se repare el escenario de costo cuando esta reparación no rompa el escenario de tiempo de respuesta.
 		
-		En la figura \ref{fig:testcase1_3_cost} podemos observar cómo el sistema desactiva un servidor en el preciso momento
+		En la figura \ref{fig:testcase3_cost} podemos observar cómo el sistema desactiva un servidor en el preciso momento
 		en que el entorno de la aplicación cambia y el tiempo de respuesta mejora por razones ajenas a la auto reparación,
 		aprovechando esto, Arco Iris logra satisfacer así un escenario que estaba sin cumplirse, sin perjudicar a ninguno de
 		los escenarios que se estaban cunmpliendo hasta ese momento.
@@ -233,10 +224,10 @@
 		servidor menos, los valores obtenidos siguen siendo suficientemente buenos debido a los cambios que se han suscitado
 		en el entorno en que funciona el sistema, sin ninguna intervención de la auto reparación. En resumen, al configurar
 		los escenarios más prioritarios permitimos a Arco Iris tomar la decisión de qué escenario reparar en cada instante y
-		con qué estrategia. En la figura \ref{fig:testcase1_3_expRespTime} podemos observar un ejemplo concreto de la potencia
+		con qué estrategia. En la figura \ref{fig:testcase3_expRespTime} podemos observar un ejemplo concreto de la potencia
 		de definir prioridades entre escenarios.
 
-		En la figura \ref{fig:testcase1_3_cost} podemos observar cómo el sistema desactiva un servidor en el preciso momento
+		En la figura \ref{fig:testcase3_cost} podemos observar cómo el sistema desactiva un servidor en el preciso momento
 		en que el entorno de la aplicación cambia y el tiempo de respuesta mejora por razones ajenas a la auto reparación,
 		aprovechando esto, Arco Iris logra satisfacer así un escenario que estaba sin cumplirse, sin perjudicar a ninguno de
 		los escenarios que se estaban cunmpliendo hasta ese momento.

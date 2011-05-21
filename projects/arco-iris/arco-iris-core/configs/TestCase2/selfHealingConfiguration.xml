@@ -1,4 +1,4 @@
-<selfHealingConfiguration description="TestCase2">
+<selfHealingConfiguration description="TestCase2 (Comportamiento con un Escenario y una Estrategia)">
   <artifacts>
     <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
     <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
