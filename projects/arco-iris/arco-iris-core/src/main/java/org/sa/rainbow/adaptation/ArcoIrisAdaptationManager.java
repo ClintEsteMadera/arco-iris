@@ -349,7 +349,6 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		doLog(Level.INFO, "Current System Utility: " + maxStrategyScore);
 
 		Strategy selectedStrategy = null;
-		double selectedStrategyRainbowSystemUtility = computeSystemInstantUtility();
 
 		for (Stitch stitch : m_repertoire) {
 			if (!stitch.script.isApplicableForModel(m_model.getAcmeModel())) {
@@ -365,7 +364,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				if (isNotCandidate || (getFailureRate(currentStrategy) > FAILURE_RATE_THRESHOLD)) {
 					String cause = isNotCandidate ? "not selected in broken scenarios"
 							: "failure rate threshold reached";
-					doLog(Level.INFO, "Strategy does not apply (" + cause + ") : " + currentStrategy.getName());
+					doLog(Level.INFO, "Strategy does not apply (" + cause + "): " + currentStrategy.getName());
 					continue; // don't consider this Strategy
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
@@ -373,7 +372,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Arco Iris' approach...");
 				double strategyScore = computeArcoIrisSystemUtility(currentSystemEnvironment,
 						new ScenarioBrokenDetector4StrategyScoring(m_model, currentStrategy));
-				doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach) : "
+				doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach): "
 						+ strategyScore);
 
 				Map<String, Double> weightsForRainbow = currentSystemEnvironment.getWeightsForRainbow();
@@ -381,16 +380,12 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				if (strategyScore > maxStrategyScore) {
 					maxStrategyScore = strategyScore;
 					selectedStrategy = currentStrategy;
-					selectedStrategyRainbowSystemUtility = computeRaibowSystemUtilityAfterStrategy(selectedStrategy,
-							weightsForRainbow);
 				} else if (strategyScore == maxStrategyScore) {
-					double currentStrategyRaibowSystemUtility = computeRaibowSystemUtilityAfterStrategy(
-							currentStrategy, weightsForRainbow);
-					if (currentStrategyRaibowSystemUtility > selectedStrategyRainbowSystemUtility) {
+					int improvesRainbowSystemUtility = compareRainbowSystemUtility(currentStrategy, selectedStrategy,
+							weightsForRainbow);
+					if (improvesRainbowSystemUtility > 0) {
 						selectedStrategy = currentStrategy;
-						selectedStrategyRainbowSystemUtility = currentStrategyRaibowSystemUtility;
-					} else if (currentStrategyRaibowSystemUtility == selectedStrategyRainbowSystemUtility
-							&& selectedStrategy != null
+					} else if (improvesRainbowSystemUtility == 0 && selectedStrategy != null
 							&& getFailureRate(currentStrategy) < getFailureRate(selectedStrategy)) {
 						selectedStrategy = currentStrategy;
 					}
@@ -413,6 +408,28 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 			m_adaptNeeded = false;
 			m_model.clearConstraintViolated();
 		}
+	}
+
+	/**
+	 * Compares <code>currentStrategy</code> and <code>selectedStrategy</code> Rainbow System Utilities
+	 * 
+	 * @return the value 0 if Rainbow's System Utility for currentStrategy is equals to selectedStrategy's. A value less
+	 *         than 0 if it's less and a value greater than 0 if it's greater.
+	 */
+	private int compareRainbowSystemUtility(Strategy currentStrategy, Strategy selectedStrategy,
+			Map<String, Double> weightsForRainbow) {
+		Double currentStrategyRaibowSystemUtility = computeRaibowSystemUtilityAfterStrategy(currentStrategy,
+				weightsForRainbow);
+		double selectedStrategyRainbowSystemUtility;
+		if (selectedStrategy == null) {
+			selectedStrategyRainbowSystemUtility = computeSystemInstantUtility();
+		} else {
+			selectedStrategyRainbowSystemUtility = computeRaibowSystemUtilityAfterStrategy(selectedStrategy,
+					weightsForRainbow);
+		}
+		int improveRainbowSystemUtility = currentStrategyRaibowSystemUtility
+				.compareTo(selectedStrategyRainbowSystemUtility);
+		return improveRainbowSystemUtility;
 	}
 
 	private Set<String> collectCandidateStrategiesNames(List<SelfHealingScenario> brokenScenarios) {
