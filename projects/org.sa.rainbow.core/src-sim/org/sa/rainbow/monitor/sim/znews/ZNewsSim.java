@@ -83,7 +83,6 @@ public class ZNewsSim extends AbstractSim {
 				accumServerRespTme += respTime;
 			}
 		}
-		double globalAvgERT = 0;
 		for (int i = 0; i < m_clientCnt; i++) { // iterate the clients
 			String connElemName = m_sysName + ".conn" + i;
 			String elemName = m_sysName + ".c" + i;
@@ -107,7 +106,6 @@ public class ZNewsSim extends AbstractSim {
 			// compute average experienced response time
 			double avgERT = doubleProp(elemName + ".experRespTime");
 			avgERT = m_alpha * sRespTime + (1 - m_alpha) * avgERT;
-			globalAvgERT += avgERT;
 			m_runner.changeProperty(elemName + ".experRespTime", String.valueOf(avgERT));
 		}
 	}
