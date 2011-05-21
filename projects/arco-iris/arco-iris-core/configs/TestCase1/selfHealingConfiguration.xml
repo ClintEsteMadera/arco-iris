@@ -1,4 +1,4 @@
-<selfHealingConfiguration description="znewsWithScenarios3">
+<selfHealingConfiguration description="TestCase1">
   <artifacts>
     <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
     <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
@@ -18,11 +18,11 @@
         <no-comparator/>
         <entry>
           <concern>RESPONSE_TIME</concern>
-          <double>0.111</double>
+          <double>0.333</double>
         </entry>
         <entry>
           <concern>SERVER_COST</concern>
-          <double>0.555</double>
+          <double>0.333</double>
         </entry>
         <entry>
           <concern>CONTENT_FIDELITY</concern>
@@ -58,29 +58,7 @@
     </environment>
   </environments>
   <scenarios>
-    <selfHealingScenario id="0" name="Server Cost Scenario" enabled="true" priority="1">
-      <concern>SERVER_COST</concern>
-      <stimulus any="true"/>
-      <environments>
-        <anyEnvironment></anyEnvironment>
-      </environments>
-      <artifact reference="../../../artifacts/artifact[2]"/>
-      <response>The proper response for the request</response>
-      <responseMeasure>
-        <description>Active servers amount is within threshold</description>
-        <constraint class="numericBinaryRelationalConstraint">
-          <artifact reference="../../../../../artifacts/artifact[2]"/>
-          <property>cost</property>
-          <quantifier>SUM</quantifier>
-          <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
-        </constraint>
-      </responseMeasure>
-      <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>ReduceOverallCost</repairStrategy>
-      </repairStrategies>
-    </selfHealingScenario>
-    <selfHealingScenario id="1" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
+    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
       <environments>
@@ -98,9 +76,7 @@
           <constantToCompareThePropertyWith class="int">600</constantToCompareThePropertyWith>
         </constraint>
       </responseMeasure>
-      <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>EnlistServerResponseTime</repairStrategy>
-      </repairStrategies>
+      <repairStrategies class="allRepairStrategies" />
     </selfHealingScenario>
   </scenarios>
 </selfHealingConfiguration>

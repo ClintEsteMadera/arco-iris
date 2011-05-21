@@ -1,4 +1,4 @@
-<selfHealingConfiguration description="znewsWithScenarios1">
+<selfHealingConfiguration description="TestCase0">
   <artifacts>
     <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
     <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
