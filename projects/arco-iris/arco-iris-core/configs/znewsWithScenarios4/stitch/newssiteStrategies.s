@@ -25,7 +25,7 @@ strategy ExpensiveReduceResponseTime
  *
  * Note:  Tested successfully in simulation, znews-brute
  */
-strategy BruteReduceResponseTime
+strategy LowerFidelityReduceResponseTime
 [ styleApplies ] {
   t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
     t1: (!RESP_TIME_STILL_BROKEN) -> done;
