@@ -1,4 +1,4 @@
-<selfHealingConfiguration description="znewsWithScenarios4">
+<selfHealingConfiguration description="TestCase2">
   <artifacts>
     <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
     <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
@@ -58,28 +58,7 @@
     </environment>
   </environments>
   <scenarios>
-    <selfHealingScenario id="0" name="Server Cost Scenario" enabled="true" priority="1">
-      <concern>SERVER_COST</concern>
-      <stimulus any="true"/>
-      <environments>
-        <anyEnvironment></anyEnvironment>
-      </environments>
-      <artifact reference="../../../artifacts/artifact[2]"/>
-      <response>The proper response for the request</response>
-      <responseMeasure>
-        <description>Active servers amount is within threshold</description>
-        <constraint class="numericBinaryRelationalConstraint">
-          <artifact reference="../../../../../artifacts/artifact[2]"/>
-          <property>cost</property>
-          <quantifier>SUM</quantifier>
-          <binaryOperator>LESS_THAN</binaryOperator>
-          <constantToCompareThePropertyWith class="int">2</constantToCompareThePropertyWith>
-        </constraint>
-      </responseMeasure>
-      <repairStrategies class="specificRepairStrategies">
-      </repairStrategies>
-    </selfHealingScenario>
-    <selfHealingScenario id="1" name="Client Experienced Response Time Scenario" enabled="true" priority="2">
+    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
       <environments>
@@ -98,8 +77,7 @@
         </constraint>
       </responseMeasure>
       <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>ExpensiveReduceResponseTime</repairStrategy>
-        <repairStrategy>LowerFidelityReduceResponseTime</repairStrategy>
+        <repairStrategy>EnlistServerResponseTime</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>
   </scenarios>

@@ -50,7 +50,7 @@
 		\emph{concerns} del sistema será equidistribuida. Esta decisión convierte a las prioridades entre escenarios en el
 		único factor influyente en la selección de una estrategia candidata para reparar el sistema (ver algoritmo de
 		selección de estrategias en la sección \ref{sec:arcoIrisStrategyScoring}), simplificando así los cálculos, así como  		también la comprensibilidad de los resultados presentados.
-	\subsection{Comportamiento del Sistema sin Auto Reparación}
+	\subsection{Caso 0: Comportamiento del Sistema sin Auto Reparación}
 	\label{sec:defaultSystemBehavior}
 		
 		Para comenzar, se presenta el comportamiento del sistema de no existir escenarios ni estrategias, esto permitirá
@@ -79,7 +79,7 @@
 		que el costo de los servidores se mantiene inmutable frente a los cambios en el tiempo de respuesta, es decir que el
 		sistema, de no mediar un usuario administrador o un \emph{framework} de auto reparación como Arco Iris, trabaja
 		siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a		ninguna acción propia de la auto reparación, sino a cambios en el ambiente, externos al sistema, como por ejemplo el		ancho de banda de la conexión de cada uno de sus clientes.
-	\subsection{Comportamiento del Sistema con un Único Escenario}
+	\subsection{Caso 1: Comportamiento con un Único Escenario, sin estrategias}
 
 		Habiendo presentado el comportamiento del sistema sin escenarios definidos, se procederá a definir el primer
 		escenario, el cual consiste en determinar un umbral máximo aceptado de 600 ms. para el tiempo de respuesta
@@ -108,7 +108,7 @@
 			\label{fig:testcase1_1_expRespTime_threshold}
 		\end{figure}
 
-	\subsection{Comportamiento del Sistema con un Único Escenario y una Única Estrategia}
+	\subsection{Caso 2: Comportamiento con un Único Escenario y una Única Estrategia}
 
 		El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma
 		consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia,
@@ -156,11 +156,11 @@
 		en el apéndice \ref{sec:logCasoPruebaArcoIris} se presenta un extracto del \emph{log} generado por Arco Iris para el
 		caso que se acaba de detallar.
 
-	\subsection{\emph{Tradeoff} entre Estrategias}
+	\subsection{Caso 3: \emph{Tradeoff} entre Estrategias}
 	
 		\todo{Escribir sobre el caso de 1 escenario con dos estrategias compitiendo entre si (el codigo ya esta hecho)}
 
-	\subsection{\emph{Tradeoff} entre Escenarios según Prioridades}
+	\subsection{Caso 4: \emph{Tradeoff} entre Escenarios según Prioridades}
 
 		El objetivo de esta prueba consiste en evaluar el comportamiento de Arco Iris ante la existencia de escenarios con
 		distintas prioridades. 
@@ -244,12 +244,12 @@
 		Esto nos muestra cómo pueden convivir varios escenarios, y cómo Arco Iris sabrá detectar cual será la estrategia que
 		le permitirá maximizar la utilidad del sistema gracias a la configuración de escenarios y sus respectivas prioridades.
 
-	\subsection{\emph{Tradeoff} entre Escenarios según \emph{Concerns} }
+	\subsection{Caso 5: \emph{Tradeoff} entre Escenarios según \emph{Concerns} }
 
 		\todo{Implementar el caso en que las prioridades son iguales y el algoritmo decide por peso del concern de un
 		escenario en particular}
 		
-	\subsection{Comportamiento Ante Los Cambios en el Entorno de Ejecución}
+	\subsection{Caso 6: Comportamiento Ante Los Cambios en el Entorno de Ejecución}
 
 		\todo{Implementar un caso de dos escenarios de distinto concern y distinto entorno (normal vs. alta carga) y ver como
 		al ppio solo intenta arreglar el de normal y luego pasa a darle bola al de high load}
