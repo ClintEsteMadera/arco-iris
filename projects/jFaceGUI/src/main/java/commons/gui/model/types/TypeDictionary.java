@@ -54,7 +54,7 @@ public class TypeDictionary {
 		do {
 			value = m_map.get(new EditType<T>(clazz, type.getClassConfiguration()));
 
-			// FIXME: No se chequea si la variable "clazz" es nula o no (probable NPE)
+			// FIXME: Possible NPE: clazz variable might be null at this point
 			final Class<? super T> superClass = clazz.getSuperclass();
 			if (superClass != null && (clazz.equals(Object.class) || superClass.equals(clazz))) {
 				clazz = null;

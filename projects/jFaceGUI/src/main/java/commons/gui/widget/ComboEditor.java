@@ -23,8 +23,9 @@ import commons.gui.model.types.EditType;
 import commons.gui.model.types.EnumConfiguration;
 
 /**
- * Wrapper de Combo<br>
- * TODO: OPTIMIZACIONES - Cachear los textos, Agregar métodos para setear un valor, obtener el valor seleccionado, etc.
+ * Combo Wrapper<br>
+ * TODO: Possible Optimizations:<br>
+ * Cache texts, add setters, getters for the selected value, etc.
  */
 public class ComboEditor {
 
