@@ -284,21 +284,18 @@
 	\subsection{Optimización en la Selección de la Estrategia}
 
 		En la sección \ref{sec:strategySelection} se describe en detalle el mecanismo de selección de la mejor estrategia para
-		resolver una situación anómala en el sistema que se está adaptando. Claramente, este problema tiene una dimensión tal,
-		que tratarlo en su justa medida requeriría un extenso trabajo de investigación, el cual excede al alcance del presente
-		trabajo. A futuro, es necesario avanzar en este tema clave para el progreso y desarrollo de nuevas y mejores técnicas
-		de auto reparación.
+		resolver una situación anómala en el sistema que se está adaptando. Este problema posee muchas aristas complejas,
+		por lo tanto, una solución sofisticada requiere un trabajo de investigación que excede lo que se puede realizar en
+		este trabajo. Esta idea fue además compartida por los investigadores de Carnegie Mellon que fueron consultados al
+		inicio del presente trabajo.
 		
-		La elección de la mejor estrategia posible para reparar un problema en el sistema ejecutandose, se puede complejizar
-		tanto como uno desee, agregando heurísticas de distintos grados de complejidad y más inteligencia en general.
-		
-		La solución propuesta en el presente trabajo, el \emph{utility function}, si bien es útil para reducir la dimensión
-		del problema y poder avanzar en otros aspectos, es claramente una solución limitada, debido a que para el cálculo del
-		mismo, se realizan muchos supuestos y simplificaciones sobre el contexto de ejecución del sistema y su correlato con
-		el modelo de su arquitectura; los cuales llevan a un grado de precisión definitivamente mejorable.
-
-		\todo{TURCO: Fijate si podés aportar algo más a esta sección!}
-
+		La solución propuesta aquí al problema de selección de la mejor estrategia de reparación, es una heurística simple
+		basada en el uso del concepto de una \emph{utility function}, la cuál, si bien es útil para reducir la dimensión del
+		problema y poder avanzar en otros aspectos, es claramente una solución limitada, debido a que para el cálculo de esta
+		utilidad se realizan muchos supuestos y simplificaciones sobre el contexto de ejecución del sistema y su correlato con
+		el modelo de su arquitectura. Las oportunidades de mejora avisoradas por los autores pasan principalmente por
+		implementar mecanismos de aprendizaje sobre qué es lo que funcionó y qué no en reparaciones anteriores, por mecanismos
+		dinámicos de modificación de los pesos de los \emph{concerns} y prioridades de los escenarios en función del estado		del sistema en un momento dado y finalmente por ajustes a las tácticas y estrategias que se aplican.
 	\subsection{Ausencia u Obsolescencia del Modelo de la Arquitectura}
 	\label{sec:ausenciaObsolescenciaModeloArquitectura}
 
