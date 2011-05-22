@@ -96,12 +96,12 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 	 * Este método está pensado para ser usado únicamente por una instancia de {@link ScenarioBrokenDetector}. Por eso
 	 * es protected.
 	 */
-	public boolean isBroken(final ArcoIrisModel rainbowModelWithScenarios) {
-		if (this.anyEnvironmentApplies(rainbowModelWithScenarios)) {
+	public boolean isBroken(final ArcoIrisModel arcoIrisModel) {
+		if (this.anyEnvironmentApplies(arcoIrisModel)) {
 			Constraint constraint = getResponseMeasure().getConstraint();
 			boolean isBroken = false;
 			String expValueAsString = NO_DATA;
-			Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
+			Double expValue = arcoIrisModel.getExponentialValueForConstraint(constraint);
 			if (expValue != null) {
 				expValueAsString = expValue.toString();
 				isBroken = !constraint.holds(expValue);
@@ -116,14 +116,14 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 		return false;
 	}
 
-	public boolean isBrokenAfterStrategy(final ArcoIrisModel rainbowModelWithScenarios,
+	public boolean isBrokenAfterStrategy(final ArcoIrisModel arcoIrisModel,
 			Map<String, Double> strategyAggregateAttributes) {
 		// It is not necessary to check the environment at this point because this scenario was already selected for
 		// being repaired
 		Constraint constraint = getResponseMeasure().getConstraint();
 		boolean isBroken = false;
 		String expValueAfterStrategyAsString = NO_DATA;
-		Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
+		Double expValue = arcoIrisModel.getExponentialValueForConstraint(constraint);
 		if (expValue != null) {
 			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
 			Double estimatedExpValueAfterStrategy = expValue + concernDiffAfterStrategy;
@@ -158,10 +158,10 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 		return validationErrors;
 	}
 
-	private boolean anyEnvironmentApplies(ArcoIrisModel rainbowModelWithScenarios) {
+	private boolean anyEnvironmentApplies(ArcoIrisModel arcoIrisModel) {
 		boolean holds = false;
 		for (Environment environment : this.getEnvironments()) {
-			if (environment.holds(rainbowModelWithScenarios)) {
+			if (environment.holds(arcoIrisModel)) {
 				holds = true;
 				break;
 			}

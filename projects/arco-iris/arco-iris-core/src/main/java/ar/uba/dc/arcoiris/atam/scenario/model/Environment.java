@@ -113,10 +113,10 @@ public class Environment extends IdentifiableArcoIrisDomainObject {
 		return this.weightsForRainbow;
 	}
 
-	public boolean holds(ArcoIrisModel rainbowModelWithScenarios) {
+	public boolean holds(ArcoIrisModel arcoIrisModel) {
 		boolean holds = true;
 		for (Constraint constraint : this.getConditions()) {
-			Double expValue = rainbowModelWithScenarios.getExponentialValueForConstraint(constraint);
+			Double expValue = arcoIrisModel.getExponentialValueForConstraint(constraint);
 			if (expValue != null) {
 				holds = holds && constraint.holds(expValue);
 			} else {

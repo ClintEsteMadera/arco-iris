@@ -45,7 +45,7 @@ import org.sa.rainbow.util.Util;
 import ar.uba.dc.arcoiris.atam.scenario.model.Stimulus;
 
 /**
- * See {@link: ArchEvaluatorWithScenarios} javadoc
+ * See {@link: ArchEvaluator} javadoc
  */
 public class ArcoIrisModelManager extends AbstractRainbowRunnable implements IModelManager {
 

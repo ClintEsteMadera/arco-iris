@@ -26,7 +26,7 @@ import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public class GraphicGenerator extends AbstractRainbowRunnable {
 
-	private ArcoIrisModel rainbowModelWithScenarios;
+	private ArcoIrisModel arcoIrisModel;
 
 	private SimGraphicConfiguration simGraphicConfiguration;
 
@@ -46,10 +46,10 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 
 	private final static String STATIC_OUTPUT = GRAPHICS_OUTPUT_DIR + "/graphic_static.html";
 
-	public GraphicGenerator(ArcoIrisModel rainbowModel) {
+	public GraphicGenerator(ArcoIrisModel arcoIrisModel) {
 		super("Simulation Graphic Generator");
 		setSleepTime(500/* ms */);
-		this.rainbowModelWithScenarios = rainbowModel;
+		this.arcoIrisModel = arcoIrisModel;
 		initializeGraphicConfiguration();
 		initializeThresholds();
 		try {
@@ -79,7 +79,7 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		List<GraphicPoint> points = new ArrayList<GraphicPoint>();
 		for (SimPropertyGraphicConfiguration propGraphicConf : this.simGraphicConfiguration
 				.getPropertyGraphicConfiguration()) {
-			Number value = (Number) rainbowModelWithScenarios.getProperty(propGraphicConf.getEavgPropertyName());
+			Number value = (Number) arcoIrisModel.getProperty(propGraphicConf.getEavgPropertyName());
 			points.add(new GraphicPoint(propGraphicConf.getProperty(), value));
 		}
 		return points;
@@ -91,8 +91,8 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 			addPointIntoArray(point.getProperty(), point.getAvgValue(), propertyPoints);
 		}
 		try {
-			putPointsWithinContext();
-			putThresholdsWithinContext();
+			putPointsIntoTheContext();
+			putThresholdsIntoTheContext();
 			writeToFile();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -175,13 +175,13 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 		points.append("];");
 	}
 
-	private void putPointsWithinContext() {
+	private void putPointsIntoTheContext() {
 		for (Entry<String, StringBuffer> entry : pointsPerProperty.entrySet()) {
 			context.put(entry.getKey() + "Points", entry.getValue());
 		}
 	}
 
-	private void putThresholdsWithinContext() {
+	private void putThresholdsIntoTheContext() {
 		for (Entry<String, Number> entry : thresholdPerProperty.entrySet()) {
 			context.put(entry.getKey(), entry.getValue());
 		}

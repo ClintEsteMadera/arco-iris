@@ -10,7 +10,7 @@ import ar.uba.dc.arcoiris.selfhealing.SelfHealingScenario;
 
 public class ScenarioBrokenDetector4StrategyScoring implements ScenarioBrokenDetector {
 
-	private final ArcoIrisModel rainbowModelWithScenarios;
+	private final ArcoIrisModel arcoIrisModel;
 
 	private final Strategy strategy;
 
@@ -18,7 +18,7 @@ public class ScenarioBrokenDetector4StrategyScoring implements ScenarioBrokenDet
 
 	public ScenarioBrokenDetector4StrategyScoring(ArcoIrisModel model, Strategy strategy) {
 		super();
-		this.rainbowModelWithScenarios = model;
+		this.arcoIrisModel = model;
 		this.strategy = strategy;
 		// save aggregate attributes in order to avoid recalculating them
 		this.aggregateAttributes = this.strategy.computeAggregateAttributes();
@@ -27,7 +27,7 @@ public class ScenarioBrokenDetector4StrategyScoring implements ScenarioBrokenDet
 	@Override
 	public boolean isBroken(SelfHealingScenario scenario) {
 		// here, the "simulation" takes place...
-		return scenario.isBrokenAfterStrategy(this.rainbowModelWithScenarios, getAggregateAttributes());
+		return scenario.isBrokenAfterStrategy(this.arcoIrisModel, getAggregateAttributes());
 	}
 
 	public SortedMap<String, Double> getAggregateAttributes() {
