@@ -11,16 +11,11 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
 /**
- * Auxiliar para la obtención de información de la sesión del usuario conectado.
+ * Helper class to get information about the user currently connected.
  */
 public abstract class SessionHelper {
 
-	/**
-	 * Retorna el nombre del usuario conectado.
-	 * 
-	 * @return nombre del usuario conectado.
-	 */
-	public static String nombreDeUsuarioConectado() {
+	public static String usernameOfTheConnectedUser() {
 		String username = null;
 		Authentication authentication = getAuthentication();
 		if (authentication != null) {
@@ -29,12 +24,7 @@ public abstract class SessionHelper {
 		return username;
 	}
 
-	/**
-	 * Retorna el password del usuario conectado.
-	 * 
-	 * @return password del usuario conectado.
-	 */
-	public static String passwordDeUsuarioConectado() {
+	public static String passwordOfTheConnectedUser() {
 		String passwd = null;
 		Authentication authentication = getAuthentication();
 		if (authentication != null) {
@@ -43,12 +33,7 @@ public abstract class SessionHelper {
 		return passwd;
 	}
 
-	/**
-	 * Retorna la lista de nombres de roles del usuario conectado.
-	 * 
-	 * @return nombres de los roles que posee el usuario conectado
-	 */
-	public static List<String> rolesDelUsuarioConectado() {
+	public static List<String> rolesOfTheConnectedUser() {
 		List<String> rolesDelUsuario = new ArrayList<String>();
 		Authentication authentication = getAuthentication();
 
@@ -64,15 +49,15 @@ public abstract class SessionHelper {
 	}
 
 	/**
-	 * Setea las credenciales del usuario en el contexto de Seguridad.
+	 * Set user credentials in the security context.
 	 * 
 	 * @param username
-	 *            el nombre del usuario a setear
+	 *            user name to set
 	 * @param password
-	 *            el password del usuario a setear
+	 *            password to set
 	 * @param roles
-	 *            los roles que posee el usuario. Si este parámetro fuera <code>null</code>, se entiende que el usuario
-	 *            NO está autenticado todavía.
+	 *            the roles that <code>username</code> has. Should this parameter is null, that means that this user is
+	 *            not authenticated yet.
 	 */
 	public static void setCredentials(String username, String password, List<String> roles) {
 		Authentication authentication;
@@ -91,7 +76,7 @@ public abstract class SessionHelper {
 	private static Authentication getAuthentication() {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 		if (securityContext == null) {
-			throw new RuntimeException("Error de Configuración interno. Contexto de Seguridad nulo.");
+			throw new RuntimeException("Internal configuration error. Null Security Context.");
 		}
 		return securityContext.getAuthentication();
 	}

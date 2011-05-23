@@ -3,26 +3,32 @@ package commons.pref.domain;
 import commons.properties.EnumProperty;
 
 /**
- * Modela la información básica para una tabla visual.<br>
  * TODO We could think about using a map instead of an array, in order to improve performance
- * 
  */
 public class TableInfo {
 
+	private EnumProperty name;
+
+	private String order;
+
+	private ColumnInfo[] columnInfos;
+
+	private int columnIndexOrder;
+
 	/**
-	 * Crea un TableInfo.
+	 * Creates an instance of TableInfo.
 	 * 
 	 * @param name
-	 *            especifica el nombre de la tabla. <b>OBLIGATORIO</b>.
+	 *            table name. <b>Mandatory</b>.
 	 * @param order
-	 *            especifica por qué campo se ordena la tabla. <b>NO OBLIGATORIO</b>.
+	 *            this table will be sorted according to this field name. <b>Not Mandatory</b>.
 	 * @param columnInfos
-	 *            especifica las columnas que tendra la tabla. <b>OBLIGATORIO</b>.
+	 *            specifies the column this table will have. <b>Mandatory</b>.
 	 */
 	public TableInfo(EnumProperty name, String order, ColumnInfo[] columnInfos) {
 		this.name = name;
 		this.columnInfos = columnInfos;
-		this.setOrder(order); // default (ordena por la primer columna de la tabla)
+		this.setOrder(order); // by default, the sorting is performed according the first column
 	}
 
 	public TableInfo() {
@@ -33,10 +39,6 @@ public class TableInfo {
 		return this.name;
 	}
 
-	/**
-	 * @param name
-	 *            especifica el nombre de la tabla. <b>OBLIGATORIO</b>.
-	 */
 	public void setName(EnumProperty name) {
 		this.name = name;
 	}
@@ -45,10 +47,6 @@ public class TableInfo {
 		return this.order;
 	}
 
-	/**
-	 * @param order
-	 *            especifica por qué campo se ordena la tabla. <b>NO OBLIGATORIO</b>.
-	 */
 	public void setOrder(String order) {
 		this.order = order;
 		if (columnInfos == null) {
@@ -66,16 +64,12 @@ public class TableInfo {
 		return columnInfos;
 	}
 
-	/**
-	 * @param columnInfos
-	 *            especifica las columnas que tendra la tabla. <b>OBLIGATORIO</b>.
-	 */
 	public void setColumnInfos(ColumnInfo[] columnsInfo) {
 		this.columnInfos = columnsInfo;
 	}
 
 	/**
-	 * @return el índice de columna por la cual se ordena
+	 * @return the index of the column this table must be sorted.
 	 */
 	public int getColumnIndexOrder() {
 		return columnIndexOrder;
@@ -115,9 +109,6 @@ public class TableInfo {
 		return result;
 	}
 
-	/**
-	 * Este método está sobreescrito únicamente a fines de debugging.
-	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -131,12 +122,4 @@ public class TableInfo {
 		}
 		return sb.toString();
 	}
-
-	private EnumProperty name;
-
-	private String order;
-
-	private ColumnInfo[] columnInfos;
-
-	private int columnIndexOrder;
 }

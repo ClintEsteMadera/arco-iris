@@ -9,6 +9,8 @@ import commons.properties.EnumProperty;
  */
 public class Preferences {
 
+	private TableInfo[] tables;
+
 	public TableInfo[] getTables() {
 		return this.tables;
 	}
@@ -28,9 +30,6 @@ public class Preferences {
 		return result;
 	}
 
-	/**
-	 * Este método está sobreescrito únicamente a fines de debugging.
-	 */
 	@Override
 	public String toString() {
 		if (this.tables != null) {
@@ -38,6 +37,4 @@ public class Preferences {
 		}
 		return super.toString();
 	}
-
-	private TableInfo[] tables;
 }

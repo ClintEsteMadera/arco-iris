@@ -11,6 +11,10 @@ import commons.properties.CommonConstants;
 
 public abstract class FileHelper {
 
+	private static final Log log = LogFactory.getLog(FileHelper.class);
+
+	public static final String OUTPUT_DIR;
+
 	public static Properties getProperties(Class clazz, String fileName) {
 		Properties props = new Properties();
 		try {
@@ -25,12 +29,10 @@ public abstract class FileHelper {
 		return File.separator;
 	}
 
-	public static final String OUTPUT_DIR;
-
 	static {
-		// Lista de directorios en orden de preferencia
+		// List of directories, in order of preference
 		final String[] dirs = {
-		// User's application data directory (only under MS-Windows)
+				// User's application data directory (only under MS-Windows)
 				System.getenv("APPDATA"),
 				// User's home directory
 				System.getProperty("user.home"),
@@ -57,6 +59,4 @@ public abstract class FileHelper {
 		}
 		OUTPUT_DIR = outputDir;
 	}
-
-	private static final Log log = LogFactory.getLog(FileHelper.class);
 }

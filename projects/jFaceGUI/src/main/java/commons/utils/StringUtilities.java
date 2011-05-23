@@ -1,26 +1,65 @@
-/*
- * $Id: SbaStringUtils.java,v 1.1 2008/02/22 12:24:51 cvschioc Exp $
- */
 package commons.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Utilidades para la manipulación de Strings en forma eficiente, y operaciones que complementan el API de la clase
  * {@link String}.
  */
-public abstract class SbaStringUtils {
+public abstract class StringUtilities {
+
+	private static final String CUIT_SEPARATOR = "-";
+
+	private static final String ATTR_BEGIN = ":{";
+
+	private static final String ATTR_SEPARATOR = "; ";
+
+	private static final String ATTR_VALUE_SEPARATOR = "=";
+
+	private static final String ATTR_END = "}";
+
+	private static final String ARR_BEGIN = "[";
+
+	private static final String ARR_SEPARATOR = ", ";
+
+	private static final String ARR_END = "]";
+
+	private static final String ARR_EMPTY = "[]";
+
+	public static final int KEYCODE_BIT = (1 << 24);
+
+	private static final int KEYPAD_CR = KEYCODE_BIT + 80;
+
+	private static final int ARROW_LEFT = KEYCODE_BIT + 3;
+
+	public static final int ARROW_RIGHT = KEYCODE_BIT + 4;
+
+	public static final int HOME = KEYCODE_BIT + 7;
+
+	public static final int END = KEYCODE_BIT + 8;
+
+	private static final char BS = '\b';
+
+	private static final char DEL = 0x7F;
+
+	private static final char CR = '\r';
+
+	private static final int ALT = 1 << 16;
+
+	private static final int CTRL = 1 << 18;
+
+	// Determines the amount of space used by StringBuffer.append(null);
+	private static final int NULL_LENGTH = new StringBuffer("").append((String) null).length();
 
 	/**
-	 * Concatena varios Strings de la forma más eficiente posible.
+	 * Concatenates several Strings in the most efficient way.
 	 * 
 	 * @param strings
-	 *            Strings a concatenar.
-	 * @return String concatenado.
+	 *            Strings to concatenate.
+	 * @return String concatenated.
 	 */
 	public static String concat(String... strings) {
 		int len = 0;
@@ -37,7 +76,7 @@ public abstract class SbaStringUtils {
 		}
 	}
 
-	public static String getCharSeparetedRow(Character separator, String... strings) {
+	public static String getCharSeparatedRow(Character separator, String... strings) {
 		int len = 0;
 		if (strings != null && strings.length > 0) {
 			len = strings.length - 1;
@@ -58,13 +97,6 @@ public abstract class SbaStringUtils {
 		return stringBuffer.toString();
 	}
 
-	/**
-	 * Crea un mensaje a partir de los mensajes recibidos, para poder ser mostrado en un diálogo como un único String
-	 * 
-	 * @param errorMessages
-	 *            Mensajes a mostrar en un diálogo
-	 * @return String único a listo para ser mostrado en un diálogo
-	 */
 	public static String formatErrorMessage(List<String> errorMessages) {
 		List<String> strings = new ArrayList<String>();
 		for (String errorMessage : errorMessages) {
@@ -74,7 +106,7 @@ public abstract class SbaStringUtils {
 		return concat(strings.toArray(new String[strings.size()]));
 	}
 
-	public static String formatDniValue(String dniValue) {
+	public static String formatDNIValue(String dniValue) {
 		String result = "";
 		int cant = 0;
 		for (int i = dniValue.length() - 1; i >= 0; i--) {
@@ -88,7 +120,7 @@ public abstract class SbaStringUtils {
 		return result;
 	}
 
-	public static String formatCuitValue(String cuitValue) {
+	public static String formatCUITValue(String cuitValue) {
 		StringBuilder sBuilder = new StringBuilder(13); // 11 caracteres + 2 guiones
 		for (int i = 0; i < cuitValue.length(); i++) {
 			if (i == 2 || i == 10) {
@@ -122,43 +154,6 @@ public abstract class SbaStringUtils {
 			} else {
 				result = (index < 0) ? "" : str.substring(0, index + 1);
 			}
-		}
-		return result;
-	}
-
-	/**
-	 * Comprime secuencias de 1 ó más de caracteres de espaciado en un carácter de espacio.
-	 * 
-	 * @param str
-	 *            Valor a compactar.
-	 * @return Valor compactado.
-	 */
-	public static String squeeze(String str) {
-		String result = null;
-		if (str != null) {
-			// To-Do: Optimize internal StringBuffer allocation
-			result = SQUEEZE_PATTERN.matcher(str).replaceAll(" ");
-		}
-		return result;
-	}
-
-	/**
-	 * Comprime secuencias de 1 ó más de caracteres de espaciado en un carácter de espacio, o las suprime en caso de
-	 * encontrarse entre 2 caracteres que no sean ambos alfanuméricos.
-	 * 
-	 * @param str
-	 *            Valor a compactar.
-	 * @return Valor compactado.
-	 */
-	public static String squeezeFully(String str) {
-		String result = null;
-		if (str != null) {
-			// To-Do: Optimize internal StringBuffer allocation
-			str = SQUEEZE_PATTERN.matcher(str).replaceAll(" ");
-			for (int i = 0; i < SQUEEZE_FULLY_PATTERNS.length; i++) {
-				str = SQUEEZE_FULLY_PATTERNS[i].matcher(str).replaceAll("$1");
-			}
-			result = str;
 		}
 		return result;
 	}
@@ -309,9 +304,10 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * @return <code>true</code> si y solo si todos los caracteres del String son imprimibles, esto es, no son
-	 *         caracteres de control. Técnicamente, verifica que todos los caracteres estén en el rango [32-175] de
-	 *         código ASCII. Algunos ejemplos de invocación del método:
+	 * @return <code>true</code> iff all the characters within the String are printable, i.e. they are not control
+	 *         characters.
+	 *         <p>
+	 *         Some examples:<br>
 	 *         <ul>
 	 *         <li>isPrintable("@?$lajk#") = <code>true</code>
 	 *         <li>isPrintable("_¡+}´") = <code>true</code>
@@ -322,19 +318,19 @@ public abstract class SbaStringUtils {
 		boolean isPrintable = true;
 		if (str != null) {
 			char charActual;
-			boolean estaEnRangoUno;
-			boolean estaEnRangoDos;
+			boolean allInRangeOne;
+			boolean allInRangeTwo;
 			for (int i = 0; isPrintable && i < str.length(); i++) {
 				charActual = str.charAt(i);
-				estaEnRangoUno = (charActual >= 32) && (charActual <= 126);
-				estaEnRangoDos = (charActual >= 161) && (charActual <= 255);
-				isPrintable = isPrintable && (estaEnRangoUno || estaEnRangoDos);
+				allInRangeOne = (charActual >= 32) && (charActual <= 126);
+				allInRangeTwo = (charActual >= 161) && (charActual <= 255);
+				isPrintable = isPrintable && (allInRangeOne || allInRangeTwo);
 			}
 		}
 		return isPrintable;
 	}
 
-	public static boolean containsSpecialCharacter(String str) {
+	public static boolean containsSpecialCharacters(String str) {
 		boolean contains = false;
 		if (str != null) {
 			for (int i = 0; !contains && i < str.length(); i++) {
@@ -345,7 +341,7 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * @return Devuelve verdadero si y solo si el char dado corresponde con alguna de las siguientes teclas:
+	 * @return <code>true</code> iff the provided character is one of the following keys:
 	 *         <ul>
 	 *         <li><code>BACKSPACE</code></li>
 	 *         <li><code>DELETE</code></li>
@@ -371,8 +367,8 @@ public abstract class SbaStringUtils {
 	}
 
 	/**
-	 * @return Devuelve verdadero si y solo si el <b>keyCode</b> dado corresponde a una <code>flecha a izquierda</code>,
-	 *         a una <code>flecha a derecha</code>, a la tecla <code>inicio</code> o a la tecla <code>fin</code>
+	 * @return <code>true</code> iff the provided <b>keyCode</b> is either the left or right key or the keys "HOME" or
+	 *         "END".
 	 */
 	public static boolean isSpecialKey(int keyCode) {
 		return keyCode == ARROW_LEFT || keyCode == ARROW_RIGHT || keyCode == HOME || keyCode == END;
@@ -381,52 +377,4 @@ public abstract class SbaStringUtils {
 	public static String toString(Object obj) {
 		return String.valueOf(obj);
 	}
-
-	private static final String CUIT_SEPARATOR = "-";
-
-	private static final String ATTR_BEGIN = ":{";
-
-	private static final String ATTR_SEPARATOR = "; ";
-
-	private static final String ATTR_VALUE_SEPARATOR = "=";
-
-	private static final String ATTR_END = "}";
-
-	private static final String ARR_BEGIN = "[";
-
-	private static final String ARR_SEPARATOR = ", ";
-
-	private static final String ARR_END = "]";
-
-	private static final String ARR_EMPTY = "[]";
-
-	public static final int KEYCODE_BIT = (1 << 24);
-
-	private static final int KEYPAD_CR = KEYCODE_BIT + 80;
-
-	private static final int ARROW_LEFT = KEYCODE_BIT + 3;
-
-	public static final int ARROW_RIGHT = KEYCODE_BIT + 4;
-
-	public static final int HOME = KEYCODE_BIT + 7;
-
-	public static final int END = KEYCODE_BIT + 8;
-
-	private static final char BS = '\b';
-
-	private static final char DEL = 0x7F;
-
-	private static final char CR = '\r';
-
-	private static final int ALT = 1 << 16;
-
-	private static final int CTRL = 1 << 18;
-
-	// Determines the amount of space used by StringBuffer.append(null);
-	private static final int NULL_LENGTH = new StringBuffer("").append((String) null).length();
-
-	private static final Pattern SQUEEZE_PATTERN = Pattern.compile("\\s+", Pattern.DOTALL);
-
-	private static final Pattern[] SQUEEZE_FULLY_PATTERNS = { Pattern.compile("(\\W) ", Pattern.DOTALL),
-			Pattern.compile(" (\\W)", Pattern.DOTALL), };
 }

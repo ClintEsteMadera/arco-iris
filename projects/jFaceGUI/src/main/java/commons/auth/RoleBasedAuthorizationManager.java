@@ -18,7 +18,7 @@ public class RoleBasedAuthorizationManager implements AuthorizationManager {
 
 	public boolean isUserAuthorized(GuiAction guiAction) {
 		boolean authorized = false;
-		List<String> connectedUserRoles = SessionHelper.rolesDelUsuarioConectado();
+		List<String> connectedUserRoles = SessionHelper.rolesOfTheConnectedUser();
 		String[] necessaryRoles = permissions.get(guiAction.getUniqueId());
 
 		for (String userRole : connectedUserRoles) {

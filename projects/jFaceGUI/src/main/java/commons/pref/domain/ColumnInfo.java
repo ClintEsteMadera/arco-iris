@@ -5,6 +5,14 @@ import commons.properties.EnumProperty;
 
 public class ColumnInfo {
 
+	private EnumProperty label;
+
+	private String fieldName;
+
+	private Alignment alignment;
+
+	private Integer width;
+
 	public ColumnInfo(EnumProperty label, String fieldName, Alignment alignment, Integer width) {
 		this(fieldName, alignment, width);
 		this.label = label;
@@ -50,11 +58,11 @@ public class ColumnInfo {
 
 	@Override
 	public boolean equals(Object obj) {
-		boolean iguales = false;
+		boolean equals = false;
 		if (obj instanceof ColumnInfo) {
-			iguales = this.equalsTo((ColumnInfo) obj);
+			equals = this.equalsTo((ColumnInfo) obj);
 		}
-		return iguales;
+		return equals;
 	}
 
 	private boolean equalsTo(ColumnInfo columnInfo) {
@@ -82,12 +90,4 @@ public class ColumnInfo {
 		sb.append("width=\"" + this.width).append("\" />");
 		return sb.toString();
 	}
-
-	private EnumProperty label;
-
-	private String fieldName;
-
-	private Alignment alignment;
-
-	private Integer width;
 }

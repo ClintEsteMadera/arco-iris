@@ -1,29 +1,26 @@
-/*
- * $Id: SystemUtils.java,v 1.1 2008/02/22 12:24:52 cvschioc Exp $
- */
 package commons.utils;
 
 import java.io.File;
 import java.io.IOException;
 
+/*
+ * TODO: Make this work in other OS, not only in Windows.
+ */
 public abstract class SystemUtils {
-	/*
-	 * TODO: Make this work in other OS, not only in Windows.
-	 */
+
+	private static final String WIN_CMD = System.getProperty("os.name").toUpperCase().startsWith("WINDOWS 9") ? "COMMAND.COM"
+			: "cmd.exe";
 
 	public static void exec(String command, final String... args) throws IOException, InterruptedException {
 		String[] cmdArgs = new String[5 + args.length];
 		int cmdArgIndex = 0;
-		// cmd.exe => Inicia una nueva instancia del intérprete de comandos de Windows.
+		// cmd.exe => Starts a new instance of Windows Command interpreter.
 		cmdArgs[cmdArgIndex++] = WIN_CMD;
-		// /C => Ejecuta el comando especificado en cadena y luego finaliza
+		// /C => Executes the specified command (chained) and then, it finishes.
 		cmdArgs[cmdArgIndex++] = "/c";
-		// Start => Inicia una ventana aparte para ejecutar un programa o un comando especificado.
+		// Start => Opens a new window to execute a program or command.
 		cmdArgs[cmdArgIndex++] = "start";
-		// "título" => Texto que se mostrará en la barra de título de la ventana.
-		// IMPORTANTE: Se debe poner un título vacío, porque sino podría confundir el siguiente
-		// parámetro (comando/nombre de archivo) con el título (en caso que deba hacerse "escape"
-		// por contener espacios en blanco.)
+		// "title" => Text to be shown in the title bar. Do not change this!
 		cmdArgs[cmdArgIndex++] = "\"\"";
 		cmdArgs[cmdArgIndex++] = command;
 		for (int i = 0; i < args.length; i++) {
@@ -33,20 +30,14 @@ public abstract class SystemUtils {
 	}
 
 	public static void showFile(String fileName) throws IOException, InterruptedException {
-		fileName = SbaStringUtils.concat("\"", new File(fileName).getCanonicalPath(), "\"");
+		fileName = StringUtilities.concat("\"", new File(fileName).getCanonicalPath(), "\"");
 		String[] args = { WIN_CMD, "/c", "start", "\"\"", fileName };
 		Runtime.getRuntime().exec(args).waitFor();
 	}
 
 	public static void showFileWithExcel(String fileName) throws IOException, InterruptedException {
-		fileName = SbaStringUtils.concat("\"", new File(fileName).getCanonicalPath(), "\"");
+		fileName = StringUtilities.concat("\"", new File(fileName).getCanonicalPath(), "\"");
 		String[] args = { WIN_CMD, "/c", "start", "excel", "/MAX", "/e", "\"\"", fileName };
 		Runtime.getRuntime().exec(args).waitFor();
 	}
-
-	/**
-	 * En Windows 95/98 el intérprete de comandos es "COMMAND.COM". En los Windows posteriores es "cmd.exe"
-	 */
-	private static final String WIN_CMD = System.getProperty("os.name").toUpperCase().startsWith("WINDOWS 9") ? "COMMAND.COM"
-			: "cmd.exe";
 }

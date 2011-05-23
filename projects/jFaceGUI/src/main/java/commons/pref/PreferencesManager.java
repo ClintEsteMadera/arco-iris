@@ -5,10 +5,13 @@ import commons.pref.domain.TableInfo;
 import commons.properties.EnumProperty;
 
 /**
- * Clase que Maneja el almacenamiento y carga de las preferencias visuales del Sistema.
- * 
+ * This class is in charge of loading and storing user preferences.
  */
 public class PreferencesManager {
+
+	private Preferences preferences;
+
+	private static PreferencesManager instance;
 
 	public static PreferencesManager getInstance() {
 		if (instance == null) {
@@ -17,17 +20,9 @@ public class PreferencesManager {
 		return instance;
 	}
 
-	public TableInfo getTableInfo(EnumProperty tableName) {
-		return this.preferences.getTableInfo(tableName);
-	}
-
-	public void persistPreferences() {
-		PreferencesHelper.persistPreferences(this.preferences);
-	}
-
 	/**
-	 * Crea un manejador de preferencias, mergeando la información del archivo de preferencias del usuario con el
-	 * default, en caso que el mismo exista.
+	 * Creates an instance of PreferencesManager. This object merges any pre-existing preferences with the default ones
+	 * (this is particularly useful when new info is added)
 	 */
 	private PreferencesManager() {
 		Preferences defaultPrefs = PreferencesHelper.getDefaultUserPreferences();
@@ -39,7 +34,11 @@ public class PreferencesManager {
 		}
 	}
 
-	private Preferences preferences;
+	public TableInfo getTableInfo(EnumProperty tableName) {
+		return this.preferences.getTableInfo(tableName);
+	}
 
-	private static PreferencesManager instance;
+	public void persistPreferences() {
+		PreferencesHelper.persistPreferences(this.preferences);
+	}
 }

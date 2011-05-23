@@ -1,8 +1,5 @@
 package commons.utils;
 
-/**
- * Clase de utileria para conversiones de tipos.
- */
 public class ConversionUtilities {
 
 	public static Character toCharacter(Object value) {
@@ -37,7 +34,7 @@ public class ConversionUtilities {
 		}
 		if (value instanceof String) {
 			final String s = (String) value;
-			if (s.equals("true") || s.equals("yes") || s.equals("si")) {
+			if (s.equals("true") || s.equals("yes")) {
 				return Boolean.TRUE;
 			}
 			return Boolean.FALSE;

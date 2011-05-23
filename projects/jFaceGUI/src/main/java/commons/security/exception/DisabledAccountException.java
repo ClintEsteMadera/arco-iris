@@ -1,8 +1,5 @@
 package commons.security.exception;
 
-/**
- * Esta clase modela una excepción causada porque la cuenta de un usuario ha sido deshabilitada.
- */
 public class DisabledAccountException extends AuthenticationException {
 
 	private static final long serialVersionUID = 1L;

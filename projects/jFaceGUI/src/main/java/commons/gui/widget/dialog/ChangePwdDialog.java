@@ -59,7 +59,7 @@ public class ChangePwdDialog extends Dialog {
 	}
 
 	public static void openWithUserLoggedIn(Shell parentShell, boolean forceChange, AuthenticationManager authManager) {
-		String usrName = SessionHelper.nombreDeUsuarioConectado();
+		String usrName = SessionHelper.usernameOfTheConnectedUser();
 		new ChangePwdDialog(parentShell, usrName, forceChange, authManager).open();
 	}
 
@@ -134,7 +134,7 @@ public class ChangePwdDialog extends Dialog {
 		Assert.notNull(this.newPwdText.getText(), "La nueva contraseña no puede ser nula");
 		Assert.notNull(this.newPwdConfirmText.getText(), "La confirmación de la nueva contraseña no puede ser nula");
 
-		if (!this.oldPwdText.getText().equals(SessionHelper.passwordDeUsuarioConectado())) {
+		if (!this.oldPwdText.getText().equals(SessionHelper.passwordOfTheConnectedUser())) {
 			EnumProperty msg = new FakeEnumProperty("La contraseña actual ingresada es inválida");
 			throw new ValidationException(new ValidationError(msg));
 		}
