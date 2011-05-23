@@ -9,15 +9,22 @@ import commons.pref.domain.ColumnInfo;
 import commons.pref.domain.TableInfo;
 
 /**
- * Converter para el objeto TableInfo. Su responsabilidad doble: dada una representación XML del objeto, crear una
- * instancia de TableInfo y viceversa.
- * 
+ * Converts between a TableInfo and its representation in XML.
  */
-
 public class TableInfoConverter extends BaseConverter implements Converter {
+
+	private static TableInfoConverter instance = new TableInfoConverter();
+
+	private static final String NAME = "name";
+
+	private static final String ORDER = "order";
 
 	public static TableInfoConverter getInstance() {
 		return instance;
+	}
+
+	private TableInfoConverter() {
+		super();
 	}
 
 	public boolean canConvert(Class type) {
@@ -42,14 +49,4 @@ public class TableInfoConverter extends BaseConverter implements Converter {
 
 		return tableInfo;
 	}
-
-	private TableInfoConverter() {
-		super();
-	}
-
-	private static TableInfoConverter instance = new TableInfoConverter();
-
-	private static final String NAME = "name";
-
-	private static final String ORDER = "order";
 }

@@ -4,11 +4,25 @@ import java.util.Comparator;
 
 public class ComparisonUtilities {
 
+	public static final Comparator<Comparable> DEFAULT_COMPARATOR = new Comparator<Comparable>() {
+		@SuppressWarnings("unchecked")
+		public int compare(Comparable o1, Comparable o2) {
+			if (o1 != null) {
+				return o1.compareTo(o2);
+			} else if (o2 != null) {
+				return o2.compareTo(o1);
+			}
+			return 0;
+		}
+	};
+
+	public static final Comparator EQUALS_COMPARATOR = new Comparator() {
+		public int compare(Object o1, Object o2) {
+			return ComparisonUtilities.equals(o1, o2) ? 0 : 1;
+		}
+	};
+
 	/**
-	 * Verifica la igualdad de ods objetos.
-	 * 
-	 * @param o1
-	 * @param o2
 	 * @return <code>(o1 == o2) || (o1 != null && o1.equals(o2))</code>
 	 */
 	public static boolean equals(Object o1, Object o2) {
@@ -16,30 +30,12 @@ public class ComparisonUtilities {
 	}
 
 	/**
-	 * Verifica la igualdad de ods objetos.
-	 * 
-	 * @param o1
-	 * @param o2
 	 * @return <code>o2 == null || equals(o1,o2)</code>
 	 */
 	public static boolean equalsOrNull(Object o1, Object o2) {
 		return o2 == null || equals(o1, o2);
 	}
 
-	/**
-	 * Verifica la pertenencia a un rango. Retorna <code>true</code> si <code>value &gt= from && value &lt=
-	 * to</code><br>
-	 * En caso de que <code>from</code> o <code>to</code> sean nulos la comparacion por &gt= o &lt= es siempre verdadera
-	 * (es decir que se asumen los valores "- infinto" y "+infinito" respectivamente).<br>
-	 * En caso de que <code>value</code> sea nulo retirna <code>true</code> solo si <code>from</code> y <code>to</code>
-	 * son nulos.
-	 * 
-	 * @param comp
-	 * @param value
-	 * @param from
-	 * @param to
-	 * @return boolean
-	 */
 	public static <T> boolean inRange(Comparator<T> comp, T value, T from, T to) {
 		if (value == null) {
 			return from == null && to == null;
@@ -75,26 +71,4 @@ public class ComparisonUtilities {
 		}
 		return value.toLowerCase().indexOf(expr.toLowerCase()) >= 0;
 	}
-
-	public static final Comparator<Comparable> DEFAULT_COMPARATOR = new Comparator<Comparable>() {
-		@SuppressWarnings("unchecked")
-		public int compare(Comparable o1, Comparable o2) {
-			if (o1 != null) {
-				return o1.compareTo(o2);
-			} else if (o2 != null) {
-				return o2.compareTo(o1);
-			}
-			return 0;
-		}
-	};
-
-	/**
-	 * Comparador que retorna 0 si dos elementos son iguales o 1 en otro caso.
-	 */
-	public static final Comparator EQUALS_COMPARATOR = new Comparator() {
-		public int compare(Object o1, Object o2) {
-			return ComparisonUtilities.equals(o1, o2) ? 0 : 1;
-		}
-	};
-
 }

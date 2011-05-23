@@ -14,6 +14,21 @@ import commons.datetime.SimpleDate;
 
 public abstract class DateUtils {
 
+	private static DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+	private static DateFormat dateTimeDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+
+	private static DateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+
+	private static final int[] DATE_FIELDS = { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, };
+
+	private static final int[] TIME_FIELDS = { Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND,
+			Calendar.MILLISECOND, };
+
 	public static String formatCalendarAsDateTime(Calendar cal) {
 		synchronized (dateTimeFormat) {
 			return dateTimeFormat.format(cal.getTime());
@@ -57,16 +72,16 @@ public abstract class DateUtils {
 				return calendar;
 			}
 		} catch (ParseException e) {
-			throw new RuntimeException("No se pudo parsear la fecha " + date);
+			throw new RuntimeException("Could not parse " + date + " as a date");
 		}
 	}
 
 	/**
-	 * Convierte a formato "dd/MM/yyyy"
+	 * Converts to format "dd/MM/yyyy"
 	 * 
 	 * @param stringDate
-	 *            un string en la forma dd/MM/yyyy
-	 * @return un Calendar en la forma dd/MM/yyyy
+	 *            a string in the form dd/MM/yyyy
+	 * @return a Calendar in the form dd/MM/yyyy
 	 */
 	public static Calendar parseDMY(String stringDate) {
 		try {
@@ -77,7 +92,7 @@ public abstract class DateUtils {
 				return calendar;
 			}
 		} catch (ParseException e) {
-			throw new RuntimeException("No se pudo parsear la fecha " + stringDate);
+			throw new RuntimeException("Could not parse " + stringDate + " as a date");
 		}
 	}
 
@@ -94,7 +109,7 @@ public abstract class DateUtils {
 	}
 
 	/**
-	 * @return un Calendar con fecha del 1 de Enero de 1970 y hora 00:00:00.000 GMT (Calendario Gregoriano).
+	 * @return a Calendar instance set to date January 1st, 1970, time: 00:00:00.000 GMT (Gregorian Calendar).
 	 */
 	public static Calendar getEpochTime() {
 		Calendar epoch = Calendar.getInstance();
@@ -103,20 +118,19 @@ public abstract class DateUtils {
 	}
 
 	/**
-	 * Intenta convertir el objeto tomado como parámetro a un Calendar:<br>
+	 * Tries to convert the object taken as parameter to an instance of Calendar:<br>
 	 * <li>
 	 * <ul>
-	 * Si el objeto es un Calendar, devuelve el mismo objeto.
+	 * If the object is already a Calendar, object is <code>returned</code>.
 	 * <ul>
-	 * Si el objeto es un Date, crea un Calendar y setea dicho Date.
+	 * If the object is an instance of Date, a new Calendar with that Date is returned.
 	 * <ul>
-	 * Si el objeto es un String, intenta parsearlo a Calendar utilizando los métodos
-	 * {@link #parseStringDateAsCalendar(String)} y {@link #parseDMY(String)} de esta clase, en ese orden.</li>
+	 * If the object is a String, try to parse it using methods {@link #parseStringDateAsCalendar(String)} and
+	 * {@link #parseDMY(String)}, in that order.</li>
 	 * 
 	 * @param object
-	 *            objeto a convertir en un Calendar
-	 * @return Calendar un Calendar creado a partir del parámetro NO NULO <code>object</code>, o <code>null</code> si
-	 *         dicho paramétro fuera nulo.
+	 *            the object to convert to a Calendar. <b>must be not null</b>
+	 * @return Calendar an instance of Calendar or null if conversion wasn't possible.
 	 */
 	public static Calendar try2GetObjectAsCalendar(Object object) {
 		Calendar calendar = null;
@@ -132,68 +146,39 @@ public abstract class DateUtils {
 				calendar = parseDMY((String) object);
 			}
 		} else if (object != null) {
-			throw new IllegalArgumentException("el objeto " + object + " de tipo " + object.getClass().getName()
-					+ " no es convertible a Calendar:");
+			throw new IllegalArgumentException("the object " + object + " of type " + object.getClass().getName()
+					+ " cannot be converted to a Calendar.");
 		}
 		return calendar;
 	}
 
-	/**
-	 * Dado un <code>Date</code>, retorna un <code>Calendar</code> con una fecha equivalente
-	 * 
-	 * @param date
-	 *            Fecha a convertir
-	 * @return Calendar con fecha equivalente al Date recibido
-	 */
 	public static Calendar getDateAsCalendar(Date date) {
 		Calendar result = Calendar.getInstance();
 		result.setTime(date);
 		return result;
 	}
 
-	public static Calendar getFechaHoraAsCalendar(DateTime fechaHora) {
+	public static Calendar getDateTimeAsCalendar(DateTime fechaHora) {
 		try {
-			return getDateAsCalendar(fechaHoraDateFormat.parse(fechaHora.getDate().toString()
+			return getDateAsCalendar(dateTimeDateFormat.parse(fechaHora.getDate().toString()
 					+ fechaHora.getTime().toString()));
 		} catch (ParseException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	public static Calendar getFechaAsCalendar(SimpleDate fecha) {
+	public static Calendar getSimpleDateAsCalendar(SimpleDate fecha) {
 		try {
-			return getDateAsCalendar(fechaDateFormat.parse(fecha.toString()));
+			return getDateAsCalendar(simpleDateFormat.parse(fecha.toString()));
 		} catch (ParseException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	/**
-	 * Compara el <i>orden</i> de dos objetos {@link Calendar}, utilizando sólo los campos que representan la fecha:
-	 * día, mes, y año.
-	 * 
-	 * @param date1
-	 *            Primer objeto {@link Calendar}.
-	 * @param date2
-	 *            Segundo objeto {@link Calendar}.
-	 * @return Un número entero negativo, cero, o un número entero positivo de acuerdo a si el primer argumento es
-	 *         menor, igual, o mayor que el segundo.
-	 */
 	public static int compareDateOnly(Calendar date1, Calendar date2) {
 		return compare(date1, date2, DATE_FIELDS);
 	}
 
-	/**
-	 * Compara el <i>orden</i> de dos objetos {@link Calendar}, utilizando sólo los campos que representan la hora:
-	 * hora, minutos, segundos y milisegundos.
-	 * 
-	 * @param time1
-	 *            Primer objeto {@link Calendar}.
-	 * @param time2
-	 *            Segundo objeto {@link Calendar}.
-	 * @return Un número entero negativo, cero, o un número entero positivo de acuerdo a si el primer argumento es
-	 *         menor, igual, o mayor que el segundo.
-	 */
 	public static int compareTimeOnly(Calendar time1, Calendar time2) {
 		return compare(time1, time2, TIME_FIELDS);
 	}
@@ -210,11 +195,7 @@ public abstract class DateUtils {
 	}
 
 	/**
-	 * Copia los campos dia, mes y año.
-	 * 
-	 * @param dest
-	 * @param source
-	 * @return dest
+	 * Copies the fields: day, month and year.
 	 */
 	public static Calendar copyDate(Calendar dest, Calendar source) {
 		dest.set(Calendar.DAY_OF_MONTH, source.get(Calendar.DAY_OF_MONTH));
@@ -224,11 +205,7 @@ public abstract class DateUtils {
 	}
 
 	/**
-	 * Copia los campos hora , minutos ,segundos y milisegundos.
-	 * 
-	 * @param dest
-	 * @param source
-	 * @return dest
+	 * Copies the fields: hour, minutes, seconds and milliseconds.
 	 */
 	public static Calendar copyTime(Calendar dest, Calendar source) {
 		dest.set(Calendar.HOUR_OF_DAY, source.get(Calendar.HOUR_OF_DAY));
@@ -278,20 +255,4 @@ public abstract class DateUtils {
 		return c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)
 				&& c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH) && c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR);
 	}
-
-	private static DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-
-	private static DateFormat fechaHoraDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
-	private static DateFormat fechaDateFormat = new SimpleDateFormat("yyyyMMdd");
-
-	private static final int[] DATE_FIELDS = { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, };
-
-	private static final int[] TIME_FIELDS = { Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND,
-			Calendar.MILLISECOND, };
-
 }

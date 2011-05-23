@@ -21,7 +21,7 @@ import commons.gui.model.ValueModel;
 import commons.gui.model.types.EditType;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.BindingInfo;
-import commons.utils.SbaStringUtils;
+import commons.utils.StringUtilities;
 
 /**
  * Modela los campos de RPC con las restricciones numéricas necesarias y el layout usual para este tipo de campos.
@@ -62,7 +62,7 @@ public class RPCComposite extends SimpleComposite implements ValueModel<String> 
 
 	@Override
 	public String getValue() {
-		return SbaStringUtils.concat(nro.getText(), folio.getText(), libro.getText(), tomo.getText());
+		return StringUtilities.concat(nro.getText(), folio.getText(), libro.getText(), tomo.getText());
 	}
 
 	@Override

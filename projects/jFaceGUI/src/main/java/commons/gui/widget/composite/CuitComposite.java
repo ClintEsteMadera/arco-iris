@@ -21,7 +21,7 @@ import commons.gui.model.types.EditType;
 import commons.gui.util.ListenerHelper;
 import commons.gui.util.PageHelper;
 import commons.gui.widget.creation.binding.Binding;
-import commons.utils.SbaStringUtils;
+import commons.utils.StringUtilities;
 
 /**
  * Modela un campo de CUIT / CUIL con las restricciones numéricas necesarias y el layout usual para este tipo de campos.
@@ -44,7 +44,7 @@ public class CuitComposite extends SimpleComposite implements ValueModel {
 	}
 
 	public Object getValue() {
-		final String s = SbaStringUtils.concat(prefixTextBox.getText(), dniTextBox.getText(), digitTextBox.getText());
+		final String s = StringUtilities.concat(prefixTextBox.getText(), dniTextBox.getText(), digitTextBox.getText());
 		return StringUtils.isEmpty(s) ? null : Long.parseLong(s);
 	}
 

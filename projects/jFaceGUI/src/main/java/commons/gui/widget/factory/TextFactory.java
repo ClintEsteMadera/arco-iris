@@ -28,7 +28,7 @@ import commons.gui.widget.creation.binding.FakeBinding;
 import commons.gui.widget.creation.metainfo.TextFieldMetainfo;
 import commons.properties.CommonLabels;
 import commons.properties.EnumProperty;
-import commons.utils.SbaStringUtils;
+import commons.utils.StringUtilities;
 
 public final class TextFactory {
 
@@ -49,7 +49,7 @@ public final class TextFactory {
 			Binding binding, boolean readOnly) {
 		Control result;
 		if (readOnly) {
-			String value = SbaStringUtils.formatDniValue(binding.getValue());
+			String value = StringUtilities.formatDNIValue(binding.getValue());
 			result = LabelFactory.createReadOnlyField(composite, new FakeBinding(value), enumProperty);
 		} else {
 			TextFieldMetainfo metainfo = TextFieldMetainfo.create(composite, enumProperty, binding, readOnly);

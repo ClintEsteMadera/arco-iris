@@ -19,41 +19,39 @@ import commons.pref.domain.TableInfo;
 import commons.properties.CommonConstants;
 import commons.utils.FileHelper;
 
-/**
- * Helper que facilita la lecto-escritura de las preferencias del usuario en archivos XML.
- * 
- */
-
 public abstract class PreferencesHelper {
 
-	/**
-	 * Obtiene las preferencias por defecto del usuario.
-	 */
-	static Preferences getDefaultUserPreferences() {
-		log.trace("Cargando preferencias del usuario por defecto desde el archivo " + DEFAULT_PREF_FILE_NAME);
+	private static final String USER_PREF_FILE_NAME = FileHelper.OUTPUT_DIR + FileHelper.getFileSeparator()
+			+ CommonConstants.PREFERENCES_FILE.toString();
 
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(
-				DEFAULT_PREF_FILE_NAME);
+	private static final String DEFAULT_PREF_FILE_NAME = CommonConstants.PREFERENCES_FILE.toString();
+
+	private static XStream xstream = configureXStream();
+
+	private static final Log log = LogFactory.getLog(PreferencesHelper.class);
+
+	static Preferences getDefaultUserPreferences() {
+		log.trace("Loading default user preferences from " + DEFAULT_PREF_FILE_NAME);
+
+		InputStream inputStream = Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream(DEFAULT_PREF_FILE_NAME);
 
 		if (inputStream == null) {
-			String msg = "No encontró archivo de preferencias del usuario en : " + DEFAULT_PREF_FILE_NAME;
+			String msg = "Default user preferences not found in " + DEFAULT_PREF_FILE_NAME;
 			log.fatal(msg);
 			throw new RuntimeException(msg);
 		}
 		return (Preferences) xstream.fromXML(inputStream);
 	}
 
-	/**
-	 * Obtiene las preferencias personalizadas del usuario.
-	 */
 	static Preferences getCustomizedUserPreferences() {
-		log.trace("Cargando preferencias personalizadas del usuario desde el archivo " + USER_PREF_FILE_NAME);
+		log.trace("Loading customized user preferences from " + USER_PREF_FILE_NAME);
 		Preferences result = null;
 		try {
 			InputStream inputStream = new FileInputStream(USER_PREF_FILE_NAME);
 			result = (Preferences) xstream.fromXML(inputStream);
 		} catch (FileNotFoundException ex) {
-			String msg = "No encontraron las preferencias del usuario en: " + USER_PREF_FILE_NAME;
+			String msg = "Customized user preferences not found in " + USER_PREF_FILE_NAME;
 			log.info(msg);
 		}
 		return result;
@@ -62,9 +60,9 @@ public abstract class PreferencesHelper {
 	static void persistPreferences(Preferences preferences) {
 		try {
 			xstream.toXML(preferences, new FileOutputStream(USER_PREF_FILE_NAME));
-			log.info("Se salvaron las preferencias del usuario en el archivo: " + USER_PREF_FILE_NAME);
+			log.info("User preferences saved in " + USER_PREF_FILE_NAME);
 		} catch (FileNotFoundException ex) {
-			String msg = "No se pudieron guardar las preferencias del usuario en el archivo: " + USER_PREF_FILE_NAME;
+			String msg = "Unable to save user preferences in " + USER_PREF_FILE_NAME;
 			log.warn(msg, ex);
 		}
 	}
@@ -131,13 +129,4 @@ public abstract class PreferencesHelper {
 		xstream.registerConverter(ColumnInfoConverter.getInstance());
 		return xstream;
 	}
-
-	private static final String USER_PREF_FILE_NAME = FileHelper.OUTPUT_DIR + FileHelper.getFileSeparator()
-			+ CommonConstants.PREFERENCES_FILE.toString();
-
-	private static final String DEFAULT_PREF_FILE_NAME = CommonConstants.PREFERENCES_FILE.toString();
-
-	private static XStream xstream = configureXStream();
-
-	private static final Log log = LogFactory.getLog(PreferencesHelper.class);
 }

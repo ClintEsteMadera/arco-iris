@@ -10,12 +10,19 @@ import commons.pref.domain.ColumnInfo;
 import commons.properties.EnumProperty;
 
 /**
- * Converter para el objeto ColumnInfo. Su responsabilidad doble: dada una representación XML del objeto, crear una
- * instancia de ColumnInfo y viceversa.
- * 
+ * Converts between a ColumnInfo and its representation in XML.
  */
-
 public class ColumnInfoConverter extends BaseConverter implements Converter {
+
+	private static ColumnInfoConverter instance = new ColumnInfoConverter();
+
+	private static final String LABEL = "label";
+
+	private static final String NAME = "name";
+
+	private static final String ALIGNMENT = "alignment";
+
+	private static final String WIDTH = "width";
 
 	public static ColumnInfoConverter getInstance() {
 		return instance;
@@ -52,15 +59,4 @@ public class ColumnInfoConverter extends BaseConverter implements Converter {
 	private ColumnInfoConverter() {
 		super();
 	}
-
-	private static ColumnInfoConverter instance = new ColumnInfoConverter();
-
-	private static final String LABEL = "label";
-
-	private static final String NAME = "name";
-
-	private static final String ALIGNMENT = "alignment";
-
-	private static final String WIDTH = "width";
-
 }

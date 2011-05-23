@@ -8,12 +8,9 @@ import java.util.ResourceBundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Helper que utilizan los enum properties para no repetir código.
- * 
- */
-
 public abstract class EnumPropertiesHelper {
+
+	private static final Log log = LogFactory.getLog(EnumPropertiesHelper.class);
 
 	public static String getString(ResourceBundle resourceBundle, String key) {
 		return resourceBundle.getString(key);
@@ -24,7 +21,7 @@ public abstract class EnumPropertiesHelper {
 		try {
 			result = MessageFormat.format(getString(resourceBundle, key), reemplazos);
 		} catch (IllegalArgumentException ex) {
-			log.fatal("No se pudo formatear el texto: " + key);
+			log.fatal("Cannot format: " + key);
 		}
 		return result;
 	}
@@ -38,7 +35,7 @@ public abstract class EnumPropertiesHelper {
 		try {
 			result = MessageFormat.format(getString(props, key), reemplazos);
 		} catch (IllegalArgumentException ex) {
-			log.fatal("No se pudo formatear el texto: " + key);
+			log.fatal("Cannot format: " + key);
 		}
 		return result;
 	}
@@ -58,7 +55,7 @@ public abstract class EnumPropertiesHelper {
 		try {
 			props.load(EnumPropertiesHelper.class.getResourceAsStream(fileName));
 		} catch (Exception e) {
-			throw new RuntimeException("No se pudo leer el archivo " + fileName);
+			throw new RuntimeException("Cannot format read file: " + fileName);
 		}
 		return props;
 	}
@@ -68,11 +65,9 @@ public abstract class EnumPropertiesHelper {
 		try {
 			props.load(clazz.getResourceAsStream(clazz.getSimpleName() + ".properties"));
 		} catch (Exception e) {
-			throw new MissingResourceException("No se pudo leer el archivo " + clazz.getSimpleName(), clazz
-					.getSimpleName(), "");
+			throw new MissingResourceException("Cannot format read file: " + clazz.getSimpleName(),
+					clazz.getSimpleName(), "");
 		}
 		return props;
 	}
-
-	private static final Log log = LogFactory.getLog(EnumPropertiesHelper.class);
 }

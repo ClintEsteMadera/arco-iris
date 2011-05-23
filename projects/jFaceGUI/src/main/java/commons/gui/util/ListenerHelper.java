@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import commons.gui.GuiStyle;
 import commons.gui.validators.Validations;
 import commons.utils.ClassUtils;
-import commons.utils.SbaStringUtils;
+import commons.utils.StringUtilities;
 
 /**
  * 
@@ -70,8 +70,8 @@ public abstract class ListenerHelper {
 			@Override
 			public void keyPressed(KeyEvent event) {
 				boolean isNumeric = StringUtils.isNumeric(String.valueOf(event.character));
-				if (!isNumeric && !SbaStringUtils.isSpecialCharacter(event.character)
-						&& !SbaStringUtils.isSpecialKey(event.keyCode)) {
+				if (!isNumeric && !StringUtilities.isSpecialCharacter(event.character)
+						&& !StringUtilities.isSpecialKey(event.keyCode)) {
 					event.doit = false;
 				} else {
 					if (isNumeric) {
@@ -180,9 +180,9 @@ public abstract class ListenerHelper {
 		final String errMsg = "El campo no puede contener caracteres no imprimibles";
 		ModifyListener listener = new ModifyListener() {
 			public void modifyText(ModifyEvent event) {
-				boolean condicion = SbaStringUtils.isPrintable(textBox.getText())
-						|| SbaStringUtils.containsSpecialCharacter(textBox.getText())
-						|| SbaStringUtils.containsSpecialKey(textBox.getText());
+				boolean condicion = StringUtilities.isPrintable(textBox.getText())
+						|| StringUtilities.containsSpecialCharacters(textBox.getText())
+						|| StringUtilities.containsSpecialKey(textBox.getText());
 
 				if (condicion) {
 					textBox.setToolTipText(null);

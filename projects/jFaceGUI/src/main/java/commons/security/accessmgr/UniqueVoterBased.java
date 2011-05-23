@@ -11,8 +11,8 @@ import org.acegisecurity.vote.AccessDecisionVoter;
 import org.acegisecurity.vote.RoleVoter;
 
 /**
- * Modela un DecisionManager que elije un único voter de todos los que posee configurados para efectuar la votación. Lo
- * elige de acuerdo a las anotaciones hechas en la interfaz del servicio a autorizar.
+ * This specialization of {@link DecisionManager} chooses a unique voter from the list it is provided with, according to
+ * the annotations made on the service interface it is trying to authorize.
  */
 public class UniqueVoterBased extends AbstractAccessDecisionManager {
 
@@ -40,8 +40,8 @@ public class UniqueVoterBased extends AbstractAccessDecisionManager {
 	private AccessDecisionVoter getDecisionVoter(ConfigAttributeDefinition config) {
 		AccessDecisionVoter result = null;
 		if (!config.getConfigAttributes().hasNext()) {
-			throw new IllegalArgumentException("ERROR DE AUTORIZACIÓN: no hay annotations"
-					+ " configuradas en el servicio que sea desea autorizar!");
+			throw new IllegalArgumentException(
+					"AUTHORIZATION ERROR: no annotations configured for the service to be authorized!");
 		}
 		List<AccessDecisionVoter> voters = ((List<AccessDecisionVoter>) getDecisionVoters());
 		ConfigAttribute configAttrib = (ConfigAttribute) config.getConfigAttributes().next();

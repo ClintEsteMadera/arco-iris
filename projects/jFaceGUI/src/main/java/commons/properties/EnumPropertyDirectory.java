@@ -6,16 +6,18 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-//import jface.gui.properties.CommonLabels;
-
 /**
- * Directorio contiene todos los enumerados en dónde buscar labels para la creación de tablas con preferencias.
- * 
+ * This directory contains all the enum classes where to look for labels for the creation of tables with user
+ * preferences.
  */
-
 public class EnumPropertyDirectory {
 
+	private List<Class<? extends EnumProperty>> enumProps = new ArrayList<Class<? extends EnumProperty>>();
+
+	private static final Log LOG = LogFactory.getLog(EnumPropertyDirectory.class);
+
 	public EnumPropertyDirectory() {
+		super();
 	}
 
 	public EnumPropertyDirectory(List<Class<? extends EnumProperty>> enumProps) {
@@ -31,14 +33,14 @@ public class EnumPropertyDirectory {
 
 	public void register(Class<? extends EnumProperty> enumPropClass) {
 		if (enumPropClass.isEnum()) {
-			// // CommonLabels tiene precedencia con respecto a cualquier otro EnumProperty.
+			// CommonLabels has precedence over any other instance of EnumProperty.
 			// if (enumPropClass.equals(CommonLabels.class)) {
 			// enumProps.add(0, enumPropClass);
 			// } else {
 			enumProps.add(enumPropClass);
 			// }
 		} else {
-			throw new IllegalArgumentException("La clase " + enumPropClass.getName() + " no es una clase enumerada!");
+			throw new IllegalArgumentException("The classs " + enumPropClass.getName() + " is not enumerated!");
 		}
 	}
 
@@ -52,14 +54,10 @@ public class EnumPropertyDirectory {
 				// do nothing
 			}
 		}
-		String msg = "No se pudo encontrar la constante " + name + " en los EnumProperties registrados";
+		String msg = "Cannot find the constant " + name + " in all registered EnumProperties";
 		if (LOG.isErrorEnabled()) {
 			LOG.error(msg);
 		}
 		throw new RuntimeException(msg);
 	}
-
-	private List<Class<? extends EnumProperty>> enumProps = new ArrayList<Class<? extends EnumProperty>>();
-
-	private static final Log LOG = LogFactory.getLog(EnumPropertyDirectory.class);
 }

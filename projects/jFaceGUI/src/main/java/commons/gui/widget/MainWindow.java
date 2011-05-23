@@ -203,7 +203,7 @@ public abstract class MainWindow extends ApplicationWindow {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setMaximized(true);
-		String userLoggedIn = SessionHelper.nombreDeUsuarioConectado();
+		String userLoggedIn = SessionHelper.usernameOfTheConnectedUser();
 		if (userLoggedIn == null) {
 			userLoggedIn = "Unknown User";
 		}

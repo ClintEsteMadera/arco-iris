@@ -24,6 +24,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class ClassUtils {
+
+	private static final Map<Class, Field[]> fieldsCache = new HashMap<Class, Field[]>();
+
+	private static final Log log = LogFactory.getLog(ClassUtils.class);
+
+	public static final String EMPTY_STRING = "";
+
 	public static Field[] getFields(Class clazz) {
 		Field[] fields = fieldsCache.get(clazz);
 		if (fields == null) {
@@ -58,23 +65,13 @@ public abstract class ClassUtils {
 			method.setAccessible(true);
 			result = method.invoke(instance, args);
 		} catch (Exception e) {
-			log.error("No se pudo invocar el metodo solicitado" + e.getMessage());
+			log.error("Cannot invoke method " + methodName + ": " + e.getMessage());
 			result = null;
 		}
 
 		return result;
 	}
 
-	/**
-	 * Retorna el método indicado por los parámetros.
-	 * 
-	 * @param clazz
-	 *            la clase a la cual pedirle el método.
-	 * @param methodName
-	 *            el nombre del método a obtener.
-	 * @return una instancia de la clase <code>Method</code> que representa al método que se quiere obtener, ó
-	 *         <code>null</code> en caso que el método no exista o no pueda ser accedido.
-	 */
 	public static Method getMethod(Class clazz, String methodName) {
 		Method result = null;
 		result = getPublicMethod(clazz, methodName);
@@ -168,15 +165,6 @@ public abstract class ClassUtils {
 		return value;
 	}
 
-	/**
-	 * Provee el objecto producto de haber navegado por la cadena de propiedades especificada por parámetro.
-	 * 
-	 * @param model
-	 *            objeto a partir del cual comenzar la navegación de propiedades.
-	 * @param chainOfProperties
-	 *            string con las propiedades separadas por puntos.
-	 * @return el valor producto de haber navegado por la cadena de propiedades especificada por parámetro.
-	 */
 	public static Object getObject(Object model, String chainOfProperties) {
 		if (model == null || chainOfProperties == null) {
 			return null;
@@ -187,15 +175,15 @@ public abstract class ClassUtils {
 		for (int i = 0; i < properties.length; i++) {
 			try {
 				if (properties[i].endsWith("()")) {
-					// es un metodo
+					// it's a method
 					String methodName = properties[i].substring(0, properties[i].length() - 2);
 					method = ClassUtils.getPublicMethod(currentObject.getClass(), methodName);
 					currentObject = method.invoke(currentObject, new Object[] {});
 				} else {
-					// es un atributo
+					// it's an attribute
 					Field field = ClassUtils.getField(currentObject.getClass(), properties[i]);
 					if (field == null) {
-						// intento buscarlo como Java Bean...
+						// try to look for it as Java Bean...
 						method = getReadMethod(currentObject, properties[i]);
 						currentObject = method.invoke(currentObject, new Object[] {});
 					} else {
@@ -203,7 +191,7 @@ public abstract class ClassUtils {
 					}
 				}
 			} catch (Exception e) {
-				log.error("Error al recuperar " + chainOfProperties + " de la clase " + model.getClass().getName());
+				log.error("Error when retrieving " + chainOfProperties + " from " + model.getClass().getName());
 			}
 		}
 		return currentObject;
@@ -213,7 +201,7 @@ public abstract class ClassUtils {
 		PropertyDescriptor pDesc = getPropertyDescriptor(target.getClass(), property);
 
 		if (pDesc == null) {
-			throw new IllegalArgumentException("La propiedad '" + property + "' no esta definida para la clase "
+			throw new IllegalArgumentException("The property '" + property + "' is not defined for class "
 					+ target.getClass().getName());
 		}
 
@@ -226,7 +214,7 @@ public abstract class ClassUtils {
 		try {
 			info = Introspector.getBeanInfo(clazz);
 		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("No se pudo obtener informacion para la clase " + clazz.getName());
+			throw new IllegalArgumentException("Could not obtain information for " + clazz.getName());
 		}
 
 		PropertyDescriptor[] props = info.getPropertyDescriptors();
@@ -239,17 +227,6 @@ public abstract class ClassUtils {
 		return null;
 	}
 
-	/**
-	 * Setea un valor dado en un atributo de una instancia
-	 * 
-	 * @param model
-	 *            Instancia a la cual se le seteará el valor
-	 * @param chainOfProps
-	 *            Nombre del atributo de la instancia que será seteado
-	 * @param value
-	 *            Valor a setear
-	 * @return true si y solo si el valor ha sido seteado correctamente
-	 */
 	public static boolean setValueByReflection(Object instance, String chainOfProps, Object value) {
 		Boolean result = false;
 		if (instance != null) {
@@ -260,7 +237,6 @@ public abstract class ClassUtils {
 				for (int i = 0; i < fields.length; i++) {
 					field = getField(instance.getClass(), fields[i]);
 					if (i != fields.length - 1) {
-						// si es el ultimo atributo ya es el atributo a setear
 						instance = field.get(instance);
 					}
 				}
@@ -306,7 +282,7 @@ public abstract class ClassUtils {
 						field.set(instance, value);
 					} else {
 						if (value.equals(EMPTY_STRING)) {
-							// cubre el caso en que el campo sea una interface y el valor un enum
+							// this covers the case where the field is an interface and the value is an enum
 							value = null;
 						}
 						field.setAccessible(true);
@@ -316,58 +292,10 @@ public abstract class ClassUtils {
 			} catch (NumberFormatException numFormatExcept) {
 				result = false;
 				String string = value != null && value.toString() != null ? value.toString() : "";
-				log.error("No se pudo formatear a numero el siguiente String: " + string, numFormatExcept);
+				log.error("Could not format " + string + " as a number", numFormatExcept);
 			} catch (Exception exc) {
 				result = false;
 				log.error(instance.getClass().getName() + "." + chainOfProps, exc);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Retorna el valor establecido en el atributo denotado por <code>propertyName</code> en el objeto receptor denotado
-	 * por <code>model</code>.
-	 * 
-	 * @param model
-	 *            el objeto que contiene la propertyName (o aquél a partir del cuál debe comenzar la búsqueda de campos,
-	 *            en el caso que <code>propertyName</code> sea una cadena de propiedades)
-	 * @param propertyName
-	 *            puede ser una cadena de propiedades separada por puntos.
-	 */
-	public static String obtenerValor(Object model, String propertyName) {
-		String result = "";
-		if (model != null && propertyName != null) {
-			try {
-				Field field = null;
-				String[] fields = propertyName.split(Pattern.quote("."));
-				for (int i = 0; i < fields.length; i++) {
-					field = getField(model.getClass(), fields[i]);
-					if (i != fields.length - 1) {
-						// si es el ultimo atributo ya es el atributo a setear
-						model = field.get(model);
-					}
-				}
-
-				if (field != null && field.get(model) != null) {
-					if (field.getType() == BigDecimal.class) {
-						result = ((BigDecimal) field.get(model)).toPlainString();
-					} else if (field.getType() == Integer.class) {
-						result = ((Integer) field.get(model)).toString();
-					} else if (field.getType() == Long.class) {
-						result = ((Long) field.get(model)).toString();
-					} else if (field.getType() == Date.class) {
-						Date date = (Date) field.get(model);
-						result = DateUtils.formatDate(date);
-					} else if (field.getType() == Calendar.class) {
-						Calendar calendar = (Calendar) field.get(model);
-						result = DateUtils.formatCalendar(calendar);
-					} else {
-						result = field.get(model).toString();
-					}
-				}
-			} catch (Exception exc) {
-				log.error(null, exc);
 			}
 		}
 		return result;
@@ -385,14 +313,8 @@ public abstract class ClassUtils {
 			constructor.setAccessible(true);
 			result = constructor.newInstance((Object[]) null);
 		} catch (Exception e) {
-			log.error("No se pudo instanciar la clase " + aClass.getCanonicalName());
+			log.error("Could not instantiate the class " + aClass.getCanonicalName());
 		}
 		return result;
 	}
-
-	private static final Map<Class, Field[]> fieldsCache = new HashMap<Class, Field[]>();
-
-	private static final Log log = LogFactory.getLog(ClassUtils.class);
-
-	public static final String EMPTY_STRING = "";
 }

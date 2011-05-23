@@ -22,6 +22,17 @@ import commons.properties.CommonTooltips;
  */
 @SuppressWarnings("rawtypes")
 public abstract class PropertiesVerifier {
+
+	protected static Map<ResourceBundle, Class<? extends Enum>> bundleMap;
+
+	static {
+		bundleMap = new HashMap<ResourceBundle, Class<? extends Enum>>();
+		bundleMap.put(ResourceBundle.getBundle("common_constants"), CommonConstants.class);
+		bundleMap.put(ResourceBundle.getBundle("common_labels"), CommonLabels.class);
+		bundleMap.put(ResourceBundle.getBundle("common_messages"), CommonMessages.class);
+		bundleMap.put(ResourceBundle.getBundle("common_tooltips"), CommonTooltips.class);
+	}
+
 	public static boolean testAllPropertiesAreDefined() throws Exception {
 		boolean okStatus = true;
 		for (Class<? extends Enum> enumClass : bundleMap.values()) {
@@ -113,15 +124,5 @@ public abstract class PropertiesVerifier {
 			result[i] = (Class<Enum>) objectArray[i];
 		}
 		return result;
-	}
-
-	protected static Map<ResourceBundle, Class<? extends Enum>> bundleMap;
-
-	static {
-		bundleMap = new HashMap<ResourceBundle, Class<? extends Enum>>();
-		bundleMap.put(ResourceBundle.getBundle("common_constants"), CommonConstants.class);
-		bundleMap.put(ResourceBundle.getBundle("common_labels"), CommonLabels.class);
-		bundleMap.put(ResourceBundle.getBundle("common_messages"), CommonMessages.class);
-		bundleMap.put(ResourceBundle.getBundle("common_tooltips"), CommonTooltips.class);
 	}
 }
