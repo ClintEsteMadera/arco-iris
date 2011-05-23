@@ -2,9 +2,9 @@
 \label{sec:casosPracticos}
 
 	En esta sección se presentan y analizan algunos casos de prueba concretos de uso de Arco Iris a fin de evaluar su
-	comportamiento. Se utilizará el modo simulación provisto por Rainbow (ver sección  \ref{sec:modosEjecucion})
-	para adaptar utilizando Arco Iris al sistema ficticio \textbf{Znn}, reutilizando los componentes de simulación creados
-	para la tesis de doctorado dónde dicho sistema es presentado. (ver sección \ref{sec:znn})
+	comportamiento. Se utilizará el modo simulación provisto por Rainbow (ver sección \ref{sec:modosEjecucion}) para
+	adaptar utilizando Arco Iris al sistema ficticio \textbf{Znn}, reutilizando los componentes de simulación creados para
+	la tesis de doctorado dónde dicho sistema es presentado. (ver sección \ref{sec:znn})
 
 	La simulación permite configurar la variación de los valores de ciertas propiedades de los componentes de la
 	arquitectura, a fin de simular diversas situaciones de carga en el sistema ficticio. Por ejemplo, se podría especificar
@@ -14,6 +14,7 @@
 	comporta Arco Iris en un contexto de \textbf{alta carga}.
 	
 	\subsection{Arquitectura del Sistema Simulado}
+	
 		Los componentes principales de la arquitectura de Znn son clientes y servidores. Éstos no se conectan directamente
 		entre sí, sino que lo hacen por medio de un \emph{proxy}, al cual arriban todas las peticiones de los clientes, y es
 		él quien conoce todos los servidores disponibles y distribuye el trabajo entre ellos. A continuación se muestra un diagrama
@@ -27,12 +28,15 @@
 			\label{fig:znnArchitecture}
 		\end{figure}
 
-		En la arquitectura de Znn están definidos tres \emph{concerns} aunque en el presente trabajo, a fin de simplificar
-		para el lector la complejidad de las pruebas, se utilizarán sólo dos, a saber:
+		En la arquitectura de Znn están definidos tres \emph{concerns} aunque en el presente trabajo, a saber:
+
 		\begin{itemize}
 			\item \textbf{Tiempo de Respuesta}: tiempo de respuesta promedio experimentado por el usuario de Znn, y
 			\item \textbf{Costo}: el cual, refleja la cantidad de servidores prestando servicio con los que Znn cuenta en un
 			determinado momento.
+			\item \textbf{Fidelidad del Contenido}: trata sobre la \textbf{calidad} del contenido ofrecido por un servidor de
+			Znn. A fin de mejorar el \emph{throughput}, un servidor podría servir contenido en un modo \emph{full} (texto,
+			videos, audio, animaciones, etc.), en un modo sólo texto o bien en una combinación de estos dos.
 		\end{itemize}
 
 		Para las pruebas realizadas en este trabajo, sólo se utilizarán las siguientes tácticas, con el fin de modificar el
@@ -40,16 +44,67 @@
 		\begin{itemize}
 			\item Dar de alta un servidor
 			\item Dar de baja un servidor
+			\item Disminuír la fidelidad del contenido provisto por un servidor.
 		\end{itemize}
 
 		Para que estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, quienes serán
 		los responsables de efectuar los cambios propiamente dichos sobre el sistema en \emph{runtime}. Los \emph{effectors}
 		serán invocados desde las tácticas, cuyas implementaciones en Znn pueden verse en el apéndice \ref{sec:tacticasZNN}.
 	
-		Antes de comenzar, cabe aclarar que, salvo que se indique lo contrario, la configuración de pesos para cada uno de los
-		\emph{concerns} del sistema será equidistribuida. Esta decisión convierte a las prioridades entre escenarios en el
-		único factor influyente en la selección de una estrategia candidata para reparar el sistema (ver algoritmo de
-		selección de estrategias en la sección \ref{sec:arcoIrisStrategyScoring}), simplificando así los cálculos, así como  		también la comprensibilidad de los resultados presentados.
+	\subsection{Configuración Base para Casos de Prueba}
+	
+		\todo{Refrescar todos los screenshots de la GUI (al final!)}
+
+		Para las pruebas realizadas serán necesarios los siguientes conceptos:
+		\begin{itemize}
+		  \item Entorno de carga normal
+		  \item Entorno de alta carga
+		  \item Escenario de tiempo de respuesta experimentado por el usuario.
+		  \item Escenario de costo de servidores del sistema.
+		  \item Estrategias asociadas a cada escenario, las cuales serán presentadas a medida que su utilización sea
+		  requerida.
+		\end{itemize}
+		
+		\todo{JONY: tomar imagenes de los entornos de la UI}
+
+		Cabe destacar que para el entorno de carga normal, la configuración por defecto de los pesos para cada uno de los
+		\emph{concerns} del sistema se encuentra equidistribuida. Esta decisión convierte a las prioridades entre escenarios,
+		cuando todos los escenarios pertenecen al entorno de carga normal, en el único factor influyente en la selección de una
+		estrategia candidata para reparar el sistema (ver algoritmo de selección de estrategias en la sección
+		\ref{sec:arcoIrisStrategyScoring}), simplificando así los cálculos, así como también la comprensibilidad de los
+		resultados presentados.
+
+		Con respecto al entorno de alta carga, notar que su objetivo consiste en enfatizar la importancia del tiempo de
+		respuesta frente a los restantes \emph{concerns} definidos en el sistema.
+		
+		De los conceptos mencionados anteriormente, de acuerdo a las necesidades de configuración de cada caso de prueba, sólo
+		será necesario modificar los siguientes atributos:
+		\begin{itemize}
+		  \item Prioridad de cada escenario.
+		  \item Estrategias asociadas a cada escenario.
+		  \item Pesos de los \emph{concerns} para cada entorno.
+		\end{itemize}
+		
+		\begin{figure}[ht]
+			\centering
+				\includegraphics[width=0.75\textwidth]{images/scenario_expRespTime.png}
+			\caption{Escenario de tiempo de respuesta experimentado por el usuario}
+			\label{fig:scenario_expRespTime}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.80\textwidth]{images/scenario_cost.png}
+			\caption{Escenario de costo de servidores del sistema}
+			\label{fig:scenario_cost}
+		\end{figure}
+
+		En el apéndice \ref{sec:scenarioExpRespTimeXML} se muestra a modo de ejemplo la representación en XML del escenario de
+		tiempo de respuesta definido anteriormente.
+
+		Notar que por defecto ambos escenarios aplican para cualquier entorno en que se encuentre el sistema en ejecución
+		(ver definición del pseudo entorno ``ANY'' en la sección \ref{sec:environment}).
+
 	\subsection{Caso 0: Comportamiento del Sistema sin Auto Reparación}
 	\label{sec:defaultSystemBehavior}
 		
@@ -78,19 +133,13 @@
 		siempre con un único servidor. Es importante tener en cuenta que la merma en el tiempo de respuesta no se debe a		ninguna acción propia de la auto reparación, sino a cambios en el ambiente, externos al sistema, como por ejemplo el		ancho de banda de la conexión de cada uno de sus clientes.
 	\subsection{Caso 1: Comportamiento con un Escenario, Sin Estrategias}
 
-		Habiendo presentado el comportamiento del sistema sin escenarios definidos, se procederá a definir el primer
-		escenario, el cual consiste en determinar un umbral máximo aceptado de 600 ms. para el tiempo de respuesta
-		experimentado por el usuario. El objetivo de esta prueba es visualizar cómo, al no haberse definido aún ninguna		estrategia, Arco Iris detectará que existe un escenario que no se satisface aunque no efectuará reparación alguna		sobre el sistema. En la figura \ref{fig:scenario_expRespTime} se muestra el detalle del escenario creado.		\todo{Refrescar todos los screenshots de la GUI (al final!)}
-
-		\begin{figure}[ht]
-			\centering
-				\includegraphics[width=0.75\textwidth]{images/scenario_expRespTime.png}
-			\caption{Detalle del único escenario del sistema}
-			\label{fig:scenario_expRespTime}
-		\end{figure}
-
-		En el apéndice \ref{sec:scenarioExpRespTimeXML} podemos ver la representación de este escenario en XML.
+		Para el presente caso de prueba se utiliza el escenario de tiempo de respuesta definido anteriormente (ver figura
+		\ref{fig:scenario_expRespTime}), el cual determina un umbral máximo aceptado de 600 ms. para el tiempo de respuesta
+		experimentado por el usuario. 
 		
+		El objetivo de esta prueba es visualizar cómo, al no haberse definido aún ninguna estrategia, Arco Iris detectará que
+		existe un escenario que no se satisface aunque no efectuará reparación alguna sobre el sistema.
+
 		Dado que Arco Iris no ejecuta estrategia alguna, el costo de servidores no se verá modificado, manteniéndose constante
 		en 1, tal como se ha visto en la figura \ref{fig:testcase0_cost}.
 		
@@ -107,9 +156,10 @@
 
 	\subsection{Caso 2: Comportamiento con un Escenario y una Estrategia}
 
-		El próximo paso será definir una estrategia que pueda actuar cuando el escenario planteado deje de cumplirse. La misma
-		consistirá simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia,
-		definida en Stitch, será la siguiente:
+		En el presente caso se intenta reflejar cómo Arco Iris repara el sistema al encontrar una estrategia candidata adecuada
+		para el escenario de tiempo de respuesta anteriormente presentado. Para tal fin, se define una estrategia que consiste
+		simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia, definida en Stitch,
+		será la siguiente:
 
 		\begin{Verbatim}[gobble=3]
 			strategy EnlistServerResponseTime {
@@ -120,9 +170,8 @@
 			}
 		\end{Verbatim}
 
-		Al agregar esta estrategia, observamos en la figura \ref{fig:testcase2_expRespTime} que el tiempo de respuesta
-		experimentado por el usuario se corrige rápidamente.
-
+		Al agregar esta estrategia, se observa en la figura \ref{fig:testcase2_expRespTime} que el tiempo de respuesta
+		experimentado por el usuario se corrige (desciende) rápidamente.
 		De manera simultánea a la mejora en el tiempo de respuesta, el costo de servidores aumenta a 2, producto de la
 		ejecución de la estrategia. Esto puede observarse en la figura \ref{fig:testcase2_cost}. 
 
@@ -137,7 +186,7 @@
 			\label{fig:Caso2}
 		\end{figure}
 
-		En resumen, hasta aquí sea ha visto el comportamiento del sistema en las siguientes circunstancias:
+		En resumen, hasta aquí se ha visto el comportamiento del sistema en las siguientes circunstancias:
 		\begin{enumerate}
 			\item sin información alguna sobre auto reparación.
 			\item con un escenario definido pero sin estrategias que lo puedan reparar.
@@ -152,39 +201,84 @@
 
 	\subsection{Caso 3: \emph{Tradeoff} entre Estrategias}
 	
-		\todo{Escribir sobre el caso de 1 escenario con dos estrategias compitiendo entre si (el codigo ya esta hecho)}
+		El presente caso intenta mostrar cómo Arco Iris escoge, entre varias estrategias candidatas para un mismo escenario,
+		aquella que maximiza la utilidad del sistema. En particular, este caso contará con dos estrategias, ambas capaces
+		de reparar el escenario para el cual fueron definidas, aunque una de ellas rompe otro escenario del	sistema,
+		reduciendo así la utilidad del sistema.
+		
+		Para configurar este caso de prueba, se utiliza la estrategia \verb@EnlistServerResponseTime@ antes definida, y se
+		agrega la siguiente estrategia:
+		
+		\begin{Verbatim}[gobble=3]
+			strategy LowerFidelityReduceResponseTime {
+			  t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
+			    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+			    t2: (RESP_TIME_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+			      t2a: (!RESP_TIME_STILL_BROKEN) -> done;
+			      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
+			    }
+			  }
+			}
+		\end{Verbatim}
+		
+		Es de notar que, al coincidir las estrategias en \emph{concern} y escenario que reparan, pasan a ser anecdóticos las
+		prioridades configuradas para cada escenario. Por otro lado, para que el escenario de costo deje de cumplirse, debe
+		aplicar al entorno actual del sistema. Esta condición se satisface ya que el escenario de costo fue definido para
+		aplicar en cualquier entorno.
+		
+		En el siguiente extracto de \emph{log} se puede observar cómo Arco Iris considera las estrategias mencionadas,
+		escogiendo a \verb@LowerFidelityReduceResponseTime@ por sobre \verb@EnlistServerResponseTime@, ya que si bien ambas
+		reparan al escenario de tiempo de respuesta, la última rompe al escenario de costo de servidores:
+		
+		\todo{Actualizar el log este:}
+		
+		\begin{Verbatim}[gobble=3]
+			...
+			Scenario Server Cost Scenario broken for [ESum] 1.0? false
+			Scenario Client Experienced Response Time Scenario broken for [EAvg] 601.80? true
+			Current System Utility: 0.1665
+			Evaluating strategy EnlistServerResponseTime...
+			Scoring EnlistServerResponseTime using Arco Iris' approach...
+			Server Cost Scenario broken after strategy for simulated [ESum] 2.0? true
+			Client Experienced Response Time Scenario broken after strategy for simulated [EAvg] 457.80? false
+			Score for strategy EnlistServerResponseTime(Arco Iris approach): 0.333
+			Evaluating strategy LowerFidelityReduceResponseTime...
+			Scoring LowerFidelityReduceResponseTime using Arco Iris' approach...
+			Scenario Server Cost Scenario broken after strategy for simulated [ESum] 1.0? false
+			Client Experienced Response Time Scenario broken after strategy for simulated [EAvg] 481.81? false
+			Score for strategy LowerFidelityReduceResponseTime(Arco Iris approach): 0.49
+			Selected strategy: LowerFidelityReduceResponseTime
+			EXECUTING STRATEGY LowerFidelityReduceResponseTime...
+			...
+		\end{Verbatim}
+		
+		A continuación, se pueden observar las variaciones de los \emph{concerns} tiempo de respuesta, costo de servidores y
+		fidelidad, para este caso de prueba. 
+		
+		\todo{TURCO: Generar gráfico de fidelidad}
+		\todo{JONY: Mostrar el grafico del responseTime, costo y si se puede de la fidelidad para este caso}	
 
 	\subsection{Caso 4: \emph{Tradeoff} entre Escenarios según Prioridades}
 
 		El objetivo de esta prueba consiste en evaluar el comportamiento de Arco Iris ante la existencia de escenarios con
-		distintas prioridades. 
+		distintas prioridades.
 
 		Para el presente caso de prueba, se toma como base la configuración del caso anterior con las siguientes
 		modificaciones:
 		\begin{itemize}
-			\item El escenario preexistente asociado al tiempo de respuesta (ver figura \ref{fig:scenario_expRespTime}), contará
-			ahora solamente con la estrategia \verb@EnlistServerResponseTime@,
-			\item Se agrega un escenario de costo, el cual se puede observar en la figura \ref{fig:scenario_cost}, con una
-			estrategia de reparación asociada, la cual, puede verse a continuación:
+			\item El escenario de tiempo de respuesta contará ahora solamente con la estrategia\\
+			\verb@EnlistServerResponseTime@,
+			\item Al escenario de costo se le agrega una estrategia de reparación, la cual puede verse a continuación:
+
+			\begin{Verbatim}[gobble=4]
+				strategy ReduceOverallCost {
+				  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
+				    t1: (!COST_STILL_BROKEN) -> done;
+				    t3: (default) -> TNULL;
+				  }
+				}
+			\end{Verbatim}
 		\end{itemize}
-
-		\begin{Verbatim}[gobble=3]
-			strategy ReduceOverallCost {
-			  t0: (true) -> dischargeServers(1) @[2000 /*ms*/] {
-			    t1: (!COST_STILL_BROKEN) -> done;
-			    t3: (default) -> TNULL;
-			  }
-			}
-		\end{Verbatim}
-
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=0.80\textwidth]{images/scenario_cost.png}
-			\caption{Detalle de un escenario de costo de servidores}
-			\label{fig:scenario_cost}
-		\end{figure}
-
-		En el apéndice \ref{sec:scenarioCostXML} podemos ver la representación de este escenario en XML.
 
 		Para este caso de prueba en particular, es importante observar que el escenario de tiempo de respuesta es más
 		prioritario que el de costo.
@@ -235,10 +329,23 @@
 		Esto nos muestra cómo pueden convivir varios escenarios, y cómo Arco Iris sabrá detectar cual será la estrategia que
 		le permitirá maximizar la utilidad del sistema gracias a la configuración de escenarios y sus respectivas prioridades.
 
-	\subsection{Caso 5: \emph{Tradeoff} entre Escenarios según \emph{Concerns} }
+	\subsection{Caso 5: \emph{Tradeoff} entre Escenarios según \emph{Concerns}}
 
-		\todo{Implementar el caso en que las prioridades son iguales y el algoritmo decide por peso del concern de un
-		escenario en particular}
+		El objetivo de este caso de prueba es analizar cómo Arco Iris, al tener que escoger entre favorecer dos escenarios
+		con igual prioridad, elige favorecer a aquel cuyo \emph{concern} posee un peso mayor para el entorno de ejecución
+		actual.
+
+		Los escenarios utilizados en este caso de prueba son idénticos a los del caso anterior, excepto porque ahora pasan a
+		tener ambos igual prioridad y el escenario de costo no posee estrategias de reparación asociadas. Por otro lado, el
+		entorno de carga normal pasa a asignar mayor peso al \emph{concern} costo de servidores:
+		
+		\todo{JONY Mostrar la nueva configuracion de pesos del environment normal tomada de Arco Iris UI}
+
+		En la figura \todo{referencia a la figura que muestra los resultados de este caso} se puede observar cómo Arco Iris
+		opta por no reparar el escenario de tiempo de respuesta ya que para esto, sería necesario perjudicar al escenario de
+		costo, \emph{concern} que posee mayor prioridad en el contexto de ejecución actual del sistema (carga normal).
+		
+		\todo{JONY mandar el log de esto}
 		
 	\subsection{Caso 6: Comportamiento Ante Los Cambios en el Entorno de Ejecución}
 

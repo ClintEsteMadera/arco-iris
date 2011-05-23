@@ -58,7 +58,7 @@
     </environment>
   </environments>
   <scenarios>
-    <selfHealingScenario id="0" name="Server Cost Scenario" enabled="true" priority="1">
+    <selfHealingScenario id="0" name="Server Cost Scenario" enabled="true" priority="2">
       <concern>SERVER_COST</concern>
       <stimulus any="true"/>
       <environments>
@@ -79,7 +79,7 @@
       <repairStrategies class="specificRepairStrategies">
       </repairStrategies>
     </selfHealingScenario>
-    <selfHealingScenario id="1" name="Client Experienced Response Time Scenario" enabled="true" priority="2">
+    <selfHealingScenario id="1" name="Client Experienced Response Time Scenario" enabled="true" priority="1">
       <concern>RESPONSE_TIME</concern>
       <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content" any="false"/>
       <environments>
@@ -98,7 +98,7 @@
         </constraint>
       </responseMeasure>
       <repairStrategies class="specificRepairStrategies">
-        <repairStrategy>ExpensiveReduceResponseTime</repairStrategy>
+        <repairStrategy>EnlistServerResponseTime</repairStrategy>
         <repairStrategy>LowerFidelityReduceResponseTime</repairStrategy>
       </repairStrategies>
     </selfHealingScenario>

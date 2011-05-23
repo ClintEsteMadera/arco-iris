@@ -18,11 +18,11 @@ TestCase2 (Comportamiento con un Escenario y una Estrategia)
 
 TestCase3 (Tradeoff entre Estrategias)
 
-    1 scenario response time - prioridad 2 - ExpensiveReduceResponseTime / LowerFidelityReduceResponseTime
-    1 scenario cost          - prioridad 1 - ninguna estrategia
+    1 scenario response time - prioridad 1 - EnlistServerResponseTime / LowerFidelityReduceResponseTime
+    1 scenario cost          - prioridad 2 - ninguna estrategia
 
 	2 escenarios, el escenario de response time tiene 2 estrategias asociadas mientras que el de server cost ninguna, las estrategias
-	ExpensiveReduceResponseTime y LowerFidelityReduceResponseTime compiten entre sí, ganando la segunda ya que la primera rompe el 
+	EnlistServerResponseTime y LowerFidelityReduceResponseTime compiten entre sí, ganando la segunda ya que la primera rompe el 
 	escenario de costo.
 
 TestCase4 (Tradeoff entre Escenarios según Prioridades)
@@ -38,7 +38,7 @@ TestCase4 (Tradeoff entre Escenarios según Prioridades)
 TestCase5 (Tradeoff entre Escenarios según Concerns)
 
     1 scenario response time - prioridad 1 - EnlistServerResponseTime
-    1 scenario cost          - prioridad 1 - ReduceOverallCost
+    1 scenario cost          - prioridad 1 - ninguna estrategia
 
 	2 escenarios con la misma prioridad, uno de costo y otro de tiempo de respuesta, se define por peso del concern 
 	asignado en el environment actual (NORMAL)

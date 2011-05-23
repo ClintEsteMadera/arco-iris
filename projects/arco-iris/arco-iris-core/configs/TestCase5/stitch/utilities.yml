@@ -95,9 +95,9 @@ vectors:
   lowerFidelity:
     uR: -80
     uF: -2
-    uC: -0.10
+    uC: 0
 # Utility: [^] R; [^] C; [^] F
   raiseFidelity:
     uR: +80
     uF: +2
-    uC: +0.10
+    uC: 0

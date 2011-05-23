@@ -133,8 +133,12 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 
 		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
 
-		log(Level.INFO, "Scenario " + this.getName() + " broken after strategy for simulated "
-				+ exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + "? " + isBroken);
+		String scenarioName = this.getName();
+		if (!scenarioName.toLowerCase().contains("scenario")) {
+			scenarioName = "Scenario " + scenarioName;
+		}
+		log(Level.INFO, scenarioName + " broken after simulation for " + getConcern() + " ("
+				+ exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + ")? " + isBroken);
 		return isBroken;
 	}
 
