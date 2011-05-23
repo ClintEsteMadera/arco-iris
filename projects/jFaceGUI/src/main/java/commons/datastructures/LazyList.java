@@ -1,4 +1,4 @@
-package commons.dataestructures;
+package commons.datastructures;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class LazyList<T> implements Cloneable {
+
+	private static final int DEFAULT_INITIAL_CAPACITY = 2;
+
+	private List<T> m_list;
+
+	@SuppressWarnings("rawtypes")
+	private static final Iterator EMPTY_ITERATOR = Collections.emptyList().iterator();
 
 	public void add(T element) {
 		getList().add(element);
@@ -68,9 +75,8 @@ public class LazyList<T> implements Cloneable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<T> collection() {
-		return m_list == null ? Collections.EMPTY_LIST : m_list;
+		return m_list == null ? Collections.<T> emptyList() : m_list;
 	}
 
 	public T get(int index) {
@@ -95,10 +101,4 @@ public class LazyList<T> implements Cloneable {
 		}
 		return m_list;
 	}
-
-	private static final int DEFAULT_INITIAL_CAPACITY = 2;
-
-	private List<T> m_list;
-
-	private static final Iterator EMPTY_ITERATOR = Collections.EMPTY_LIST.iterator();
 }

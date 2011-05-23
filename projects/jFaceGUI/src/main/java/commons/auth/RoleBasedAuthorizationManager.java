@@ -30,7 +30,7 @@ public class RoleBasedAuthorizationManager implements AuthorizationManager {
 		return authorized;
 	}
 
-	public boolean isUserAuthorized(GuiAction... guiActions) {
+	public boolean isUserAuthorizedForAny(GuiAction... guiActions) {
 		boolean authorized = false;
 		for (GuiAction guiAction : guiActions) {
 			authorized = authorized || isUserAuthorized(guiAction);

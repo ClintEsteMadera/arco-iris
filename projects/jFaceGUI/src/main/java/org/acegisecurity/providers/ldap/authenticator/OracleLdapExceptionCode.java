@@ -8,7 +8,7 @@ import commons.security.exception.ExpiredPasswordException;
 import commons.security.exception.PasswordAboutToExpireException;
 
 /**
- * Representa los tipos de excepción que puede arrojar el LDAP de Oracle.
+ * Type safe wrapper around the possible error codes that Oracle's LDAP can throw.
  */
 public enum OracleLdapExceptionCode {
 
@@ -18,7 +18,7 @@ public enum OracleLdapExceptionCode {
 	CODE_9000() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new ExpiredPasswordException("Su contraseña ha expirado. Por favor, cambie su contraseña.", cause);
+			return new ExpiredPasswordException("Your Password has expired. Please, change your password.", cause);
 		}
 	},
 	/**
@@ -27,7 +27,7 @@ public enum OracleLdapExceptionCode {
 	CODE_9001() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new AccountLockedException("Su cuenta está bloqueada. Contacte al administrador.", cause);
+			return new AccountLockedException("Your account is locked. Please contact the Administrator.", cause);
 		}
 	},
 	/**
@@ -38,7 +38,7 @@ public enum OracleLdapExceptionCode {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
 
-			return new PasswordAboutToExpireException("Su contraseña va a expirar en breve. Cambie su contraseña.",
+			return new PasswordAboutToExpireException("Your Password will expire soon. Please change your password.",
 					cause);
 		}
 	},
@@ -48,8 +48,7 @@ public enum OracleLdapExceptionCode {
 	CODE_9003() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new BadPasswordCompositionException("Su contraseña no posee la suficiente cantidad de caracteres.",
-					cause);
+			return new BadPasswordCompositionException("Your Password is not enough characters long.", cause);
 		}
 	},
 	/**
@@ -58,8 +57,7 @@ public enum OracleLdapExceptionCode {
 	CODE_9004() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new BadPasswordCompositionException(
-					"Su contraseña no contiene la suficiente cantidad de caracteres numéricos.", cause);
+			return new BadPasswordCompositionException("Your Password must contain numeric characters.", cause);
 		}
 	},
 	/**
@@ -68,7 +66,7 @@ public enum OracleLdapExceptionCode {
 	CODE_9005() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new BadPasswordCompositionException("Su contraseña no puede ser nula.", cause);
+			return new BadPasswordCompositionException("Your Password cannot be empty.", cause);
 		}
 	},
 	/**
@@ -77,7 +75,8 @@ public enum OracleLdapExceptionCode {
 	CODE_9006() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new BadPasswordCompositionException("Su nueva contraseña no puede ser igual a la anterior.", cause);
+			return new BadPasswordCompositionException("Your New Password cannot be the same as your Old Password.",
+					cause);
 		}
 	},
 	/**
@@ -87,7 +86,7 @@ public enum OracleLdapExceptionCode {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
 			return new BadPasswordCompositionException(
-					"Su nueva contraseña no puede ser igual a otras utilizadas con anterioridad.", cause);
+					"Your New Password cannot be the same as previously used passwords.", cause);
 		}
 	},
 	/**
@@ -96,7 +95,7 @@ public enum OracleLdapExceptionCode {
 	CODE_9008() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new ExpiredPasswordException("Su contraseña ha expirado. Por favor, cambie su contraseña.", cause);
+			return new ExpiredPasswordException("Your Password has expired. Por favor, change your password.", cause);
 		}
 	},
 	/**
@@ -105,7 +104,8 @@ public enum OracleLdapExceptionCode {
 	CODE_9050() {
 		@Override
 		public AuthenticationException getAuthenticationException(Throwable cause) {
-			return new DisabledAccountException("Su cuenta ha sido deshabilitada. Contacte al administrador.", cause);
+			return new DisabledAccountException("Your Account has been disabled. Please contact the administrator.",
+					cause);
 		}
 	};
 
