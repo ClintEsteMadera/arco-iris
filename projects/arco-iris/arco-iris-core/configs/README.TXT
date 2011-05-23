@@ -42,3 +42,13 @@ TestCase5 (Tradeoff entre Escenarios según Concerns)
 
 	2 escenarios con la misma prioridad, uno de costo y otro de tiempo de respuesta, se define por peso del concern 
 	asignado en el environment actual (NORMAL)
+
+TestCase6 (Comportamiento Ante Los Cambios en el Entorno de Ejecución)
+
+    1 scenario response time - prioridad 3 - EnlistServerResponseTime - carga normal
+    1 scenario response time - prioridad 1 - EnlistServerResponseTime - alta carga
+    1 scenario cost          - prioridad 2 - ReduceOverallCost - carga normal
+
+	En carga normal no se repara el tiempo de respuesta porque es mas importante el costo, en cambio en
+	alta carga si se repara ya que es prioritario el escenario de mayor prioridad es el de tiempo de respuesta
+	de alta carga, y ademas el entorno alta carga otorga mas importancia a la performance.
