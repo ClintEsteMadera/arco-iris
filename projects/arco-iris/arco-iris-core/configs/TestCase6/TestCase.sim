@@ -1,0 +1,77 @@
+## Simulation plan for znews "With Self Healing Scenarios"
+
+# Property file defining the system and simulation plan
+sim.class = org.sa.rainbow.monitor.sim.znews.ZNewsSim
+
+sim.0 =
+#- start with high server load
+sim.1 = 10001:ZNewsSys.c1.perf.service.time:700,20001:ZNewsSys.c2.perf.service.time:700
+
+# terminate system at 40 seconds
+sim.2 = 50000:sim:terminate
+
+sim.size = 3
+
+# list the elements on which to explicitly check rules
+elements = ZNewsSys.lbproxy, ZNewsSys.s0, ZNewsSys.s1, ZNewSys.c0, ZNewSys.c1, ZNewSys.c2, ZNewsSys.conn0, ZNewsSys.conn1, ZNewsSys.conn2, ZNewsSys.proxyconn0, ZNewsSys.proxyconn1
+#elements.check = ZNewsSys.c0, ZNewsSys.c1, ZNewsSys.c2
+client.count = 3
+server.count = 2
+
+# whether loads are balanced, which means servers are treated as if replicated
+perf.load.balanced = true
+
+# average request and response size, in kilobytes (KB)
+perf.request.size = 10
+perf.response.size = 100
+
+# this is the alpha factor to compute exponential average
+# (a greater number means "the new value is more important")
+alpha = 0.60
+
+### initial properties and performance simulation SEED VALUES
+ZNewsSys.lbproxy.load = 0.01
+
+## client 0, first client; bw in kbps, time in ms, rate in req/s
+ZNewsSys.c0.experRespTime = 50
+ZNewsSys.conn0.bandwidth.up = 384
+ZNewsSys.conn0.bandwidth.down = 384
+ZNewsSys.c0.perf.service.time = 100
+ZNewsSys.c0.perf.arrival.rate = 3
+# load is balanced, therefore, the following does not make sense
+#ZNewsSys.c0.connection.target = ZNewsSys.s0
+
+## client 1
+ZNewsSys.c1.experRespTime = 50
+ZNewsSys.conn1.bandwidth.up = 256
+ZNewsSys.conn1.bandwidth.down = 256
+ZNewsSys.c1.perf.service.time = 180
+ZNewsSys.c1.perf.arrival.rate = 9
+#ZNewsSys.c1.connection.target = ZNewsSys.s1
+
+## client 2
+ZNewsSys.c2.experRespTime = 50
+ZNewsSys.conn2.bandwidth.up = 512
+ZNewsSys.conn2.bandwidth.down = 512
+ZNewsSys.c2.perf.service.time = 120
+ZNewsSys.c2.perf.arrival.rate = 2
+#ZNewsSys.c2.connection.target = ZNewsSys.s0
+
+## server 0
+ZNewsSys.s0.isArchEnabled = true
+ZNewsSys.s0.type = ZNewsFam.ServerT
+ZNewsSys.s0.load = 0.01
+ZNewsSys.s0.cost = 1.0
+ZNewsSys.s0.fidelity = 5
+ZNewsSys.s0.replication = 1
+ZNewsSys.s0.perf.service.time = 11
+
+### Spares...
+## server 1
+ZNewsSys.s1.isArchEnabled = false
+ZNewsSys.s1.type = ZNewsFam.ServerT
+ZNewsSys.s1.load = 0.01
+ZNewsSys.s1.cost = 1.0
+ZNewsSys.s1.fidelity = 5
+ZNewsSys.s1.replication = 1
+ZNewsSys.s1.perf.service.time = 15
