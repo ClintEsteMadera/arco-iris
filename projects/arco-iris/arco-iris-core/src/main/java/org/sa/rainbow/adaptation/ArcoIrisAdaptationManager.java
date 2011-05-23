@@ -346,7 +346,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		double maxStrategyScore = computeArcoIrisSystemUtility(currentSystemEnvironment,
 				scenarioBrokenDetector4CurrentSystemState);
 
-		doLog(Level.INFO, "Current System Utility: " + maxStrategyScore);
+		doLog(Level.INFO, "Current System Utility (Score to improve): " + maxStrategyScore);
 
 		Strategy selectedStrategy = null;
 
@@ -369,17 +369,17 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				}
 				doLog(Level.INFO, "Evaluating strategy " + currentStrategy.getName() + "...");
 
-				doLog(Level.INFO, "Scoring " + currentStrategy.getName() + " using Arco Iris' approach...");
+				doLog(Level.INFO, "Scoring " + currentStrategy.getName() + "...");
 				double strategyScore = computeArcoIrisSystemUtility(currentSystemEnvironment,
 						new ScenarioBrokenDetector4StrategyScoring(m_model, currentStrategy));
-				doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + "(Arco Iris approach): "
-						+ strategyScore);
+				doLog(Level.INFO, "Score for strategy " + currentStrategy.getName() + ": " + strategyScore);
 
 				Map<String, Double> weightsForRainbow = currentSystemEnvironment.getWeightsForRainbow();
 
 				if (strategyScore > maxStrategyScore) {
 					maxStrategyScore = strategyScore;
 					selectedStrategy = currentStrategy;
+					doLog(Level.INFO, "Current best strategy " + selectedStrategy.getName());
 				} else if (strategyScore == maxStrategyScore) {
 					int improvesRainbowSystemUtility = compareRainbowSystemUtility(currentStrategy, selectedStrategy,
 							weightsForRainbow);

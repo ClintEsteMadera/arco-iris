@@ -11,13 +11,16 @@ define boolean styleApplies = Model.hasType(M, "ClientT") && Model.hasType(M, "S
 define boolean COST_STILL_BROKEN = ArcoIrisAdaptationManager.isConcernStillBroken("SERVER_COST");
 define boolean RESP_TIME_STILL_BROKEN = ArcoIrisAdaptationManager.isConcernStillBroken("RESPONSE_TIME");
 
-/* This strategy will enlist 2 servers
+/* This Strategy is simple in that, while it encounters any anomaly in
+ * experienced response time, it enlists one new server.
  *
+ * Note:  Tested successfully in simulation, znews-varied
  */
-strategy ExpensiveReduceResponseTime
+strategy EnlistServerResponseTime
 [ styleApplies ] {
-  t0: (true) -> enlistServers(2) @[2000 /*ms*/]{
-  	t1: (default) -> TNULL;
+  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+	  t1: (!RESP_TIME_STILL_BROKEN) -> done;
+	  t2: (default) -> TNULL;
   }
 }
 
