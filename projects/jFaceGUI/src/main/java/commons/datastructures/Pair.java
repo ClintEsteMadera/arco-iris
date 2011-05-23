@@ -1,4 +1,4 @@
-package commons.dataestructures;
+package commons.datastructures;
 
 public class Pair<T1, T2> {
 

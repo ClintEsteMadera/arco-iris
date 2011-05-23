@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 
 import commons.annotations.AnnotationManager;
-import commons.dataestructures.Pair;
+import commons.datastructures.Pair;
 
 /**
  * 

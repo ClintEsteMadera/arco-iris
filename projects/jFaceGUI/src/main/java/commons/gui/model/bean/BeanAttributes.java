@@ -1,6 +1,6 @@
 package commons.gui.model.bean;
 
-import commons.dataestructures.LazyMap;
+import commons.datastructures.LazyMap;
 import commons.gui.model.AbstractAttribute;
 import commons.gui.model.Attribute;
 import commons.gui.model.Attributes;

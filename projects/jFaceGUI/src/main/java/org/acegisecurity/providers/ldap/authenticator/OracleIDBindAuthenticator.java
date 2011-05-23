@@ -8,8 +8,8 @@ import org.acegisecurity.ldap.InitialDirContextFactory;
 import commons.security.exception.AuthenticationException;
 
 /**
- * Autenticador que parsea el código de error del LDAP de Oracle y se encarga de arrojar una excepción específica para
- * cada uno de los posibles errores.
+ * An authenticator that parses Oracle's LDAP error code and throws a specific exception according to the specific
+ * problem found.
  */
 public class OracleIDBindAuthenticator extends BindAuthenticator {
 
@@ -33,8 +33,8 @@ public class OracleIDBindAuthenticator extends BindAuthenticator {
 	 * Attempts to parse the error code from the exception message returned by OID.
 	 */
 	private AuthenticationException getAuthenticationException(Throwable cause) {
-		// Por defecto, se devuelve esta excepción, salvo que la causa contenga más detalle.
-		AuthenticationException result = new AuthenticationException("El usuario o la contraseña son inválidos.", cause);
+		// By default, this exception is returned, unless the cause contains more detail...
+		AuthenticationException result = new AuthenticationException("Either username or password is invalid.", cause);
 		String msg = cause.getMessage();
 		Matcher matcher = oidErrorMsgPattern.matcher(msg);
 
@@ -44,7 +44,7 @@ public class OracleIDBindAuthenticator extends BindAuthenticator {
 				OracleLdapExceptionCode oracleLdapExceptionCode = OracleLdapExceptionCode.valueOf("CODE_" + code);
 				result = oracleLdapExceptionCode.getAuthenticationException(cause);
 			} catch (IllegalArgumentException e) {
-				// en este caso, el código de error no está contemplado en OracleLdapExceptionCode
+				// error code is not defined in OracleLdapExceptionCode
 			}
 		}
 		return result;

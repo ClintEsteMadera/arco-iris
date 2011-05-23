@@ -1,13 +1,15 @@
-package commons.dataestructures;
+package commons.datastructures;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Map que se carga en modalidad "lazy". Cuando no encuentra una clave, crea el elemento asociado (es util para
- * construir caches.)
+ * Lazy map. When a key is not found, the associated element is created. This might be useful, for example, to build
+ * caches.
  */
 public abstract class LazyMap<K, V> {
+
+	private Map<K, V> m_map = new HashMap<K, V>();
 
 	public V get(K key) {
 		V ret = m_map.get(key);
@@ -23,7 +25,4 @@ public abstract class LazyMap<K, V> {
 	}
 
 	public abstract V createElement(K key);
-
-	private Map<K, V> m_map = new HashMap<K, V>();
-
 };

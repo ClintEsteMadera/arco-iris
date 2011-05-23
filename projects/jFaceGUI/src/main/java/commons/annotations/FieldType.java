@@ -1,16 +1,16 @@
 package commons.annotations;
 
 public enum FieldType {
-	ALF("Alfabetico"), AFN("Alfanumérico"), NUM("Numérico"), CAL("Calendar"), DEFAULT("Default");
+	ALF("Alphabetic"), AFN("Alphanumeric"), NUM("Numeric"), CAL("Calendar"), DEFAULT("Default");
 
-	FieldType(String descripcion) {
-		this.descripcion = descripcion;
+	FieldType(String description) {
+		this.description = description;
 	}
 
-	public String getDescripcion() {
-		return this.descripcion;
+	public String getDescription() {
+		return this.description;
 	}
 
-	private String descripcion;
+	private String description;
 
 }

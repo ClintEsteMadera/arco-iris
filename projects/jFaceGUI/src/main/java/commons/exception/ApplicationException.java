@@ -1,11 +1,8 @@
 package commons.exception;
 
-/**
- * Clase base para excepciones de aplicación.
- * 
- * 
- */
 public class ApplicationException extends ServiceException {
+
+	private static final long serialVersionUID = 6277468437111874316L;
 
 	public ApplicationException() {
 		super(DEFAULT_ERROR_MESSAGE);
@@ -22,7 +19,4 @@ public class ApplicationException extends ServiceException {
 	public ApplicationException(Throwable cause) {
 		super(ServiceException.DEFAULT_ERROR_MESSAGE, cause);
 	}
-
-	private static final long serialVersionUID = 6277468437111874316L;
-
 }

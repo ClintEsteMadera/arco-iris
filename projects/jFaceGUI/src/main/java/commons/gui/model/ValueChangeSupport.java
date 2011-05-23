@@ -2,7 +2,7 @@ package commons.gui.model;
 
 import java.util.Iterator;
 
-import commons.dataestructures.LazyList;
+import commons.datastructures.LazyList;
 
 /**
  * Soporte para manejar ValueListener. <br>

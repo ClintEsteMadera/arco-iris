@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import commons.dataestructures.Pair;
+import commons.datastructures.Pair;
 import commons.validation.ValidateBooleanRequiredHandler;
 import commons.validation.ValidateComponentHandler;
 import commons.validation.ValidateDataTypeHandler;

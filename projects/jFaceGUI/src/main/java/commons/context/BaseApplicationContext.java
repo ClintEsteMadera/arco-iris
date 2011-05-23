@@ -8,17 +8,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import commons.core.BaseSystemConfiguration;
 
-/**
- * 
- */
 public abstract class BaseApplicationContext extends ClassPathXmlApplicationContext {
 
 	@SuppressWarnings("unchecked")
 	public <T> T getBean(Class<T> beanClass) {
 		Map<String, Object> beans = getBeansOfType(beanClass);
 		String canonicalName = beanClass.getCanonicalName();
-		assert !beans.isEmpty() : "No existe bean para la clase " + canonicalName;
-		assert beans.size() < 2 : "Existe mas de un bean para la misma clase" + canonicalName;
+		assert !beans.isEmpty() : "No bean registered for class: " + canonicalName;
+		assert beans.size() < 2 : "More than one bean for class:" + canonicalName;
 		return (T) beans.values().toArray()[0];
 	}
 
@@ -27,12 +24,12 @@ public abstract class BaseApplicationContext extends ClassPathXmlApplicationCont
 	}
 
 	/**
-	 * Provee la configuración del sistema concreta de la aplicación.
+	 * Provides concrete's system configuration.
 	 */
 	public abstract BaseSystemConfiguration getSystemConfiguration();
 
 	/**
-	 * Las subclases deben completar estáticamente esta lista con sus location particulares.
+	 * Subclasses may (statically) add specific locations to this list.
 	 */
 	protected static List<String> locations;
 

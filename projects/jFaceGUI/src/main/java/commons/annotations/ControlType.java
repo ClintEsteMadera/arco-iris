@@ -1,16 +1,16 @@
 package commons.annotations;
 
 public enum ControlType {
-	TEXT("Text"), COMB("Combo"), CALE("Calendar"), BOOL("Booleano");
+	TEXT("Text"), COMB("Combo"), CALE("Calendar"), BOOL("Boolean");
 
-	ControlType(String descripcion) {
-		this.descripcion = descripcion;
+	ControlType(String description) {
+		this.description = description;
 	}
 
-	public String getDescripcion() {
-		return this.descripcion;
+	public String getDescription() {
+		return this.description;
 	}
 
-	private String descripcion;
+	private String description;
 
 }

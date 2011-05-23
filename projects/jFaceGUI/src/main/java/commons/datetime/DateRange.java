@@ -23,14 +23,14 @@ public class DateRange implements Serializable {
 	private boolean considerTime;
 
 	/**
-	 * Crea un rango de fechas a partir de dos objetos Calendar. La cantidad de parámetros núlos es a lo sumo uno.
+	 * Constructs a DateRange based on two calendars.
 	 * 
 	 * @param dateTimeFrom
-	 *            un calendar que determina el límite inferior del rango.
+	 *            range's lower bound.
 	 * @param dateTimeTo
-	 *            un calendar que determina el límite superior del rango.
+	 *            range's upper bound.
 	 * @param considerTime
-	 *            especifica si debe considerarse o no la hora del calendario.
+	 *            specifies whether calendars' times must be considered,
 	 */
 	public DateRange(Calendar dateTimeFrom, Calendar dateTimeTo, boolean considerTime) {
 		super();
@@ -39,24 +39,14 @@ public class DateRange implements Serializable {
 		this.setDateTimeTo(dateTimeTo);
 	}
 
-	/**
-	 * @return el límite inferior del rango de fechas.
-	 */
 	public Calendar getDateTimeFrom() {
 		return dateTimeFrom;
 	}
 
-	/**
-	 * @return el límite superior del rango de fechas.
-	 */
 	public Calendar getDateTimeTo() {
 		return dateTimeTo;
 	}
 
-	/**
-	 * @param dateTimeFrom
-	 *            el límite inferior del rango de fechas.
-	 */
 	public void setDateTimeFrom(Calendar dateTimeFrom) {
 		if (!this.considerTime) {
 			clearTimeIfNotNull(dateTimeFrom);
@@ -64,10 +54,6 @@ public class DateRange implements Serializable {
 		this.dateTimeFrom = dateTimeFrom;
 	}
 
-	/**
-	 * @param dateTimeTo
-	 *            el límite superior del rango de fechas.
-	 */
 	public void setDateTimeTo(Calendar dateTimeTo) {
 		if (!this.considerTime) {
 			endOfDayIfNotNull(dateTimeTo);
@@ -75,13 +61,6 @@ public class DateRange implements Serializable {
 		this.dateTimeTo = dateTimeTo;
 	}
 
-	/**
-	 * Decide si la fecha pasado por parámetro se encuentra en rango con la subyacente.
-	 * 
-	 * @param dateTime
-	 *            la fecha a chequear
-	 * @return <code>true</code> si se encuentra en rango, <code>false</code> en caso contrario.
-	 */
 	public boolean isInRange(Calendar dateTime) {
 		boolean isInRange = true;
 		if (this.dateTimeFrom != null) {

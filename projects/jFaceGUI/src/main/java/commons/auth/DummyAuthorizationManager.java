@@ -15,7 +15,7 @@ public class DummyAuthorizationManager implements AuthorizationManager {
 		return true;
 	}
 
-	public boolean isUserAuthorized(GuiAction... guiActions) {
+	public boolean isUserAuthorizedForAny(GuiAction... guiActions) {
 		return true;
 	}
 }
