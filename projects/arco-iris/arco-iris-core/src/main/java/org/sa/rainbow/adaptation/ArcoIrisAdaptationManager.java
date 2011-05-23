@@ -394,7 +394,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.stop();
 		if (selectedStrategy != null) {
-			doLog(Level.INFO, "Selected strategy!: " + selectedStrategy.getName());
+			doLog(Level.INFO, "Selected strategy: " + selectedStrategy.getName() + "!!!");
 			// strategy args removed...
 			Object[] args = new Object[0];
 			m_pendingStrategies.add(selectedStrategy);
