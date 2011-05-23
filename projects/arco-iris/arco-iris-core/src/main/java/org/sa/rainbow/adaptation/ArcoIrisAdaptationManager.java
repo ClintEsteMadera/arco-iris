@@ -148,8 +148,6 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 			doLog(Level.INFO, "Is Concern " + concern + " Still Broken?");
 
 			boolean result = false;
-			// FIXME NO HABRIA QUE MENCIONAR ESTO EN EL INFORME?
-			// FIXME NO PODEMOS PREDICAR SOBRE UN CONCERN QUE NO SE HAYA ROTO! e.g.fidelity
 			for (SelfHealingScenario scenario : currentBrokenScenarios) {
 				if (scenario.getConcern().equals(concern)
 						&& scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
@@ -157,7 +155,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 					break;
 				}
 			}
-			doLog(Level.INFO, "Concern " + concern + (result == true ? " Still Broken!" : " Not Broken Anymore!!!"));
+			doLog(Level.INFO, "Concern " + concern + (result == true ? " Still Broken!" : " Not Broken Anymore!"));
 			return result;
 		} catch (NullPointerException e) {
 			doLog(Level.ERROR, "Concern not specified");
@@ -379,7 +377,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 				if (strategyScore > maxStrategyScore) {
 					maxStrategyScore = strategyScore;
 					selectedStrategy = currentStrategy;
-					doLog(Level.INFO, "Current best strategy " + selectedStrategy.getName());
+					doLog(Level.INFO, "Current best strategy: " + selectedStrategy.getName());
 				} else if (strategyScore == maxStrategyScore) {
 					int improvesRainbowSystemUtility = compareRainbowSystemUtility(currentStrategy, selectedStrategy,
 							weightsForRainbow);
@@ -396,7 +394,7 @@ public class ArcoIrisAdaptationManager extends AbstractRainbowRunnable {
 		if (_stopWatchForTesting != null)
 			_stopWatchForTesting.stop();
 		if (selectedStrategy != null) {
-			doLog(Level.INFO, "Selected strategy: " + selectedStrategy.getName() + "!!!");
+			doLog(Level.INFO, "Selected strategy!: " + selectedStrategy.getName());
 			// strategy args removed...
 			Object[] args = new Object[0];
 			m_pendingStrategies.add(selectedStrategy);

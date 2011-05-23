@@ -66,8 +66,8 @@
 				gente a cargo de su mantenimiento evolutivo.
 				\item Este mecanismo provee poca visibilidad al usuario final. Una posible idea para analizar la
 				configuración de la auto reparación del sistema podría ser un \textbf{\emph{ranking} de estrategias}, en el que se
-				presente el porcentaje de éxito y fallas de cada una así como la cantidad de veces que se ejecutó, cómo quedó el
-				\emph{Utility Function} en promedio luego de ejecutar la estrategia, etc.
+				presente el porcentaje de éxito y fallas de cada una así como la cantidad de veces que se ejecutó, cuál es la
+				utilidad del sistema promedio luego de ejecutar la estrategia, etc.
 				\item Otra posible idea podría ser el proveer una suerte de alarma al usuario administrador (vía e-mail por ejemplo)
 				que, previamente a desactivar una estrategia o luego de haber desactivado reiteradas veces la misma estrategia,
 				avise sobre este tipo de situaciones, haciendo explícito este tipo de decisiones cruciales y permitiendo así la
@@ -290,21 +290,20 @@
 		inicio del presente trabajo.
 		
 		La solución propuesta aquí al problema de selección de la mejor estrategia de reparación, es una heurística simple
-		basada en el uso del concepto de una \emph{utility function}, la cuál, si bien es útil para reducir la dimensión del
+		basada en el uso del concepto de \textbf{utilidad del sistema}, el cuál, si bien es útil para reducir la dimensión del
 		problema y poder avanzar en otros aspectos, es claramente una solución limitada, debido a que para el cálculo de esta
 		utilidad se realizan muchos supuestos y simplificaciones sobre el contexto de ejecución del sistema y su correlato con
-		el modelo de su arquitectura. Las oportunidades de mejora avisoradas por los autores pasan principalmente por
-		implementar mecanismos de aprendizaje sobre qué es lo que funcionó y qué no en reparaciones anteriores, por mecanismos
-		dinámicos de modificación de los pesos de los \emph{concerns} y prioridades de los escenarios en función del estado		del sistema en un momento dado y finalmente por ajustes a las tácticas y estrategias que se aplican.
+		el modelo de su arquitectura. Las oportunidades de mejora avisoradas por los autores de este trabajo pasan
+		principalmente por implementar mecanismos de aprendizaje sobre qué es lo que funcionó y qué no en reparaciones		anteriores, por mecanismos dinámicos de modificación de los pesos de los \emph{concerns} y prioridades de los		escenarios en función del estado del sistema en un momento dado y finalmente por ajustes a las tácticas y estrategias		que se aplican.
 	\subsection{Ausencia u Obsolescencia del Modelo de la Arquitectura}
 	\label{sec:ausenciaObsolescenciaModeloArquitectura}
 
-			Tanto Rainbow como Arco Iris hacen foco en disponer de un modelo (actualizado) de la arquitectura del sistema a
-			adaptar pero en realidad, no siempre es posible disponer del mismo: puede no haber existido nunca o bien haber
-			quedado desactualizado. Existen líneas de investigación que intentan derivar el modelo de la arquitectura a partir de
-			un sistema, obteniendo información del mismo en \emph{runtime}. Uno de los proyectos tiene lugar en el contexto del
-			grupo de investigación ABLE, el responsable de Rainbow y se llama \textbf{DiscoTect}. Para más información sobre
-			dicho proyecto, visitar \url{http://www.cs.cmu.edu/~able/research/discotect.html}.
+		Tanto Rainbow como Arco Iris hacen foco en disponer de un modelo (actualizado) de la arquitectura del sistema a
+		adaptar pero en realidad, no siempre es posible disponer del mismo: puede no haber existido nunca o bien haber
+		quedado desactualizado. Existen líneas de investigación que intentan derivar el modelo de la arquitectura a partir de
+		un sistema, obteniendo información del mismo en \emph{runtime}. Uno de los proyectos tiene lugar en el contexto del
+		grupo de investigación ABLE, el responsable de Rainbow y se llama \textbf{DiscoTect}. Para más información sobre
+		dicho proyecto, visitar \url{http://www.cs.cmu.edu/~able/research/discotect.html}.
 
 	\subsection{Adaptación de un Sistema Sobre el Cual se Tiene Poco Control}
 
