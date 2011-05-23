@@ -109,8 +109,8 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 
 			String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
 
-			log(Level.INFO, "Scenario " + this.getName() + " broken for " + exponentialQuantifierApplied + " "
-					+ expValueAsString + "? " + isBroken);
+			log(Level.INFO, this.getScenarioNameForLoggingPurposes() + " broken for " + exponentialQuantifierApplied
+					+ " " + expValueAsString + "? " + isBroken);
 			return isBroken;
 		}
 		return false;
@@ -133,12 +133,8 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 
 		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
 
-		String scenarioName = this.getName();
-		if (!scenarioName.toLowerCase().contains("scenario")) {
-			scenarioName = "Scenario " + scenarioName;
-		}
-		log(Level.INFO, scenarioName + " broken after simulation for " + getConcern() + " ("
-				+ exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + ")? " + isBroken);
+		log(Level.INFO, this.getScenarioNameForLoggingPurposes() + " broken after simulation for " + getConcern()
+				+ " (" + exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + ")? " + isBroken);
 		return isBroken;
 	}
 
@@ -190,4 +186,11 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 		return exponentialQuantifierApplied;
 	}
 
+	private String getScenarioNameForLoggingPurposes() {
+		String scenarioName = this.getName();
+		if (!scenarioName.toLowerCase().contains("scenario")) {
+			scenarioName = "Scenario " + scenarioName;
+		}
+		return scenarioName;
+	}
 }
