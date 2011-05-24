@@ -1,10 +1,14 @@
 \section{Conclusiones}
 
-	\ceria{Yo creo que en toda esta sección no están poniendo la idea más interesante de esta tesis, que es que los
-	sistemas, en vez de implementar "soluciones" a los requerimientos, directamente van a "conocer su requerimientos", para
-	que en vez de tener "una solución" tengan N soluciones que dependen de si esos requerimientos van cambiando o no, y eso
-	se hace de manera dinámica. Muestren convicción de que creemos qeu ese es un camino interesante a seguir.}
+	\subsection{Objetivo}
 
+		El presente trabajo permite a los sistemas que implementen Arco Iris \textbf{contar con la definiciones de sus
+		requerimientos de atributos de calidad}, en lugar de simplemente poseer implementaciones de posibles soluciones a los
+		mismos. No es menor el hecho de que estas definiciones estén al alcance de todos \emph{stakeholders} participantes,
+		cambio radical con respecto al enfoque planteado por Rainbow.
+		Este conocimiento es fundamental para lograr el objetivo de esta tesis, que consiste en permitir ampliar el estudio de
+		los sistemas autónomos introduciendo un modelo flexible de auto reparación basado en la arquitectura de los sistemas,
+		ya que además de poner sobre el tablero los requerimientos, los hace visibles a todo el conjunto de participantes del		desarrollo. De esto se desprende directamente el hecho de que los sistemas podrán poseer un espectro más amplio de		soluciones, las cuáles serán seleccionadas según los requerimientos vayan modificándose como consecuencia de		variaciones en el entorno de ejecución bajo el cual el sistema deba responder. Este dinamismo en la reparación, así		como también la flexibilidad en el modelo de selección de soluciones y su fácil configuración, hacen de Arco Iris una		opción plausible a ser considerada y extendida para lograr avanzar en la flexibilización de sistemas inteligentes, a		la vez que permite incorporar cada vez más la utilización de la auto reparación en la industria del software.
 	\subsection{Resumen del trabajo realizado}
 
 		En resumidas palabras, el presente trabajo añade una serie de características a Rainbow, todas ellas tendientes a
@@ -77,6 +81,7 @@
 		\end{center}
 
 		\subsubsection{Rapidez en el cambio de configuración}
+		
 			Como se ha mencionado anteriormente, Arco Iris (es decir, Rainbow con las extensiones realizadas en este trabajo)
 			trabaja utilizando:
 			\begin{itemize}
@@ -103,6 +108,7 @@
 			\end{itemize}
 			
 		\subsubsection{Información sobre restricciones}
+		
 			Como se ha visto anteriormente, en Rainbow las restricciones impuestas sobre el funcionamiento del sistema (e.g.
 			``el tiempo de respuesta para cualquier tipo de \emph{request} no debe superar los 5 mílisegundos'') son guardadas en
 			el modelo de la arquitectura, el cual está expresado en el lenguaje de descripción de arquitecturas \mbox{ACME}.
