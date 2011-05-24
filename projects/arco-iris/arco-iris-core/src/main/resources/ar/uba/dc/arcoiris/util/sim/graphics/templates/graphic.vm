@@ -21,14 +21,19 @@
 
 	<div id="costDiv" style="width:1200px;height:350px;"></div>
 
+	<h3>Fidelity</h3>
+
+	<div id="fidelityDiv" style="width:1200px;height:350px;"></div>
+
 </body>
 
 <script type="text/javascript">
-	var experRespTimePoints = new Array(1000);
-	var costPoints = new Array(1000);
+	var experRespTimePoints = new Array(100);
+	var costPoints = new Array(100);
+	var fidelityPoints = new Array(100);
 	$experRespTimePoints
 	$costPoints
-
+	$fidelityPoints
 </script>
 
 <script id="source" language="javascript" type="text/javascript">
@@ -37,13 +42,14 @@ $(function () {
     $plot($("#experRespTimeDiv"), [
         {
             data: experRespTimePoints,
+            label: "Response Time",
             #if ($experRespTimeThreshold)
             	color: "rgb(200, 20, 30)",
 	            threshold: { below: $experRespTimeThreshold, color: "rgb(30, 180, 20)" },
 			#else
             	color: "rgb(30, 180, 20)",
 			#end
-			points: { show: false },
+			points: { show: true },
 			lines: { show: true }
         }
     ]);
@@ -61,6 +67,21 @@ $(function () {
             lines: { show: true }
         }
     ]);
+
+    $plot($("#fidelityDiv"), [
+        {
+            data: fidelityPoints,
+            color: "rgb(200, 20, 30)",
+            #if ($fidelityThreshold)
+	            threshold: { below: $fidelityThreshold, color: "rgb(30, 180, 20)" },
+			#else
+            	color: "rgb(30, 180, 20)",
+	        #end
+            points: { show: false },
+            lines: { show: true }
+        }
+    ]);
+
 });
 </script>
 

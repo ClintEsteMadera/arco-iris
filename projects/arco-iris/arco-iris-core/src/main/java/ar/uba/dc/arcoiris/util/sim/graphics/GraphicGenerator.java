@@ -108,8 +108,11 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 				"experRespTime");
 		SimPropertyGraphicConfiguration costGraphicConfig = new SimPropertyGraphicConfiguration("ServerT", "cost",
 				Quantifier.SUM);
+		SimPropertyGraphicConfiguration fidelityGraphicConfig = new SimPropertyGraphicConfiguration("ServerT",
+				"fidelity");
 		simGraphicConfiguration.add(respTimeGraphicConfig);
 		simGraphicConfiguration.add(costGraphicConfig);
+		simGraphicConfiguration.add(fidelityGraphicConfig);
 	}
 
 	private void initializeThresholds() {
@@ -165,14 +168,16 @@ public class GraphicGenerator extends AbstractRainbowRunnable {
 	}
 
 	private void addPointIntoArray(String property, Number avgValue, StringBuffer points) {
-		points.append(property + "Points[");
-		points.append(countPerProperty.get(property));
-		countPerProperty.put(property, countPerProperty.get(property) + 1);
-		points.append("]=[");
-		points.append(Oracle.instance().simTime());
-		points.append(",");
-		points.append(avgValue);
-		points.append("];");
+		if (avgValue != null) {
+			points.append(property + "Points[");
+			points.append(countPerProperty.get(property));
+			countPerProperty.put(property, countPerProperty.get(property) + 1);
+			points.append("]=[");
+			points.append(Oracle.instance().simTime());
+			points.append(",");
+			points.append(avgValue);
+			points.append("];");
+		}
 	}
 
 	private void putPointsIntoTheContext() {
