@@ -201,9 +201,10 @@
 	  		\end{tabularx}
 			\begin{tabularx}{\textwidth}{p{3cm}X}
 				\textbf{org.sa.rainbow.*} & Aquellos proyectos Java cuyo nombre comienza con el prefijo \verb@org.sa.rainbow@ son
-				básicamente \textbf{copias} de submódulos de Rainbow que fueron modificados ligeramente a fines de mejorar
-				características como el \emph{logging} de la aplicación, etc. \todo{Revisar bien qué cambios hicimos acá y explicar
-				mejor!}
+				básicamente \textbf{copias} de submódulos de Rainbow que fueron modificados ligeramente principalmente a fines de
+				mejorar el \emph{logging} de los componentes \emph{core} de Rainbow. A fines prácticos, se podría prescindir de
+				estos proyectos y Arco Iris debería seguir funcionando de la misma manera, aunque el \emph{log} de la aplicación
+				sería bastante más verboso.
 	  		\end{tabularx}
  		\end{center}
 
@@ -239,20 +240,23 @@
 			una aplicación deben ser encontrables en un repositorio de artefactos Maven (ya sea en Internet, o en un repositorio
 			\emph{cache} local en la computadora del usuario). La gran mayoría de las dependencias de Arco Iris cumplen con esta
 			condición y se pueden encontrar en el repositorio oficial de Maven (\url{http://repo1.maven.org/maven2/}).
+			
 			Lamentablemente, las dependencias de Arco Iris relacionadas con Rainbow no se encuentran alojadas en ningún
 			repositorio Maven público, y mucho menos aquellos proyectos que se han modificado ligeramente en el curso de este
 			trabajo. Es por eso que es necesario, \textbf{instalar manualmente} tales dependencias (archivos \verb@.jar@) a fin
 			de que, durante el proceso de construcción, sean encontradas por Maven.
 			
-			Los comandos a ejecutar están especificados en el archivo de texto\\
-			\verb@projects/arco-iris/arco-iris-core/lib/install_missing_artifacts.txt@. Es necesario abrir una consola (Inicio
-			$\rightarrow$ Ejecutar $\rightarrow$ \verb@cmd.exe@, en Windows o ALT+F2 $\rightarrow$ \verb@Terminal@ o
-			\verb@Konsole@, en Linux) y correr los comandos contenidos en dicho archivo de texto utilizando la técnica de copiar
-			y pegar (por alguna razón, ejecutar dicho archivo como \emph{script} no funciona correctamente \todo{ver si esto se
-			puede arreglar, es un bardo sino\ldots}). Esto instalará los poms de todas aquellas dependencias a instalar
-			manualmente. Luego de realizar lo antedicho, es necesario repetir el mismo proceso una vez más para ahora instalar
-			los archivos \verb@.jar@ en el repositorio Maven local. Esto, más una conexión a Internet, debería ser suficiente
-			para disponer de todas las dependencias de los proyectos relacionados con Arco Iris.
+			Afortunadamente, Maven ofrece una forma sencilla de instalar manualmente artefactos en el repositorio local. Los
+			comandos a ejecutar están especificados en el \emph{script} (el cuál debería funcionar tanto en Linux como en
+			Windows) ubicado en la siguiente ruta: \verb@projects/arco-iris/arco-iris-core/lib/install_missing_artifacts.cmd@.
+			
+			El mismo procedimiento debe ser reiterado para aquellas dependencias de de JFaceGUI que no se encuentran en
+			repositorios Maven públicos. Para ello, es necesario correr el \emph{script}
+			\verb@projects/arco-iris/arco-iris-ui/lib/install_missing_artifacts.cmd@.
+			
+			Cabe comentar que para los 3 proyectos Java aquí presentados (Arco Iris, Arco Iris UI y JFaceGUI) se incluye un
+			directorio \verb@lib@ con las dependencias de cada proyecto, de modo que los mismos puedan compilar y correr sin que
+			el usuario necesite disponer de una conexión a internet.
 
 		\subsubsection{Construcción de los Proyectos con Maven}
 		
@@ -1058,7 +1062,125 @@
 		}	
 	\end{Verbatim}
 
+\newpage
+
 \section{Extracto del \emph{Log} de un Caso de Prueba de Arco Iris}
 \label{sec:logCasoPruebaArcoIris}
 
-	\todo{Jony: poner el log del caso 2!!}
+	A continuación, se incluye un extracto significativo del \emph{log} generado por Arco Iris para el caso de prueba
+	número 2, presentado anteriormente en la sección \ref{sec:testCase2}. Dada la longitud del \emph{log} original, el
+	mismo ha sido recortado a fin de mostrar las partes más importantes del procesamiento que efectúa Arco Iris para el
+	caso de prueba de referencia.
+	
+	Observese que Arco Iris al iniciar, toma desde el directorio\\
+	\verb@/home/user/arco-iris/arco-iris-core/configs/TestCase2@ toda la configuración requerida, tanto por Rainbow como
+	por Arco Iris (archivo \verb@.sim@ de simulación, tácticas y estrategias, el modelo de la arquitectura en Acme, el
+	archivo XML de configuración de Arco Iris, etc.)
+	
+	Nótese que luego Arco Iris, de acuerdo a la configuración en el archivo de simulación, efectúa la modificación de
+	varias propiedades del sistema de acuerdo a lo que allí se indica.
+	
+	Finalmente, para esta porción de \emph{log}, se buscan escenarios rotos, no encontrando ninguno en esta etapa de la
+	ejecución.
+		
+	\begin{Verbatim}
+		Rainbow config path: /home/user/arco-iris/arco-iris-core/configs/TestCase2
+		Loading Rainbow config file: [rainbow.properties]
+		/========================/
+		|  Trial run 1 of 1...
+		\========================\
+		Loading simulation file from/home/user/arco-iris/arco-iris-core/configs/TestCase2/TestCase.sim
+		(...)
+		Change prop: ZNewsSys.c1.perf.service.time = 180
+		Change prop: ZNewsSys.s0.isArchEnabled = true
+		Change prop: ZNewsSys.conn2.bandwidth.up = 512
+		Change prop: sim.size = 6
+		Change prop: ZNewsSys.c1.experRespTime = 50
+		Change prop: ZNewsSys.s1.fidelity = 5
+		Change prop: ZNewsSys.s1.cost = 1.0
+		Change prop: ZNewsSys.lbproxy.load = 0.01
+		Change prop: ZNewsSys.conn1.bandwidth.up = 256
+		Change prop: ZNewsSys.conn2.bandwidth.down = 512
+		Change prop: ZNewsSys.s0.load = 0.01
+		(...)
+		Self Healing Configuration successfully loaded from /home/.../TestCase2/selfHealingConfiguration.xml
+		Arco Iris Model initialized!
+		Arco Iris Model started
+		Arco Iris Adaptation Manager started.
+		Finding broken scenarios...
+		Is scenario Client Experienced Response Time Scenario broken?
+		Client Experienced Response Time Scenario broken for [EAvg] 50.0? false
+		Client Experienced Response Time Scenario --> PASSED!
+		END Finding broken scenarios!
+		Finding broken scenarios...
+				<several iterations without finding any broken scenarios...>
+	\end{Verbatim}
+	
+	Luego de un tiempo, se vuelve a ejecutar la rutina de búsqueda de escenarios que no se cumplen y se detecta que el
+	escenario de tiempo de respuesta se encuentra ``roto'' (el tiempo de respuesta ha subido a 602,25 ms. cuando el umbral
+	máximo era 600 ms.). Se evalúa la única estrategia existente para dicho escenario y se decide ejecutarla debido a que
+	se estima que el tiempo de respuesta luego de la ejecución de dicha estrategia, será de 458,25 ms.
+	
+	Nótese que los resultados de ejecutar la táctica \verb@enlistServers@ (que agrega un servidor más al sistema),
+	difícilmente sean instantáneos, es decir, con lo cual, junto a la ejecución de dicha táctica, se determina una demora
+	(\emph{delay}) de 2,5 segundos (2529,55 ms.) para esperar a que los resultados de la táctica sean visibles en el
+	sistema en \emph{runtime}.
+
+	\begin{Verbatim}
+		Finding broken scenarios...
+		Is scenario Client Experienced Response Time Scenario broken?
+		Client Experienced Response Time Scenario broken for [EAvg] 602.25? true
+		Client Experienced Response Time Scenario --> BROKEN!
+		END Finding broken scenarios!
+		Adaptation triggered, let's begin!
+		Current environment: NORMAL
+		Computing Current System Utility...
+		Client Experienced Response Time Scenario broken for [EAvg] 602.25? true
+		Current System Utility (Score to improve): 0.0
+		Evaluating strategy EnlistServerResponseTime...
+		Scoring EnlistServerResponseTime...
+		Client Experienced Response Time Scenario broken after simulation for Resp.time ([EAvg] 458.25)? false
+		Score for strategy EnlistServerResponseTime: 0.333
+		Current best strategy: EnlistServerResponseTime
+		Selected strategy: EnlistServerResponseTime!!!
+		--> EXECUTING STRATEGY EnlistServerResponseTime...
+		t0: true? true
+		Tactic action! enlistServers
+		Effector time delay to simulate resource limitations: 2529.55
+	\end{Verbatim}
+	
+	Finalmente, luego de varios segundos de ejecución y habiendo esperado el tiempo prudencial para determinar si el haber
+	levantado un servidor más en el sistema tuvo el efecto esperado o no, cerca del segundo 8 de ejecución (8012 ms.) se
+	arriba a un estado dónde el sistema baja su tiempo de respuesta promedio a 583,73, ligeramente por debajo del umbral
+	máximo: 600 ms. Así, el sistema decide que el resultado (\emph{outcome}) de la estrategia es exitoso y determina que en
+	ese momento ya no hay más escenarios sin cumplirse.
+	
+	Alrededor de los 40 segundos (valor configurado en el archivo de simulación), la ejecución del sistema simulado termina
+	y se indica a al tándem Rainbow/Arco Iris que termine también, finalizando así el ciclo de adaptación.
+
+	\begin{Verbatim}
+		------------- Running ZNewsSim at 8012------------
+		Is Concern Response time Still Broken?
+		Client Experienced Response Time Scenario broken for [EAvg] 583.73? false
+		Concern Response time Not Broken Anymore!
+		t1: !? true
+		t2: DEFAULT condition!
+		DONE action!
+		Outcome: SUCCESS
+		------------- Running ZNewsSim at 8512------------
+		Change prop: ZNewsSys.s0.load = 0.33
+		Change prop: ZNewsSys.s1.load = 0.45
+		Change prop: ZNewsSys.c0.experRespTime = 475.57
+		Change prop: ZNewsSys.c1.experRespTime = 687.08
+		Change prop: ZNewsSys.c2.experRespTime = 429.82
+		Finding broken scenarios...
+		Is scenario Client Experienced Response Time Scenario broken?
+		Client Experienced Response Time Scenario broken for [EAvg] 578.51? false
+		Client Experienced Response Time Scenario --> PASSED!
+		END Finding broken scenarios!
+		(...)		
+		------------- Running ZNewsSim at 40087------------
+		*** Signalling Terminate ***
+		TargetSystem Simulation Runner terminated.
+		****** Rainbow Runtime Infrastructure - Master terminated! ******
+	\end{Verbatim}
