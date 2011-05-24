@@ -3,10 +3,228 @@
 \addappheadtotoc
 \appendixpage
 
+\section{Implementación de NumericBinaryRelationalConstraint}
+\label{sec:numericBinaryRelationalConstraintCode}
+
+	\begin{Verbatim}
+		@XStreamAlias("numericBinaryRelationalConstraint")
+		public class NumericBinaryRelationalConstraint 
+				extends BaseSinglePropertyInvolvedConstraint {
+		
+			private NumericBinaryOperator binaryOperator;
+		
+			private Number constantToCompareThePropertyWith;
+		
+			@XStreamOmitField
+			private String exponentialPropertyName;
+		
+			public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, 
+					String property,NumericBinaryOperator binaryOperator, 
+					Number constantToCompareThePropertyWith) {
+				super(artifact, property);
+				this.quantifier = quantifier;
+				this.binaryOperator = binaryOperator;
+				this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
+			}			
+			
+			public boolean holds(Number expValue) {
+				boolean holds = this.binaryOperator.performOperation(expValue, 
+						this.constantToCompareThePropertyWith);
+				return holds;
+			}
+			...
+		}	
+	\end{Verbatim}
+
+\newpage
+
+\section{Implementación de Probe y extensión de Arco Iris}
+\label{sec:probesCode}
+
+	\begin{Verbatim}
+		public class ClientProxyProbe {
+			...
+			public void run() {
+				byte[] bytes = new byte[Util.MAX_BYTES];
+				URL url = new URL(urlStr);
+				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				int cnter = 0;
+				long startTime = System.currentTimeMillis();
+				int length = httpConn.getContentLength();
+				BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
+				while (in.available() > 0 || cnter < length) {
+					int cnt = in.read(bytes);
+					baos.write(bytes, 0, cnt);
+					cnter += cnt;
+				}
+				long endTime = System.currentTimeMillis();
+				String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
+							url.getHost() + ":" + (endTime - startTime) + "ms";
+				reportData(rpt);
+				try {
+					Thread.sleep(sleepTime());
+				} catch (InterruptedException e) {
+					// intentional ignore
+				}
+			}
+			...
+		}
+	\end{Verbatim}
+
+\newpage
+
+	\begin{Verbatim}
+		public class ClientProxyProbeWithStimulus {
+			...
+			public void run() {
+				byte[] bytes = new byte[Util.MAX_BYTES];
+				URL url = new URL(urlStr);
+				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				int cnter = 0;
+				long startTime = System.currentTimeMillis();
+				int length = httpConn.getContentLength();
+				BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
+				while (in.available() > 0 || cnter < length) {
+					int cnt = in.read(bytes);
+					baos.write(bytes, 0, cnt);
+					cnter += cnt;
+				}
+				long endTime = System.currentTimeMillis();
+				String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
+						url.getHost() + "<stimulus:" + stimulusName + ">:" 
+						+ (endTime - startTime) + "ms";
+				reportData(rpt);
+				httpConn.disconnect();
+				try {
+					Thread.sleep(sleepTime());
+				} catch (InterruptedException e) {
+					// intentional ignore
+				}
+			}
+			...
+	\end{Verbatim}
+
+\newpage
+
+\section{Representación en XML de una configuración de \emph{Self Healing}}
+\label{sec:SelfHealingConfigXML}
+		\begin{Verbatim}[gobble=3]
+			<selfHealingConfiguration description="test">
+			  <artifacts>
+			    <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
+			    <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
+			  </artifacts>
+			  <environments>
+			    <environment id="0" name="NORMAL">
+			      <conditions>
+			        <numericBinaryRelationalConstraint>
+			          <artifact reference="../../../../../artifacts/artifact"/>
+			          <property>experRespTime</property>
+			          <quantifier>IN_AVERAGE</quantifier>
+			          <binaryOperator>LESS_THAN</binaryOperator>
+			          <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
+			        </numericBinaryRelationalConstraint>
+			      </conditions>
+			      <weights class="tree-map">
+			        <no-comparator/>
+			        <entry>
+			          <concern>RESPONSE_TIME</concern>
+			          <double>0.333</double>
+			        </entry>
+			        <entry>
+			          <concern>SERVER_COST</concern>
+			          <double>0.333</double>
+			        </entry>
+			        <entry>
+			          <concern>CONTENT_FIDELITY</concern>
+			          <double>0.333</double>
+			        </entry>
+			      </weights>
+			    </environment>
+			    <environment id="1" name="HIGH LOAD">
+			      <conditions>
+			        <numericBinaryRelationalConstraint>
+			          <artifact reference="../../../../../artifacts/artifact"/>
+			          <property>experRespTime</property>
+			          <quantifier>IN_AVERAGE</quantifier>
+			          <binaryOperator>GREATER_THAN</binaryOperator>
+			          <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
+			        </numericBinaryRelationalConstraint>
+			      </conditions>
+			      <weights class="tree-map">
+			        <no-comparator/>
+			        <entry>
+			          <concern>RESPONSE_TIME</concern>
+			          <double>0.7</double>
+			        </entry>
+			        <entry>
+			          <concern>SERVER_COST</concern>
+			          <double>0.2</double>
+			        </entry>
+			        <entry>
+			          <concern>CONTENT_FIDELITY</concern>
+			          <double>0.1</double>
+			        </entry>
+			      </weights>
+			    </environment>
+			  </environments>
+			  <scenarios>
+			    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario"
+			    	enabled="true" priority="1">
+			      <concern>RESPONSE_TIME</concern>
+			      <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content"
+			      	any="false"/>
+			      <environments>
+			        <anyEnvironment></anyEnvironment>
+			      </environments>
+			      <artifact reference="../../../artifacts/artifact"/>
+			      <response>Requested News Content</response>
+			      <responseMeasure>
+			        <description>Experienced response time is within threshold</description>
+			        <constraint class="numericBinaryRelationalConstraint">
+			          <artifact reference="../../../../../artifacts/artifact"/>
+			          <property>experRespTime</property>
+			          <quantifier>IN_AVERAGE</quantifier>
+			          <binaryOperator>LESS_THAN</binaryOperator>
+			          <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
+			        </constraint>
+			      </responseMeasure>
+			      <repairStrategies class="specificRepairStrategies">
+			        <repairStrategy>VariedReduceResponseTime</repairStrategy>
+			      </repairStrategies>
+			    </selfHealingScenario>
+			    <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
+			      <concern>SERVER_COST</concern>
+			      <stimulus any="true"/>
+			      <environments>
+			        <anyEnvironment reference="../../../selfHealingScenario/environments/anyEnvironment"/>
+			      </environments>
+			      <artifact reference="../../../artifacts/artifact[2]"/>
+			      <response>The proper response for the request</response>
+			      <responseMeasure>
+			        <description>Active servers amount is within threshold</description>
+			        <constraint class="numericBinaryRelationalConstraint">
+			          <artifact reference="../../../../../artifacts/artifact[2]"/>
+			          <property>cost</property>
+			          <quantifier>SUM</quantifier>
+			          <binaryOperator>LESS_THAN</binaryOperator>
+			          <constantToCompareThePropertyWith class="int">4</constantToCompareThePropertyWith>
+			        </constraint>
+			      </responseMeasure>
+			      <repairStrategies class="specificRepairStrategies">
+			        <repairStrategy>ReduceOverallCost</repairStrategy>
+			      </repairStrategies>
+			    </selfHealingScenario>
+			  </scenarios>
+			</selfHealingConfiguration>
+		\end{Verbatim}
+
+\newpage
+
 \section{Instalación y Ejecución de Arco Iris y Arco Iris UI}
 \label{sec:instalacionYEjecucionArcoIris}
-
-	\todo{Revisar y actualizar todos los apendices, re organizarlos más coherentemente con subsecciones, etc\ldots}
 
 	\subsection{Aclaración importante}
 
@@ -813,120 +1031,8 @@
 		}
 	\end{Verbatim}
 
-\newpage
 
-	\section{Representación en XML de una configuración de \emph{Self Healing}}
-	\label{sec:SelfHealingConfigXML}
-			\begin{Verbatim}[gobble=4]
-				<selfHealingConfiguration description="test">
-				  <artifacts>
-				    <artifact id="0" name="ClientT" systemName="ZNewsSys"/>
-				    <artifact id="1" name="ServerT" systemName="ZNewsSys"/>
-				  </artifacts>
-				  <environments>
-				    <environment id="0" name="NORMAL">
-				      <conditions>
-				        <numericBinaryRelationalConstraint>
-				          <artifact reference="../../../../../artifacts/artifact"/>
-				          <property>experRespTime</property>
-				          <quantifier>IN_AVERAGE</quantifier>
-				          <binaryOperator>LESS_THAN</binaryOperator>
-				          <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-				        </numericBinaryRelationalConstraint>
-				      </conditions>
-				      <weights class="tree-map">
-				        <no-comparator/>
-				        <entry>
-				          <concern>RESPONSE_TIME</concern>
-				          <double>0.333</double>
-				        </entry>
-				        <entry>
-				          <concern>SERVER_COST</concern>
-				          <double>0.333</double>
-				        </entry>
-				        <entry>
-				          <concern>CONTENT_FIDELITY</concern>
-				          <double>0.333</double>
-				        </entry>
-				      </weights>
-				    </environment>
-				    <environment id="1" name="HIGH LOAD">
-				      <conditions>
-				        <numericBinaryRelationalConstraint>
-				          <artifact reference="../../../../../artifacts/artifact"/>
-				          <property>experRespTime</property>
-				          <quantifier>IN_AVERAGE</quantifier>
-				          <binaryOperator>GREATER_THAN</binaryOperator>
-				          <constantToCompareThePropertyWith class="int">800</constantToCompareThePropertyWith>
-				        </numericBinaryRelationalConstraint>
-				      </conditions>
-				      <weights class="tree-map">
-				        <no-comparator/>
-				        <entry>
-				          <concern>RESPONSE_TIME</concern>
-				          <double>0.7</double>
-				        </entry>
-				        <entry>
-				          <concern>SERVER_COST</concern>
-				          <double>0.2</double>
-				        </entry>
-				        <entry>
-				          <concern>CONTENT_FIDELITY</concern>
-				          <double>0.1</double>
-				        </entry>
-				      </weights>
-				    </environment>
-				  </environments>
-				  <scenarios>
-				    <selfHealingScenario id="0" name="Client Experienced Response Time Scenario"
-				    	enabled="true" priority="1">
-				      <concern>RESPONSE_TIME</concern>
-				      <stimulus name="GetNewsContentClientStimulus" source="Any Client requesting news content"
-				      	any="false"/>
-				      <environments>
-				        <anyEnvironment></anyEnvironment>
-				      </environments>
-				      <artifact reference="../../../artifacts/artifact"/>
-				      <response>Requested News Content</response>
-				      <responseMeasure>
-				        <description>Experienced response time is within threshold</description>
-				        <constraint class="numericBinaryRelationalConstraint">
-				          <artifact reference="../../../../../artifacts/artifact"/>
-				          <property>experRespTime</property>
-				          <quantifier>IN_AVERAGE</quantifier>
-				          <binaryOperator>LESS_THAN</binaryOperator>
-				          <constantToCompareThePropertyWith class="int">500</constantToCompareThePropertyWith>
-				        </constraint>
-				      </responseMeasure>
-				      <repairStrategies class="specificRepairStrategies">
-				        <repairStrategy>VariedReduceResponseTime</repairStrategy>
-				      </repairStrategies>
-				    </selfHealingScenario>
-				    <selfHealingScenario id="1" name="Server Cost Scenario" enabled="true" priority="2">
-				      <concern>SERVER_COST</concern>
-				      <stimulus any="true"/>
-				      <environments>
-				        <anyEnvironment reference="../../../selfHealingScenario/environments/anyEnvironment"/>
-				      </environments>
-				      <artifact reference="../../../artifacts/artifact[2]"/>
-				      <response>The proper response for the request</response>
-				      <responseMeasure>
-				        <description>Active servers amount is within threshold</description>
-				        <constraint class="numericBinaryRelationalConstraint">
-				          <artifact reference="../../../../../artifacts/artifact[2]"/>
-				          <property>cost</property>
-				          <quantifier>SUM</quantifier>
-				          <binaryOperator>LESS_THAN</binaryOperator>
-				          <constantToCompareThePropertyWith class="int">4</constantToCompareThePropertyWith>
-				        </constraint>
-				      </responseMeasure>
-				      <repairStrategies class="specificRepairStrategies">
-				        <repairStrategy>ReduceOverallCost</repairStrategy>
-				      </repairStrategies>
-				    </selfHealingScenario>
-				  </scenarios>
-				</selfHealingConfiguration>
-			\end{Verbatim}
+\newpage
 
 \section{Representación en XML del Escenario de Tiempo de Res\-pues\-ta}
 \label{sec:scenarioExpRespTimeXML}
@@ -955,111 +1061,6 @@
 			<architecturalDecisions/>
 			<repairStrategy></repairStrategy>
 		</selfHealingScenario>
-	\end{Verbatim}
-
-\newpage
-
-\section{Implementación de Probe y extensión de Arco Iris}
-\label{sec:probesCode}
-
-	\begin{Verbatim}
-		public class ClientProxyProbe {
-			...
-			public void run() {
-				byte[] bytes = new byte[Util.MAX_BYTES];
-				URL url = new URL(urlStr);
-				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				int cnter = 0;
-				long startTime = System.currentTimeMillis();
-				int length = httpConn.getContentLength();
-				BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
-				while (in.available() > 0 || cnter < length) {
-					int cnt = in.read(bytes);
-					baos.write(bytes, 0, cnt);
-					cnter += cnt;
-				}
-				long endTime = System.currentTimeMillis();
-				String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
-							url.getHost() + ":" + (endTime - startTime) + "ms";
-				reportData(rpt);
-				try {
-					Thread.sleep(sleepTime());
-				} catch (InterruptedException e) {
-					// intentional ignore
-				}
-			}
-			...
-		}
-	\end{Verbatim}
-
-\newpage
-
-	\begin{Verbatim}
-		public class ClientProxyProbeWithStimulus {
-			...
-			public void run() {
-				byte[] bytes = new byte[Util.MAX_BYTES];
-				URL url = new URL(urlStr);
-				HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				int cnter = 0;
-				long startTime = System.currentTimeMillis();
-				int length = httpConn.getContentLength();
-				BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
-				while (in.available() > 0 || cnter < length) {
-					int cnt = in.read(bytes);
-					baos.write(bytes, 0, cnt);
-					cnter += cnt;
-				}
-				long endTime = System.currentTimeMillis();
-				String rpt = "[" + Util.probeLogTimestamp() + "]<" + id() + "> " + 
-						url.getHost() + "<stimulus:" + stimulusName + ">:" 
-						+ (endTime - startTime) + "ms";
-				reportData(rpt);
-				httpConn.disconnect();
-				try {
-					Thread.sleep(sleepTime());
-				} catch (InterruptedException e) {
-					// intentional ignore
-				}
-			}
-			...
-	\end{Verbatim}
-
-\newpage
-
-\section{Implementación de NumericBinaryRelationalConstraint}
-\label{sec:numericBinaryRelationalConstraintCode}
-
-	\begin{Verbatim}
-		@XStreamAlias("numericBinaryRelationalConstraint")
-		public class NumericBinaryRelationalConstraint 
-				extends BaseSinglePropertyInvolvedConstraint {
-		
-			private NumericBinaryOperator binaryOperator;
-		
-			private Number constantToCompareThePropertyWith;
-		
-			@XStreamOmitField
-			private String exponentialPropertyName;
-		
-			public NumericBinaryRelationalConstraint(Quantifier quantifier, Artifact artifact, 
-					String property,NumericBinaryOperator binaryOperator, 
-					Number constantToCompareThePropertyWith) {
-				super(artifact, property);
-				this.quantifier = quantifier;
-				this.binaryOperator = binaryOperator;
-				this.constantToCompareThePropertyWith = constantToCompareThePropertyWith;
-			}			
-			
-			public boolean holds(Number expValue) {
-				boolean holds = this.binaryOperator.performOperation(expValue, 
-						this.constantToCompareThePropertyWith);
-				return holds;
-			}
-			...
-		}	
 	\end{Verbatim}
 
 \newpage
