@@ -431,39 +431,47 @@
 
 	\subsection{Caso 6: Comportamiento Ante Los Cambios en el Entorno de Ejecución}
 
-		Este caso de prueba pretende demostrar cómo Arco Iris varía su comportamiento dependiendo el entorno bajo el cual se
+		Este caso de prueba pretende demostrar cómo Arco Iris varía su comportamiento dependiendo del entorno en el cual se
 		encuentra ejecutando el sistema en un momento dado.
 	
 		Para este caso es necesario contar con tres escenarios similares a los utilizados hasta aquí pero con las siguientes
 		variaciones:
 		\begin{itemize}
-		  \item Un escenario de prioridad 3 cuya definición acota el tiempo de respuesta a 600 ms. cuando el sistema se
-		  encuentra en carga normal.
-		  \item Un escenario de prioridad 1 que define que el tiempo de respuesta no debe superar los 900 ms. cuando el
-		  sistema se encuentra bajo alta carga.
-		  \item Un escenario de prioridad 2 que predica sobre el costo de servidores, limitando al sistema a utilizar como
-		  máximo un servidor cuando se encuentre en un entorno de carga normal.
+		  \item Un escenario de \textbf{prioridad 3} cuya cuantificación de la respuesta acota el tiempo de respuesta a 600
+		  ms. como máximo, cuando el sistema se encuentra en \textbf{carga normal}.
+		  \item Un escenario de \textbf{prioridad 1} que define que el tiempo de respuesta no debe superar los 900 ms. cuando
+		  el sistema se encuentra bajo \textbf{alta carga}.
+		  \item Un escenario de \textbf{prioridad 2} que predica sobre el costo de servidores, \textbf{limitando al sistema a
+		  utilizar como máximo un servidor}, cuando se encuentre en un entorno de \textbf{carga normal}.
 		\end{itemize}
 		
-		También ha sido necesario modificar el comportamiento del sistema utilizado en las pruebas anteriores para lograr que
-		el entorno pase a ser de carga alta en lugar de normal. 
+		En otras palabras, mientras el sistema se encuentre dentro de parámetros normales de carga (i.e. carga normal), se
+		prefiere que el tiempo de respuesta suba por encima de su umbral máximo (600 ms.) antes que agregar un servidor más
+		al sistema. Ahora, cuando el entorno de ejecución es de alta carga, el tiempo de respuesta pasa a tener más
+		importancia que el costo de servidores. Esto, en teoría, habilitaría a Arco Iris a agregar uno o más servidores en pos
+		de que el tiempo de respuesta no supere su umbral máximo para un entorno de alta carga (900 ms.). Este es el objetivo
+		primordial de este caso de prueba.
 		
-		Los escenarios de tiempo de respuesta tendrán asociadas como estrategia de auto reparación a
+		Para lograr que el sistema en un momento determinado de la ejecución pase a estar en alta carga, ha sido necesario
+		modificar los parámetros de la simulación, generando así condiciones que emulan un incremento en la carga de pedidos
+		al único servidor disponible en el sistema. Recordar que la condición que especifica cuándo el sistema se encuentra en
+		alta carga, está configurada en el entorno definido en la sección \ref{sec:configBasicaCasosPrueba} (ver figura
+		\ref{fig:Environment_HighLoad}).
+		
+		Los escenarios de tiempo de respuesta tendrán asociada la estrategia de auto reparación
 		\verb@EnlistServerResponseTime@, utilizada en pruebas anteriores, mientras que el escenario de costo no poseerá
 		estrategias asociadas.
 		
-		Es importante remarcar que, a diferencia de los casos anteriores, cuando el sistema se encuentra bajo carga normal
-		(i.e por debajo del umbral de 800 ms), la prioridad del escenario de costo es superior a la del escenario de tiempo
-		de respuesta. Esto hace que Arco Iris no tome acción alguna mientras el sistema se mantenga en este entorno.
+		Tal como se esperaba, Arco Iris no toma acción alguna mientras el sistema se encuentra en carga normal, puesto que el
+		escenario de costo posee más prioridad que el escenario de tiempo de respuesta para dicho entorno.
 		
 		Luego de superados los 800 ms. el sistema pasa a estar en alta carga, por lo cual dos de los tres escenarios pasan a
-		satisfacerse trivialmente, entonces Arco Iris deberá solamente procurar que se cumpla el escenario de tiempo de
-		respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_expRespTime_cost} que
-		la auto reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la simulación,		reparando efectivamente el escenario en cuestión.
+		satisfacerse trivialmente. Consecuentemente, Arco Iris deberá procurar sólamente que se cumpla el escenario de tiempo
+		de respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_expRespTime_cost}		que la auto reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la		simulación, reparando efectivamente el escenario en cuestión.
 		\begin{figure}[H]
 			\centering
 				\includegraphics[width=1.0\textwidth]{images/testcase6_expRespTime_cost.png}
-			\caption{Comportamiento del sistema bajo distintos entornos}
+			\caption{Comportamiento del sistema en distintos entornos de ejecución}
 			\label{fig:testcase6_expRespTime_cost}
 		\end{figure}
 		
