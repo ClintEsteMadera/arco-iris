@@ -1,9 +1,11 @@
 package commons.validation.string;
 
 /**
- * Set de caracteres identificado mediante un String.
+ * Charset identified by a String.
  */
 public class LiteralCharacterSet implements CharacterSet {
+
+	private String m_characters;
 
 	public LiteralCharacterSet(String characters) {
 		m_characters = characters;
@@ -18,12 +20,10 @@ public class LiteralCharacterSet implements CharacterSet {
 	}
 
 	public String getName() {
-		return " alguno de los siguientes caracteres: '" + m_characters + "'";
+		return " some of the following characters: '" + m_characters + "'";
 	}
 
 	public Character getReplaceForInvalidCharacter(char c) {
 		return null;
 	}
-
-	private String m_characters;
 }

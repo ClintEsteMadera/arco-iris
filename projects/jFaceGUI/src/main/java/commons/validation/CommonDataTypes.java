@@ -2,11 +2,6 @@ package commons.validation;
 
 import commons.validation.string.CharacterSet;
 
-/**
- * 
- * 
- */
-
 public class CommonDataTypes extends DataTypeDictionary {
 
 	public static final String DOMICILIO_CALLE = "jface.gui.domicilio.calle";
