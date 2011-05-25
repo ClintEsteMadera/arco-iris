@@ -25,7 +25,7 @@
 
 		\begin{figure}[ht]
 			\centering
-				\includegraphics[width=0.82\textwidth]{images/znnArchitecture.png}
+				\includegraphics[width=\textwidth]{images/znnArchitecture.png}
 			\caption{Arquitectura de Znn vista en Acme Studio}
 			\label{fig:znnArchitecture}
 		\end{figure}
@@ -82,7 +82,7 @@
 		\ref{sec:arcoIrisStrategyScoring}), simplificando así los cálculos, así como también la comprensibilidad de los
 		resultados presentados.
 
-		\begin{figure}[H]
+		\begin{figure}[ht]
 			\centering
 				\includegraphics[scale=0.6]{images/Environment_HighLoad.png}
 			\caption{Entorno de ejecución de alta carga}
@@ -93,16 +93,16 @@
 		no se encuentran equidistribuídos, enfatizando así la importancia del tiempo de respuesta frente a los restantes
 		\emph{concerns} definidos en el sistema.
 		
-		\begin{figure}[ht]
+		\begin{figure}[H]
 			\centering
-				\includegraphics[width=0.8\textwidth]{images/scenario_expRespTime.png}
+				\includegraphics[width=0.9\textwidth]{images/scenario_expRespTime.png}
 			\caption{Escenario de tiempo de respuesta experimentado por el usuario}
 			\label{fig:scenario_expRespTime}
 		\end{figure}
 
 		\begin{figure}[H]
 			\centering
-				\includegraphics[width=0.8\textwidth]{images/scenario_cost.png}
+				\includegraphics[width=0.9\textwidth]{images/scenario_cost.png}
 			\caption{Escenario de costo de servidores del sistema}
 			\label{fig:scenario_cost}
 		\end{figure}
@@ -184,14 +184,19 @@
 		simplemente en agregar un servidor, siempre y cuando existan servidores disponibles. La estrategia, definida en Stitch,
 		posee la siguiente lógica:
 
-		\begin{Verbatim}[gobble=3]
-			strategy EnlistServerResponseTime {
-			  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
-			    t1: (!RESP_TIME_STILL_BROKEN) -> done;
-			    t2: (default) -> TNULL;
-			  }
-			}
-		\end{Verbatim}
+		\begin{figure}[ht]
+			\centering
+			\begin{Verbatim}[gobble=4]
+				strategy EnlistServerResponseTime {
+				  t0: (true) -> enlistServers(1) @[5000 /*ms*/] {
+				    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+				    t2: (default) -> TNULL;
+				  }
+				}
+			\end{Verbatim}
+			\caption{Estrategia que agrega un servidor más al sistema}
+			\label{fig:EnlistServerResponseTime}
+		\end{figure}
 
 		Al agregar esta estrategia al escenario, se observa en la figura \ref{fig:testcase2_expRespTime} que el tiempo de
 		respuesta experimentado por el usuario mejora (i.e. desciende) rápidamente. De manera simultánea a esta mejora, el
@@ -327,12 +332,12 @@
 		En las figuras \ref{fig:testcase4_expRespTime} y \ref{fig:testcase4_cost} se puede observar el comportamiento del
 		tiempo de respuesta y del costo, respectivamente, para la configuración actual.
 
-		\begin{figure}[H]
+		\begin{figure}[ht]
 			\begin{center}
 				\subfigure[Uso de prioridades favoreciendo al escenario de eficiencia por sobre el de costo]
-						  {\label{fig:testcase4_expRespTime}\includegraphics[width=1.00\textwidth]{images/testcase4_expRespTime.png}}
+						  {\label{fig:testcase4_expRespTime}\includegraphics[width=0.95\textwidth]{images/testcase4_expRespTime.png}}
 				\subfigure[Reducción del costo como consecuencia de un cambio en el entorno]
-						  {\label{fig:testcase4_cost}\includegraphics[width=1.00\textwidth]{images/testcase4_cost.png}}
+						  {\label{fig:testcase4_cost}\includegraphics[width=0.95\textwidth]{images/testcase4_cost.png}}
 			\end{center}
 			\caption{Comportamiento del sistema respetando prioridades entre escenarios}
 			\label{fig:Caso4}
@@ -343,7 +348,7 @@
 		es ejecutada exitosamente, ya que cerca de los 9 segundos, el tiempo de respuesta vuelve a ubicarse en valores aceptables.
 		
 		Ahora bien, la estrategia ejecutada consiste ni más ni menos que en agregar un servidor más al sistema, con lo cual se
-		observa en la figura \ref{fig:testcase3_cost} de qué manera, a partir de los 5 segundos, el escenario relacionado con
+		observa en la figura \ref{fig:testcase4_cost} de qué manera, a partir de los 5 segundos, el escenario relacionado con
 		el costo de servidores deja de cumplirse, puesto que la cantidad máxima de servidores allí especificados es 1.
 		
 		Arco Iris debe decidir si repara o no a este nuevo escenario que se ha ``roto''. Es aquí dónde las prioridades entre
@@ -354,7 +359,7 @@
 		prioritario. En otras palabras, la auto reparación provista por Arco Iris no intentará reparar el escenario de costo
 		de servidores mientras que la utilidad del sistema en el estado actual sea mayor a la prevista en caso de repararlo.
 
-		En la figura \ref{fig:testcase3_cost}, aproximadamente a partir de los 33 segundos, se puede observar cómo Arco Iris
+		En la figura \ref{fig:testcase4_cost}, aproximadamente a partir de los 33 segundos, se puede observar cómo Arco Iris
 		decide desactivar un servidor en el preciso momento en que el entorno de ejecución de la aplicación cambia y el
 		tiempo de respuesta mejora por razones ajenas a la auto reparación. Aprovechando esto, Arco Iris logra satisfacer así
 		al escenario que estaba sin cumplirse, sin perjudicar al otro escenario (más prioritario) que se estaba cumpliendo
@@ -368,7 +373,7 @@
 		
 		En resumen, se ha mostrado por un lado la potencia y conveniencia de agregar el concepto de prioridad entre escenarios
 		como un elemento de relevancia para configurar al \emph{framework} y por otro, cómo distintos escenarios con		distinta prioridad pueden convivir en Arco Iris, tomando éste decisiones inteligentemente sobre qué escenario(s)
-		reparar, considerando siempre como factor crucial, la utilidad que el sistema exhibiría de ejecutar, o no, determinada
+		reparar, considerando siempre como factor crucial la utilidad que el sistema exhibiría de ejecutar, o no, determinada
 		estrategia de reparación.
 
 	\subsection{Caso 5: \emph{Tradeoff} entre Escenarios según \emph{Concerns}}
@@ -383,37 +388,42 @@
 		
 		\begin{figure}[H]
 			\centering
-				\includegraphics[scale=0.6]{images/testcase5_normal_environment_modified.png}
+				\includegraphics[scale=0.57]{images/testcase5_normal_environment_modified.png}
 			\caption{Nueva distribución de pesos para el entorno ``normal''}
 			\label{fig:testcase5_normal_environment_modified}
 		\end{figure}
 
 		En el extracto del \emph{log} generado por Arco Iris se observa cómo, al igual que en la mayoría de los casos de
 		pruebas ya presentados aquí, el escenario de tiempo de respuesta deja de cumplirse y Arco Iris debe decidir qué
-		acción llevar a cabo ante dicha situación. Puede apreciarse que Arco Iris opta por no reparar el escenario de tiempo de
-		respuesta ya que esto perjudicaría al escenario de costo, puesto que si bien ambos poseen idéntica prioridad, el
-		último está relacionado al \emph{concern} \textbf{costo de servidores}, el cuál en el entorno de ejecución actual
-		(normal) tiene más peso que el \emph{concern} \textbf{tiempo de respuesta}.
+		acción llevar a cabo ante dicha situación. En la figura \ref{fig:Caso5} puede apreciarse que Arco Iris opta por no
+		reparar el escenario de tiempo de respuesta ya que esto perjudicaría al escenario de costo, puesto que si bien ambos
+		poseen idéntica prioridad, el último está relacionado al \emph{concern} \textbf{costo de servidores}, el cuál en el
+		entorno de ejecución actual (normal) tiene más peso que el \emph{concern} \textbf{tiempo de respuesta}.
 		
+		\begin{figure}[ht]
+			\centering
+			\begin{Verbatim}[gobble=4]
+				Current environment: NORMAL
+				Computing Current System Utility...
+				Server Cost Scenario broken for [ESum] 1.0? false
+				Experienced Response Time Scenario broken for [EAvg] 602.25? true
+				Current System Utility (Score to improve): 0.555
+				Evaluating strategy EnlistServerResponseTime...
+				  Scoring EnlistServerResponseTime...
+				  Server Cost Scenario broken after simulation for Server Cost ([ESum] 2.0)? true
+				  Experienced Response Time Scenario broken after simulation for Response time ([EAvg] 458.25)? false
+				  Score for strategy EnlistServerResponseTime: 0.111
+				NO applicable strategy, adaptation cycle ended.
+			\end{Verbatim}
+			\caption{\emph{log} de Arco Iris para el caso de prueba 5}
+			\label{fig:Caso5}
+		\end{figure}
+
 		En otras palabras, al igual que en el caso anterior, Arco Iris vuelve a utilizar la Utilidad del sistema como una
 		medida para estimar el estado en que quedaría el sistema, de ejecutar o no una determinada estrategia; concluyendo
 		que, en el caso de intentar reparar el escenario de tiempo de respuesta ``roto'', el sistema brindaría menos utilidad
 		que en el estado actual. Vale reiterar que el factor determinante en el cálculo de dicha utilidad simulada del sistema
 		es, ni más ni menos, que el peso del \emph{concern} costo de servidores posee en el entorno de ejecución actual.
-
-		\begin{Verbatim}[gobble=3]
-			Current environment: NORMAL
-			Computing Current System Utility...
-			Server Cost Scenario broken for [ESum] 1.0? false
-			Experienced Response Time Scenario broken for [EAvg] 602.25? true
-			Current System Utility (Score to improve): 0.555
-			Evaluating strategy EnlistServerResponseTime...
-			  Scoring EnlistServerResponseTime...
-			  Server Cost Scenario broken after simulation for Server Cost ([ESum] 2.0)? true
-			  Experienced Response Time Scenario broken after simulation for Response time ([EAvg] 458.25)? false
-			  Score for strategy EnlistServerResponseTime: 0.111
-			NO applicable strategy, adaptation cycle ended.
-		\end{Verbatim}
 		
 		Cabe mencionar que, avanzada ya la ejecución del sistema, el tiempo de respuesta vuelve a estar por debajo del umbral
 		máximo definido en el escenario correspondiente. Esto, nuevamente, se debe a condiciones cambiantes en el entorno de
@@ -466,7 +476,12 @@
 		Tal como se esperaba, Arco Iris no toma acción alguna mientras el sistema se encuentra en carga normal, puesto que el
 		escenario de costo posee más prioridad que el escenario de tiempo de respuesta para dicho entorno. Esto se puede
 		apreciar en la figura \ref{fig:testcase6_expRespTime}.
+		
+		Luego de superados los 800 ms. el sistema pasa a estar en alta carga, por lo cual dos de los tres escenarios pasan a
+		satisfacerse trivialmente. Consecuentemente, Arco Iris deberá procurar sólamente que se cumpla el escenario de tiempo		de respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_cost} que la auto		reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la simulación, reparando
+		efectivamente el escenario en cuestión.
 
+		\clearpage
 		\begin{figure}[ht]
 			\begin{center}
 				\subfigure[Arco Iris sólo arregla el tiempo de respuesta con el sistema en alta carga.]
@@ -477,10 +492,3 @@
 			\caption{Comportamiento del sistema en distintos entornos de ejecución}
 			\label{fig:Caso6}
 		\end{figure}
-		
-		Luego de superados los 800 ms. el sistema pasa a estar en alta carga, por lo cual dos de los tres escenarios pasan a
-		satisfacerse trivialmente. Consecuentemente, Arco Iris deberá procurar sólamente que se cumpla el escenario de tiempo		de respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_cost} que la auto		reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la simulación, reparando
-		efectivamente el escenario en cuestión.
-		
-		% \todo{no deberíamos tener que poner tener que poner este clearpage acá\ldots} 
-		\clearpage

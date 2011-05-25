@@ -197,9 +197,9 @@
 		al punto de que ya permiten definir una base formal para su descripción y análisis.
 
 	\subsubsection{Acme}
-	\label{sec:acme}
+	\label{sec:Acme}
 
-		Acme\cite{ACME} es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la universidad de Carnegie
+		Acme\cite{Acme} es uno de los ADLs más reconocidos y utilizados, ha sido desarrollado en la universidad de Carnegie
 		Mellon, más precisamente por el proyecto ABLE, liderado por el Dr. David Garlan.
 
 		Acme es un pilar fundamental dentro del proyecto ABLE, ya que todo el proyecto gira en torno a la arquitectura de
@@ -225,34 +225,37 @@
 		Actualmente, el lenguaje Acme y \emph{Acme Tool Developer's Library (AcmeLib)}, proveen una infraestructura genérica y
 		extensible para describir, representar, analizar y generar descripciones de arquitecturas de software.
 
-		A continuación, observamos un breve ejemplo de una arquitectura modelada en el lenguaje ACME, la cual posee un
-		sistema que contiene:
+		En la figura \ref{fig:ArquitecturaBasicaModeladaConAcme}, se observa un breve ejemplo de una arquitectura modelada en
+		el lenguaje Acme, la cual posee un sistema que contiene:
 		\begin{itemize}
 			\item un servidor HTTP, con algunas propiedades como por ejemplo fidelidad del contenido que provee.
 			\item un cliente HTTP, también con algunas propiedades particulares como el tiempo de respuesta experimentado por el
 			usuario.
 		\end{itemize}
 		
-		\newpage
-
-		\begin{Verbatim}[gobble=3]
-			System system : ClientServerType = {
-			    Component server : ServerT = new ServerT extended with {
-			        Port http0 : HttpPortT;
-			        Property cost;
-			        Property fidelity;
-			        Property load;
-			    }
-			    Component client : ClientT = new ClientT extended with {
-			        Port p0 : HttpReqPortT = new HttpReqPortT extended with {
-			            Property isArchEnabled = true;
-			        }
-			        Property deploymentLocation = "127.0.0.1";
-			        Property isArchEnabled = true;
-			        Property experRespTime;
-			    }
-			}
-		\end{Verbatim}
+		\begin{figure}[ht]
+			\centering
+			\begin{Verbatim}[gobble=4]
+				System system : ClientServerType = {
+				    Component server : ServerT = new ServerT extended with {
+				        Port http0 : HttpPortT;
+				        Property cost;
+				        Property fidelity;
+				        Property load;
+				    }
+				    Component client : ClientT = new ClientT extended with {
+				        Port p0 : HttpReqPortT = new HttpReqPortT extended with {
+				            Property isArchEnabled = true;
+				        }
+				        Property deploymentLocation = "127.0.0.1";
+				        Property isArchEnabled = true;
+				        Property experRespTime;
+				    }
+				}
+			\end{Verbatim}
+			\caption{Arquitectura básica modelada con Acme}
+			\label{fig:ArquitecturaBasicaModeladaConAcme}
+		\end{figure}
 
 		Más adelante, en la sección \ref{sec:casosPracticos}, veremos otro ejemplo (más extenso) del lenguaje al mostrar la
 		descripción completa en Acme de la arquitectura del sistema que utilizaremos para mostrar los resultados de la extensión
@@ -360,7 +363,7 @@
 					\item \textbf{Capa de Arquitectura}:\\
 					En esta capa, los denominados \emph{Gauges} agregan información provenientes de los \emph{Probes} y
 					mantienen constantemente actualizadas las propiedades correspondientes en el modelo arquitectural del sistema
-					(descrito en ACME), el cual es manejado y accedido mediante un componente denominado \emph{Model Manager}. El
+					(descrito en Acme), el cual es manejado y accedido mediante un componente denominado \emph{Model Manager}. El
 					\emph{Constraint Evaluator} chequea el modelo periódicamente y dispara la adaptación en el caso que ocurra una
 					violación en alguna restricción impuesta sobre el modelo. En ese caso, el motor de adaptación (\emph{Adaptation
 					Engine}) determina el curso de acción y lleva a cabo la adaptación necesaria.
@@ -425,7 +428,7 @@
 			
 			La táctica consiste en disminuir la fidelidad (a modo sólo texto) del contenido provisto por todos los servidores
 			cuando se detecta que al menos un cliente experimenta un tiempo de respuesta superior a un determinado umbral. Para lograr
-			esto, Rainbow inspecciona las propiedades del modelo de la arquitectura del sistema, definido en ACME, el cúal se
+			esto, Rainbow inspecciona las propiedades del modelo de la arquitectura del sistema, definido en Acme, el cúal se
 			supone constantemente actualizado por Rainbow con respecto al estado actual del sistema en ejecución.
 			
 			Por último, se especifica que el efecto esperado de ejecutar la táctica consiste en que todos los clientes

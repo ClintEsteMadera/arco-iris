@@ -27,12 +27,12 @@
 		\begin{enumerate}
 			\item la creación de un modelo de la arquitectura del sistema al cual Rainbow va a adaptar. Dicho modelo se
 			especifica utilizando el estilo de componentes y conectores (C\&C) y el lenguaje de descripción de arquitecturas
-			ACME (ver sección \ref{sec:acme}). En dicho lenguaje, los componentes y conectores poseen propiedades (con valores
+			Acme (ver sección \ref{sec:Acme}). En dicho lenguaje, los componentes y conectores poseen propiedades (con valores
 			asociados), restricciones y también se ofrece la posibilidad de especificar invariantes a nivel de sistema o sub
 			sistema. Dichos invariantes y restricciones serán evaluados periódicamente por Rainbow para verificar que el sistema
 			funcione dentro de los límites determinados como normales.
 			\item la generación de un conjunto de archivos de configuración que especifican diversos aspectos relacionados con
-			la definición del sistema a auto reparar, como por ejemplo: ubicación física del archivo ACME que describe la
+			la definición del sistema a auto reparar, como por ejemplo: ubicación física del archivo Acme que describe la
 			arquitectura del sistema, archivos de tácticas y estrategias de reparación (escritos en \emph{Stitch}), datos para
 			la configuración de la conexión de Rainbow con el sistema en \emph{runtime}, etc.
 		\end{enumerate}
@@ -209,28 +209,33 @@
 				restricciones impuestas sobre el modelo en Acme como si predicaran implícitamente sobre el \emph{promedio} de todos
 				los valores; y por otro lado, ofrece como mecanismo para expresar restricciones sobre la \emph{sumatoria} de
 				todos los valores, la definición de precondiciones dentro de las estrategias de reparación definidas en en lenguaje
-				\emph{Stitch}. El siguiente, es un ejemplo de cómo Znn impone restricciones sobre la sumatoria del costo de los
-				servidores del sistema:
-				
-				\begin{Verbatim}[gobble=5]
-					import op "org.sa.rainbow.stitch.lib.Model";
-					...
-					define float totalCost = Model.sumOverProperty("cost", servers);
-					define boolean hiCost = totalCost >= M.THRESHOLD_COST;
-					...
-					/* This Strategy is triggered by the total server costs rising above acceptable
-					 * threshold; this Strategy reduces the number of active servers
-					 */
-					strategy ReduceOverallCost
-					[ hiCost ] {
-					  t0: (hiCost) -> dischargeServers(1) @[2000 /*ms*/] {
-					    t1: (!hiCost) -> done;
-					    t2: (lowRespTime && hiCost) -> do[2] t0;
-					    t3: (default) -> TNULL;
-					  }
-					}
-					...
-				\end{Verbatim}
+				\emph{Stitch}. En la figura \ref{fig:ZnnReduceOverallCost} se observa un ejemplo de cómo Znn impone restricciones
+				sobre la sumatoria del costo de los servidores del sistema.
+
+				\begin{figure}[ht]
+					\centering
+					\begin{Verbatim}[gobble=6]
+						import op "org.sa.rainbow.stitch.lib.Model";
+						...
+						define float totalCost = Model.sumOverProperty("cost", servers);
+						define boolean hiCost = totalCost >= M.THRESHOLD_COST;
+						...
+						/* This Strategy is triggered by the total server costs rising above acceptable
+						 * threshold; this Strategy reduces the number of active servers
+						 */
+						strategy ReduceOverallCost
+						[ hiCost ] {
+						  t0: (hiCost) -> dischargeServers(1) @[2000 /*ms*/] {
+						    t1: (!hiCost) -> done;
+						    t2: (lowRespTime && hiCost) -> do[2] t0;
+						    t3: (default) -> TNULL;
+						  }
+						}
+						...
+					\end{Verbatim}
+					\caption{Estrategia que apaga un servidor para mejorar el costo de servidores.}
+					\label{fig:ZnnReduceOverallCost}
+				\end{figure}
 
 				Se observa la utilización de una clase Java (\verb@Model.sumOverProperty("cost", servers)@) para obtener la
 				sumatoria de los costos de los servidores. Esta forma de establecer restricciones (el ``qué'') se encuentra
@@ -306,7 +311,7 @@
 				\includegraphics[width=1.00\textwidth]{images/QAS_Model.png}
 			\caption{Modelo de QAS}
 			\label{fig:QAS_Model}
-		\end{figure}		
+		\end{figure}
 		
 		De todos los atributos que posee un QAS, el \textbf{Estímulo}, el \textbf{Artefacto}, el \textbf{Entorno} y la
 		\textbf{Cuantificación de la Respuesta} son particularmente relevantes a los fines de establecer información útil para
@@ -384,20 +389,26 @@
 			
 			Tanto la configuración como la implementación de \verb@ClientProxy@ son muy similares a las de su contraparte de Arco
 			Iris, \verb@ClientProxyWithStimulus@. En el apéndice \ref{sec:probesCode} se pueden observar ambas implementaciones,
-			mientras que la configuración de una instancia de \verb@ClientProxyWithStimulus@ se puede observar a continuación:
+			mientras que la configuración de una instancia de \verb@ClientProxyWithStimulus@ se puede observar en la figura
+			\ref{fig:ClientProxyProbeWithStimulus0}.
 
-			\begin{Verbatim}[gobble=4]
-				ClientProxyProbeWithStimulus0:
-					alias: clientproxyWithStimulus
-					location: "localhost" 
-					type: java 
-					javaInfo:
-						class: ar.uba.dc.arcoiris.znn.probes.ClientProxyProbeWithStimulus
-						period: 2000
-						args.length: 2
-						args.0: "http://delegate.oracle/"
-						args.1: "delegateStimulus"
-			\end{Verbatim}
+			\begin{figure}[ht]
+				\centering
+				\begin{Verbatim}[gobble=5]
+					ClientProxyProbeWithStimulus0:
+						alias: clientproxyWithStimulus
+						location: "localhost" 
+						type: java 
+						javaInfo:
+							class: ar.uba.dc.arcoiris.znn.probes.ClientProxyProbeWithStimulus
+							period: 2000
+							args.length: 2
+							args.0: "http://delegate.oracle/"
+							args.1: "delegateStimulus"
+				\end{Verbatim}
+				\caption{Configuración de una instancia de ClientProxyWithStimulus.}
+				\label{fig:ClientProxyProbeWithStimulus0}
+			\end{figure}
 
 			Por último, se muestra la información reportada por una instancia de\\
 			\verb@ClientProxyWithStimulus@ con la configuración que se acaba de presentar:
@@ -428,16 +439,23 @@
 			de una arquitectura de estilo cliente-servidor, donde el componente de tipo \emph{ClientT} se define de la siguiente
 			manera:
 
-			\begin{Verbatim}[gobble=4]
-				Component Type ClientT extends ArchElementT with {
+			\begin{figure}[H]
+				\centering
+				\begin{Verbatim}[gobble=5]
+					Component Type ClientT extends ArchElementT with {
+	
+					  Property deploymentLocation : string <<  default : string = "localhost"; >> ;
+	
+					  Property experRespTime : float <<  default : float = 100.0; >> ;
+	
+					  Property requestRate : float <<  default : float = 0.0; >> ;
+					}
+				\end{Verbatim}
+				\caption{Definición del tipo \emph{ClientT}.}
+				\label{fig:ClientT}
+			\end{figure}
 
-				  Property deploymentLocation : string <<  default : string = "localhost"; >> ;
-
-				  Property experRespTime : float <<  default : float = 100.0; >> ;
-
-				  Property requestRate : float <<  default : float = 0.0; >> ;
-				}
-			\end{Verbatim}
+			\newpage
 
 			Suponiendo que se define el siguiente escenario:
 
@@ -676,10 +694,6 @@
 	
 		Hasta aquí se ha detallado el uso que Arco Iris hace del modelo básico de QAS, pero como se mencionó anteriormente,
 		es necesario extender este modelo para agregar información de auto reparación propiamente dicha.
-		
-		En la figura \ref{fig:Arco_Iris_QAS_Model} se puede observar el modelo del \textbf{escenario de auto reparación}\\
-		(\verb@SelfHealingScenario@), el cual, además de ser un QAS tiene toda la información y la lógica necesaria para que
-		Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación.
 
 		\begin{figure}[H]
 			\centering
@@ -687,6 +701,10 @@
 			\caption{Modelo de Arco Iris}
 			\label{fig:Arco_Iris_QAS_Model}
 		\end{figure}
+		
+		En la figura \ref{fig:Arco_Iris_QAS_Model} se puede observar el modelo del \textbf{escenario de auto reparación}\\
+		(\verb@SelfHealingScenario@), el cual, además de ser un QAS tiene toda la información y la lógica necesaria para que
+		Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación.
 
 		Los escenarios de auto reparación pueden ser deshabilitados, considerando Arco Iris solamente aquellos escenarios
 		habilitados al momento de reparar el sistema.
@@ -791,49 +809,59 @@
 				
 		En Arco Iris, para poder escribir estrategias que involucren varias tácticas, el usuario contará con un mecanismo que
 		le permitirá verificar si los escenarios de un determinado \emph{concern}, y que han sido marcados para reparar,
-		siguen aún sin cumplirse. En base a esta información la estrategia podrá decidir cómo continuar su ejecución. A
-		continuación se muestra un ejemplo de su utilización:
+		siguen aún sin cumplirse. En base a esta información la estrategia podrá decidir cómo continuar su ejecución.
 
-		\begin{Verbatim}[gobble=3]
-			import op "org.sa.rainbow.adaptation.ArcoIrisAdaptationManager";
-			...
-			define boolean RESP_TIME_STILL_BROKEN =
-					ArcoIrisAdaptationManager.isConcernStillBroken("RESPONSE_TIME");
-			...
-			/*
-			 * This Strategy will drop fidelity once, observe, then drop again if necessary.
-			 */
-			strategy BruteReduceResponseTime {
-			  t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
-			    t1: (!RESP_TIME_STILL_BROKEN) -> done;
-			    t2: (RESP_TIME_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
-			      t2a: (!RESP_TIME_STILL_BROKEN) -> done;
-			      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
-			    }
-			  }
-			}
-			...
-			\end{Verbatim}
-
-		Como se puede observar en el código, para que este mecanismo funcione, es necesario importar la función
-		\verb@isConcernStillBroken@ de la clase \verb@ArcoIrisAdaptationManager@, cuya implementación se verá a continuación.
-		Notar que el usuario solamente deberá indicar cual es el \emph{concern} de su interés:
-
-		\begin{Verbatim}[gobble=3]
-			public static boolean isConcernStillBroken(String concernString) {
-				Concern concern = Concern.valueOf(concernString);
-
-				boolean result = false;
-				for (SelfHealingScenario scenario : currentBrokenScenarios) {
-					if (scenario.getConcern().equals(concern) &&
-							scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
-						result = true;
-						break;
-					}
+		\begin{figure}[ht]
+			\centering
+			\begin{Verbatim}[gobble=4]
+				import op "org.sa.rainbow.adaptation.ArcoIrisAdaptationManager";
+				...
+				define boolean RESP_TIME_STILL_BROKEN =
+						ArcoIrisAdaptationManager.isConcernStillBroken("RESPONSE_TIME");
+				...
+				/*
+				 * This Strategy will drop fidelity once, observe, then drop again if necessary.
+				 */
+				strategy BruteReduceResponseTime {
+				  t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
+				    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+				    t2: (RESP_TIME_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+				      t2a: (!RESP_TIME_STILL_BROKEN) -> done;
+				      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
+				    }
+				  }
 				}
-				return result;
-			}
-		\end{Verbatim}
+				...
+				\end{Verbatim}
+			\caption{Estrategia que baja drásticamente la fidelidad para mejorar el tiempo de respuesta}
+			\label{fig:BruteReduceResponseTime}
+		\end{figure}
+
+		Como se puede observar en la figura \ref{fig:BruteReduceResponseTime}, para que este mecanismo funcione, es necesario
+		importar la función \verb@isConcernStillBroken@ de la clase \verb@ArcoIrisAdaptationManager@, cuya implementación se
+		observa en la figura \ref{fig:isConcernStillBroken}. Notar que el usuario solamente deberá indicar cual es el
+		\emph{concern} de su interés.
+
+		\begin{figure}[H]
+			\centering
+			\begin{Verbatim}[gobble=4]
+				public static boolean isConcernStillBroken(String concernString) {
+					Concern concern = Concern.valueOf(concernString);
+	
+					boolean result = false;
+					for (SelfHealingScenario scenario : currentBrokenScenarios) {
+						if (scenario.getConcern().equals(concern) &&
+								scenarioBrokenDetector4CurrentSystemState.isBroken(scenario)) {
+							result = true;
+							break;
+						}
+					}
+					return result;
+				}
+			\end{Verbatim}
+			\caption{Implementación del método \emph{isConcernStillBroken}.}
+			\label{fig:isConcernStillBroken}
+		\end{figure}
 
 	\subsection{Activación del Mecanismo de Auto Reparación}
 
@@ -866,7 +894,7 @@
 		\subsubsection{Desarrollo}
 		\label{sec:desarrolloMecanismoAutoReparacion}
 
-			Para determinar si el sistema necesita auto repararse, Rainbow utiliza una funcionalidad ofrecida por ACME, que
+			Para determinar si el sistema necesita auto repararse, Rainbow utiliza una funcionalidad ofrecida por Acme, que
 			permite evaluar las restricciones descritas en el modelo de la arquitectura. Dicha funcionalidad es provista por una
 			herramienta llamada \emph{Type Checker}. A continuación podemos observar una versión simplificada de cómo Rainbow se
 			sirve de esta utilidad para decidir si debe lanzar la auto reparación o no:
@@ -1000,8 +1028,6 @@
 			\end{itemize}			
 
 			Se observa a continuación, un ejemplo de una configuración de este tipo, tomada de Znn:
-			
-			\newpage
 
 			\begin{Verbatim}[gobble=4]
 				...
@@ -1163,47 +1189,51 @@
 			que sí apliquen al entorno actual, Arco Iris evaluará si las restricciones establecidas en la cuantificación de la
 			respuesta del escenario se satisfacen y sólo en caso afirmativo sumarán a la utilidad del sistema.
 
-			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
-			asignará un puntaje (\emph{score}) a cada uno. A continuación se puede ver plasmado en pseudocódigo el cálculo del
-			puntaje de un escenario y cómo es utilizado para calcular el puntaje final de la estrategia, seleccionando Arco Iris 
-			aquella de mayor puntaje para ser ejecutada:
-
-			\begin{Verbatim}[gobble=4]
-				scoreMaximo = utilidad actual del sistema
-
-				Por cada estrategia
-					scoreStrategia = 0
-					estimacionPorConcern = simular la aplicación de la estrategia como lo hace Rainbow y
-					                       obtener el valor resultante para los concerns
-
-					Por cada escenario habilitado
-						Si (no aplica al entorno actual o
-						    (aplica al entorno actual y la cuantificación de la respuesta se satisface))
-
-							prioridadRelativa = calcular prioridad relativa del escenario
-							pesoConcern = peso que el entorno actual asigna a escenario.concern
-							puntajeEscenario = prioridadRelativa * pesoConcern
-							scoreStrategia = scoreStrategia + puntajeEscenario
+			\begin{figure}[H]
+				\centering
+				\begin{Verbatim}[gobble=5]
+					scoreMaximo = utilidad actual del sistema
+	
+					Por cada estrategia
+						scoreStrategia = 0
+						estimacionPorConcern = simular la aplicación de la estrategia como lo hace Rainbow y
+						                       obtener el valor resultante para los concerns
+						Por cada escenario habilitado
+							Si (no aplica al entorno actual o
+							    (aplica al entorno actual y la cuantificación de la respuesta se satisface))
+	
+								prioridadRelativa = calcular prioridad relativa del escenario
+								pesoConcern = peso que el entorno actual asigna a escenario.concern
+								puntajeEscenario = prioridadRelativa * pesoConcern
+								scoreStrategia = scoreStrategia + puntajeEscenario
+							Fin
 						Fin
-					Fin
-
-					Si scoreStrategia > scoreMaximo
-						estrategiaSeleccionada = estrategia
-						scoreMaximo = scoreStrategia
-					Sino
-						Si scoreStrategia = scoreMaximo
-							utilityDiff = rainbowSystemUtility(estrategia) -
-							              rainbowSystemUtility(estrategiaSeleccionada)
-							Si utilityDiff > 0
-								estrategiaSeleccionada = estrategia
-							Sino Si utilityDiff = 0 y
-							     tasaDeFallos(estrategia) < tasaDeFallos(estrategiaSeleccionada)
-								estrategiaSeleccionada = estrategia
+	
+						Si scoreStrategia > scoreMaximo
+							estrategiaSeleccionada = estrategia
+							scoreMaximo = scoreStrategia
+						Sino
+							Si scoreStrategia = scoreMaximo
+								utilityDiff = rainbowSystemUtility(estrategia) -
+								              rainbowSystemUtility(estrategiaSeleccionada)
+								Si utilityDiff > 0
+									estrategiaSeleccionada = estrategia
+								Sino Si utilityDiff = 0 y
+								     tasaDeFallos(estrategia) < tasaDeFallos(estrategiaSeleccionada)
+									estrategiaSeleccionada = estrategia
+								Fin
 							Fin
 						Fin
 					Fin
-				Fin
-			\end{Verbatim}
+				\end{Verbatim}
+				\caption{Pseudocódigo del cálculo del puntaje de escenarios y estrategias.}
+				\label{fig:PseudoCalculoPuntajeEscenariosEstrategias}
+			\end{figure}
+
+			Ahora bien, una vez que se tienen los escenarios que pesarán sobre la utilidad del sistema, veamos cómo Arco Iris
+			asignará un puntaje (\emph{score}) a cada uno. En la figura \ref{fig:PseudoCalculoPuntajeEscenariosEstrategias} se
+			puede ver plasmado en pseudocódigo el cálculo del puntaje de un escenario y cómo es utilizado para calcular el
+			puntaje final de la estrategia, seleccionando Arco Iris aquella de mayor puntaje para ser ejecutada.
 			
 			Como se dijo anteriormente, si la mejor estrategia no agrega más utilidad que la actual, Arco Iris no aplica
 			ninguna estrategia. Luego, por cada estrategia, Arco Iris simulará su aplicación reutilizando para este punto la
@@ -1313,6 +1343,9 @@
 			\ref{sec:arcoIrisStrategyScoring})
 		\end{itemize}
 
+		A fin de simplificar y amenizar para el usuario la creación y edición de la configuración que Arco Iris utiliza, se
+		provee la herramienta Arco Iris UI, la cuál será explicada en detalle en la sección \ref{sec:arcoIrisUI}.
+
 		\subsubsection{Formato del Archivo de Configuración}
 		\label{sec:formatoArchivoConfiguracion}
 
@@ -1357,51 +1390,5 @@
 			escenarios sin detener en ningún momento su ejecución.
 			
 			El mecanismo descrito en este apartado se encuentra implementado en la clase\\
-			\verb@FileSelfHealingConfiguracionDao@ y podemos ver su código a continuación:
-
-			\begin{Verbatim}[gobble=4]
-				private static final long CONFIG_RELOAD_INTERVAL_MS =
-					Long.valueOf(Rainbow.property("customize.scenarios.reloadInterval"));
-
-				private static final String SELF_HEALING_CONFIG_FILE_NAME =
-					Rainbow.property("customize.scenarios.path");
-
-				private static final File SELF_HEALING_CONFIG_FILE =
-					Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
-				...
-				public FileSelfHealingConfigurationDao() {
-					super();
-					this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
-					this.loadSelfHealingConfigurationFromFile();
-
-					TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
-						@Override
-						protected void onChange(File file) {
-							logger.info(SELF_HEALING_CONFIG_FILE_NAME +
-								" has just changed, reloading Self Healing Configuration!");
-							loadSelfHealingConfigurationFromFile();
-							notifyListeners();
-						}
-					};
-
-					Timer timer = new Timer();
-					timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
-				}
-				
-				public void register(SelfHealingConfigurationChangeListener listener) {
-					this.listeners.add(listener);
-				}
-				
-				protected void notifyListeners() {
-					for (SelfHealingConfigurationChangeListener listener : this.listeners) {
-						listener.selfHealingConfigurationHasChanged();
-					}
-				}
-								
-				...
-			\end{Verbatim}
-
-		A fin de simplificar y amenizar para el usuario la creación y edición de la configuración que Arco Iris utiliza, se
-		provee la herramienta Arco Iris UI, la cuál será explicada en detalle en la sección \ref{sec:arcoIrisUI}.
-			
-			
+			\verb@FileSelfHealingConfiguracionDao@, cuya implementación se puede observar en el apéndice
+			\ref{sec:fileSelfHealingConfigDao}.
