@@ -301,13 +301,12 @@
 		modelo cumple una tarea fundamental ya que toda esta información será manipulada constantemente por Arco Iris para
 		llevar a cabo la auto reparación en base a las expectativas plasmadas por los \emph{stakeholders} al crear los escenarios.
 
-		\afterpage{\clearpage
 		\begin{figure}[H]
 			\centering
 				\includegraphics[width=1.00\textwidth]{images/QAS_Model.png}
 			\caption{Modelo de QAS}
 			\label{fig:QAS_Model}
-		\end{figure}}		
+		\end{figure}		
 		
 		De todos los atributos que posee un QAS, el \textbf{Estímulo}, el \textbf{Artefacto}, el \textbf{Entorno} y la
 		\textbf{Cuantificación de la Respuesta} son particularmente relevantes a los fines de establecer información útil para
@@ -682,13 +681,12 @@
 		(\verb@SelfHealingScenario@), el cual, además de ser un QAS tiene toda la información y la lógica necesaria para que
 		Arco Iris pueda llevar a cabo su objetivo de flexibilizar la auto reparación.
 
-		\afterpage{\clearpage
 		\begin{figure}[H]
 			\centering
 				\includegraphics[width=1.00\textwidth]{images/Arco_Iris_QAS_Model.png}
 			\caption{Modelo de Arco Iris}
 			\label{fig:Arco_Iris_QAS_Model}
-		\end{figure}}
+		\end{figure}
 
 		Los escenarios de auto reparación pueden ser deshabilitados, considerando Arco Iris solamente aquellos escenarios
 		habilitados al momento de reparar el sistema.
@@ -755,8 +753,8 @@
 			}
 		\end{Verbatim}
 
-		Donde \emph{responseTimeConstraintViolation} es un predicado que permite determinar si existe algún cliente cuyo tiempo
-		de respuesta haya sobrepasado el umbral máximo permitido:
+		Donde \verb@responseTimeConstraintViolation@ es un predicado que permite determinar si existe algún cliente cuyo
+		tiempo de respuesta haya sobrepasado el umbral máximo permitido:
 
 		\begin{Verbatim}[gobble=3]
 			define boolean responseTimeConstraintViolation =
@@ -853,9 +851,7 @@
 	
 			\begin{Verbatim}[gobble=4]
 				Component Type ClientT {
-
 					Property experRespTime : float <<  default : float = 100.0; >> ;
-
 					rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
 				}
 			\end{Verbatim}
@@ -1004,6 +1000,8 @@
 			\end{itemize}			
 
 			Se observa a continuación, un ejemplo de una configuración de este tipo, tomada de Znn:
+			
+			\newpage
 
 			\begin{Verbatim}[gobble=4]
 				...
@@ -1050,6 +1048,8 @@
 			cual fue explicada en detalle en la sección \ref{sec:environment}. Recordar que uno de estos entornos será
 			seleccionado en la configuración de Rainbow como el entorno actual y, por ende, sus pesos serán utilizados en el
 			cálculo de la \emph{Utilidad del Sistema}, cuyo pseudocódigo se presenta a continuación:
+
+			\newpage
 
 			\begin{Verbatim}[gobble=4]
 				utilidadDelSistema = 0
@@ -1243,7 +1243,6 @@
 						return (maxPriority - scenario.getPriority() + 1) / maxPriority;
 					}
 				}
-			}
 			\end{Verbatim}
 
 			Algunas aclaraciones:
@@ -1292,7 +1291,7 @@
 
 		\begin{figure}[H]
 			\centering
-				\includegraphics[width=0.50\textwidth]{images/SelfHealingConfiguration.png}
+				\includegraphics[width=0.45\textwidth]{images/SelfHealingConfiguration.png}
 			\caption{Estructura de la configuración de Self Healing utilizada por Arco Iris}
 			\label{fig:SelfHealingConfiguration}
 		\end{figure}		

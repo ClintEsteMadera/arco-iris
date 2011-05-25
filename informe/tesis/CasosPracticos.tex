@@ -23,7 +23,7 @@
 		de la arquitectura del sistema, extraída utilizando la herramienta AcmeStudio. (En el apéndice
 		\ref{sec:arquitecturaZNN} se puede observar el código fuente Acme de dicha arquitectura)
 
-		\begin{figure}[H]
+		\begin{figure}[ht]
 			\centering
 				\includegraphics[width=0.82\textwidth]{images/znnArchitecture.png}
 			\caption{Arquitectura de Znn vista en Acme Studio}
@@ -138,7 +138,7 @@
 		En la figura \ref{fig:Caso0} se puede observar el comportamiento del sistema sin escenarios, es decir, sin mecanismo
 		de auto reparación alguno.
 
-		\begin{figure}[H]
+		\begin{figure}[ht]
 			\begin{center}
 				\subfigure[Tiempo de Respuesta]{\includegraphics[width=\textwidth]{images/testcase0_expRespTime.png}}
 				\subfigure[Costo de
@@ -198,7 +198,7 @@
 		costo de servidores aumenta a 2, producto de la ejecución de la estrategia. Esto puede observarse en la figura
 		\ref{fig:testcase2_cost}.
 
-		\begin{figure}[H]
+		\begin{figure}[ht]
 			\begin{center}
 				\subfigure[Mejora en el tiempo de respuesta debido a la ejecución de una
 				estrategia]{\label{fig:testcase2_expRespTime}\includegraphics[width=1.00\textwidth]{images/testcase2_expRespTime.png}}
@@ -324,15 +324,15 @@
 		escenario de tiempo de respuesta es más prioritario que el de costo. Esta configuración es crucial en este caso de
 		prueba, ya que determinará el rumbo de la auto reparación llevada a cabo por Arco Iris.
 
-		En las figuras \ref{fig:testcase3_expRespTime} y \ref{fig:testcase3_cost} se puede observar el comportamiento del
+		En las figuras \ref{fig:testcase4_expRespTime} y \ref{fig:testcase4_cost} se puede observar el comportamiento del
 		tiempo de respuesta y del costo, respectivamente, para la configuración actual.
 
 		\begin{figure}[H]
 			\begin{center}
 				\subfigure[Uso de prioridades favoreciendo al escenario de eficiencia por sobre el de costo]
-						  {\label{fig:testcase3_expRespTime}\includegraphics[width=1.00\textwidth]{images/testcase3_expRespTime.png}}
+						  {\label{fig:testcase4_expRespTime}\includegraphics[width=1.00\textwidth]{images/testcase4_expRespTime.png}}
 				\subfigure[Reducción del costo como consecuencia de un cambio en el entorno]
-						  {\label{fig:testcase3_cost}\includegraphics[width=1.00\textwidth]{images/testcase3_cost.png}}
+						  {\label{fig:testcase4_cost}\includegraphics[width=1.00\textwidth]{images/testcase4_cost.png}}
 			\end{center}
 			\caption{Comportamiento del sistema respetando prioridades entre escenarios}
 			\label{fig:Caso4}
@@ -450,7 +450,7 @@
 		prefiere que el tiempo de respuesta suba por encima de su umbral máximo (600 ms.) antes que agregar un servidor más
 		al sistema. Ahora, cuando el entorno de ejecución es de alta carga, el tiempo de respuesta pasa a tener más
 		importancia que el costo de servidores. Esto, en teoría, habilitaría a Arco Iris a agregar uno o más servidores en pos
-		de que el tiempo de respuesta no supere su umbral máximo para un entorno de alta carga (900 ms.). Este es el objetivo
+		de que el tiempo de respuesta no supere su umbral máximo (900 ms.) para un entorno de alta carga. Este es el objetivo
 		primordial de este caso de prueba.
 		
 		Para lograr que el sistema en un momento determinado de la ejecución pase a estar en alta carga, ha sido necesario
@@ -464,15 +464,23 @@
 		estrategias asociadas.
 		
 		Tal como se esperaba, Arco Iris no toma acción alguna mientras el sistema se encuentra en carga normal, puesto que el
-		escenario de costo posee más prioridad que el escenario de tiempo de respuesta para dicho entorno.
-		
-		Luego de superados los 800 ms. el sistema pasa a estar en alta carga, por lo cual dos de los tres escenarios pasan a
-		satisfacerse trivialmente. Consecuentemente, Arco Iris deberá procurar sólamente que se cumpla el escenario de tiempo
-		de respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_expRespTime_cost}		que la auto reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la		simulación, reparando efectivamente el escenario en cuestión.
-		\begin{figure}[H]
-			\centering
-				\includegraphics[width=1.0\textwidth]{images/testcase6_expRespTime_cost.png}
+		escenario de costo posee más prioridad que el escenario de tiempo de respuesta para dicho entorno. Esto se puede
+		apreciar en la figura \ref{fig:testcase6_expRespTime}.
+
+		\begin{figure}[ht]
+			\begin{center}
+				\subfigure[Arco Iris sólo arregla el tiempo de respuesta con el sistema en alta carga.]
+						  {\label{fig:testcase6_expRespTime}\includegraphics[width=\textwidth]{images/testcase6_expRespTime.png}}
+				\subfigure[En carga normal, el costo es priorizado y se mantiene en 1.]
+						  {\label{fig:testcase6_cost}\includegraphics[width=\textwidth]{images/testcase6_cost.png}}
+			\end{center}
 			\caption{Comportamiento del sistema en distintos entornos de ejecución}
-			\label{fig:testcase6_expRespTime_cost}
+			\label{fig:Caso6}
 		\end{figure}
 		
+		Luego de superados los 800 ms. el sistema pasa a estar en alta carga, por lo cual dos de los tres escenarios pasan a
+		satisfacerse trivialmente. Consecuentemente, Arco Iris deberá procurar sólamente que se cumpla el escenario de tiempo		de respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_cost} que la auto		reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la simulación, reparando
+		efectivamente el escenario en cuestión.
+		
+		% \todo{no deberíamos tener que poner tener que poner este clearpage acá\ldots} 
+		\clearpage
