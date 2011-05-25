@@ -108,7 +108,7 @@
 
 \newpage
 
-\section{Representación en XML de una configuración de \emph{Self Healing}}
+\section{Configuración de Arco Iris en Representación XML}
 \label{sec:SelfHealingConfigXML}
 		\begin{Verbatim}[gobble=3]
 			<selfHealingConfiguration description="test">
@@ -220,6 +220,87 @@
 			  </scenarios>
 			</selfHealingConfiguration>
 		\end{Verbatim}
+
+\newpage
+
+\section{Implementación de FileSelgHealingConfigurationDao}
+\label{sec:fileSelfHealingConfigDao}
+
+	\begin{Verbatim}
+		public class FileSelfHealingConfigurationDao implements SelfHealingConfigurationDao {
+		
+			private static final long CONFIG_RELOAD_INTERVAL_MS = Long.valueOf(Rainbow
+					.property("customize.scenarios.reloadInterval"));
+		
+			private static final String SELF_HEALING_CONFIG_FILE_NAME =
+									Rainbow.property("customize.scenarios.path");
+		
+			private static final File SELF_HEALING_CONFIG_FILE =
+			Util.getRelativeToPath(Rainbow.instance().getTargetPath(), SELF_HEALING_CONFIG_FILE_NAME);
+		
+			private static final Log logger = LogFactory.getLog(FileSelfHealingConfigurationDao.class);
+		
+			private SelfHealingConfiguration scenariosConfig;
+		
+			private final Collection<SelfHealingConfigurationChangeListener> listeners;
+		
+			public FileSelfHealingConfigurationDao() {
+				super();
+				this.listeners = new HashSet<SelfHealingConfigurationChangeListener>();
+				this.loadSelfHealingConfigurationFromFile();
+		
+				TimerTask task = new FileChangeDetector(SELF_HEALING_CONFIG_FILE) {
+					@Override
+					protected void onChange(File file) {
+						logger.info(SELF_HEALING_CONFIG_FILE_NAME + " has just changed,
+									reloading Self Healing Configuration!");
+						loadSelfHealingConfigurationFromFile();
+						notifyListeners();
+					}
+				};
+		
+				Timer timer = new Timer();
+				timer.schedule(task, new Date(), CONFIG_RELOAD_INTERVAL_MS);
+			}
+		
+			public List<SelfHealingScenario> getAllScenarios() {
+				return this.scenariosConfig.getScenarios();
+			}
+		
+			public List<Environment> getAllEnvironments() {
+				return this.scenariosConfig.getEnvironments();
+			}
+		
+			public Environment getEnvironment(String name) {
+				for (Environment environment : this.getAllEnvironments()) {
+					if (environment.getName().equals(name)) {
+						return environment;
+					}
+				}
+				throw new RuntimeException("Environment " + name + " not defined.");
+			}
+		
+			public List<Artifact> getAllArtifacts() {
+				return this.scenariosConfig.getArtifacts();
+			}
+		
+			public void register(SelfHealingConfigurationChangeListener listener) {
+				this.listeners.add(listener);
+			}
+		
+			protected void notifyListeners() {
+				for (SelfHealingConfigurationChangeListener listener : this.listeners) {
+					listener.selfHealingConfigurationHasChanged();
+				}
+			}
+		
+			private void loadSelfHealingConfigurationFromFile() {
+				SelfHealingConfigurationPersister persister = new SelfHealingConfigurationPersister();
+				this.scenariosConfig =
+						persister.readFromFile(SELF_HEALING_CONFIG_FILE.getAbsolutePath());
+			}
+		}
+	\end{Verbatim}
 
 \newpage
 

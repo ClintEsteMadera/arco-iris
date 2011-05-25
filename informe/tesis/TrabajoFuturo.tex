@@ -91,22 +91,23 @@
 		\begin{itemize}
 			\item el archivo \verb@rainbow.properties@, un típico archivo \verb@.properties@ de Java, el cual es leído una única
 			vez al inicializarse el \emph{framework} y que sirve para externalizar propiedades tales como el nivel de \emph{log}
-			deseado para la aplicación, el \emph{path} en dónde buscar estrategias y tácticas, el archivo .ACME con el modelo de
-			la arquitectura del sistema a adaptar, etc. En este caso, sería relativamente sencillo implementar un mecanismo de
-			recarga dinámica idéntico al explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} para recargar
-			la configuración de Arco Iris. El mismo tendría que ser realizado en el constructor de la clase \verb@Rainbow)@.
-			\item \verb@utilities.yml@, dónde se configuran las curvas de utilidad para el sistema. Al igual que en el
-			caso anterior, estas propiedades se leen en el constructor de la clase \verb@Rainbow@ utilizando una clase
-			\emph{helper} llamada \verb@YamlUtil@. Utilizando el mismo mecanismo descrito anteriormente se podría dinamizar
-			también la recarga dinámica de este archivo.
-			\item archivos Stitch (con extensión \verb@.s@) de tácticas y estrategias. La lógica de lectura de tácticas
-			y estrategias está ubicada en el \verb@AdaptationManager@. Puesto que en Arco Iris se necesitó extender esta clase,
-			se aprovechó la oportunidad para abstraer esta lógica de lectura desde un archivo, a una clase específica llamada
+			deseado para la aplicación, el \emph{path} en dónde buscar estrategias y tácticas, el archivo \verb@.acme@ con el
+			modelo de la arquitectura del sistema a adaptar, etc. En este caso, sería relativamente sencillo implementar un
+			mecanismo de recarga dinámica idéntico al explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig}
+			para recargar la configuración de Arco Iris. El mismo tendría que ser realizado en el constructor de la clase
+			\verb@Rainbow)@.
+			\item \verb@utilities.yml@, dónde se configuran las curvas de utilidad para el sistema. Al igual que en el caso
+			anterior, estas propiedades se leen en el constructor de la clase \verb@Rainbow@ utilizando una clase \emph{helper}
+			llamada \verb@YamlUtil@. Utilizando el mismo mecanismo descrito anteriormente se podría dinamizar también la recarga
+			dinámica de este archivo.
+			\item archivos Stitch (con extensión \verb@.s@) de tácticas y estrategias. La lógica de lectura de tácticas y
+			estrategias está ubicada en el \verb@AdaptationManager@. Puesto que en Arco Iris se necesitó extender esta clase, se
+			aprovechó la oportunidad para abstraer esta lógica de lectura desde un archivo, a una clase específica llamada
 			\verb@StitchLoader@, la cual tiene la responsabilidad no sólo de cargar los datos desde un archivo sino de proveer
-			también acceso a los mismos. Sería una buena idea el incorporar esta clase al código base de Rainbow puesto que
-			dicha abstracción provee la posibilidad de incorporar rápidamente el mecanismo de refresco mencionado ya reiteradas
-			veces. Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un trabajo difícil sino
-			debido a que dicha tarea se encuentra afuera del alcance del presente trabajo.
+			también acceso a los mismos. Sería una buena idea el incorporar esta clase al código base de Rainbow puesto que dicha
+			abstracción provee la posibilidad de incorporar rápidamente el mecanismo de refresco mencionado ya reiteradas veces.
+			Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un trabajo difícil sino debido
+			a que dicha tarea se encuentra afuera del alcance del presente trabajo.
 		\end{itemize}
 
 		Como podemos observar, el mecanismo explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} es

@@ -1,20 +1,5 @@
 \section{Conclusiones}
 
-	\subsection{A Entornos de Ejecución Cambiantes, Soluciones Dinámicas}
-
-		Arco Iris, la extensión a Raibow desarrollada en este trabajo, aporta un ladrillo más a la construcción de una
-		solución de auto reparación para sistemas de \emph{software} que permita que el sistema, en lugar de
-		\textbf{implementar soluciones} para satisfacer requerimientos de atributos de calidad, directamente \textbf{conozca
-		dichos requerimientos}, disponiendo así de un \emph{framework} genérico y personalizable que provea diversas
-		soluciones que se \textbf{adaptan dinámicamente} al cambio de requerimientos producto de los \textbf{cambios en el
-		entorno} de ejecución del sistema.
-
-		Este dinamismo en la auto reparación de sistemas, junto a la flexibilidad y facilidad de configuración agregadas al
-		modelo de selección de soluciones, hacen de Arco Iris una opción interesante a ser considerada para su
-		estudio y extensión, a fin de \textbf{continuar avanzando en la flexibilización de herramientas de auto reparación}
-		para sistemas de \emph{software} y consecuentemente, tender a la adopción progresiva de este tipo de herramientas por
-		parte de la industria del \emph{software}.
-
 	\subsection{Resumen del trabajo realizado}
 
 		En resumidas palabras, el presente trabajo añade una serie de características a Rainbow, todas ellas tendientes a
@@ -69,8 +54,8 @@
 		  			dinámicamente mientras Rainbow está funcionando. & Los escenarios se actualizan dinámicamente en \emph{runtime} al
 		  			ser modificados. & Una gran parte de los cambios de configuración pasan a impactarse ins\-tan\-tá\-nea\-men\-te,
 		  			evitando reiniciar el sistema para cambiar la configuración\\
-		  			Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{ACME}) & Mediante escenarios
-		  			de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
+		  			Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{Acme}) & Mediante
+		  			escenarios de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
 		  			Decisiones sobre que reparaciones realizar & También se encuentran en archivos de configuración & Se evaluán los
 		  			escenarios cargados y como se afectan entre ellos. Luego se invoca a un módulo que decide qué reparaciones pueden
 		  			llevarse a cabo en ese contexto. & Posibilidad de extensión de dicho módulo para incluír complejas heurísticas que
@@ -98,7 +83,7 @@
 			\begin{itemize}
 				\item por un lado, una configuración de \emph{Self Healing} en formato XML, producida ya sea por la herramientas
 				Arco Iris UI o bien manualmente; la cual incluye: escenarios de QAW, entornos de ejecución y \emph{artifacts}.
-				\item por otro, una batería de archivos de configuración heredados de Rainbow, en distintos formatos: stitch, ACME,
+				\item por otro, una batería de archivos de configuración heredados de Rainbow, en distintos formatos: stitch, Acme,
 				\emph{properties files}, etc.
 			\end{itemize}
 			Una de las mejoras que agrega este trabajo a Rainbow es el de proveer un mecanismo dinámico de actualización de la
@@ -122,7 +107,7 @@
 		
 			Como se ha visto anteriormente, en Rainbow las restricciones impuestas sobre el funcionamiento del sistema (e.g.
 			``el tiempo de respuesta para cualquier tipo de \emph{request} no debe superar los 5 mílisegundos'') son guardadas en
-			el modelo de la arquitectura, el cual está expresado en el lenguaje de descripción de arquitecturas \mbox{ACME}.
+			el modelo de la arquitectura, el cual está expresado en el lenguaje de descripción de arquitecturas \mbox{Acme}.
 			Esto claramente representa un impedimento para que los \emph{stakeholders} no técnicos puedan participar activamente
 			en la definición de requerimientos de auto reparación del sistema; ya que de intentarlo, deberían poder comprender y
 			modificar correctamente un diagrama de arquitectura, con sus restricciones escritas en un lenguaje no coloquial sino
@@ -244,3 +229,18 @@
 			en la sección \ref{sec:todaLaConfigEnUnSoloArchivo}) y también en el incremento de la documentación para facilitar el
 			uso, tanto de Rainbow como de Arco Iris.
 		\end{itemize}
+
+	\subsection{Soluciones Dinámicas a Entornos de Ejecución Cambiantes}
+
+		Arco Iris, la extensión a Raibow desarrollada en este trabajo, aporta un ladrillo más a la construcción de una
+		solución de auto reparación para sistemas de \emph{software} que permita que el sistema, en lugar de
+		\textbf{implementar soluciones} para satisfacer requerimientos de atributos de calidad, directamente \textbf{conozca
+		dichos requerimientos}, disponiendo así de un \emph{framework} genérico y personalizable que provea diversas
+		soluciones que se \textbf{adaptan dinámicamente} al cambio de requerimientos producto de los \textbf{cambios en el
+		entorno} de ejecución del sistema.
+
+		Este dinamismo en la auto reparación de sistemas, junto a la flexibilidad y facilidad de configuración agregadas al
+		modelo de selección de soluciones, hacen de Arco Iris una opción interesante a ser considerada para su
+		estudio y extensión, a fin de \textbf{continuar avanzando en la flexibilización de herramientas de auto reparación}
+		para sistemas de \emph{software} y consecuentemente, tender a la adopción progresiva de este tipo de herramientas por
+		parte de la industria del \emph{software}.
