@@ -1,7 +1,7 @@
 package commons.validation.string;
 
 /**
- * Conjunto de caracteres validos en un String.
+ * Set of valid characters within a String.
  */
 public interface CharacterSet {
 
@@ -17,7 +17,7 @@ public interface CharacterSet {
 		}
 
 		public String getName() {
-			return "dígitos";
+			return "digits";
 		}
 
 		public Character getReplaceForInvalidCharacter(char c) {
@@ -31,7 +31,7 @@ public interface CharacterSet {
 		}
 
 		public String getName() {
-			return "letras";
+			return "letters";
 		}
 
 		public Character getReplaceForInvalidCharacter(char c) {
@@ -47,7 +47,7 @@ public interface CharacterSet {
 		}
 
 		public String getName() {
-			return "espacios";
+			return "spaces";
 		}
 
 		public Character getReplaceForInvalidCharacter(char c) {
@@ -61,7 +61,7 @@ public interface CharacterSet {
 		}
 
 		public String getName() {
-			return "cualquier caracter";
+			return "any character";
 		}
 
 		public Character getReplaceForInvalidCharacter(char c) {
@@ -75,7 +75,7 @@ public interface CharacterSet {
 		}
 
 		public String getName() {
-			return "ningún caracter";
+			return "no character";
 		}
 
 		public Character getReplaceForInvalidCharacter(char c) {
@@ -90,7 +90,7 @@ public interface CharacterSet {
 			new LiteralCharacterSet("ABCDEFGHIJKMNLOPQRSTUVWXYZ")) {
 		@Override
 		public String getName() {
-			return "caracteres válidos para NOVASCALE";
+			return "BCD charset";
 		}
 
 		@Override

@@ -4,11 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Set de caracteres compuesto por otros sets de caracteres.
+ * Character set, composed of other charsets.
  */
 public class CompoundCharacterSet implements CharacterSet, Cloneable {
 
+	private List<CharacterSet> m_list = new LinkedList<CharacterSet>();
+
 	public CompoundCharacterSet() {
+		super();
 	}
 
 	public CompoundCharacterSet(CharacterSet set) {
@@ -77,6 +80,4 @@ public class CompoundCharacterSet implements CharacterSet, Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
-	private List<CharacterSet> m_list = new LinkedList<CharacterSet>();
 }
