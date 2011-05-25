@@ -232,6 +232,8 @@
 			\item un cliente HTTP, también con algunas propiedades particulares como el tiempo de respuesta experimentado por el
 			usuario.
 		\end{itemize}
+		
+		\newpage
 
 		\begin{Verbatim}[gobble=3]
 			System system : ClientServerType = {
@@ -435,7 +437,7 @@
 			En la figura \ref{fig:strategies_example} podemos ver un ejemplo de una estrategia definida en Stitch para ser
 			utilizada por Rainbow.
 
-			\begin{figure}[h]
+			\begin{figure}[ht]
 				\centering
 					\includegraphics[width=0.98\textwidth]{images/strategies_example.png}
 				\caption{Ejemplo de una estrategia en Stitch}
@@ -480,13 +482,8 @@
 			más información, visitar \url{http://www.iexplain.org/exponential-moving-average-defined/}}, que permite ponderar los
 			valores históricos de la(s) propiedad(es) del sistema que se consultan para tomar decisiones. La función de suavizado
 			que implementa esta heurística se define inductivamente de la siguiente manera:
-
-			\begin{equation}
-				S_0 = Y_0
-			\end{equation}
-			\begin{equation}
-				S_t = \alpha \times Y_t + (1-\alpha) \times S_{t-1}
-			\end{equation}
+			\[S_0 = Y_0\]
+			\[S_t = \alpha \times Y_t + (1-\alpha) \times S_{t-1}\]
 
 			donde $\alpha$ se denomina \textbf{factor de suavizado} y $0 < \alpha < 1$.
 			
@@ -519,9 +516,12 @@
 			un registro por estrategia de la historia de sus ejecuciones.
 	
 			El mecanismo contempla el paso del tiempo como un factor importante al momento de determinar el porcentaje de fallos:
-			el cociente \[\frac{cantidad\_de\_fallos}{cantidad\_de\_ejecuciones}\]es sopesado con el tiempo que ha pasado desde
-			la última ejecución de la estrategia, permitiendo así que la misma vuelva potencialmente a ser considerada en futuras
-			ejecuciones.
+			el cociente
+
+			\[\frac{\textrm{cantidad de fallos}}{\textrm{cantidad de ejecuciones}}\]
+			
+			es sopesado con el tiempo que ha pasado desde la última ejecución de la estrategia, permitiendo así que la misma
+			vuelva potencialmente a ser considerada en futuras ejecuciones.
 	
 		\subsubsection{Znn}
 		\label{sec:znn}
@@ -551,20 +551,20 @@
 		\label{sec:modosEjecucion}
 		
 			Rainbow soporta dos modos de ejecución: el \textbf{modo normal}, donde el \emph{framework} se conecta con un sistema
-			real, y un \textbf{modo simulación}, el cual permite probar las herramientas de auto reparación implementadas por los
-			usuarios sin necesidad de conectar a Rainbow con un sistema real en ejecución.
+			real, y un \textbf{modo simulación}, el cual permite probar las herramientas de auto reparación implementadas por
+			los usuarios sin necesidad de conectar a Rainbow con un sistema real en ejecución.
 			
 			En modo simulación, el usuario debe configurar mediante un archivo de texto (de extensión \verb@.sim@) consistente en
 			pares clave-valor, los valores iniciales de las propiedades de los componentes del sistema, más los cambios de valores
 			en las propiedades de interés del modelo de la arquitectura siguiendo el siguiente esquema:
 			
-			\begin{Verbatim}[gobble=3]
+			\begin{Verbatim}[gobble=4]
 				sim.<numero_simulacion> = <instante_tiempo>:<propiedad>:<valor>
 			\end{Verbatim}
 			
 			Ejemplos de puntos de simulación:
 			
-			\begin{Verbatim}[gobble=3]
+			\begin{Verbatim}[gobble=4]
 				sim.1 = 30001:ZNewsSys.c1.perf.service.time:100,30001:ZNewsSys.c2.perf.service.time:100
 				sim.2 = 40001:ZNewsSys.c1.perf.arrival.rate:4
 			\end{Verbatim}
@@ -610,7 +610,7 @@
 
 		\begin{figure}[ht]
 			\centering
-				\includegraphics{images/scenario_availability_example.png}
+				\includegraphics[scale=0.8]{images/scenario_availability_example.png}
 			\caption{Ejemplo de un escenario de disponibilidad}
 			\label{fig:scenario_availability_example}
 		\end{figure}
