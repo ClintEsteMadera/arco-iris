@@ -4,7 +4,7 @@
 	En esta sección se presentan y analizan algunos casos de prueba concretos de uso de Arco Iris a fin de evaluar su
 	comportamiento. Se utilizará el modo simulación provisto por Rainbow (ver sección \ref{sec:modosEjecucion}) para
 	adaptar utilizando Arco Iris al sistema ficticio \textbf{Znn}, reutilizando los componentes de simulación creados para
-	la tesis de doctorado dónde dicho sistema es presentado. (ver sección \ref{sec:znn})
+	la tesis de doctorado donde dicho sistema es presentado. (ver sección \ref{sec:znn})
 
 	La simulación permite configurar la variación de los valores de ciertas propiedades de los componentes de la
 	arquitectura, a fin de simular diversas situaciones de carga en el sistema ficticio. Por ejemplo, se podría especificar
@@ -46,7 +46,7 @@
 		\begin{itemize}
 			\item Dar de alta un servidor
 			\item Dar de baja un servidor
-			\item Disminuír la fidelidad del contenido provisto por un servidor.
+			\item Disminuir la fidelidad del contenido provisto por un servidor.
 		\end{itemize}
 
 		Para que estas tácticas puedan ejecutarse, Znn implementa los correspondientes \emph{effectors}, quienes serán
@@ -90,7 +90,7 @@
 		\end{figure}
 
 		En la figura \ref{fig:Environment_HighLoad} se puede observar la configuración del entorno de alta carga, cuyos pesos
-		no se encuentran equidistribuídos, enfatizando así la importancia del tiempo de respuesta frente a los restantes
+		no se encuentran equidistribuidos, enfatizando así la importancia del tiempo de respuesta frente a los restantes
 		\emph{concerns} definidos en el sistema.
 		
 		\begin{figure}[H]
@@ -131,9 +131,9 @@
 
 	\subsection{Caso 0: Comportamiento del Sistema sin Auto Reparación}
 		
-		Para comenzar, se presenta el comportamiento del sistema de no existir escenarios ni estrategias, esto
-		sentará las bases para luego poder comparar y evaluar el comportamiento de Arco Iris a medida que se
-		vayan agregando escenarios y/o estrategias en los siguientes casos de prueba a considerar.
+		Para comenzar, se presenta el comportamiento del sistema de no existir escenarios ni estrategias. Esto sentará las
+		bases para luego poder comparar y evaluar el comportamiento de Arco Iris a medida que se vayan agregando escenarios
+		y/o estrategias en los siguientes casos de prueba a considerar.
 
 		En la figura \ref{fig:Caso0} se puede observar el comportamiento del sistema sin escenarios, es decir, sin mecanismo
 		de auto reparación alguno.
@@ -351,9 +351,9 @@
 		observa en la figura \ref{fig:testcase4_cost} de qué manera, a partir de los 5 segundos, el escenario relacionado con
 		el costo de servidores deja de cumplirse, puesto que la cantidad máxima de servidores allí especificados es 1.
 		
-		Arco Iris debe decidir si repara o no a este nuevo escenario que se ha ``roto''. Es aquí dónde las prioridades entre
+		Arco Iris debe decidir si repara o no a este nuevo escenario que se ha ``roto''. Es aquí donde las prioridades entre
 		escenarios juegan un papel determinante: dado que el escenario relaciondo con el tiempo de respuesta es más
-		prioritario que aquél relacionado con el costo de servidores, Arco Iris decide no efectuar reparación alguna sobre
+		prioritario que aquel relacionado con el costo de servidores, Arco Iris decide no efectuar reparación alguna sobre
 		este último, ya que detecta (mediante la heurística explicada en la sección \ref{sec:arcoIrisStrategyScoring}) que el
 		arreglar el escenario de costo, potencialmente llevaría a ``romper'' el escenario de tiempo de respuesta, que es más
 		prioritario. En otras palabras, la auto reparación provista por Arco Iris no intentará reparar el escenario de costo
@@ -365,9 +365,9 @@
 		al escenario que estaba sin cumplirse, sin perjudicar al otro escenario (más prioritario) que se estaba cumpliendo
 		hasta ese momento.
 
-		Finalmente, se arriba a un estado de estabilidad dónde ambos escenarios se satisfacen simultáneamente. Si bien el tiempo
-		de respuesta sufre un pequeño detrimento al trabajar el sistema con un servidor menos, los valores de las
-		propiedades relacionadas con los \emph{concerns} de interés, siguen siendo lo suficientemente aceptables como para no
+		Finalmente, se arriba a un estado de estabilidad donde ambos escenarios se satisfacen simultáneamente. Si bien el
+		tiempo de respuesta sufre un pequeño detrimento al trabajar el sistema con un servidor menos, los valores de las
+		propiedades relacionadas con los \emph{concerns} de interés siguen siendo lo suficientemente aceptables como para no
 		violar ninguna de las restricciones definidas en la cuantificación de la respuesta de los escenarios aquí
 		configurados.
 		
@@ -434,7 +434,7 @@
 		\begin{figure}[H]
 			\centering
 				\includegraphics[width=1.00\textwidth]{images/testcase5_expRespTime.png}
-			\caption{El tiempo de respuesta no es reparado por Arco Iris, arreglandose sólo luego.}
+			\caption{El tiempo de respuesta no es reparado por Arco Iris, arreglandose solo luego.}
 			\label{fig:testcase5_expRespTime}
 		\end{figure}
 

@@ -6,11 +6,11 @@
 		Requerimientos se busca imponer el término \textbf{Atributos de Calidad} a las categorías de requerimientos que un
 		sistema debe cumplir. Tradicionalmente los requerimientos eran divididos en \textbf{Requerimientos Funcionales} para
 		referirse a la ``funcionalidad del negocio'' y \textbf{Requerimientos No Funcionales} para referirse a otros
-		requerimientos como seguridad, eficiencia, usabilidad, escalabilidad, etc. Sin embargo, esta división resulta
-		poco apropiada, dado que algunos de los llamados \textbf{Requerimientos No Funcionales} usualmente se terminan
-		implementando con funcionalidad, como puede ser un módulo de autenticación para lograr seguridad. El término
-		\textbf{Atributos de Calidad} aparece entonces como más general, y permite una clasificación más clara entre la
-		funcionalidad y otros atributos. Algunos ejemplos de Atributos de Calidad son los siguientes:
+		requerimientos como seguridad, eficiencia, usabilidad, escalabilidad, etc. Sin embargo, esta división resulta poco
+		apropiada, dado que algunos de los llamados \textbf{Requerimientos No Funcionales} usualmente se terminan implementando
+		con funcionalidad, como puede ser un módulo de autenticación para lograr seguridad. El término \textbf{Atributos de
+		Calidad} aparece entonces como más general, y permite una clasificación más clara entre la funcionalidad y otros
+		atributos. A continuación, algunos ejemplos de requerimientos relacionados con Atributos de Calidad:
 
 		\begin{enumerate}
 			\item \label{ejAtributoCalidad1} el sistema debe ser escalable con respecto a la cantidad de usuarios que lo utilizan
@@ -31,13 +31,13 @@
 			\item sólo se utilizarán productos de código abierto (\emph{open-source}).
 		\end{enumerate}
 
-		Es imprescindible conocer los Atributos de Calidad requeridos para un sistema a fin de poder diseñar la arquitectura
-		del mismo. Notemos que, en los ejemplos de atributos de calidad (\ref{ejAtributoCalidad1}, \ref{ejAtributoCalidad2} y
-		\ref{ejAtributoCalidad3}), los mismos se encuentran especificados de manera vaga e imprecisa. Esto es lo que suele
-		ocurrir en la mayoría de los casos en la industria de desarrollo de \emph{software}. Notar también que los
-		requerimientos \ref{ejAtributoCalidad1} y \ref{ejAtributoCalidad3} pueden llegar a afectarse mutuamente: esto también
-		es muy común y para lograr un buen \emph{tradeoff} entre atributos de calidad los arquitectos suelen tener que tomar
-		un conjunto de decisiones arquitectónicas llamadas \textbf{estrategias}, sobre las cuales profundizaremos en la
+		Es importante conocer los Atributos de Calidad requeridos para un sistema a fin de poder diseñar la arquitectura del
+		mismo. Notar que, los ejemplos de requerimientos de atributos de calidad (\ref{ejAtributoCalidad1},
+		\ref{ejAtributoCalidad2} y \ref{ejAtributoCalidad3}) se encuentran especificados de manera vaga e imprecisa. Esto es
+		lo que suele ocurrir en la mayoría de los casos en la industria de desarrollo de \emph{software}. Notar también que
+		los requerimientos \ref{ejAtributoCalidad1} y \ref{ejAtributoCalidad3} pueden llegar a afectarse mutuamente: esto
+		también es muy común y para lograr un buen \emph{tradeoff} entre atributos de calidad los arquitectos suelen tener que
+		tomar un conjunto de decisiones arquitectónicas llamadas \textbf{estrategias}, sobre las cuales profundizaremos en la
 		sección \ref{sec:tacticasEstrategias}.
 
 		\subsubsection{Atributos de Calidad y \emph{Concerns}}
@@ -98,18 +98,20 @@
 			
 	\subsection{Sistemas Autónomos, Auto Adaptación, Auto Reparación\ldots}
 
- 		A medida que va pasando el tiempo, los sistemas de software se vuelven cada vez más complejos y más exigentes en
-		cuanto a disponibilidad se trata. Hoy en día los mismos operan en ambientes dinámicos, con requerimientos de usuario
-		altamente cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un aumento
-		en la administración operativa del software, lo cual representa un costo importante para que el sistema pueda
-		mantenerse operativo. Para reducir este costo, se puede plantear que los sistemas se adapten de manera dinámica para
-		poder utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos de atributos de
-		calidad, así también como los errores en el sistema. De forma genérica, a los sistemas de software que cumplen con
-		estas características, se los denomina \textbf{Sistemas Autónomos}.
+		A medida que va pasando el tiempo, los sistemas de \emph{software} se vuelven cada vez más complejos y más exigentes en
+		cuanto a disponibilidad se trata y, hoy en día, operan en ambientes dinámicos, con requerimientos de usuario altamente
+		cambiantes y con la necesidad de operar prácticamente sin interrupción, resultando esto en un aumento en la
+		administración operativa del software, lo cual representa un costo importante para que el sistema pueda mantenerse
+		operativo. Además, la complejidad creciente de los sistemas hace que sea cada vez más difícil para una persona
+		comprender lo que se encuentra ocurriendo en una aplicación cuando deja de brindar sus servicios como era esperado. Para
+		resolver o al menos paliar estos problemas, se puede plantear que los sistemas se adapten de manera dinámica para poder
+		utilizar los recursos existentes, a fin de poder atender los cambiantes requerimientos de atributos de calidad, así
+		también como los errores en el sistema. De forma genérica, a los sistemas de software que cumplen con estas
+		características, se los denomina \textbf{Sistemas Autónomos}.
 
 		Hilando más fino en la caracterización de sistemas autónomos, encontramos términos en inglés como \emph{Self
 		Configuring} o \emph{Self Adapting} para referirse a sistemas autónomos que tienen la capacidad de auto configurarse
-		(o auto adaptarse) a condiciones cambiantes en el entorno de ejecución del sistema.
+		(o auto adaptarse) a condiciones cambiantes en el entorno de ejecución.
 
 		Por otro lado, cuando la adaptación dinámica del sistema responde a errores o situaciones excepcionales del
 		mismo, el término más utilizado actualmente es \emph{Self Healing} o, en castellano, \textbf{Auto Reparación}.
@@ -176,8 +178,8 @@
 
 	\subsection{Lenguajes de Descripción de Arquitecturas}
 
-		Un problema fundamental en el diseño de arquitecturas de sistemas utilizando el estilo de componentes y
-		conectores ha sido encontrar la notación apropiada para definir dichas arquitecturas.
+		Un problema fundamental en el diseño de arquitecturas de sistemas ha sido encontrar la notación apropiada para definir
+		dichas arquitecturas.
 
 		Un buen lenguaje para describir arquitecturas debería permitir generar una documentación clara sobre los componentes
 		de la arquitectura, que luego servirá como base a los de\-sa\-rro\-lla\-do\-res, permitiendo a su vez razonar sobre
@@ -186,12 +188,12 @@
 		manera temprana decisiones arquitectónicas, reduciendo así el tiempo de implementación y evitando utilizar
 		ineficientemente recursos en el desarrollo del sistema.
 
-		Una forma de describir dichas arquitecturas es mediante el modelado de objetos con UML, si bien este método ha
-		sido ampliamente aceptado y utilizado en la industria, tiene varios inconvenientes: el más importante e
-		invalidante es que no provee un soporte directo para describir propiedades no funcionales. Ésto hace dificultoso
-		razonar sobre propiedades críticas del sistema, como por ejemplo la eficiencia o la confiabilidad. Ésta es la
-		razón principal que ha motivado el avance de los ADLs (\emph{Architecture Description Languages}). Para más
-		información sobre la discusión ADL's vs. UML, remitirse a \cite{ADLsVsUML}.
+		Una forma de describir dichas arquitecturas es mediante el modelado con UML, si bien este método ha sido ampliamente
+		aceptado y utilizado en la industria, tiene varios inconvenientes: el más importante e invalidante es que no provee un
+		soporte directo para describir propiedades no funcionales. Ésto hace dificultoso razonar sobre propiedades críticas
+		del sistema, como por ejemplo la eficiencia o la confiabilidad. Ésta es la razón principal que ha motivado el avance
+		de los ADLs (\emph{Architecture Description Languages}). Para más información sobre la discusión ADL's vs. UML,
+		remitirse a \cite{ADLsVsUML}.
 
 		La descripción de arquitecturas de sistemas basada en ADLs ha avanzado considerablemente en las últimas dos décadas,
 		al punto de que ya permiten definir una base formal para su descripción y análisis.
@@ -266,10 +268,9 @@
 
 			Hemos mencionado anteriormente que el objetivo de la auto reparación es el alcanzar determinados atributos de
 			calidad definidos para un determinado sistema, ajustando su comportamiento, de ser necesario, de acuerdo a
-			las condiciones de ejecución del mismo. En el libro \textbf{Software Architecture in Practice} \cite{BassClementz},
-			Bass, Clements y Kazman caracterizan y formalizan dos herramientas que vienen siendo ampliamente utilizadas desde
-			hace tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las
-			\textbf{estrategias}.
+			sus condiciones de ejecución. En el libro \textbf{Software Architecture in Practice} \cite{BassClementz}, Bass,
+			Clements y Kazman caracterizan y formalizan dos herramientas que vienen siendo ampliamente utilizadas desde hace
+			tiempo por los arquitectos de software en la industria, estas son: las \textbf{tácticas} y las \textbf{estrategias}.
 
 			Las \textbf{tácticas} se definen como decisiones de diseño tendientes a controlar las respuestas del sistema a
 			determinados estímulos, a fin de satisfacer uno o más atributos de calidad requeridos. La figura
@@ -316,7 +317,7 @@
 			adaptación de sistemas de software a traves de sus modelos de arquitectura, tal cual fue descrito en la sección
 			\ref{sec:ARSBMA}.
 
-			Si bien en principio el enfoque de auto adaptación basado en arquitecturas es atractivo, el mismo supone un número
+			Si bien en principio el enfoque de auto adaptación basado en arquitecturas es atractivo, también supone un número
 			significativo de desafíos en el campo de la investigación así también como en el de la ingeniería:
 
 			\begin{itemize}
@@ -339,7 +340,7 @@
 
 				La Figura \ref{fig:Rainbow_Framework} muestra la arquitectura de Rainbow. En resumidas palabras, el \emph{framework}
 				utiliza un modelo arquitectural abstracto para monitorear las propiedades en \emph{runtime} del sistema que está
-				siendo ejecutado, evalúa el modelo para detectar violaciones a restricciones impuestas sobre el mismo y lleva a cabo
+				siendo ejecutado, evalúa el modelo para detectar violaciones a alguna de sus restricciones y lleva a cabo
 				adaptaciones en el sistema tendientes a eliminar tales violaciones.
 
 				\begin{figure}[H]
@@ -388,13 +389,13 @@
 
 		\subsubsection{Conocimiento específico del sistema}
 		
-			En la sección anterior hemos descrito la infraestructura básica provista por Rainbow. Es de notar que la misma no es
-			suficiente para satisfacer las necesidades puntuales de auto adaptación de un sistema en particular. Para
-			lograr esto, es necesario extender dicha infraestructura, agregando conocimiento específico del sistema que se desea
-			adaptar. Este conocimiento (típicamente no reutilizable entre distintos sistemas) incluye el modelo operacional
-			del sistema, que define parámetros como tipos de componentes y propiedades, restricciones de comportamiento,
-			estrategias de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como
-			para hacer efectivas las estrategias de reparación, etc.
+			En la sección anterior hemos descrito la infraestructura básica provista por Rainbow. Es de notar que no es
+			suficiente para satisfacer las necesidades puntuales de auto adaptación de un sistema en particular. Para lograr
+			esto, es necesario extender dicha infraestructura, agregando conocimiento específico del sistema que se desea
+			adaptar. Este conocimiento (típicamente no reutilizable entre distintos sistemas) incluye el modelo operacional del
+			sistema, que define parámetros como tipos de componentes y propiedades, restricciones de comportamiento, estrategias
+			de adaptación, interfaz para acceder a la información de \emph{runtime} del sistema, así también como para hacer
+			efectivas las estrategias de reparación, etc.
 
 		\subsubsection{Stitch}
 
@@ -459,7 +460,7 @@
 			chequea la existencia de al menos un servidor con alta carga, y en caso afirmativo, ejecuta otra táctica que consiste
 			en agregar un servidor más en pos de mejorar el \emph{concern} tiempo de respuesta. Si luego de esperar 2 segundos
 			para que los efectos de la táctica puedan verse reflejados en el sistema, todos los servidores operan con carga
-			normal, la estrategia finaliza exitosamente, caso contrario, la misma se considera fallida.
+			normal, la estrategia finaliza exitosamente, caso contrario, se considera fallida.
 
 		\subsubsection{\emph{Exponential Moving Average}}
 		\label{sec:exponentialAverage}
@@ -512,9 +513,9 @@
 		\subsubsection{Tasa de Fallos de una Estrategia}
 		\label{sec:failureRate}
 		
-			Rainbow provee un mecanismo que considera la historia de ejecución de las estrategias. El mismo es útil para que,
-			dado un umbral predeterminado y no configurable por el usuario, aquellas estrategias que han fallado porcentualmente
-			en un 95\% o más de las veces que fueron ejecutadas, no sean consideradas por el \verb@AdaptationManager@. El
+			Rainbow provee un mecanismo que considera la historia de ejecución de las estrategias, el cual es útil para que, dado
+			un umbral predeterminado y no configurable por el usuario, aquellas estrategias que han fallado porcentualmente en un
+			95\% o más de las veces que fueron ejecutadas, no sean consideradas por el \verb@AdaptationManager@. El
 			\emph{framework} permite especificar al usuario si desea habilitar este mecanismo o no y, de estar habilitado, lleva
 			un registro por estrategia de la historia de sus ejecuciones.
 	
@@ -523,8 +524,8 @@
 
 			\[\frac{\textrm{cantidad de fallos}}{\textrm{cantidad de ejecuciones}}\]
 			
-			es sopesado con el tiempo que ha pasado desde la última ejecución de la estrategia, permitiendo así que la misma
-			vuelva potencialmente a ser considerada en futuras ejecuciones.
+			es sopesado con el tiempo que ha pasado desde la última ejecución de la estrategia, permitiendo así que vuelva
+			potencialmente a ser considerada en futuras ejecuciones.
 	
 		\subsubsection{Znn}
 		\label{sec:znn}
@@ -539,8 +540,8 @@
 			\end{itemize}
 	
 			Si bien Znn y sus herramientas asociadas (\emph{probes}, \emph{gauges}, tácticas, estrategias, etc.) nacieron con
-			el único objetivo de evaluar la efectividad de Rainbow, las mismas han sido abiertas a la comunidad para que puedan
-			ser utilizadas para tomar métricas y poder comparar distintos \emph{frameworks} de auto reparación.
+			el único objetivo de evaluar la efectividad de Rainbow, cabe mencionar que han sido abiertas a la comunidad para que
+			puedan ser utilizadas para tomar métricas y poder comparar distintos \emph{frameworks} de auto reparación.
 	
 			Znn provee un entorno de simulación de una arquitectura cliente-servidor ampliamente configurable que permite
 			representar situaciones específicas de ejecución y controlar las variables de simulación permitiendo modificarlas en
@@ -651,8 +652,8 @@
 			supuestos que pueden no ser tan claros para el resto de los participantes, y proporcionando una visión de cómo
 			interactúan los atributos de calidad entre sí, sirviendo de base para definir \emph{tradeoffs} entre estos atributos.
 	
-			El proceso QAW termina con la lista de escenarios refinados y priorizados. Los mismos pueden servir para definir casos
-			de pruebas, o como semillas para el proceso ATAM, sobre el cual discutiremos en la siguiente sección.
+			El proceso QAW termina con la lista de escenarios refinados y priorizados, que pueden servir para definir casos de
+			pruebas, o como semillas para el proceso ATAM, sobre el cual discutiremos en la siguiente sección.
 
 			Si bien no es condición necesaria para poder usar Arco Iris, el utilizar la metodología QAW, tal cual está
 			descrita en \cite{QAW}, es recomendado ya que Arco Iris hará uso intensivo de los escenarios de atributos de calidad

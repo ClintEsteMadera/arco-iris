@@ -25,7 +25,7 @@
 			desarrollado por IBM para facilitar la construcción del entorno de desarrollo Eclipse, pero su uso no está limitado a
 			éste. JFace proporciona una serie de construcciones muy frecuentes para desarrollar interfaces gráficas de usuario,
 			tales como cuadros de diálogo, evitando al programador la tediosa tarea de lidiar manualmente con los widgets de
-			SWT.}, la cual provee un conjunto de \emph{widgets} para construír interfaces gráficas de usuario construido sobre SWT.
+			SWT.}, la cual provee un conjunto de \emph{widgets} para construir interfaces gráficas de usuario sobre	SWT.
 			
 			Se prefirió una herramienta de escritorio por sobre una aplicación web principalmente porque las aplicaciones del
 			primer tipo suelen proveer interfaces de usuario más ricas, intuitivas, ágiles y fáciles de usar que las
@@ -34,21 +34,21 @@
 		\subsubsection{Idioma por defecto: inglés}
 
 			Dado que Rainbow es una aplicación originalmente creada en Estados Unidos, y previendo que tanto Arco Iris como
-			Arco Iris UI puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, decidimos que lo más
-			razonable es que estas aplicaciones estén codificadas en el idioma inglés. En el caso de Arco Iris UI, todos los
-			textos mostrados en pantalla también están escritos en inglés, aunque todas las etiquetas se encuentran
-			externalizadas a archivos de configuración, simplificando así la traducción a otros idiomas, en caso de que en un
-			futuro fuera necesario.
+			Arco Iris UI puedan ser aplicaciones tomadas por otros investigadores para ser extendidas, se ha decidido que lo más
+			razonable es que el idioma de estas aplicaciones sea el inglés. En el caso de Arco Iris UI, todos los textos
+			mostrados en pantalla también están escritos en inglés, aunque todas las etiquetas se encuentran externalizadas a
+			archivos de configuración, simplificando así la traducción a otros idiomas, en caso de que en un futuro fuera
+			necesario.
 			
 		\subsubsection{Multi plataforma}
 
 			Arco Iris UI es, como la gran mayoría de las aplicaciones Java, ejecutable desde los sistemas operativos
-			más importantes, como por ejemplo Windows, Unix, MAC OS o Solaris. Debido a la utilización de las librerías SWT-JFace
-			para la creación de la herramienta, las cuales poseen dependencias nativas del sistema operativo (i.e. el encargado
-			de dibujar y refrescar los componentes visuales no es la máquina virtual de Java sino el sistema operativo) es
-			necesario empaquetar la aplicación con diferentes dependencias java (i.e. archivos JAR) en el \emph{classpath} para
-			poder correr la aplicación en distintas plataformas. En el apéndice \ref{sec:instalacionYEjecucionArcoIris} se
-			explica en detalle los pasos necesarios para instalar y ejecutar las aplicaciones Arco Iris y Arco Iris UI.
+			más importantes. Debido a la utilización de las librerías SWT-JFace para la creación de la herramienta, las cuales
+			poseen dependencias nativas del sistema operativo (i.e. el encargado de dibujar y refrescar los componentes visuales
+			no es la máquina virtual de Java sino el sistema operativo) es necesario empaquetar la aplicación con diferentes
+			dependencias java (i.e. archivos JAR) en el \emph{classpath} para poder correr la aplicación en distintas
+			plataformas. En el apéndice \ref{sec:instalacionYEjecucionArcoIris} se explica en detalle los pasos necesarios para
+			instalar y ejecutar las aplicaciones Arco Iris y Arco Iris UI.
 		
 	\subsection{Conceptos básicos de uso de la herramienta}
 
@@ -58,8 +58,8 @@
 			en la sección \ref{sec:formatoArchivoConfiguracion}.
 			
 			El mecanismo utilizado para serializar una configuración de \emph{Self Healing} a un archivo XML es exactamente el
-			mismo que el mecanismo utilizado por Arco Iris para importar dicho archivo. El mismo se encuentra detallado en la
-			sección \ref{sec:lecturaConfiguracion}.
+			mismo que el mecanismo utilizado por Arco Iris para importar dicho archivo; y se encuentra detallado en la sección
+			\ref{sec:lecturaConfiguracion}.
 	
 		\subsubsection{Una configuración de \emph{Self Healing} subyacente}
 
@@ -101,8 +101,8 @@
 			parte fundamental de la configuración requerida para que Arco Iris provea su funcionalidad adecuadamente.
 			
 			El componente visual asociado a una restricción fue diseñado para ser fácilmente extendido pero, sólo a fines del
-			presente trabajo y con el objetivo de acotar la funcionalidad a los límites impuestos en los objetivos del mismo,
-			sólo hemos implementado un sólo tipo de restricción: la restricción numérica relacional binaria (ver apéndice
+			presente trabajo y con el objetivo de acotar la funcionalidad a los límites establecidos en sus objetivos, sólo se ha
+			implementado un sólo tipo de restricción: la restricción numérica relacional binaria (ver apéndice
 			\ref{sec:numericBinaryRelationalConstraintCode} para más detalle).
 			
 			\begin{figure}[h]
@@ -129,7 +129,7 @@
 
 	\subsection{Administración de Entornos}
 		El ``Entorno'' es uno de los componentes más relevantes dentro de un escenario de auto reparación: representa la
-		situación concreta (en tiempo de ejecución) dónde el escenario en cuestión va a aplicar.
+		situación concreta (en tiempo de ejecución) donde el escenario en cuestión va a aplicar.
 		
 		Al igual que para los \emph{artifacts}, Arco Iris UI provee la funcionalidad de ABM para administrar escenarios
 		junto con una solapa para visualizar sus propiedades más relevantes.
@@ -142,12 +142,12 @@
 		\end{figure}
 
 		El cuadro de diálogo que muestra las propiedades de un entorno está diseñado para recoger dinámicamente todos los
-		\emph{concerns} existentes en el sistema e inicialmente asignarle a cada uno un peso equidistribuído $P$
+		\emph{concerns} existentes en el sistema e inicialmente asignarle a cada uno un peso equidistribuido $P$
 		determinado de la siguiente forma:
 		\begin{equation}
 			P = \frac{1}{K}
 		\end{equation}
-		dónde $K$ es la cantidad de \emph{concerns} existentes en el sistema.
+		donde $K$ es la cantidad de \emph{concerns} existentes en el sistema.
 		
 		Se observa también la funcionalidad de ABM para las condiciones que se deben cumplir para que el entorno se cumpla en
 		\emph{runtime}. Aquí se reutiliza un componente genérico para restricciones, también utilizado en el diálogo de
@@ -155,8 +155,8 @@
 
 	\subsection{Administración de Escenarios}
 
-		Finalmente, llegamos al concepto central del presente trabajo: el escenario de auto reparación. El mismo contiene los
-		elementos ya vistos anteriormente junto con otros atributos que repasaremos a continuación. Por supuesto que existe,
+		Esta sección trata sobre el concepto central de este trabajo: el escenario de auto reparación, quien contiene los
+		elementos ya vistos anteriormente junto con otros atributos que se repasarán a continuación. Por supuesto que existe,
 		al igual que para los otros conceptos anteriormente vistos, una solapa dedicada para maneja las altas, bajas y
 		modificaciones de escenarios.
 
@@ -184,8 +184,8 @@
 
 			Una funcionalidad interesante de Arco Iris UI es su capacidad para, en el contexto de la creación o edición de un
 			escenario, poder elegir una estrategia de reparación directamente desde el archivo \emph{stitch} en el cual se
-			encuentra definida la misma. Primeramente, se elige el archivo que contiene las estrategias, para luego seleccionar
-			la estrategia deseada, visualizando el código (en el lenguaje de scripting \emph{stitch}) de la misma.
+			encuentra definida. Primeramente, se elige el archivo que contiene las estrategias, para luego seleccionar la
+			estrategia deseada, visualizando el código (en el lenguaje de scripting \emph{stitch}) de la misma.
 
 			Es de notar que para el caso de las estrategias de reparación, y a diferencia del resto de los otros conceptos
 			explicados hasta este momento, no es posible crear una estrategia ad-hoc, sino que se deben usar únicamente las ya
@@ -220,8 +220,8 @@
 
 	\subsection{Puntos de extensión}
 	
-		A continuación, enunciaremos algunos de los posibles puntos de extensión para únicamente para la herramienta
-		Arco Iris UI (en la sección \ref{sec:trabajoFuturo} se cubrirán los puntos de extensión para Arco Iris):
+		A continuación, enunciaremos algunos de los posibles puntos de extensión únicamente para la herramienta Arco Iris UI
+		(en la sección \ref{sec:trabajoFuturo} se cubrirán los puntos de extensión para Arco Iris):
 		\begin{itemize}
 			\item \textbf{Obtener artefactos y estímulos desde el archivo .acme}: Es deseable el evitar mantener
 			en Arco Iris UI un ABM (\textbf{A}lta-\textbf{B}aja-\textbf{M}odificación) de artefactos, así también como que el

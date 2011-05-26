@@ -56,7 +56,7 @@
 			ejecución de las estrategias con el objetivo de evitar elegir aquellas con un alto porcentaje histórico de fallas,
 			esto es, estrategias que no resolvieron anteriormente las anomalías que se suponía debían resolver.
 			
-			Si bien este mecanismo es bastante aceptable, el mismo podría ser mejorado en el futuro en dos aspectos:
+			Si bien este mecanismo es bastante aceptable, también se reconocen posibilidades de mejora a futuro en dos aspectos:
 			\begin{itemize}
 				\item El porcentaje de fallas máximo permitido para que una estrategia pueda ser considerada debe ser configurado
 				por el usuario final. La forma más simple de hacer esto es sencillamente externalizando este valor al archivo de
@@ -94,7 +94,7 @@
 			deseado para la aplicación, el \emph{path} en dónde buscar estrategias y tácticas, el archivo \verb@.acme@ con el
 			modelo de la arquitectura del sistema a adaptar, etc. En este caso, sería relativamente sencillo implementar un
 			mecanismo de recarga dinámica idéntico al explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig}
-			para recargar la configuración de Arco Iris. El mismo tendría que ser realizado en el constructor de la clase
+			para recargar la configuración de Arco Iris. Dicho mecanismo tendría que ser realizado en el constructor de la clase
 			\verb@Rainbow)@.
 			\item \verb@utilities.yml@, dónde se configuran las curvas de utilidad para el sistema. Al igual que en el caso
 			anterior, estas propiedades se leen en el constructor de la clase \verb@Rainbow@ utilizando una clase \emph{helper}
@@ -103,16 +103,16 @@
 			\item archivos Stitch (con extensión \verb@.s@) de tácticas y estrategias. La lógica de lectura de tácticas y
 			estrategias está ubicada en el \verb@AdaptationManager@. Puesto que en Arco Iris se necesitó extender esta clase, se
 			aprovechó la oportunidad para abstraer esta lógica de lectura desde un archivo, a una clase específica llamada
-			\verb@StitchLoader@, la cual tiene la responsabilidad no sólo de cargar los datos desde un archivo sino de proveer
-			también acceso a los mismos. Sería una buena idea el incorporar esta clase al código base de Rainbow puesto que dicha
-			abstracción provee la posibilidad de incorporar rápidamente el mecanismo de refresco mencionado ya reiteradas veces.
-			Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un trabajo difícil sino debido
-			a que dicha tarea se encuentra afuera del alcance del presente trabajo.
+			\verb@StitchLoader@, la cual tiene la doble responsabilidad de cargar los datos desde un archivo y de proveer también
+			acceso dichos datos. Sería una buena idea el incorporar esta clase al código base de Rainbow puesto que
+			dicha abstracción provee la posibilidad de incorporar rápidamente el mecanismo de refresco mencionado ya reiteradas
+			veces. Actualmente dicho comportamiento tampoco está incorporado en Arco Iris, no porque sea un trabajo difícil sino
+			debido a que dicha tarea se encuentra afuera del alcance del presente trabajo.
 		\end{itemize}
 
 		Como podemos observar, el mecanismo explicado en detalle en la sección \ref{sec:actualizacionDinamicaConfig} es
-		fácilmente reutilizable y también observamos posibilidades de mejora del mismo para simplificar aún más su uso
-		extendido en todo el \emph{framework}.
+		fácilmente reutilizable y también se observan posibilidades de mejora para simplificar aún más su uso extendido en
+		todo el \emph{framework}.
 
 	\subsection{Ampliación de la Configuración Existente}
 	\label{sec:ampliacionConfiguracionExistente}
@@ -172,9 +172,9 @@
 					Al agregar un concern al sistema, se suscita la duda sobre qué hacer con el mapa\\
 					\verb@<Concern,Weight>@ de cada uno de los Entornos ya existentes en el sistema.
 
-					Una posible opción sería cambiar la semántica actual de dicho mapa y que el mismo pase a almacenar únicamente
-					aquellos pesos que son distintos de cero, en otras palabras, al no encontrarse en el mapa un valor para un
-					determinado \emph{Concern}, se sobreentiende que su peso relativo es 0 (cero).
+					Una posible opción sería cambiar la semántica actual de dicho mapa, pasando a almacenar únicamente aquellos pesos
+					que son distintos de cero, en otras palabras, al no encontrarse en el mapa un valor para un determinado
+					\emph{Concern}, se sobreentiende que su peso relativo es 0 (cero).
 
 					Existe otra opción que no cambia la semántica de los mapas (i.e. todos los \emph{Concerns} seguirían siendo
 					enumerados por extensión) y para eso se vale de la herramienta Arco Iris UI. Básicamente, al agregar un nuevo
@@ -194,10 +194,10 @@
 					\emph{Concern}? ¿deben darse de baja? ¿debe forzarse su actualización? Nuevamente, si el usuario no usara Scenarios
 					UI, el mantenimiento de la configuración podría tornarse dificultoso.
 
-				\item \label{asignacionEquidistribuidaPesos} \textbf{Asignación equidistribuída de pesos para un Entorno nuevo}
+				\item \label{asignacionEquidistribuidaPesos} \textbf{Asignación equidistribuida de pesos para un Entorno nuevo}
 
 					En Arco Iris, al construir una instancia de \verb@Environment@, se invoca a una función llamada
-					\verb@createMapWithEquallyDistributedWeights@ que inicializa el mapa de pesos del Entorno de manera equidistribuída
+					\verb@createMapWithEquallyDistributedWeights@ que inicializa el mapa de pesos del Entorno de manera equidistribuida
 					entre todos los entornos (e.g. si hay 3 \emph{Concerns} en el sistema, asigna $0.\wideparen{33}$ a cada uno).
 
 					Esta decisión de diseño si bien es razonable, es también mejorable: esto podría ser configurable por el usuario del
@@ -237,18 +237,18 @@
 		posean algún tipo de intersección en sus condiciones de aplicabilidad. En particular y a modo de ejemplo, el
 		usuario querría poder especificar un escenario de ``Alta Carga'' y otro de ``Extrema Alta Carga'', cuyas condiciones
 		de aplicabilidad podrían tener una intersección no nula pues probablemente las condiciones necesarias para
-		que el entorno de ``Alta Carga'' se cumpla están incluídas en las condiciones el entorno de ``Extrema Alta Carga''.
+		que el entorno de ``Alta Carga'' se cumpla están incluidas en las condiciones el entorno de ``Extrema Alta Carga''.
 
 		Es deseable que en el caso de entornos con intersección no nula en sus condiciones de aplicabilidad, Arco Iris
-		seleccione a aquél que sea más adecuado, de acuerdo al caso en particular. En el ejemplo anterior, ``Extrema Alta
+		seleccione a aquel que sea más adecuado, de acuerdo al caso en particular. En el ejemplo anterior, ``Extrema Alta
 		Carga'' sería el elegido para representar más fielmente el estado actual del sistema. Esto sin duda es altamente
 		relevante ya que los pesos configurados en cada uno de los escenarios pueden determinar el curso de la auto reparación
 		puesto que afectan directamente al algoritmo de selección de estrategias.
 
 		Una posible solución para este problema podría ser el explicitar relaciones de intersección (o de inclusión) entre
 		restricciones y reconfigurar el algoritmo de detección del Entorno actual de ejecución existente en el
-		\verb@ArcoIrisAdaptationManager@ para que el mismo elija aquel Entorno con condiciones más generales. A
-		continuación, un pseudo-código del posible algoritmo que contempla \textbf{inclusión entre Entornos}:
+		\verb@ArcoIrisAdaptationManager@ para que elija aquel Entorno con condiciones más generales. A continuación, un
+		pseudo-código del posible algoritmo que contempla \textbf{inclusión entre Entornos}:
 
 		\begin{Verbatim}[gobble=3]
 			función detectCurrentSystemEnvironment
@@ -280,18 +280,18 @@
 		Dependiendo del grado de profundidad en el que se avance en la integración de Arco Iris con Acme Studio, se podría
 		incluso especular con un reemplazo completo de la herramienta Arco Iris UI. Esta tarea no fue realizada en el
 		contexto del presente trabajo debido a que el encarar el desarrollo de un \emph{plug-in} de Eclipse con estas
-		características era una tarea de alta complejidad, que se encuentra afuera del alcance de este trabajo.
+		características es una tarea compleja que no agrega valor al esfuerzo de investigación.
 
 	\subsection{Optimización en la Selección de la Estrategia}
 
 		En la sección \ref{sec:strategySelection} se describe en detalle el mecanismo de selección de la mejor estrategia para
-		resolver una situación anómala en el sistema que se está adaptando. Este problema posee muchas aristas complejas,
-		por lo tanto, una solución sofisticada requiere un trabajo de investigación que excede lo que se puede realizar en
-		este trabajo. Esta idea fue además compartida por los investigadores de Carnegie Mellon que fueron consultados al
-		inicio del presente trabajo.
+		resolver una situación anómala en el sistema que se está adaptando. Este problema posee muchas aristas complejas y por
+		lo tanto, una solución sofisticada requiere un trabajo de investigación que excede lo que se puede realizar en este
+		trabajo. Esta idea fue además compartida por los investigadores de Carnegie Mellon que fueron consultados al inicio
+		del presente trabajo.
 		
 		La solución propuesta aquí al problema de selección de la mejor estrategia de reparación, es una heurística simple
-		basada en el uso del concepto de \textbf{utilidad del sistema}, el cuál, si bien es útil para reducir la dimensión del
+		basada en el uso del concepto de \textbf{utilidad del sistema}, el cual, si bien es útil para reducir la dimensión del
 		problema y poder avanzar en otros aspectos, es claramente una solución limitada, debido a que para el cálculo de esta
 		utilidad se realizan muchos supuestos y simplificaciones sobre el contexto de ejecución del sistema y su correlato con
 		el modelo de su arquitectura. Las oportunidades de mejora avisoradas por los autores de este trabajo pasan
@@ -300,19 +300,19 @@
 	\label{sec:ausenciaObsolescenciaModeloArquitectura}
 
 		Tanto Rainbow como Arco Iris hacen foco en disponer de un modelo (actualizado) de la arquitectura del sistema a
-		adaptar pero en realidad, no siempre es posible disponer del mismo: puede no haber existido nunca o bien haber
+		adaptar pero en realidad, no siempre es posible disponer de dicho modelo: puede no haber existido nunca o bien haber
 		quedado desactualizado. Existen líneas de investigación que intentan derivar el modelo de la arquitectura a partir de
 		un sistema, obteniendo información del mismo en \emph{runtime}. Uno de los proyectos tiene lugar en el contexto del
-		grupo de investigación ABLE, el responsable de Rainbow y se llama \textbf{DiscoTect}. Para más información sobre
-		dicho proyecto, visitar \url{http://www.cs.cmu.edu/~able/research/discotect.html}.
+		grupo de investigación ABLE, el responsable de Rainbow y se llama \textbf{DiscoTect}. Para más información sobre dicho
+		proyecto, visitar \url{http://www.cs.cmu.edu/~able/research/discotect.html}.
 
 	\subsection{Adaptación de un Sistema Sobre el Cual se Tiene Poco Control}
 
-		Otro de los tópicos sobre los cuales es necesario también avanzar, es en desarrollar técnicas y herramientas que
-		permitan poder alterar el comportamiento de un sistema sobre el cuál se posee muy poco control. Tal es el caso, por
+		Otro de los tópicos sobre los cuales es necesario también avanzar es en desarrollar técnicas y herramientas que
+		permitan poder alterar el comportamiento de un sistema sobre el cual se posee muy poco control. Tal es el caso, por
 		ejemplo, de sistemas desarrollados por terceras partes, de los cuales no se posee ni siquiera el código fuente. Otro
 		ejemplo podría ser el de sistemas pobremente modularizados o codificados con un lenguaje de programación antiguo sobre
-		los cuáles parece poco probable que se puedan establecer puntos de comunicación con un \emph{framework} de auto
+		los cuales parece poco probable que se puedan establecer puntos de comunicación con un \emph{framework} de auto
 		adaptación como Arco Iris o Rainbow.
 		
 		Este tema es crítico para el desarrollo de la auto adaptación de sistemas de \emph{software} considerando que existen
@@ -322,9 +322,9 @@
 
 		Hasta el momento, en Rainbow y en Arco Iris, las estrategias de reparación se encuentran configuradas de una manera		imperativa, es decir, el arquitecto o una persona con ese rol, configura el \emph{framework} especificando una serie
 		de estrategias de reparación, que no son más que algoritmos que intentan resolver o paliar una anomalía en el sistema
-		basandose en observaciones sobre las propiedades del mismo en \emph{runtime} y en un conjunto de tácticas (e.g.
-		levantar un servidor extra, disminuír el nivel de \emph{logging}, apagar la encripción, etc\ldots) también provistas
-		por el usuario del \emph{framework}.
+		basandose en observaciones sobre sus propiedades en \emph{runtime} y en un conjunto de tácticas (e.g. levantar un
+		servidor extra, disminuir el nivel de \emph{logging}, apagar la encripción, etc\ldots) también provistas por el
+		usuario del \emph{framework}.
 		
 		Otra posibilidad menos programática y más declarativa podría consistir en que el usuario únicamente especifique, para
 		un escenario, las tácticas que podrían ejecutarse en el caso en que el escenario no se cumpla; dejando al
