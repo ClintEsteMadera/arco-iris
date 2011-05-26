@@ -10,8 +10,8 @@ sim.1 = 5000:ZNewsSys.conn0.bandwidth.up:256,5000:ZNewsSys.conn0.bandwidth.down:
 sim.1 = 5000:ZNewsSys.conn1.bandwidth.up:256,5000:ZNewsSys.conn1.bandwidth.down:256
 sim.1 = 5000:ZNewsSys.conn2.bandwidth.up:256,5000:ZNewsSys.conn2.bandwidth.down:256
 
-# terminate system at 40 seconds
-sim.2 = 40000:sim:terminate
+# terminate system at 60 seconds
+sim.2 = 60000:sim:terminate
 
 sim.size = 3
 

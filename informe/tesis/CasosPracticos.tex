@@ -7,8 +7,8 @@
 	la tesis de doctorado donde dicho sistema es presentado. (ver sección \ref{sec:znn})
 
 	La simulación permite configurar la variación de los valores de ciertas propiedades de los componentes de la
-	arquitectura, a fin de simular diversas situaciones de carga en el sistema ficticio. Por ejemplo, se podría especificar
-	que a los 10 segundos de haber comenzado la simulación, el ancho de banda de un servidor en particular disminuya y por
+	arquitectura, a fin de simular diversas situaciones de carga en el sistema ficticio. Por ejemplo, se podría
+	especificar que a los 10 segundos de haber comenzado la simulación, el ancho de banda de un servidor en particular disminuya y por
 	otro lado que en ese mismo instante, la frecuencia de arribo de \emph{requests} del usuario suba en una determinada
 	proporción. Este cambio en el entorno de ejecución del sistema simulado, por ejemplo, permitiría evaluar cómo se
 	comporta Arco Iris en un contexto de \textbf{alta carga}.
@@ -475,7 +475,7 @@
 		
 		Tal como se esperaba, Arco Iris no toma acción alguna mientras el sistema se encuentra en carga normal, puesto que el
 		escenario de costo posee más prioridad que el escenario de tiempo de respuesta para dicho entorno. Esto se puede
-		apreciar en la figura \ref{fig:testcase6_expRespTime}.
+		apreciar en la primera porción del gráfico de la figura \ref{fig:testcase6_expRespTime}.
 		
 		Luego de superados los 800 ms. el sistema pasa a estar en alta carga, por lo cual dos de los tres escenarios pasan a
 		satisfacerse trivialmente. Consecuentemente, Arco Iris deberá procurar sólamente que se cumpla el escenario de tiempo		de respuesta que impide que se superen los 900 ms. Puede observarse en la figura \ref{fig:testcase6_cost} que la auto		reparación decide agregar un servidor aproximadamente a partir de los 23 segundos de iniciada la simulación, reparando
