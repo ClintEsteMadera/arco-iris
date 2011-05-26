@@ -9,8 +9,9 @@ sim.1 = 20001:ZNewsSys.c1.perf.service.time:100,20001:ZNewsSys.c2.perf.service.t
 sim.2 = 20001:ZNewsSys.c1.perf.arrival.rate:4
 sim.3 = 20001:ZNewsSys.conn1.bandwidth.up:512,20001:ZNewsSys.conn1.bandwidth.down:512
 sim.4 = 20001:ZNewsSys.conn0.bandwidth.up:512,20001:ZNewsSys.conn0.bandwidth.down:512
-# terminate system at 40 seconds
-sim.5 = 40000:sim:terminate
+
+# terminate system at 60 seconds
+sim.5 = 60000:sim:terminate
 
 sim.size = 6
 
