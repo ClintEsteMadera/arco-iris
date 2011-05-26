@@ -320,6 +320,9 @@
 
 		\subsubsection{El Estímulo en la Auto Reparación}
 
+			\ceria{acá debería haber algún gráfico... esto de contar todo en texto tipo cuentito es un garrón. Los jurados van a
+			putear...}
+
 			El \textbf{estímulo} de un escenario normalmente se asocia a un evento desencadenado en el sistema por la acción del
 			alguno de sus usuarios. Dicho evento es el punto de entrada del escenario, el disparador (interno o externo) que
 			inicia la interacción con el sistema, y más particularmente, con el artefacto del escenario en cuestión. Por ejemplo,
@@ -476,8 +479,8 @@
 			\subsubsubsection{El Concepto de Entorno en Rainbow}
 			
 				Si bien Rainbow utiliza el concepto de entorno y, para contribuir a la confusión del lector, lo llama
-				\emph{scenario}, el mismo es configurable aunque estático, es decir, no se adapta dinámicamente a los cambios
-				que experimenta el sistema en tiempo de ejecución.
+				\emph{scenario}, cabe aclarar que tal entorno es configurable aunque estático, es decir, no se adapta
+				dinámicamente a los cambios que experimenta el sistema en tiempo de ejecución.
 				Rainbow implementa el entorno como una distribución específica de pesos relativos entre los distintos
 				\emph{concerns} del sistema. A continuación se muestra un ejemplo de un entorno (\emph{scenario}) de Rainbow
 				utilizado por Znn:
@@ -551,10 +554,11 @@
 				otra opción más que configurar distintos escenarios.
 				
 				Cabe destacar que, a fines de simplificar el problema y acotar así el alcance de este trabajo, en el modelo de
-				Arco Iris se establece una restricción no poco importante: se presupone que el usuario de Arco Iris no cargará en el
+				Arco Iris se establece una restricción significativa: se presupone que el usuario de Arco Iris no cargará en el
 				sistema entornos cuyas condiciones de aplicabilidad tengan intersección no nula. Esta simplificación, si bien no
-				representa mayor problema a los fines de este trabajo, sí restringe futuras extensiones del mismo. La naturaleza de
-				tal restricción y una posible solución son abordadas en detalle en la sección \ref{sec:flexibilizacionEntorno}.
+				representa mayor problema a los fines de este trabajo, sí restringe futuras extensiones del \emph{framework}. La
+				naturaleza de tal restricción y una posible solución son abordadas en detalle en la sección
+				\ref{sec:flexibilizacionEntorno}.
 
 			\subsubsubsection{Estructura y Características del Entorno}
 
@@ -590,12 +594,12 @@
 				al permitir establecer la importancia (peso relativo) de cada \emph{concern} según el estado en el que el sistema se
 				encuentre.
 	
-				El entorno ``ANY'' será asignado automáticamente al escenario si el usuario no especifica ningún entorno o, si por
-				el contrario, decide explícitamente que el escenario aplique \textbf{en cualquier entorno de ejecución}. En
-				cualquiera de los dos casos, Arco Iris asignará a todos los \emph{concerns} el mismo peso, con la intención de
-				evitar otorgarle más importancia a algún \emph{concern} en particular. Esta decisión de equidistribuír los pesos
-				relativos por \emph{concern} es, desde ya, arbitraria y se reconoce una posibilidad de mejora en vistas de un
-				trabajo futuro. Para más información, ver \ref{asignacionEquidistribuidaPesos}.
+				El entorno ``ANY'' será asignado automáticamente al escenario si el usuario no especifica ningún entorno o, si por el
+				contrario, decide explícitamente que el escenario aplique \textbf{en cualquier entorno de ejecución}. En cualquiera de
+				los dos casos, Arco Iris asignará a todos los \emph{concerns} el mismo peso, con la intención de evitar otorgarle más
+				importancia a algún \emph{concern} en particular. Esta decisión de equidistribuir los pesos relativos por \emph{concern}
+				es, desde ya, arbitraria y se reconoce una posibilidad de mejora en vistas de un trabajo futuro. Para más información,
+				ver \ref{asignacionEquidistribuidaPesos}.
 	
 				Para ejemplificar la importancia de configurar un entorno correctamente y no hacer abuso del pseudo-entorno ``ANY'',
 				considerar, por ejemplo, un sistema el cual se encuentra bajo excesiva carga, y los \emph{stakeholders} consideran
@@ -684,9 +688,9 @@
 			Otra diferencia esencial con respecto al uso que Rainbow y Arco Iris hacen de las restricciones, es el momento en
 			el que se aplican. Hemos visto anteriormente que Rainbow posee un componente llamado \emph{``Architecture
 			Evaluator''}, cuya responsabilidad consiste en verificar de a intervalos la arquitectura del modelo, siempre y
-			cuando éste haya sufrido algunas modificación y no se esté ya ejecutando un proceso de auto reparación, esto implica
-			verificar absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir un cambio en el
-			modelo, verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente aquellos cuyo
+			cuando éste haya sufrido algunas modificaciones y no se esté ya ejecutando un proceso de auto reparación, esto
+			implica verificar absolutamente todas las restricciones del modelo. Arco Iris, en cambio, al descubrir un cambio en
+			el modelo, verifica que los escenarios se satisfagan, pero no todos los escenarios, sino solamente aquellos cuyo
 			estímulo coincida con el que desencadenó la actualización del modelo, optimizando así de manera drástica la cantidad
 			de restricciones a verificar, lo que hace más escalable la auto reparación.
 	\subsection{Modelo Extendido de QAS}
@@ -736,10 +740,10 @@
 		positivo que es inversamente proporcional a la importancia que se desea asignarle al escenario. Por ejemplo, un
 		escenario con prioridad 2 es considerado más prioritario que otro con prioridad 6.
 		
-		Si bien esta nueva funcionalidad abre nuevas posibilidades al usuario, por otro lado, la misma debe manejarse con sumo
-		cuidado ya que es probable que, al configurar escenarios con prioridades \emph{muy grandes}, éstos no tengan
-		prácticamente ningún peso al momento de seleccionar la estrategia de auto reparación a aplicar, con lo cual dichos
-		escenarios nunca serán reparados, careciendo de sentido así su existencia.
+		Si bien esta nueva funcionalidad abre nuevas posibilidades al usuario, por otro lado, debe manejarse con sumo cuidado
+		ya que es probable que, al configurar escenarios con prioridades \emph{muy grandes}, éstos no tengan prácticamente
+		ningún peso al momento de seleccionar la estrategia de auto reparación a aplicar, con lo cual dichos escenarios nunca
+		serán reparados, careciendo de sentido así su existencia.
 
 		La prioridad del escenario es una propiedad fundamental para el correcto funcionamiento de Arco Iris, veremos su
 		importancia al detallar de qué manera Arco Iris selecciona la estrategia que aplicará para reparar el sistema en la
@@ -751,7 +755,7 @@
 	\label{sec:strategies}
 
 		Antes de profundizar en el impacto de los escenarios en la selección de la estrategia para reparar el sistema,
-		repasaremos brevemente cómo se utilizan las mismas en Rainbow.
+		se repasará brevemente cómo se utilizan las estrategias en Rainbow.
 
 		Las estrategias en Rainbow tienen un conjunto de precondiciones que nos indican si dicha estrategia puede ser
 		utilizada para reparar el sistema en un determinado momento. Esto implica que, en cuanto Rainbow detecta un problema
@@ -791,7 +795,7 @@
 		consideradas para su ejecución, en el caso de que el escenario en cuestión se vea comprometido. De esta forma, las
 		estrategias quedan exentas de conocer cuáles son las circunstancias en las que su ejecución tiene sentido. Esto permite
 		al arquitecto tener un mayor control sobre las estrategias a ejecutar en determinadas condiciones, ya que al situarse en
-		un escenario concreto, él sabrá cuales serán las soluciones más adecuadas basándose en el entorno del sistema y en la
+		un escenario concreto, sabrá cuales serán las soluciones más adecuadas basándose en el entorno del sistema y en la
 		prioridad del escenario en cuestión.
 				
 		Cabe acotar que Arco Iris también ofrece la posibilidad de configurar el mismo comportamiento brindado por Rainbow: esto
@@ -987,12 +991,8 @@
 	\subsection{Selección de la Estrategia}
 	\label{sec:strategySelection}
 	
-		Arco Iris selecciona la estrategia a aplicar para reparar el sistema, de un manera sustancialmente diferente a cómo lo
-		hace Rainbow. Para comenzar, Rainbow considera todas las estrategias existentes mientras que Arco Iris se limita a
-		considerar únicamente las estrategias propuestas en el escenario que se ha dejado de satisfacer.
-		
-		Ahora bien, una vez determinado el subconjunto de estrategias a considerar, es necesario asignarle un valor a cada
-		una para poder compararlas y seleccionar la estrategia, que luego de ser aplicada, maximice el rendimiento del
+		Una vez determinado el subconjunto de estrategias a considerar para su selección, es necesario asignarle un valor a
+		cada una para poder compararlas y seleccionar la estrategia, que luego de ser aplicada, maximice el rendimiento del
 		sistema. Para esto, se definirá el concepto de \emph{Utilidad del Sistema} y se presentará la heurística propuesta
 		para su cálculo en Arco Iris.
 
@@ -1004,24 +1004,24 @@
 			impacto ante determinados cambios.
 			
 			En Rainbow, un sistema brinda un 100\% de utilidad cuando cumple todos sus requerimientos y no viola ninguna de las
-			restricciones planteadas para el mismo. Desde la perspectiva de Arco Iris, la utilidad se maximiza cuando todos los
-			escenarios definidos se cumplen, consecuentemente, en la medida en que los escenarios dejan de cumplirse, la utilidad
-			del sistema baja.
+			restricciones planteadas. Desde la perspectiva de Arco Iris, la utilidad se maximiza cuando todos los escenarios
+			definidos se cumplen, consecuentemente, en la medida en que los escenarios dejan de cumplirse, la utilidad del
+			sistema baja.
 			
 			Rainbow posee un mecanismo que permite predecir cuál estrategia dejaría al sistema en una mejor situación, de acuerdo
 			al valor arrojado por el cálculo de la utilidad del sistema luego de la supuesta ejecución de cada una de las
 			estrategias candidatas. Si bien este mecanismo de predicción es reutilizado por Arco Iris, el cálculo de la utilidad
-			del sistema, propiamente dicho, es sustancialmente diferente. 
+			del sistema, es sustancialmente diferente. 
 
 			En el archivo de configuración llamado \verb@utilities.yml@, Rainbow permite configurar:
 			\begin{itemize}
 				\item cúales son los \emph{concerns} que manejará el sistema y la propiedad del modelo de la arquitectura asociada a
 				él.
-				\item como se vió anteriormente en la sección \ref{sec:environment}, se especifican distintos entornos de ejecución
-				estáticos, esto es, se configura el entorno predecido de ejecución antes de iniciar el \emph{framework} y
-				dicho entorno no cambia de acuerdo a la situación real del sistema en \emph{runtime}. Estos entornos estáticos
-				(llamados ``scenarios'', que nada tienen que ver con los escenarios de Arco Iris) son ni más ni menos que un
-				diccionario que especifica qué peso (o importancia) tiene en el sistema cada \emph{concern}.
+				\item como se vió anteriormente en la sección \ref{sec:environment}, se configura antes de que Rainbow inicie, el
+				entorno estático de ejecución en el que se desea que funcione, y dicho entorno no cambia de acuerdo a la situación
+				real del sistema en \emph{runtime}. Estos entornos estáticos (llamados ``scenarios'', que nada tienen que ver con
+				los escenarios de Arco Iris) son ni más ni menos que un diccionario que especifica qué peso (o importancia) tiene en
+				el sistema cada \emph{concern}.
 				\item por cada uno de los \emph{concerns} que manejará el sistema, se define una función de utilidad, la cual, dada
 				un valor de la propiedad del modelo relacionada (e.g. tiempo de respuesta), arroja un valor entre 0 y 1, cuyo uso se
 				explicará en breve.
@@ -1184,9 +1184,9 @@
 			determinado puntaje a cada escenario habilitado que se satisfaga, el resto de los escenarios serán ignorados, o lo
 			que es equivalente, tendrán puntaje cero.
 			
-			Por cada escenario habilitado, Arco Iris verificará si el mismo aplica para el entorno actual del sistema, en caso de
-			no aplicar, el escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios
-			que sí apliquen al entorno actual, Arco Iris evaluará si las restricciones establecidas en la cuantificación de la
+			Por cada escenario habilitado, Arco Iris verificará si aplica para el entorno actual del sistema, en caso de no
+			aplicar, el escenario se satisface trivialmente, por lo que sumará a la utilidad del sistema. Para los escenarios que
+			sí apliquen al entorno actual, Arco Iris evaluará si las restricciones establecidas en la cuantificación de la
 			respuesta del escenario se satisfacen y sólo en caso afirmativo sumarán a la utilidad del sistema.
 
 			\begin{figure}[H]
@@ -1279,7 +1279,7 @@
 			\begin{itemize}
 				\item en la sección siguiente se entrará en detalle sobre el rol que cumple en Arco Iris el objeto
 				\verb@SelfHealingConfigurationManager@.
-				\item se toma como prioridad máxima la del escenario menos prioritario., 
+				\item se toma como prioridad máxima la del escenario menos prioritario. 
 				\item al calcular la prioridad relativa, se suma uno al dividendo para evitar que la prioridad relativa del escenario
 				menos prioritario sea cero y que sea ignorado en el cálculo de la utilidad del sistema. De esta manera también se logra
 				que la prioridad relativa de un escenario de prioridad uno (i.e: el escenario más importante) sea exactamente igual a uno.
@@ -1352,7 +1352,7 @@
 			En el apéndice \ref{sec:SelfHealingConfigXML}, se puede observar un ejemplo de un archivo de configuración de
 			\emph{Self Healing}.
 
-			El archivo de configuración de \emph{Self Healing} que Arco Iris acepta, debe poseer un formato determinado. Se ha
+			El archivo de configuración de \emph{Self Healing} que Arco Iris acepta debe poseer un formato determinado. Se ha
 			decidido que el mejor formato para dicho archivo es XML, ya que es comprensible no sólo por sistemas de
 			\emph{software} sino también por personas. Esto es particularmente útil en el caso en que el usuario desee efectuar
 			modificaciones mínimas sobre la configuración y no desee o, por algún motivo, no pueda ejecutar la herramienta Arco

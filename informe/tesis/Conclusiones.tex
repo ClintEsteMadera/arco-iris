@@ -55,7 +55,7 @@
 		  			ser modificados. & Una gran parte de los cambios de configuración pasan a impactarse ins\-tan\-tá\-nea\-men\-te,
 		  			evitando reiniciar el sistema para cambiar la configuración\\
 		  			Información sobre restricciones & Guardadas en el modelo de la arquitectura (en \mbox{Acme}) & Mediante
-		  			escenarios de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de las mismas.\\
+		  			escenarios de QAW editados por \emph{stakeholders} & Fácil y transparente agregado y edición de restricciones.\\
 		  			Decisiones sobre que reparaciones realizar & También se encuentran en archivos de configuración & Se evaluán los
 		  			escenarios cargados y como se afectan entre ellos. Luego se invoca a un módulo que decide qué reparaciones pueden
 		  			llevarse a cabo en ese contexto. & Posibilidad de extensión de dicho módulo para incluír complejas heurísticas que
@@ -64,7 +64,7 @@
 		  			\emph{framework}. & Se permite especificar distintos entornos de ejecución. El sistema cambia
 		  			di\-ná\-mi\-ca\-men\-te de en\-tor\-no sin necesidad de in\-ter\-ven\-ción humana ni reinicio del \emph{framework}.
 		  			& Se agrega una nueva variable a considerar para la elección de una estrategia, aumentando la probabilidad de que
-		  			la misma se adeque mejor a la situación actual del sistema.
+		  			dicha estrategia sea más adecuada para la situación actual del sistema.
 		 			\end{tabularx}
 		 			}
 				\end{center}
@@ -131,9 +131,9 @@
 			decidir qué estrategia es la más adecuada para ser ejecutada en el contexto de una o más \emph{constraints} no
 			cumpliendose, en Rainbow se calcula un \emph{score} para cada una de las estrategias existentes en el sistema,
 			mientras Arco Iris busca aquellos escenarios de QAW ``rotos'' y sólo asigna un \emph{score} a las estrategias
-			definidas en dicho subconjunto de escenarios. Este enfoque, además de ser más eficiente, es considerablemente mas
+			definidas en dicho subconjunto de escenarios. Este enfoque, además de ser más eficiente, es considerablemente más
 			sencillo de configurar y tiene más sentido a nivel funcional, ya que en el caso de Rainbow no parece haber una manera
-			sencilla de intuír de antemano qué estrategia eligiría en cada caso, hecho que complica en análisis de las
+			sencilla de intuir de antemano qué estrategia eligiría en cada caso, hecho que complica en análisis de las
 			reparaciones efectuadas por Rainbow durante el transcurso de una ejecución.
 
 		\subsubsection{Entorno de ejecución}
@@ -150,7 +150,7 @@
 			cual se realiza considerando los pesos relativos que poseen los \emph{concerns} arquitecturales en el entorno de ejecución
 			actual.
 			
-			Lo antedicho, agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de
+			Lo antedicho agrega una nueva arista a las variables consideradas al momento de elegir la mejor estrategia de
 			reparación, aumentando las probabilidades de que la estrategia seleccionada sea más precisa de acuerdo a la situación
 			del sistema en tiempo de ejecución.
 			
@@ -182,10 +182,10 @@
 			como medio para expresar requerimientos de atributos de calidad para un sistema. Con lo cual, el inicio de todo el
 			proceso de auto reparación se da de una manera sincrónica con respecto al Estímulo de algún escenario(s) ocurrido en
 			el sistema en ejecución. Esto se contrapone con el enfoque de Rainbow, en el cual, periódicamente se verifican todas
-			las restricciones e invariantes de la arquitectura. Observamos que si quisieramos mantener esta última
-			característica de Rainbow, ya el foco absoluto de la auto reparación no estaría puesto en los Escenarios de
-			atributos de calidad sino que paralelamente existirían dos flujos distintos de auto reparación disputando entre sí.
-			Esto llevaría a un comportamiento excesivamente complejo y poco predecible, lo cual resulta poco deseable para un
+			las restricciones e invariantes de la arquitectura. Observamos que, si quisieramos mantener esta última
+			característica de Rainbow, ya el foco absoluto de la auto reparación no estaría puesto en los Escenarios de atributos
+			de calidad sino que paralelamente existirían dos flujos distintos de auto reparación disputando entre sí. Esto
+			llevaría a un comportamiento excesivamente complejo y poco predecible, lo cual resulta poco deseable para un
 			\emph{framework} de auto reparación.
 			\item \textbf{Cómo se decide cuándo adaptar:} Arco Iris sólo intenta efectuar adaptaciones acotadas al escenario o
 			los escenarios que se dejan de cumplir en un determinado momento, mientras que Rainbow contempla todo el abanico de
@@ -202,7 +202,7 @@
 		
 		Consideramos que Arco Iris se encuentra un paso más cerca de ser utilizado en un sistema de \emph{software} real (i.e.
 		en un ámbito no académico) que lo que su antecesor, Rainbow, se encontraba. Esta consideración se basa en el hecho de
-		que Arco Iris hace foco en la accesibilidad del usuario final para configurar el \emph{framework} de una manera amena
+		que Arco Iris hace foco en la accesibilidad del usuario final para configurar el \emph{framework} de una manera simple
 		y más flexible que la provista originalmente por Rainbow, incluyendo una interfaz de usuario visual que facilita dicha
 		tarea así también como el mantenimiento y evolución de configuración existente.
 		
@@ -212,13 +212,11 @@
 		
 		\begin{itemize}
 			\item Actualmente, no todas las organizaciones que desarrollan \emph{software} poseen un modelo formal de la
-			arquitectura, tal como es requerido por Rainbow o Arco Iris. Esto forma parte de una tendencia por parte de La
-			industria del \emph{software} a desarrollar sistemas, a veces de envergadura y de misión crítica, de una manera
-			todavía artesanal. Esta realidad complica la adopción de \emph{frameworks} que centren la auto reparación de un
-			sistema en el modelo de su arquitectura. Sin embargo, como hemos mencionado en la sección
-			\ref{sec:ausenciaObsolescenciaModeloArquitectura}, existen líneas de investigación intentando atacar este problema,
-			derivando el modelo de la arquitectura de un sistema a partir de información obtenida durante su ejecución, lo cual
-			representa un avance importante en pos de facilitar el uso de herramientas como Arco Iris.
+			arquitectura, tal como es requerido por Rainbow o Arco Iris. Esto complica la adopción de \emph{frameworks}
+			que centren la auto reparación de un sistema en el modelo de su arquitectura. Sin embargo, como hemos mencionado en
+			la sección \ref{sec:ausenciaObsolescenciaModeloArquitectura}, existen líneas de investigación intentando atacar este
+			problema, derivando el modelo de la arquitectura de un sistema a partir de información obtenida durante su ejecución,
+			lo cual representa un avance importante en pos de facilitar el uso de herramientas como Arco Iris.
 			\item El trabajo de creación de \emph{Gauges} y \emph{Probes} (los cuales usualmente no son reutilizables entre
 			distintas aplicaciones) sigue siendo una tarea de complejidad no trivial a cargo del usuario del \emph{framework}.
 			\item La información necesaria para que el \emph{framework} funcione, no obstante las mejoras introducidas en Arco
