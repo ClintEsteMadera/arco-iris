@@ -1,0 +1,450 @@
+\documentclass[table,dvipsnames]{beamer}
+\usepackage[spanish, activeacute]{babel}
+\usepackage[ansinew]{inputenc} 
+\usepackage{beamerthemesplit}
+% My Beamer options
+\usetheme{Warsaw}
+\setbeamercovered{transparent}
+\setbeamerfont{subtitle}{size=\tiny}
+% beamerbasefont.sty defines the commands \Tiny and \TINY for very small font sizes. Redefining \Tiny to avoid warnings
+\let\Tiny=\tiny
+
+\title{Hacia un modelo más flexible para la implementación de la auto reparación de sistemas de software basada en Arquitectura}
+\subtitle{Tesis de Licenciatura en Ciencias de la Computación}
+\author{Chiocchio, Jonathan \and Tursi, Germán Gabriel}
+\institute{Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación}
+\date{10 de Junio de 2011}
+
+\begin{document}
+
+% Title Page
+\begin{frame}
+	\titlepage
+\end{frame}
+
+% Outline
+\begin{frame} 
+\tableofcontents 
+\end{frame}
+
+\section{Objetivos del Proyecto}
+	\begin{frame}
+		\frametitle{Objetivos del Proyecto}
+		\scriptsize\begin{itemize}
+			\item Mostrar la conveniencia y factibilidad del uso de un \textbf{método iterativo} de estimación que se base en la
+			\textbf{tipificación} de los elementos del proyecto, de manera de:
+				\begin{itemize}
+					\item \scriptsize Permitir \textbf{reutilizar} los componentes de estimación a lo largo de los diferentes
+					desarrollos.
+					\item \scriptsize Brindar medidas adecuadas en cada futura estimación.
+				\end{itemize}
+			\item Proponer una \textbf{herramienta} que \textbf{implemente} esta técnica de estimación y sirva de ayuda gerencial
+			a los lideres de proyectos para:
+				\begin{itemize}
+					\item \scriptsize la \textbf{planificación, estimación, especificación y actualización} constante de los proyectos.
+					\item \scriptsize ser un \textbf{repositorio} de la información relevante de proyectos, accesibles por todos los
+					recursos involucrados.
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+\section{Método Propuesto}
+	\subsection{Justificación}
+		% Enunciado
+		\begin{frame}
+			\frametitle{Estimación de Proyectos}
+			``Su objetivo es conocer en etapas tempranas y de manera aproximada, el tamaño, esfuerzo y costo del desarrollo de un
+			proyecto de software''
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Métodos Tradicionales}
+			\scriptsize	\begin{itemize}
+				\item  \textbf{Métodos Empiricos}\\Dependen exclusivamente del juicio experto.
+				\item  \textbf{Líneas de Código}
+					\begin{itemize} \scriptsize	
+						\item Qué es una línea de código?
+						\item Desarrollo de sistema $\neq$ codificación
+					\end{itemize}
+					Dependiente de la tecnología, lenguajes, herramientas o metodologías utilizadas.
+				\item  \textbf{Puntos de Función}\\
+					Allan Albrecht - 1979: cuantifica el tamaño y la complejidad de un sistema de software según las funciones de
+					usuario. No es útil en etapas tempranas (datos y funciones no están bien definidos)
+				\item  \textbf{Puntos de Casos de Uso}\\
+					Gustav Karner - 1993: clasifica los CU y actores en complejos, medios y simples.
+					No considera cuestiones independientes de la funcionalidad.
+				\end{itemize}
+				No consideran en su aplicación la \textcolor{red}{historia} de los proyectos anteriormente realizados en la
+				organización.
+		\end{frame}
+
+	\subsection{Método propuesto}
+		\begin{frame}
+			\frametitle{Elementos de Estimación}
+			\scriptsize La tipificación de estos componentes por características comunes la definen los estimadores en base a:
+				\begin{itemize}
+					\item experiencia
+					\item entorno organizacional
+					\item requerimientos
+				\end{itemize}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{Método propuesto}
+			\underline{Características}
+			\scriptsize
+			\begin{itemize}
+				\item Adaptable fácilmente a las características propias de la organización 
+				\item Considera todos los procesos involucrados en un desarrollo típicos de la cultura organizacional
+				\item Reutiliza la definición de tipos de componentes a lo largo de diferentes proyectos.
+				\item Con el uso las estimaciones son más refinadas y ajustadas a la realidad.
+				\item \textbf{Método Iterativo}
+					\begin{itemize}
+						\scriptsize
+						\item Iteración: realización completa de un proyecto.
+						\item Comienza con valores más o menos aproximados.
+						\item A medida que itere sus valores son retroalimentados y ajustados
+						\item Con cada iteración se tiene una definición de tipos más extensa.
+					\end{itemize}
+			\end{itemize}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{Implementación del Método}
+			Pasos:
+			\pause
+			\scriptsize
+			\begin{itemize}
+				\item Tipificar los componentes del proyecto
+					\begin{itemize}
+						\item \scriptsize Esfuerzo de desarrollo
+						\item \scriptsize Tiempo de desarrollo
+						\item \scriptsize Recursos empleados
+					\end{itemize}
+				\pause
+				\item Realizar la planificación de tareas que compondrá al proyecto y definir un tipo para cada una de las mismas.
+				\pause
+				\item Finalizada la primera iteración del método los valores para cada tipo de componente serán recalculados
+				utilizando los resultados reales.
+			\end{itemize}
+		\end{frame}	
+
+		\begin{frame}
+			\frametitle{Ventajas del Método}
+			\scriptsize
+			\begin{itemize}
+				\item Es un método relativamente fácil y familiar para los estimadores, lo cual \textbf{favorece su utilización}.
+				\item Después de algunas iteraciones, la mayoría de las tareas ya se encuentran tipificadas, lo cual
+				\textbf{facilita la planificación}.
+				\item Permite \textbf{usar toda la información histórica} que generalmente se pierde.
+				\item Luego de algunas iteraciones \textbf{el método se adapta a la organización} con resultados más precisos.
+				\item Captura el conocimiento de los especialistas estimadores (\textbf{independencia de las personas}), previendo
+				que dichos especialistas puedan desvincularse de la organización.
+			\end{itemize}
+		\end{frame}	
+			
+		\begin{frame}
+			\frametitle{Desventajas del Método}
+			\scriptsize
+			\begin{itemize}
+				\item Poca certeza en las primeras iteraciones del mismo, poseyendo la misma incertidumbre de los métodos utilizados
+				para efectuar las primeras aproximaciones.
+				\item No es directamente aplicable a las empresas de desarrollo de software para terceros (e.g. \emph{Software
+				Factories}), ya que en general los proyectos suelen ser muy diferentes uno del otro, y es más difícil establecer
+				características en común.
+				\item Requiere la participación activa de los \emph{stakeholders} del proyecto, informando el desarrollo real de sus
+				tareas, lo cual no siempre es fácil de conseguir.
+			\end{itemize}
+		\end{frame}	
+
+\section{Resources Manager}
+	\subsection{Descripción}
+		\begin{frame}
+			\frametitle{Características de Resources Manager}
+			\scriptsize
+			\begin{itemize}
+				\item Automatiza el \textcolor{red}{método} propuesto
+				\pause
+				\item Permite la administración de \textcolor{red}{proyectos} y la gestión de \textcolor{red}{recursos},
+				\textcolor{red}{tareas}, alertas y desvíos
+				\pause
+				\item Se \textcolor{red}{adapta} a las características de la organización.
+				\pause
+				\item Facilita la \textcolor{red}{planificación} de un proyecto
+				\pause
+				\item De \textcolor{red}{fácil} uso y acceso
+				\pause
+				\item \textcolor{red}{Repositorio} de la información valiosa para la organización, a utilizar no sólo en
+				estimaciones sino también en otros aspectos clave como por ejemplo la mejora continua de procesos.
+				\pause
+				\item Permite la definición de \textcolor{red}{métricas} específicas a medir.
+				\pause
+				\item Refleja las \textcolor{red}{actividades} diarias de los recursos
+				\pause
+				\item Ofrece información de avance y sumarizada de los proyectos.
+			\end{itemize}
+		\end{frame}
+	
+	\subsection{Características Técnicas}
+		\begin{frame}
+			\frametitle{Plataforma Tecnológica}
+		
+			\begin{itemize}
+				\item Lenguaje de programación: Java
+				\item Interfaz de Usuario: Cliente Rico SWT/JFace
+				\item Spring
+				\item Hibernate
+				\item H2
+				\item Ant			
+				\item Java Web Start
+			\end{itemize}
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Domain Driven Design}
+			Patrones de Diseño Utilizados
+			\begin{columns}
+				\column{0.27\textwidth}
+					\begin{itemize}
+						\item Entity Object
+						\item Value Object 
+						\item Aggregate 
+						\item Repository 
+					\end{itemize}
+				\column{0.73\textwidth}
+				Acá iba una imagen!	
+			\end{columns}
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Modelo de Dominio}
+			\begin{columns}
+				\column{4cm}
+					\begin{block}{\Large Proyecto}
+						\begin{itemize}
+							\item Tipo de Proyecto
+							\item Metricas
+							\item Tiempo Desarrollo
+							\item Fechas
+						\end{itemize}
+					\end{block}		
+				\column{4cm}
+					\begin{block}{\Large Recurso}
+						\begin{itemize}
+							\item Administrador
+							\item Líder
+							\item Recurso
+						\end{itemize}
+					\end{block}
+			\end{columns}
+				
+			\begin{columns}
+				\column{5cm}
+					\begin{block}{\Large Tarea}
+						\begin{itemize}
+							\item Tipo de Tarea
+							\item Metricas
+							\item Tiempo de Desarrollo
+							\item Fechas
+						\end{itemize}
+					\end{block}
+			\end{columns}
+			
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Diseño de la Aplicación}
+		\end{frame}
+
+\section{Caso de Estudio}
+	\subsection{Caracteristicas de los Proyectos}
+	
+	\begin{frame}
+		\frametitle{Caso de Estudio: Reingeniería en Caja de Valores S.A.}
+		Caja de Valores S.A.:\\
+		\scriptsize
+		\begin{itemize}
+			\item Depositaria de Títulos Valores y otros servicios
+			\item Más de 30 años de existencia
+			\item Procesos complejos y a veces burocráticos a considerar en las estimaciones
+			\item Sistemas Cobol funcionando en mainframes
+		\end{itemize}
+		\normalsize
+		Proyectos:\\
+		\scriptsize
+		\begin{itemize}
+			\item ABM de Emisores
+			\item ABM de Convocatoria a Asamblea
+		\end{itemize}
+		\normalsize
+		Características:\\
+		\scriptsize
+		\begin{itemize}
+			\item Consisten en la migración de la funcionalidad de sistemas legacy a una plataforma Java
+			\item Son ABMs de conceptos de negocios, los cuales además deberán manejar también los ciclos de vida de dichos
+			conceptos
+		\end{itemize}					
+	\end{frame}
+	
+	\subsection{Componentes Identificados}
+		\begin{frame}
+			\frametitle{Recursos Identificados}
+			\begin{center}
+				\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+				\scriptsize 
+				\begin{tabular}{lll}
+					\textbf{Nombre} & \textbf{Rol} & \textbf{Skill} \\
+					\hline
+							Alejandro Arias & Administrador & Senior \\
+							Pablo Pastorino & Líder del Proyecto - Analista & Senior \\
+							Gabriel Tursi & Líder del Proyecto - Analista & Senior \\
+							Jonathan Chiocchio & Desarrollador Java - Arquitecto & Senior \\
+							Luisina Marconi & Desarrollador Java & Senior \\
+							Emiliano Calabrese & Desarrollador Java & Semi-senior \\
+							Miguel Diaz & Desarrollador Java & Semi-senior \\
+							Angeles Alvarez & Tester & Semi-senior \\
+				\end{tabular}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Tipos de Componentes Identificados}
+			\begin{center}
+				\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+				\begin{tabular}{p{0.8cm} p{7cm} cp{2cm}}
+					\textbf{\tiny Tipo} & \textbf{\tiny Descripción} & \textbf{\tiny Tiempo de Desarrollo} \\
+					\hline
+					\tiny Proyecto & \tiny Reingeniería ABM Simple de un Concepto de dominio y administración de su ciclo de vida & \tiny 400 hs. \\
+					\tiny Tareas macro & \tiny Relevamiento para reingeniería de ABM de concepto de dominio y administración de su ciclo de vida & \tiny 40 hs. \\
+					\tiny Tareas macro & \tiny Análisis y diseño para reingeniería de ABM de concepto de dominio y administración de su ciclo de vida & \tiny 100 hs. \\
+					\tiny Tareas macro & \tiny  Construcción para reingeniería de ABM de concepto de dominio y administración de su ciclo de vida & \tiny 100 hs. \\
+					\tiny Tareas macro & \tiny Prueba Aplicación para reingeniería de ABM de concepto de dominio y administración de su ciclo de vida & \tiny 100 hs. \\
+					\tiny Tareas macro & \tiny Puesta en Producción. & \tiny 100 hs. \\
+				\end{tabular}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Tipos de Componentes Identificados (Cont.)}
+			\begin{center}
+				\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+					\begin{tabular}{p{1.5cm} p{6cm} cp{2cm}}
+						\textbf{\tiny Tipo} & \textbf{\tiny Descripción} & \textbf{\tiny Tiempo de Desarrollo} \\
+						\hline
+						\tiny Tarea Detallada & \tiny Documentación de relevamiento para reingeniería de ABM de concepto de dominio y administración de su ciclo de vida & \tiny 20 hs. \\
+						\tiny Tarea Detallada & \tiny Prueba Construcción Integral & \tiny 8 hs. \\
+						\tiny Tarea Detallada & \tiny Aprobación del usuario & \tiny 8 hs. \\
+						\tiny Tarea Detallada & \tiny Presentación a Usuarios Finales & \tiny 8 hs. \\
+						\tiny Tarea Detallada & \tiny Capacitación a Usuarios Finales & \tiny 16 hs. \\
+						\tiny Tarea Detallada & \tiny Presentación a Asistencia Técnica y Operaciones & \tiny 16 hs. \\
+						\tiny Tarea Detallada & \tiny Preparación de documentación para despliegue en pre-producción & \tiny 8 hs. \\
+						\tiny Tarea Detallada & \tiny Despliegue en pre-producción & \tiny 16 hs. \\
+						\tiny Tarea Detallada & \tiny Migración de la información & \tiny 16 hs.
+					\end{tabular}
+			\end{center}
+		\end{frame}
+	
+	\subsection{Planificación y Resultados}
+		\begin{frame}
+			\frametitle{Planificación del Proyecto Emisores}
+			\scriptsize En base a los componentes identificados se realizó la planificación para el proyecto ``Emisores''. Para
+		la misma se definieron tipos de componentes adicionales.
+		
+		Luego del desarrollo se obtuvieron los siguientes resultados:\\
+			\begin{center}
+				\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+				\begin{tabular}{llccc}
+					\textbf{\tiny Tipo} & \textbf{\tiny Nombre} & \textbf{\tiny Tiempo Estimado} & \textbf{\tiny Tiempo Real} & \textbf{\tiny Desvío} \\
+					\hline
+					\tiny Proyecto & \tiny Proyecto ABM Emisores & \tiny 344 hs. & \tiny 384 hs. & \tiny 40 hs.\\
+					\tiny Tarea macro & \tiny Relevamiento & \tiny 24 hs. & \tiny 24 hs. & \tiny -\\
+					\tiny Tarea macro & \tiny Análisis Y Diseño & \tiny 104 hs. & \tiny 112 hs. & \tiny 8 hs.\\
+					\tiny Tarea macro & \tiny  Construcción & \tiny 72 hs. & \tiny 88 hs. & \tiny 16 hs.\\
+					\tiny Tarea macro & \tiny Prueba Aplicación & \tiny 56 hs. & \tiny 72 hs. & \tiny 16 hs.\\
+					\tiny Tarea macro & \tiny Puesta en Producción. & \tiny 88 hs. & \tiny 88 hs. & \tiny -\\
+	
+					\tiny Tarea detallada & \tiny Diseño de Pantallas & \tiny 8 hs. & \tiny 16 hs. & \tiny 8 hs.\\
+					\tiny Tarea detallada & \tiny Construcción & \tiny 40 hs. & \tiny 56 hs. & \tiny 16 hs.\\
+					\tiny Tarea detallada & \tiny Corrección de la aplicación primera iteración & \tiny 8 hs. & \tiny 16 hs. & \tiny 8 hs.\\
+					\tiny Tarea detallada & \tiny Corrección de la aplicación segunda iteración & \tiny 8 hs. & \tiny 16 hs. & \tiny 8 hs.\\
+				\end{tabular}
+			\end{center}
+		\end{frame}
+	
+	\subsection{Tipos de Componentes Resultantes}
+		\begin{frame}
+			\frametitle{Primera Iteración}
+			\scriptsize Al incorporarse los datos reales aportados por Emisores, la información de tipos de componentes se actualizó de acuerdo a la siguiente fórmula:
+			\begin{center}
+				\begin{displaymath}
+					TC_{n}= \frac{(\sum_{i=1}^{m} CH)+ TC_{n-1} + VI}{m+2}
+				\end{displaymath}
+			\end{center}
+			donde
+			$n$ = Número de Iteración\\
+			$m$ = Cantidad de Componentes en el Historial de ese Tipo \\
+			$TC$ = Tipo de Componente\\
+			$CH$ = Componente del Historial\\
+			$VI$ = Valor Ingresado\\
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Tipos de Componentes Resultantes}
+			\scriptsize Luego de la primera iteración los resultados arrojados por la herramienta para los tipos de componentes son:
+			\begin{center}
+				\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+				\begin{tabular}{p{1.3cm} p{5cm} cp{1cm} cp{1cm}}
+					\textbf{\tiny Tipo} & \textbf{\tiny Nombre} & \textbf{\tiny Tiempo Iter. 0} & \textbf{\tiny Tiempo Iter. 1} \\
+					\hline
+					\tiny Proyecto & \tiny Reingeniería ABM Simple de un Concepto de dominio & \tiny 392 hs. & \tiny 400 hs.\\
+					\tiny Tareas macro & \tiny Relevamiento para reingeniería de ABM de concepto de dominio & \tiny 32 hs.& \tiny 40 hs.\\
+					\tiny Tareas macro & \tiny Análisis y diseño para reingeniería de ABM de concepto de dominio & \tiny 106 hs.& \tiny 100 hs.\\
+					\tiny Tareas macro & \tiny Construcción para reingeniería de ABM de concepto de dominio & \tiny 94 hs.& \tiny 100 hs.\\
+					\tiny Tareas macro & \tiny Prueba Aplicación para reingeniería de ABM de concepto de dominio & \tiny 60 hs.& \tiny 100 hs.\\
+					\tiny Tareas macro & \tiny Puesta en Producción. & \tiny 94 hs. & \tiny 100 hs.\\
+				\end{tabular}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+			\frametitle{Valores resultantes para los Tipos de Tareas Detalladas}
+			\begin{center}
+				\rowcolors{1}{RoyalBlue!20}{RoyalBlue!5}
+				\begin{tabular}{p{6cm} cp{1.6cm} cp{1cm}}
+					\textbf{\tiny Nombre} & \textbf{\tiny Tiempo de Desarrollo} & \textbf{\tiny Nro. Recursos} \\
+					\hline
+					\tiny Documentación de relevamiento para reingeniería de ABM & \tiny 14 hs. & \tiny 1 Senior\\
+					\tiny Prueba Construcción Integral & \tiny 8 hs.& \tiny 1 Senior\\
+					\tiny Aprobación del usuario & \tiny 8 hs. & \tiny 1 Senior\\
+					\tiny Presentación a Usuarios Finales & \tiny 8 hs. & \tiny 1 Senior\\
+					\tiny Capacitación a Usuarios Finales & \tiny 16 hs. & \tiny 1 Senior\\
+					\tiny Presentación a Asistencia Técnica y Operaciones & \tiny 16 hs. & \tiny 1 Senior\\
+					\tiny Preparación de documentación para despliegue en pre-producción & \tiny 8 hs. & \tiny 1 Senior\\
+					\tiny Despliegue en pre-producción & \tiny 16 hs. & \tiny 2 Senior\\
+					\tiny Migración de la información & \tiny 16 hs. & \tiny 2 Senior\\
+					\tiny Diseño de Pantallas y Salidas & \tiny 12 hs. & \tiny 1 Senior\\
+					\tiny Construcción &  \tiny 48 hs.& \tiny 2 Senior\\
+					\tiny QA de la aplicación  & \tiny 13,3 hs.& \tiny 1 Senior\\
+				\end{tabular}
+			\end{center}
+		\end{frame}
+
+\section{Continuación}
+	\begin{frame}
+		\frametitle{Planificación del proyecto Convocatorias a Asambleas}
+		En Resumen:
+		\pause
+		\scriptsize\begin{itemize}
+			\item Se realizó la planificación del proyecto ``Convocatorias a Asambleas'' reutilizando los componentes comunes definidos.
+			\item Se realizó el desarrollo de la aplicación y se plasmó su avance en la herramienta.
+		\end{itemize}
+		A continuación cerraremos el proyecto para obtener los resultados de la segunda iteración del método.
+	\end{frame}
+	
+	\begin{frame}
+		\begin{center}
+			\Huge{>Preguntas?}
+		\end{center}
+	\end{frame}
+
+\end{document}
