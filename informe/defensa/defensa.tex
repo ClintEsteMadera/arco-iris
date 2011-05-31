@@ -10,6 +10,7 @@
 \setbeamerfont{subtitle}{size=\tiny}
 \usenavigationsymbolstemplate{}	% borrar los símbolos de navegación de abajo a la derecha
 %\beamertemplateshadingbackground{red!10}{white!1}
+\setbeamertemplate{frametitle continuation}[from second]
 
 % beamerbasefont.sty defines the commands \Tiny and \TINY for very small font sizes. Redefining \Tiny to avoid warnings
 \let\Tiny=\tiny
@@ -41,6 +42,11 @@ reparación de sistemas de software basada en Arquitectura}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
+			complejidad creciente de los sistemas de software\\
+			los sistemas incluyan mecanismos para ajustar su comportamiento a partir de fallas o necesidades cambiantes 
+			de sus usuarios y/o el entorno en el que operan.\\
+			sin intervención humana\\
+			
 		\end{frame}
 				
 	\subsection{Rainbow}
@@ -64,16 +70,16 @@ reparación de sistemas de software basada en Arquitectura}
 	
 		\begin{frame}
 			\frametitle{\insertsubsection}
+			Características a mejorar de Rainbow:
 			\begin{itemize}
-			  \item No considera al usuario como un actor crucial en la determinación de requerimientos
+			  \item No involucra a los \emph{stakeholders} en el proceso de configuración de auto reparación
 			  \item Poco dinámico, causas:
 			  \begin{itemize}
-			    \item Configuración compleja
-			    \item Ausencia de mecanismo de actualización en caliente
+			    \item configuración compleja
+			    \item ausencia de mecanismo de actualización en caliente
+			    \item no se adapta al entorno de ejecución
 			   \end{itemize}
-			  \item No se adapta al entorno de ejecución
-			  \item Duplicación de configuración de restricciones
-			  \item etc.
+			  \item Duplicación de configuración de restricciones (\emph{overhead de procesamiento})
 			\end{itemize}
 		\end{frame}
 
@@ -83,19 +89,52 @@ reparación de sistemas de software basada en Arquitectura}
 			\frametitle{\insertsubsection}
 		\end{frame}
 	
-	\subsection{QAW y QAS}
+	\subsection{Escenarios de Atributos de Calidad}
 	
-		\begin{frame}
-			\frametitle{\insertsubsection}
-			stakeholders participan en la conf de self healing
+%los \Escenarios de Atributos de Calidad" como
+%forma fundamental de expresar el conocimiento de los stakeholders referido a requerimientos
+%que deben ser contemplados por la arquitectura
+
+	\subsubsection{Escenarios de Atributos de Calidad}
+		\begin{frame}[allowframebreaks,from second]
+			\frametitle{\insertsubsubsection}
+			Los Escenarios de Atributos de Calidad o QAS(\emph{Quality Attribute Scenarios}) permiten expresar cómo debería
+			responder el sistema ante determinados estímulos y bajo ciertas circunstancias.\\
+			
+			\framebreak
+			
+			\frametitle{\insertsubsubsection}
+			Composición de un QAS:
+			\begin{itemize}
+				\item \textbf{Fuente del estímulo}: entidad que generó el estímulo
+				\item \textbf{Estímulo}: condición que debe ser tenida en cuenta cuando llega al sistema
+				\item \textbf{Entorno}: condiciones en las que se encuentra el sistema, e.g. alta carga
+				\item \textbf{Artefacto}: el sistema o partes de él afectadas por el estímulo
+				\item \textbf{Respuesta}: qué hace el sistema ante la llegada del estímulo
+				\item \textbf{Cuantificación de la respuesta}: métrica sobre la \textbf{respuesta}
+			\end{itemize}
+
+			La \textbf{Cuantificación de la respuesta} permitirá saber si el escenario se satisface.
 		\end{frame}
 	
+	\subsubsection{Quality Attribute Workshop (QAW)}
+		\begin{frame}
+			\frametitle{\insertsubsubsection}
+			Quality Attribute Workshop es un método que define un proceso que involucra a los \emph{stakeholders} en la
+			definición de los Escenarios de Atributos de Calidad.
+			
+			Permite identificar drivers de la Arquitectura del sistema
+		\end{frame}
+
 	\subsection{Arco Iris}
 	
 		\subsubsection{¿Qué es Arco Iris?}
-		
+	
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
+				Arco Iris pretende involucrar a los \emph{stakeholders} en el proceso de auto reparación y proveerles
+				una mayor visibilidad de sus posibles consecuencias para el desempeño del sistema.
+	
 				\begin{itemize}
 				  \item Permite a stakeholders definir los requerimientos de QA y sus prioridades relativas dependientes del
 				  contexto de ejecución
