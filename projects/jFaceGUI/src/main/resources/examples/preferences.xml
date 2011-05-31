@@ -1,8 +1,0 @@
-<!-- All of these constants have to be registered EnumProperties -->
-<preferences>
-  <tables>
-    <table name="DUMMY_TABLE_NAME" order="name">
-      <column label="ID" name="id" alignment="CENTER" width="25"/>
-      <column label="NAME" name="name" alignment="LEFT" width="276"/>
-    </table>
-</preferences>
