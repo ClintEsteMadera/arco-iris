@@ -11,7 +11,6 @@
 	<description>This POM triggers the build of the applications related to Arco Iris.</description>
 
 	<modules>
-		<module>../jFaceGUI</module>
 		<module>arco-iris-core</module>
 		<module>arco-iris-ui</module>
 	</modules>
