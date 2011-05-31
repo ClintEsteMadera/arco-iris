@@ -24,6 +24,9 @@ reparación de sistemas de software basada en Arquitectura}
 \date{10 de Junio de 2011}
 %\date{\today}
 
+\def\todo#1{\noindent \textcolor{red}{#1}}   % macro para To-Do's
+\def\nota#1{\note[item]{#1}}                 % simplifica el agregado de notas
+
 \begin{document}
 
 % Title Page
@@ -42,20 +45,42 @@ reparación de sistemas de software basada en Arquitectura}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			complejidad creciente de los sistemas de software\\
-			los sistemas incluyan mecanismos para ajustar su comportamiento a partir de fallas o necesidades cambiantes 
-			de sus usuarios y/o el entorno en el que operan.\\
-			sin intervención humana\\
 			
+ 			\nota{Criticidad de las fallas: costos muy altos}
+ 			\nota{Operadores o \emph{sysadmins}: muy costoso y proclive a errores}
+
+			Complejidad creciente de los sistemas de software
+			\begin{itemize}
+				\item[\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}}] Sistemas con mecanismos para ajustar su comportamiento ante:
+				\begin{itemize}
+					\item fallas de hardware,
+					\item necesidades cambiantes de sus usuarios,
+					\item entorno en el que operan.
+				\end{itemize}
+				\pause
+				\uncover<2->{\item \alert{¡Sin intervención humana!}}
+			\end{itemize}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{Sistemas de Bucle Cerrado}
+
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.4]{images/closedLoop.png}
+			\end{figure}
 		\end{frame}
 				
 	\subsection{Rainbow}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
+			
+			\nota{Adapt.Basada en modelos de Arq.: módulo q' conoce e interpreta el modelo de la arq. y de acuerdo al
+			problema detectado, toma una decisión sobre cómo reparar al sistema}
+			
 			\begin{itemize}
-				\item Mencionar Self Healing basado en Arquitectura
-				\item Mencionar Acme
+				\item Adaptación Basada en Modelos de Arquitectura.
+				\item Acme.
 				\item Arquitectura:
 					\begin{itemize}
 						\item Figura 10 y contar cuento de punta a punta 
