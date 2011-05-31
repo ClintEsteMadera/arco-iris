@@ -6,7 +6,6 @@ import ar.uba.dc.arcoiris.common.validation.Validatable;
 
 import commons.exception.ApplicationException;
 import commons.exception.ServiceException;
-import commons.gui.background.BackgroundInvocationException;
 import commons.gui.util.purpose.Purpose;
 import commons.gui.widget.dialog.BaseCompositeModelBoundedDialog;
 import commons.gui.widget.dialog.OpenableTrayDialog;
@@ -81,9 +80,6 @@ public abstract class BaseArcoIrisUIMultiPurposeDialog<T extends Validatable> ex
 			}
 			arcoIrisUIManager.saveSelfHealingConfiguration();
 
-		} catch (BackgroundInvocationException ex) {
-			// Se supone que se atrapa más arriba esta excepción...
-			throw ex;
 		} catch (ServiceException ex) {
 			// Esta jerarquía de excepciones ya viene preparada para ser
 			// mostradas
