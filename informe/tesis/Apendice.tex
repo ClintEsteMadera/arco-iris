@@ -462,8 +462,7 @@
 	  		\end{tabularx}
 	  		\begin{tabularx}{\textwidth}{p{2cm}X}
 	  			\textbf{projects} & Aquí se encuentra la totalidad del código fuente correspondiente a las aplicaciones objeto de
-	  			este trabajo: Arco Iris, Arco Iris UI, JFaceGUI (a continuación, veremos de qué se trata este proyecto) y algunos
-	  			módulos de Rainbow que fueron ligeramente modificados. 
+	  			este trabajo: Arco Iris, Arco Iris UI, y algunos módulos de Rainbow que fueron ligeramente modificados. 
 	  		\end{tabularx}
 			\begin{tabularx}{\textwidth}{p{2cm}X}
 				\textbf{software} & Aquí se incluyen los prerequisitos para compilar y ejecutar las aplicaciones. (ver apéndice
@@ -486,17 +485,9 @@
  	  			\verb@arco-iris-core@, Arco Iris propiamente dicho; y \verb@arco-iris-ui@.
  	  		\end{tabularx}
 			\begin{tabularx}{\textwidth}{p{3cm}X}
-	  			\textbf{jFaceGUI} & En el desarrollo de una interfaz gráfica para Arco Iris, se observó la oportunidad de aislar
-	  			un \emph{framework} genérico de desarrollo de interfaces ricas de usuario basada en JFace-SWT. Este proyecto aúna
-	  			todas aquellas características genéricas y se compila y construye de manera 100\% independiente a Arco Iris UI.
-	  			Más aún, Arco Iris UI tiene como dependencia al artefacto generado en el proceso de construcción de JFaceGUI.
-	  		\end{tabularx}
-			\begin{tabularx}{\textwidth}{p{3cm}X}
 				\textbf{master-pom} & Este POM\footnote{Para más información sobre los \textbf{P}roject \textbf{O}bject
 				\textbf{M}odel de Maven, referirse a \url{http://maven.apache.org/pom.html}} de Maven contiene descripciones de
-				características comunes a los tres proyectos relacionados con Arco Iris: \verb@arco-iris-core@,
-				\verb@arco-iris-ui@ y \verb@JFaceGUI@. Este último, si bien es independiente de los primeros dos, a los fines de
-				este trabajo y por simplicidad, utiliza el \verb@master-pom@ al igual que los otros dos proyectos.
+				características comunes a los proyectos relacionados con Arco Iris: \verb@arco-iris-core@, y \verb@arco-iris-ui@.
 	  		\end{tabularx}
 			\begin{tabularx}{\textwidth}{p{3cm}X}
 				\textbf{org.sa.rainbow.*} & Aquellos proyectos Java cuyo nombre comienza con el prefijo \verb@org.sa.rainbow@ son
@@ -514,8 +505,8 @@
 		\begin{itemize}
 			\item construir el \verb@master-pom@, el cual luego será utilizado tanto por Arco Iris como por Arco Iris UI.
 			\item instalar las dependencias de \verb@arco-iris-core@ en el repositorio local de Maven.
-			\item construir JFaceGUI, \verb@arco-iris-core@ y \verb@arco-iris-ui@ de una sola vez, utilizando el
-			\emph{reactor-pom} ubicado dentro del directorio \verb@arco-iris@.
+			\item construir \verb@arco-iris-core@ y \verb@arco-iris-ui@ de una sola vez, utilizando el \emph{reactor-pom} ubicado
+			dentro del directorio \verb@arco-iris@.
 		\end{itemize}
 
 		En los próximos apartados se describirán en detalle estos 3 simples pasos.
@@ -549,17 +540,17 @@
 			comandos a ejecutar están especificados en el \emph{script} (el cuál debería funcionar tanto en Linux como en
 			Windows) ubicado en la siguiente ruta: \verb@projects/arco-iris/arco-iris-core/lib/install_missing_artifacts.cmd@.
 			
-			El mismo procedimiento debe ser reiterado para aquellas dependencias de de JFaceGUI que no se encuentran en
+			El mismo procedimiento debe ser reiterado para aquellas dependencias de \verb@arco-iris-ui@ que no se encuentran en
 			repositorios Maven públicos. Para ello, es necesario correr el \emph{script}
 			\verb@projects/arco-iris/arco-iris-ui/lib/install_missing_artifacts.cmd@.
 			
-			Cabe comentar que para los 3 proyectos Java aquí presentados (Arco Iris, Arco Iris UI y JFaceGUI) se incluye un
-			directorio \verb@lib@ con las dependencias de cada proyecto, de modo que cada uno pueda compilar y correr sin que
-			el usuario necesite disponer de una conexión a internet.
+			Cabe mencionar que para los 2 proyectos Java aquí presentados (\verb@arco-iris-core@ y \verb@arco-iris-ui@) se
+			incluye un directorio \verb@lib@ con las dependencias de cada proyecto, de modo que cada uno pueda compilar y correr
+			sin que el usuario necesite disponer de una conexión a internet.
 
 		\subsubsection{Construcción de los Proyectos con Maven}
 		
-			Generar los binarios de las tres aplicaciones anteriormente mencionadas, es tan simple como ejecutar los siguientes
+			Generar los binarios de las dos aplicaciones anteriormente mencionadas, es tan simple como ejecutar los siguientes
 			dos comandos:
 			
 			\begin{Verbatim}[gobble=4]
@@ -569,11 +560,12 @@
 
 			Esto debería generar:
 			\begin{enumerate}
-				\item el archivo \verb@jFaceGUI-0.0.1-SNAPSHOT.jar@ con los binarios de \textbf{JFaceGUI}, compilados utilizando las
-				librerías nativas del sistema operativo subyacente (Windows y Linux están actualmente soportados, para sus versiones
-				de 32 y 64 bits)
-				\item el archivo \verb@arco-iris-ui-0.0.1-SNAPSHOT-distribution.zip@ que contiene el \verb@.jar@ de \textbf{Arco
-				Iris UI} junto con un directorio \verb@lib@ que posee todas las dependencias de dicha aplicación.
+				\item el archivo \verb@arco-iris-ui-0.0.1-SNAPSHOT.jar@ con los binarios de \textbf{Arco Iris UI}, compilados
+				utilizando las librerías nativas del sistema operativo subyacente (Windows y Linux están actualmente soportados,
+				para sus versiones de 32 y 64 bits)
+				\item el archivo \verb@arco-iris-ui-0.0.1-SNAPSHOT-distribution.zip@ que contiene el \verb@.jar@ anteriormente
+				mencionado de \textbf{Arco Iris UI} junto con un directorio \verb@lib@ que posee todas las dependencias de dicha
+				aplicación.
 				\item un archivo \verb@arco-iris-core-0.0.1-SNAPSHOT-distribution.zip@ que contiene el \verb@.jar@ del \emph{core}
 				de \textbf{Arco Iris} junto con un directorio \verb@lib@ que posee todas sus dependencias y un directorio
 				\verb@configs@ el cual contiene los casos de prueba realizados en el presente trabajo y detallados en la sección
