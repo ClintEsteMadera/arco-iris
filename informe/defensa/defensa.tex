@@ -109,9 +109,30 @@ reparación de sistemas de software basada en Arquitectura}
 		\end{frame}
 
 	\subsection{Atributos de Calidad y Concerns}
-
-		\begin{frame}
+		\begin{frame}[allowframebreaks,from second]
 			\frametitle{\insertsubsection}
+			Los \textbf{atributos de calidad} hablan de características específicas que debe tener el sistema 
+			(anteriormente llamados ``requerimientos no funcionales'').\\[10pt]
+			Ejemplo: eficiencia, disponibilidad, flexibilidad, usabilidad, etc.\\[16pt]
+			
+			Los \textbf{concerns} son parámetros mediante los cuales los atributos de un sistema son juzgados,
+			especificados y medidos. Usualmente, los requerimientos de atributos de calidad son
+			expresados en términos de concerns.
+		
+			\framebreak
+			
+			\frametitle{\insertsubsection}
+			\begin{center}
+				\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
+				\begin{tabular}{|c|c|}
+				\textbf{Atributo de Calidad} & \textbf{\emph{Concerns}}\\
+				Eficiencia & Comportamiento Temporal, Utilización de Recursos\\
+				Funcionalidad & Interoperabilidad, Seguridad\\
+				Mantenibilidad & Cambiabilidad, Facilidad de Prueba\\
+				Portabilidad & Adaptabilidad, Coexistencia\\
+				Usabilidad & Compresibilidad, Atractivo			
+				\end{tabular}
+			\end{center}
 		\end{frame}
 	
 	\subsection{Escenarios de Atributos de Calidad}
@@ -130,14 +151,16 @@ reparación de sistemas de software basada en Arquitectura}
 			
 			\frametitle{\insertsubsubsection}
 			Composición de un QAS:
-			\begin{itemize}
-				\item \textbf{Fuente del estímulo}: entidad que generó el estímulo
-				\item \textbf{Estímulo}: condición que debe ser tenida en cuenta cuando llega al sistema
-				\item \textbf{Entorno}: condiciones en las que se encuentra el sistema, e.g. alta carga
-				\item \textbf{Artefacto}: el sistema o partes de él afectadas por el estímulo
-				\item \textbf{Respuesta}: qué hace el sistema ante la llegada del estímulo
-				\item \textbf{Cuantificación de la respuesta}: métrica sobre la \textbf{respuesta}
-			\end{itemize}
+
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.8]{images/scenario.png}
+			\end{figure}
+
+			\nota{Estímulo: condición que debe ser tenida en cuenta cuando llega al sistema}
+			\nota{Entorno: condiciones en las que se encuentra el sistema, e.g. alta carga}
+			\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
+			\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
+			\nota{Cuantificación de la respuesta: métrica sobre la respuesta}
 
 			La \textbf{Cuantificación de la respuesta} permitirá saber si el escenario se satisface.
 		\end{frame}
