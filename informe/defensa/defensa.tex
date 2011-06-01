@@ -1,6 +1,7 @@
 \documentclass[red,table,dvipsnames]{beamer}
 \usepackage[spanish, activeacute]{babel}
 \usepackage[ansinew]{inputenc}
+\usepackage{lmodern}	% to avoid warnings about undefined fonts
 % descomentar lo siguiente para una presentación en formato widescreen 
 %\usepackage[orientation=landscape,size=custom,width=16,height=10,scale=0.5]{beamerposter}
 
@@ -8,16 +9,23 @@
 \usecolortheme{rose}
 \setbeamercovered{transparent}
 \setbeamerfont{subtitle}{size=\tiny}
-\usenavigationsymbolstemplate{}	% borrar los símbolos de navegación de abajo a la derecha
+\setbeamersize{			% reducing margins
+	text margin left=10pt,
+	text margin right=10pt,
+	sidebar width left=0pt,
+	sidebar width right=0pt
+}
+\usenavigationsymbolstemplate{}	% remove navigation symbols on lower right hand side
 %\beamertemplateshadingbackground{red!10}{white!1}
 \setbeamertemplate{frametitle continuation}[from second]
 
 % beamerbasefont.sty defines the commands \Tiny and \TINY for very small font sizes. Redefining \Tiny to avoid warnings
-\let\Tiny=\tiny
+%\let\Tiny=\tiny
 \setcounter{tocdepth}{1}
 
-\title[Auto Reparación de Sistemas de Software]{Hacia un modelo más flexible para la implementación de la auto
-reparación de sistemas de software basada en Arquitectura}
+\title[Auto Reparación de Sistemas de Software]{Presentación}	% workaround para etapa de confección de la PPT
+%\title[Auto Reparación de Sistemas de Software]{Hacia un modelo más flexible para la implementación de la auto
+%reparación de sistemas de software basada en Arquitectura}
 \subtitle{Tesis de Licenciatura en Ciencias de la Computación}
 \author{Chiocchio, Jonathan \and Tursi, Germán Gabriel}
 \institute{Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación}
@@ -41,10 +49,19 @@ reparación de sistemas de software basada en Arquitectura}
 
 \section{Conceptos Preliminares}
 
-	\subsection{Introducción a Self Healing}
+	\subsection{Introducción a Auto Adaptación}
 
 		\begin{frame}
-			\frametitle{\insertsubsection}
+			\frametitle{Tendencia a los Sistemas Autónomos}
+			
+			\centering
+			\begin{figure}[ht]
+				\centering \includegraphics[width=0.96\textwidth,height=0.84\textheight]{images/evolucionWindows.png}
+			\end{figure}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{Auto $x$, $x \in$ \{Adaptación, Reparación, Configuración\}}
 			
  			\nota{Criticidad de las fallas: costos muy altos}
  			\nota{Operadores o \emph{sysadmins}: muy costoso y proclive a errores}
@@ -65,11 +82,39 @@ reparación de sistemas de software basada en Arquitectura}
 		\begin{frame}
 			\frametitle{Sistemas de Bucle Cerrado}
 
+			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.4]{images/closedLoop.png}
 			\end{figure}
 		\end{frame}
-				
+
+	\subsection{Atributos de Calidad y Concerns}
+		\begin{frame}[allowframebreaks,from second]
+			\frametitle{\insertsubsection}
+			Los \textbf{atributos de calidad} (QAs) hablan de características específicas que debe tener el sistema, antes (mal)
+			llamados ``requerimientos no funcionales''.\\[10pt]
+			e.g. ``el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.''\\[16pt]
+			Los \textbf{\emph{concerns}} son parámetros mediante los cuales los atributos de un sistema son juzgados,
+			especificados y medidos. Usualmente, los requerimientos de atributos de calidad son expresados en términos de
+			concerns.
+		
+			\framebreak
+			
+			\frametitle{\insertsubsection}
+			\small
+			\begin{center}
+				\rowcolors*[\hline]{1}{GreenYellow!65}{GreenYellow!30}
+				\begin{tabular}{|c|c|}
+					\textbf{Atributo de Calidad} & \textbf{Ejemplos de \emph{Concerns}}\\
+					Eficiencia & Comportamiento Temporal, Utilización de Recursos\\
+					Funcionalidad & Interoperabilidad, Seguridad\\
+					Mantenibilidad & Cambiabilidad, Facilidad de Prueba\\
+					Portabilidad & Adaptabilidad, Coexistencia\\
+					Usabilidad & Compresibilidad, Atractivo			
+				\end{tabular}
+			\end{center}
+		\end{frame}
+
 	\subsection{Rainbow}
 
 		\begin{frame}
@@ -79,14 +124,58 @@ reparación de sistemas de software basada en Arquitectura}
 			problema detectado, toma una decisión sobre cómo reparar al sistema}
 			
 			\begin{itemize}
-				\item Adaptación Basada en Modelos de Arquitectura.
-				\item Acme.
-				\item Arquitectura:
-					\begin{itemize}
-						\item Figura 10 y contar cuento de punta a punta 
-					\end{itemize}
-				\item Explicar qué es una Estrategia (obviar concepto de Táctica)
+				\uncover<1>{\item Implementa la denominada\\
+				\textbf{``Adaptación Basada en Modelos de Arquitectura}''.}
+				\uncover<2>{\item Intenta cubrir una amplia variedad de sistemas con arquitectura disímiles entre sí.}
+				\uncover<3>{\item Útil por ejemplo para sistemas \emph{legacy}.}
+				\uncover<4>{\item Lee el modelo de la arquitectura. (en \textbf{Acme})}
 			\end{itemize}
+			
+		\end{frame}
+
+		\begin{frame}[containsverbatim]
+			\frametitle{Ejemplo de un Arquitectura en Acme}
+			\scriptsize
+			\begin{verbatim}
+				Property MAX_UTIL : float = 0.75;
+				Property MAX_RESPTIME : float = 1000.0;
+
+				Component s1 : ServerT {
+				  Property deploymentLocation;
+				  Port http0;
+				  Property cost;
+				  Property fidelity;
+				  Property load;
+				  Property constraint << default : "heuristic self.load <= MAX_UTIL;"; >> ;
+				}
+
+				Component c1 : ClientT {
+				  Property experRespTime : float << default : float = 100.0; >> ;
+				  Property requestRate : float << default : float = 0.0; >> ;
+				  rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
+				}
+			\end{verbatim}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{Arquitectura de Rainbow}
+
+			\centering
+			\begin{figure}[ht]
+				\centering \includegraphics[height=0.84\textheight]{images/Rainbow_Architecture.png}
+			\end{figure}
+		\end{frame}
+
+		\begin{frame}
+			\frametitle{Tácticas y Estrategias de Reparación}
+
+			\underline{\textbf{Táctica}}: decisión de diseño para controlar las respuestas del sistema a determinados
+			estímulos, a fin de satisfacer uno o más QA.\\[5pt]
+			e.g. \alert{agregar un servidor} al sistema.\\[10pt]
+			\pause \underline{\textbf{Estrategia}}: es un \textbf{algoritmo que usa una o más tácticas} para cumplir los
+			atributos de calidad en un nivel deseado.\\[5pt]
+			e.g. \alert{agregar un servidor}, si el tiempo de respuesta aún supera cierto umbral, \alert{disminuír la fidelidad}
+			de la respuesta.
 		\end{frame}
 	
 \section{Descripción del Problema y Propuesta}
@@ -94,85 +183,59 @@ reparación de sistemas de software basada en Arquitectura}
 	\subsection{Mejoras a Rainbow}
 	
 		\begin{frame}
-			\frametitle{\insertsubsection}
-			Características a mejorar de Rainbow:
-			\begin{itemize}
-			  \item No involucra a los \emph{stakeholders} en el proceso de configuración de auto reparación
-			  \item Poco dinámico, causas:
-			  \begin{itemize}
-			    \item configuración compleja
-			    \item ausencia de mecanismo de actualización en caliente
-			    \item no se adapta al entorno de ejecución
-			   \end{itemize}
-			  \item Duplicación de configuración de restricciones (\emph{overhead de procesamiento})
-			\end{itemize}
-		\end{frame}
+			\frametitle{Características de Rainbow a Mejorar}
 
-	\subsection{Atributos de Calidad y Concerns}
-		\begin{frame}[allowframebreaks,from second]
-			\frametitle{\insertsubsection}
-			Los \textbf{atributos de calidad} hablan de características específicas que debe tener el sistema 
-			(anteriormente llamados ``requerimientos no funcionales'').\\[10pt]
-			Ejemplo: eficiencia, disponibilidad, flexibilidad, usabilidad, etc.\\[16pt]
-			
-			Los \textbf{concerns} son parámetros mediante los cuales los atributos de un sistema son juzgados,
-			especificados y medidos. Usualmente, los requerimientos de atributos de calidad son
-			expresados en términos de concerns.
-		
-			\framebreak
-			
-			\frametitle{\insertsubsection}
-			\begin{center}
-				\rowcolors*[\hline]{1}{GreenYellow!25}{GreenYellow!10}
-				\begin{tabular}{|c|c|}
-				\textbf{Atributo de Calidad} & \textbf{\emph{Concerns}}\\
-				Eficiencia & Comportamiento Temporal, Utilización de Recursos\\
-				Funcionalidad & Interoperabilidad, Seguridad\\
-				Mantenibilidad & Cambiabilidad, Facilidad de Prueba\\
-				Portabilidad & Adaptabilidad, Coexistencia\\
-				Usabilidad & Compresibilidad, Atractivo			
-				\end{tabular}
-			\end{center}
+			\begin{itemize}[<+->]
+				\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
+				\item Duplicación en la configuración de restricciones (\emph{overhead de procesamiento})
+				\item Poco dinámico, debido a:
+				\begin{itemize}[<+->]
+					\item configuración compleja
+					\item ausencia de mecanismo de actualización ``en caliente''
+					\item no se adapta al entorno de ejecución
+				\end{itemize}
+			\end{itemize}
 		\end{frame}
 	
 	\subsection{Escenarios de Atributos de Calidad}
 	
-%los \Escenarios de Atributos de Calidad" como
-%forma fundamental de expresar el conocimiento de los stakeholders referido a requerimientos
-%que deben ser contemplados por la arquitectura
-
-	\subsubsection{Escenarios de Atributos de Calidad}
-		\begin{frame}[allowframebreaks,from second]
-			\frametitle{\insertsubsubsection}
-			Los Escenarios de Atributos de Calidad o QAS(\emph{Quality Attribute Scenarios}) permiten expresar cómo debería
-			responder el sistema ante determinados estímulos y bajo ciertas circunstancias.\\
-			
-			\framebreak
-			
-			\frametitle{\insertsubsubsection}
-			Composición de un QAS:
-
-			\begin{figure}[ht]
-				\centering \includegraphics[scale=0.8]{images/scenario.png}
-			\end{figure}
-
-			\nota{Estímulo: condición que debe ser tenida en cuenta cuando llega al sistema}
-			\nota{Entorno: condiciones en las que se encuentra el sistema, e.g. alta carga}
-			\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
-			\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
-			\nota{Cuantificación de la respuesta: métrica sobre la respuesta}
-
-			La \textbf{Cuantificación de la respuesta} permitirá saber si el escenario se satisface.
-		\end{frame}
+		\subsubsection{Escenarios de Atributos de Calidad}
 	
-	\subsubsection{Quality Attribute Workshop (QAW)}
-		\begin{frame}
-			\frametitle{\insertsubsubsection}
-			Quality Attribute Workshop es un método que define un proceso que involucra a los \emph{stakeholders} en la
-			definición de los Escenarios de Atributos de Calidad.
-			
-			Permite identificar drivers de la Arquitectura del sistema
-		\end{frame}
+			\nota{Los Escenarios de Atributos de Calidad como forma fundamental de expresar el conocimiento de los
+			\emph{stakeholders} referido a requerimientos que deben ser contemplados por la arquitectura}
+	
+			\begin{frame}[allowframebreaks,from second]
+				\frametitle{\insertsubsubsection}
+				Los \textbf{Escenarios de Atributos de Calidad} o QAS(\emph{Quality Attribute Scenarios}) permiten expresar cómo
+				debería responder el sistema ante determinados estímulos y bajo ciertas circunstancias.
+				
+				\framebreak
+				
+				\frametitle{\insertsubsubsection}
+				Composición de un QAS:
+	
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.7]{images/scenario.png}
+				\end{figure}
+	
+				\nota{Estímulo: condición que debe ser tenida en cuenta cuando llega al sistema}
+				\nota{Entorno: condiciones en las que se encuentra el sistema, e.g. alta carga}
+				\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
+				\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
+				\nota{Cuantificación de la respuesta: métrica sobre la respuesta}
+	
+				\todo{¿Esto no queda medio colgado?}\\
+				La \textbf{Cuantificación de la respuesta} permitirá saber si el escenario se satisface.
+			\end{frame}
+		
+		\subsubsection{Quality Attribute Workshop (QAW)}
+			\begin{frame}
+				\frametitle{\insertsubsubsection}
+				El \textbf{Quality Attribute Workshop} es una metodología definida por el SEI\footnote{\emph{Software Engineering
+				Institute}, ver \url{http://www.sei.cmu.edu/}}, con un proceso bien definido para involucrar a los
+				\emph{stakeholders} en la definición de los Escenarios de Atributos de Calidad.\\[10pt]
+				Permite identificar \emph{drivers} de la Arquitectura del sistema.
+			\end{frame}
 
 	\subsection{Arco Iris}
 	
@@ -181,10 +244,10 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
 				Arco Iris pretende involucrar a los \emph{stakeholders} en el proceso de auto reparación y proveerles
-				una mayor visibilidad de sus posibles consecuencias para el desempeño del sistema.
+				mayor visibilidad sobre la injerencia que este proceso tiene en el desempeño del sistema.
 	
 				\begin{itemize}
-				  \item Permite a stakeholders definir los requerimientos de QA y sus prioridades relativas dependientes del
+				  \item Permite a \emph{stakeholders} definir los requerimientos de QA y sus prioridades relativas, dependientes del
 				  contexto de ejecución
 				\end{itemize}
 
@@ -252,13 +315,14 @@ reparación de sistemas de software basada en Arquitectura}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			\begin{itemize}
-				\item Ampliación de la recarga dinámica de configuración (ideal: nunca detener Arco Iris para cambiar la config.)
-				\item Extensión de tipos de restricciones implementadas por defecto
-				\item Atributos de Calidad y concerns configurables por el usuario (solución difícil)
-				\item Optimización en la selección de la estrategia: la utilidad del sistema es algo limitado pues hace suposiciones
-				y simplificaciones sobre el modelo\ldots
-				\item Ausencia u obsolescencia del modelo de la arquitectura 
+			\begin{itemize}[<+->]
+				\item Ampliación de la recarga dinámica de configuración\\
+				(idealmente: nunca detener Arco Iris para reconfigurar).
+				\item Extensión de tipos de restricciones implementadas por defecto.
+				\item Atributos de Calidad y \emph{Concerns} configurables por el usuario.
+				\item Optimización en la selección de la estrategia: la utilidad del sistema es limitada ya que hace
+				simplificaciones sobre el modelo\ldots
+				\item Ausencia u obsolescencia del modelo de la arquitectura.
 			\end{itemize}
 		\end{frame}
 
@@ -266,12 +330,16 @@ reparación de sistemas de software basada en Arquitectura}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			\begin{itemize}
-				\item Rapidez en el cambio de configuración (por la UI + recarga dinamica)
-				\item Informacion sobre restricciones (fuera del modelo - mas accesible p/ los stakeholders)
-				\item Entorno de ejecución más copado con respecto al estático de Rainbow
-				\item Aplicabilidad en sistemas reales (opcional)
-				\item Conclusión final (sección 7.5) 
+			\begin{itemize}[<+->]
+				\item Dinamismo agregado:
+				\begin{itemize}[<+->]
+					\item Recarga automática de configuración
+					\item Arco Iris UI
+					\item Reconocimiento dinámico del entorno de ejecución del sistema.
+				\end{itemize}
+				\item Informacion sobre las restricciones fuera del modelo (más accesible para los \emph{stakeholders})
+				\item Aplicabilidad en sistemas reales (\todo{opcional})
+				\item \todo{Conclusión final (sección 7.5)}
 			\end{itemize}
 		\end{frame}	
 	
@@ -279,6 +347,14 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{center}
 				\Huge{¿Preguntas?}
 			\end{center}
+		\end{frame}
+
+		\begin{frame}[plain]
+			\frametitle{``Dígame Licenciado''}
+			\centering
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.7]{images/Licenciado.png}
+			\end{figure}
 		\end{frame}
 
 \end{document}
