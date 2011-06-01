@@ -85,9 +85,9 @@
 			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.4]{images/closedLoop.png}
-				\\\todo{EL SISTEMA MONITOREA? ESTA BIEN EL CONCEPTO?}
 			\end{figure}
 		\end{frame}
+
 	\subsection{Atributos de Calidad y Concerns}
 		\begin{frame}[allowframebreaks,from second]
 			\frametitle{\insertsubsection}
@@ -98,8 +98,8 @@
 			\nota{ejemplo de definición QA: el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.}
 
 			Los \textbf{\emph{concerns}} permiten juzgar, especificar y medir los atributos de calidad. Usualmente, los requerimientos
-			de atributos de calidad son expresados en términos de concerns.
-
+			de atributos de calidad son expresados en términos de \emph{concerns}.
+		
 			\framebreak
 			
 			\frametitle{\insertsubsection}
@@ -147,6 +147,7 @@
 				  Port http0;
 				  Property cost;
 				  Property fidelity;
+				  Property load;
 				}
 
 				Component c1 : ClientT {
@@ -174,7 +175,6 @@
 			e.g. \alert{agregar un servidor} al sistema.\\[10pt]
 			\pause \underline{\textbf{Estrategia}}: es un \textbf{algoritmo que usa una o más tácticas} para cumplir los
 			atributos de calidad en un nivel deseado. \pause Ejemplo:\\[5pt]
-
 			\begin{enumerate}
 			  \item \alert{agregar un servidor}
 			  \item si tiempo de respuesta $>$ umbral determinado\\
@@ -182,7 +182,7 @@
 			  \item Estrategia exitosa \textbf{\textcolor{blue}{$\iff$}} tiempo de respuesta $<$ umbral determinado  
 			\end{enumerate}
 		\end{frame}
-
+	
 \section{Descripción del Problema y Propuesta}
 
 	\subsection{Mejoras a Rainbow}
@@ -233,7 +233,7 @@
 				\begin{center}
 					La \textbf{Cuantificación de la respuesta (Response Measure)} permite determinar si el escenario se satisface o no.
 				\end{center}
-				\todo{Ponemos ejemplo de escenario de tiempo de respuesta?}
+				\todo{Poner ejemplo de escenario de tiempo de respuesta}
 			\end{frame}
 		
 		\subsubsection{Quality Attribute Workshop (QAW)}
@@ -268,21 +268,22 @@
 				\end{itemize}
 
 				\begin{center}
-					Arco Iris puede resumirse cómo una combinación de Rainbow más Escenarios de Atributos de Calidad
+					Arco Iris = Rainbow + Escenarios
 				\end{center}
 			\end{frame}
-	
+
 		\subsubsection{Arco Iris UI}
 
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
-				(mostrar configuración necesaria para utilizar Arco Iris y mencionar que es dinamica)
+				\todo{(mostrar configuración necesaria para utilizar Arco Iris y mencionar que es dinamica)}
 			\end{frame}
 
 		\subsubsection{Implementación de Arco Iris}
 
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
+				\todo{falta hacer esto}
 				\begin{itemize}
 					\item Mostrar arquitectura de Arco Iris (haciendo un golpe de efecto con la Arq. De Rainbow)
 					\item Explicar importancia de estímulo, entorno y cuantificación de la rta. para la auto reparación.
@@ -296,7 +297,7 @@
 
 	\begin{frame}
 		\frametitle{\insertsection}
-		Utiliza modo simulación de una tesis de doctorado (znn)
+		\todo{Utiliza modo simulación de una tesis de doctorado (znn)}
 	\end{frame}
 
 	\subsection{Caso 1 - Renombrar}
