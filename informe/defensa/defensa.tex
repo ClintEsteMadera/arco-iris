@@ -85,22 +85,25 @@
 			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.4]{images/closedLoop.png}
+				\\\todo{EL SISTEMA MONITOREA? ESTA BIEN EL CONCEPTO?}
 			\end{figure}
 		\end{frame}
-
 	\subsection{Atributos de Calidad y Concerns}
 		\begin{frame}[allowframebreaks,from second]
 			\frametitle{\insertsubsection}
 			Los \textbf{atributos de calidad} (QAs) hablan de características específicas que debe tener el sistema, antes (mal)
 			llamados ``requerimientos no funcionales''.\\[10pt]
-			e.g. ``el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.''\\[16pt]
-			Los \textbf{\emph{concerns}} son parámetros mediante los cuales los atributos de un sistema son juzgados,
-			especificados y medidos. Usualmente, los requerimientos de atributos de calidad son expresados en términos de
-			concerns.
-		
+			Ejemplo: eficiencia, disponibilidad, flexibilidad, usabilidad, etc.\\[16pt]
+
+			\nota{ejemplo de definición QA: el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.}
+
+			Los \textbf{\emph{concerns}} permiten juzgar, especificar y medir los atributos de calidad. Usualmente, los requerimientos
+			de atributos de calidad son expresados en términos de concerns.
+
 			\framebreak
 			
 			\frametitle{\insertsubsection}
+			Ejemplos de \textbf{concerns}:
 			\small
 			\begin{center}
 				\rowcolors*[\hline]{1}{GreenYellow!65}{GreenYellow!30}
@@ -128,7 +131,7 @@
 				\textbf{``Adaptación Basada en Modelos de Arquitectura}''.}
 				\uncover<2>{\item Intenta cubrir una amplia variedad de sistemas con arquitectura disímiles entre sí.}
 				\uncover<3>{\item Útil por ejemplo para sistemas \emph{legacy}.}
-				\uncover<4>{\item Lee el modelo de la arquitectura. (en \textbf{Acme})}
+				\uncover<4>{\item Trabaja con el modelo de la arquitectura. (expresado mediante \textbf{Acme})}
 			\end{itemize}
 			
 		\end{frame}
@@ -137,7 +140,6 @@
 			\frametitle{Ejemplo de un Arquitectura en Acme}
 			\scriptsize
 			\begin{verbatim}
-				Property MAX_UTIL : float = 0.75;
 				Property MAX_RESPTIME : float = 1000.0;
 
 				Component s1 : ServerT {
@@ -145,13 +147,11 @@
 				  Port http0;
 				  Property cost;
 				  Property fidelity;
-				  Property load;
-				  Property constraint << default : "heuristic self.load <= MAX_UTIL;"; >> ;
 				}
 
 				Component c1 : ClientT {
 				  Property experRespTime : float << default : float = 100.0; >> ;
-				  Property requestRate : float << default : float = 0.0; >> ;
+				  Property requestRate;
 				  rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
 				}
 			\end{verbatim}
@@ -173,11 +173,16 @@
 			estímulos, a fin de satisfacer uno o más QA.\\[5pt]
 			e.g. \alert{agregar un servidor} al sistema.\\[10pt]
 			\pause \underline{\textbf{Estrategia}}: es un \textbf{algoritmo que usa una o más tácticas} para cumplir los
-			atributos de calidad en un nivel deseado.\\[5pt]
-			e.g. \alert{agregar un servidor}, si el tiempo de respuesta aún supera cierto umbral, \alert{disminuír la fidelidad}
-			de la respuesta.
+			atributos de calidad en un nivel deseado. \pause Ejemplo:\\[5pt]
+
+			\begin{enumerate}
+			  \item \alert{agregar un servidor}
+			  \item si tiempo de respuesta $>$ umbral determinado\\
+			  \textbf{\textcolor{blue}{$\Rightarrow$}} \alert{disminuir la fidelidad}
+			  \item Estrategia exitosa \textbf{\textcolor{blue}{$\iff$}} tiempo de respuesta $<$ umbral determinado  
+			\end{enumerate}
 		\end{frame}
-	
+
 \section{Descripción del Problema y Propuesta}
 
 	\subsection{Mejoras a Rainbow}
@@ -187,7 +192,8 @@
 
 			\begin{itemize}[<+->]
 				\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
-				\item Duplicación en la configuración de restricciones (\emph{overhead de procesamiento})
+				\item Duplicación en la configuración de restricciones 
+				\\\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}
 				\item Poco dinámico, debido a:
 				\begin{itemize}[<+->]
 					\item configuración compleja
@@ -224,8 +230,10 @@
 				\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
 				\nota{Cuantificación de la respuesta: métrica sobre la respuesta}
 	
-				\todo{¿Esto no queda medio colgado?}\\
-				La \textbf{Cuantificación de la respuesta} permitirá saber si el escenario se satisface.
+				\begin{center}
+					La \textbf{Cuantificación de la respuesta (Response Measure)} permite determinar si el escenario se satisface o no.
+				\end{center}
+				\todo{Ponemos ejemplo de escenario de tiempo de respuesta?}
 			\end{frame}
 		
 		\subsubsection{Quality Attribute Workshop (QAW)}
@@ -241,17 +249,27 @@
 	
 		\subsubsection{¿Qué es Arco Iris?}
 	
-			\begin{frame}
+			\begin{frame}[allowframebreaks,from second]
 				\frametitle{\insertsubsubsection}
 				Arco Iris pretende involucrar a los \emph{stakeholders} en el proceso de auto reparación y proveerles
 				mayor visibilidad sobre la injerencia que este proceso tiene en el desempeño del sistema.
-	
+
+				\framebreak
+					
+				Características:
 				\begin{itemize}
-				  \item Permite a \emph{stakeholders} definir los requerimientos de QA y sus prioridades relativas, dependientes del
-				  contexto de ejecución
+				  \item Utiliza los QAS definidos por los \emph{stakeholders} en los QAW para llevar a cabo la auto reparación
+				  \item Extiende los QAS con información requerida para mejorar la adaptación:
+				  	\begin{itemize}
+				    	\item Cada escenario tiene una prioridad determinada
+				    	\item Cada entorno define la importancia de los distintos \emph{concerns}
+				    	\item Estrategias que reparan al escenario
+					\end{itemize}
 				\end{itemize}
 
-				En qué consiste la extensión a Rainbow (Rainbow + Escenarios)
+				\begin{center}
+					Arco Iris puede resumirse cómo una combinación de Rainbow más Escenarios de Atributos de Calidad
+				\end{center}
 			\end{frame}
 	
 		\subsubsection{Arco Iris UI}
