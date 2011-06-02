@@ -48,9 +48,9 @@
 \end{frame}
 
 
-%JONY
+%--------- JONY ---------
 \begin{frame}
-	\frametitle{\insertsection}
+	\frametitle{Objetivo de la Tesis}
 		
 	Presentar un modelo de \textbf{Auto Reparación} más flexible, el cual involucre a los \textbf{\emph{stakeholders}} en
 	el proceso de definición de requerimientos de calidad, proveyéndoles a su vez mayor visibilidad.
@@ -61,19 +61,18 @@
 
 	\subsection{Introducción a Auto Reparación}
 
-		%JONY
+		%--------- JONY ---------
 		\begin{frame}
 			\frametitle{Tendencia a los Sistemas Autónomos}
 
 			\nota{Antes de introducir Auto Adaptación, veamos un ejemplo de la evolución de windows con respecto a este tema}			
-			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[width=0.96\textwidth,height=0.84\textheight]{images/evolucionWindows.png}
 			\end{figure}
 		\end{frame}
 
 		
-		%JONY
+		%--------- JONY ---------
 		\begin{frame}
 			\frametitle{Auto Adaptación / Auto Reparación}
 			
@@ -94,18 +93,16 @@
 			\end{itemize}
 		\end{frame}
 
-		%JONY
+		%--------- JONY ---------
 		\begin{frame}
 			\frametitle{Sistemas de Bucle Cerrado}
 
-			\todo{JONY: Eliminar la palabra ``Modelo''}
-			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.4]{images/closedLoop.png}
 			\end{figure}
 		\end{frame}
 
-	%JONY
+	%--------- JONY ---------
 	\subsection{Atributos de Calidad y Concerns}
 		\begin{frame}[allowframebreaks,from second]
 			\frametitle{\insertsubsection}
@@ -138,7 +135,7 @@
 
 	\subsection{Rainbow}
 
-		%TURCO
+		%--------- TURCO ---------
 		\begin{frame}
 			\frametitle{\insertsubsection}
 			
@@ -157,7 +154,7 @@
 			
 		\end{frame}
 
-		%TURCO
+		%--------- TURCO ---------
 		\begin{frame}[containsverbatim]
 			\frametitle{Ejemplo de un Arquitectura en Acme}
 			
@@ -183,13 +180,12 @@
 			\end{verbatim}
 		\end{frame}
 
-		%JONY
+		%--------- JONY ---------
 		\begin{frame}
 			\frametitle{Arquitectura de Rainbow}
 
-			\centering
 			\begin{figure}[ht]
-				\centering \includegraphics[height=0.85\textheight]{images/Rainbow_Framework.png}
+				\centering \includegraphics[height=0.84\textheight]{images/Rainbow_Framework.png}
 			\end{figure}
 		\end{frame}
 
@@ -262,11 +258,8 @@
 				\nota{Entorno: condiciones en las que se encuentra el sistema, e.g. alta carga}
 				\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
 				\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
-				\nota{Cuantificación de la respuesta: métrica sobre la respuesta}
-	
-				\begin{center}
-					La \textbf{Cuantificación de la respuesta (Response Measure)} permite determinar si el escenario se satisface o no.
-				\end{center}
+				\nota{Cuantificación de la respuesta: métrica sobre la respuesta. Permite determinar si el escenario se satisface}
+
 				\todo{TURCO:Poner ejemplo de escenario de tiempo de respuesta (modo texto o scenario\_availability\_example.png?)}
 			\end{frame}
 		
@@ -285,12 +278,12 @@
 	
 			\begin{frame}[allowframebreaks,from second]
 				\frametitle{\insertsubsubsection}
+				
 				Arco Iris pretende involucrar a los \emph{stakeholders} en el proceso de auto reparación y proveerles
 				mayor visibilidad sobre la injerencia que este proceso tiene en el desempeño del sistema.
 
 				\framebreak
 
-				\centering
 				\begin{figure}[ht]
 					\centering \includegraphics[scale=0.4]{images/arcoIrisUI_conceptualFlow.png}
 				\end{figure}
@@ -313,11 +306,26 @@
 				\end{center}
 			\end{frame}
 
+		%--------- JONY ---------
 		\subsubsection{Arco Iris UI}
 
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
-				\todo{JONY: mostrar configuración necesaria para utilizar Arco Iris y mencionar que es dinamica}
+				
+				\textbf{Motivación principal}\\[10pt]
+				\begin{center}
+					Facilitar el uso de Arco Iris a los distintos \emph{stakeholders}.
+				\end{center}
+
+				\textbf{Características Principales}\\[10pt]
+				\begin{center}
+					\begin{itemize}
+						\pause \item Herramienta de escritorio.
+						\pause \item Multi plataforma.
+						\pause \item Multi usuario.
+						\pause \item Lee y guarda configuración en XML.
+					\end{itemize}
+				\end{center}
 			\end{frame}
 
 		\subsubsection{Implementación de Arco Iris}
@@ -413,7 +421,6 @@
 
 		\begin{frame}[plain]
 			\frametitle{``Dígame Licenciado''}
-			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.7]{images/Licenciado.png}
 			\end{figure}
