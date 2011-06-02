@@ -47,31 +47,46 @@
 	\tableofcontents
 \end{frame}
 
+
+%JONY
+\begin{frame}
+	\frametitle{\insertsection}
+		
+	Presentar un modelo de \textbf{Auto Reparación} más flexible, el cual involucre a los \textbf{\emph{stakeholders}} en
+	el proceso de definición de requerimientos de calidad, proveyéndoles a su vez mayor visibilidad.
+		
+\end{frame}
+
 \section{Conceptos Preliminares}
 
-	\subsection{Introducción a Auto Adaptación}
+	\subsection{Introducción a Auto Reparación}
 
+		%JONY
 		\begin{frame}
 			\frametitle{Tendencia a los Sistemas Autónomos}
-			
+
+			\nota{Antes de introducir Auto Adaptación, veamos un ejemplo de la evolución de windows con respecto a este tema}			
 			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[width=0.96\textwidth,height=0.84\textheight]{images/evolucionWindows.png}
 			\end{figure}
 		\end{frame}
 
+		
+		%JONY
 		\begin{frame}
-			\frametitle{Auto $x$, $x \in$ \{Adaptación, Reparación, Configuración\}}
+			\frametitle{Auto Adaptación / Auto Reparación}
 			
- 			\nota{Criticidad de las fallas: costos muy altos}
- 			\nota{Operadores o \emph{sysadmins}: muy costoso y proclive a errores}
+ 			\nota{Criticidad de las fallas: una falla puede resultar muy costosa}
+ 			\nota{Necesidad de reducir costos operativos: operadores, ITO Caja de Valores, sector Operaciones Sabre}
+ 			\nota{Minimizar el error humano}
 
 			Complejidad creciente de los sistemas de software
 			\begin{itemize}
 				\item[\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}}] Sistemas con mecanismos para ajustar su comportamiento ante:
 				\begin{itemize}
 					\item fallas de hardware,
-					\item necesidades cambiantes de sus usuarios,
+					\item requerimientos de calidad cambiantes,
 					\item entorno en el que operan.
 				\end{itemize}
 				\pause
@@ -79,15 +94,18 @@
 			\end{itemize}
 		\end{frame}
 
+		%JONY
 		\begin{frame}
 			\frametitle{Sistemas de Bucle Cerrado}
 
+			\todo{JONY: Eliminar la palabra ``Modelo''}
 			\centering
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.4]{images/closedLoop.png}
 			\end{figure}
 		\end{frame}
 
+	%JONY
 	\subsection{Atributos de Calidad y Concerns}
 		\begin{frame}[allowframebreaks,from second]
 			\frametitle{\insertsubsection}
@@ -120,24 +138,31 @@
 
 	\subsection{Rainbow}
 
+		%TURCO
 		\begin{frame}
 			\frametitle{\insertsubsection}
 			
 			\nota{Adapt.Basada en modelos de Arq.: módulo q' conoce e interpreta el modelo de la arq. y de acuerdo al
 			problema detectado, toma una decisión sobre cómo reparar al sistema}
+			\nota{Intenta aplicar a arquitecturas disímiles y ser no intrusivo}
+			\nota{No requiere diseñar el sistema teniendo en cuenta que va a ser adaptado mediante Rainbow}
 			
-			\begin{itemize}
-				\uncover<1>{\item Implementa la denominada\\
-				\textbf{``Adaptación Basada en Modelos de Arquitectura}''.}
-				\uncover<2>{\item Intenta cubrir una amplia variedad de sistemas con arquitectura disímiles entre sí.}
-				\uncover<3>{\item Útil por ejemplo para sistemas \emph{legacy}.}
-				\uncover<4>{\item Trabaja con el modelo de la arquitectura. (expresado mediante \textbf{Acme})}
+			\begin{itemize}[<+->]
+			  	\item \emph{Framework} de Auto Adaptación.
+			  	\item Realizado bajo el marco del proyecto ABLE de la CMU. 
+				\item Trabaja con el modelo de la arquitectura (expresado mediante \textbf{Acme}).
+				\item Externo al sistema a adaptar.
+				\item Soporta sistemas \emph{legacy} y/o cuyo código no se encuentra disponible.
 			\end{itemize}
 			
 		\end{frame}
 
+		%TURCO
 		\begin{frame}[containsverbatim]
 			\frametitle{Ejemplo de un Arquitectura en Acme}
+			
+			\nota{las invariantes seran utilizadas por Rainbow para saber cuándo y cómo debe adaptar el sistema}
+
 			\scriptsize
 			\begin{verbatim}
 				Property MAX_RESPTIME : float = 1000.0;
@@ -158,26 +183,35 @@
 			\end{verbatim}
 		\end{frame}
 
+		%JONY
 		\begin{frame}
 			\frametitle{Arquitectura de Rainbow}
 
 			\centering
 			\begin{figure}[ht]
-				\centering \includegraphics[height=0.84\textheight]{images/Rainbow_Architecture.png}
+				\centering \includegraphics[height=0.85\textheight]{images/Rainbow_Framework.png}
 			\end{figure}
 		\end{frame}
 
-		\begin{frame}
+		\begin{frame}[allowframebreaks]
 			\frametitle{Tácticas y Estrategias de Reparación}
 
 			\underline{\textbf{Táctica}}: decisión de diseño para controlar las respuestas del sistema a determinados
 			estímulos, a fin de satisfacer uno o más QA.\\[5pt]
-			e.g. \alert{agregar un servidor} al sistema.\\[10pt]
-			\pause \underline{\textbf{Estrategia}}: es un \textbf{algoritmo que usa una o más tácticas} para cumplir los
-			atributos de calidad en un nivel deseado. \pause Ejemplo:\\[5pt]
+			e.g. \alert{agregar un servidor} al sistema.\\[14pt]
+			\underline{\textbf{Estrategia}}: es un \textbf{algoritmo que usa una o más tácticas} para cumplir los
+			atributos de calidad en un nivel deseado. 
+
+			\framebreak
+			\textbf{Invariante}: el tiempo de respuesta experimentado por el usuario no debe superar el umbral
+			determinado.\\[10pt]
+			
+			\nota{explicar disminuir fidelidad de la información: por ejemplo eliminar videos}
+			
+			Estrategia que intenta reparar el sistema en caso de romperse el invariante:\\[5pt]
 			\begin{enumerate}
 			  \item \alert{agregar un servidor}
-			  \item si tiempo de respuesta $>$ umbral determinado\\
+			  \item si tiempo de respuesta $>$ umbral determinado
 			  \textbf{\textcolor{blue}{$\Rightarrow$}} \alert{disminuir la fidelidad}
 			  \item Estrategia exitosa \textbf{\textcolor{blue}{$\iff$}} tiempo de respuesta $<$ umbral determinado  
 			\end{enumerate}
@@ -233,7 +267,7 @@
 				\begin{center}
 					La \textbf{Cuantificación de la respuesta (Response Measure)} permite determinar si el escenario se satisface o no.
 				\end{center}
-				\todo{Poner ejemplo de escenario de tiempo de respuesta}
+				\todo{TURCO:Poner ejemplo de escenario de tiempo de respuesta (modo texto o scenario\_availability\_example.png?)}
 			\end{frame}
 		
 		\subsubsection{Quality Attribute Workshop (QAW)}
@@ -255,7 +289,14 @@
 				mayor visibilidad sobre la injerencia que este proceso tiene en el desempeño del sistema.
 
 				\framebreak
-					
+
+				\centering
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.4]{images/arcoIrisUI_conceptualFlow.png}
+				\end{figure}
+
+				\framebreak
+
 				Características:
 				\begin{itemize}
 				  \item Utiliza los QAS definidos por los \emph{stakeholders} en los QAW para llevar a cabo la auto reparación
@@ -276,7 +317,7 @@
 
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
-				\todo{(mostrar configuración necesaria para utilizar Arco Iris y mencionar que es dinamica)}
+				\todo{JONY: mostrar configuración necesaria para utilizar Arco Iris y mencionar que es dinamica}
 			\end{frame}
 
 		\subsubsection{Implementación de Arco Iris}
@@ -298,6 +339,8 @@
 	\begin{frame}
 		\frametitle{\insertsection}
 		\todo{Utiliza modo simulación de una tesis de doctorado (znn)}
+		\nota{describir configuracion (escenarios, estrategias y entornos}
+		\nota{mostrar imagen resultado (sin texto, lo explicamos en la presentacion)}
 	\end{frame}
 
 	\subsection{Caso 1 - Renombrar}
