@@ -1,7 +1,8 @@
 \documentclass[red,table,dvipsnames]{beamer}
 \usepackage[spanish, activeacute]{babel}
 \usepackage[ansinew]{inputenc}
-\usepackage{lmodern}	% to avoid warnings about undefined fonts
+\usepackage{tabularx}                                         % permite usar tablas mas inteligentes que con``tabular''
+\usepackage{lmodern}                                          % to avoid warnings about undefined fonts
 % descomentar lo siguiente para una presentación en formato widescreen 
 %\usepackage[orientation=landscape,size=custom,width=16,height=10,scale=0.5]{beamerposter}
 
@@ -15,7 +16,7 @@
 	sidebar width left=0pt,
 	sidebar width right=0pt
 }
-\usenavigationsymbolstemplate{}	% remove navigation symbols on lower right hand side
+\usenavigationsymbolstemplate{}                               % remove navigation symbols on lower right hand side
 %\beamertemplateshadingbackground{red!10}{white!1}
 \setbeamertemplate{frametitle continuation}[from second]
 
@@ -23,7 +24,7 @@
 %\let\Tiny=\tiny
 \setcounter{tocdepth}{1}
 
-\title[Auto Reparación de Sistemas de Software]{Presentación}	% workaround para etapa de confección de la PPT
+\title[Auto Reparación de Sistemas de Software]{Presentación} %workaround para etapa de confección de la PPT
 %\title[Auto Reparación de Sistemas de Software]{Hacia un modelo más flexible para la implementación de la auto
 %reparación de sistemas de software basada en Arquitectura}
 \subtitle{Tesis de Licenciatura en Ciencias de la Computación}
@@ -32,8 +33,8 @@
 \date{10 de Junio de 2011}
 %\date{\today}
 
-\def\todo#1{\noindent \textcolor{red}{#1}}   % macro para To-Do's
-\def\nota#1{\note[item]{#1}}                 % simplifica el agregado de notas
+\def\todo#1{\noindent \textcolor{red}{#1}}                    % macro para To-Do's
+\def\nota#1{\note[item]{#1}}                                  % simplifica el agregado de notas
 
 \begin{document}
 
@@ -259,6 +260,7 @@
 				\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
 				\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
 				\nota{Cuantificación de la respuesta: métrica sobre la respuesta. Permite determinar si el escenario se satisface}
+				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
 	
 				\framebreak
 
@@ -337,15 +339,31 @@
 		\subsubsection{Implementación de Arco Iris}
 
 			\begin{frame}
-				\frametitle{\insertsubsubsection}
-				\todo{falta hacer esto}
-				\begin{itemize}
-					\item Mostrar arquitectura de Arco Iris (haciendo un golpe de efecto con la Arq. De Rainbow)
-					\item Explicar importancia de estímulo, entorno y cuantificación de la rta. para la auto reparación.
-					\item Modelo extendido de QAS (explicar SelfHealingScenario: prioridades relativas, estrategias embebidas)
-					\item Concepto de Utilidad del Sistema
-					\item Puntuación y Selección de estrategias
-				\end{itemize}
+				\frametitle{Colaboración de objetos en Rainbow}
+
+				\begin{figure}[ht]
+					\centering \includegraphics[height=0.84\textheight]{images/Rainbow_Architecture.png}
+				\end{figure}
+			\end{frame}
+
+			\begin{frame}
+				\frametitle{Colaboración de objetos en Arco Iris}
+
+				\begin{figure}[ht]
+					\centering \includegraphics[height=0.84\textheight]{images/Arco_Iris_Architecture.png}
+				\end{figure}
+			\end{frame}
+
+			\begin{frame}
+				\frametitle{Utilidad del Sistema}
+				
+				\todo{Desarrollar esto!}
+			\end{frame}
+
+			\begin{frame}
+				\frametitle{Puntuación y Selección de estrategias}
+				
+				\todo{Desarrollar esto!}
 			\end{frame}
 
 \section{Casos de Prueba}
@@ -360,32 +378,48 @@
 
 		Utiliza una simulación de una \textbf{arquitectura cliente-servidor}.
 
-		\nota{describir configuracion (escenarios, estrategias y entornos}
-		\nota{mostrar imagen resultado (sin texto, lo explicamos en la presentacion)}
 	\end{frame}
 
-	\subsection{Caso 1 - Renombrar}
+	% Caso 1
+	\subsection{Comportamiento Sin Estrategias}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			(1 escenario - sin estrategias)
+
+			\tiny{
+			\begin{center}
+				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
+				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
+					\textbf{Estrategias}\\
+					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. & \verb@
+					EnlistServerResponseTime@
+				\end{tabularx}
+			\end{center}}
+			
+			\begin{figure}[ht]
+				\centering \includegraphics[height=0.7\textheight,width=\textwidth]{images/testcase1_expRespTime.png}
+			\end{figure}
 		\end{frame}
 
-	\subsection{Caso 3 - Renombrar}
+	% Caso 3
+	\subsection{Tradeoff Entre Estrategias}
 	
 		\begin{frame}
 			\frametitle{\insertsubsection}
 			(Tradeoff entre estrategias)
 		\end{frame}
 
-	\subsection{Caso 4 - Renombrar}
+	% Caso 4
+	\subsection{Tradeoff según Prioridades}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
 			(Tradeoff según prioridades)
 		\end{frame}
 
-	\subsection{Caso 5 - Renombrar}
+	% Caso 5
+	\subsection{Tradeoff entre Escenarios Según Concerns}
 	
 		\begin{frame}
 			\frametitle{\insertsubsection}
