@@ -1,8 +1,10 @@
-\documentclass[red,table,dvipsnames]{beamer}
+\documentclass[red,table,dvipsnames,handout]{beamer}
 \usepackage[spanish, activeacute]{babel}
 \usepackage[ansinew]{inputenc}
 \usepackage{tabularx}                                         % permite usar tablas mas inteligentes que con``tabular''
 \usepackage{lmodern}                                          % to avoid warnings about undefined fonts
+\usepackage{fancyvrb}                                         % Fancy Verbatim
+\RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
 % descomentar lo siguiente para una presentación en formato widescreen 
 %\usepackage[orientation=landscape,size=custom,width=16,height=10,scale=0.5]{beamerposter}
 
@@ -162,7 +164,7 @@
 			\nota{las invariantes seran utilizadas por Rainbow para saber cuándo y cómo debe adaptar el sistema}
 
 			\scriptsize
-			\begin{verbatim}
+			\begin{Verbatim}[gobble=4]
 				Property MAX_RESPTIME : float = 1000.0;
 
 				Component s1 : ServerT {
@@ -178,7 +180,7 @@
 				  Property requestRate;
 				  rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
 				}
-			\end{verbatim}
+			\end{Verbatim}
 		\end{frame}
 
 		%--------- JONY ---------
@@ -292,12 +294,6 @@
 
 				\framebreak
 
-				\begin{figure}[ht]
-					\centering \includegraphics[scale=0.4]{images/arcoIrisUI_conceptualFlow.png}
-				\end{figure}
-
-				\framebreak
-
 				Características:
 				\begin{itemize}
 				  \item Utiliza los QAS definidos por los \emph{stakeholders} en los QAW para llevar a cabo la auto reparación
@@ -336,6 +332,15 @@
 				\end{center}
 			\end{frame}
 
+		\subsubsection{Flujo Conceptual}
+			\begin{frame}
+				\frametitle{\insertsubsubsection}
+
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.4]{images/arcoIrisUI_conceptualFlow.png}
+				\end{figure}
+			\end{frame}
+
 		\subsubsection{Implementación de Arco Iris}
 
 			\begin{frame}
@@ -354,10 +359,49 @@
 				\end{figure}
 			\end{frame}
 
-			\begin{frame}
+			\begin{frame}[allowframebreaks,from second,containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
-				\todo{Desarrollar esto!}
+				\begin{itemize}
+					\item Define una medida relativa de satisfacción sobre el impacto de determinados cambios en un sistema.
+					\item 100\% de utilidad cuando:
+					\begin{itemize}
+						\item no se viola ninguna restricción impuesta sobre el modelo (\textbf{Rainbow})
+						\item todos los escenarios definidos se cumplen (\textbf{Arco Iris})
+					\end{itemize}
+					\item Arco Iris reutiliza el mecanismo de predicción de la utilidad del sistema\ldots
+					\item \ldots aunque \textbf{calculando la utilidad} propiamente dicha \textbf{de manera diferente}.
+				\end{itemize}
+				
+				\framebreak		
+
+				\begin{Verbatim}[fontsize=\tiny,gobble=5]
+					utilities:
+					  uR:
+					    label:       Average Response Time
+					    mapping:     "[EAvg]ClientT.experRespTime"
+					    description: "Client experienced response time in milliseconds, R, defined
+					                  as a float property 'ClientT.experRespTime' in the architecture"
+					    utility:
+					      0:    1.00
+					      100:  1.00
+					      200:  0.99
+					      500:  0.90
+					      1000: 0.75
+					      1500: 0.50
+					      2000: 0.25
+					      4000: 0.00
+					  uF:
+					    label:        Average Fidelity
+					    mapping:      "[EAvg]ServerT.fidelity"
+						...
+					vectors:         # Tactic quality attribute vectors
+					  enlistServers:
+					    uR: -144
+					    uF: 0
+					    uC: +1.00
+					...
+				\end{Verbatim}
 			\end{frame}
 
 			\begin{frame}
@@ -401,7 +445,7 @@
 				\centering \includegraphics[height=0.7\textheight,width=\textwidth]{images/testcase1_expRespTime.png}
 			\end{figure}
 		\end{frame}
-		
+
 	\begin{frame}[plain]
 		\frametitle{TURCO Comportamiento del Sistema sin Auto Reparación}
 		
