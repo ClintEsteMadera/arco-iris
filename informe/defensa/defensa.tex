@@ -381,7 +381,7 @@
 	\end{frame}
 
 	% Caso 1
-	\subsection{Comportamiento Sin Estrategias}
+	\subsection{JONY Comportamiento Sin Estrategias}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
@@ -400,6 +400,49 @@
 			\begin{figure}[ht]
 				\centering \includegraphics[height=0.7\textheight,width=\textwidth]{images/testcase1_expRespTime.png}
 			\end{figure}
+		\end{frame}
+		
+	\begin{frame}[plain]
+		\frametitle{TURCO Comportamiento del Sistema sin Auto Reparación}
+		
+		Tiempo de respuesta experimentado por el usuario
+		\begin{figure}[ht]
+			\centering \includegraphics[scale=0.35]{images/testcase0_expRespTime.png}
+		\end{figure}
+		
+		Costo de servidores
+		\begin{figure}[ht]
+			\centering \includegraphics[scale=0.35]{images/testcase0_cost.png}
+		\end{figure}
+
+	\end{frame}
+	
+	\subsection{TURCO Caso 1 - Arco Iris Detecta al Escenario}
+
+		\begin{frame}
+			\frametitle{\insertsubsection}
+			Se configura un único escenario que define que el \emph{concern} tiempo de respuesta no debe superar los 600 ms.:
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.35]{images/testcase1_expRespTime.png}
+			\end{figure}
+			\pause 
+			\begin{center}
+				\alert{¡Arco Iris no puede reparar el sistema ya que\\ el escenario no tiene estrategias asociadas!}
+			\end{center}
+		\end{frame}
+
+	\subsection{TURCO Caso 2 - 1 Escenario - 1 Estrategia}
+	
+		\begin{frame}
+			\frametitle{\insertsubsection}
+			Al definirse una estrategia Arco Iris puede reparar al escenario:
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.32]{images/testcase2_expRespTime.png}
+			\end{figure}
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.32]{images/testcase2_cost.png}
+			\end{figure}
+			
 		\end{frame}
 
 	% Caso 3
