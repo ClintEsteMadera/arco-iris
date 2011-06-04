@@ -192,7 +192,7 @@
 			\end{figure}
 		\end{frame}
 
-		\begin{frame}[allowframebreaks]
+		\begin{frame}
 			\frametitle{Tácticas y Estrategias de Reparación}
 
 			\underline{\textbf{Táctica}}: decisión de diseño para controlar las respuestas del sistema a determinados
@@ -200,14 +200,17 @@
 			e.g. \alert{agregar un servidor} al sistema.\\[14pt]
 			\underline{\textbf{Estrategia}}: es un \textbf{algoritmo que usa una o más tácticas} para cumplir los
 			atributos de calidad en un nivel deseado. 
+		\end{frame}
 
-			\framebreak
+		\begin{frame}
+			\frametitle{Ejemplo}
+
 			\textbf{Invariante}: el tiempo de respuesta experimentado por el usuario no debe superar el umbral
 			determinado.\\[10pt]
 			
 			\nota{explicar disminuir fidelidad de la información: por ejemplo eliminar videos}
 			
-			Estrategia que intenta reparar el sistema en caso de romperse el invariante:\\[5pt]
+			\textbf{Estrategia} que intenta reparar el sistema en caso de romperse el invariante:\\[5pt]
 			\begin{enumerate}
 			  \item \alert{agregar un servidor}
 			  \item si tiempo de respuesta $>$ umbral determinado
@@ -225,13 +228,15 @@
 
 			\begin{itemize}[<+->]
 				\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
-				\item Duplicación en la configuración de restricciones 
-				\\\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}
+				\item Duplicación en la configuración de restricciones\\
+				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{propenso a errores}\\
+				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{difícil de mantener}\\
+				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}
 				\item Poco dinámico, debido a:
 				\begin{itemize}[<+->]
+					\item no se adapta al entorno de ejecución
 					\item configuración compleja
 					\item ausencia de mecanismo de actualización ``en caliente''
-					\item no se adapta al entorno de ejecución
 				\end{itemize}
 			\end{itemize}
 		\end{frame}
@@ -262,9 +267,12 @@
 				\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
 				\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
 				\nota{Cuantificación de la respuesta: métrica sobre la respuesta. Permite determinar si el escenario se satisface}
-				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
+				\nota{Lo importante: que el stakeholder participe en la definición de escenarios, participando asi de la
+				definición de los requerimientos de auto reparación. Más adelante, veremos como van a ser utilizados por Arco Iris.}
 	
 				\framebreak
+
+				\todo{JONY: Cambiar este ejemplo por otro mas entendible y significativo (ver ejemplo del informe)}
 
 				Ejemplo de escenario de disponibilidad:
 				\begin{figure}[ht]
@@ -273,41 +281,65 @@
 				
 			\end{frame}
 		
-		\subsubsection{Quality Attribute Workshop (QAW)}
-			\begin{frame}
-				\frametitle{\insertsubsubsection}
-				El \textbf{Quality Attribute Workshop} es una metodología definida por el SEI\footnote{\emph{Software Engineering
-				Institute}, ver \url{http://www.sei.cmu.edu/}}, con un proceso bien definido para involucrar a los
-				\emph{stakeholders} en la definición de los Escenarios de Atributos de Calidad.\\[10pt]
-				Permite identificar \emph{drivers} de la Arquitectura del sistema.
-			\end{frame}
+% 		\subsubsection{Quality Attribute Workshop (QAW)}
+% 			\begin{frame}
+% 				\frametitle{\insertsubsubsection}
+% 				El \textbf{Quality Attribute Workshop} es una metodología definida por el SEI\footnote{\emph{Software Engineering
+% 				Institute}, ver \url{http://www.sei.cmu.edu/}}, con un proceso bien definido para involucrar a los
+% 				\emph{stakeholders} en la definición de los Escenarios de Atributos de Calidad.\\[10pt]
+% 				Permite identificar \emph{drivers} de la Arquitectura del sistema.
+% 			\end{frame}
 
 	\subsection{Arco Iris}
 	
-		\subsubsection{¿Qué es Arco Iris?}
-	
-			\begin{frame}[allowframebreaks,from second]
+		\subsubsection{Arco Iris}
+
+			\begin{frame}
 				\frametitle{\insertsubsubsection}
 				
 				Arco Iris pretende involucrar a los \emph{stakeholders} en el proceso de auto reparación y proveerles
 				mayor visibilidad sobre la injerencia que este proceso tiene en el desempeño del sistema.
+				
+			\end{frame}
 
-				\framebreak
+			\begin{frame}[allowframebreaks,from second]
+				\frametitle{SHS: Extensión a QAS}
 
-				Características:
-				\begin{itemize}
-				  \item Utiliza los QAS definidos por los \emph{stakeholders} en los QAW para llevar a cabo la auto reparación
-				  \item Extiende los QAS con información requerida para mejorar la adaptación:
-				  	\begin{itemize}
-				    	\item Cada escenario tiene una prioridad determinada
-				    	\item Cada entorno define la importancia de los distintos \emph{concerns}
-				    	\item Estrategias que reparan al escenario
-					\end{itemize}
+				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
+
+				Arco Iris define una extensión de los QAS denominada \textbf{Self Healing Scenario (SHS)}, agregando:
+			  	\begin{itemize}
+			    	\item Cada escenario tiene una prioridad determinada
+			    	\item Cada entorno define la importancia de los distintos \emph{concerns}
+			    	\item Estrategias que reparan al escenario
 				\end{itemize}
 
 				\begin{center}
-					Arco Iris = Rainbow + Escenarios
+					Arco Iris = Rainbow + Self Healing Scenarios
 				\end{center}
+
+				\framebreak
+
+				\nota{Explicar condiciones y pesos del entorno}				
+				\todo{TURCO: agregar figura de SHS}
+			\end{frame}
+
+			\begin{frame}
+				\frametitle{Mejoras a Rainbow}
+		
+				\todo{JONY poner tachado lo de rainbow y resaltado lo de arco iris}
+		
+				\begin{itemize}[<+->]
+					\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
+ 					\item Duplicación en la configuración de restricciones\\
+ 					\pause Restricciones sólo en los QAS.
+					\item Poco dinámico, debido a:
+					\begin{itemize}[<+->]
+						\item no se adapta al entorno de ejecución \pause \alert{Entornos dinámicos}.
+						\item configuración compleja \pause \alert{Configuración de QAS mediante Arco Iris UI}. 
+						\item ausencia de mecanismo de actualización ``en caliente'' \pause \structure{Recarga de configuración dinámica}
+					\end{itemize}
+				\end{itemize}
 			\end{frame}
 
 		%--------- JONY ---------
@@ -332,9 +364,19 @@
 				\end{center}
 			\end{frame}
 
+			\begin{frame}
+				\frametitle{¿Para qué una GUI?}
+				
+				\todo{TURCO: Poner un cacho de acme con un invariante y un cacho de stitch con la misma condicion replicada como
+				precondicion de una estrategia, y mostrar que con Arco Iris UI es mas accesible para el stakeholder (poner imagen
+				existente)}
+			\end{frame}
+
 		\subsubsection{Flujo Conceptual}
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
+
+				\todo{JONY: Separar mas las cosas de este grafico}
 
 				\begin{figure}[ht]
 					\centering \includegraphics[scale=0.4]{images/arcoIrisUI_conceptualFlow.png}
@@ -344,37 +386,28 @@
 		\subsubsection{Implementación de Arco Iris}
 
 			\begin{frame}
-				\frametitle{Colaboración de objetos en Rainbow}
+				\frametitle{Arco Iris en Ejecución}
 
-				\begin{figure}[ht]
-					\centering \includegraphics[height=0.84\textheight]{images/Rainbow_Architecture.png}
-				\end{figure}
-			\end{frame}
+				\todo{JONY: poner grafico que diseñamos en papel}
 
-			\begin{frame}
-				\frametitle{Colaboración de objetos en Arco Iris}
-
-				\begin{figure}[ht]
-					\centering \includegraphics[height=0.84\textheight]{images/Arco_Iris_Architecture.png}
-				\end{figure}
 			\end{frame}
 
 			\begin{frame}[allowframebreaks,from second,containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
 				\begin{itemize}
-					\item Define una medida relativa de satisfacción sobre el impacto de determinados cambios en un sistema.
+					\item Permite asignar una medida relativa de satisfacción (i.e. utilidad ) sobre un sistema sobre el cual es
+					necesario medir el impacto ante determinados cambios.
 					\item 100\% de utilidad cuando:
 					\begin{itemize}
 						\item no se viola ninguna restricción impuesta sobre el modelo (\textbf{Rainbow})
 						\item todos los escenarios definidos se cumplen (\textbf{Arco Iris})
 					\end{itemize}
-					\item Arco Iris reutiliza el mecanismo de predicción de la utilidad del sistema\ldots
-					\item \ldots aunque \textbf{calculando la utilidad} propiamente dicha \textbf{de manera diferente}.
 				\end{itemize}
 				
 				\framebreak		
 
+				\todo{JONY Arreglar esto!}
 				\begin{Verbatim}[fontsize=\tiny,gobble=5]
 					utilities:
 					  uR:
@@ -404,10 +437,28 @@
 				\end{Verbatim}
 			\end{frame}
 
-			\begin{frame}
-				\frametitle{Puntuación y Selección de estrategias}
+			\begin{frame}[containsverbatim]
+				\frametitle{Puntuación y Selección de una Estrategia}
+		
+					\textbf{Puntuación}: predicción de la utilidad del sistema luego de simular la ejecución de la estrategia. 
 				
-				\todo{Desarrollar esto!}
+					\begin{Verbatim}[fontsize=\tiny,gobble=6]
+						scoreStrategia = 0
+						estimacionPorConcern = simular la aplicación de la estrategia como lo hace Rainbow y
+						                       obtener el valor resultante para los concerns
+						Por cada escenario habilitado
+							escenarioSeSatisface = !escenario.applyFor(entornoActual) o
+							   (escenario.applyFor(entornoActual) y escenario.responseMeasure.holds(estimacionPorConcern))
+
+							Si (escenarioSeSatisface)
+								prioridadRelativa = calcular prioridad relativa del escenario
+								pesoConcern = peso que el entorno actual asigna a escenario.concern
+								puntajeEscenario = prioridadRelativa * pesoConcern
+								scoreStrategia = scoreStrategia + puntajeEscenario
+							Fin
+						Fin
+					\end{Verbatim}
+					\textbf{Selección}: se elige aquella estrategia que posea el puntaje máximo.
 			\end{frame}
 
 \section{Casos de Prueba}
@@ -415,7 +466,7 @@
 	\begin{frame}
 		\frametitle{ZNN}
 
-		Para los casos de prueba se utilizará \textbf{ZNN}, un sistema que \textbf{simula un sitio web de noticias} presentado
+		Para los casos de prueba se utilizó \textbf{ZNN}, un sistema que \textbf{simula un sitio web de noticias} presentado
 		en una tesis de doctorado de la universidad de Carnegie Mellon.\\[12pt]
 		
 		ZNN \textbf{propone un marco para evaluar soluciones de Auto Adaptación}, evaluando concretamente a Rainbow.\\[12pt]
@@ -424,8 +475,28 @@
 
 	\end{frame}
 
+	% Caso 0
+	\subsection{Comportamiento del Sistema sin Auto Reparación}
+
+		\begin{frame}[plain]
+			\frametitle{\insertsubsection}
+
+			\todo{TURCO: Poner un comentario en la imagen en el punto en que el respTime baja solo}
+			
+			Tiempo de respuesta experimentado por el usuario
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.35]{images/testcase0_expRespTime.png}
+			\end{figure}
+			
+			Costo de servidores
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.35]{images/testcase0_cost.png}
+			\end{figure}
+	
+		\end{frame}
+
 	% Caso 1
-	\subsection{JONY Comportamiento Sin Estrategias}
+	\subsection{Comportamiento con un Escenario, Sin Estrategias}
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
@@ -436,50 +507,36 @@
 				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
 				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
 					\textbf{Estrategias}\\
-					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. & \verb@
-					EnlistServerResponseTime@
+					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. & --
 				\end{tabularx}
 			\end{center}}
 			
 			\begin{figure}[ht]
-				\centering \includegraphics[height=0.7\textheight,width=\textwidth]{images/testcase1_expRespTime.png}
+				\centering \includegraphics[height=0.6\textheight,width=\textwidth]{images/testcase1_expRespTime.png}
 			\end{figure}
+
+ 			\begin{center}
+ 				\uncover<2>{\alert{¡Arco Iris no puede reparar el sistema ya que\\ el escenario no tiene estrategias asociadas!}}
+ 			\end{center}
+			
 		\end{frame}
 
-	\begin{frame}[plain]
-		\frametitle{TURCO Comportamiento del Sistema sin Auto Reparación}
-		
-		Tiempo de respuesta experimentado por el usuario
-		\begin{figure}[ht]
-			\centering \includegraphics[scale=0.35]{images/testcase0_expRespTime.png}
-		\end{figure}
-		
-		Costo de servidores
-		\begin{figure}[ht]
-			\centering \includegraphics[scale=0.35]{images/testcase0_cost.png}
-		\end{figure}
-
-	\end{frame}
+	\subsection{Comportamiento con un Escenario y una Estrategia}
 	
-	\subsection{TURCO Caso 1 - Arco Iris Detecta al Escenario}
-
-		\begin{frame}
+		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
-			Se configura un único escenario que define que el \emph{concern} tiempo de respuesta no debe superar los 600 ms.:
-			\begin{figure}[ht]
-				\centering \includegraphics[scale=0.35]{images/testcase1_expRespTime.png}
-			\end{figure}
-			\pause 
+
+			\tiny{
 			\begin{center}
-				\alert{¡Arco Iris no puede reparar el sistema ya que\\ el escenario no tiene estrategias asociadas!}
-			\end{center}
-		\end{frame}
+				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
+				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
+					\textbf{Estrategias}\\
+					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
+					\alert{EnlistServerResponseTime}
+				\end{tabularx}
+			\end{center}}
 
-	\subsection{TURCO Caso 2 - 1 Escenario - 1 Estrategia}
-	
-		\begin{frame}
-			\frametitle{\insertsubsection}
-			Al definirse una estrategia Arco Iris puede reparar al escenario:
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.32]{images/testcase2_expRespTime.png}
 			\end{figure}
@@ -492,9 +549,23 @@
 	% Caso 3
 	\subsection{Tradeoff Entre Estrategias}
 	
-		\begin{frame}
+		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
-			(Tradeoff entre estrategias)
+
+			\tiny{
+			\begin{center}
+				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
+				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
+					\textbf{Estrategias}\\
+					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
+					\alert{EnlistServerResponseTime, LowerFidelityReduceResponseTime}\\
+					2 & Costo de Servidores & Cualquier Entorno aplica & costo $<$ 2 & --
+				\end{tabularx}
+			\end{center}}
+
+			\todo{TURCO: Poner graficos de caso 3}
+			
 		\end{frame}
 
 	% Caso 4
@@ -502,7 +573,8 @@
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			(Tradeoff según prioridades)
+			\todo{JONY: Tradeoff según prioridades - Caso 4}
+			
 		\end{frame}
 
 	% Caso 5
@@ -510,7 +582,7 @@
 	
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			(opcional)
+			\todo{JONY: Tradeoff entre Escenarios Según Concerns - Caso 5}
 		\end{frame}
 
 \section{Trabajo a Futuro y Conclusiones}
@@ -522,11 +594,11 @@
 			\begin{itemize}[<+->]
 				\item Ampliación de la recarga dinámica de configuración\\
 				(idealmente: nunca detener Arco Iris para reconfigurar).
-				\item Extensión de tipos de restricciones implementadas por defecto.
+				\item Extensión de tipos de restricciones soportadas.
 				\item Atributos de Calidad y \emph{Concerns} configurables por el usuario.
-				\item Optimización en la selección de la estrategia: la utilidad del sistema es limitada ya que hace
-				simplificaciones sobre el modelo\ldots
-				\item Ausencia u obsolescencia del modelo de la arquitectura.
+				\item Mejorar heurísticas de predicción del potencial impacto de estrategias.
+				\nota{mapa estatico de impacto de tactica vs ir aprendiendo de la experiencia}
+				\item ¿Ausencia u obsolescencia del modelo de la arquitectura?
 			\end{itemize}
 		\end{frame}
 
@@ -535,15 +607,18 @@
 		\begin{frame}
 			\frametitle{\insertsubsection}
 			\begin{itemize}[<+->]
+				\item \emph{Stakeholders} con mayor participación en el proceso de Auto Reparación:
+				\begin{itemize}[<+->]
+					\item En mayor parte, Arco Iris no requiere habilidades técnicas para su configuración
+					\item Información sobre restricciones fuera del modelo de la arquitectura y unificadas
+					\item Arco Iris UI
+				\end{itemize}
 				\item Dinamismo agregado:
 				\begin{itemize}[<+->]
 					\item Recarga automática de configuración
-					\item Arco Iris UI
-					\item Reconocimiento dinámico del entorno de ejecución del sistema.
+					\item Adaptación dinámica de soluciones de acuerdo al entorno de ejecución
 				\end{itemize}
-				\item Informacion sobre las restricciones fuera del modelo (más accesible para los \emph{stakeholders})
-				\item Aplicabilidad en sistemas reales (\todo{opcional})
-				\item \todo{Conclusión final (sección 7.5)}
+				\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}  
 			\end{itemize}
 		\end{frame}	
 	

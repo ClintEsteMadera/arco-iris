@@ -42,7 +42,6 @@ $(function () {
     $plot($("#experRespTimeDiv"), [
         {
             data: experRespTimePoints,
-            label: "Response Time",
             #if ($experRespTimeThreshold)
             	color: "rgb(200, 20, 30)",
 	            threshold: { below: $experRespTimeThreshold, color: "rgb(30, 180, 20)" },

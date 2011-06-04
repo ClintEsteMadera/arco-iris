@@ -1196,8 +1196,8 @@
 						estimacionPorConcern = simular la aplicación de la estrategia como lo hace Rainbow y
 						                       obtener el valor resultante para los concerns
 						Por cada escenario habilitado
-							Si (no aplica al entorno actual o
-							    (aplica al entorno actual y la cuantificación de la respuesta se satisface))
+							Si (!escenario.applyFor(entornoActual) o
+							   (escenario.applyFor(entornoActual) y escenario.responseMeasure.holds(estimacionPorConcern)))
 	
 								prioridadRelativa = calcular prioridad relativa del escenario
 								pesoConcern = peso que el entorno actual asigna a escenario.concern
