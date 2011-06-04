@@ -118,23 +118,25 @@ public class SelfHealingScenario extends QualityAttributeScenario {
 
 	public boolean isBrokenAfterStrategy(final ArcoIrisModel arcoIrisModel,
 			Map<String, Double> strategyAggregateAttributes) {
-		// It is not necessary to check the environment at this point because this scenario was already selected for
-		// being repaired
-		Constraint constraint = getResponseMeasure().getConstraint();
+
 		boolean isBroken = false;
-		String expValueAfterStrategyAsString = NO_DATA;
-		Double expValue = arcoIrisModel.getExponentialValueForConstraint(constraint);
-		if (expValue != null) {
-			Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
-			Double estimatedExpValueAfterStrategy = expValue + concernDiffAfterStrategy;
-			expValueAfterStrategyAsString = estimatedExpValueAfterStrategy.toString();
-			isBroken = !constraint.holds(estimatedExpValueAfterStrategy);
+
+		if (this.anyEnvironmentApplies(arcoIrisModel)) {
+			Constraint constraint = getResponseMeasure().getConstraint();
+			String expValueAfterStrategyAsString = NO_DATA;
+			Double expValue = arcoIrisModel.getExponentialValueForConstraint(constraint);
+			if (expValue != null) {
+				Double concernDiffAfterStrategy = strategyAggregateAttributes.get(getConcern().getRainbowName());
+				Double estimatedExpValueAfterStrategy = expValue + concernDiffAfterStrategy;
+				expValueAfterStrategyAsString = estimatedExpValueAfterStrategy.toString();
+				isBroken = !constraint.holds(estimatedExpValueAfterStrategy);
+			}
+			String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
+
+			log(Level.INFO, this.getScenarioNameForLoggingPurposes() + " broken after simulation for " + getConcern()
+					+ " (" + exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + ")? " + isBroken);
 		}
 
-		String exponentialQuantifierApplied = this.getExpPropertyPrefix(constraint);
-
-		log(Level.INFO, this.getScenarioNameForLoggingPurposes() + " broken after simulation for " + getConcern()
-				+ " (" + exponentialQuantifierApplied + " " + expValueAfterStrategyAsString + ")? " + isBroken);
 		return isBroken;
 	}
 
