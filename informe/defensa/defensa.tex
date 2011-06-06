@@ -1,9 +1,10 @@
-\documentclass[red,table,dvipsnames,handout]{beamer}
+\documentclass[red,table,dvipsnames]{beamer}
 \usepackage[spanish, activeacute]{babel}
 \usepackage[ansinew]{inputenc}
 \usepackage{tabularx}                                         % permite usar tablas mas inteligentes que con``tabular''
 \usepackage{lmodern}                                          % to avoid warnings about undefined fonts
 \usepackage{fancyvrb}                                         % Fancy Verbatim
+\usepackage[normalem]{ulem}                                   % Para tachar texto, entre otras cosas
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
 % descomentar lo siguiente para una presentación en formato widescreen 
 %\usepackage[orientation=landscape,size=custom,width=16,height=10,scale=0.5]{beamerposter}
@@ -26,9 +27,8 @@
 %\let\Tiny=\tiny
 \setcounter{tocdepth}{1}
 
-\title[Auto Reparación de Sistemas de Software]{Presentación} %workaround para etapa de confección de la PPT
-%\title[Auto Reparación de Sistemas de Software]{Hacia un modelo más flexible para la implementación de la auto
-%reparación de sistemas de software basada en Arquitectura}
+\title[Auto Reparación de Sistemas de Software]{Hacia un modelo más flexible para la implementación de la auto
+reparación de sistemas de software basada en Arquitectura}
 \subtitle{Tesis de Licenciatura en Ciencias de la Computación}
 \author{Chiocchio, Jonathan \and Tursi, Germán Gabriel}
 \institute{Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación}
@@ -70,10 +70,9 @@
 
 			\nota{Antes de introducir Auto Adaptación, veamos un ejemplo de la evolución de windows con respecto a este tema}			
 			\begin{figure}[ht]
-				\centering \includegraphics[width=0.96\textwidth,height=0.84\textheight]{images/evolucionWindows.png}
+				\centering \includegraphics[width=0.96\textwidth,height=0.83\textheight]{images/evolucionWindows.png}
 			\end{figure}
 		\end{frame}
-
 		
 		%--------- JONY ---------
 		\begin{frame}
@@ -83,16 +82,17 @@
  			\nota{Necesidad de reducir costos operativos: operadores, ITO Caja de Valores, sector Operaciones Sabre}
  			\nota{Minimizar el error humano}
 
-			Complejidad creciente de los sistemas de software
+			Complejidad creciente de los sistemas de software \textcolor{blue}{\Large{$\Rightarrow$}}\\
+			\pause
 			\begin{itemize}
-				\item[\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}}] Sistemas con mecanismos para ajustar su comportamiento ante:
+				\uncover<2->{\item Sistemas con mecanismos para ajustar su comportamiento ante:
 				\begin{itemize}
 					\item fallas de hardware,
 					\item requerimientos de calidad cambiantes,
 					\item entorno en el que operan.
-				\end{itemize}
+				\end{itemize}}
 				\pause
-				\uncover<2->{\item \alert{¡Sin intervención humana!}}
+				\uncover<3->{\item \alert{¡Sin intervención humana!}}
 			\end{itemize}
 		\end{frame}
 
@@ -121,10 +121,10 @@
 			\framebreak
 			
 			\frametitle{\insertsubsection}
-			Ejemplos de \textbf{concerns}:
+			Ejemplos de \textbf{\emph{concerns}}:
 			\small
 			\begin{center}
-				\rowcolors*[\hline]{1}{GreenYellow!65}{GreenYellow!30}
+				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
 				\begin{tabular}{|c|c|}
 					\textbf{Atributo de Calidad} & \textbf{Ejemplos de \emph{Concerns}}\\
 					Eficiencia & Comportamiento Temporal, Utilización de Recursos\\
@@ -149,10 +149,10 @@
 			
 			\begin{itemize}[<+->]
 			  	\item \emph{Framework} de Auto Adaptación.
-			  	\item Realizado bajo el marco del proyecto ABLE de la CMU. 
-				\item Trabaja con el modelo de la arquitectura (expresado mediante \textbf{Acme}).
-				\item Externo al sistema a adaptar.
-				\item Soporta sistemas \emph{legacy} y/o cuyo código no se encuentra disponible.
+			  	\uncover<2->{\item Realizado en el marco del proyecto ABLE de la CMU.} 
+				\uncover<3->{\item Trabaja con el modelo de la arquitectura (expresado mediante \textbf{Acme}).}
+				\uncover<4->{\item Externo al sistema a adaptar.}
+				\uncover<5->{\item Soporta sistemas \emph{legacy} y/o cuyo código no se encuentra disponible.}
 			\end{itemize}
 			
 		\end{frame}
@@ -188,7 +188,7 @@
 			\frametitle{Arquitectura de Rainbow}
 
 			\begin{figure}[ht]
-				\centering \includegraphics[height=0.84\textheight]{images/Rainbow_Framework.png}
+				\centering \includegraphics[height=0.83\textheight]{images/Rainbow_Framework.png}
 			\end{figure}
 		\end{frame}
 
@@ -228,16 +228,16 @@
 
 			\begin{itemize}[<+->]
 				\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
-				\item Duplicación en la configuración de restricciones\\
+				\uncover<2->{\item Duplicación en la configuración de restricciones\\
 				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{propenso a errores}\\
 				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{difícil de mantener}\\
-				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}
-				\item Poco dinámico, debido a:
+				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}}
+				\uncover<3->{\item Poco dinámico, debido a:
 				\begin{itemize}[<+->]
-					\item no se adapta al entorno de ejecución
-					\item configuración compleja
-					\item ausencia de mecanismo de actualización ``en caliente''
-				\end{itemize}
+					\uncover<4->{\item no se adapta al entorno de ejecución}
+					\uncover<5->{\item configuración compleja}
+					\uncover<6->{\item ausencia de mecanismo de actualización ``en caliente''}
+				\end{itemize}}
 			\end{itemize}
 		\end{frame}
 	
@@ -252,14 +252,9 @@
 				\frametitle{\insertsubsubsection}
 				Los \textbf{Escenarios de Atributos de Calidad} o QAS(\emph{Quality Attribute Scenarios}) permiten expresar cómo
 				debería responder el sistema ante determinados estímulos y bajo ciertas circunstancias.
-				
-				\framebreak
-				
-				\frametitle{\insertsubsubsection}
-				Composición de un QAS:
-	
+
 				\begin{figure}[ht]
-					\centering \includegraphics[scale=0.7]{images/scenario.png}
+					\centering \includegraphics[scale=0.75]{images/scenario.png}
 				\end{figure}
 	
 				\nota{Estímulo: condición que debe ser tenida en cuenta cuando llega al sistema}
@@ -272,11 +267,9 @@
 	
 				\framebreak
 
-				\todo{JONY: Cambiar este ejemplo por otro mas entendible y significativo (ver ejemplo del informe)}
-
-				Ejemplo de escenario de disponibilidad:
+				\textbf{Ejemplo} (escenario de eficiencia)\\[31pt]
 				\begin{figure}[ht]
-					\centering \includegraphics[scale=0.7]{images/scenario_availability_example.png}
+					\centering \includegraphics[scale=0.75]{images/scenario_example.png}
 				\end{figure}
 				
 			\end{frame}
@@ -325,19 +318,17 @@
 			\end{frame}
 
 			\begin{frame}
-				\frametitle{Mejoras a Rainbow}
+				\frametitle{Características de Arco Iris}
 		
-				\todo{JONY poner tachado lo de rainbow y resaltado lo de arco iris}
-		
-				\begin{itemize}[<+->]
-					\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
- 					\item Duplicación en la configuración de restricciones\\
- 					\pause Restricciones sólo en los QAS.
-					\item Poco dinámico, debido a:
-					\begin{itemize}[<+->]
-						\item no se adapta al entorno de ejecución \pause \alert{Entornos dinámicos}.
-						\item configuración compleja \pause \alert{Configuración de QAS mediante Arco Iris UI}. 
-						\item ausencia de mecanismo de actualización ``en caliente'' \pause \structure{Recarga de configuración dinámica}
+				\begin{itemize}
+					\item \sout{No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.}
+ 					\pause \uncover<2->{\item \sout{Duplicación en la configuración de restricciones}\\\alert{Restricciones sólo en los QAS.}}
+					\pause \uncover<3->{\item \sout{Poco dinámico, debido a:}
+					\begin{itemize}
+						\item \sout{no se adapta al entorno de ejecución}\\\alert{Entornos dinámicos}.}
+						\pause \uncover<4->{\item \sout{configuración compleja}\\\alert{Configuración de QAS mediante Arco Iris UI}.} 
+						\pause \uncover<5->{\item \sout{ausencia de mecanismo de actualización ``en caliente''}\\\alert{Recarga de
+						configuración dinámica}}
 					\end{itemize}
 				\end{itemize}
 			\end{frame}
@@ -356,10 +347,10 @@
 				\textbf{Características Principales}\\[10pt]
 				\begin{center}
 					\begin{itemize}
-						\pause \item Herramienta de escritorio.
-						\pause \item Multi plataforma.
-						\pause \item Multi usuario.
-						\pause \item Lee y guarda configuración en XML.
+						\item Herramienta de escritorio.
+						\item Multi plataforma.
+						\item Multi usuario.
+						\item Lee y guarda configuración en XML.
 					\end{itemize}
 				\end{center}
 			\end{frame}
@@ -376,10 +367,8 @@
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
 
-				\todo{JONY: Separar mas las cosas de este grafico}
-
 				\begin{figure}[ht]
-					\centering \includegraphics[scale=0.4]{images/arcoIrisUI_conceptualFlow.png}
+					\centering \includegraphics[scale=0.45]{images/arcoIrisUI_conceptualFlow.png}
 				\end{figure}
 			\end{frame}
 
@@ -388,15 +377,16 @@
 			\begin{frame}
 				\frametitle{Arco Iris en Ejecución}
 
-				\todo{JONY: poner grafico que diseñamos en papel}
-
+					\begin{figure}[ht]
+						\centering \includegraphics[scale=0.45]{images/arcoIrisEnEjecucion.png}
+					\end{figure}
 			\end{frame}
 
 			\begin{frame}[allowframebreaks,from second,containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
 				\begin{itemize}
-					\item Permite asignar una medida relativa de satisfacción (i.e. utilidad ) sobre un sistema sobre el cual es
+					\item Permite asignar una medida relativa de satisfacción (i.e. utilidad) sobre un sistema sobre el cual es
 					necesario medir el impacto ante determinados cambios.
 					\item 100\% de utilidad cuando:
 					\begin{itemize}
@@ -407,7 +397,6 @@
 				
 				\framebreak		
 
-				\todo{JONY Arreglar esto!}
 				\begin{Verbatim}[fontsize=\tiny,gobble=5]
 					utilities:
 					  uR:
@@ -417,8 +406,6 @@
 					                  as a float property 'ClientT.experRespTime' in the architecture"
 					    utility:
 					      0:    1.00
-					      100:  1.00
-					      200:  0.99
 					      500:  0.90
 					      1000: 0.75
 					      1500: 0.50
@@ -481,46 +468,45 @@
 		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
 
-			\todo{TURCO: Poner un comentario en la imagen en el punto en que el respTime baja solo}
-			
-			Tiempo de respuesta experimentado por el usuario
-			\begin{figure}[ht]
-				\centering \includegraphics[scale=0.35]{images/testcase0_expRespTime.png}
-			\end{figure}
-			
-			Costo de servidores
-			\begin{figure}[ht]
-				\centering \includegraphics[scale=0.35]{images/testcase0_cost.png}
-			\end{figure}
-	
+			\begin{center}
+				Tiempo de respuesta
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.35]{images/testcase0_expRespTime.png}
+				\end{figure}
+				Costo de servidores
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.35]{images/testcase0_cost.png}
+				\end{figure}
+			\end{center}	
 		\end{frame}
 
 	% Caso 1
 	\subsection{Comportamiento con un Escenario, Sin Estrategias}
 
-		\begin{frame}
+		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
 
-			\tiny{
 			\begin{center}
-				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
-				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
-				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
+				\tiny{
+					\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
+					\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.86cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}X|}
+					\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
 					\textbf{Estrategias}\\
 					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. & --
-				\end{tabularx}
-			\end{center}}
-			
-			\begin{figure}[ht]
-				\centering \includegraphics[height=0.6\textheight,width=\textwidth]{images/testcase1_expRespTime.png}
-			\end{figure}
-
- 			\begin{center}
- 				\uncover<2>{\alert{¡Arco Iris no puede reparar el sistema ya que\\ el escenario no tiene estrategias asociadas!}}
+					\end{tabularx}
+				}\\[12pt]
+				\normalsize
+				Tiempo de respuesta
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.35]{images/testcase1_expRespTime.png}
+				\end{figure}
+				
+ 				\uncover<2>{\alert{¡Arco Iris no puede reparar el sistema porque el escenario no tiene estrategias asociadas!}}
  			\end{center}
 			
 		\end{frame}
 
+	% Caso 2
 	\subsection{Comportamiento con un Escenario y una Estrategia}
 	
 		\begin{frame}[plain]
@@ -529,11 +515,11 @@
 			\tiny{
 			\begin{center}
 				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
-				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.86cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}X|}
 				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
 					\textbf{Estrategias}\\
 					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
-					\alert{EnlistServerResponseTime}
+					\textcolor{red}{EnlistServerResponseTime}
 				\end{tabularx}
 			\end{center}}
 
@@ -555,34 +541,89 @@
 			\tiny{
 			\begin{center}
 				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
-				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.7cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2.9cm}|}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.86cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}X|}
 				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
 					\textbf{Estrategias}\\
 					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
-					\alert{EnlistServerResponseTime, LowerFidelityReduceResponseTime}\\
+					\textcolor{red}{EnlistServerResponseTime, LowerFidelityReduceResponseTime}\\
 					2 & Costo de Servidores & Cualquier Entorno aplica & costo $<$ 2 & --
 				\end{tabularx}
 			\end{center}}
-
-			\todo{TURCO: Poner graficos de caso 3}
-			
 		\end{frame}
 
 	% Caso 4
 	\subsection{Tradeoff según Prioridades}
 
-		\begin{frame}
+		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
-			\todo{JONY: Tradeoff según prioridades - Caso 4}
+
+			\tiny{
+			\begin{center}
+				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.86cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}X|}
+				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
+					\textbf{Estrategias}\\
+					\alert{1} & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
+					\alert{EnlistServerResponseTime}\\
+					\alert{2} & Costo de Servidores & Cualquier Entorno aplica & costo $<$ 2 & \textcolor{red}{ReduceOverallCost}\\
+				\end{tabularx}
+			\end{center}}
+
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.32]{images/testcase4_expRespTime.png}
+			\end{figure}
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.32]{images/testcase4_cost.png}
+			\end{figure}
 			
 		\end{frame}
 
 	% Caso 5
 	\subsection{Tradeoff entre Escenarios Según Concerns}
 	
-		\begin{frame}
+		\begin{frame}[plain,allowframebreaks,from second,containsverbatim]
 			\frametitle{\insertsubsection}
-			\todo{JONY: Tradeoff entre Escenarios Según Concerns - Caso 5}
+
+			\tiny{
+			\begin{center}
+				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
+				\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}m{0.86cm}|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}X|}
+				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
+					\textbf{Estrategias}\\
+					\alert{1} & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
+					\alert{EnlistServerResponseTime}\\
+					\alert{1} & Costo de Servidores & Cualquier Entorno aplica & costo $<$ 2 & \textcolor{red}{--}\\
+				\end{tabularx}
+			\end{center}}
+
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.3]{images/testcase5_normal_environment_modified.png}
+			\end{figure}
+			
+			\framebreak
+
+			\begin{Verbatim}[fontsize=\tiny,gobble=4]
+				Current environment: NORMAL
+				Computing Current System Utility...
+				Server Cost Scenario broken for [ESum] 1.0? false
+				Experienced Response Time Scenario broken for [EAvg] 602.25? true
+				Current System Utility (Score to improve): 0.555
+				Evaluating strategy EnlistServerResponseTime...
+				  Scoring EnlistServerResponseTime...
+				  Server Cost Scenario broken after simulation for Server Cost ([ESum] 2.0)
+				  Experienced Response Time Scenario NOT broken after simulation for Response time ([EAvg] 458.25)
+				  Score for strategy EnlistServerResponseTime: 0.111
+				NO applicable strategy, adaptation cycle ended.
+			\end{Verbatim}
+
+			\normalsize
+			\begin{center}
+				Tiempo de respuesta
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.32]{images/testcase5_expRespTime.png}
+				\end{figure}
+			\end{center}
+			
 		\end{frame}
 
 \section{Trabajo a Futuro y Conclusiones}
@@ -594,11 +635,11 @@
 			\begin{itemize}[<+->]
 				\item Ampliación de la recarga dinámica de configuración\\
 				(idealmente: nunca detener Arco Iris para reconfigurar).
-				\item Extensión de tipos de restricciones soportadas.
-				\item Atributos de Calidad y \emph{Concerns} configurables por el usuario.
-				\item Mejorar heurísticas de predicción del potencial impacto de estrategias.
+				\uncover<2->{\item Extensión de tipos de restricciones soportadas.}
+				\uncover<3->{\item Atributos de Calidad y \emph{Concerns} configurables por el usuario.}
+				\uncover<4->{\item Mejorar heurísticas de predicción del potencial impacto de estrategias.}
 				\nota{mapa estatico de impacto de tactica vs ir aprendiendo de la experiencia}
-				\item ¿Ausencia u obsolescencia del modelo de la arquitectura?
+				\uncover<5->{\item ¿Ausencia u obsolescencia del modelo de la arquitectura?}
 			\end{itemize}
 		\end{frame}
 
@@ -606,19 +647,20 @@
 
 		\begin{frame}
 			\frametitle{\insertsubsection}
-			\begin{itemize}[<+->]
+
+			\begin{itemize}
 				\item \emph{Stakeholders} con mayor participación en el proceso de Auto Reparación:
-				\begin{itemize}[<+->]
+				\begin{itemize}
 					\item En mayor parte, Arco Iris no requiere habilidades técnicas para su configuración
 					\item Información sobre restricciones fuera del modelo de la arquitectura y unificadas
 					\item Arco Iris UI
 				\end{itemize}
-				\item Dinamismo agregado:
-				\begin{itemize}[<+->]
+				\pause \uncover<2->{\item Dinamismo agregado:
+				\begin{itemize}
 					\item Recarga automática de configuración
 					\item Adaptación dinámica de soluciones de acuerdo al entorno de ejecución
-				\end{itemize}
-				\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}  
+				\end{itemize}}
+				\pause \uncover<3->{\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}}  
 			\end{itemize}
 		\end{frame}	
 	
