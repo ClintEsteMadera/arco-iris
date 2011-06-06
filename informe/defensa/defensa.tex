@@ -3,9 +3,10 @@
 \usepackage[ansinew]{inputenc}
 \usepackage{tabularx}                                         % permite usar tablas mas inteligentes que con``tabular''
 \usepackage{lmodern}                                          % to avoid warnings about undefined fonts
-\usepackage{fancyvrb}                                         % Fancy Verbatim
 \usepackage[normalem]{ulem}                                   % Para tachar texto, entre otras cosas
+\usepackage{fancyvrb}                                         % Fancy Verbatim
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
+
 % descomentar lo siguiente para una presentación en formato widescreen 
 %\usepackage[orientation=landscape,size=custom,width=16,height=10,scale=0.5]{beamerposter}
 
@@ -20,20 +21,23 @@
 	sidebar width right=0pt
 }
 \usenavigationsymbolstemplate{}                               % remove navigation symbols on lower right hand side
-%\beamertemplateshadingbackground{red!10}{white!1}
-\setbeamertemplate{frametitle continuation}[from second]
+\setbeamertemplate{frametitle continuation}[from second]      % para que ponga el texto ``(Cont.)
+\setcounter{tocdepth}{1}
 
 % beamerbasefont.sty defines the commands \Tiny and \TINY for very small font sizes. Redefining \Tiny to avoid warnings
 %\let\Tiny=\tiny
-\setcounter{tocdepth}{1}
 
 \title[Auto Reparación de Sistemas de Software]{Hacia un modelo más flexible para la implementación de la auto
 reparación de sistemas de software basada en Arquitectura}
 \subtitle{Tesis de Licenciatura en Ciencias de la Computación}
 \author{Chiocchio, Jonathan \and Tursi, Germán Gabriel}
-\institute{Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación}
+\institute{
+	\tiny{Director: Santiago Ceria}
+	\and
+	\scriptsize{Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación}
+}
+
 \date{10 de Junio de 2011}
-%\date{\today}
 
 \def\todo#1{\noindent \textcolor{red}{#1}}                    % macro para To-Do's
 \def\nota#1{\note[item]{#1}}                                  % simplifica el agregado de notas
@@ -47,9 +51,10 @@ reparación de sistemas de software basada en Arquitectura}
 
 %Outline
 \begin{frame}
+	\frametitle{Contenido}
+
 	\tableofcontents
 \end{frame}
-
 
 %--------- JONY ---------
 \begin{frame}
@@ -391,7 +396,7 @@ reparación de sistemas de software basada en Arquitectura}
 				cualquier \emph{stakeholder}:
 				\begin{figure}[h]
 					\centering
-					\includegraphics[width=0.96\textwidth]{images/arcoIrisUI_numericBinaryRelationalConstraint.png}
+					\includegraphics[width=0.8\textwidth]{images/arcoIrisUI_numericBinaryRelationalConstraint.png}
 				\end{figure}
 				
 			\end{frame}
@@ -534,7 +539,8 @@ reparación de sistemas de software basada en Arquitectura}
 					\centering \includegraphics[scale=0.35]{images/testcase1_expRespTime.png}
 				\end{figure}
 				
- 				\uncover<2>{\alert{¡Arco Iris no puede reparar el sistema porque el escenario no tiene estrategias asociadas!}}
+ 				\pause \uncover<2>{\alert{¡Arco Iris no puede reparar el sistema porque el escenario no tiene estrategias
+ 				asociadas!}}
  			\end{center}
 			
 		\end{frame}
@@ -556,19 +562,21 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{tabularx}
 			\end{center}}
 
+			\nota{Mencionar que la estrategia \verb@EnlistServerResponseTime@ simplemente agrega un servidor (y nada más)}
+			
+			\normalsize
 			\begin{figure}[ht]
-				\centering \includegraphics[scale=0.32]{images/testcase2_expRespTime.png}
-			\end{figure}
-			\begin{figure}[ht]
+				Tiempo de respuesta
+				\centering \includegraphics[scale=0.32]{images/testcase2_expRespTime.png}\\
+				Costo de servidores
 				\centering \includegraphics[scale=0.32]{images/testcase2_cost.png}
 			\end{figure}
-			
 		\end{frame}
 
 	% Caso 3
 	\subsection{Tradeoff Entre Estrategias}
 	
-		\begin{frame}[plain]
+		\begin{frame}[plain,allowframebreaks,from second,containsverbatim]
 			\frametitle{\insertsubsection}
 
 			\tiny{
@@ -578,10 +586,32 @@ reparación de sistemas de software basada en Arquitectura}
 				\textbf{Prioridad} & \textbf{\emph{Concern}} & \textbf{Entorno} & \textbf{Cuantificación Respuesta} &
 					\textbf{Estrategias}\\
 					1 & Tiempo de Respuesta & Cualquier Entorno aplica & tiempo de respuesta $<$ 600 ms. &
-					\textcolor{red}{EnlistServerResponseTime, LowerFidelityReduceResponseTime}\\
+					EnlistServerResponseTime, \textcolor{red}{LowerFidelityReduceResponseTime}\\
 					2 & Costo de Servidores & Cualquier Entorno aplica & costo $<$ 2 & --
 				\end{tabularx}
 			\end{center}}
+			
+			\begin{Verbatim}[gobble=4]
+				strategy LowerFidelityReduceResponseTime {
+				  t0: (true) -> lowerFidelity(2, 100) @[5000 /*ms*/] {
+				    t1: (!RESP_TIME_STILL_BROKEN) -> done;
+				    t2: (RESP_TIME_STILL_BROKEN) -> lowerFidelity(2, 100) @[8000 /*ms*/] {
+				      t2a: (!RESP_TIME_STILL_BROKEN) -> done;
+				      t2b: (default) -> TNULL;  // in this case, we have no more steps to take
+				    }
+				  }
+				}
+			\end{Verbatim}
+			
+			\framebreak
+			\frametitle{\insertsubsection}
+			
+			\begin{figure}[ht]
+				\centering \includegraphics[scale=0.28]{images/testcase3_expRespTime.png}\\
+				\centering \includegraphics[scale=0.28]{images/testcase3_cost.png}\\
+				\centering \includegraphics[scale=0.28]{images/testcase3_fidelity.png}
+			\end{figure}
+			
 		\end{frame}
 
 	% Caso 4
@@ -602,10 +632,11 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{tabularx}
 			\end{center}}
 
+			\nota{Mencionar que la estrategia \verb@ReduceOverallCost@ simplemente baja un servidor (y nada más)}
 			\begin{figure}[ht]
-				\centering \includegraphics[scale=0.32]{images/testcase4_expRespTime.png}
-			\end{figure}
-			\begin{figure}[ht]
+				Tiempo de respuesta\\
+				\centering \includegraphics[scale=0.32]{images/testcase4_expRespTime.png}\\
+				Costo de servidores\\
 				\centering \includegraphics[scale=0.32]{images/testcase4_cost.png}
 			\end{figure}
 			
