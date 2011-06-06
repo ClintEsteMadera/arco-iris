@@ -1,8 +1,8 @@
-\documentclass[red,table,dvipsnames]{beamer}
+\documentclass[red,table,dvipsnames,handout]{beamer}
 \usepackage[spanish, activeacute]{babel}
 \usepackage[ansinew]{inputenc}
-\usepackage{tabularx}                                          % permite usar tablas mas inteligentes
-\usepackage{lmodern}                                           % to avoid warnings about undefined fonts
+\usepackage{tabularx}                                           % permite usar tablas mas inteligentes
+\usepackage{lmodern}                                            % to avoid warnings about undefined fonts
 \usepackage[normalem]{ulem}                                     % Para tachar texto, entre otras cosas
 \usepackage{fancyvrb}                                           % Fancy Verbatim
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
@@ -132,8 +132,8 @@ reparación de sistemas de software basada en Arquitectura}
 			\end{figure}
 		\end{frame}
 
-	%--------- JONY ---------
 	\subsection{Atributos de Calidad y Concerns}
+		%--------- JONY ---------
 		\begin{frame}[allowframebreaks]
 			\frametitle{\insertsubsection}
 			Los \textbf{atributos de calidad} (QAs) hablan de características específicas que debe tener el sistema, antes (mal)
@@ -219,6 +219,7 @@ reparación de sistemas de software basada en Arquitectura}
 			\end{figure}
 		\end{frame}
 
+		%--------- TURCO ---------
 		\begin{frame}
 			\frametitle{Tácticas y Estrategias de Reparación}
 
@@ -229,6 +230,7 @@ reparación de sistemas de software basada en Arquitectura}
 			atributos de calidad en un nivel deseado. 
 		\end{frame}
 
+		%--------- TURCO ---------
 		\begin{frame}
 			\frametitle{Ejemplo}
 
@@ -250,6 +252,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 	\subsection{Mejoras a Rainbow}
 	
+		%--------- JONY ---------
 		\begin{frame}
 			\frametitle{Características de Rainbow a Mejorar}
 
@@ -275,6 +278,7 @@ reparación de sistemas de software basada en Arquitectura}
 			\nota{Los Escenarios de Atributos de Calidad como forma fundamental de expresar el conocimiento de los
 			\emph{stakeholders} referido a requerimientos que deben ser contemplados por la arquitectura}
 	
+			%--------- JONY ---------
 			\begin{frame}[allowframebreaks]
 				\frametitle{\insertsubsubsection}
 				Los \textbf{Escenarios de Atributos de Calidad} o QAS(\emph{Quality Attribute Scenarios}) permiten expresar cómo
@@ -314,6 +318,7 @@ reparación de sistemas de software basada en Arquitectura}
 	
 		\subsubsection{Arco Iris}
 
+			%--------- TURCO ---------
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
 				
@@ -322,6 +327,7 @@ reparación de sistemas de software basada en Arquitectura}
 				
 			\end{frame}
 
+			%--------- TURCO ---------
 			\begin{frame}[allowframebreaks]
 				\frametitle{SHS: Extensión a QAS}
 
@@ -347,6 +353,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 			\end{frame}
 
+			%--------- TURCO ---------
 			\begin{frame}
 				\frametitle{Características de Arco Iris}
 		
@@ -385,6 +392,7 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{center}
 			\end{frame}
 
+			%--------- JONY ---------
 			\begin{frame}[allowframebreaks,containsverbatim]
 				\frametitle{¿Para qué una GUI?}
 				
@@ -414,8 +422,8 @@ reparación de sistemas de software basada en Arquitectura}
 
 				\framebreak
 				
-				En Arco Iris la definición de las restricciones de los escenarios puede ser llevada a cabo por
-				cualquier \emph{stakeholder}:
+				En Arco Iris la definición de las restricciones de los escenarios puede ser llevada a cabo por cualquier
+				\emph{stakeholder}:
 				\begin{figure}[h]
 					\centering
 					\includegraphics[width=0.8\textwidth]{images/arcoIrisUI_numericBinaryRelationalConstraint.png}
@@ -424,6 +432,8 @@ reparación de sistemas de software basada en Arquitectura}
 			\end{frame}
 
 		\subsubsection{Flujo Conceptual}
+
+			%--------- JONY ---------
 			\begin{frame}
 				\frametitle{\insertsubsubsection}
 
@@ -434,6 +444,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 		\subsubsection{Implementación de Arco Iris}
 
+			%--------- JONY ---------
 			\begin{frame}
 				\frametitle{Arco Iris en Ejecución}
 
@@ -442,6 +453,7 @@ reparación de sistemas de software basada en Arquitectura}
 					\end{figure}
 			\end{frame}
 
+			%--------- TURCO ---------
 			\begin{frame}[allowframebreaks,containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
@@ -484,6 +496,7 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{Verbatim}
 			\end{frame}
 
+			%--------- TURCO ---------
 			\begin{frame}[containsverbatim]
 				\frametitle{Puntuación y Selección de una Estrategia}
 		
@@ -510,6 +523,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 \section{Casos de Prueba}
 
+	%--------- TURCO ---------
 	\begin{frame}
 		\frametitle{ZNN}
 
@@ -525,6 +539,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 0
 	\subsection{Comportamiento del Sistema sin Auto Reparación}
 
+		%--------- TURCO ---------
 		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
 
@@ -543,6 +558,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 1
 	\subsection{Comportamiento con un Escenario, Sin Estrategias}
 
+		%--------- JONY ---------
 		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
 
@@ -570,6 +586,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 2
 	\subsection{Comportamiento con un Escenario y una Estrategia}
 	
+		%--------- TURCO ---------
 		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
 
@@ -598,6 +615,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 3
 	\subsection{Tradeoff Entre Estrategias}
 	
+		%--------- JONY ---------
 		\begin{frame}[plain,allowframebreaks,containsverbatim]
 			\frametitle{\insertsubsection}
 
@@ -639,6 +657,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 4
 	\subsection{Tradeoff según Prioridades}
 
+		%--------- TURCO ---------
 		\begin{frame}[plain]
 			\frametitle{\insertsubsection}
 
@@ -667,6 +686,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 5
 	\subsection{Tradeoff entre Escenarios Según Concerns}
 	
+		%--------- JONY ---------
 		\begin{frame}[plain,allowframebreaks,containsverbatim]
 			\frametitle{\insertsubsection}
 
@@ -716,6 +736,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 	\subsection{Trabajo a Futuro}
 
+		%--------- JONY ---------
 		\begin{frame}
 			\frametitle{\insertsubsection}
 			\begin{itemize}[<+->]
@@ -731,6 +752,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 	\subsection{Conclusiones}
 
+		%--------- TURCO ---------
 		\begin{frame}
 			\frametitle{\insertsubsection}
 
