@@ -314,7 +314,10 @@ reparación de sistemas de software basada en Arquitectura}
 				\framebreak
 
 				\nota{Explicar condiciones y pesos del entorno}				
-				\todo{TURCO: agregar figura de SHS}
+				\begin{figure}[ht]
+					\centering \includegraphics[scale=0.4]{images/Arco_Iris_QAS_Model.png}
+				\end{figure}
+
 			\end{frame}
 
 			\begin{frame}
@@ -355,12 +358,42 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{center}
 			\end{frame}
 
-			\begin{frame}
+			\begin{frame}[allowframebreaks,from second,containsverbatim]
 				\frametitle{¿Para qué una GUI?}
 				
-				\todo{TURCO: Poner un cacho de acme con un invariante y un cacho de stitch con la misma condicion replicada como
-				precondicion de una estrategia, y mostrar que con Arco Iris UI es mas accesible para el stakeholder (poner imagen
-				existente)}
+				En Rainbow se definen los invariantes en el modelo de la arquitectura:
+				\begin{Verbatim}[fontsize=\tiny,gobble=5]
+					Property MAX_RESPTIME : float = 800.0;
+					...
+					Component Type ClientT = {
+						Property experRespTime;
+						rule primaryConstraint = invariant self.experRespTime <= MAX_RESPTIME;
+					}
+				\end{Verbatim}
+				
+				Y se debe duplicar la lógica en la precondición de la estrategia:
+
+				\begin{Verbatim}[fontsize=\tiny,gobble=5]
+					define boolean cViolation = exists c : T.ClientT in M.components | c.experRespTime > M.MAX_RESPTIME;
+					...
+					strategy SimpleReduceResponseTime
+					[ cViolation ] {
+						t0: (cViolation) -> enlistServers(1) {
+							t1: (!cViolation) -> done;
+							t2: (default) -> TNULL;
+						}
+					}
+				\end{Verbatim}
+
+				\framebreak
+				
+				En Arco Iris la definición de las restricciones de los escenarios puede ser llevada a cabo por
+				cualquier \emph{stakeholder}:
+				\begin{figure}[h]
+					\centering
+					\includegraphics[width=0.96\textwidth]{images/arcoIrisUI_numericBinaryRelationalConstraint.png}
+				\end{figure}
+				
 			\end{frame}
 
 		\subsubsection{Flujo Conceptual}
