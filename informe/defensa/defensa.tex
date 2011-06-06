@@ -1,13 +1,34 @@
 \documentclass[red,table,dvipsnames]{beamer}
 \usepackage[spanish, activeacute]{babel}
 \usepackage[ansinew]{inputenc}
-\usepackage{tabularx}                                         % permite usar tablas mas inteligentes que con``tabular''
-\usepackage{lmodern}                                          % to avoid warnings about undefined fonts
-\usepackage[normalem]{ulem}                                   % Para tachar texto, entre otras cosas
-\usepackage{fancyvrb}                                         % Fancy Verbatim
+\usepackage{tabularx}                                          % permite usar tablas mas inteligentes
+\usepackage{lmodern}                                           % to avoid warnings about undefined fonts
+\usepackage[normalem]{ulem}                                     % Para tachar texto, entre otras cosas
+\usepackage{fancyvrb}                                           % Fancy Verbatim
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,gobble=2,frame=single}
 
-% descomentar lo siguiente para una presentación en formato widescreen 
+% 4 opciones auto contenidas y excluyentes:
+%-----------------------------------------
+% Opción 1: Mostrar las notas en la segunda pantalla
+%\usepackage{pgfpages}
+%\setbeameroption{show notes on second screen}
+
+% Opción 2: Imprimir 4 slides por hoja, incluyendo las notas (poner \documentclass[handout])
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=5mm] % handouts con notas
+%\setbeameroption{show notes}
+
+% Opción 3: Imprimir únicamente las notas, 4 slides por hoja)
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=5mm] % handouts con notas
+%\setbeameroption{show only notes}
+
+% Opción 4: Imprimir handouts para el público, 4 slides por hoja, sin notas (poner \documentclass[handout])
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=5mm] % handouts con notas
+%\setbeameroption{show notes}
+
+% Para una presentación en formato widescreen, descomentar lo siguiente: 
 %\usepackage[orientation=landscape,size=custom,width=16,height=10,scale=0.5]{beamerposter}
 
 \usetheme{Warsaw}
@@ -20,8 +41,8 @@
 	sidebar width left=0pt,
 	sidebar width right=0pt
 }
-\usenavigationsymbolstemplate{}                               % remove navigation symbols on lower right hand side
-\setbeamertemplate{frametitle continuation}[from second]      % para que ponga el texto ``(Cont.)
+\usenavigationsymbolstemplate{}                                 % remove navigation symbols on lower right hand side
+\setbeamertemplate{frametitle continuation}[from second]        % para que ponga el texto ``(Cont.)
 \setcounter{tocdepth}{1}
 
 % beamerbasefont.sty defines the commands \Tiny and \TINY for very small font sizes. Redefining \Tiny to avoid warnings
@@ -39,8 +60,8 @@ reparación de sistemas de software basada en Arquitectura}
 
 \date{10 de Junio de 2011}
 
-\def\todo#1{\noindent \textcolor{red}{#1}}                    % macro para To-Do's
-\def\nota#1{\note[item]{#1}}                                  % simplifica el agregado de notas
+\def\todo#1{\noindent \textcolor{red}{#1}}                      % macro para To-Do's
+\def\nota#1{\note[item]{#1}}                                    % simplifica el agregado de notas
 
 \begin{document}
 
@@ -73,7 +94,8 @@ reparación de sistemas de software basada en Arquitectura}
 		\begin{frame}
 			\frametitle{Tendencia a los Sistemas Autónomos}
 
-			\nota{Antes de introducir Auto Adaptación, veamos un ejemplo de la evolución de windows con respecto a este tema}			
+			\nota{Antes de introducir Auto Adaptación, veamos un ejemplo de la evolución\\
+			de windows con respecto a este tema}			
 			\begin{figure}[ht]
 				\centering \includegraphics[width=0.96\textwidth,height=0.83\textheight]{images/evolucionWindows.png}
 			\end{figure}
@@ -112,7 +134,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 	%--------- JONY ---------
 	\subsection{Atributos de Calidad y Concerns}
-		\begin{frame}[allowframebreaks,from second]
+		\begin{frame}[allowframebreaks]
 			\frametitle{\insertsubsection}
 			Los \textbf{atributos de calidad} (QAs) hablan de características específicas que debe tener el sistema, antes (mal)
 			llamados ``requerimientos no funcionales''.\\[10pt]
@@ -253,7 +275,7 @@ reparación de sistemas de software basada en Arquitectura}
 			\nota{Los Escenarios de Atributos de Calidad como forma fundamental de expresar el conocimiento de los
 			\emph{stakeholders} referido a requerimientos que deben ser contemplados por la arquitectura}
 	
-			\begin{frame}[allowframebreaks,from second]
+			\begin{frame}[allowframebreaks]
 				\frametitle{\insertsubsubsection}
 				Los \textbf{Escenarios de Atributos de Calidad} o QAS(\emph{Quality Attribute Scenarios}) permiten expresar cómo
 				debería responder el sistema ante determinados estímulos y bajo ciertas circunstancias.
@@ -300,7 +322,7 @@ reparación de sistemas de software basada en Arquitectura}
 				
 			\end{frame}
 
-			\begin{frame}[allowframebreaks,from second]
+			\begin{frame}[allowframebreaks]
 				\frametitle{SHS: Extensión a QAS}
 
 				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
@@ -320,7 +342,7 @@ reparación de sistemas de software basada en Arquitectura}
 
 				\nota{Explicar condiciones y pesos del entorno}				
 				\begin{figure}[ht]
-					\centering \includegraphics[scale=0.4]{images/Arco_Iris_QAS_Model.png}
+					\centering \includegraphics[scale=0.39]{images/Arco_Iris_QAS_Model.png}
 				\end{figure}
 
 			\end{frame}
@@ -363,7 +385,7 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{center}
 			\end{frame}
 
-			\begin{frame}[allowframebreaks,from second,containsverbatim]
+			\begin{frame}[allowframebreaks,containsverbatim]
 				\frametitle{¿Para qué una GUI?}
 				
 				En Rainbow se definen los invariantes en el modelo de la arquitectura:
@@ -420,7 +442,7 @@ reparación de sistemas de software basada en Arquitectura}
 					\end{figure}
 			\end{frame}
 
-			\begin{frame}[allowframebreaks,from second,containsverbatim]
+			\begin{frame}[allowframebreaks,containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
 				\begin{itemize}
@@ -562,7 +584,7 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{tabularx}
 			\end{center}}
 
-			\nota{Mencionar que la estrategia \verb@EnlistServerResponseTime@ simplemente agrega un servidor (y nada más)}
+			\nota{Mencionar que la estrategia EnlistServerResponseTime simplemente agrega un servidor (y nada más)}
 			
 			\normalsize
 			\begin{figure}[ht]
@@ -576,7 +598,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 3
 	\subsection{Tradeoff Entre Estrategias}
 	
-		\begin{frame}[plain,allowframebreaks,from second,containsverbatim]
+		\begin{frame}[plain,allowframebreaks,containsverbatim]
 			\frametitle{\insertsubsection}
 
 			\tiny{
@@ -632,7 +654,7 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{tabularx}
 			\end{center}}
 
-			\nota{Mencionar que la estrategia \verb@ReduceOverallCost@ simplemente baja un servidor (y nada más)}
+			\nota{Mencionar que la estrategia ReduceOverallCost simplemente baja un servidor (y nada más)}
 			\begin{figure}[ht]
 				Tiempo de respuesta\\
 				\centering \includegraphics[scale=0.32]{images/testcase4_expRespTime.png}\\
@@ -645,7 +667,7 @@ reparación de sistemas de software basada en Arquitectura}
 	% Caso 5
 	\subsection{Tradeoff entre Escenarios Según Concerns}
 	
-		\begin{frame}[plain,allowframebreaks,from second,containsverbatim]
+		\begin{frame}[plain,allowframebreaks,containsverbatim]
 			\frametitle{\insertsubsection}
 
 			\tiny{
