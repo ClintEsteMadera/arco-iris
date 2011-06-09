@@ -166,7 +166,7 @@ reparación de sistemas de software basada en Arquitectura}
 			\nota{Intenta aplicar a arquitecturas disímiles}
 			\nota{No requiere diseñar el sistema teniendo en cuenta que va a ser adaptado mediante Rainbow}
 			
-			\begin{itemize}[<+->]
+			\begin{itemize}
 			  	\item \emph{Framework} de Auto Adaptación.
 			  	\item Realizado en el marco del proyecto ABLE de la CMU. 
 				\item Trabaja con el modelo de la arquitectura (expresado mediante \textbf{Acme}).
@@ -180,8 +180,7 @@ reparación de sistemas de software basada en Arquitectura}
 		\begin{frame}[containsverbatim]
 			\frametitle{Ejemplo de una Arquitectura en Acme}
 			
-			\nota{los invariantes seran utilizados por Rainbow para saber cuándo y cómo debe reparar el sistema utilizando
-			estrategias, las cuales seran explicadas mas adelante}
+			\nota{los invariantes seran utilizados por Rainbow para saber cuándo reparar el sistema}
 			\nota{Decir ``Tiempo de respuesta experimentado por el usuario''}
 			\nota{Relacionar experRespTime con el concern Comportamiento Temporal para que se entienda ``Puntuación y
 			Selección de una Estrategia''}
@@ -205,25 +204,22 @@ reparación de sistemas de software basada en Arquitectura}
 			\end{Verbatim}
 		\end{frame}
 
-		%--------- JONY ---------
-		\begin{frame}
-			\frametitle{Arquitectura de Rainbow}
-
-			\nota{Mencionar closed-loop}
-			\nota{Idea: Rainbow testeará la app para mantener actualizado el modelo de la arquitectura y así poder verificar
-			periódicamente que se satisfagan todas las restricciones, de no ser así elegirá la mejor estrategia para repararlo
-			impactando sobre el sistema en ejecución para modificar su comportamiento.}
-
-			\begin{figure}[ht]
-				\centering \includegraphics[height=0.83\textheight]{images/Rainbow_Framework.png}
-			\end{figure}
-		\end{frame}
+% 		\begin{frame}
+% 			\frametitle{Arquitectura de Rainbow}
+% 
+% 			\nota{Mencionar closed-loop}
+% 			\nota{Idea: Rainbow testeará la app para mantener actualizado el modelo de la arquitectura y así poder verificar
+% 			periódicamente que se satisfagan todas las restricciones, de no ser así elegirá la mejor estrategia para repararlo
+% 			impactando sobre el sistema en ejecución para modificar su comportamiento.}
+% 
+% 			\begin{figure}[ht]
+% 				\centering \includegraphics[height=0.83\textheight]{images/Rainbow_Framework.png}
+% 			\end{figure}
+% 		\end{frame}
 
 		%--------- TURCO ---------
 		\begin{frame}
 			\frametitle{Tácticas y Estrategias de Reparación}
-
-			\nota{Tanto Rainbow como Arco Iris utilizan los conceptos táctica y estrategia para reparar al sistema}
 
 			\underline{\textbf{Táctica}}: decisión de diseño que permite modificar el comportamiento del sistema ante 
 			determinados estímulos.\\[5pt] 
@@ -309,14 +305,13 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{figure}
 	
 				\nota{Lo importante: concepto sencillo de facil configuracion, permite involucrar a los stakeholders .}
-				\nota{Mencionar GUI.}
 				\nota{Más adelante veremos como son utilizados por Arco Iris.}
 			\end{frame}
 
 			\begin{frame}
 				\frametitle{\insertsubsubsection (ejemplo)}
 
-				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
+				\nota{Explicar matching entre RESPONSE MEASURE e invariantes}
 
 				\textbf{Escenario de eficiencia}\\[20pt]
 				\begin{figure}[ht]
@@ -352,11 +347,11 @@ reparación de sistemas de software basada en Arquitectura}
 					\item \sout{No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.}\\
 					\alert{Arco Iris los involucra.}
 					\item \sout{Duplicación en la configuración de invariantes}\\
-					\alert{Invariantes sólo en los QAS.}
+					\alert{Invariantes sólo en los escenarios.}
 					\item \sout{Poco dinámico, debido a:}
 					\begin{itemize}
 						\item \sout{no se adapta al entorno de ejecución}\\\alert{Entornos dinámicos}.
-						\item \sout{configuración compleja}\\\alert{Configuración de QAS mediante Arco Iris UI}. 
+						\item \sout{configuración compleja}\\\alert{Configuración de escenarios mediante Arco Iris UI}. 
 						\item \sout{ausencia de mecanismo de actualización ``en caliente''}\\\alert{Recarga de
 						configuración dinámica}
 					\end{itemize}
@@ -447,11 +442,10 @@ reparación de sistemas de software basada en Arquitectura}
 			\end{frame}
 
 			%--------- TURCO ---------
-			\begin{frame}[allowframebreaks,containsverbatim]
+			\begin{frame}[containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
 				\nota{El sistema ofrece una determinada utilidad en cada instante}
-				\todo{Mencionar que se usa para evaluar a las estrategias?}
 				
 				\begin{itemize}
 					\item Permite asignar una medida relativa de satisfacción (i.e. utilidad) sobre un sistema sobre el cual es
@@ -465,32 +459,6 @@ reparación de sistemas de software basada en Arquitectura}
 				
 				Rainbow posee un mecanismo que permite predecir la utilidad del sistema luego de una supuesta ejecución de una
 				estrategia.
-				
-				\framebreak		
-
-				\todo{Que hay que decir sobre el utilities.yml? Mencionar cómo scorea estrategias Rainbow?}
-				
-				\nota{Se define el impacto de cada táctica sobre los concerns}
-
-				Estimación del impacto de cada estrategia.
-				
-				\begin{Verbatim}[fontsize=\tiny,gobble=5]
-					utilities:
-					  uR:
-					    label:       Average Response Time
-					    mapping:     "[EAvg]Client.experRespTime"
-					    ...
-					  uF:
-					    label:        Average Fidelity
-					    mapping:      "[EAvg]Server.fidelity"
-					    ...
-					vectors:         # Tactic quality attribute vectors
-					  enlistServers:
-					    uR: -144
-					    uF: 0
-					    uC: +1.00
-					...
-				\end{Verbatim}
 			\end{frame}
 
 			%--------- TURCO ---------
@@ -501,8 +469,6 @@ reparación de sistemas de software basada en Arquitectura}
 					
 					\textbf{Puntuación}: predicción de la utilidad del sistema luego de simular la ejecución de la estrategia. 
 					
-					\todo{¿Acá no debería decir ``estimaciónPorPropiedad'' en lugar de concern?}
-				
 					\begin{Verbatim}[fontsize=\tiny,gobble=6]
 						scoreStrategia = 0
 						estimacionPorConcern = simular la aplicación de la estrategia como lo hace Rainbow y
@@ -559,7 +525,7 @@ reparación de sistemas de software basada en Arquitectura}
 		\end{frame}
 
 		% Caso 1
-		%--------- JONY ---------
+		%--------- TURCO ---------
 		\begin{frame}[plain]
 			\frametitle{Comportamiento con un Escenario, Sin Estrategias}
 
@@ -750,7 +716,13 @@ reparación de sistemas de software basada en Arquitectura}
 		\begin{frame}
 			\frametitle{\insertsubsection}
 
-			\begin{itemize}[<+->]
+			\nota{framework generico y personalizable: soluciones que se \textbf{adaptan dinámicamente} ante \textbf{cambios en
+			el entorno} de ejecución}
+			
+			\nota{Finalizar con: Arco Iris es una opción interesante a ser considerada para su estudio y extensión, a fin de
+			\textbf{continuar avanzando en la flexibilización de herramientas de auto reparación}}
+
+			\begin{itemize}
 				\item \emph{Stakeholders} con mayor participación en el proceso de Auto Reparación:
 				\begin{itemize}
 					\item En mayor parte, Arco Iris no requiere habilidades técnicas para su configuración
@@ -764,7 +736,6 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{itemize}
 				\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}  
 			\end{itemize}
-		\todo{No me cierra el ultimo item}	
 		\end{frame}	
 
 		\begin{frame}
