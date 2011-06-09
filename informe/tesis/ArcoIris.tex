@@ -1197,7 +1197,8 @@
 						                       obtener el valor resultante para los concerns
 						Por cada escenario habilitado
 							Si (!escenario.applyFor(entornoActual) o
-							   (escenario.applyFor(entornoActual) y escenario.responseMeasure.holds(estimacionPorConcern)))
+							   (escenario.applyFor(entornoActual) y
+							       escenario.responseMeasure.holds(estimacionPorConcern)))
 	
 								prioridadRelativa = calcular prioridad relativa del escenario
 								pesoConcern = peso que el entorno actual asigna a escenario.concern
@@ -1205,7 +1206,6 @@
 								scoreStrategia = scoreStrategia + puntajeEscenario
 							Fin
 						Fin
-	
 						Si scoreStrategia > scoreMaximo
 							estrategiaSeleccionada = estrategia
 							scoreMaximo = scoreStrategia
