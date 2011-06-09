@@ -183,6 +183,8 @@ reparación de sistemas de software basada en Arquitectura}
 			\nota{los invariantes seran utilizados por Rainbow para saber cuándo y cómo debe reparar el sistema utilizando
 			estrategias, las cuales seran explicadas mas adelante}
 			\nota{Decir ``Tiempo de respuesta experimentado por el usuario''}
+			\nota{Relacionar experRespTime con el concern Comportamiento Temporal para que se entienda ``Puntuación y
+			Selección de una Estrategia''}
 
 			\scriptsize
 			\begin{Verbatim}[gobble=4]
@@ -221,6 +223,8 @@ reparación de sistemas de software basada en Arquitectura}
 		\begin{frame}
 			\frametitle{Tácticas y Estrategias de Reparación}
 
+			\nota{Tanto Rainbow como Arco Iris utilizan los conceptos táctica y estrategia para reparar al sistema}
+
 			\underline{\textbf{Táctica}}: decisión de diseño que permite modificar el comportamiento del sistema ante 
 			determinados estímulos.\\[5pt] 
 			e.g. \alert{agregar un servidor} al sistema.\\[14pt]
@@ -235,6 +239,7 @@ reparación de sistemas de software basada en Arquitectura}
 			\textbf{Invariante}: el tiempo de respuesta experimentado por el usuario no debe superar el umbral
 			determinado.\\[10pt]
 			
+			\nota{Mencionar tiempo de asentamiento de una tactica}
 			\nota{explicar disminuir fidelidad de la información: por ejemplo eliminar videos}
 			\nota{La estrategia informa si pudo reparar el problema o no (Retorna SUCCESS o FAILURE)}
 			
@@ -289,11 +294,12 @@ reparación de sistemas de software basada en Arquitectura}
 
 		\subsubsection{Escenarios de Atributos de Calidad}
 	
-			\nota{Los Escenarios de Atributos de Calidad como forma fundamental de expresar el conocimiento de los
-			\emph{stakeholders} referido a requerimientos que deben ser contemplados por la arquitectura}
-	
 			%--------- TURCO ---------
 			\begin{frame}
+
+				\nota{QAS como forma fundamental de expresar el conocimiento de los \emph{stakeholders} sobre requerimientos
+				que deben ser contemplados por la arquitectura}
+	
 				\frametitle{\insertsubsubsection}
 				Los \textbf{Escenarios de Atributos de Calidad} o QAS (\emph{Quality Attribute Scenarios}) permiten expresar cómo
 				debería responder el sistema ante determinados estímulos y bajo ciertas circunstancias.
@@ -302,19 +308,16 @@ reparación de sistemas de software basada en Arquitectura}
 					\centering \includegraphics[scale=0.75]{images/scenario.png}
 				\end{figure}
 	
-				\nota{Estímulo: condición que debe ser tenida en cuenta cuando llega al sistema}
-				\nota{Entorno: condiciones en las que se encuentra el sistema, e.g. alta carga}
-				\nota{Artefacto: el sistema o partes de él afectadas por el estímulo}
-				\nota{Respuesta: qué hace el sistema ante la llegada del estímulo}
-				\nota{Cuantificación de la respuesta: métrica sobre la respuesta. Permite determinar si el escenario se satisface}
-				\nota{Lo importante: concepto sencillo de facil configuracion, permite involucrar a los stakeholders en la
-				definición de los requerimientos de auto reparación.}
+				\nota{Lo importante: concepto sencillo de facil configuracion, permite involucrar a los stakeholders .}
 				\nota{Mencionar GUI.}
-				\nota{Más adelante, veremos como van a ser utilizados por Arco Iris.}
+				\nota{Más adelante veremos como son utilizados por Arco Iris.}
 			\end{frame}
 
 			\begin{frame}
 				\frametitle{\insertsubsubsection (ejemplo)}
+
+				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
+
 				\textbf{Escenario de eficiencia}\\[20pt]
 				\begin{figure}[ht]
 					\centering \includegraphics[scale=0.75]{images/scenario_example.png}
@@ -325,8 +328,6 @@ reparación de sistemas de software basada en Arquitectura}
 			%--------- TURCO ---------
 			\begin{frame}[allowframebreaks]
 				\frametitle{SHS: Extensión a QAS}
-
-				\nota{Explicar importancia de ESTIMULO, ENTORNO y RESPONSE MEASURE para la auto adaptación.}
 
 				Arco Iris define una extensión de los QAS denominada \textbf{Self Healing Scenario (SHS)}, agregando:
 			  	\begin{itemize}
@@ -340,16 +341,6 @@ reparación de sistemas de software basada en Arquitectura}
 				    	Costo de Servidores&=&20\%		    	
 			    	\end{tabular}			    	
 				\end{itemize}
-
-% 				\framebreak
-
-% 				\begin{figure}[ht]
-% 					\centering \includegraphics[scale=0.39]{images/Arco_Iris_QAS_Model.png}
-% 				\end{figure}
-% 
-% 				\nota{Explicar condiciones y pesos del entorno}				
-% 				\nota{Mencionar Scoring de la estrategia}
-% 				\nota{Mencionar applyFor, isBroken y isBrokenAfterStrategy}
 
 			\end{frame}
 
@@ -459,6 +450,9 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{frame}[allowframebreaks,containsverbatim]
 				\frametitle{Utilidad del Sistema}
 				
+				\nota{El sistema ofrece una determinada utilidad en cada instante}
+				\todo{Mencionar que se usa para evaluar a las estrategias?}
+				
 				\begin{itemize}
 					\item Permite asignar una medida relativa de satisfacción (i.e. utilidad) sobre un sistema sobre el cual es
 					necesario medir el impacto ante determinados cambios.
@@ -469,26 +463,27 @@ reparación de sistemas de software basada en Arquitectura}
 					\end{itemize}
 				\end{itemize}
 				
+				Rainbow posee un mecanismo que permite predecir la utilidad del sistema luego de una supuesta ejecución de una
+				estrategia.
+				
 				\framebreak		
 
+				\todo{Que hay que decir sobre el utilities.yml? Mencionar cómo scorea estrategias Rainbow?}
+				
+				\nota{Se define el impacto de cada táctica sobre los concerns}
+
+				Estimación del impacto de cada estrategia.
+				
 				\begin{Verbatim}[fontsize=\tiny,gobble=5]
 					utilities:
 					  uR:
 					    label:       Average Response Time
-					    mapping:     "[EAvg]ClientT.experRespTime"
-					    description: "Client experienced response time in milliseconds, R, defined
-					                  as a float property 'ClientT.experRespTime' in the architecture"
-					    utility:
-					      0:    1.00
-					      500:  0.90
-					      1000: 0.75
-					      1500: 0.50
-					      2000: 0.25
-					      4000: 0.00
+					    mapping:     "[EAvg]Client.experRespTime"
+					    ...
 					  uF:
 					    label:        Average Fidelity
-					    mapping:      "[EAvg]ServerT.fidelity"
-						...
+					    mapping:      "[EAvg]Server.fidelity"
+					    ...
 					vectors:         # Tactic quality attribute vectors
 					  enlistServers:
 					    uR: -144
@@ -769,8 +764,9 @@ reparación de sistemas de software basada en Arquitectura}
 				\end{itemize}
 				\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}  
 			\end{itemize}
+		\todo{No me cierra el ultimo item}	
 		\end{frame}	
-	
+
 		\begin{frame}
 			\begin{center}
 				\Huge{¿Preguntas?}
