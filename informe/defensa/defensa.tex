@@ -73,8 +73,7 @@ reparación de sistemas de software basada en Arquitectura}
 \begin{frame}
 	\frametitle{Contenido}
 
-	\nota{Aclarar que pueden interrumpir en cualquier momento}
-	\nota{Poco tiempo => acotar temas}
+	\nota{Poco tiempo $\Rightarrow$ vamos a ir rápido $\Rightarrow$ interrumpan si algo no se entiende}
 
 	\tableofcontents
 \end{frame}
@@ -130,23 +129,20 @@ reparación de sistemas de software basada en Arquitectura}
 		%--------- JONY ---------
 		\begin{frame}[allowframebreaks]
 			\frametitle{\insertsubsection}
-			Los \textbf{atributos de calidad} (QAs) hablan de características específicas que debe tener el sistema, antes (mal)
-			llamados ``requerimientos no funcionales''.\\[10pt]
-			Ejemplo: eficiencia, disponibilidad, flexibilidad, usabilidad, etc.\\[16pt]
 
 			\nota{ejemplo de definición QA: el sistema debe ser diseñado de manera tal que se minimize el procesamiento y el tiempo de respuesta.}
-			\nota{(mal) llamados requerimientos no funcionales --> Porque a veces se necesita implementar funcionalidad para ellos.
-			e.g. seguridad: autorización requiere que se implemente funcionalidad}
+			\nota{(mal) llamados requerimientos no funcionales $\Rightarrow$ Porque a veces se necesita implementar funcionalidad para
+			ellos. e.g. seguridad: autorización requiere que se implemente funcionalidad}
+
+			Los \textbf{atributos de calidad} (QAs) hablan de características específicas que debe tener el sistema, antes (mal)
+			llamados ``requerimientos no funcionales''.\\[10pt]
 
 			Los \textbf{\emph{concerns}} permiten juzgar, especificar y medir los atributos de calidad. Usualmente, los requerimientos
 			de atributos de calidad son expresados en términos de \emph{concerns}.
-		
-			\framebreak
 			
-			\frametitle{\insertsubsection}
-			Ejemplos de \textbf{\emph{concerns}}:
-			\small
 			\begin{center}
+				\textbf{Ejemplos}
+				\small
 				\rowcolors*[\hline]{1}{ForestGreen!55}{ForestGreen!20}
 				\begin{tabular}{|c|c|}
 					\textbf{Atributo de Calidad} & \textbf{Ejemplos de \emph{Concerns}}\\
@@ -172,10 +168,10 @@ reparación de sistemas de software basada en Arquitectura}
 			
 			\begin{itemize}[<+->]
 			  	\item \emph{Framework} de Auto Adaptación.
-			  	\uncover<2->{\item Realizado en el marco del proyecto ABLE de la CMU.} 
-				\uncover<3->{\item Trabaja con el modelo de la arquitectura (expresado mediante \textbf{Acme}).}
-				\uncover<4->{\item Externo al sistema a adaptar, no intrusivo.}
-				\uncover<5->{\item Soporta sistemas \emph{legacy} y/o cuyo código no se encuentra disponible.}
+			  	\item Realizado en el marco del proyecto ABLE de la CMU. 
+				\item Trabaja con el modelo de la arquitectura (expresado mediante \textbf{Acme}).
+				\item Externo al sistema a adaptar, no intrusivo.
+				\item Soporta sistemas \emph{legacy} y/o cuyo código no se encuentra disponible.
 			\end{itemize}
 			
 		\end{frame}
@@ -261,16 +257,16 @@ reparación de sistemas de software basada en Arquitectura}
 
 			\begin{itemize}[<+->]
 				\item No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.
-				\uncover<2->{\item Duplicación en la configuración de invariantes\\
+				\item Duplicación en la configuración de invariantes\\
 				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{propenso a errores}\\
 				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{difícil de mantener}\\
-				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}}
-				\uncover<3->{\item Poco dinámico, debido a:
+				\indent\textbf{\textcolor{blue}{\Large{$\Rightarrow$}}} \emph{overhead de procesamiento}
+				\item Poco dinámico, debido a:
 				\begin{itemize}[<+->]
-					\uncover<4->{\item no se adapta al entorno de ejecución}
-					\uncover<5->{\item configuración compleja}
-					\uncover<6->{\item ausencia de mecanismo de actualización ``en caliente''}
-				\end{itemize}}
+					\item no se adapta al entorno de ejecución
+					\item configuración compleja
+					\item ausencia de mecanismo de actualización ``en caliente''
+				\end{itemize}
 			\end{itemize}
 		\end{frame}
 	
@@ -326,8 +322,6 @@ reparación de sistemas de software basada en Arquitectura}
 				
 			\end{frame}
 		
-
-
 			%--------- TURCO ---------
 			\begin{frame}[allowframebreaks]
 				\frametitle{SHS: Extensión a QAS}
@@ -338,8 +332,8 @@ reparación de sistemas de software basada en Arquitectura}
 			  	\begin{itemize}
 			    	\item Cada escenario tiene una prioridad determinada
 			    	\item Estrategias que reparan al escenario
-			    	\item Cada entorno define la importancia de los distintos \emph{concerns}.\\
-			    	Ejemplo, en un entorno de ``Alta Carga'':\\[10pt]
+			    	\item Cada entorno define la importancia de los distintos \emph{concerns}.\\[10pt]
+			    	Por ejemplo, en un entorno de ``Alta Carga'':\\[10pt]
 			    	\begin{tabular}{rcl}
 				    	Tiempo de Respuesta&=&60\%\\
 				    	Fidelidad de la Información&=&20\%\\
@@ -363,17 +357,17 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{frame}
 				\frametitle{Arco Iris: Mejoras a Rainbow}
 		
-				\begin{itemize}
+				\begin{itemize}[<+->]
 					\item \sout{No involucra a los \emph{stakeholders} en el proceso de configuración de la auto reparación.}\\
 					\alert{Arco Iris los involucra.}
-					\pause \uncover<2->{\item \sout{Duplicación en la configuración de invariantes}\\
-					\alert{Invariantes sólo en los QAS.}}
-					\pause \uncover<3->{\item \sout{Poco dinámico, debido a:}
+					\item \sout{Duplicación en la configuración de invariantes}\\
+					\alert{Invariantes sólo en los QAS.}
+					\item \sout{Poco dinámico, debido a:}
 					\begin{itemize}
-						\item \sout{no se adapta al entorno de ejecución}\\\alert{Entornos dinámicos}.}
-						\pause \uncover<4->{\item \sout{configuración compleja}\\\alert{Configuración de QAS mediante Arco Iris UI}.} 
-						\pause \uncover<5->{\item \sout{ausencia de mecanismo de actualización ``en caliente''}\\\alert{Recarga de
-						configuración dinámica}}
+						\item \sout{no se adapta al entorno de ejecución}\\\alert{Entornos dinámicos}.
+						\item \sout{configuración compleja}\\\alert{Configuración de QAS mediante Arco Iris UI}. 
+						\item \sout{ausencia de mecanismo de actualización ``en caliente''}\\\alert{Recarga de
+						configuración dinámica}
 					\end{itemize}
 				\end{itemize}
 			\end{frame}
@@ -508,7 +502,11 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{frame}[containsverbatim]
 				\frametitle{Puntuación y Selección de una Estrategia}
 		
+					\nota{Explicar bien con palabras antes de empezar a analizar el pseudo-código}
+					
 					\textbf{Puntuación}: predicción de la utilidad del sistema luego de simular la ejecución de la estrategia. 
+					
+					\todo{¿Acá no debería decir ``estimaciónPorPropiedad'' en lugar de concern?}
 				
 					\begin{Verbatim}[fontsize=\tiny,gobble=6]
 						scoreStrategia = 0
@@ -585,8 +583,7 @@ reparación de sistemas de software basada en Arquitectura}
 					\centering \includegraphics[scale=0.35]{images/testcase1_expRespTime.png}
 				\end{figure}
 				
- 				\pause \uncover<2>{\alert{¡Arco Iris no puede reparar el sistema porque el escenario no tiene estrategias
- 				asociadas!}}
+ 				\pause \alert{¡Arco Iris no puede reparar el sistema porque el escenario no tiene estrategias asociadas!}
  			\end{center}
 			
 		\end{frame}
@@ -648,7 +645,6 @@ reparación de sistemas de software basada en Arquitectura}
 			\end{Verbatim}
 			
 			\framebreak
-			\frametitle{\insertsubsection}
 			
 			\begin{figure}[ht]
 				\centering \includegraphics[scale=0.28]{images/testcase3_expRespTime.png}\\
@@ -711,13 +707,13 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{Verbatim}[fontsize=\tiny,gobble=4]
 				Current environment: NORMAL
 				Computing Current System Utility...
-				Server Cost Scenario broken for [ESum] 1.0? false
-				Experienced Response Time Scenario broken for [EAvg] 602.25? true
+				Server Cost Scenario NOT BROKEN for [ESum] 1.0
+				Experienced Response Time Scenario BROKEN for [EAvg] 602.25
 				Current System Utility (Score to improve): 0.555
 				Evaluating strategy EnlistServerResponseTime...
 				  Scoring EnlistServerResponseTime...
-				  Server Cost Scenario broken after simulation for Server Cost ([ESum] 2.0)
-				  Experienced Response Time Scenario NOT broken after simulation for Response time ([EAvg] 458.25)
+				  Server Cost Scenario BROKEN after simulation for Server Cost ([ESum] 2.0)
+				  Experienced Response Time Scenario NOT BROKEN after simulation for Response time ([EAvg] 458.25)
 				  Score for strategy EnlistServerResponseTime: 0.111
 				NO applicable strategy, adaptation cycle ended.
 			\end{Verbatim}
@@ -742,11 +738,14 @@ reparación de sistemas de software basada en Arquitectura}
 			\begin{itemize}[<+->]
 				\item Ampliación de la recarga dinámica de configuración\\
 				(idealmente: nunca detener Arco Iris para reconfigurar).
-				\uncover<2->{\item Extensión de tipos de restricciones soportadas.}
-				\uncover<3->{\item Atributos de Calidad y \emph{Concerns} configurables por el usuario.}
-				\uncover<4->{\item Mejorar heurísticas de predicción del potencial impacto de estrategias.}
+				\item Extensión de tipos de restricciones soportadas.
+				\item Atributos de Calidad y \emph{Concerns} configurables por el usuario.
+				\item Mejorar heurísticas de predicción del potencial impacto de estrategias.
 				\nota{mapa estatico de impacto de tactica vs ir aprendiendo de la experiencia}
-				\uncover<5->{\item ¿Ausencia u obsolescencia del modelo de la arquitectura?}
+				\item ¿Ausencia u obsolescencia del modelo de la arquitectura?
+				\begin{itemize}
+					\item \url{http://www.cs.cmu.edu/~able/research/discotect.html}
+				\end{itemize} 
 			\end{itemize}
 		\end{frame}
 
@@ -756,19 +755,19 @@ reparación de sistemas de software basada en Arquitectura}
 		\begin{frame}
 			\frametitle{\insertsubsection}
 
-			\begin{itemize}
+			\begin{itemize}[<+->]
 				\item \emph{Stakeholders} con mayor participación en el proceso de Auto Reparación:
 				\begin{itemize}
 					\item En mayor parte, Arco Iris no requiere habilidades técnicas para su configuración
 					\item Información sobre restricciones fuera del modelo de la arquitectura y unificadas
 					\item Arco Iris UI
 				\end{itemize}
-				\pause \uncover<2->{\item Dinamismo agregado:
+				\item Dinamismo agregado:
 				\begin{itemize}
 					\item Recarga automática de configuración
 					\item Adaptación dinámica de soluciones de acuerdo al entorno de ejecución
-				\end{itemize}}
-				\pause \uncover<3->{\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}}  
+				\end{itemize}
+				\item El sistema conociendo sus requerimientos vs. implementación de soluciones \emph{ad hoc}  
 			\end{itemize}
 		\end{frame}	
 	
