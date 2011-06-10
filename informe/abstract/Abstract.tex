@@ -26,17 +26,17 @@
 			pdfstartview=FitH,            % Fits the width of the page to the window
 			bookmarksnumbered,            % los bookmarks numerados se ven mejor...
 			colorlinks,                   % links con bellos colores
-			linkcolor=blue]								% permite cambiar el color de los links
+			linkcolor=blue]               % permite cambiar el color de los links
 			{hyperref}                    % Permite jugar con algunas cosas que aparecerán en el PDF final
 
 \selectlanguage{spanish}
 
-\linespread{1.3}                    % interlineado equivalente al 1.5 líneas de Word...
-\pagestyle{myheadings}              % encabezado personalizable con \markboth{}{}
-\markboth{}{}												% PONER TITULO PARA ENCABEZADOS DE PAGINAS(el nombre de la tesis es muy largo)
-\headsep = 30pt                     % separación entre encabezado y comienzo del párrafo
+\linespread{1.3}                          % interlineado equivalente al 1.5 líneas de Word...
+\pagestyle{myheadings}                    % encabezado personalizable con \markboth{}{}
+\markboth{}{}                             % PONER TITULO PARA ENCABEZADOS DE PAGINAS(el nombre de la tesis es muy largo)
+\headsep = 30pt                           % separación entre encabezado y comienzo del párrafo
 
-%\addtolength{\oddsidemargin}{-2cm}	% configuracion IDEAL!!!
+%\addtolength{\oddsidemargin}{-2cm}       % configuracion IDEAL!!!
 %\addtolength{\textwidth}{4cm}
 %\addtolength{\textheight}{2cm}
 
@@ -93,7 +93,7 @@
 			\item \textbf{Monitor}: es el módulo que se encarga de obtener la información sobre el funcionamiento del sistema en tiempo de ejecución.
 			\item \textbf{Evaluador de Restricciones}: es el que determina si el valor de alguna de las variables que se están monitoreando violó alguna de las restricciones planteadas (por ejemplo, que la \emph{performance} de un proceso dejó de ser aceptable).
 			\item \textbf{Modelo de Arquitectura}: es el módulo que contiene una representación en el lenguaje \textbf{Acme} de la arquitectura del sistema que se quiere adaptar.
-			\item \textbf{Manejador de Reparaciones}: es el módulo que se ocupa de determinar la forma en la que se va a “reparar” o “adaptar” el sistema en función de los problemas detectados.
+			\item \textbf{Manejador de Reparaciones}: es el módulo que se ocupa de determinar la forma en la que se va a ``reparar'' o ``adaptar'' el sistema en función de los problemas detectados.
 			\item \textbf{Intérprete}: es el módulo que interpreta los cambios ocurridos en tiempo de ejecución y los ``traduce'' a cambios en el modelo de arquitectura.
 			\item \textbf{Administrador de Runtime}: es el módulo que implementa en tiempo de ejecución el cambio en el comportamiento de la aplicación.
 		\end{itemize}
